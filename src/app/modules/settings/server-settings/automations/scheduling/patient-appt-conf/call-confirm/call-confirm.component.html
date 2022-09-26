@@ -1,0 +1,15 @@
+<div class="tab-pane" id="call-confirm-tab">
+    <div class="tab-section">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'general'" routerLinkActive="active">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'script'" routerLinkActive="active">Script</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

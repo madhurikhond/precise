@@ -1,0 +1,385 @@
+<!--Ref Study Sum Tab Start-->
+
+<div class="tab-pane" id="ref-study-sum-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="refStudyForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isRefStudySum" id="sumcheck1"
+											type="checkbox">
+										<label for="sumcheck1" class="arrow-label">Is Active</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Modality</div>
+										<div class="input-group">
+											<ng-select [items]="modalityList" placeholder="Select"
+												[ngClass]="{ 'is-invalid': (submitted && refForm.studyMOdality.errors)}"
+												formControlName="studyMOdality" bindLabel="scheduledmodality"
+												[multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
+												[(ngModel)]="selectedModalityList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:6">
+														<span class="ng-value-label"> {{item.scheduledmodality}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 6">
+														<span class="ng-value-label">{{items.length - 6}} more...</span>
+													</div>
+												</ng-template>  
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && refForm.studyMOdality.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="refForm.studyMOdality.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Run Service At</div>
+										<div class="input-group icon-active">
+											<input type="time"
+												[ngClass]="{ 'is-invalid': (submitted && refForm.initialReminder.errors)}"
+												formControlName="initialReminder" class="form-control" id="timepicker1">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && refForm.initialReminder.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="refForm.initialReminder.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>   
+					   <div class="user-detail">
+                            <div class="theme-label-title">Scheduled</div>
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Finan. Type</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="financialTypesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.scheduledFinacialType.errors)}"
+                                                formControlName="scheduledFinacialType" bindLabel="financialtypename"
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                                                [(ngModel)]="selectedFinancialList" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.scheduledFinacialType.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.scheduledFinacialType.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Radius Status</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="statusNamesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.studyStatus.errors)}"
+                                                formControlName="studyStatus" bindLabel="status" [multiple]="true"
+                                                [closeOnSelect]="false" bindValue="status"
+                                                [(ngModel)]="selectedStatusList" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.studyStatus.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.studyStatus.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <div class="theme-label">Send initial reminder at</div>
+                                        <!-- <script>
+                                            $(function() {
+                                                $("#cut-of-date").datepicker();
+                                            });
+                                        </script> -->
+                                        <div class="input-group">
+                                            <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.cutofDate.errors)}"
+                                                formControlName="cutofDate" type="date" [showClearButton]="true"
+                                                [useMaskBehavior]="true">
+                                            </dx-date-box>
+                                            <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
+                                        </div>
+                                        <div *ngIf="submitted && refForm.cutofDate.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="refForm.cutofDate.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail">
+                            <div class="theme-label-title">Couldnt Scheduled</div>
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Finan. Type</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="financialTypesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.cannotScheduledFinacialType.errors)}"
+                                                formControlName="cannotScheduledFinacialType"
+                                                bindLabel="financialtypename" [multiple]="true" [closeOnSelect]="false"
+                                                bindValue="financialtypename" [(ngModel)]="selectedFinancialList1"
+                                                (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.cannotScheduledFinacialType.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.cannotScheduledFinacialType.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Radius Status</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="statusNamesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.cannotScheduleStatus.errors)}"
+                                                formControlName="cannotScheduleStatus" bindLabel="status"
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="status"
+                                                [(ngModel)]="selectedStatusList1" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.cannotScheduleStatus.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.cannotScheduleStatus.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <div class="theme-label">Send initial reminder at</div>
+                                        <!-- <script>
+                                            $(function() {
+                                                $("#cut-of-date2").datepicker();
+                                            });
+                                        </script> -->
+                                        <div class="input-group">
+                                            <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.cannotCutOff.errors)}"
+                                                formControlName="cannotCutOff" type="date" [showClearButton]="true"
+                                                [useMaskBehavior]="true" >
+                                            </dx-date-box>
+                                            <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
+                                        </div>
+                                        <div *ngIf="submitted && refForm.cannotCutOff.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.cannotCutOff.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail">
+                            <div class="theme-label-title">No Show</div>
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Finan. Type</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="financialTypesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.noShowFinacialType.errors)}"
+                                                formControlName="noShowFinacialType" bindLabel="financialtypename"
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                                                [(ngModel)]="selectedFinancialList2" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.noShowFinacialType.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.noShowFinacialType.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Radius Status</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="statusNamesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.noShowStatus.errors)}"
+                                                formControlName="noShowStatus" bindLabel="status" [multiple]="true"
+                                                [closeOnSelect]="false" bindValue="status"
+                                                [(ngModel)]="selectedStatusList2" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.noShowStatus.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.noShowStatus.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">No Show Status</div>
+                                        <div class="input-group">
+                                            <ng-select [items]="statusNamesList" placeholder="Select"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.appointmentStatus.errors)}"
+                                                formControlName="appointmentStatus" bindLabel="status" [multiple]="true"
+                                                [closeOnSelect]="false" bindValue="status"
+                                                [(ngModel)]="selectedStatusList3" (change)="onChange($event)">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>  
+                                            </ng-select>
+                                        </div>
+                                        <div *ngIf="submitted && refForm.appointmentStatus.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.appointmentStatus.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <div class="theme-label">Send initial reminder at</div>
+                                        <!-- <script>
+                                            $(function() {
+                                                $("#cut-of-date3").datepicker();
+                                            });
+                                        </script> -->
+                                        <div class="input-group">
+                                            <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                [ngClass]="{ 'is-invalid': (submitted && refForm.noShowCutOff.errors)}"
+                                                formControlName="noShowCutOff" type="date" [showClearButton]="true"
+                                                [useMaskBehavior]="true" >
+                                            </dx-date-box>
+                                            <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
+                                        </div>
+                                        <div *ngIf="submitted && refForm.noShowCutOff.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="refForm.noShowCutOff.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && refForm.comment.errors)}"
+                                formControlName="comment" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && refForm.comment.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="refForm.comment.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Ref Study Sum Tab End-->

@@ -1,0 +1,72 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Facility Management</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                    <div class="theme-form">
+                             <div class="form-group">
+                                <div class="theme-label">Search</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" [(ngModel)]="searchTextBoxModal" #searchBox>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">Status</div>
+                                <div class="input-group">
+                                    <select class="form-control" #selectUserType [(ngModel)]="userDropDownModal">
+                                        <option value=1 selected>Active</option>
+                                        <option value=0>Not Active</option>
+                                        <option value=2>Show All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <button type="submit" class="btn   btn-theme"
+                                        (click)="searchFilter(searchBox.value,selectUserType.value)">Search</button>
+                                    <button type="button" class="btn btn-border"
+                                        (click)="clearFilters(searchBox,selectUserType,selectAction)">Clear</button>
+                                </div>
+                            </div>
+                     </div>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+                    <div class="precisemri-search">
+                        <select class="form-search" #selectAction>
+                            <option selected value="0">Select an Action</option>
+                            <!-- <option value="1">Update Price</option> -->
+                            <option value="2">Duplicate Facility</option>
+                            <option value="3">Export Facilities To Excel</option>                            
+                        </select>
+                        <button type="button" class="search" [disabled]="selectAction.value==0?true:false"
+                            [ngStyle]="{'background-color': (selectAction.value==0) ? '#bfbfbf' : '#3b8beb'}"
+                            (click)="goEventFire(selectAction.value)">Go</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'schd-facilities'"
+                        routerLinkActive="active">Schd. Facilities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'parent-comp'" routerLinkActive="active">Parent
+                        Comp.</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

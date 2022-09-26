@@ -1,0 +1,248 @@
+
+<div class="tab-pane" id="pend-pi-tab">	
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="pendPiAcceptLiabWithoutGridForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+                            <div class="row">
+                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="active19" type="checkbox" formControlName="isActive">
+                                        <label for="active19" class="arrow-label">Is Active</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="theme-label">Time to run</div>
+                                        <div class="input-group icon-active">
+                                            <input type="time" class="form-control" id="timepicker28" formControlName="timeToRun">
+                                        </div>	
+                                    </div>
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Financial  Type</div>
+                                            <ng-select 
+                                            [items]="financialTypeList" 
+                                            placeholder="Select"                                            
+                                            formControlName="financialType" 
+                                            bindLabel="financialtypename" 
+                                            [multiple]="true"
+                                            [closeOnSelect]="false"
+                                            bindValue="financialtypename" 
+                                            [(ngModel)]="selectedFinancialTypeList"
+                                            >             
+                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                <div class="ng-value" *ngFor="let item of items | slice:0:3">
+                                                    <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                                        aria-hidden="true">×</span>
+                                                </div>
+                                                <div class="ng-value" *ngIf="items.length > 3">
+                                                    <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                                </div>
+                                            </ng-template>                        
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="theme-label">Alert Type</div>
+                                        <div class="input-group md-input-focused">
+                                            
+                                             <select  (change)="onChangeAlertTypeDropDown($event.target.value)" formControlName="alertType" id="alerttype" class="form-control">
+                                                <option [value]="" disabled>Select Type</option>
+                                                <option *ngFor="let alert of alertTypeList" [value]="alert.alerttype">{{alert.alerttype}}</option>
+                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Radius Status</div>
+                                            <ng-select 
+                                                [items]="statusList" 
+                                                placeholder="Select" 
+                                                formControlName="radiusStatus" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedStatusList"
+                                                >     
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:3">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 3">
+                                                        <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                                    </div>
+                                                </ng-template>                                
+                                            </ng-select> 
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="theme-label">Alert Reason</div>
+                                        <div class="input-group md-input-focused">
+                                            <select   formControlName="alertReason" id="reason" class="form-control">
+                                                <option [value]="" disabled>Select Reason</option>
+                                                <option *ngFor="let reasonObj of reasonList" [value]="reasonObj.reason">{{reasonObj.reason}}</option>
+                                             </select>
+                                            <!-- <select class="form-control">
+                                                <option>Pending Accept Liability Attorney</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                        <div class="page-top-action">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" (click)="addGridRow()"><i class="fa fa-plus"></i> Add New Record</a>
+                                    <button  type="submit" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <thead>
+                                    <tr>
+                                        <th width="80">STATEMENT</th>
+                                        <th width="80">Modality Count</th>
+                                        <th width="80">Modality</th>
+                                        <th width="50">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>	
+                                    <tr formArrayName="pendPiAcceptLiabWithGridForm"
+                                    *ngFor="let singleFormGroup of pendPiAcceptLiabWithGridForm.controls; let i = index">
+                                    <ng-container [formGroupName]="i">   
+                                     <td>{{i+1}}</td>
+                                                <td>
+                                            <select [ngStyle]="{'border-color': pendPiAcceptLiabWithGridForm.controls[i].get('modalityCount').errors?.required && submitted ? 'red':''}" class="form-control" id="modalityCount{{i+1}}" formControlName="modalityCount">
+                                                <option  *ngFor="let modalityCount of modalityCountList" [value]="modalityCount">{{modalityCount}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select [ngStyle]="{'border-color': pendPiAcceptLiabWithGridForm.controls[i].get('modality').errors?.required && submitted ? 'red':''}" class="form-control" id="modalityName{{i+1}}" formControlName="modality">
+                                                <option  *ngFor="let modality of modalityList" [value]="modality.scheduledmodality">{{modality.scheduledmodality}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <select [ngStyle]="{'border-color': pendPiAcceptLiabWithGridForm.controls[i].get('andOrCondtion').errors?.required && submitted ? 'red':''}" class="form-control" formControlName="andOrCondtion">
+                                                    <option selected>OR</option>
+                                                    <option>AND</option>
+                                                </select>
+                                                <div class="table-actions">
+                                                    <a href="javascript:void(0)" class="single-action fa fa-trash" (click)="deleteGridRow(i)" data-toggle="modal" data-target="#delete-modality"></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container> 
+                                    </tr>				
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="Add Note" formControlName="notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button  type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>
+<!-- Add Pop Up Start-->
+<div class="modal fade modal-theme in modal-small" id="add-pi-pend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+          
+				<div class="modal-body">
+					<form class="theme-form">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">ModalityCount</div>
+                                    <div class="input-group">
+                                        <select class="form-control">
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>11</option>
+                                            <option>12</option>
+                                            <option>13</option>
+                                            <option>14</option>
+                                            <option>15</option>
+                                            <option>16</option>
+                                            <option>17</option>
+                                            <option>18</option>
+                                            <option>19</option>
+                                            <option>20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">MODALITY</div>
+                                    <div class="input-group">
+                                        <select class="form-control">
+                                            <option>CR</option>
+                                            <option>CT</option>
+                                            <option>DR</option>
+                                            <option>DX</option>
+                                            <option selected="">HD</option>
+                                            <option>MG</option>
+                                            <option>MR</option>
+                                            <option>NM</option>
+                                            <option>OT</option>
+                                            <option>PT</option>
+                                            <option>RF</option>
+                                            <option>SC</option>
+                                            <option>US</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</form>
+				</div>
+				 <div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+					<a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Insert</a>
+				</div>
+			
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="delete-modality" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure to delete this record?</p>
+            </div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+				<a (click)="deleteModality()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
+			</div>
+        </div>
+    </div>
+</div>
+<!---- End--->

@@ -1,0 +1,2299 @@
+<div class="main-page-body broker-page" *ngIf="isGridDisplay">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Funding Companies</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <form [formGroup]="searchBrokerForm" class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">Search</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="searchText" class="form-control">
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" (click)="searchBrokers()" class="btn btn-theme">Search</a>
+                    <a href="javascript:void(0)" (click)="clearBrokers()" class="btn btn-border">Clear</a>
+                </div>
+            </form>
+        </div>
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
+                        data-toggle="modal" data-target="#add-edit-record"><i class="fa fa-plus"></i> Add New Record</a>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                    <form [formGroup]="searchForm">
+                        <div class="precisemri-search  page-select">
+                            <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                                <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                    value={{item.value}}>{{item.value}}</option>
+                            </select>
+                            <select formControlName="option" class="form-search">
+                                <option value=null disabled>Select an Action</option>
+                                <option value="1">Default</option>
+                                <option value="2">Show all Companies</option>
+                            </select>
+                            <button (click)="onSearchSubmit()" [ngClass]="{'disabled': !searchForm.valid}"
+                                [disabled]="searchForm.invalid" class="search">Go</button>
+                        </div>
+                    </form>
+                    <a href="javascript:void(0)" (click)="getAllBrokers()" class="right btn btn-theme"><i
+                            class="fa fa-repeat"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid id="gridContainer" [dataSource]="brokerList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="BrokerID" [showBorders]="true">
+
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+                <dxi-column dataField="BrokerID" [width]="100" caption="Action" [allowFiltering]="false"
+                    [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+                <dxi-column dataField="Broker" caption="Funding Company"></dxi-column>
+                <dxi-column dataField="MainContactName" caption="Main Contact Name"></dxi-column>
+                <dxi-column dataField="MainContactPhone" cellTemplate="MainContactPhoneTemplate"
+                    caption="Main Contact Phone"></dxi-column>
+                <dxi-column dataField="MainContactEmail" caption="Main Contact Email"></dxi-column>
+                <dxi-column dataField="MainFax" cellTemplate="MainFaxTemplate" caption="Main Fax"></dxi-column>
+                <dxi-column dataField="Website" caption="Website"></dxi-column>
+                <dxi-column dataField="Address" caption="Address"></dxi-column>
+                <dxi-column dataField="City" caption="City"></dxi-column>
+                <dxi-column dataField="State" caption="State"></dxi-column>
+                <dxi-column dataField="Zip" caption="Zip"></dxi-column>
+                <dxi-column dataField="BillingMethod" caption="Billing Method"></dxi-column>
+                <dxi-column dataField="AccountsPayable1Contact" caption="Accounts Payable #1 Contact"></dxi-column>
+                <dxi-column dataField="AccountsPayable1Phone" caption="Accounts Payable #1 Phone"></dxi-column>
+                <dxi-column dataField="AccountsPayable1Email" caption="Accounts Payable #1 Email"></dxi-column>
+                <dxi-column dataField="AccountsPayable2Contact" caption="Accounts Payable #2 Contact"></dxi-column>
+                <dxi-column dataField="AccountsPayable2Phone" caption="Accounts Payable #2 Phone"></dxi-column>
+                <dxi-column dataField="AccountsPayable2Email" caption="Accounts Payable #2 Email"></dxi-column>
+                <dxi-column dataField="AccountsPayable3Contact" caption="Accounts Payable #3 Contact"></dxi-column>
+                <dxi-column dataField="AccountsPayable3Phone" caption="Accounts Payable #3 Phone"></dxi-column>
+                <dxi-column dataField="AccountsPayable3Email" caption="Accounts Payable #3 Email"></dxi-column>
+                <dxi-column dataField="Billing1Contact" caption="Billing #1 Contact"></dxi-column>
+                <dxi-column dataField="Billing1Phone" caption="Billing #1 Phone"></dxi-column>
+                <dxi-column dataField="Billing1Email" caption="Billing #1 Email"></dxi-column>
+                <dxi-column dataField="Billing2Contact" caption="Billing #2 Contact"></dxi-column>
+                <dxi-column dataField="Billing2Phone" caption="Billing #2 Phone"></dxi-column>
+                <dxi-column dataField="Billing2Email" caption="Billing #2 Email"></dxi-column>
+                <dxi-column dataField="Billing3Contact" caption="Billing #3 Contact"></dxi-column>
+                <dxi-column dataField="Billing3Phone" caption="Billing #3 Phone"></dxi-column>
+                <dxi-column dataField="Billing3Email" caption="Billing #3 Email"></dxi-column>
+                <dxi-column dataField="OtherContactEmail" caption="Other Contact Email"></dxi-column>
+
+                <div *dxTemplate="let data of 'MainContactPhoneTemplate'">
+                    <p *ngIf="data && data.value">
+                        {{ data.value | mask: '(000) 000-0000' }}
+                    </p>
+                </div>
+                <div *dxTemplate="let data of 'MainFaxTemplate'">
+                    <p *ngIf="data && data.value">
+                        {{ data.value | mask: '(000) 000-0000' }}
+                    </p>
+                </div>
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <a href="javascript:void(0)" (click)="edit(data.data.BrokerID)"
+                        class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                        data-target="#add-edit-record"></a>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div
+                    *ngFor="let item of brokerList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme" id="add-edit-record" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{brokerId !==0 && brokerName ? brokerName : 'Add New Record'}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="addEditForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="tab-section">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Funding Company Details')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Funding Company Details'}"
+                                    data-toggle="tab" href="#add-broker-details">Funding Company Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Contact Details')" 
+                                    [ngClass]="{'active': defaultPopupTab === 'Contact Details'}" data-toggle="tab"
+                                    href="#add-contact-details">Contact Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Pricing')" (click)="onPolicyTabClick()"
+                                    [ngClass]="{'active': defaultPopupTab === 'Pricing'}" data-toggle="tab"
+                                    href="#add-pricing">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link cursor-pointer" data-toggle="modal"
+                                [ngClass]= "documentTabShow ==  false ? 'document-hide' : 'show'"
+                                    data-target="#docManagerRefFundingCo" (click)="showDocManager()">Documents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Attorney Billing')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Attorney Billing'}" data-toggle="tab"
+                                    href="#add-attorney-billing">Attorney Billing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Intake')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Intake'}" data-toggle="tab"
+                                    href="#add-intake">Intake</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Option')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Option'}" data-toggle="tab"
+                                    href="#add-option">Option</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Facilities')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Facilities'}" data-toggle="tab"
+                                    href="#add-facilities">Facilities</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" (click)="tabClick('Policies')"
+                                    [ngClass]="{'active': defaultPopupTab === 'Policies'}" data-toggle="tab"
+                                    href="#edit-policies">Policies</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane" [ngClass]="{'active': defaultPopupTab === 'Funding Company Details'}"
+                                id="add-broker-details">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Funding Company</div>
+                                            <div class="input-group">
+                                                <input formControlName="broker" type="text"
+                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.broker.errors)}"
+                                                    class="form-control">
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.broker" class="tooltiptext text-right">
+                                                <small class="error text-danger" *ngIf="aeForm.broker.invalid">Funding
+                                                    Company is required</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Main Contact Name</div>
+                                            <div class="input-group">
+                                                <input type="text" formControlName="mainContactName"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Main Contact Phone #</div>
+                                            <div class="input-group">
+                                                <input formControlName="mainContactPhone" mask="(000)-000-0000"
+                                                    type="text"
+                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.mainContactPhone.errors)}"
+                                                    class="form-control">
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.mainContactPhone"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="aeForm.mainContactPhone.invalid">Invalid main contact
+                                                    phone</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Main Fax #</div>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.mainFax.errors)}"
+                                                    formControlName="mainFax" mask="(000)-000-0000"
+                                                    class="form-control">
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.mainFax" class="tooltiptext text-right">
+                                                <small class="error text-danger" *ngIf="aeForm.mainFax.invalid">Invalid
+                                                    main contact fax</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Main Contact Email</div>
+                                            <div class="input-group">
+                                                <input formControlName="mainContactEmail" type="text"
+                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.mainContactEmail.errors)}"
+                                                    class="form-control">
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.mainContactEmail"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="aeForm.mainContactEmail.invalid">Invalid main contact
+                                                    email</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Website</div>
+                                            <div class="input-group">
+                                                <input formControlName="website" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Address</div>
+                                            <div class="input-group">
+                                                <input formControlName="address" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">City</div>
+                                            <div class="input-group">
+                                                <input formControlName="city" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">State</div>
+                                            <div class="input-group">
+                                                <input formControlName="state" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Zip</div>
+                                            <div class="input-group">
+                                                <input formControlName="zip" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Billing Method</div>
+                                            <div class="input-group">
+                                                <select formControlName="billingMethod" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.billingMethod.errors)}">
+                                                    <option value='' disabled>Select Billing Method</option>
+                                                    <option *ngFor="let item of billingMethodList"
+                                                        value={{item.billingMethod}}>
+                                                        {{item.billingMethod}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.billingMethod"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="aeForm.billingMethod.invalid">Billing method is
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="isActiveBroker" id="addinfo2"
+                                                type="checkbox">
+                                            <label for="addinfo2" class="arrow-label">Active</label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" [ngClass]="{'active': defaultPopupTab === 'Contact Details'}"  
+                                id="add-contact-details">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Accounts Payable #1</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable1Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable1Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable1Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable1Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable1Email.invalid">Invalid
+                                                        email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable1Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable1Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable1Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable1Phone.invalid">Invalid
+                                                        phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable1Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable1Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable1Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable1Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Accounts Payable #2</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable2Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable2Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable2Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable2Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable2Email.invalid">Invalid
+                                                        email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable2Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable2Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable2Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable2Phone.invalid">Invalid
+                                                        phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable2Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable2Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable2Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable2Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Accounts Payable #3</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable3Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable3Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable3Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable3Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable3Email.invalid">Invalid
+                                                        email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable3Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable3Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable3Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable3Phone.invalid">Invalid
+                                                        phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="accountsPayable3Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.accountsPayable3Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.accountsPayable3Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.accountsPayable3Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Other Contact Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="otherContactEmail" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.otherContactEmail.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.otherContactEmail"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.otherContactEmail.invalid">Invalid other contact
+                                                        email</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Billing #1</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing1Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing1Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing1Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing1Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing1Email.invalid">Invalid email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing1Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing1Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing1Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing1Phone.invalid">Invalid phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing1Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing1Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing1Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing1Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Billing #2</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing2Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing2Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing2Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing2Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing2Email.invalid">Invalid email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing2Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing2Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing2Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing2Phone.invalid">Invalid phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing2Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing2Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing2Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing2Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Billing #3</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Contact Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing3Contact" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing3Email" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing3Email.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing3Email"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing3Email.invalid">Invalid email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing3Phone" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing3Phone.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing3Phone"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing3Phone.invalid">Invalid phone</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="billing3Fax" mask="(000)-000-0000"
+                                                        type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.billing3Fax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.billing3Fax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.billing3Fax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="user-detail">
+                                            <div class="theme-label-title">Reports</div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Name</div>
+                                                <div class="input-group">
+                                                    <input formControlName="brokerReportName" type="text"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input formControlName="reportEmail" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.reportEmail.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.reportEmail"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.reportEmail.invalid">Invalid report email</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax #</div>
+                                                <div class="input-group">
+                                                    <input formControlName="reportFax" mask="(000)-000-0000" type="text"
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.reportFax.errors)}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && aeForm.reportFax"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="aeForm.reportFax.invalid">Invalid fax</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane"  [ngClass]="{'active': defaultPopupTab === 'Pricing'}"
+                                id="add-pricing">
+                                <div class="cash-price-btn">
+                                    <a href="javascript:void(0)" class="btn btn-theme" data-toggle="modal"
+                                        (click)="fromReset()" data-target="#email-pricing">Email Pricing</a>
+                                    <a href="javascript:void(0)" (click)="ExportFile()" class="btn btn-theme">Export
+                                        Excel</a>
+                                </div>
+
+                                <div class="cash-price-table">
+                                    <div class="table-responsive">
+                                        <div id="exportContainer">
+                                            <dx-button text="Export multiple grids" icon="xlsxfile" #hiddenDXbutton
+                                                [hidden]="true" (onClick)="exportExcel($event,'export')"></dx-button>
+                                        </div>
+                                        <div id="sendMailContainer">
+                                            <dx-button text="Export multiple grids" icon="xlsxfile"
+                                                #hiddenSendMailbutton [hidden]="true"
+                                                (onClick)="exportExcel($event,'send_mail')"></dx-button>
+                                        </div>
+                                        <div class="d-flex justify-content-center" id="exportContainerGrid"
+                                            *ngIf="isShown">
+                                            <div class="table-responsive">
+                                                <dx-data-grid #gridExport id="gridExport"
+                                                    [dataSource]="brokerExportDataList" [width]="0" [height]="0"
+                                                    keyExpr="BrokerId">
+                                                    <dxi-column caption="FACILITY NAME" [width]="300"
+                                                        dataField="FacilityName_Src"></dxi-column>
+                                                    <dxi-column caption="Address" [width]="300" dataField="Address 1">
+                                                    </dxi-column>
+                                                    <dxi-column caption="City" [width]="300" dataField="City">
+                                                    </dxi-column>
+                                                    <dxi-column caption="State" [width]="50" dataField="State">
+                                                    </dxi-column>
+                                                    <dxi-column caption="Zip" [width]="100" dataField="Zip">
+                                                    </dxi-column>
+                                                    <dxi-column caption="Phone" [width]="200" dataField="Phone">
+                                                    </dxi-column>
+                                                    <dxi-column caption="Fax" [width]="200" dataField="Fax">
+                                                    </dxi-column>
+                                                    <dxi-column caption="Email" [width]="250" dataField="Email">
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MRI">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MRIPriceTech" format="fixedPoint" width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MRIPriceGlobal">
+                                                        </dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="ARTHROGRAM">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="ArthrogramPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="ArthrogramPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MRI W/ & W/O CONTRAST">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MRIWOContrastPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MRIWOContrastPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MRI W/ CONTRAST">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MRIWContrastPriceNewTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MRIWContrastPriceNewGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="CT">
+                                                        <dxi-column caption="Tech" [width]="100" dataField="CTPriceTech"
+                                                            format="fixedPoint" width="50"></dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="CTPriceGlobal">
+                                                        </dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="CT W/ & W/O CONTRAST">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="CTWOContrastPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="CTWOContrastPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="CT W/ CONTRAST">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="CTWConstrastPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="CTWContrastPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="XRAY">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="XRayPriceTech" format="fixedPoint" width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="XRayPriceGlobal">
+                                                        </dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="ULTRASOUND">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="UltrasoundPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="UltrasoundPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="PET SCAN">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="PETPriceTech" format="fixedPoint" width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="PETPriceGlobal">
+                                                        </dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="NUCLEAR MEDICINE">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="NuclearMedicinePriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="NuclearMedicinePriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="BONE DENSITY">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="BoneDensityPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="BoneDensityPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MAMMO">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MammographPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MammographPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="DEXA">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="DexaPriceTech" format="fixedPoint" width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="DexaPriceGlobal">
+                                                        </dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MYELOGRAM">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MyElogramPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MyElogramPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="CT ARTHROGRAM">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="CTArthrogramPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="CTArthrogramPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                    <dxi-column alignment="left" caption="MRARTHRO">
+                                                        <dxi-column caption="Tech" [width]="100"
+                                                            dataField="MRARTHROPriceTech" format="fixedPoint"
+                                                            width="50">
+                                                        </dxi-column>
+                                                        <dxi-column caption="GLOBAL" [width]="100"
+                                                            dataField="MRARTHROPriceGlobal"></dxi-column>
+                                                    </dxi-column>
+                                                </dx-data-grid>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive manual-table">
+                                            <table class="table table-theme">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="100">Facility Name</th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    MRI
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Arthrogram
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('ArthrogramPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('ArthrogramPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    MRI w/ &amp; w/o contrast
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIWOContrastPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIWOContrastPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    MRI w/ contrast</div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIWContrastPriceNewTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRIWContrastPriceNewGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    CT
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    CT w/ &amp; w/o contrast
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTWOContrastPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTWOContrastPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    CT w/ contrast
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTWConstrastPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTWContrastPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    XRAY
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('XRayPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('XRayPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Ultrasound
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('UltrasoundPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('UltrasoundPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    PET Scan
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('PETPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('PETPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Nuclear Medicine
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('NuclearMedicinePriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('NuclearMedicinePriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Bone Density
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('BoneDensityPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('BoneDensityPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Mammo
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MammographPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MammographPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    DEXA
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('DexaPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('DexaPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    Myelogram
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MyElogramPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MyElogramPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    CT Arthrogram
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTArthrogramPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('CTArthrogramPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th width="100">
+                                                            <div class="th-group">
+                                                                <div class="th-single">
+                                                                    MRARTHRO
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span>Tech</span>
+                                                                    <span>Global</span>
+                                                                </div>
+                                                                <div class="th-list">
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRARTHROPriceTech')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                    <span><img src="/assets/images/copy-icon.png"
+                                                                            (click)="copyPrice('MRARTHROPriceGlobal')"
+                                                                            style="cursor: pointer;width: 20px;" /></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of brokerFacilityPricingList; let i = index">
+                                                        <td>
+                                                            {{item.FacilityName_Src}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIPriceTech_'+i)"
+                                                                    id="MRIPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIPriceGlobal_'+i)"
+                                                                    id="MRIPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.ArthrogramPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('ArthrogramPriceTech_'+i)"
+                                                                    id="ArthrogramPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.ArthrogramPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('ArthrogramPriceGlobal_'+i)"
+                                                                    id="ArthrogramPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIWOContrastPriceTech"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIWOContrastPriceTech_'+i)"
+                                                                    id="MRIWOContrastPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIWOContrastPriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIWOContrastPriceGlobal_'+i)"
+                                                                    id="MRIWOContrastPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIWContrastPriceNewTech"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIWContrastPriceNewTech_'+i)"
+                                                                    id="MRIWContrastPriceNewTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRIWContrastPriceNewGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRIWContrastPriceNewGlobal_'+i)"
+                                                                    id="MRIWContrastPriceNewGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTPriceTech_'+i)"
+                                                                    id="CTPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTPriceGlobal_'+i)"
+                                                                    id="CTPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTWOContrastPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTWOContrastPriceTech_'+i)"
+                                                                    id="CTWOContrastPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTWOContrastPriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTWOContrastPriceGlobal_'+i)"
+                                                                    id="CTWOContrastPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTWConstrastPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTWConstrastPriceTech_'+i)"
+                                                                    id="CTWConstrastPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTWContrastPriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTWContrastPriceGlobal_'+i)"
+                                                                    id="CTWContrastPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.XRayPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('XRayPriceTech_'+i)"
+                                                                    id="XRayPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.XRayPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('XRayPriceGlobal_'+i)"
+                                                                    id="XRayPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.UltrasoundPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('UltrasoundPriceTech_'+i)"
+                                                                    id="UltrasoundPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.UltrasoundPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('UltrasoundPriceGlobal_'+i)"
+                                                                    id="UltrasoundPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.PETPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('PETPriceTech_'+i)"
+                                                                    id="PETPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.PETPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('PETPriceGlobal_'+i)"
+                                                                    id="PETPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.NuclearMedicinePriceTech"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('NuclearMedicinePriceTech_'+i)"
+                                                                    id="NuclearMedicinePriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.NuclearMedicinePriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('NuclearMedicinePriceGlobal_'+i)"
+                                                                    id="NuclearMedicinePriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.BoneDensityPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('BoneDensityPriceTech_'+i)"
+                                                                    id="BoneDensityPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.BoneDensityPriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('BoneDensityPriceGlobal_'+i)"
+                                                                    id="BoneDensityPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MammographPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MammographPriceTech_'+i)"
+                                                                    id="MammographPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MammographPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MammographPriceGlobal_'+i)"
+                                                                    id="MammographPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.DexaPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('DexaPriceTech_'+i)"
+                                                                    id="DexaPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.DexaPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('DexaPriceGlobal_'+i)"
+                                                                    id="DexaPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MyElogramPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MyElogramPriceTech_'+i)"
+                                                                    id="MyElogramPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MyElogramPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MyElogramPriceGlobal_'+i)"
+                                                                    id="MyElogramPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTArthrogramPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTArthrogramPriceTech_'+i)"
+                                                                    id="CTArthrogramPriceTech_{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.CTArthrogramPriceGlobal"
+                                                                    type="text" class="form-control"
+                                                                    appTwoDigitDecimaNumber
+                                                                    (click)="copyData('CTArthrogramPriceGlobal_'+i)"
+                                                                    id="CTArthrogramPriceGlobal_{{i}}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="td-list">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRARTHROPriceTech" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRARTHROPriceTech'+i)"
+                                                                    id="MRARTHROPriceTech{{i}}">
+                                                                <input [ngModelOptions]="{standalone: true}"
+                                                                    [(ngModel)]="item.MRARTHROPriceGlobal" type="text"
+                                                                    class="form-control" appTwoDigitDecimaNumber
+                                                                    (click)="copyData('MRARTHROPriceGlobal'+i)"
+                                                                    id="MRARTHROPriceGlobal{{i}}">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane document-hide" [ngClass]="{'active': defaultPopupTab === 'Documents'}"
+                                id="add-documents">
+                                <div class="nodata-display">
+                                    Coming Soon
+                                </div>
+                            </div>
+                            <div class="tab-pane" [ngClass]="{'active': defaultPopupTab === 'Attorney Billing'}"
+                               
+                                id="add-attorney-billing">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="theme-label-title">NPI</div>
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="npi" (change)="changeNPI()"
+                                                        formControlName="isNpi" type="checkbox">
+                                                    <label for="npi" class="arrow-label">Use NPI</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div *ngIf="aeForm.isNpi.value" class="form-group without-label">
+                                                    <div class="input-group">
+                                                        <input formControlName="npiText" type="text"
+                                                            [ngClass]="{ 'is-invalid': (submitted && aeForm.npiText.errors)}"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && aeForm.isNpi.value && aeForm.npiText.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="aeForm.npiText.errors.required">
+                                                            NPI text is required
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="checkbox-theme">
+                                                    <input formControlName="isExamLocation" class="form-control"
+                                                        id="billing2" type="checkbox">
+                                                    <label for="billing2" class="arrow-label">Exam Location</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="theme-label-title">Send Bill</div>
+                                        <div class="checkbox-theme">
+                                            <input formControlName="autoFax" class="form-control" id="billing3"
+                                                type="checkbox">
+                                            <label for="billing3" class="arrow-label">Auto Fax Bill</label>
+                                        </div>
+                                        <div class="checkbox-theme">
+                                            <input formControlName="autoEmail" class="form-control" id="billing4"
+                                                type="checkbox">
+                                            <label for="billing4" class="arrow-label">Auto Email Bill</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input formControlName="isDoNotUseDxCode" class="form-control" id="billing5"
+                                                type="checkbox">
+                                            <label for="billing5" class="arrow-label">Do Not Use DxCode</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input formControlName="doNotSendPIBIll" class="form-control" id="billing6"
+                                                type="checkbox">
+                                            <label for="billing6" class="arrow-label">Send PI BIll to Funding Company
+                                                NOT Attorney</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input formControlName="doNotDOI" class="form-control" id="billing7"
+                                                type="checkbox">
+                                            <label for="billing7" class="arrow-label">Require DOI</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input formControlName="pauseSendingBill" class="form-control" id="billing8"
+                                                type="checkbox">
+                                            <label for="billing8" class="arrow-label">Pause Sending Attorney
+                                                Bills</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="theme-label-title">Billing Address</div>
+                                        <div class="checkbox-theme">
+                                            <input formControlName="overrideAddressForBilling"
+                                                (change)="changeOverrideAddressForBilling()" class="form-control"
+                                                id="billing9" type="checkbox" checked>
+                                            <label for="billing9" class="arrow-label">Override Address for
+                                                Billing</label>
+                                        </div>
+                                        <div *ngIf="aeForm.overrideAddressForBilling.value" class="row">
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Company Name</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdCompanyName" type="text"
+                                                            [ngClass]="{ 'is-invalid': (submitted && aeForm.bdCompanyName.errors)}"
+                                                            class="form-control">
+                                                        <div *ngIf="submitted && aeForm.overrideAddressForBilling.value && aeForm.bdCompanyName.errors"
+                                                            class="tooltiptext text-right">
+                                                            <small class="error text-danger"
+                                                                *ngIf="aeForm.bdCompanyName.errors.required">
+                                                                Company name is required
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="theme-label">Address</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdAddress1" type="text"
+                                                            [ngClass]="{ 'is-invalid': (submitted && aeForm.bdAddress1.errors)}"
+                                                            class="form-control">
+                                                        <div *ngIf="submitted && aeForm.overrideAddressForBilling.value && aeForm.bdAddress1.errors"
+                                                            class="tooltiptext text-right">
+                                                            <small class="error text-danger"
+                                                                *ngIf="aeForm.bdAddress1.errors.required">
+                                                                Address is required
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="theme-label">Address 2</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdAddress2" type="text"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="theme-label">City</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdCity" type="text"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="theme-label">State</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdState" type="text"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="theme-label">Zip</div>
+                                                    <div class="input-group">
+                                                        <input formControlName="bdZip" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="theme-label-title">Referral Service</div>
+                                        <div class="checkbox-theme">
+                                            <input formControlName="isReferralService" class="form-control"
+                                                id="billing10" type="checkbox">
+                                            <label for="billing10" class="arrow-label">Use Referral Service</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-4 col-md-12 col-sm-12 col-12">
+                                        <div class="theme-label-title">Addendum</div>
+                                        <div class="checkbox-theme">
+                                            <input formControlName="isAddendum" (change)="changeAddendum()"
+                                                class="form-control" id="billing11" type="checkbox">
+                                            <label for="billing11" class="arrow-label">Use Addendum</label>
+                                        </div>
+                                        <div *ngIf="aeForm.isAddendum.value" class="texteditor">
+                                            <div class="cke-editor-group">
+                                                <ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
+                                                formControlName="addendumText" 
+                                                [ngClass]="{ 'is-invalid': (submitted && aeForm.addendumText.errors)}"
+                                                    [config]="CkeConfig" (paste)="onPaste($event)" id="email-editor"
+                                                    (change)="onChange($event)">
+                                                </ckeditor>
+                                                <!-- <ckeditor [editor]="Editor" formControlName="addendumText">
+                                                    <textarea
+                                                        [ngClass]="{ 'is-invalid': (submitted && aeForm.addendumText.errors)}"
+                                                        class="" id="email-editor" cols="10" rows="10"
+                                                        formControlName="addendumText"></textarea>
+                                                </ckeditor> -->
+                                            </div>
+                                            <div *ngIf="submitted && aeForm.addendumText"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="aeForm.addendumText.invalid">Addendum text is
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane"   [ngClass]="{'active': defaultPopupTab === 'Intake'}"
+                                id="add-intake">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Intake packet override</div>
+                                            <div class="input-group">
+                                                <select formCnotrolName="brokerReportName" class="form-control">
+                                                    <option value=null disabled>Select Report Name</option>
+                                                    <option *ngFor="let item of reportList" value="{{item}}">
+                                                        {{item}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-input-group">
+                                            <div class="checkbox-theme">
+                                                <input class="form-control" (change)="changeReqUniqueLien()"
+                                                    formControlName="isReqUniqueLien" id="intake1" type="checkbox">
+                                                <label for="intake1" class="arrow-label">Requires unique lien per
+                                                    patient</label>
+                                            </div>
+
+                                            <ng-container *ngIf="aeForm.isReqUniqueLien.value">
+                                                <div class="form-group without-label">
+                                                    <div class="input-group">
+                                                        <select formControlName="brokerUniqueLien"
+                                                            [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerUniqueLien.errors)}"
+                                                            class="form-control">
+                                                            <option value=null disabled>Select Document Type</option>
+                                                            <option *ngFor="let item of documentTypeList"
+                                                                value={{item.docType}}>
+                                                                {{item.docType}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div *ngIf="submitted && aeForm.isReqUniqueLien.value && aeForm.brokerUniqueLien.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="aeForm.brokerUniqueLien.errors.required">
+                                                            Unique Lien is required
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group without-label">
+                                                    <div class="input-group">
+                                                        <input formControlName="missingLienEmail"
+                                                            [ngClass]="{ 'is-invalid': (submitted && aeForm.missingLienEmail.errors)}"
+                                                            type="text" class="form-control"
+                                                            placeholder="Enter Missing Lien Email">
+                                                    </div>
+                                                    <div *ngIf="submitted && aeForm.isReqUniqueLien.value && aeForm.missingLienEmail"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="aeForm.missingLienEmail.invalid">
+                                                            Invalid Missing Lien email
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane"   [ngClass]="{'active': defaultPopupTab === 'Option'}"
+                                id="add-option">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="addinfo1"
+                                                        (change)="changeAutoEmailReport()"
+                                                        formControlName="isAutoEmailReport" type="checkbox">
+                                                    <label for="addinfo1" class="theme-label">Auto Email Report</label>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="aeForm.isAutoEmailReport.value"
+                                                class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text"
+                                                            [ngClass]="{'is-invalid': (submitted && aeForm.autoEmailReport.errors)}"
+                                                            formControlName="autoEmailReport" class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && aeForm.isAutoEmailReport.value && aeForm.autoEmailReport.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="aeForm.autoEmailReport.errors.required">
+                                                            ﻿EMAIL ADDRESS IS REQUIRED
+                                                        </small>
+                                                        <small class="error text-danger"
+                                                            *ngIf="aeForm.autoEmailReport.errors.pattern">
+                                                            ﻿﻿EMAIL ADDRESS IS INVALID
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" formControlName="isSendBrokerPSL"
+                                                        (change)="changeSendBrokerPSL()" id="PSL1" type="checkbox">
+                                                    <label for="PSL1" class="arrow-label">Send PSL to Funding
+                                                        Company</label>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="aeForm.isSendBrokerPSL.value"
+                                                class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                        <div class="form-group">
+                                                            <div class="theme-label">Lien Email 1</div>
+                                                            <div class="input-group">
+                                                                <input formControlName="brokerPSL1" type="text"
+                                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerPSL1.errors)}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div *ngIf="submitted && aeForm.isSendBrokerPSL.value && aeForm.brokerPSL1.errors"
+                                                                class="tooltiptext text-right">
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL1.errors.required">
+                                                                    PSL 1 email is required
+                                                                </small>
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL1.errors.pattern">
+                                                                    PSL 1 email is invalid
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                        <div class="form-group">
+                                                            <div class="theme-label">Lien Email 2</div>
+                                                            <div class="input-group">
+                                                                <input formControlName="brokerPSL2" type="text"
+                                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerPSL2.errors)}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div *ngIf="submitted && aeForm.isSendBrokerPSL.value && aeForm.brokerPSL2.errors"
+                                                                class="tooltiptext text-right">
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL2.errors.pattern">
+                                                                    PSL 2 email is invalid
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+
+                                                        <div class="form-group">
+                                                            <div class="theme-label">Lien Email 3</div>
+                                                            <div class="input-group">
+                                                                <input formControlName="brokerPSL3" type="text"
+                                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerPSL3.errors)}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div *ngIf="submitted && aeForm.isSendBrokerPSL.value && aeForm.brokerPSL3.errors"
+                                                                class="tooltiptext text-right">
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL3.errors.pattern">
+                                                                    PSL 3 email is invalid
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+
+                                                        <div class="form-group">
+                                                            <div class="theme-label">Lien Email 4</div>
+                                                            <div class="input-group">
+                                                                <input formControlName="brokerPSL4" type="text"
+                                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerPSL4.errors)}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div *ngIf="submitted && aeForm.isSendBrokerPSL.value && aeForm.brokerPSL4.errors"
+                                                                class="tooltiptext text-right">
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL4.errors.pattern">
+                                                                    PSL 4 email is invalid
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                        <div class="form-group">
+                                                            <div class="theme-label">Lien Email 5</div>
+                                                            <div class="input-group">
+                                                                <input formControlName="brokerPSL5" type="text"
+                                                                    [ngClass]="{ 'is-invalid': (submitted && aeForm.brokerPSL5.errors)}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div *ngIf="submitted && aeForm.isSendBrokerPSL.value && aeForm.brokerPSL5.errors"
+                                                                class="tooltiptext text-right">
+                                                                <small class="error text-danger"
+                                                                    *ngIf="aeForm.brokerPSL5.errors.pattern">
+                                                                    PSL 5 email is invalid
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendEmail" id="option2"
+                                                type="checkbox">
+                                            <label for="option2" class="arrow-label">Do not Email Blasts</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendFax" id="option3"
+                                                type="checkbox">
+                                            <label for="option3" class="arrow-label">Do not Fax Blasts</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendMail" id="option14"
+                                                type="checkbox">
+                                            <label for="option14" class="arrow-label">Do not Mail Blasts</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="removeAllMarketingBlast"
+                                                id="option4" type="checkbox">
+                                            <label for="option4" class="arrow-label">Remove from all marketing blasts
+                                                under</label>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendliability"
+                                                id="addinfo3" type="checkbox">
+                                            <label for="addinfo3" class="arrow-label">Do NOT send ANY liability forms to
+                                                attorney.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control"
+                                                formControlName="doNotSendliabilitySecondCriteria" id="addinfo4"
+                                                type="checkbox">
+                                            <label for="addinfo4" class="arrow-label">Dont Send liability form except
+                                                for Second criteria</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendScheduledSummary"
+                                                id="addinfo5" type="checkbox">
+                                            <label for="addinfo5" class="arrow-label">Do NOT send Scheduled summary to
+                                                Atty & ref. phy.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control"
+                                                formControlName="doNotSendScheduledSummaryBroker" id="addinfo_3"
+                                                type="checkbox">
+                                            <label for="addinfo_3" class="arrow-label">Do NOT send Scheduled summary to
+                                                Broker</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control"
+                                                formControlName="doNotSendCouldntScheduleReminderAtty" id="addinfo_4"
+                                                type="checkbox">
+                                            <label for="addinfo_4" class="arrow-label">DO NOT Send Couldnt Schedule
+                                                Reminder to atty & ref. phy.</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendCouldntScheduleSMS"
+                                                id="addinfo_5" type="checkbox">
+                                            <label for="addinfo_5" class="arrow-label">Do Not Send Couldnt Schedule SMS
+                                                to Patient</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotFaxReportToAttorney"
+                                                id="addinfo6" type="checkbox">
+                                            <label for="addinfo6" class="arrow-label">Do NOT Fax report to
+                                                attorney</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendARPaymentSummary"
+                                                id="addinfo7" type="checkbox">
+                                            <label for="addinfo7" class="arrow-label">Do NOT Send AR Payment
+                                                Summary</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="doNotSendOrderedSmstoPatient"
+                                                id="addinfo8" type="checkbox">
+                                            <label for="addinfo8" class="arrow-label">Do NOT send Ordered SMS to
+                                                Patient</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-input-group">
+                                            <div class="checkbox-theme">
+                                                <input class="form-control" id="addinfo9" formControlName="isDocManage"
+                                                    type="checkbox">
+                                                <label for="addinfo9" class="arrow-label">Export doc manager
+                                                    files</label>
+                                            </div>
+                                            <div *ngIf="aeForm.isDocManage.value" class="checkbox-theme row">
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <input class="form-control" id="addinfo10"
+                                                        (change)="changedocManagerFiles()" formControlName="isSFTP"
+                                                        type="checkbox">
+                                                    <label for="addinfo10" class="arrow-label">Send files via
+                                                        SFTP</label>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="aeForm.isSFTP.value && aeForm.isDocManage.value" class="row">
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Select FTP Profile:</div>
+                                                        <div class="input-group">
+                                                            <select formControlName="sftpprofileId"
+                                                                class="form-control">
+                                                                <option></option>
+                                                                <option *ngFor="let item of SftpList"
+                                                                    [ngValue]=item.sftpId>
+                                                                    {{item.profileName}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="aeForm.isSFTP.value && aeForm.isDocManage.value" class="row">
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Doc Types to Exculde:</div>
+                                                        <div class="input-group">
+                                                            <ng-select [items]="docTypeList" formControlName="docId"
+                                                                bindLabel="docType" [multiple]="true"
+                                                                [closeOnSelect]="false" bindValue="docId"
+                                                                [(ngModel)]="selectedDocType">
+                                                                <ng-template ng-multi-label-tmp let-items="items"
+                                                                    let-clear="clear">
+                                                                    <div class="ng-value"
+                                                                        *ngFor="let item of items | slice:0:1">
+                                                                        <span class="ng-value-label">
+                                                                            {{item.docType}}</span>
+                                                                        <span class="ng-value-icon right"
+                                                                            (click)="clear(item)"
+                                                                            aria-hidden="true">×</span>
+                                                                    </div>
+                                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                                        <span class="ng-value-label">{{items.length -
+                                                                            1}} more...</span>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </ng-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="requiredpo" id="option9"
+                                                type="checkbox">
+                                            <label for="option9" class="arrow-label">Required PO#</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Auto forward doc to broker:</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="docTypeList" formControlName="autoDocToBroker"
+                                                    bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
+                                                    bindValue="docId" [(ngModel)]="selectedDocToBroker">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.docType}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane"  [ngClass]="{'active': defaultPopupTab === 'Facilities'}"
+                                id="add-facilities">
+                                <div class="tab-section">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab"
+                                                href="#excluded-locations">Excluded locations</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active show" id="excluded-locations">
+                                            <div class="alert alert-danger" role="alert">
+                                                Check mark the facilities you do <strong>NOT</strong> want to show on
+                                                the scheduling facility page
+                                            </div>
+                                            <div class="tab-pane" id="facility-log">
+                                                <div class="table-responsive">
+                                                    <dx-data-grid id="facilityList" [dataSource]="FacilityList"
+                                                        [allowColumnResizing]="true" [columnAutoWidth]="true"
+                                                        [allowColumnReordering]="true"
+                                                        [columnResizingMode]="columnResizingMode" [showBorders]="true"
+                                                        [allowColumnReordering]="true"
+                                                        [(selectedRowKeys)]="selectedRows">
+                                                        <dxo-selection selectAllMode="allPages"
+                                                            (click)="isAllSelected()" showCheckBoxesMode="always"
+                                                            mode="multiple">
+                                                        </dxo-selection>
+                                                        <dxo-sorting mode="multiple"></dxo-sorting>
+                                                        <dxo-paging [enabled]="true"></dxo-paging>
+                                                        <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                                                        <!-- </dxo-filter-row> -->
+                                                        <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                                                        <!-- </dxo-header-filter> -->
+                                                        <dxo-header-filter [visible]="true" [allowSearch]="true">
+                                                        </dxo-header-filter>
+                                                        <dxo-load-panel [enabled]="true">
+                                                        </dxo-load-panel>
+                                                        <dxi-column dataField="FacilityName" caption="Facility Name">
+                                                        </dxi-column>
+                                                        <dxi-column dataField="ParentCoName" caption="Parent Company">
+                                                        </dxi-column>
+                                                        <dxi-column dataField="Street" caption="Street">
+                                                        </dxi-column>
+                                                        <dxi-column dataField="City" caption="City" [visible]="false">
+                                                        </dxi-column>
+                                                        <dxi-column dataField="State" caption="State"></dxi-column>
+                                                        <dxi-column dataField="Zip" caption="ZIP"></dxi-column>
+                                                    </dx-data-grid>
+                                                </div>
+                                                <div class="pagination-theme">
+                                                    <div class="pagination-theme">
+                                                        <div
+                                                            *ngFor="let item of FacilityList | paginate: { id: 'pagination112' , itemsPerPage: pageSizeFacilityList, currentPage: pageNumberFacilityList, totalItems:totalRecordFacilityList}">
+                                                        </div>
+                                                        <pagination-controls id="pagination112"
+                                                            (pageChange)="onPageNumberChangeFacilityList($event)">
+                                                        </pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="table-responsive manual-table">
+      <table class="table table-theme">
+          <thead>
+              <tr>
+                  <th width="100">Facility Name</th>
+                  <th width="100">Parent Company</th>
+                  <th width="100">Street</th>
+                  <th width="100">City</th>
+                  <th width="100">State</th>0000000
+                  <th width="100">Zip</th>
+                  <th>
+                      <div class="checkbox-theme">
+                          <input [ngModelOptions]="{standalone: true}"
+                              id="chkSelectAll" class="form-control"
+                              type="checkbox" [(ngModel)]="masterSelected"
+                              [checked]="masterSelected"
+                              (change)="checkUncheckAll()" />
+                          <label for="chkSelectAll"
+                              class="arrow-label"><strong>ALL</strong></label>
+                      </div>
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let item of brokerExcludeFacilityList;">
+                  <td>{{item.FacilityName}}</td>
+                  <td>{{item.ParentCoName}}</td>
+                  <td>{{item.Street}}</td>
+                  <td>{{item.City}}</td>
+                  <td>{{item.State}}</td>
+                  <td>{{item.Zip}}</td>
+                  <td class="check-td" width="50">
+                      <div class="checkbox-theme">
+                          <input [ngModelOptions]="{standalone: true}"
+                              class="checkbox-input"
+                              [(ngModel)]="item.IsExcluded" type="checkbox"
+                              [checked]="item.IsExcluded"
+                              (change)="isAllSelected()">
+                          <label class="checkbox-label">&nbsp;</label>
+                      </div>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" [ngClass]="{'active': defaultPopupTab === 'Policies'}">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form class="theme-form" [formGroup]="BrokerPoliciesForm">
+                                            <div class="theme-form">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div class="theme-label-title">Funding Company Policies</div>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div class="cke-editor-group">
+                                                            <ckeditor #myckeditor class="ng-untouched ng-pristine ng-invalid"
+                                                            formControlName="brokerPolicy" 
+                                                                [config]="CkeConfig" (paste)="onPaste($event)"
+                                                                (change)="onChange($event)">
+                                                            </ckeditor>   
+                                                        </div>
+                                                        <!-- <ckeditor [editor]="Editor" debounce="500"
+                                                                formControlName="brokerPolicy" style="text-transform: none;"
+                                                                [disabled]="false" class=" ng-untouched ng-pristine ng-invalid">
+                                                            </ckeditor> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
+                        data-dismiss="modal">Close</a>
+                    <a href="javascript:void(0)" (click)="onSubmit(true)" class="btn btn-theme btn-sm pull-left"
+                        [attr.data-dismiss]="modelValue">Save & Close</a>
+                    <a href="javascript:void(0)" (click)="onSubmit()" class="btn btn-border btn-sm pull-left"
+                        [attr.data-dismiss]="modelValue">Apply Changes</a>
+                    <!-- <a href="javascript:void(0)" (click)="onSubmit()" class="btn btn-theme btn-sm pull-left"
+                        [attr.data-dismiss]="modelValue">{{brokerId ? 'Save Changes' : 'Insert'}}</a> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="email-pricing" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Email Facility Pricing for Access HealthNet</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="sendMailForm" class="theme-form">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Email</div>
+                                <div class="input-group">
+                                    <input formControlName="email" type="text"
+                                        [ngClass]="{ 'is-invalid': (mailSubmitted && mailForm.email.errors)}"
+                                        class="form-control">
+                                </div>
+                                <div *ngIf="mailSubmitted && mailForm.email.errors" class="tooltiptext text-right">
+                                    <small class="error text-danger" *ngIf="mailForm.email.errors.required">Email is
+                                        required</small>
+                                    <small class="error text-danger" *ngIf="mailForm.email.errors.pattern">Invalid email
+                                        address</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Subject</div>
+                                <div class="input-group">
+                                    <input formControlName="subject" type="text"
+                                        [ngClass]="{ 'is-invalid': (mailSubmitted && mailForm.subject.errors)}"
+                                        class="form-control">
+                                </div>
+                                <div *ngIf="mailSubmitted && mailForm.subject.errors" class="tooltiptext text-right">
+                                    <small class="error text-danger" *ngIf="mailForm.subject.errors.required">subject is
+                                        required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Body</div>
+                                <div class="input-group">
+                                    <textarea formControlName="Body" class="form-control"
+                                        [ngClass]="{ 'is-invalid': (mailSubmitted && mailForm.Body.errors)}"
+                                        placeholder=""></textarea>
+                                </div>
+                                <div *ngIf="mailSubmitted && mailForm.Body.errors" class="tooltiptext text-right">
+                                    <small class="error text-danger" *ngIf="mailForm.Body.errors.required">Body is
+                                        required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
+                    data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" [attr.data-dismiss]="mailmodelValue" class="btn btn-theme btn-sm pull-left"
+                    (click)="sendEmail()" data-dismiss="modal">Send Email</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
+    data-target="#add-edit-record"></button>
+<app-document-referral-and-fundingco></app-document-referral-and-fundingco>

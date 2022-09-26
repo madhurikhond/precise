@@ -1,0 +1,17 @@
+.invalid-feedback {
+    margin-top: 30px;
+}
+.is-invalid{
+    border-color: red !important;
+}
+:host ::ng-deep .ck-editor__editable_inline {
+    height: 280px !important;
+    overflow-y: scroll !important
+}
+.font-size
+{
+    font-size: 15px !important;
+}
+.documentTabHide{
+    display:none !important;
+  }

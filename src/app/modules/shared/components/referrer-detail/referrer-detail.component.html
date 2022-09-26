@@ -1,0 +1,1450 @@
+<div class="modal fade modal-theme" #refferrer id="ReferrerDetailWindow" role="dialog" data-backdrop="static"
+	data-keyboard="false" aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{title}}</h5>
+				<div class="close-dismiss" (click)="closePopUp()" data-dismiss="modal"></div>
+			</div>
+			<form [formGroup]="referrersForm" class="theme-form referrer-theme-form">
+				<div class="modal-body">
+					<div class="tab-section">
+						<ul class="nav nav-tabs" click ='onTabclick(false)'>
+							<li class="nav-item">
+								<a class="nav-link active" #referrer_details data-toggle="tab"
+								[ngClass]="{'active': tabId === 'edit-referrer-details'}"
+									href="#edit-referrer-details" (click)="updateTabId('edit-referrer-details')">Referrer
+									Details</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#edit-notes"  
+								[ngClass]="{'active': tabId === 'edit-notes'}" (click)="updateTabId('edit-notes')" >Notes</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#edit-policies"  
+								[ngClass]="{'active': tabId === 'edit-policies'}" (click)="updateTabId('edit-policies')">Policies</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#edit-contact-details"
+								[ngClass]="{'active': tabId === 'edit-contact-details'}"  (click)="updateTabId('edit-contact-details')" >Contact Details</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#edit-option" 
+								[ngClass]="{'active': tabId === 'edit-option'}" (click)="updateTabId('edit-option')" >Option</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" 
+								[ngClass]="{'active': tabId === 'edit-negotiated-settlements'}" href="#edit-negotiated-settlements"  (click)="updateTabId('edit-negotiated-settlements')">Negotiated
+									Settlements</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link cursor-pointer" data-toggle="modal"
+									data-target="#docManagerRefFundingCo" (click)="showDocManager()">Documents</a>
+							</li>
+							<li class="nav-item" *ngIf="refForm.isReferrerReadingRadiologist.value">
+								<a class="nav-link" data-toggle="tab" href="#edit-radfees">RAD DETAILS</a>
+							</li>
+						</ul>
+
+						<div class="tab-content">
+							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-referrer-details'}"  id="edit-referrer-details">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Company Name</div>
+											<div class="input-group">
+												<input type="text" formControlName="fullName" class="form-control"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Address</div>
+											<div class="input-group">
+												<input type="text" formControlName="address" class="form-control"
+													disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Specialty</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="specialty"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Zip / Postal Code</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="zipPostalCode"
+													disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">NPI / Physican ID</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="zipPostalCode"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">City</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="city" disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Business Phone</div>
+											<div class="input-group">
+												<input type="text" mask="(000)-000-0000" class="form-control"
+													formControlName="businessPhoneNumber" disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">State</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="stateProvince"
+													disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Fax Number</div>
+											<div class="input-group">
+												<input type="text" mask="(000)-000-0000" class="form-control"
+													formControlName="faxNumber" disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Country</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="country"
+													disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Email</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="email"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Cell Phone Number</div>
+											<div class="input-group">
+												<input type="text" class="form-control" mask="(000)-000-0000"
+													formControlName="cellPhoneNumber" disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Date Added</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="dateAdded"
+													[value]="referrersForm.get('dateAdded').value | date : dateTimeFormatCustom.DateTime"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Pager Phone</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="pagerPhoneNumber" disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Type</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="type" disabled>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Notes</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="notes"
+													disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Ramsoft Username</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="username"
+													disabled>
+											</div>
+										</div>
+									</div>
+									<div *ngIf="getBILink" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<a target="_blank" (click)="viewUrl()" class="btn btn-theme pull-left btn-sm" >BI / KPI Attorney Performance</a>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="autoFaxFinal" id="editinfo1"
+												type="checkbox" disabled>
+											<label for="editinfo1" class="arrow-label">Auto Fax Final</label>
+										</div>
+									</div>
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="autoEmailFinal" id="editinfo2"
+												type="checkbox" disabled>
+											<label for="editinfo2" class="arrow-label">Auto Email Final</label>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-input-group">
+											<div class="checkbox-theme">
+												<input class="form-control" formControlName="exiled"
+													(change)="onCheckboxChange($event)" id="editinfo3" type="checkbox"
+													checked="">
+												<label for="editinfo3" class="arrow-label">Exiled</label>
+											</div>
+											<div class="form-group" *ngIf="refForm.exiled.value">
+												<div class="theme-label">Exiled Date</div>
+												<div class="input-group">
+													<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.exiledDate.errors) }"
+														formControlName="exiledDate" type="date"
+														[showClearButton]="true" [useMaskBehavior]="true">
+														
+													</dx-date-box>
+												</div>
+												<div *ngIf="submitted && refForm.exiledDate.errors"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.exiledDate.errors.required">Exiled Date is
+														required</small>
+												</div>
+
+											</div>
+											<div *ngIf="refForm.exiled.value">
+												<div class="input-group">
+													<textarea class="form-control" formControlName="exiledComment"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.exiledComment.errors) }"
+														placeholder=" Comment"></textarea>
+												</div>
+												<div *ngIf="submitted && refForm.exiledComment.errors"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.exiledComment.errors.required">Comment is
+														required</small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-notes'}" id="edit-notes">
+								<div class="note-list">
+									<div *ngIf="!referrerNoteList" class="nodata-display"> No note to display </div>
+									<div class="note-list-inner" *ngFor="let note of referrerNoteList;">
+										<div class="name">{{note.UserName}} {{note.Timestamp | date:
+											dateTimeFormatCustom.DateTime}}</div>
+										<p>{{note.Note}}</p>
+									</div>
+								</div>
+								<div class="user-detail">
+									<div class="input-group">
+										<textarea class="form-control" placeholder="Add Note Here" #notesId
+											(keyup)="checkNotes(notesId)"></textarea>
+									</div>
+									<button type="button" class="btn btn-theme btn-sm" (click)="addNote(true)"
+										[disabled]="isNoteButtonDisable">Add Note</button>
+								</div>
+							</div>
+							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-policies'}" id="edit-policies">
+								<form class="theme-form" [formGroup]="ReferrerPoliciesForm">
+									<div class="theme-form">
+										<div class="row">
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<div class="theme-label-title">Referrer Policies</div>
+											</div>
+											<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+												<div class="cke-editor-group">
+													<ckeditor formControlName="referrerPolicy"
+													  [config]="CkeConfig"
+														(paste)="onPaste($event)" (change)="onChange($event)">
+													</ckeditor>
+													<!-- <ckeditor [editor]="Editor" debounce="500"
+														formControlName="referrerPolicy" style="text-transform: none;"
+														[disabled]="false" class=" ng-untouched ng-pristine ng-invalid">
+													</ckeditor> -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-contact-details'}" id="edit-contact-details">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Accounts Payable #1</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountContactName1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountContactName1.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountContactName1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountContactName1.invalid">accountContactName1
+														req</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountEmail1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountEmail1.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountEmail1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountEmail1.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountPhone1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountPhone1.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountPhone1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountPhone1.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountFax1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountFax1.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountFax1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountFax1.invalid">Invalid fax</small>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">Accounts Payable #2</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountContactName2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountContactName2.errors)}"
+														class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountEmail2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountEmail2.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountEmail2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountEmail2.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountPhone2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountPhone2.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountPhone2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountPhone2.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountFax2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountFax2.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountFax2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountFax2.invalid">Invalid fax</small>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">Accounts Payable #3</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountContactName3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountContactName3.errors)}"
+														class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountEmail3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountEmail3.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountEmail3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountEmail3.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountPhone3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountPhone3.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountPhone3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountPhone3.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="accountFax3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.accountFax3.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.accountFax3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.accountFax3.invalid">Invalid fax</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Other Contact Email</div>
+												<div class="input-group">
+													<input type="text"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.otherContactEmail.errors)}"
+														formControlName="otherContactEmail" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.otherContactEmail"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.otherContactEmail.invalid">Invalid email</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Billing #1</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingContactName1"
+														class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingEmail1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingEmail1.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingEmail1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingEmail1.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingPhone1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingPhone1.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingPhone1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingPhone1.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingFax1"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingFax1.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingFax1"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingFax1.invalid">Invalid fax</small>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">Billing #2</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingContactName2"
+														class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingEmail2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingEmail2.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingEmail2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingEmail2.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingPhone2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingPhone2.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingPhone2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingPhone2.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingFax2"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingFax2.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingFax2"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingFax2.invalid">Invalid fax</small>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail billing-03">
+											<div class="theme-label-title">Billing #3</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingContactName3"
+														class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingEmail3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingEmail3.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingEmail3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingEmail3.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Phone #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingPhone3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingPhone3.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingPhone3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingPhone3.invalid">Invalid phone</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="billingFax3"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.billingFax3.errors)}"
+														mask="(000)-000-0000" class="form-control">
+												</div>
+												<div *ngIf="submitted && refForm.billingFax3"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.billingFax3.invalid">Invalid fax</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Reports</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="reportEmail"
+														[ngClass]="{'is-invalid': (submitted && refForm.reportEmail.errors)}"
+														class="form-control"
+														placeholder="Separate multiple emails with a comma (,)">
+												</div>
+
+
+												<div *ngIf="submitted && refForm.reportEmail"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.reportEmail.invalid">Invalid email</small>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" formControlName="reportFax"
+														placeholder="Separate multiple faxs with a comma (,)"
+														[ngClass]="{'is-invalid': (submitted && refForm.reportFax.errors)}"
+														mask="(000)-000-0000,(000)-000-0000,(000)-000-0000"
+														class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">Status Updates</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Email</div>
+														<div class="input-group">
+															<input type="text" formControlName="statusUpdateEmail"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.statusUpdateEmail.errors)}"
+																class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.statusUpdateEmail"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.statusUpdateEmail.invalid">Invalid
+																email</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact1" formControlName="isStatusEmail"
+															type="checkbox">
+														<label for="editcontact1" class="arrow-label">Active</label>
+													</div>
+												</div>
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Fax #</div>
+														<div class="input-group">
+															<input type="text" formControlName="statusUpdateFax"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.statusUpdateFax.errors)}"
+																mask="(000)-000-0000" class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.statusUpdateFax"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.statusUpdateFax.invalid">Invalid
+																fax</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact2" formControlName="isStatusFax"
+															type="checkbox">
+														<label for="editcontact2" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Couldnt schedule reminders</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Email</div>
+														<div class="input-group">
+															<input type="text" formControlName="couldntStatusEmail"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.couldntStatusEmail.errors)}"
+																class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.couldntStatusEmail"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.couldntStatusEmail.invalid">Invalid
+																email</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact3" formControlName="isCouldntStatusEmail"
+															type="checkbox">
+														<label for="editcontact3" class="arrow-label">Active</label>
+													</div>
+												</div>
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Fax #</div>
+														<div class="input-group">
+															<input type="text" formControlName="couldntStatusFax"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.couldntStatusFax.errors)}"
+																mask="(000)-000-0000" class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.couldntStatusFax"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.couldntStatusFax.invalid">Invalid
+																fax</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact4" formControlName="isCouldntStatusFax"
+															type="checkbox">
+														<label for="editcontact4" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">Accept Liability Form</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Email</div>
+														<div class="input-group">
+															<input type="text" formControlName="acceptLiabilityEmail"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.acceptLiabilityEmail.errors)}"
+																class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.acceptLiabilityEmail"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.acceptLiabilityEmail.invalid">Invalid
+																email</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact5"
+															formControlName="isAcceptLiabilityEmail" type="checkbox">
+														<label for="editcontact5" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Fax #</div>
+														<div class="input-group">
+															<input type="text" formControlName="acceptLiabilityFax"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.acceptLiabilityFax.errors)}"
+																mask="(000)-000-0000" class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.acceptLiabilityFax"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.acceptLiabilityFax.invalid">Invalid
+																fax</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact6" formControlName="isAcceptLiabilityFax"
+															type="checkbox">
+														<label for="editcontact6" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="user-detail">
+											<div class="theme-label-title">AR Payment Summary</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Email</div>
+														<div class="input-group">
+															<input type="text" formControlName="arpaymentEmail"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.arpaymentEmail.errors)}"
+																class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.arpaymentEmail"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.arpaymentEmail.invalid">Invalid
+																email</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact7"
+															formControlName="isArpaymentSummaryEmail" type="checkbox">
+														<label for="editcontact7" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Fax #</div>
+														<div class="input-group">
+															<input type="text" formControlName="arpaymentFax"
+																[ngClass]="{ 'is-invalid': (submitted && refForm.arpaymentFax.errors)}"
+																mask="(000)-000-0000" class="form-control">
+														</div>
+														<div *ngIf="submitted && refForm.arpaymentFax"
+															class="tooltiptext text-right">
+															<small class="error text-danger"
+																*ngIf="refForm.arpaymentFax.invalid">Invalid fax</small>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input id="editcontact8" formControlName="isArpaymentSummaryFax"
+															type="checkbox">
+														<label for="editcontact8" class="arrow-label">Active</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane"  [ngClass]="{'active': tabId === 'edit-option'}" id="edit-option">
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isNotLienReminder"
+												id="editoption1" type="checkbox">
+											<label for="editoption1" class="arrow-label">Do not Send Lien
+												Reminder</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isNotPiLiablility"
+												id="editoption2" type="checkbox">
+											<label for="editoption2" class="arrow-label">Do not Send PI Liablility
+												Form</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isPatientSignature"
+												id="editoption3" type="checkbox">
+											<label for="editoption3" class="arrow-label">Always require patient
+												signature for lien</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="notsendScheduledSummary"
+												id="editoption14" type="checkbox">
+											<label for="editoption14" class="arrow-label">Do NOT send Scheduled
+												Summary</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendEmail"
+												id="editoption4" type="checkbox">
+											<label for="editoption4" class="arrow-label">Do not Email Blasts</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendFax" id="editoption5"
+												type="checkbox">
+											<label for="editoption5" class="arrow-label">Do not Fax Blasts</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendMail" id="editoption6"
+												type="checkbox">
+											<label for="editoption6" class="arrow-label">Do not Mail Blasts</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="removeAllMarketingBlast"
+												id="editoption7" type="checkbox">
+											<label for="editoption7" class="arrow-label">Remove from all marketing
+												blasts under</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isAutoEmailReport"
+												id="editoption8" type="checkbox"
+												(change)="textBoxDisabled($event.currentTarget.checked)">
+											<label for="editoption8" class="arrow-label">Auto Email Report</label>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">CONTACT EMAIL ADDRESS</div>
+											<div class="input-group">
+												<input class="form-control" formControlName="autoEmailReport"
+													[ngClass]="{ 'is-invalid': (submitted && refForm.autoEmailReport.errors)}"
+													type="text">
+											</div>
+											<div *ngIf="submitted && refForm.autoEmailReport"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="refForm.autoEmailReport.invalid">Invaild Email Id
+												</small>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotFaxReport"
+												id="editoption9" type="checkbox">
+											<label for="editoption9" class="arrow-label">Do NOT fax Report</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotCouldnotSchedule"
+												id="editoption10" type="checkbox">
+											<label for="editoption10" class="arrow-label">Do NOT send couldn't schedule
+												reminders</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendArpaymentSummary"
+												id="editoption11" type="checkbox">
+											<label for="editoption11" class="arrow-label">Do NOT send AR Payment
+												Summary</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendCaseStatusRequests"
+												id="editoption12" type="checkbox">
+											<label for="editoption12" class="arrow-label">Do NOT send case status
+												requests</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotSendCaseUpdates"
+												id="editoption13" type="checkbox">
+											<label for="editoption13" class="arrow-label">Do NOT send automated case
+												updates</label>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngIf="refForm.doNotSendCaseUpdates.value==true">
+
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="skipStatus1"
+												id="editoption1SkipStatus1" type="checkbox">
+											<label for="editoption1SkipStatus1" class="arrow-label">Skip status update
+												#1</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="skipStatus2"
+												id="editoption1SkipStatus2" type="checkbox">
+											<label for="editoption1SkipStatus2" class="arrow-label">Skip status update
+												#2</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="skipStatus3"
+												id="editoption1SkipStatus3" type="checkbox">
+											<label for="editoption1SkipStatus3" class="arrow-label">Skip status update
+												#3</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="skipStatus4"
+												id="editoption1SkipStatus4" type="checkbox">
+											<label for="editoption1SkipStatus4" class="arrow-label">Skip status update
+												#4</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="skipAllStatusUpdates"
+												id="editoption1SkipAllStatusUpdates" type="checkbox">
+											<label for="editoption1SkipAllStatusUpdates" class="arrow-label">SKIP ALL
+												STATUS UPDATES</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12 mt-3">
+										<div class="form-group">
+											<div class="theme-label">Grouping</div>
+											<div class="referrers-grouping">
+												<ng-select [items]="referrerList" bindLabel="username"
+													bindValue="username" [multiple]="true" groupBy="selectedAllGroup"
+													searchable="true" placeholder="Search Grouping Names"
+													[closeOnSelect]="false" 
+													(keyup)="onTagChange($event)">
+
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+															<span class="ng-value-label"> {{item.username}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 1"> <span
+																class="ng-value-label">{{items.length - 1}}
+																more..</span>
+														</div>
+													</ng-template>
+												</ng-select>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isDocManage" id="editoptionDoc"
+												type="checkbox">
+											<label for="editoptionDoc" class="arrow-label">Export doc manager
+												files</label>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngIf="refForm.isDocManage.value==true">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isSftp" id="editoptionSftp"
+												type="checkbox">
+											<label for="editoptionSftp" class="arrow-label">Send files via SFTP</label>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
+										*ngIf="refForm.isSftp.value==true">
+										<div class="form-group">
+											<div class="theme-label">Select FTP Profile</div>
+											<select formControlName="sftpprofileId" class="form-control">
+												<option></option>
+												<option *ngFor="let sftp of sftpProfilesList" [ngValue]="sftp.sftpId">
+													{{sftp.profileName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
+										*ngIf="refForm.isSftp.value==true">
+										<div class="form-group">
+											<div class="theme-label">Doc Types to Exculde 1</div>
+											<div class="doc-types-field">
+												<ng-select [items]="docTypeList" formControlName="docId"
+													bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
+													bindValue="docId" [(ngModel)]="selectedDocType">
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+															<span class="ng-value-label"> {{item.docType}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}}
+																more...</span>
+														</div>
+													</ng-template>
+												</ng-select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isMarkettingCredit"
+												id="editoption15" type="checkbox">
+											<label for="editoption15" class="arrow-label">Marketing Credit</label>
+										</div>
+									</div>
+									<ng-container *ngIf="refForm.isMarkettingCredit.value==true">
+										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<!-- <div class="theme-label">Marketing User</div> -->
+												<select formControlName="marketingUser" class="form-control">
+													<option></option>
+													<option *ngFor="let user of epicUserList" [ngValue]="user.USERID">
+														{{user.UserName}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<!-- <input class="form-control" type="date" formControlName="marketingStartDate"> -->
+												<div class="theme-label">From</div>
+												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+													formControlName="marketingStartDate" type="date"
+													[showClearButton]="true" [useMaskBehavior]="true">
+													
+												</dx-date-box>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">To</div>
+												<!-- <input class="form-control" type="date" formControlName="marketingEnddate"> -->
+												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+													formControlName="marketingEnddate" type="date"
+													[showClearButton]="true" [useMaskBehavior]="true">
+													
+												</dx-date-box>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+											<div class="checkbox-theme">
+												<input class="form-control" formControlName="verifiedUser"
+													id="editoptionVerified" type="checkbox">
+												<label for="editoptionVerified" class="arrow-label">Verified</label>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Verified On</div>
+												<!-- <input class="form-control" type="date" formControlName="verifiedOn" disabled>  -->
+												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+													formControlName="verifiedOn" type="date" [showClearButton]="true"
+													[useMaskBehavior]="true" >
+												</dx-date-box>
+											</div>
+										</div>
+									</ng-container>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isesignEmail" id="editoption16"
+												type="checkbox">
+											<label for="editoption16" class="arrow-label">Do Not Sent E-Sign Link Via
+												Email</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="noCreateAcceptLiability"
+												id="editoption19" type="checkbox">
+											<label for="editoption19" class="arrow-label"> Do Not Create Auto Alert For
+												Accept Liability</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isNotRequiredAsl"
+												id="editoption17" type="checkbox">
+											<label for="editoption17" class="arrow-label">Do not require asl to bill to
+												move to QC page</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isReferrerReadingRadiologist"
+												id="editoption18" type="checkbox">
+											<label for="editoption18" class="arrow-label">Referrer is a reading
+												radiologist</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" [ngClass]="{'active': tabId === 'edit-negotiated-settlements'}" id="edit-negotiated-settlements">
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">MRI</div>
+											<div class="form-group">
+												<div class="theme-label">Without Contrast</div>
+												<div cl ass="input-group">
+													<input type="text" formControlName="mriwithoutContrast"
+														class="form-control" (keypress)="allowNumberOnly($event)">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">With & Without Contrast</div>
+												<div class="input-group">
+													<input type="text" formControlName="mri"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">With Contrast</div>
+												<div class="input-group">
+													<input type="text" formControlName="mriwithContrast"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">CT</div>
+											<div class="form-group">
+												<div class="theme-label">Without Contrast</div>
+												<div class="input-group">
+													<input type="text" formControlName="ctwithoutContrast"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">With & Without Contrast</div>
+												<div class="input-group">
+													<input type="text" formControlName="ct"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">With Contrast</div>
+												<div class="input-group">
+													<input type="text" formControlName="ctwithContrast"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Xray</div>
+											<div class="form-group">
+												<div class="theme-label">1View</div>
+												<div class="input-group">
+													<input type="text" (keypress)="allowNumberOnly($event)"
+														formControlName="xray1View" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">2Views.</div>
+												<div class="input-group">
+													<input type="text" (keypress)="allowNumberOnly($event)"
+														formControlName="xray2Views" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">3Views.</div>
+												<div class="input-group">
+													<input type="text" formControlName="xray3Views"
+														(keypress)="allowNumberOnly($event)" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="edit-documents">
+								<div class="nodata-display">
+									Coming Soon
+								</div>
+							</div>
+							<div class="tab-pane fade" id="edit-radfees">
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Patient Bill Name</div>
+												<div class="input-group">
+													<input type="text" formControlName="PatientBillName"
+														class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">NPI #</div>
+												<div class="input-group">
+													<input type="text" formControlName="NPI" class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">License # </div>
+												<div class="input-group">
+													<input type="text" formControlName="LicenseNumber"
+														class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Tax Id</div>
+												<div class="input-group">
+													<input type="text" formControlName="TaxID" class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Rad Address</div>
+												<div class="input-group">
+													<input type="text" formControlName="RadAddress"
+														class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Rad Liens Email</div>
+												<div class="input-group">
+													<input type="text" formControlName="RadEmail"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.RadEmail.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf=" submitted   && refForm.RadEmail"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.RadEmail.invalid">Invalid email</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Rad Billing Email </div>
+												<div class="input-group">
+													<input type="text" formControlName="RadBillingEmail"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.RadBillingEmail.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="submitted   && refForm.RadBillingEmail"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.RadBillingEmail.invalid">Invalid email</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Rad Phone</div>
+												<div class="input-group">
+													<input type="text" formControlName="RadPhone" mask="(000)-000-0000"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.RadPhone.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="(submitted  && refForm.RadPhone)"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.RadPhone.invalid">Invalid Rad Phone</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Rad Fax</div>
+												<div class="input-group">
+													<input type="text" formControlName="RadFax" mask="(000)-000-0000"
+														[ngClass]="{ 'is-invalid': (submitted && refForm.RadFax.errors)}"
+														class="form-control">
+												</div>
+												<div *ngIf="(submitted  && refForm.RadFax)"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="refForm.RadFax.invalid">Invalid Rad Fax</small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="table-responsive manual-table">
+									<table class="table table-theme">
+										<thead>
+											<tr>
+												<th>Proc Group Name</th>
+												<th>PI Rad Bill Fee</th>
+												<th>Rad.Cost</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let referrerProcGroup of referrerProcGroupList">
+												<td>{{referrerProcGroup.ProcGroupName}}</td>
+												<td>
+													<!-- <input class="form-control" type="text" [(ngModel)]="referrerProcGroup.PIBillingFee"> -->
+													<input formControlName="{{'PI' + referrerProcGroup.ProcGroupId}}"
+														[(ngModel)]="referrerProcGroup.PIBillingFee" appCurrencyInput
+														appTwoDigitDecimaNumber>
+												</td>
+												<td>
+													<!-- <input class="form-control" type="text" [(ngModel)]="referrerProcGroup.RadCost"> -->
+													<input formControlName="{{'Rad' + referrerProcGroup.ProcGroupId}}"
+														[(ngModel)]="referrerProcGroup.RadCost" appCurrencyInput
+														appTwoDigitDecimaNumber>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" (click)="closePopUp()" class="btn btn-border-gray pull-right btn-sm"
+						data-dismiss="modal">Close</a>
+					<a href="javascript:void(0)" (click)="updateReferrer(true)" class="btn btn-theme pull-left btn-sm"
+						[attr.data-dismiss]="modelValue">Save & Close</a>
+					<a href="javascript:void(0)" (click)="updateReferrer(true)"
+						class="btn btn-border pull-left btn-sm">Apply Changes</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<button #hiddenButton2 [hidden]="true" data-toggle="modal" data-target="#ReferrerDetailWindow"></button>
+<app-document-referral-and-fundingco></app-document-referral-and-fundingco>
+<!-- <div class="modal-backdrop fade show" [ngStyle]="{'display':editAccount}"></div> -->

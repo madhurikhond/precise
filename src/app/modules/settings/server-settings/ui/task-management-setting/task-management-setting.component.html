@@ -1,0 +1,350 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Task Management</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#labels">LABELS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#slack">Slack</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#approvals">Approvals</a>
+                </li>
+            </ul>
+			 <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+					<div class="tab-content">
+						<div class="tab-pane active" id="labels">
+							<div class="page-top-action">
+								<div class="precisemri-search page-select">
+									<div class="theme-label">Page Size</div>
+										<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+											<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+										</select>
+								</div>
+								<a href="javascript:void(0)" class="btn btn-theme btn-sm pull-right" data-toggle="modal" data-target="#add-edit-label-setting" (click)="addNewLabelButtonClick()"><i class="fa fa-plus"></i> Add New</a>
+							</div>
+							<div class="table-responsive">
+								<dx-data-grid
+									id="taskManagemetSettingGrid"
+									[dataSource]="labelTabData"
+									[allowColumnResizing]="true"
+									[columnAutoWidth]="true"
+									[allowColumnReordering]="true"
+									[columnResizingMode]="columnResizingMode"
+									[columnMinWidth]="30"
+									keyExpr="Id"  
+									[showBorders]="true">
+
+									<dxo-paging [enabled]="false"></dxo-paging>
+									<dxo-sorting mode="multiple"></dxo-sorting>
+									<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+									<!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+									<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+									<dxo-load-panel [enabled]="true"></dxo-load-panel>
+									<dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" alignment="left"></dxi-column>
+									<dxi-column dataField="LabelName" caption="Label Name"></dxi-column>
+									<dxi-column  caption="Is Archive" cellTemplate="isArchivedcellTemplate"></dxi-column>
+									<dxi-column caption="Archive" cellTemplate="ArchivedcellTemplate"></dxi-column>
+									<div *dxTemplate="let data of 'isArchivedcellTemplate'">
+										{{data.data.IsLabelArchive==true ? 'Yes':'No'}}
+									</div>
+									<div *dxTemplate="let data of 'cellTemplate'">
+										<a href="javascript:void(0)" (click)="actionArrowButtonClickForLabelTab(data.data)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#add-edit-label-setting"></a>
+									</div>
+									<div *dxTemplate="let data of 'ArchivedcellTemplate'">
+										<a href="javascript:void(0)" (click)="SlackOverrideButtonClickForLabelTab(data.data)"  data-toggle="modal" data-target="#slack-override-setting" style="font-size: 30px;padding: 5px !important;">.....</a>
+									</div>
+								</dx-data-grid>
+							</div>
+														
+							
+						</div>
+						<div class="tab-pane" id="slack">
+							<form class="theme-form" [formGroup]="taskManagementSlackGlobalSettingsForm">
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="notifyOnTaskCreationGlobalForLabel" type="checkbox" formControlName="isNotifyOnTaskCreationGlobal">
+											<label for="notifyOnTaskCreationGlobalForLabel" class="arrow-label">Notify on task creation</label>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="input-group">
+												<select class="form-control" formControlName="notifyToUserOnTaskCreationGlobal">
+													<option selected value="">Select User</option>
+													<option value="Assigned To">Assigned To</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="notifyOnDayDueGlobalForLabel" type="checkbox" formControlName="isNotifyOnDueDayGlobal">
+											<label for="notifyOnDayDueGlobalForLabel" class="arrow-label">Notify on day due</label>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="input-group">
+												<select class="form-control" formControlName="notifyToUserOnDueDayGlobal">
+													<option selected  value="">Select User</option>
+													<option value="Assigned To">Assigned To</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="notifyGlobalForLabel" type="checkbox" formControlName="isNotifyAfterDueDayGlobal">
+											<label for="notifyGlobalForLabel" class="arrow-label">Notify</label>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="input-group">
+												<input type="text" class="form-control" (keypress)="allowNumberOnly($event)" formControlName="afterDueDayGlobal">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Days past due</div>
+											<div class="input-group">
+												<select class="form-control" formControlName="notifyToUserAfterDueDayGlobal">
+													<option selected disabled value="">Select User</option>
+													<option value="Assigned To">Assigned To</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="sendDailySummaryGlobalForLabel" type="checkbox" formControlName="isSendDailySummaryGlobal">
+											<label for="sendDailySummaryGlobalForLabel" class="arrow-label">Send Daily Summery at</label>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="input-group">
+												<input type="time" class="form-control" formControlName="sendDailySummaryAtGlobal">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group autocomplete">
+											<div class="theme-label">Time Selection only on these days</div>
+											<div class="input-group">
+												<ng-select
+													[items]="days" 
+													placeholder="Select"                                            
+													bindLabel="day" 
+													[multiple]="true"
+													[closeOnSelect]="false"
+													bindValue="day" 
+													formControlName="sendDailySummaryOnDaysGlobal"> 
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+															<span class="ng-value-label"> {{item.day}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}} more..</span>
+														</div>
+													</ng-template>                                   
+												</ng-select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+								
+						</div>
+						<div class="tab-pane" id="approvals">
+							<form class="theme-form" [formGroup]="taskManagementSlackGlobalSettingsForm">
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group autocomplete">
+											<div class="theme-label">Allowed to approve uncollectable Cases</div>
+											<div class="input-group">
+												<ng-select
+													[items]="epicEmployees" 
+													placeholder="Select"                                            
+													bindLabel="UserName" 
+													[multiple]="true"
+													[closeOnSelect]="false"
+													bindValue="USERID" 
+													formControlName="epicUser"
+													> 
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+															<span class="ng-value-label"> {{item.UserName}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}} more..</span>
+														</div>
+													</ng-template>                                   
+												</ng-select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+					<form class="theme-form note-right" [formGroup]="taskManagementSlackGlobalSettingsForm">
+						<textarea type="text" class="form-control" placeholder="enter notes" formControlName="notes"></textarea>
+					</form>
+				</div>
+            </div>
+			<div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<div class="action bottom-action">
+						<a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" (click)="updateTaskManagementSlackGlobalSettings()">Save</a>
+						<a href="javascript:void(0)" class="left btn btn-border">Cancel</a>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="add-edit-label-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{currentEditLabelId!=null?currentEditLabelName:'Add New Label'}}</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="lableTabCancelButtonClick()"></div>
+            </div>
+            <div class="modal-body">
+               
+                    <form class="theme-form" [formGroup]="taskManagementSettingsFormForLabelTab">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Labels Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"  formControlName="labelName" placeholder="Enter Label Name"
+										[ngClass]="{ 'is-invalid': (submitted && labelTabFormControl.labelName.errors) || labelTabFormControl.labelName.touched && labelTabFormControl.labelName.errors}">
+                                    </div>
+									<div *ngIf="(submitted && labelTabFormControl.labelName.errors)  || (labelTabFormControl.labelName.touched && labelTabFormControl.labelName.errors)" class="invalid-feedback">
+										<div *ngIf="labelTabFormControl.labelName.errors?.required  || labelTabFormControl.labelName.touched">Label Required</div>
+									</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Archive</div>
+                                    <div class="input-group">
+                                        <select class="form-control" formControlName="isLabelArchive"
+										[ngClass]="{ 'is-invalid': (submitted && labelTabFormControl.isLabelArchive.errors) || labelTabFormControl.isLabelArchive.touched && labelTabFormControl.isLabelArchive.errors}">
+                                            <option selected  disabled>Select Archive Type</option>
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+									<div *ngIf="(submitted && labelTabFormControl.isLabelArchive.errors)  || (labelTabFormControl.isLabelArchive.touched && labelTabFormControl.isLabelArchive.errors)" class="invalid-feedback">
+										<div *ngIf="labelTabFormControl.isLabelArchive.errors?.required  || labelTabFormControl.isLabelArchive.touched">Type Required</div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+            </div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal" (click)="lableTabCancelButtonClick()">Cancel</a>
+				<a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" [attr.data-dismiss]="modalValue" *ngIf="currentEditLabelId==null"  (click)="addTaskManagementSettingForLabelTab()">Add</a>
+				<a href="javascript:void(0)" class="btn btn-border pull-left btn-sm" [attr.data-dismiss]="modalValue"  *ngIf="currentEditLabelId!=null"  (click)="updateTaskManagementSettingForLabelTab()">Update</a>
+			</div>
+	   
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="slack-override-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{'Slack Settings-'+currentEditLabelName}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+             
+                    <form class="theme-form" [formGroup]="taskManagementSettingsFormForLabelTab">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="checkbox-theme">
+                                    <input class="form-control" formControlName="isOverrideSlackGlobalSetting" type="checkbox" id="OverrideSlackGlobalSettingForLabel">
+                                    <label for="OverrideSlackGlobalSettingForLabel" class="arrow-label">Override global slack notification settings</label>
+                                </div>
+                                <div class="checkbox-theme">
+                                    <input class="form-control" formControlName="isNotifyOnTaskCreation" type="checkbox" id="notifyOnTaskCreationForLabel">
+                                    <label for="notifyOnTaskCreationForLabel" class="arrow-label">Notify on task creation</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select class="form-control" formControlName="notifyToUserOnTaskCreation">
+                                            <option selected value="">Select User</option>
+                                            <option value="Assigned To">Assigned To</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="checkbox-theme">
+                                    <input class="form-control" type="checkbox" formControlName="isNotifyOnDueDay" id="notifyOnDueDayForLabel">
+                                    <label for="notifyOnDueDayForLabel" class="arrow-label">Notify on day due</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select class="form-control" formControlName="notifyToUserOnDueDay">
+                                            <option selected value="">Select User</option>
+                                            <option value="Assigned To">Assigned To</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="checkbox-theme">
+                                    <input class="form-control" type="checkbox" formControlName="isNotifyAfterDueDay" id="notifyForLabel">
+                                    <label for="notifyForLabel" class="arrow-label">Notify</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="afterDueDay">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Days past due</div>
+                                    <div class="input-group">
+                                        <select class="form-control" formControlName="notifyToUserAfterDueDay">
+                                            <option selected  value="">Select User</option>
+                                            <option value="Assigned To">Assigned To</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+              
+            </div>
+			 <div class="modal-footer">
+			<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+			<a href="javascript:void(0)" class="btn btn-border pull-left btn-sm" data-dismiss="modal" (click)="updateTaskManagementSettingForLabelTab()">Save Changes</a>
+		</div>
+        </div>
+    </div>
+</div>

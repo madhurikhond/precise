@@ -1,0 +1,418 @@
+<div class="modal fade modal-theme in" id="facilityDocManager" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{facilityName}} - Document Manager </h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <div class="modal-body">
+
+        <div class="search-field page-top-action" id="facilityDoc" #facilityDoc *ngIf="facilityId">
+          <ul class="top-left action-menu">
+            <li><a href="javascript:void(0)" #upload class="fa fa-upload" data-toggle="modal"
+                (click)="uploadFile()"></a></li>
+            <li><a href="javascript:void(0)" #delete [class.disabled]="isDeleteDisabled" class="fa fa-trash  mr-2"
+                (click)="deleteFolder()"></a>
+            </li>
+          </ul>
+        </div>
+        <div class="row" id="facilityDocRow" #facilityDocRow *ngIf="facilityId">
+          <div class="col-md-2">
+
+            <dx-tree-view #treeview id="treeview" [dataSource]="folderTree" keyExpr="id" displayExpr="folderName"
+              (onItemClick)="selectItem($event)" (onItemContextMenu)="treeViewItemContextMenu($event)"
+              selectionMode="single" selectByClick=true keyExpr="id" [selectByClick]="true" itemsExpr="items">
+            </dx-tree-view>
+            <dx-context-menu [dataSource]="menuItems" target="#treeview .dx-treeview-item"
+              (onItemClick)="contextMenuItemClick($event)">
+            </dx-context-menu>
+          </div>
+
+          <div class="col-md-9">
+            <dx-file-manager id="fileManager" #fileManager [fileSystemProvider]="allFile"
+              (onContextMenuItemClick)="onItemClick($event)"
+              (onSelectionChanged)="fileManager_onSelectionChanged($event)" height="450">
+              <dxo-item-view [showParentFolder]="false" [showFolders]="false">
+                <dxo-details>
+                  <dxi-column dataField="name"></dxi-column>
+                  <dxi-column dataField="docType" caption="Type"></dxi-column>
+                  <dxi-column dataField="uploadedBy" caption="Uploaded By"></dxi-column>
+                  <dxi-column [width]="300" dataField="uploadedOn" caption="Uploaded On"></dxi-column>
+                  <dxi-column dataField="docId" [visible]="false" caption="DocId"></dxi-column>
+                  <dxi-column dataField="fileBase64" [visible]="false" caption="Image Data"></dxi-column>
+                  <dxi-column dataField="docTypeId" [visible]="false" caption="DocTypeId"></dxi-column>
+                </dxo-details>
+              </dxo-item-view>
+
+
+
+              <dxo-toolbar>
+                <dxi-item name="showNavPane" [visible]="false"></dxi-item>
+                <dxi-item name="refresh" [visible]="false"></dxi-item>
+              </dxo-toolbar>
+              <dxo-context-menu>
+                <dxi-item text="Open" beginGroup="true"></dxi-item>
+                <dxi-item text="Delete" beginGroup="true"></dxi-item>
+                <dxi-item text="Rename" beginGroup="true"></dxi-item>
+                <dxi-item text="Upload" beginGroup="true"></dxi-item>
+                <dxi-item text="Send Fax" beginGroup="true"></dxi-item>
+                <dxi-item text="Send Email" beginGroup="true"></dxi-item>
+              </dxo-context-menu>
+
+            </dx-file-manager>
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+          <!-- <a class="view-btn-attach" [href]="selectedFileBLOB">View</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="NewFolderPopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New folder</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <form [formGroup]="newFolderForm" class="theme-form">
+        <div class="modal-body">
+          <div class="modal-body-inner">
+            <div class="row">
+              <div class="col-xl-6 col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <div class="theme-label">Enter new folder name</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="newFolderTxt" class="form-control" />
+                  </div>
+                  <div
+                    *ngIf="(submitted || refnewFolderForm.newFolderTxt.touched) && refnewFolderForm.newFolderTxt.errors"
+                    class="tooltiptext text-right">
+                    <small class="error text-danger" *ngIf="refnewFolderForm.newFolderTxt.errors.required">Folder
+                      name
+                      required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+            (click)="okCreateNewFolder(false)">Cancel</a>
+          <button type="submit" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+            (click)="okCreateNewFolder(true)" [attr.data-dismiss]="modelValue">Ok</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="uploadFileManagerPopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa fa-upload" aria-hidden="true" style="font-size:20px"></i></h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <div class="modal-body">
+        <div class="theme-form">
+          <div class="row">
+            <div class="col-xl-12 center-block">
+              <div class="form-group">
+                <div class="theme-label">Select Document Type</div>
+                <div class="input-group">
+                  <select class="form-control" [ngModel]="selectedDocumentTypeId"
+                    [ngClass]="{ 'is-invalid':selectedDocumentTypeId=='' && docTypeModelChange==true} "
+                    (ngModelChange)="setUploadedFileDocType($event)">
+                    <option selected value="">Select Document Type</option>
+                    <option *ngFor="let item of documentTypeList" [ngValue]="item">
+                      {{item.DocType}}
+                    </option>
+                  </select>
+
+                </div>
+                <div *ngIf="(selectedDocumentTypeId=='' && docTypeModelChange==true)" class="invalid-feedback">
+                  <div *ngIf="selectedDocumentTypeId=='' && docTypeModelChange==true">DocType is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 center-block">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="upload-section">
+                    <div class="fileupload" data-provides="fileupload" appFileupload
+                      (onFileDropped)="onFileDropped($event)">
+                      <span class="btn btn-file drag-drop-box ">
+                        <span class="fileupload-new"><i class="fa fa-upload"></i> Drag &amp; Drop files Here
+                          or
+                          Browse</span>
+                        <input type="file" class="file-input" [multiple]="false"
+                          (change)="fileBrowseHandler($event.target.files)" #fileUpload id="fileUpload"
+                          accept=".jpg,.jpeg,.png,.gif,.bmp,.txt,.doc,.docx,.pdf,.xls,.xlsx">
+                        <span class="fileupload-preview"></span>
+                      </span>
+                    </div>
+
+                    <p class="red-color" *ngIf="isfileSizeOk">File should be less than 20MB</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="selectedUploadFile || selectedUploadFile?.length>0">
+            <div class="files-list">
+              <div class="single-file" *ngFor="let file of selectedUploadFile; let i = index">
+                <div class="file-icon" style="width: 35px">
+                  <i class="fa fa-file-image-o" aria-hidden="true" style="font-size: 20px;"></i>
+                </div>
+                <div class="info">
+                  <h4 class="name">
+                    {{ file?.name }}
+                  </h4>
+                  <p class="size">
+                    {{ formatBytes(file?.size) }}
+                  </p>
+                  <div class="progress-cont">
+                    <div class="progress" [style.width]="file?.progress+'%'">
+                    </div>
+                  </div>
+                </div>
+                <div class="delete" (click)="deleteSelectedUploadFile(i)">
+                  <i class="fa fa-trash-o" style="font-size:24px"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+        <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+          [disabled]="selectedDocumentTypeId=='' || (!selectedUploadFile || selectedUploadFile?.length ==0)"
+          (click)="uploadFileMgr(fileUpload)">Upload</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal fade modal-theme modal-small" id="RenamePopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Rename</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <form [formGroup]="renameForm" class="theme-form">
+        <div class="modal-body" style="height: 137px;">
+          <div class="modal-body-inner">
+            <div class="row">
+              <div class="col-xl-6 col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <div class="theme-label">Rename</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="renameTxt" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submitted &&  refrenameForm.renameTxt.errors)}" />
+                  </div>
+                  <div *ngIf="(submitted && refrenameForm.renameTxt.errors)" class="tooltiptext text-right">
+                    <small class="error text-danger">File name required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+            (click)="renameOrCancelItem(false)">Cancel</a>
+          <button type="submit" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+            (click)="renameOrCancelItem(true)" [attr.data-dismiss]="modelValue">Rename</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="SendFaxPopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Fax</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <form [formGroup]="sendFaxForm" class="theme-form">
+        <div class="modal-body" style="height: 137px;">
+          <div class="modal-body-inner">
+            <div class="row">
+              <div class="col-xl-6 col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <div class="theme-label">Send To</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="sendFaxTxt" class="form-control" mask="(000)-000-0000"
+                      [ngClass]="{ 'is-invalid': (submittedSendFax &&  refSendFaxForm.sendFaxTxt.errors)}" />
+                  </div>
+                  <div *ngIf="(submittedSendFax  && refSendFaxForm.sendFaxTxt.errors)" class="tooltiptext text-right">
+                    <small class="error text-danger" *ngIf="refSendFaxForm.sendFaxTxt.errors.required">Field
+                      is
+                      required</small>
+                    <small class="error text-danger" *ngIf="refSendFaxForm.sendFaxTxt.errors.pattern">Please
+                      enter
+                      the
+                      valid
+                      number</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+            (click)="sendFax(false)">Cancel</a>
+          <button type="submit" class="btn btn-theme pull-left btn-sm" data-dismiss="modal" (click)="sendFax(true)"
+            [attr.data-dismiss]="modelValue">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="SendEmailPopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Compose Email</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <form [formGroup]="sendEmailForm" class="theme-form">
+        <div class="modal-body" style="height: 444px;">
+          <div class="modal-body-inner">
+            <div class="row">
+              <div class="col-xl-6 col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <div class="theme-label">Send To</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="sendToTxt" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submittedSendEmail &&  refSendEmailForm.sendToTxt.errors)}" />
+                  </div>
+                  <div *ngIf="(submittedSendEmail  && refSendEmailForm.sendToTxt.errors)"
+                    class="tooltiptext text-right">
+                    <small class="error text-danger" *ngIf="refSendEmailForm.sendToTxt.errors.required">Field
+                      is
+                      required</small>
+                    <small class="error text-danger" *ngIf="refSendEmailForm.sendToTxt.errors.pattern">Invalid
+                      email</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="theme-label">Send From</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="sendFromTxt" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submittedSendEmail &&  refSendEmailForm.sendFromTxt.errors)}" />
+                  </div>
+                  <div *ngIf="(submittedSendEmail  && refSendEmailForm.sendFromTxt.errors)"
+                    class="tooltiptext text-right">
+                    <small class="error text-danger" *ngIf="refSendEmailForm.sendFromTxt.errors.required">Field is
+                      required</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="theme-label">Subject</div>
+                  <div class="input-group">
+                    <input type="text" formControlName="subjectTxt" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submittedSendEmail &&  refSendEmailForm.subjectTxt.errors)}" />
+                  </div>
+                  <div *ngIf="(submittedSendEmail  && refSendEmailForm.subjectTxt.errors)"
+                    class="tooltiptext text-right">
+                    <small class="error text-danger">Field is required</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="theme-label">Body</div>
+                  <div class="input-group">
+                    <textarea class="form-control" formControlName="bodyTxt"
+                      [ngClass]="{ 'is-invalid': submittedSendEmail && refSendEmailForm.bodyTxt.errors }"></textarea>
+                  </div>
+                  <div *ngIf="(submittedSendEmail  && refSendEmailForm.bodyTxt.errors)" class="tooltiptext text-right">
+                    <small class="error text-danger">Field is required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+            (click)="sendFax(false)">Cancel</a>
+          <button type="submit" class="btn btn-theme pull-left btn-sm" data-dismiss="modal" (click)="sendEmail(true)"
+            [attr.data-dismiss]="modelValue">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="deleteItemConfirmPopUp" data-backdrop="static" data-keyboard="false"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <div class="close-dismiss" data-dismiss="modal" (click)="deleteOrCancelItem(false)"></div>
+      </div>
+      <div class="modal-body" style="height: 100px;">
+        <p>would you like to delete this item?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+          (click)="deleteOrCancelItem(false)">Cancel</button>
+        <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+          (click)="deleteOrCancelItem(true)">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade modal-theme in" id="viewFile" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{fileName}}</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <div class="modal-body" *ngIf="fileData">
+        <iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<button #hiddenFileDeleteItem [hidden]="true" data-toggle="modal" data-target="#deleteItemConfirmPopUp"></button>
+<button #hiddenFileNewFolderPopUpItem [hidden]="true" data-toggle="modal" data-target="#NewFolderPopUp"></button>
+<button #hiddenUploadFilePopUp [hidden]="true" data-toggle="modal" data-target="#uploadFileManagerPopUp"></button>
+<button #hiddenSendFaxPopUp [hidden]="true" data-toggle="modal" data-target="#SendFaxPopUp"></button>
+<button #hiddenSendEmailPopUp [hidden]="true" data-toggle="modal" data-target="#SendEmailPopUp"></button>
+<button #hiddenFileRenamePopUpItem [hidden]="true" data-toggle="modal" data-target="#RenamePopUp"></button>
+<button #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile"></button>

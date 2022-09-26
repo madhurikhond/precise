@@ -1,0 +1,378 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Request Search</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <div class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">LAST NAME</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="lastNameModel"
+                            (keyup.enter)="applyFilter()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FIRST NAME</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="firstNameModel"
+                            (keyup.enter)="applyFilter()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOB</div>
+
+                    <div class="input-group icon-active">
+                        <dx-date-box   [displayFormat]="dateTimeFormatCustom.Date" #dob type="date"[showClearButton]="true"
+                            [useMaskBehavior]="true" [(ngModel)]="dobModel">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">PATIENT ID</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="patientIdModel"
+                            (keyup.enter)="applyFilter()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Ref#</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="refModel" (keyup.enter)="applyFilter()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Checks</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="checksModel" (keyup.enter)="applyFilter()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Company Name</div>
+                    <ng-select [items]="companyList" placeholder="Select" bindLabel="CompanyName" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="CompanyName" [(ngModel)]="companyNameModelList">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Status</div>
+                    <ng-select [items]="statusList" placeholder="Select" bindLabel="statusName" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="statusName" [(ngModel)]="statusModelList">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.statusName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Request Type</div>
+                    <ng-select [items]="requestTypeList" placeholder="Select" bindLabel="requestTypeName"
+                        [multiple]="true" [closeOnSelect]="false" bindValue="requestTypeName"
+                        [(ngModel)]="requestTypeModelList">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.requestTypeName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Media</div>
+                    <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="mediaName" [(ngModel)]="mediaNameModelList">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.mediaName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme" (click)="applyFilter()">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">Clear</a>
+                </div>
+            </div>
+        </div>
+        <div class="search-field search-field-mobile">
+            <div class="remove-cataloge"></div>
+            <div class="theme-form">
+                <div class="filter-data">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+
+                                <div class="input-group icon-active">
+                                    <input type="text" class="form-control" id="dob1" />
+                                    <i class="fa-right-icon fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Ref #</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Checks</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Company Name</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Status</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Requested Type</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Media</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border">Clear</a>
+                </div>
+            </div>
+        </div>
+        <div class="page-top-action">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="search-field search-field-theme">
+                        <div class="theme-form">
+                            <div class="form-group">
+                                <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+                                    data-target="#new-cnr-request" (click)="resetDetailPageForm()">New CNR Request</a>
+                            </div>
+                            <div class="form-group">
+                                <ng-select [items]="dropDownList" placeholder="Select" bindLabel="dropDownName"
+                                    [searchable]="false" [multiple]="false" [clearable]="false" bindValue="dropDownName"
+                                    [closeOnSelect]="false" bindValue="dropDownName" [(ngModel)]="dropDownNameModel"
+                                    (change)="filterDropDownOnChange()">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.dropDownName}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 3">
+                                            <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+
+                            <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#saved-searches"
+                                class="btn btn-theme">Saved Searches</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="precisemri-search">
+                        <ng-select [items]="actionList" placeholder="Select" bindLabel="actionName" [multiple]="false"
+                            [closeOnSelect]="false" bindValue="actionName" [(ngModel)]="actionModel"
+                            class="form-search">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <span class="ng-value-label"> {{item.actionName}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+                                <div class="ng-value" *ngIf="items.length > 3">
+                                    <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <button href="javascript:void(0)" class="search" [disabled]="!this.selectedRows.length"
+                            (click)="goButtonClick()">GO</button>
+                    </div>
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                            <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                value={{item.value}}>{{item.value}}</option>
+                        </select>
+                    </div>
+                    <a href="javascript:void(0)" class="right btn btn-theme" (click)="applyFilter()"><i
+                            class="fa fa-repeat"></i> Refresh</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid id="grid-container" [dataSource]="subsGridList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" keyExpr="SubsID" [allowColumnReordering]="true"
+                [columnResizingMode]="columnResizingMode" [columnMinWidth]="7" [showBorders]="true"
+                [(selectedRowKeys)]="selectedRows" (onSelectionChanged)="selectionChangedHandler()" 
+                (onCellPrepared)="onCellPrepared($event)">
+                <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                </dxo-selection>
+                <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="false"></dxo-header-filter> -->
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxi-column [allowFiltering]="false" [allowSorting]="false" cellTemplate="subsIdCellTemplate">
+                </dxi-column>
+                <!-- <dxi-column dataField="SubsID" caption="Subs ID" [visible]="true"></dxi-column> -->
+                <dxi-column dataField="CompanyID" caption="CompanyID" [visible]="false"></dxi-column>
+                <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                <!-- <dxi-column dataField="InternalPatientID" caption="Internal Patient ID" [visible]="true"></dxi-column> -->
+                <dxi-column dataField="LastNameDisplay" caption="LAST NAME"></dxi-column>
+                <dxi-column dataField="FirstNameDisplay" caption="FIRST NAME"></dxi-column>
+                <dxi-column dataField="BirthDateDisplay" caption="DOB" cellTemplate="dobCellTemplate"></dxi-column>
+                <dxi-column dataField="CompanyName" caption="COMPANY NAME"></dxi-column>
+                <dxi-column dataField="status" caption="STATUS"></dxi-column>
+                <dxi-column dataField="RefNum" caption="Ref #"></dxi-column>
+                <dxi-column dataField="SecondaryRefNum" caption="Secondary RefNum #"
+                    [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="Type" caption="Requested Type" [(visible)]="isShowColumnWithNoData">
+                </dxi-column>
+                <dxi-column dataField="ProvidedType" caption="Provided Type" [(visible)]="isShowColumnWithNoData">
+                </dxi-column>
+                <dxi-column dataField="Media" caption="Media" [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="DateRequested" caption="Date Requested" cellTemplate="dobCellTemplate"
+                    [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="DateEntered" caption="Date Entered" cellTemplate="dobCellTemplate"
+                    [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="DateReady" caption="Date Ready" cellTemplate="dobCellTemplate"
+                    [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="AllChecks" caption="All Checks" [(visible)]="isShowColumnWithNoData">
+                </dxi-column>
+                <dxi-column dataField="CheckNum" caption="Check #1" [(visible)]="isShowColumnWithNoData">
+                </dxi-column>
+                <dxi-column dataField="CheckDate" caption="Check #1 Date" cellTemplate="dobCellTemplate"
+                    [(visible)]="isShowColumnWithNoData"></dxi-column>
+                <dxi-column dataField="CheckAmount" caption="Check #1 Amount" [(visible)]="isShowColumnWithNoData">
+                    <dxo-format type="fixedPoint" [precision]="2">
+                    </dxo-format>
+                </dxi-column>
+                <dxi-column dataField="PickupCost" caption="Pickup Amount Due">
+                    <dxo-format type="fixedPoint" [precision]="2">
+                    </dxo-format>
+                </dxi-column>
+                <dxi-column dataField="DatePickedUp" caption="Date Picked Up" cellTemplate="dobCellTemplate">
+                </dxi-column>
+                <dxi-column dataField="PickedUpBy" caption="Picked Up By"></dxi-column>
+                <dxi-column dataField="IsMailedChecked" caption="Mailed Checkbox" [visible]="false"></dxi-column>
+                <dxi-column dataField="SeeNotes" caption="Picked Up By" [visible]="false"></dxi-column>
+                <dxi-column dataField="UserId" caption="UserId" [visible]="false"></dxi-column>
+                <div *dxTemplate="let data of 'subsIdCellTemplate'">
+                    <a href="javascript:void(0)" (click)="getSubsDetail(data)"
+                        class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                        data-target="#new-cnr-request"></a>
+                </div>
+                <div *dxTemplate="let data of 'dobCellTemplate'">
+                    {{data.value | date: dateTimeFormatCustom.Date}}
+                </div>
+            </dx-data-grid>
+        </div>
+        <div class="pagination-theme">
+            <div
+                *ngFor="let item of subsGridList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="studyNotSelectedPopUp" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Warning</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Please Select Study</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button #hiddenButton1 [hidden]="true" data-toggle="modal" data-target="#studyNotSelectedPopUp"></button>
+<app-request-search-detail (messageChildToParent)="receiveMessageFromChild($event)"></app-request-search-detail>

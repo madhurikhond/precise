@@ -1,0 +1,60 @@
+<div class="tab-pane" id="attorney-stats">
+    <div class="page-header page-top-action">
+        <div class="row">
+            <div class="col-sm-12 col-12">
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                    <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">        
+        <dx-data-grid
+            id="gridContainer"
+            [dataSource]="dataList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="ATTORNEY"  
+            [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+		    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
+            <dxi-column dataField="PatientNo" caption="Patients (Total)"></dxi-column>
+            <dxi-column dataField="AttorneyLienYes" caption="Has ASL (Total)"></dxi-column>
+            <dxi-column dataField="AttorneyLineNo" caption="Missing ASL (Total)"></dxi-column>
+            <dxi-column dataField="perattoyes" cellTemplate="template1" caption="Signed (%)"></dxi-column>
+            <dxi-column dataField="perattoNo" cellTemplate="template2" caption="Missing (%)"></dxi-column>
+            <dxi-column dataField="remAvg" cellTemplate="template3" caption="Average Reminders"></dxi-column>
+
+            <div *dxTemplate="let data of 'template1'">
+                {{data.data.perattoyes | number:'.1-2'}}
+            </div>
+            <div *dxTemplate="let data of 'template2'">
+                {{data.data.perattoNo | number:'.1-2'}}
+            </div>
+            <div *dxTemplate="let data of 'template3'">
+                {{data.data.remAvg | number:'.1-2'}}
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div 
+                *ngFor="let item of dataList | paginate: { id:'paginatePage3', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls id="paginatePage3" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>

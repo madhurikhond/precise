@@ -1,0 +1,1241 @@
+<div class="tab-pane" id="parent-comp">
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" (click)="resetParentFacilityForm()"
+                    data-toggle="modal" data-target="#add-edit-parent-facility"><i class="fa fa-plus"></i> ADD PARENT
+                    COMPANY</a>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="precisemri-search page-select">
+					<div class="theme-label">Page Size</div>
+						<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+							<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+						</select>
+					</div>
+                <a href="javascript:void(0)" class="right btn btn-theme" (click)="getAllParentFacility()"><i
+                        class="fa fa-repeat"></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid id="parent-Facility-grid-container" [dataSource]="parentFacilityList" [allowColumnResizing]="true"
+            [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30" (onSelectionChanged)="selectionChanged($event)" keyExpr="facilityParentID"
+            [showBorders]="true">
+
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+            <!-- </dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+
+            <!-- </dxo-header-filter> -->
+			<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search..."> -->
+            <!-- </dxo-search-panel> -->
+            <dxo-paging [pageSize]="15"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[15,50, 100, 1000]" [showInfo]="true">
+            </dxo-pager>
+            <dxo-load-panel [enabled]="true">
+            </dxo-load-panel>
+
+            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+            </dxi-column>
+            <dxi-column dataField="facilityParentID" caption="facilityParentID" [visible]="false"></dxi-column>
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxi-column dataField="facilityParentName" caption="COMPANY NAME" [allowFixing]="false"></dxi-column>
+            <dxi-column dataField="address" caption="ADDRESS" [allowFixing]="false"></dxi-column>
+            <dxi-column dataField="city" caption="CITY" [visible]="false"></dxi-column>
+            <dxi-column dataField="state" caption="STATE"></dxi-column>
+            <dxi-column dataField="zip" caption="ZIP" alignment="left"></dxi-column>
+            <dxi-column dataField="mriPriceGlobal" caption="MRI GLOBAL" alignment="center"></dxi-column>
+            <dxi-column dataField="mriPriceTech" caption="MRI Tech" alignment="center"></dxi-column>
+            <dxi-column dataField="mriwContrastPriceGlobal" caption="MRI W/ GLOBAL" alignment="center"></dxi-column>
+            <dxi-column dataField="mriwContrastPriceTech" caption="MRI W/ TECH"></dxi-column>
+            <!-- <dxi-column dataField="mriwoContrastPriceGlobal" headerCellTemplate="MRIw/&w/oGlobal"></dxi-column> -->
+            <dxi-column dataField="mriwoContrastPriceTech" caption="MRI w/ & w/o Tech"></dxi-column>
+            <dxi-column dataField="ctPriceGlobal" caption="CT Global"></dxi-column>
+            <dxi-column dataField="ctPriceTech" caption="CT Tech"></dxi-column>
+            <dxi-column dataField="ctwContrastPriceGlobal" caption="CT w/ Global"></dxi-column>
+            <dxi-column dataField="ctwContrastPriceTech" caption="CT w/ Tech"></dxi-column>
+            <dxi-column dataField="ctwoContrastPriceGlobal" caption="CT w/ & w/o Global"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="ctwoContrastPriceTech" caption="CT w/ & w/o Tech"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="arthrogramPriceGlobal" caption="Arthro Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="arthrogramPriceTech" caption="Arthrogram Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="xRayPriceGlobal" caption="XR Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="xRayPriceTech" caption="XR Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="xRayPriceTier" caption="XR Tier" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="ultrasoundPriceGlobal" caption="US Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="ultrasoundPriceTech" caption="US Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>      
+            <dxi-column dataField="boneDensityPriceGlobal" caption="Bone Den. Global"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="boneDensityPriceTech" caption="Bone Den. Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="mammographPriceGlobal" caption="Mammo Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="mammographPriceTech" caption="Mammo Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="nuclearMedicinePriceGlobal" caption="Nuc Med Global"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="nuclearMedicinePriceTech" caption="Nuc Med Tech"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="petPriceGlobal" caption="PET Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="mriPriceType" caption="PET Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="dexaPriceGlobal" caption="Dexa Global" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="dexaPriceTech" caption="Dexa Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="myElogramPriceGlobal" caption="Myelogram Global"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="myElogramPriceTech" caption="Myelogram Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="ctArthrogramPriceGlobal" caption="CTArthro Global"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="ctArthrogramPriceTech" caption="CTArthro Tech" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+
+            <div *dxTemplate="let data of 'MRIw/&w/oGlobal'">
+                <div>MRI w/ <br>& w/o<br>Global</div>
+            </div>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="getFacilityDetail(data)"
+                    class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                    data-target="#add-edit-parent-facility"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of parentFacilityList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme" id="add-edit-parent-facility" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="static" data-keyboard="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{title}}</h5>
+                <div class="close-dismiss" (click)="getAllParentFacility()" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="tab-section">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#edit-parent-details">Parent Company
+                                Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#edit-parent-policies">Policies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#edit-parent-modalities">Modalities</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#edit-parent-pricing">Pricing</a>
+                        </li>
+                        <li class="nav-item" *ngIf="isPopUpInEditMode">
+							<a class="nav-link" data-toggle="modal" data-target="#facilityDocManager"
+								(click)="senddocManagerFacility()">Documents</a>
+						</li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="edit-parent-details">
+                            <form [formGroup]="parentCompanyDetailForm" class="theme-form">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="row">
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Company Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="FacilityParentName"
+                                                        class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.FacilityParentName.errors) || pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors}">
+                                                    <div *ngIf="(submitted && pcForm.FacilityParentName.errors)  || (pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors)"
+                                                        class="invalid-feedback">
+                                                        <div
+                                                            *ngIf="pcForm.FacilityParentName.errors?.required  || pcForm.FacilityParentName.touched">
+                                                            Parent Facility Name is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">DBA</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="DBA" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Address</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="Address" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.Address.errors) || pcForm.Address.touched && pcForm.Address.errors}">
+                                                    <div *ngIf="(submitted && pcForm.Address.errors)  || (pcForm.Address.touched && pcForm.Address.errors)"
+                                                        class="invalid-feedback">
+                                                        <div
+                                                            *ngIf="pcForm.Address.errors?.required  || pcForm.Address.touched">
+                                                            Address is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">City</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="City" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.City.errors) || pcForm.City.touched && pcForm.City.errors}">
+                                                    <div *ngIf="(submitted && pcForm.City.errors)  || (pcForm.City.touched && pcForm.City.errors)"
+                                                        class="invalid-feedback">
+                                                        <div
+                                                            *ngIf="pcForm.City.errors?.required  || pcForm.City.touched">
+                                                            City is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">State</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="State" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.State.errors) || pcForm.State.touched && pcForm.State.errors}">
+                                                    <div *ngIf="(submitted && pcForm.State.errors)  || (pcForm.State.touched && pcForm.State.errors)"
+                                                        class="invalid-feedback">
+                                                        <div
+                                                            *ngIf="pcForm.State.errors?.required  || pcForm.State.touched">
+                                                            State is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Zip</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="Zip" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.Zip.errors) || pcForm.Zip.touched && pcForm.Zip.errors}">
+                                                    <div *ngIf="(submitted && pcForm.Zip.errors)  || (pcForm.Zip.touched && pcForm.Zip.errors)"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="pcForm.Zip.errors?.required  || pcForm.Zip.touched">
+                                                            Zip is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="checkbox-theme">
+                                                <input class="form-control" formControlName="IsActive" id="parent-info4"
+                                                    type="checkbox">
+                                                <label for="parent-info4" class="arrow-label">Active</label>
+                                            </div>
+                                        </div>
+                                        </div>
+
+
+                                        </div>
+                                    </div>
+                               
+								<div class="user-detail">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Owner Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="OwnerName" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="OwnerEmail" class="form-control"
+                                                        [ngClass]="{'is-invalid': pcForm.OwnerEmail.errors}">
+                                                    <div *ngIf="pcForm.OwnerEmail.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.OwnerEmail.errors">Email must be a valid
+                                                            email address</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="OwnerPhone"
+                                                        mask="(000) 000-0000" class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.OwnerPhone.errors }">
+                                                    <div *ngIf="pcForm.OwnerPhone.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.OwnerPhone.errors">phone number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="OwnerFax" mask="(000) 000-0000"
+                                                        class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.OwnerFax.errors }">
+                                                    <div *ngIf="pcForm.OwnerFax.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.OwnerFax.errors">fax number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Manager Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ManagerName"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ManagerEmail"
+                                                        class="form-control"
+                                                        [ngClass]="{'is-invalid': pcForm.ManagerEmail.errors}">
+                                                    <div *ngIf="pcForm.ManagerEmail.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ManagerEmail.errors">Email must be a valid
+                                                            email address</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ManagerPhone"
+                                                        mask="(000) 000-0000" class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.ManagerPhone.errors }">
+                                                    <div *ngIf="pcForm.ManagerPhone.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ManagerPhone.errors">phone number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ManagerFax"
+                                                        mask="(000) 000-0000" class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.ManagerFax.errors }">
+                                                    <div *ngIf="pcForm.ManagerFax.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ManagerFax.errors">fax number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">IT Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ITName" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ITEmail" class="form-control"
+                                                        [ngClass]="{'is-invalid': pcForm.ITEmail.errors }">
+                                                    <div *ngIf="pcForm.ITEmail.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ITEmail.errors">Email must be a valid email
+                                                            address</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ITPhone" mask="(000) 000-0000"
+                                                        class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.ITPhone.errors }">
+                                                    <div *ngIf="pcForm.ITPhone.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ITPhone.errors">phone number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="ITFax" mask="(000) 000-0000"
+                                                        class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.ITFax.errors }">
+                                                    <div *ngIf="pcForm.ITFax.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.ITFax.errors">fax number must be 10 numbers
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Billing Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="BillingName"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Email</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="BillingEmail"
+                                                        class="form-control"
+                                                        [ngClass]="{'is-invalid': pcForm.BillingEmail.errors}">
+                                                    <div *ngIf="pcForm.BillingEmail.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.BillingEmail.errors">Email must be a valid
+                                                            email address</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Phone</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="BillingPhone"
+                                                        mask="(000) 000-0000" class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.BillingPhone.errors }">
+                                                    <div *ngIf="pcForm.BillingPhone.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.BillingPhone.errors">phone number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Fax</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="BillingFax"
+                                                        mask="(000) 000-0000" class="form-control font-size"
+                                                        [ngClass]="{ 'is-invalid': pcForm.BillingFax.errors }">
+                                                    <div *ngIf="pcForm.BillingFax.errors" class="invalid-feedback">
+                                                        <div *ngIf="pcForm.BillingFax.errors">fax number must be 10
+                                                            numbers</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="edit-parent-policies">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="theme-label-title">Parent Company Policies</div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
+												 [(ngModel)]="parentPolicy"
+													[config]="CkeConfig" (paste)="onPaste($event)"
+													(change)="onChange($event)">
+												</ckeditor>
+                                    <!-- <ckeditor [editor]="Editor" [(ngModel)]="parentPolicy" debounce="500"
+                                        style="text-transform: none;"></ckeditor> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="edit-parent-modalities">
+                            <div class="tab-section">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab"
+                                            href="#edit-parent-services-info">Services</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" *ngIf="modalityServicesFormControl.MRIService.value==true"
+                                            data-toggle="tab" href="#edit-parent-mri-info">MRI</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" *ngIf="modalityServicesFormControl.CTService.value==true"
+                                            data-toggle="tab" href="#edit-parent-ct-info">CT</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div class="tab-pane active show" id="edit-parent-services-info">
+                                        <form class="theme-form" [formGroup]="modalityServicesForm">
+                                            <div class="row">
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="MriServices" type="checkbox"
+                                                            formControlName="MRIService">
+                                                        <label for="MriServices" class="arrow-label">MRI</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="CtServices" type="checkbox"
+                                                            formControlName="CTService">
+                                                        <label for="CtServices" class="arrow-label">CT</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="XrayServices" type="checkbox"
+                                                            formControlName="XrayService">
+                                                        <label for="XrayServices" class="arrow-label">XRAY</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="ArthrogramServices"
+                                                            type="checkbox" formControlName="ArthrogramService">
+                                                        <label for="ArthrogramServices"
+                                                            class="arrow-label">Arthrogram</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="BoneDensityServices"
+                                                            type="checkbox" formControlName="BoneDensityService">
+                                                        <label for="BoneDensityServices" class="arrow-label">Bone
+                                                            Density</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="MammographServices"
+                                                            type="checkbox" formControlName="MammographService">
+                                                        <label for="MammographServices"
+                                                            class="arrow-label">Mammograph</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="NuclearMedicineServices"
+                                                            type="checkbox" formControlName="NuclearMedicineService">
+                                                        <label for="NuclearMedicineServices" class="arrow-label">Nuclear
+                                                            Medicine</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" type="checkbox"
+                                                            formControlName="PETScanService">
+                                                        <label for="editservices7" class="arrow-label">PET Scan</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="UltrasoundServices"
+                                                            type="checkbox" formControlName="UltrasoundService">
+                                                        <label for="UltrasoundServices"
+                                                            class="arrow-label">Ultrasound</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-contro" id="MyelogramServices"
+                                                            type="checkbox" formControlName="MyElogramService">
+                                                        <label for="MyelogramServices"
+                                                            class="arrow-label">Myelogram</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-contro" id="DexaServices" type="checkbox"
+                                                            formControlName="DEXAService">
+                                                        <label for="DexaServices" class="arrow-label">DEXA</label>
+                                                    </div>
+												</div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-contro11" id="CTArthrogramServices"
+                                                            type="checkbox" formControlName="CTArthrogramService">
+                                                        <label for="CTArthrogramServices" class="arrow-label">CT
+                                                            Arthrogram</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="edit-parent-mri-info">
+                                        <form class="theme-form" [formGroup]="modalityMriForm">
+                                            <div class="table-responsive manual-table">
+                                                <table class="table table-theme">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="100">Machine #</th>
+                                                            <th width="100">Type</th>
+                                                            <th width="100">Strength</th>
+                                                            <th width="100">Make</th>
+                                                            <th width="100">Weight</th>
+                                                            <th width="100">Contrast</th>
+                                                            <th width="100">Incl. Flex & Ext</th>
+                                                            <th width="100">Sedation</th>
+                                                            <th width="100">Breast</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI1Type">
+                                                                    <option></option>
+                                                                    <option value="Open">Open</option>
+                                                                    <option value="Closed">Closed</option>
+                                                                    <option value="Stand Up">Stand Up</option>
+                                                                    <option value="Wide Bore">Wide Bore</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI1Strength">
+                                                                    <option></option>
+                                                                    <option value=".3T">.3T</option>
+                                                                    <option value=".6T">.6T</option>
+                                                                    <option value="1.0T">1.0T</option>
+                                                                    <option value="1.2T">1.2T</option>
+                                                                    <option value="1.5T">1.5T</option>
+                                                                    <option value="3T">3T</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI1Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI1Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI1Contrast">
+                                                                    <option></option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="No">No</option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="Rectal">Rectal</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRIWFlexandEXT">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI1Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI1Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI2Type">
+                                                                    <option></option>
+                                                                    <option value="Open">Open</option>
+                                                                    <option value="Closed">Closed</option>
+                                                                    <option value="Stand Up">Stand Up</option>
+                                                                    <option value="Wide Bore">Wide Bore</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2Strength">
+                                                                    <option></option>
+                                                                    <option value=".3T">.3T</option>
+                                                                    <option value=".6T">.6T</option>
+                                                                    <option value="1.0T">1.0T</option>
+                                                                    <option value="1.2T">1.2T</option>
+                                                                    <option value="1.5T">1.5T</option>
+                                                                    <option value="3T">3T</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI2Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2Contrast">
+                                                                    <option></option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="No">No</option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="Rectal">Rectal</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2WFlexandEXT">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI2Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI3Type">
+                                                                    <option></option>
+                                                                    <option value="Open">Open</option>
+                                                                    <option value="Closed">Closed</option>
+                                                                    <option value="Stand Up">Stand Up</option>
+                                                                    <option value="Wide Bore">Wide Bore</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3Strength">
+                                                                    <option></option>
+                                                                    <option value=".3T">.3T</option>
+                                                                    <option value=".6T">.6T</option>
+                                                                    <option value="1.0T">1.0T</option>
+                                                                    <option value="1.2T">1.2T</option>
+                                                                    <option value="1.5T">1.5T</option>
+                                                                    <option value="3T">3T</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="MRI3Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3Contrast">
+                                                                    <option></option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="No">No</option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="Rectal">Rectal</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3WFlexandEXT">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="MRI3Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="edit-parent-ct-info">
+                                        <form class="theme-form" [formGroup]="modalityCtForm">
+                                            <div class="table-responsive manual-table">
+                                                <table class="table table-theme">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="100">Machine #</th>
+                                                            <th width="100">Make</th>
+                                                            <th width="100">Slices</th>
+                                                            <th width="100">Weight</th>
+                                                            <th width="100">Contrast</th>
+                                                            <th width="100">Sedation</th>
+                                                            <th width="100">Breast</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="CT1Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT1Slices">
+                                                                    <option></option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="32">32</option>
+                                                                    <option value="64">64</option>
+                                                                    <option value="NA">NA</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT1Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT1Contrast">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT1Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT1Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="CT2Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT2Slices">
+                                                                    <option></option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="32">32</option>
+                                                                    <option value="64">64</option>
+                                                                    <option value="NA">NA</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT2Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT2Contrast">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT2Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT2Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3</td>
+                                                            <td>
+                                                                <select class="form-control" formControlName="CT3Make">
+                                                                    <option></option>
+                                                                    <option value="GE">GE</option>
+                                                                    <option value="Fonar">Fonar</option>
+                                                                    <option value="Hitachi">Hitachi</option>
+                                                                    <option value="Phillips">Phillips</option>
+                                                                    <option value="Siemens">Siemens</option>
+                                                                    <option value="Toshiba">Toshiba</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT3Slices">
+                                                                    <option></option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="6">6</option>
+                                                                    <option value="8">8</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="32">32</option>
+                                                                    <option value="64">64</option>
+                                                                    <option value="NA">NA</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT3Weight">
+                                                                    <option></option>
+                                                                    <option value="300">300</option>
+                                                                    <option value="350">350</option>
+                                                                    <option value="400">400</option>
+                                                                    <option value="450">450</option>
+                                                                    <option value="500">500</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT3Contrast">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT3Sedation">
+                                                                    <option></option>
+                                                                    <option value="Oral">Oral</option>
+                                                                    <option value="IV">IV</option>
+                                                                    <option value="Both">Both</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control"
+                                                                    formControlName="CT3Breast">
+                                                                    <option></option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="edit-parent-pricing">
+                            <div class="tab-section">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#current">Current</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#historical">Historical</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="current">
+                                        <div class="page-top-action">
+                                            <button href="javascript:void(0)" class="btn btn-theme"
+                                                [disabled]="FacilityParentCurrentPricingList?.length>0?false:true"
+                                                (click)="saveChangesCurrentPricing()">Save Changes</button>
+                                            <button href="javascript:void(0)" class="btn-border"
+                                                [disabled]="FacilityParentCurrentPricingList?.length>0?false:true"
+                                                (click)="getFacilityParentById()">Cancel Changes</button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <dx-data-grid id="gridContainerFacilityPricingList"
+                                                [dataSource]="FacilityParentCurrentPricingList" [showBorders]="true">
+                                                <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
+                                                <dxi-column dataField="facilityParentID" caption="facilityParentID"
+                                                    [visible]="false"></dxi-column>
+                                                <dxi-column dataField="modType" caption="TYPE" [allowEditing]="false">
+                                                </dxi-column>
+                                                <dxi-column dataField="priceTier" caption="PRICE TIER"
+                                                    dataType="number"></dxi-column>
+                                                <dxi-column dataField="currentGlobal" caption="CURRENT GLOBAL"
+                                                    dataType="number"></dxi-column>
+                                                <dxi-column dataField="currentTech" caption="CURRENT TECH"
+                                                    dataType="number"></dxi-column>
+                                                <dxi-column dataField="pricingCutOff" dataType="date"
+                                                    caption="PRICING CUT OFF"></dxi-column>
+                                                <dxi-column dataField="newGlobal" caption="NEW GLOBAL"
+                                                    dataType="number"></dxi-column>
+                                                <dxi-column dataField="newTech" caption="NEW TECH" dataType="number">
+                                                </dxi-column>
+                                                <!-- <dxi-column dataField="leaseTime" caption="Lease Time"
+                                                    dataType="number"></dxi-column>
+                                                    <dxi-column dataField="hourlyLeaseRate" caption="Hourly Lease Rate"
+													dataType="number"
+													[format]="{ style: 'currency', currency: 'USD', useGrouping: true, minimumSignificantDigits: 3 }"  [customizeText]="customizeText"
+													[customizeText]="customizeText">
+													<dxi-validation-rule type="pattern" [pattern]="numberPattern"
+														message="Enter valid values">
+													</dxi-validation-rule>
+												</dxi-column> -->
+                                                <dxi-column dataField="isCopyPrice" caption="ISCOPYPRICE"
+                                                    [visible]="false"></dxi-column>
+                                                <dxi-column dataField="service" caption="SERVICE" [visible]="false">
+                                                </dxi-column>
+                                                <dxi-column dataField="isReadOnly" caption="ISREADONLY"
+                                                    [visible]="false"></dxi-column>
+                                                <dxi-column dataField="overridePrice" caption="OVERRIDEPRICE"
+                                                    [visible]="false"></dxi-column>
+                                            </dx-data-grid>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="historical">
+                                        <div class="table-responsive">
+                                            <dx-data-grid id="gridContainerfacilityPricingHistoryList"
+                                                [dataSource]="FacilityParentPricingHistoryList"
+                                                [allowColumnResizing]="true" [columnAutoWidth]="true"
+                                                [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                                                [columnMinWidth]="30" keyExpr="id" [showBorders]="true">
+
+                                                <dxo-sorting mode="multiple"></dxo-sorting>
+                                                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                                                <!-- </dxo-filter-row> -->
+                                                <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                                                <!-- </dxo-header-filter> -->
+												<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                                                
+                                                <dxo-load-panel [enabled]="true">
+                                                </dxo-load-panel>
+
+                                                <dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
+                                                <dxi-column dataField="facilityParentId" caption="facilityParentId"
+                                                    [visible]="false"></dxi-column>
+
+                                                <dxi-column dataField="type" caption="TYPE" [allowFixing]="true"
+                                                    alignment="center"></dxi-column>
+
+                                                <dxi-column dataField="oldGlobalPrice" caption="OLD GLOBAL PRICE"
+                                                    [allowFixing]="false" alignment="center"></dxi-column>
+
+                                                <dxi-column dataField="newGlobalPrice" caption="NEW GLOBAL PRICE"
+                                                    alignment="center"></dxi-column>
+
+                                                <dxi-column dataField="globalPriceDifference" caption="$  +/-"
+                                                    alignment="center"></dxi-column>
+
+                                                <dxi-column dataField="globalPriceDifferencePr" caption="%  +/-"
+                                                    alignment="center">
+                                                </dxi-column>
+
+                                                <dxi-column dataField="oldTechPrice" caption="OLD TECH PRICE"
+                                                    alignment="center">
+                                                </dxi-column>
+
+                                                <dxi-column dataField="newTechPrice" caption="NEW TECH PRICE"
+                                                    alignment="center">
+                                                </dxi-column>
+
+                                                <dxi-column dataField="techPriceDifference" caption="$  +/-"
+                                                    alignment="center"></dxi-column>
+
+                                                <dxi-column dataField="techPriceDifferencePr" caption="%  +/-"
+                                                    alignment="center">
+                                                </dxi-column>
+
+                                                <dxi-column dataField="lastEffectiveDate" caption="LAST EFFECTIVE DATE"
+                                                    alignment="center" dataType="date" format="shortDate">
+                                                </dxi-column>
+
+                                                <dxi-column dataField="priceTier" caption="PRICE TIER"
+                                                    alignment="center"></dxi-column>
+
+                                            </dx-data-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="edit-parent-documents">
+                            <div class="nodata-display">
+                                No Document
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="getAllParentFacility()" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Close</a>
+                <a href="javascript:void(0)" *ngIf="isInsertButtonVisible" (click)="addParentFacility()"
+                    class="btn btn-theme btn-sm pull-left" [attr.data-dismiss]="modalValue">Insert</a>
+                <a href="javascript:void(0)" *ngIf="isOkAndApplyButtonVisible" (click)="updateParentFacilityById()"
+                    class="btn btn-theme btn-sm pull-left" [attr.data-dismiss]="modalValue">Ok</a>
+                <a href="javascript:void(0)" *ngIf="isOkAndApplyButtonVisible" (click)="updateParentFacilityById()"
+                    class="btn btn-border btn-sm pull-left">Apply</a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-document-manager-facility></app-document-manager-facility>

@@ -1,0 +1,260 @@
+<div class="tab-pane active" id="ordered-general-settings-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="generalSettingForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isActive" id="active18"
+											type="checkbox">
+										<label for="active18" class="arrow-label">Is Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Check for new calls at</div>
+										<div class="input-group icon-active">
+											<!-- <ng-template #popTemplate>
+												<timepicker [formControlName]="'serviceRunAt'" [showMeridian]="false"></timepicker>
+											</ng-template>
+											<input [formControlName]="'serviceRunAt'" class="form-control" [popover]="popTemplate" [outsideClick]="true" placement="top" /> -->
+											<input [formControlName]="'serviceRunAt'" type="time" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.serviceRunAt.errors)}" />
+											<!-- <input type="text" class="form-control" formControlName="serviceRunAt" id="timepicker27">  -->
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && gsForm.serviceRunAt.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="gsForm.serviceRunAt.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Study must equal</div>
+										<div class="input-group md-input-focused">
+											<ng-select [items]="statusNamesList" placeholder="Select"
+												formControlName="twilioStatus" bindLabel="status" [multiple]="true"
+												[closeOnSelect]="false" bindValue="status" [(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioStatus.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioStatus.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="gsForm.twilioStatus.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Finan. Type</div>
+										<div class="input-group md-input-focused">
+											<ng-select [items]="financialTypesList" placeholder="Select"
+												formControlName="twilioFinancialType" bindLabel="financialtypename"
+												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+												[(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioFinancialType.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioFinancialType.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="gsForm.twilioFinancialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Days NOT to run</div>
+										<div class="input-group icon-active">
+											<!-- <input type="text" class="form-control" formControlName="twilioNotRunAt" bsDatepicker id="days-not-run" [bsConfig]="{ containerClass : 'theme-default', dateInputFormat: 'DD-MM-YYYY'}">
+											<i class="fa-right-icon fa fa-calendar"></i> -->
+											<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+												formControlName="twilioNotRunAt" type="date" [showClearButton]="true"
+												[useMaskBehavior]="true"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioNotRunAt.errors)}">
+												
+											</dx-date-box>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioNotRunAt.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="gsForm.twilioNotRunAt.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Days of the week to run</div>
+										<div class="input-group md-input-focused">
+											<ng-select [items]="weekDays" placeholder="Select"
+												formControlName="twilioDaysOfWeekRun" 
+												[multiple]="true" [closeOnSelect]="false"
+												[(ngModel)]="selectedweekDays"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioDaysOfWeekRun.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioDaysOfWeekRun.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="gsForm.twilioDaysOfWeekRun.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								<!-- 
+									<div class="form-group">
+										<div class="theme-label">Days of the week to run</div>
+										<div class="input-group md-input-focused">
+											<select class="form-control" formControlName="twilioDaysOfWeekRun"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioDaysOfWeekRun.errors)}">
+												<option>Sunday</option>
+												<option>Monday</option>
+												<option>Tuesday</option>
+												<option>Wednesday</option>
+												<option>Thrusday</option>
+												<option>Friday</option>
+												<option>Saturday</option>
+											</select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioDaysOfWeekRun.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="gsForm.twilioDaysOfWeekRun.errors.required">
+												Required
+											</small>
+										</div>
+								</div> -->
+									<div class="form-group">
+										<div class="theme-label">Min.days to wait before next Cal</div>
+										<div class="input-group md-input-focused">
+											<select class="form-control" formControlName="twilioWaitDaysToRun"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioWaitDaysToRun.errors)}">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+												<option>6</option>
+												<option>7</option>
+												<option>8</option>
+												<option>9</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioWaitDaysToRun.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="gsForm.twilioWaitDaysToRun.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Max attempts per study</div>
+										<div class="input-group md-input-focused">
+											<select class="form-control" formControlName="twilioMaxAttemptToStudy"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioMaxAttemptToStudy.errors)}">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+												<option>6</option>
+												<option>7</option>
+												<option>8</option>
+												<option>9</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div *ngIf="submitted && gsForm.twilioMaxAttemptToStudy.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="gsForm.twilioMaxAttemptToStudy.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Call From Phone #</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="twilioPhone"
+											mask="(000)-000-0000"
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioPhone.errors)}"
+												(keypress)="allowNumberOnly($event)">
+										</div>
+										<div *ngIf="submitted && gsForm.twilioPhone.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="gsForm.twilioPhone.errors.required">
+												Required
+											</small>
+											<div class="error text-danger" *ngIf="gsForm.twilioPhone.errors.min">
+												Required 10 Digit Min
+											</div>
+											<div class="error text-danger" *ngIf="gsForm.twilioPhone.errors.max">
+												Required 12 Digit Max
+											</div>
+											<div class="error text-danger" *ngIf="gsForm.twilioPhone.errors.pattern">
+												Invalid phone number
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>{{responseData}}</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="twilioCommnet" placeholder="Add Note"
+                                [ngClass]="{ 'is-invalid': (submitted && gsForm.twilioCommnet.errors)}"></textarea>
+                        </div>
+                        <div *ngIf="submitted && gsForm.twilioCommnet.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="gsForm.twilioCommnet.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" class="btn btn-theme">Update</button>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+<div class="main-page-body">
+	<div class="page-header">
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="page-header-title">Auto Route</div>
+			</div>
+		</div>
+	</div>
+	<div class="inner-page-body">
+		<div class="theme-form-center">
+			<form [formGroup]="autoRouteForm" (ngSubmit)="onSubmit()" class="theme-form">
+				<div class="theme-panel-body">
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+							<div class="form-group autocomplete">
+								Allow uploads before the patient is in ePIC
+								<div class="input-group">
+									<ng-select [items]="documentList" placeholder="Select" formControlName="docIds"
+										bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
+										[(ngModel)]="selectedDocumentList" [loading]="showDocumentDropdownLoader"
+										bindValue="docId" (change)="onChange($event)"
+										[ngClass]="{ 'is-invalid': submitted && arForm.docIds.errors }">
+										<ng-template ng-header-tmp ng-multi-label-tmp let-items="items"
+											let-clear="clear">
+											<div>
+												<button class="btn btn-link" (click)="onSelectAll()">Select All</button>
+												<button class="btn btn-link" (click)="onClearAll()">Clear All</button>
+											</div>
+											<div class="ng-value" *ngFor="let item of items | slice:0:3">
+												<span class="ng-value-label"> {{item.docType}}</span>
+												<span class="ng-value-icon right" (click)="clear(item)"
+													aria-hidden="true">×</span>
+											</div>
+											<div class="ng-value" *ngIf="items.length > 3">
+												<span *ngIf="(items.length - 3)>0" class="ng-value-label">{{items.length
+													- 3}} more...</span>
+											</div>
+										</ng-template>
+
+									</ng-select>
+
+									<div *ngIf="submitted && arForm.docIds.errors" class="tooltiptext text-right">
+										<small class="error text-danger" *ngIf="arForm.docIds.errors.required">
+											Select at least one doc type
+										</small>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<div class="input-lable-side">
+								<span>After</span>
+								<div class="icon-active">
+									<input type="number" class="form-control" formControlName="daysNotFound" min="0"
+										[ngClass]="{ 'is-invalid': submitted && arForm.daysNotFound.errors }">
+									<div *ngIf="submitted && arForm.daysNotFound.errors" class="tooltiptext text-right">
+										<small class="error text-danger"
+											*ngIf="arForm.daysNotFound.errors.required">Reference number is
+											required</small>
+									</div>
+									<div *ngIf="submitted && arForm.daysNotFound.errors" class="tooltiptext text-right">
+										<small class="error text-danger"
+											*ngIf="arForm.daysNotFound.errors.minlength">minlength</small>
+									</div>
+									<div *ngIf="submitted && arForm.daysNotFound.errors" class="tooltiptext text-right">
+										<small class="error text-danger"
+											*ngIf="arForm.daysNotFound.errors.maxlength">max</small>
+									</div>
+								</div>
+								<span>days email the upload user that the patient was not found.</span>
+
+							</div>
+							<div class="input-lable-side">
+								<span>After</span>
+								<!-- <input type="text" class="form-control" value="2"> -->
+								<div class="icon-active">
+									<input type="number" class="form-control" formControlName="daysIntoAction" min="0"
+										[ngClass]="{ 'is-invalid': submitted && arForm.daysIntoAction.errors }">
+									<div *ngIf="submitted && arForm.daysIntoAction.errors"
+										class="tooltiptext text-right">
+										<small class="error text-danger"
+											*ngIf="arForm.daysIntoAction.errors.required">Reference number is
+											required</small>
+									</div>
+								</div>
+								<span>days show record in the action needed.</span>
+
+							</div>
+
+							<div class="input-lable-side">
+								<span>After</span>
+								<div class="icon-active">
+									<input type="number" class="form-control" formControlName="daysPurge" min="0"
+										[ngClass]="{ 'is-invalid': submitted && arForm.daysPurge.errors }">
+									<div *ngIf="submitted && arForm.daysPurge.errors" class="tooltiptext text-right">
+										<small class="error text-danger"
+											*ngIf="arForm.daysPurge.errors.required">Reference
+											number is required</small>
+									</div>
+								</div>
+								<span>days purge the files with no matching records.</span>
+
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+							<div class="form-group autocomplete">
+								File Types
+								<ng-select [items]="fileExtensionList" placeholder="Select" class=""
+									formControlName="extensionIds" bindLabel="Extension" [multiple]="true"
+									[(ngModel)]="selectedExtensionList" [closeOnSelect]="false"
+									[loading]="showFileExtensionDropdownLoader" autofocus bindValue="ExtensionId"
+									[selectableGroup]="true" [selectableGroupAsModel]="false"
+									[ngClass]="{ 'is-invalid': submitted && arForm.extensionIds.errors }">
+
+									<ng-template ng-header-tmp let-items="items" let-index="index">
+										<div>
+											<button class="btn btn-link" (click)="onSelectAllExtension()">Select
+												All</button>
+											<button class="btn btn-link" (click)="onClearAllExtension()">Clear
+												All</button>
+										</div>
+										<div class="ng-value" *ngFor="let item of items | slice:0:1">
+											<span class="ng-value-label"> {{item.Extension}}</span>
+										</div>
+										<div class="ng-value" *ngIf="items.length > 1">
+											<span *ngIf="(items.length - 1)>0" class="ng-value-label">{{items.length -
+												1}} more...</span>
+										</div>
+									</ng-template>
+								</ng-select>
+								<div *ngIf="submitted && arForm.extensionIds.errors" class="tooltiptext text-right">
+									<small class="error text-danger" *ngIf="arForm.extensionIds.errors.required">
+										Select at least one extension
+									</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="theme-panel-footer">
+					<button type="submit" class="btn btn-theme">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

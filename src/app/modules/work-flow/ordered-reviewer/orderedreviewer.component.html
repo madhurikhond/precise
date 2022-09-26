@@ -1,0 +1,399 @@
+<div class="main-page-body ordered-reviewer-page">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Ordered Reviewer</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <div class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">PATIENT ID</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" #refPatientId
+                            (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">LAST NAME</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" #refLastName
+                            (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FIRST NAME</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" #refFirstName
+                            (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOB</div>
+                    <div class="input-group icon-active dob">
+                        <dx-date-box #refDob type="date" [value]="filterDOB" [showClearButton]="true"
+                            [useMaskBehavior]="true" displayFormat="shortdate" [(ngModel)]="filterDOB">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <div class="theme-label">Select Financial Type</div>
+                        <ng-multiselect-dropdown
+                            #dropDown
+                            [placeholder]="'Select'"
+                            [data]="financialTypeList"
+                            [(ngModel)]="selectedFinancialTypeList"
+                            [settings]="dropdownSettings"
+                            >
+                            </ng-multiselect-dropdown>
+                </div> -->
+                <div class="form-group autocomplete form-group1">
+                    <div class="theme-label">Select Financial Type</div>
+                    <div class="input-group">
+                        <ng-select [items]="financialTypeList" placeholder="SELECT" bindLabel="financialtypename"
+                            [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                            [(ngModel)]="selectedFinancialTypeList">
+                            <ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                </div>
+                                <div class="ng-value" *ngIf="items.length > 1">
+                                    <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme"
+                        (click)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">SEARCH</a>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">CLEAR</a>
+                </div>
+            </div>
+            <div class="page-top-action">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="precisemri-search page-select">
+                            <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                                <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#needs-reviewed"
+                        (click)="onNeedToReviewedTabClicked()">Needs to be Reviewed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#reviewed" (click)="onReviewedTabClicked()">Reviewed</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="needs-reviewed">
+                    <div class="table-responsive page-table">
+                        <dx-data-grid id="gridContainer" [dataSource]="NeedToOrderedReviewList"
+                            [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id" [showBorders]="true">
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <dxo-paging [enabled]="false"></dxo-paging>
+							<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+                            <dxi-column dataField="PatientId" cellTemplate="patientTemplate" caption="PATIENT ID">
+                            </dxi-column>
+                            <dxi-column dataField="LastName" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FirstName" caption="FIRST NAME"></dxi-column>
+                            <dxi-column dataField="BirthDate" caption="DOB"></dxi-column>
+                            <dxi-column dataField="FinancialTypeName" caption="FIN TYPE"></dxi-column>
+                            <dxi-column dataField="InjuryDate" caption="DOI"></dxi-column>
+                            <dxi-column dataField="EnteredOn" caption="ENTERED ON"></dxi-column>
+                            <dxi-column dataField="SyudyCount" caption="# OF STUDIES"></dxi-column>
+                            <dxi-column dataField="JoinInternalStudyId" caption="JoinInternalStudyId" [visible]="false">
+                            </dxi-column>
+                            <dxi-column dataField="RowNumber" caption="RowNumber" [visible]="false"></dxi-column>
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                                <a href="javascript:void(0)" (click)="getNeedToReviewRowCurrentDetail(data)"
+                                    class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                                    data-target="#addEditrecord"></a>
+                                <img src="/assets/images/copy-icon.png" data-toggle="modal" data-target="#docManager"
+                                    (click)="showDocManager(data.data.PatientId)" class="cursor-pointer" />
+                            </div>
+                            <div *dxTemplate="let data of 'patientTemplate'">
+                                <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                                    data-toggle="modal" data-target="#patient-Detail-Window">
+                                    {{data.data.PatientId}} </a>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme" *ngIf="this.needToOrderedReviewTotalRecords>0">
+                        <div class="pagination-theme">
+                            <div
+                                *ngFor="let item of NeedToOrderedReviewList | paginate: { id: 'pagination1' , itemsPerPage: needToOrderedReviewPageSize, currentPage: needToOrderedReviewPageNumber, totalItems:needToOrderedReviewTotalRecords}">
+                            </div>
+                            <pagination-controls id="pagination1" (pageChange)="NeedToOrderedReviewPageChanged($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="reviewed">
+                    <div class="table-responsive page-table">
+                        <dx-data-grid id="gridContainer2" [dataSource]="orderedReviewedList"
+                            [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id" [showBorders]="true">
+                            <dxo-paging [enabled]="false"></dxo-paging>
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                            <!-- </dxo-filter-row> -->
+                            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+
+                            <!-- </dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false" [visible]="false"></dxi-column>
+                            <!-- <dxi-column dataField="CompanyID" [width]="100" caption="CompanyID"></dxi-column> -->
+                            <dxi-column dataField="PatientId" cellTemplate="patientTemplate" caption="PATIENT ID"></dxi-column>
+                            <dxi-column dataField="LastName" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FirstName" caption="FIRST NAME"></dxi-column>
+                            <dxi-column dataField="FinancialType" caption="FIN TYPE"></dxi-column>
+                            <dxi-column dataField="ReviewedBy" caption="REVIEWED BY"></dxi-column>
+
+                            <dxi-column dataField="ReviewedOn" caption="REVIEWED ON"></dxi-column>
+                            <dxi-column dataField="JoinInternalStudyId" caption="JoinInternalStudyId" [visible]="false">
+                            </dxi-column>
+                            <dxi-column dataField="DOB" caption="DOB" [visible]="false"></dxi-column>
+
+                            <div *dxTemplate="let data of 'patientTemplate'">
+                                <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                                    data-toggle="modal" data-target="#patient-Detail-Window">
+                                    {{data.data.PatientId}} </a>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme">
+                        <div
+                            *ngFor="let item of orderedReviewedList | paginate: { id: 'pagination2' , itemsPerPage: orderedReviewedPageSize, currentPage: orderedReviewedPageNumber, totalItems:orderedReviewedTotalRecords }">
+                        </div>
+                        <pagination-controls id="pagination2" (pageChange)="orderedReviewedPageChanged($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Edit Pop Up Start-->
+<div class="modal fade modal-theme" id="addEditrecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{popUpTittle}}</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="cancel()"></div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+				   
+						<div class="user-detail" *ngIf="patientInfo">
+							<div class="form-box-patient-table-details">
+								<div class="left-side-section">
+									<table class="table table-green-group">
+										<tbody>
+											<tr>
+												<td>PATIENT ID</td>
+												<td><a href="javascript:void(0);" data-toggle="modal"
+														data-target="#patient-Detail-Window"
+														class="class-Link-Button-Underline"
+														(click)="openPatientDetailWindow()">{{patientInfo.PATIENTID}}</a>
+												</td>
+											</tr>
+											<tr>
+												<td>Last Name</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.FAMILYNAME === '' || patientInfo.FAMILYNAME === null}">
+													{{patientInfo.FAMILYNAME}}</td>
+											</tr>
+											<tr>
+												<td>First Name</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.GIVENNAME === '' || patientInfo.GIVENNAME === null}">
+													{{patientInfo.GIVENNAME}}</td>
+											</tr>
+											<tr>
+												<td>Gender</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.SEX === '' || patientInfo.SEX === null}">
+													{{patientInfo.SEX}}</td>
+											</tr>
+											<tr>
+												<td>DOB</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.BIRTHDATE === '' || patientInfo.BIRTHDATE === null}">
+													{{patientInfo.BIRTHDATE}}</td>
+											</tr>
+											<tr>
+												<td>Phone</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.PHONE === '' || patientInfo.PHONE === null}">
+													{{patientInfo.PHONE}}</td>
+											</tr>
+											<tr>
+												<td>Address</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.ADDRESS === '' || patientInfo.ADDRESS === null}">
+													{{patientInfo.ADDRESS}}</td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="table table-purple-group">
+										<tbody>
+											<tr>
+												<td>DOI</td>
+												<td
+													[ngClass]="{'class-background-color': patientInfo.INJURYDATE === '' || patientInfo.INJURYDATE === null}">
+													{{patientInfo.INJURYDATE}}</td>
+											</tr>
+											<tr>
+												<td>Accident Type</td>
+												<td>{{patientInfo.ACCIDENTTYPECODE}}</td>
+											</tr>
+											<tr>
+												<td>Financial Type</td>
+												<td>{{patientInfo.FINANCIALTYPE}}</td>
+											</tr>
+											<tr>
+												<td>Insurance</td>
+												<td>{{patientInfo.INSURANCECOMPANY}}</td>
+											</tr>
+											<tr>
+												<td>&nbsp;</td>
+
+												<td><img [src]="missingRxAndMissingUniqueLienImagePath"
+														*ngIf="missingDocument!=''"></td>
+
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+				   
+                        <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <thead>
+                                    <tr>
+                                        <th width="100">STUDY</th>
+                                        <th width="100">PART</th>
+                                        <th width="100">LAT</th>
+                                        <th width="100">PC</th>
+                                        <th width="100">STATUS</th>
+                                        <th width="100">ATTORNEY</th>
+                                        <th width="100">REF. PHY.</th>
+                                        <th width="100">Funding Company</th>
+                                        <th width="100">TRANSCRP.</th>
+                                        <th width="100">ENTERED on</th>
+                                        <th width="100">ENTERED By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="patientStudyList">
+                                        <tr *ngFor="let item of patientStudyList">
+                                            <td>{{item.Study}}</td>
+                                            <td
+                                                [ngClass]="{'class-background-color': item.Part === '' || item.Part === null}">
+                                                {{item.Part}}</td>
+                                            <td>{{item.LAT}}</td>
+                                            <td
+                                                [ngClass]="{'class-background-color': item.PROCCODENAME === '' || item.PROCCODENAME === null}">
+                                                {{item.PROCCODENAME}}</td>
+                                            <td>{{item.STATUS}}</td>
+                                            <td><a href="javascript:void(0);" class="class-Link-Button-Underline"
+                                                    *ngIf="item.ATTORNEY!='' || item.ATTORNEY!=null" data-toggle="modal"
+                                                    data-target="#ReferrerDetailWindow"
+                                                    (click)="OpenAttorneyWindow(item.ATTORNEY,item.AttorneyID)">{{item.ATTORNEY}}</a>
+                                            </td>
+                                            <td><a href="javascript:void(0);" class="class-Link-Button-Underline"
+                                                    *ngIf="item.DOCTOR!='' || item.DOCTOR!=null" data-toggle="modal"
+                                                    data-target="#ReferrerDetailWindow"
+                                                    (click)="OpenReferrerWindow(item.DOCTOR,item.DoctorID)">{{item.DOCTOR}}</a>
+                                            </td>
+                                            <td><a href="javascript:void(0);" class="class-Link-Button-Underline"
+                                                    *ngIf="item.Broker!='' || item.Broker!=null"
+                                                    (click)="OpenBrokerWindow(item.Broker,item.BrokerID)">{{item.Broker}}</a>
+                                            </td>
+                                            <td><a href="javascript:void(0);" class="class-Link-Button-Underline"
+                                                    *ngIf="item.TRANSCRP!='' || item.TRANSCRP!=null">{{item.TRANSCRP}}</a>
+                                            </td>
+                                            <td>{{item.EnteredOn}}</td>
+                                            <td>{{item.ENTEREDBY}}</td>
+                                        </tr>
+                                        <tr *ngIf="!patientStudyList">
+                                            <td>
+                                                No Record Found.
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="user-detail">
+                            <div class="input-group">
+                                <textarea class="form-control" placeholder="History"
+                                    readonly>{{patientHistory}}</textarea>
+                            </div>
+                            <div class="input-group">
+                                <textarea class="form-control" placeholder="Comments"
+                                    readonly>{{patientComments}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div *ngIf="isRxFileAvailable; else rxFileNotAvailable" style="height: 100%;">
+                            <iframe width="100%" height="100%" frameBorder="0" [src]="rxFile"></iframe>
+                        </div>
+                        <ng-template #rxFileNotAvailable>
+                            <h3>Rx file not found</h3>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme btn-sm pull-left"
+                    (click)="reviewedPatient()">Reviewd</button>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" id="btnCancel" (click)="cancel()"
+                    data-dismiss="modal">Cancel</a>
+
+                <button type="button" class="btn btn-border-gray pull-right btn-sm" (click)="getPreviousPatient()">Previous</button>
+                <button type="button" class="btn btn-border-gray pull-right btn-sm" (click)="getNextPatient()">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit Pop Up End -->
+<app-referrer-detail></app-referrer-detail>
+<app-patient-detail></app-patient-detail>

@@ -1,0 +1,90 @@
+<div class="tab-pane" id="bpart">
+    <div class="search-field search-field-theme page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+                </div>
+                <a href="javascript:void(0)" (click)="refreshbpart()"   class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid
+            id="gridContainer"
+            [dataSource]="bpartList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="Id"  
+            [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxi-column dataField="Id" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="BPart" caption="Body Part"></dxi-column>
+            <dxi-column dataField="DescriptionText" caption="DESCRIPTION"></dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="edit(data.data.Id)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-bpart-record"></a>
+            </div>
+        </dx-data-grid>       
+    </div>
+    <div>
+        <div>
+            <div *ngFor="let item of bpartList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="edit-bpart-record" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">UPDATE</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+			<form [formGroup]="editForm" class="theme-form">
+				<div class="modal-body">
+					<div class="modal-body-inner">
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+								<div class="form-group">
+									<div class="theme-label">Body Part</div>
+									<div class="input-group">
+                                        <input formControlName="bPart" type="text" class="form-control">
+									</div>
+                                    
+                                    <div *ngIf="submitted1 && eForm.bPart.invalid"  class="invalid-feedback">
+                                        <div *ngIf="eForm.bPart.errors.required">Body Part is required</div>                                       
+                                    </div>  
+								</div>
+								<div class="form-group">
+									<div class="theme-label">Description</div>
+									<div class="input-group">
+										<input formControlName="descriptionText" type="text" class="form-control">
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

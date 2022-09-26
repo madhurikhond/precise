@@ -1,0 +1,94 @@
+<div>
+  <div class="search-field search-field-theme page-top-action">
+    <div class="row">
+      <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="theme-form">
+          <div class="form-group">
+            <div class="theme-label">Search</div>
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="search"
+                     (keyup.enter)="applyFilter()">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <button type="submit" class="btn   btn-theme"
+                      (click)="applyFilter()">
+                Search
+              </button>
+              <button type="button" class="btn btn-border"
+                      (click)="clearFilters()">
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <dx-data-grid id="gridContainer" [dataSource]="teamMemberList" [allowColumnResizing]="true"
+                  [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                  [columnMinWidth]="30" keyExpr="USERID" [showBorders]="true">
+
+      <dxo-sorting mode="multiple"></dxo-sorting>
+      <!-- <dxo-filter-row  -->
+      <!-- [visible]="showFilterRow"  -->
+      <!-- [applyFilter]="currentFilter"> -->
+      <!-- </dxo-filter-row> -->
+      <!-- <dxo-header-filter  -->
+      <!-- [visible]="showHeaderFilter" > -->
+      <!-- </dxo-header-filter> -->
+      <dxo-paging [enabled]="false"></dxo-paging>
+      <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+      <dxo-load-panel [enabled]="true">
+      </dxo-load-panel>
+
+      <dxi-column dataField="USERID" [width]="100" caption="Action" [allowFiltering]="false"
+                  [allowSorting]="false" [visible]="false"></dxi-column>
+      <dxi-column dataField="FIRSTNAME" caption="FIRST NAME" cellTemplate="cellTemplate"></dxi-column>
+      <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+      <dxi-column dataField="WORKEMAIL" caption="WORK EMAIL"></dxi-column>
+      <dxi-column dataField="DepartmentName" caption="DEPARTMENT Name"></dxi-column>
+      <dxi-column dataField="OfficeLocation" caption="LOCATION"></dxi-column>
+      <dxi-column dataField="Extention" caption="EXTENSION"></dxi-column>
+      <dxi-column dataField="Hours" caption="SHIFT HOURS"></dxi-column>
+      <dxi-column dataField="LunchTime" caption="LUNCH TIME"></dxi-column>
+
+      <div *dxTemplate="let data of 'cellTemplate'">
+        <a href="javascript:void(0)" (click)="getRowCurrentDetail(data)" data-toggle="modal"
+           data-target="#addEditrecord">{{data.data.FIRSTNAME}}</a>
+      </div>
+    </dx-data-grid>
+  </div>
+  <div class="pagination-theme">
+    <div *ngFor="let item of teamMemberList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+    </div>
+    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+</div>
+
+<!--Add/Update Pop Up Star-->
+<div class="modal fade modal-theme in" id="addEditrecord" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{userName}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <ckeditor #myckeditor [(ngModel)]="userDuties" [config]="ckConfig" (paste)="onPaste($event)"
+                        (change)="onChange($event)">
+                    </ckeditor>
+                    <!-- <ckeditor [editor]="Editor" [(ngModel)]="userDuties" [disabled]="true"></ckeditor> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Update Pop Up End-->

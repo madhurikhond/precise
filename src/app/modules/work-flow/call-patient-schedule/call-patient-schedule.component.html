@@ -1,0 +1,228 @@
+<div class="main-page-body call-patient-confirmation-page">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Call Patient Confirmation</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <form [formGroup]="searchForm" class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">Last Name</div>
+                    <div class="input-group">
+                        <input formControlName="lastName" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">First Name</div>
+                    <div class="input-group">
+                        <input formControlName="firstName" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Patient ID</div>
+                    <div class="input-group">
+                        <input formControlName="patientId" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-action">
+                    <button (click)="onSearchSubmit()" class="btn btn-theme">SEARCH</button>
+                    <button (click)="onReset()" class="btn btn-border">CLEAR</button>
+                    <!-- <a href="javascript:void(0)" class="btn btn-theme">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border">Clear</a> -->
+                </div>
+            </form>
+        </div>
+        <div class="search-field search-field-mobile">
+            <div class="remove-cataloge"></div>
+            <form class="theme-form">
+                <div class="filter-data">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Last Name</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">First Name</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Patient ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border">Clear</a>
+                </div>
+            </form>
+        </div>
+        <div class="search-field page-top-action">
+            <ul class="top-left action-menu">
+                <li><a href="javascript:void(0)" (click)="saveCallPatientConfirmationLog('confirmed')" title="Confirmed"
+                        class="fa fa-calendar" data-toggle="modal" data-target="#conformation"></a></li>
+                <li><a href="javascript:void(0)" (click)="saveCallPatientConfirmationLog('voicemail')"
+                        title="Left VoiceMail" class="fa fa-volume-control-phone" data-toggle="modal"
+                        data-target="#conformation"></a></li>
+                <li><a href="javascript:void(0)" (click)="saveCallPatientConfirmationLog('reschedule')"
+                        title="Needs to Reschedule" class="pe-7s-alarm" data-toggle="modal"
+                        data-target="#conformation"></a></li>
+                <li><a href="javascript:void(0)" (click)="saveCallPatientConfirmationLog('cancel')"
+                        title="Counld Not Reach Patient" class="fa fa-times" data-toggle="modal"
+                        data-target="#conformation"></a></li>
+                        <li>
+                            <div class="theme-form view-mode view-mode-css">
+                                <div class="form-group">
+                                    <div class="theme-label">PATIENTS TO CALL</div>
+                                        <div class="input-group">
+                                         <div *ngIf="basicData" class="view-mode-data">{{patientCount}}</div>
+                                         <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
+                                        </div>
+                                    </div>
+                                <div class="form-group">
+                                    <div class="theme-label">TOTAL STUDIES</div>
+                                    <div class="input-group">
+                                        <div *ngIf="basicData" class="view-mode-data">{{totalStudies}}</div>
+                                        <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                <li class="pull-right"><a href="javascript:void(0)" title="Sms" class="pe-7s-news-paper"
+                        data-toggle="modal" data-target="#conformation-note"></a></li>
+            </ul>
+            
+            <a href="javascript:void(0)" #Reschedule_popup class="right btn btn-theme" style="display:none"
+                data-toggle="modal" data-target="#Reschedule_popup">Rebill popup</a>
+            <!-- <div class="precisemri-search page-select">
+                <div class="theme-label">Page Size</div>
+                <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                    <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                        value={{item.value}}>{{item.value}}</option>
+                </select>
+            </div> -->
+        </div>
+        <div class="table-responsive page-table callPatient">
+            <dx-data-grid  id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="myId" [(selectedRowKeys)]="selectedRows" [showBorders]="true" >
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+                <dxo-selection   mode="multiple" [allowSelectAll]="false"></dxo-selection>
+                <dxi-column dataField="patientid" [width]="100" groupCellTemplate="groupTemplate" caption="Patient ID"
+                    [groupIndex]="0"></dxi-column>
+                <dxi-column dataField="Studydatetime" caption="APPOINTMENT DATE"></dxi-column>
+                <dxi-column dataField="studydescription" caption="STUDY DESCRIPTION"></dxi-column>
+                <dxi-column dataField="FacilityName" caption="FACILITY" cellTemplate="facilityTemplate"
+                    [allowFiltering]="false" [allowSorting]="false"></dxi-column>
+                <dxi-column dataField="PreArrivalTime" caption="PRE ARRIVAL TIME"></dxi-column>
+                <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
+                <dxi-column dataField="referringphysician" caption="Doctor"></dxi-column>
+                <dxi-column dataField="BROKER" caption="Funding Company"></dxi-column>
+
+                <div *dxTemplate="let data of 'groupTemplate'">   
+                   <patient-details [data]="data"></patient-details>
+                </div>
+                <div *dxTemplate="let data of 'facilityTemplate'">
+                    <a [href]="'https://www.google.com/maps/place/' + data.data.street+'/'+data.data.state+'/'+data.data.zip" target="blank">
+                        <img src="assets/images/google-maps.png" width="30" height="30">
+                    </a>
+                    <a href="javascript:void(0)" class=" link-btn" (click)="senddatatoschd_facilities(data)">
+                        <span>{{ data.data.Facilitydetail}} <strong>{{ data.data.Walkin}}</strong></span>
+                    </a>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div
+                    *ngFor="let item of dataList | paginate: {id: 'pagination2' ,  itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+                <pagination-controls id="pagination2" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="conformation-note" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">GREETING SCRIPT</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>{{script}}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="Reschedule_popup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ADD NOTE OR PATIENT REQUESTED TIME CHANGE TO BE INCLUDED IN THE MESSAGE TO THE
+                    SCHEDULING DEPT.</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="RescheduleNoteForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <!-- <div class="theme-label">Note</div> -->
+                                    <div class="input-group">
+                                        <textarea type="text" class="form-control"
+                                            formControlName="RescheduleNote"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Cancel</a>
+                    <button type="submit" (click)="RescheduleSelectedStudies('reschedule')"
+                        [attr.data-dismiss]="modelValue" class="btn btn-theme pull-left btn-sm">REQUEST</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-schd-facilities [isGridDisplay]="false"></app-schd-facilities>
+<app-patient-detail></app-patient-detail>

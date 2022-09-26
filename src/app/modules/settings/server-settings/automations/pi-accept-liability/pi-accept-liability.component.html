@@ -1,0 +1,325 @@
+<!--Pi Accept Liability Tab Start-->
+<div class="tab-pane" id="pi-accept-liability-tab">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="piAcceptLiabilitySettingForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="check1" type="checkbox" formControlName="isActive">
+                                        <label for="check1" class="arrow-label">Is Active</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Status</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="statusList" 
+                                                placeholder="Select" 
+                                                formControlName="status" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedStatusList"
+                                                >   <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>                                   
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Modality</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="modalityList" 
+                                                placeholder="Select" 
+                                                formControlName="modality" 
+                                                bindLabel="scheduledmodality" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="scheduledmodality" 
+                                                [(ngModel)]="selectedModalityList"
+                                                >               
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:4">
+                                                        <span class="ng-value-label"> {{item.scheduledmodality}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 4">
+                                                        <span class="ng-value-label">{{items.length - 4}} more...</span>
+                                                    </div>
+                                                </ng-template>                       
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Financial Type</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="financialTypeList" 
+                                                placeholder="Select" 
+                                                formControlName="financialType" 
+                                                bindLabel="financialtypename" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="financialtypename" 
+                                                [(ngModel)]="selectedFinancialTypeList"
+                                                >                   
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>                   
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="check2" type="checkbox" formControlName="isSecondCriteriaForLiability" (change)="hideShowSecondCriteriaSetting($event)">
+                                        <label for="check2" class="arrow-label">Second Criteria For Liability(OR)</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <div class="theme-label">Send initial reminder at</div>
+                                        <div class="input-group icon-active">
+                                            <input type="time" class="form-control" id="reminder-date"
+                                             formControlName="initialReminder">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail" *ngIf="piAcceptLiabilitySettingForm.get('isSecondCriteriaForLiability').value">
+                            <div id="SecondCriteria"  class="row"> 
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Status</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="statusList" 
+                                                placeholder="Select" 
+                                                formControlName="secondAcceptLiabilityStatus2" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedSecondAcceptLiabilityStatus2"
+                                                >             
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>                        
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Modality</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="modalityList" 
+                                                placeholder="Select" 
+                                                formControlName="secondLiabilityModality2" 
+                                                bindLabel="scheduledmodality" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="scheduledmodality" 
+                                                [(ngModel)]="selectedSecondLiabilityModality2"
+                                                >       
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:4">
+                                                        <span class="ng-value-label"> {{item.scheduledmodality}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 4">
+                                                        <span class="ng-value-label">{{items.length - 4}} more...</span>
+                                                    </div>
+                                                </ng-template>                               
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Financial Type</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="financialTypeList" 
+                                                placeholder="Select" 
+                                                formControlName="secondFinancialTypes2" 
+                                                bindLabel="financialtypename" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="financialtypename" 
+                                                [(ngModel)]="selectedSecondFinancialTypes2"
+                                                >                   
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>                   
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="check3" type="checkbox" formControlName="persistentIsActive" (change)="hideShowpersistentIsActive($event)">
+                                        <label for="check3" class="arrow-label">Persistent Reminder</label>
+                                    </div>                                    
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Status</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="statusList" 
+                                                placeholder="Select" 
+                                                formControlName="persistentStatus" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedPersistentStatus"
+                                                >        
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>                              
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Modality</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="modalityList" 
+                                                placeholder="Select" 
+                                                formControlName="persistentModality" 
+                                                bindLabel="scheduledmodality" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="scheduledmodality" 
+                                                [(ngModel)]="selectedPersistentModality"
+                                                >             
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:4">
+                                                        <span class="ng-value-label"> {{item.scheduledmodality}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 4">
+                                                        <span class="ng-value-label">{{items.length - 4}} more...</span>
+                                                    </div>
+                                                </ng-template>                         
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Financial Type</div>
+                                        <div class="input-group">
+                                            <ng-select 
+                                                [items]="financialTypeList" 
+                                                placeholder="Select" 
+                                                formControlName="persistentFinancial" 
+                                                bindLabel="financialtypename" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="financialtypename" 
+                                                [(ngModel)]="selectedPersistentFinancial">                        
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 2">
+                                                        <span class="ng-value-label">{{items.length - 2}} more...</span>
+                                                    </div>
+                                                </ng-template>              
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <div class="theme-label">Send initial reminder at</div>
+                                        <div class="input-group icon-active">
+                                            <input type="time" class="form-control" id="reminderdate" formControlName="initialReminderPersistent">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="input-lable-side"><span>Send a reminder every</span> <input type="text" class="form-control"  formControlName="persistentEveryDays" (keypress)="allowNumberOnly($event)"> <span>days and stop after</span> <input type="text" class="form-control" formControlName="persistentStopAfter" (keypress)="allowNumberOnly($event)"> <span>days</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="Add Note" formControlName="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>	
+
+<!--Pi Accept Liability Tab End-->

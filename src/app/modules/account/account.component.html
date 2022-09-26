@@ -1,0 +1,23 @@
+<div class="login-page">
+    <div class="login-left">
+        <div class="login-left-bg" style="background-image: url('assets/images/login.jpg');"></div>
+        <ul class="login-top-buttons">
+            <li><a routerLink="/login" routerLinkActive="active" class="btn btn-login-white">Login</a></li>
+            <li><a routerLink="/login-request" routerLinkActive="active" class="btn btn-login-white">Request a Login</a></li>
+            <li><a routerLink="/subpoena-pickup-status" routerLinkActive="active" class="btn btn-login-white">Subpoena Pickup Status</a></li>
+            <li><a href="https://pacs.radflow360.com/" class="btn btn-login-white">PACS Login</a></li>
+        </ul>
+    </div>
+    <div class="login-right">
+        <div class="login-logo">
+            <img src="assets/images/radflowsolutions-logo.png">
+        </div>
+        <ul class="login-top-buttons mobile-login-top-buttons">
+            <li><a routerLink="/login" class="btn btn-login-white">Login</a></li>
+            <li><a routerLink="/login-request" class="btn btn-login-white">Request a Login</a></li>
+            <li><a routerLink="/subpoena-pickup-status" class="btn btn-login-white">Subpoena Pickup Status</a></li>
+            <li><a href="javascript:void(0)" class="btn btn-login-white">PACS Login</a></li>
+        </ul>
+        <router-outlet></router-outlet>
+    </div>		
+</div>

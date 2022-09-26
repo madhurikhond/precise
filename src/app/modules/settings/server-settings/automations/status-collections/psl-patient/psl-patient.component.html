@@ -1,0 +1,124 @@
+<div class="tab-pane" id="psl-patientl">
+    <div class="theme-form-center">
+        <form [formGroup]="pslForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="form-group autocomplete">
+										<div class="input-group">
+											<ng-select [items]="financialTypesList" placeholder="Select"
+												formControlName="pslPatientFinancialType" bindLabel="financialtypename"
+												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+												[(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted && ppForm.pslPatientFinancialType.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template> 
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && ppForm.pslPatientFinancialType.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="ppForm.pslPatientFinancialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side">
+										<div class="icon-active">
+											<input type="text" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted && ppForm.showCompleteStudy.errors)}"
+											formControlName="showCompleteStudy" (keypress)="allowNumberOnly($event)">
+											<div *ngIf="submitted && ppForm.showCompleteStudy.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="ppForm.showCompleteStudy.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="ppForm.showCompleteStudy.errors.max">
+													Required Max 3
+												</small>
+											</div> 
+										</div> 
+										<span>days after report signed time study show on grid</span>
+
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side">
+										<div class="icon-active">
+											<input type="text" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted && ppForm.removeCompleteStudy.errors)}"
+											(keypress)="allowNumberOnly($event)" formControlName="removeCompleteStudy">
+											<div *ngIf="submitted && ppForm.removeCompleteStudy.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="ppForm.removeCompleteStudy.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="ppForm.removeCompleteStudy.errors.max">
+													Required Max 3
+												</small>
+											</div> 
+										</div> 
+										<span>days after report signed time remove from grid</span>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && ppForm.completeStudyMissingLienNote.errors)}"
+                                formControlName="completeStudyMissingLienNote" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && ppForm.completeStudyMissingLienNote.errors"
+                            class="tooltiptext text-right">
+                            <small class="error text-danger"
+                                *ngIf="ppForm.completeStudyMissingLienNote.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

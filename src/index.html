@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Precise MRI</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/precisemri-theme.css">
+  <link rel="stylesheet" href="assets/css/precisemri-responsive-theme.css">
+  <link rel="stylesheet" href="assets/css/jquery-ui.css">
+  <link rel="stylesheet" href="assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
+  <link rel="stylesheet" href="assets/fonts/pe-icon-7-stroke/css/helper.css" />
+  <link rel="stylesheet" href="assets/css/wow.css">
+  <link rel="stylesheet" href="assets/css/developer.css">
+  <script type="text/javascript" src="assets/js/jquery.js"></script>
+  <script type="text/javascript" src="assets/js/popper.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="assets/js/wow.js"></script>
+  <script src="https://cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script>
+    $(document).on("click", "#show-hide-menu", function () {
+      if ($(".page-area").hasClass("full-menu-active")) {
+        $(".page-area").removeClass("full-menu-active");
+        $("[aria-expanded=true]").removeClass("collapsed");
+        $("[data-parent='#accordion']").removeClass("show");
+        $("[aria-expanded='true']").attr("aria-expanded", false);
+      }
+      else {
+        $(".page-area").addClass("full-menu-active");
+      }
+    });
+
+    $(document).on("click", ".navbar-left .nav-item a", function () {
+      if ($(this).attr("data-toggle") != undefined) {
+        if (!$(".page-area").hasClass("full-menu-active")) {
+          $(".page-area").addClass("full-menu-active");
+        }
+      }
+    });
+
+    $(document).on("click", "li>a", function () {
+      if ($(this).attr("routerlinkactive") === "active") {
+        setTimeout(function () {
+          $("[aria-expanded=true]").removeClass("collapsed");
+          $("[data-parent='#accordion']").removeClass("show");
+          $("[aria-expanded='true']").attr("aria-expanded", false);
+          $(".page-area").removeClass("full-menu-active");
+        }, 500);
+      }
+    });
+  </script>
+</head>
+
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<div class="tab-pane" id="call-confirm-script">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="callSettingForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="cke-editor-group">
+                            <ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid" formControlName="script"
+                                id="txt"  required id="script-editor" 
+                                [ngClass]="{ 'is-invalid': (submitted && csForm.script.errors)}" [config]="CkeConfig"
+                                (paste)="onPaste($event)" (change)="onChange($event)">
+                            </ckeditor>
+                            <!-- <ckeditor [editor]="Editor" formControlName="script" id="txt"
+                                [ngClass]="{ 'is-invalid': (submitted && csForm.script.errors)}">
+                            <textarea class="form-control" formControlName="script" id="script-editor" cols="30" rows="10" required></textarea> 
+                            </ckeditor> -->
+
+                        </div>
+                        <div *ngIf="submitted && csForm.script.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="csForm.script.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+        <input type="hidden" [(ngModel)]="hidden1" id="abc">
+    </div>
+</div>

@@ -1,0 +1,164 @@
+<div class="tab-pane active" id="pi-mapping-tab">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="piAttorneyLiensSettingForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+							   <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" id="active25" type="checkbox" formControlName="isPatientLienActive">
+										<label for="active25" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">First schedule time</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control" id="timepicker37" formControlName="firstScheduleTime">
+											
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Second schedule time</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control" id="timepicker38" formControlName="secondScheduleTime">
+											
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Third schedule time</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control" id="timepicker39" formControlName="thirdScheduleTime">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+						<div class="user-detail">
+                            <div class="theme-label-title">No Patient Signed Lien</div>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Send Lien without patient signature</div>
+                                        <div class="input-group md-input-focused">     
+                                            <ng-select 
+                                                [items]="lienWithOutPatientStatusList" 
+                                                placeholder="Select" 
+                                                formControlName="lienWithOutPatient" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedLienWithOutPatientStatusList"
+                                                >    
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:4">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 4">
+                                                        <span class="ng-value-label">{{items.length - 4}} more...</span>
+                                                    </div>
+                                                </ng-template>                                
+                                            </ng-select>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="input-label-title">Days After DOS</div>
+                                    <div class="input-lable-side">
+                                        <input  (keypress)="allowNumberOnly($event)" class="form-control" formControlName="daysAfterDos">
+                                        <span>Reminders (When counting days it should be business days 
+                                        so exclude Sat and Sun when counting when to send.)</span>
+                                        <input type="text" class="form-control" formControlName="after1stReminder" (keypress)="allowNumberOnly($event)">
+                                        <span>Days after 1st reminder</span>
+                                        <input type="text" class="form-control" formControlName="after2ndReminder" (keypress)="allowNumberOnly($event)">
+                                        <span>days after 2nd reminder After 2nd Reminder send every</span>
+                                        <input type="text" class="form-control" formControlName="countingBusinessDays" (keypress)="allowNumberOnly($event)">
+                                       <span> Days until Attorney has signed lien Stop sending after</span>
+                                        <input type="text" class="form-control" formControlName="stopSendingReminder" (keypress)="allowNumberOnly($event)">times
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail">
+                            <div class="theme-label-title">Has Patient Signed Lien</div>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="form-group autocomplete">
+                                        <div class="theme-label">Status</div>
+                                        <div class="input-group md-input-focused">                                            
+                                            <ng-select 
+                                                [items]="hpslstatusList" 
+                                                placeholder="Select" 
+                                                formControlName="hpslStatus" 
+                                                bindLabel="status" 
+                                                [multiple]="true"
+                                                [closeOnSelect]="false"
+                                                bindValue="status" 
+                                                [(ngModel)]="selectedHpslstatusList"
+                                                >   
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <span class="ng-value-label"> {{item.status}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
+                                                    </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>                                 
+                                            </ng-select>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="input-lable-side">
+                                        <input type="text" class="form-control" formControlName="hpslAfter1stRem" (keypress)="allowNumberOnly($event)">
+                                       <span> Days after 1st reminder </span>
+                                        <input type="text" class="form-control" formControlName="hpslAfter2ndRem" (keypress)="allowNumberOnly($event)">
+                                       <span> days after 2nd reminder After 2nd Reminder send every</span>
+                                        <input type="text" class="form-control" formControlName="hpslContinousRem" (keypress)="allowNumberOnly($event)">
+                                       <span> Days until Attorney has signed lien Stop sending after</span>
+                                        <input type="text" class="form-control" formControlName="hpslStopSendingRem" (keypress)="allowNumberOnly($event)"><span>times</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="Add Note" formControlName="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="alert alert-info" role="alert">
+										Options Tab
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+									<div class="form-group">
+										<div class="theme-label">Send Email to</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="email">
+										</div>
+									</div> 
+								</div> 
+                            </div> 
+							<div class="alert alert-info" role="alert">
+                                when a new study comes in with no attorney fax AND no attorney email. (Only if the status is greater than status signed)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>

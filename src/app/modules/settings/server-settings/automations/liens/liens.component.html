@@ -1,0 +1,22 @@
+<div class="tab-pane" id="liens-tab">
+    <div class="tab-section">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'pi'" routerLinkActive="active">PI</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'brokerpsl'" routerLinkActive="active">Funding Company PSL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'pslalert'" routerLinkActive="active">PSL ALERT</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'esignlien'" routerLinkActive="active">E SIGN LIEN</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+</div>
+

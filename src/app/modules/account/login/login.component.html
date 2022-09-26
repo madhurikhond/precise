@@ -1,0 +1,50 @@
+<div class="dislpaytable">
+    <div class="valign-content">
+        <div class="valign-content-inner">
+            <div class="center-login">		
+                <div class="title-group">
+                    <div class="title"><img src="assets/images/precise-imaging-logo.png" alt="" /></div>
+                </div>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <div class="form-with-icon validation-tooltip">
+                            <input type="email" class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && lgform.email.errors }">
+                            <!-- <div class="iconimg"><i class="pe-7s-mail"></i></div> -->
+                            <div *ngIf="submitted && lgform.email.errors" class="tooltiptext text-right">                            
+                                <small class="error text-danger" *ngIf="lgform.email.errors.required">Email is required</small>
+                                <small class="error text-danger" *ngIf="lgform.email.errors.pattern">Invalid email address</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon validation-tooltip">
+                            <input type="password" class="form-control" placeholder="Enter your password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && lgform.password.errors }">
+							<!-- <div class="iconimg"><i class="pe-7s-lock"></i></div> -->
+                            <div *ngIf="submitted && lgform.password.errors" class="tooltiptext text-right">                            
+                                <small class="error text-danger" *ngIf="lgform.password.errors.required">Password is required</small>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-theme pull-left">
+                            <input id="signinkeep" formControlName="keepSignIn" class="styled" type="checkbox">
+                            <label for="signinkeep" style="text-transform:capitalize;" class="arrow-label">Remember me</label>
+                        </div>
+                        <a routerLink="/forgot-password" class="reset-password">Forgot Password</a>
+                    </div>
+                    <div class="form-btn-bottom">
+                        <div class="form-btn">
+                            <button type="submit" class="form-main-btn">Login</button>
+                        </div>					
+                    </div>	
+                </form>
+                <ul class="login-footer-buttons">
+                    <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
+                    <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>
+                    <li><a routerLink="/subpoena-pickup-status" class="footer-link">Subpoena Pickup Status</a></li>
+                </ul>							
+            </div>
+        </div>
+    </div>
+</div>

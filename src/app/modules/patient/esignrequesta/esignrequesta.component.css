@@ -1,0 +1,1271 @@
+@-webkit-keyframes pulse {
+	0% {
+		-webkit-transform: scaleX(1);
+		transform: scaleX(1);
+	}
+	50% {
+		-webkit-transform: scale3d(1.2, 1.2, 1.2);
+		transform: scale3d(1.2, 1.2, 1.2);
+	}
+	to {
+		-webkit-transform: scaleX(1);
+		transform: scaleX(1);
+	}
+}
+@keyframes pulse {
+	0% {
+		-webkit-transform: scaleX(1);
+		transform: scaleX(1);
+	}
+	50% {
+		-webkit-transform: scale3d(1.2, 1.2, 1.2);
+		transform: scale3d(1.2, 1.2, 1.2);
+	}
+	to {
+		-webkit-transform: scaleX(1);
+		transform: scaleX(1);
+	}
+}
+.pulse {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation: pulse 0.5s infinite;
+	animation: pulse 0.5s infinite;
+	-webkit-transform: scale(1);
+	transform: scale(1);
+	width: 40px;
+}
+.animation-large {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+.mt-50 {
+	margin-top: 50px;
+}
+.ml-50 {
+	margin-left: 50px;
+}
+.pb-10 {
+	padding-bottom: 10px;
+}
+.ml-10 {
+	margin-left: 10px;
+}
+.headertext {
+	font-weight: bold;
+	font-size: 18px;
+}
+.headertext1 {
+	font-weight: bold;
+	font-size: 20px;
+}
+.mt-5 {
+	margin-top: 5px;
+}
+.ml-20 {
+	margin-left: 20px;
+}
+.mr-0 {
+	margin-right: 0px;
+}
+.mr-10 {
+	margin-right: 10px;
+}
+.mr-20 {
+	margin-right: 20px;
+}
+.pt-10 {
+	padding-top: 10px;
+}
+.pb-50 {
+	padding-bottom: 50px;
+}
+.text-line {
+	background-color: transparent;
+	color: #000000;
+	outline: none;
+	outline-style: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: solid #000000 2px;
+	padding: 3px 10px;
+	font-size: 18px;
+}
+.toptd {
+	padding-left: 5px;
+	padding-right: 5px;
+	float: left;
+	border-left: solid #000000 1px;
+	border-right: solid #000000 1px;
+	border-bottom: solid #000000 1px;
+	height: 50px;
+}
+.bottomtd {
+	padding-left: 5px;
+	padding-right: 5px;
+	float: left;
+	border-left: solid #000000 1px;
+	border-right: solid #000000 1px;
+	border-bottom: solid #000000 1px;
+	height: 50px;
+}
+.textalign {
+	text-align: justify;
+	text-justify: inter-word;
+}
+.Missingdetails {
+	color: indianred;
+	text-align: center;
+	font-weight: bold;
+}
+.commondiv {
+	font-size: 18px;
+}
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #2196f3;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: #bdbdbd;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+/* .whSlider:before {
+	background-color: #fff !important
+} */
+input:checked+.slider {
+	background-color: #fff;
+}
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+input:checked+.slider:before {
+    transform: translate(26px, 6px);
+    background-color: #3b8beb;
+}
+.blue-strip .right-action .switch-group .slider {
+    background-color: #818181;
+}
+.blue-strip .right-action .switch-group .switch-active .slider {
+    background-color: #ffc820;
+}
+.blue-strip .right-action .switch-group input:checked+.slider:before {
+	background-color: #ffffff;
+    border-color: #ffffff;
+	left: 2px;
+}
+.blue-strip .left-section a {
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+/* Rounded sliders */
+
+.slider.round {
+	border-radius: 34px;
+}
+.slider.round:before {
+	border-radius: 50%;
+    transform: translate(0px, 6px);
+}
+.switch-group span.text {
+    line-height: 38px;
+    padding: 0 5px;
+    font-weight: 600;
+}
+
+/* The Close Button */
+
+.modal1 {
+	overflow: hidden;
+	position: fixed;
+	z-index: 1;
+	right: 0;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 0%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+	opacity: 1;
+	background: rgba(0, 0, 0, 0.5);
+}
+.modal1:before {
+	content: "";
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+/* Modal Content */
+
+.modal-content1 {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 100%;
+	position: relative;
+}
+.modal-dialog1 {
+	background: transparent;
+	position: relative;
+	padding: 10%;
+	width: 100%;
+	box-sizing: border-box;
+}
+.modal2 {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	right: 0;
+	left: 5%;
+	top: 5%;
+	width: 100%;
+	height: 85%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+	opacity: 1;
+}
+
+/* Modal Content */
+
+.modal-content2 {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 100%;
+}
+.modal-dialog2 {
+	width: 90%;
+}
+.loader {
+	position: fixed;
+	z-index: 9999;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	background-color: white;
+	filter: alpha(opacity=60);
+	opacity: 0.8;
+	-moz-opacity: 0.8;
+}
+.center {
+	z-index: 1000;
+	margin: 300px auto;
+	padding: 10px;
+	width: 300px;
+	border-radius: 10px;
+	filter: alpha(opacity=100);
+	opacity: 1;
+	-moz-opacity: 1;
+}
+.center img {
+	height: 30px !important;
+	width: 35px !important;
+}
+.modal3 {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	right: 40%;
+	top: 220px;
+	width: 30%;
+	height: 75%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+.flagimage {
+	padding-right: 10px;
+	padding-top: 0px;
+}
+.flagimage img{
+	width: 34px;
+	vertical-align: top;
+}
+.signature-pad-group {
+	background-image: url('../../../../assets/images/signhereep.jpg'); 
+	width: 100%;
+    float: left;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.signature-pad-group_s {
+	background-image: url('../../../../assets/images/signheresp.jpg'); 
+	width: 100%;
+    float: left;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.signature-pad-group.remove {
+    background-image: none !important;
+}
+.esign-request-body {
+	width: 100%;
+	float: left;
+	position: relative;
+}
+.esign-request-body-fixed {
+	width: 100%;
+	float: left;
+	position: fixed !important;
+}
+.esign-header .esign-header-left .label-input {
+    width: 80px;
+    text-align: center;
+    float: left;
+    margin-left: -100px;
+}
+.esign-header .esign-header-left .label-input img.esign-header-web{
+    height: 40px;
+}
+.esign-header .esign-header-left .label-input img.esign-header-mobile{
+    display: none;
+}
+.esign-request-main {
+	margin: 20px auto;
+	padding: 0 20px 0 80px;
+	vertical-align: top;
+	border-radius: 0px;
+	position: relative;
+	float: none;
+	max-width: 900px;
+	width: 100%;
+}
+.esign-request {
+	padding: 20px;
+	border: 1px solid #b4b4b4;
+	vertical-align: top;
+	border-radius: 0px;
+	position: relative;
+	float: none;
+	width: 100%;
+}
+.esign-request .esign-switch {
+	width: 100%;
+	display: inline-block;
+	vertical-align: top;
+}
+.esign-request .esign-switch .label-language {
+	font-size: 18px;
+	line-height: 34px;
+	margin: 0px;
+	vertical-align: top;
+}
+.esign-header {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 4px solid #c0c0c0;
+	display: flex;
+}
+.esign-header .esign-header-left {
+	text-align: left;
+	white-space: nowrap;
+	width: 100%;
+}
+.esign-header .esign-header-left .logo {
+	max-height: 50px;
+	display: inline-block;
+	vertical-align: top;
+}
+.esign-header-title {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 20px;
+}
+.esign-header-title .page-title {
+	font-size: 22px;
+	font-weight: 600;
+	color: #a94442;
+}
+.esign-header-left .PLien-Header {
+	font-size: 23px;
+	font-weight: bold;
+	white-space: normal;
+}
+.esign-header .esign-header-right {
+	max-width: fit-content;
+	text-align: right;
+}
+.esign-header .esign-header-right .address-line {
+	width: 100%;
+	margin-bottom: 5px;
+	display: inline-block;
+	vertical-align: top;
+	color: gray;
+}
+.esign-details {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	display: inline-block;
+	position: relative;
+}
+.esign-request .start {
+	position: absolute;
+	top: 20px;
+	left: -82px;
+	cursor: pointer;
+}
+.esign-details .esign-single-line {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	margin-bottom: 8px;
+}
+.esign-details .esign-single-line .text-line {
+	padding: 0px;
+}
+.patient-info-group {
+	width: 100%;
+	display: flex;
+	margin: 5px 0px;
+}
+.patient-info-group .patient-info-single {
+	margin: 5px;
+	width: 100%;
+	background: #eee;
+	padding: 5px 10px;
+	color: #337ab7;
+}
+.patient-info-group .patient-info-single .headertext {
+	font-weight: 600;
+	font-size: 16px;
+}
+.paragraph-group {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	margin: 14px 0px;
+}
+.Attorney-Detail {
+	vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 15px;
+    border-top: 2px solid black;
+    line-height: 30px;
+	margin-top: 20px;
+}
+p {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	font-size: 16px;
+	margin-bottom: 15px;
+}
+.esign-signature {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	display: inline-block;
+}
+.esign-signature .sign-icon {
+	width: 11%;
+	float: left;
+	vertical-align: top;
+	display: inline-block;
+    margin-left: -110px;
+}
+.esign-patient-information {
+	width: 100%;
+	float: none;
+	vertical-align: top;
+	display: inline-block;
+	margin: 10px 0px;
+	text-align: left;
+}
+.modal-signature {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: table;
+}
+.modal-signature .modal-center {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 20px;
+	text-align: center;
+}
+.modal-signature .modal-signature-content {
+	background: #fff;
+	border: 5px solid #286090;
+	width: 100%;
+	max-width: 1000px;
+	display: inline-block;
+	vertical-align: top;
+}
+.modal-signature .modal-header {
+	width: 100%;
+	display: flex;
+	padding: 20px;
+}
+.modal-signature .modal-header.modal-header-common {
+	display: inline-block;
+	vertical-align: top;
+}
+.modal-signature .modal-header.modal-header-common h1 {
+	width: 100%;
+	float: left;
+	font-size: 24px;
+	text-align: left;
+	margin: 0px;
+	color: #286090;
+	margin-bottom: 5px;
+}
+.modal-signature .modal-header.modal-header-common p {
+	width: 100%;
+	float: left;
+	font-size: 15px;
+	text-align: left;
+	margin: 0px;
+	color: #757575;
+	margin-bottom: 0px;
+}
+.modal-signature .form-group {
+	width: 100%;
+	margin: 0px;
+	display: flex;
+}
+.modal-signature .form-group+.form-group {
+	margin-left: 20px;
+}
+.modal-signature .form-group span {
+	line-height: 36px;
+	display: inline-block;
+	white-space: nowrap;
+	margin-right: 10px;
+}
+.modal-signature .form-group input {
+	line-height: 36px;
+	display: inline-block;
+	width: 100%;
+	border-radius: 6px;
+	border: 1px solid #999;
+	padding: 0px 10px;
+}
+.modal-signature .modal-body {
+	width: 100%;
+	display: flex;
+	padding: 20px;
+}
+.modal-signature .modal-body.modal-download .download-copy {
+	max-height: 50px;
+	width: auto;
+}
+.modal-signature .m-signature-pad {
+	width: 100% !important;
+	margin: 0px !important;
+}
+.modal-signature .m-signature-pad .m-signature-pad--body {
+	position: relative;
+	float: none;
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	height: 100%;
+	left: initial;
+	right: initial;
+	top: initial;
+	bottom: initial;
+	background: transparent;
+}
+.modal-signature .m-signature-pad .m-signature-pad--body canvas {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 120%;
+}
+.modal-signature .modal-footer .sign-btn {
+	background: #337ab7;
+	color: #fff;
+}
+.esign-input-group {
+	width: 100%;
+	float: none;
+	display: flex;
+	vertical-align: top;
+}
+.esign-input-group .esign-input-head {
+	width: 50%;
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 15px;
+}
+.esign-input-group .esign-input-body {
+	width: 50%;
+	display: inline-block;
+	vertical-align: top;
+	text-align: left;
+}
+.esign-input-group .headerinput {
+	width: 100%;
+	border-bottom: 2px solid #000 !important;
+	border: none;
+	padding: 0px 0px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: normal;
+	display: inline-block;
+	vertical-align: top;
+	outline: none;
+	box-shadow: none;
+}
+.esign-input-group .headerlabel {
+	padding: 0px 0px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: 600;
+	display: inline-block;
+	vertical-align: top;
+}
+.esign-input-group .headetext {
+	padding: 0px 0px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: normal;
+	display: inline-block;
+	vertical-align: top;
+}
+.signature-table {
+	float: none;
+	text-align: left;
+	display: flex;
+	vertical-align: top;
+	width: 100%;
+	position: relative;
+}
+.signature-table .single-signature {
+	width: calc(100% - 20px);
+	margin-right: 20px;
+	border-radius: 2px;
+}
+.signature-table .single-signature .label-title {
+	width: 100%;
+	font-size: 16px;
+	font-weight: bold;
+	white-space: normal;
+}
+.signature-table .single-signature.extrasignmax .label-title {
+	margin-bottom: 10px;
+}
+.esign-patient-information-group .signature-table .single-signature .label-title {
+	height: 70px;
+}
+.esign-patient-information-groups .signature-table .single-signature .label-title {
+	height: 120px;
+}
+.signature-table .single-signature .label-title.label-date {
+	height: 52px;
+}
+.signature-table .single-signature .label-input {
+	width: 100%;
+	/* margin-top: 10px; */
+	text-align: left;
+}
+.signature-table .single-signature .label-input img{
+	width: 86px;
+}
+.signature-table .single-signature .text-line {
+	width: 100%;
+	padding: 10px 0px;
+	border-bottom: solid #000 2px;
+	font-size: 15px;
+}
+.dropdownaction {
+	color: #fff;
+	font-size: 20px;
+	background-color: #2196F3;
+	font-weight: bold;
+	border-color: #2196F3;
+	cursor: pointer;
+}
+.clearsign {
+	font-size: 16px;
+	width: calc(100% - 38px);
+	height: 50px;
+	padding: 5px;
+	margin-right: 19px;
+	margin-left: 19px;
+}
+.top-strip {
+	background: #2196F3;
+	padding: 10px;
+	color: #fff;
+	width: 100%;
+}
+.top-strip p {
+    margin: 0px;
+    color: #fff;
+}
+.top-action {
+	width: 100%;
+	position: relative;
+	background-color: lightgrey;
+}
+.top-action ul {
+	width: 100%;
+	position: relative;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+.top-action ul li {
+	display: inline-block;
+	list-style: none;
+	margin: 5px 10px;
+}
+.top-action ul li a.fa {
+	width: 36px;
+	height: 36px;
+	color: #fff;
+	font-size: 22px;
+	line-height: 36px;
+	text-align: center;
+	text-decoration: none;
+}
+.top-action .switch-group{
+	display: none;
+}
+.checkbox-theme {
+	padding-left: 30px !important;
+	margin: 10px 0px;
+}
+.checkbox-theme label {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	cursor: pointer;
+	margin-bottom: 0px;
+	line-height: 20px;
+	font-size: 16px;
+	color: #fff;
+	width: auto;
+	font-weight: normal;
+}
+.checkbox-theme label::before {
+	content: "";
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	font-size: 11px;
+	left: 0;
+	margin-left: -25px;
+	border: 1px solid #ffffff;
+	border-radius: 4px;
+	background-color: transparent;
+	text-align: center;
+	color: #fff;
+}
+.checkbox-theme label::after {
+	width: 18px;
+	left: 1px;
+	top: 0px;
+	margin-left: -26px;
+	font-size: 10px;
+	color: #ffffff;
+	line-height: 18px;
+	text-align: center;
+	border: none !important;
+	border-radius: 4px;
+	background: #268dcd;
+}
+.checkbox-theme input[type="checkbox"] {
+	opacity: 0;
+	z-index: 1;
+	margin: 0px 0px 0px -22px;
+	cursor: pointer;
+}
+.checkbox-theme input[type="checkbox"]:focus+label::before {
+	outline: none;
+}
+.checkbox-theme input[type="checkbox"]:checked+label::before {
+	font-family: "FontAwesome";
+	content: "\f00c";
+	color: #2196F3;
+	background: #ffffff;
+	border: 1px solid #ffffff;
+}
+.esign-request-body.disabled:before {
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.38);
+	z-index: 1;
+}
+.blue-strip {
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 20px;
+	z-index: 1;
+	background-color: #0da0ff;
+	display: block;
+}
+.blue-strip p {
+	color: #fff;
+}
+.blue-strip .main-section {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+.blue-strip .left-section {
+	width: 50%;
+	position: relative;
+	float: left;
+}
+.blue-strip .left-section .checkbox-theme{
+	margin: 8px 0px 0px 0px;
+	padding-left: 25px !important;
+}
+.blue-strip .left-section .checkbox-theme label{
+	font-size: 14px;
+}
+.blue-strip .right-action {
+	width: 50%;
+	float: left;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+.blue-strip .right-action .btn-theme {
+	background-color: #ffc820;
+	border: 0 !important;
+	color: #fff;
+	margin-right: 12px;
+	border-radius: 4px !important;
+	box-shadow: none !important;
+	outline: none !important;
+	font-size: 15px;
+	font-weight: bold;
+}
+.blue-strip .right-action .dropdown .dropdown-toggle {
+	color: #fff;
+	font-size: 16px;
+}
+.blue-strip .right-action .switch-group {
+    padding: 0 7px;
+}
+.blue-strip .right-action .switch-group span.text {
+    color: #fff;
+	line-height: 38px;
+}
+.blue-strip .right-action .dropdown .dropdownaction{
+    border-radius: 4px;
+	font-size: 16px;
+    padding: 4px 8px;
+}
+.blue-strip .right-action .dropdown .dropdownaction:focus-visible{
+    outline: none;
+}
+.signature-table.signature-table-group {
+    display: block;
+}
+.signature-table.signature-table-group .single-signature {
+    width: calc(20% - 20px);
+    display: inline-block;
+    vertical-align: top;
+}
+.esign-patient-information .signature-table.signature-table-group .single-signature {
+	width: calc(50% - 20px);
+}
+.esign-patient-information-group.esign-patient-information .signature-table.signature-table-group .single-signature {
+    width: calc(20% - 20px);
+}
+.signature-table.signature-table-group .single-signature .patientsign-input{
+	border-bottom: solid #000 2px;
+	margin-top: 5px;
+	height: 37px;
+}
+.signature-table.signature-table-group .single-signature .patientsign-input img{
+	width: 100%;
+    height: auto !important;
+}
+.signature-table.signature-table-group .single-signature .label-input img {
+    height: auto !important;
+}
+.signature-table .single-signature .label-group {
+	margin: 10px 0px;
+}
+.signature-table .single-signature .label-group input {
+    width: 100%;
+    border-bottom: 2px solid #000 !important;
+    border: none;
+    padding: 0px 0px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: top;
+    outline: none;
+    box-shadow: none;
+}
+.esign-patient-information-group .signature-table.signature-table-group .single-signature .label-input img {
+    height: 42px !important;
+}
+.theme-form .form-group signature-pad {
+    width: 100%;
+    float: left;
+	overflow-x: auto;
+	border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.theme-form .form-group.download-copy-section {
+    margin-bottom: 50px;
+}
+.theme-form .form-group.download-copy-section .theme-label{
+    padding: 0px;
+	left: 0px;
+}
+.white-strip {
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 15px;
+	z-index: 1;
+	background-color: #fff;
+	display: block;
+}
+.white-strip span {
+	color: #000;
+	display: block;
+	text-align: center;
+	font-size: 13px;
+	font-weight: 700;
+}
+.white-strip a {
+	color: #000;
+	display: block;
+	text-align: center;
+	margin: 10px;
+}
+.white-strip a img{
+	width: 40px;
+}
+#SignDownloadModel .modal-dialog{
+	max-width: 550px;
+}
+#SignDownloadModel .theme-form .form-group .theme-label img.download-copy-img{
+	width: 38px;
+}
+#SignPopUp.modal-theme .modal-header .modal-title{
+	padding: 12px 50px 12px 15px;
+	line-height: normal;
+}
+.esign-successful{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+	margin-bottom: 0px;
+}
+.esign-successful img{
+    width: 130px;	
+}
+.esign-successful p{
+    padding-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23px;
+	margin-bottom: 0;
+}
+@media (max-width: 1200px) {
+	.signature-table {
+		display: flex;
+	}
+	.signature-table .single-signature {
+		width: calc(50% - 20px);
+		float: left;
+	}
+}
+@media (max-width: 1080px) {
+	.blue-strip .main-section{
+		display: block;
+	}
+	.blue-strip .left-section{
+		float: none;
+        margin: 0px auto;
+		width: 453px;
+	}
+	.blue-strip .right-action{
+		width: auto;
+		position: relative;
+		display: block;
+		margin: 0px auto;
+		float: none;
+		text-align: center;
+	}
+	.blue-strip .right-action .switch-group{
+		width: auto;
+		float: none;
+		text-align: initial !important;
+        display: inline-block;
+	}
+	.blue-strip .right-action .dropdown{
+		display: inline-block;
+		}
+}
+@media (max-width: 992px) {
+	.esign-patient-information-group .signature-table .single-signature{
+		width: calc(50% - 20px);
+		margin-bottom: 20px;
+	}
+	.signature-table.signature-table-group .single-signature .patientsign-input img{
+		width: 128px;
+	}
+}
+@media (max-width: 767px) {
+	.modal1 {
+		margin: 0px !important;
+		width: 100%;
+		background-color: #fff !important;
+	}
+	.modal-dialog1 {
+		width: 100% !important;
+		height: 100% !important;
+		margin: 0px;
+		padding: 0px;
+	}
+	.modal2 {
+		margin: 0px !important;
+		width: 100%;
+	}
+	.modal-dialog2 {
+		width: 100% !important;
+		height: 100% !important;
+		margin: 0px;
+		padding: 0px;
+	}
+	.modal-content2 {
+		height: 100% !important;
+	}
+	.esign-header {
+		display: inline-block;
+	}
+	.esign-header .esign-header-left {
+		text-align: center;
+	}
+	.esign-header .esign-header-right {
+		text-align: center;
+		margin-top: 15px;
+	}
+	.patient-info-group {
+		display: inline-block;
+	}
+	.patient-info-group .patient-info-single {
+		margin: 5px 0px;
+	}
+	.modal-signature .form-group {
+		display: inline-block;
+		text-align: left;
+	}
+	.esign-input-group {
+		display: inline-block;
+	}
+	.esign-input-group .esign-input-head,
+	.esign-input-group .esign-input-body {
+		width: 100%;
+	}
+	.signature-table {
+		display: inline-block;
+	}
+	.signature-table .single-signature {
+		width: 100% !important;
+		margin-right: 0;
+		float: left;
+	}
+	.signature-table .single-signature .label-title.label-date{
+		height: auto;
+	}
+	.signature-table .sign-icon {
+		display: none;
+	}
+	.signature-table .sign-icon .sign-image1 {
+		cursor: pointer;
+		width: 46px;
+		height: 95px;
+	}
+	.extra-signature {
+		display: flex;
+	}
+	.extra-signature .extrasignmax {
+		width: 100%;
+		margin-right: 0px;
+		margin-top: 15px;
+	}
+	.esign-request .start {
+		position: absolute;
+		top: 20px;
+		left: -80px;
+		cursor: pointer;
+	}
+	.esign-request-main {
+		margin: 20px auto;
+		padding: 0 20px 0 80px;
+		vertical-align: top;
+		border-radius: 0px;
+		position: relative;
+		float: none;
+		max-width: 900px;
+		width: 100%;
+	}
+	.blue-strip{
+		padding: 10px;
+	}
+	.blue-strip .left-section {
+		float: left;
+		width: auto;
+	}
+	.blue-strip .right-action {
+		float: left;
+        width: auto;
+		margin-top: 10px;
+	}
+	.blue-strip .main-section {
+		display: block !important;
+	}
+	.blue-strip .right-action .btn-theme{
+		padding: 4px 8px;
+		margin-left: 10px;
+	}
+	.blue-strip .right-action .switch-group{
+		padding: 0px;
+	}
+	.top-action .switch-group{
+		display: block;
+	}
+	.esign-request-main .esign-request .esign-header .switch-group{
+		display: none;
+	}
+	.top-action.top-action-switch{
+		text-align: center;
+	}
+	.top-action.top-action-switch ul{
+		display: inline-block;
+		width: auto;
+	}
+	.top-action.top-action-switch .switch-group{
+		display: inline-block;
+		width: auto;
+		float: none;
+		padding-left: 0px;
+		line-height: 44px;
+	}
+	.esign-patient-information-group .signature-table .single-signature{
+		width: 100% !important;
+		margin-right: 0px;
+	}
+	#SignDownloadModel .theme-form .esignrequests-email-copy-btns input{
+		width: 100%;
+	}
+	#SignDownloadModel .theme-form .form-group .tooltiptext{
+		position: absolute;
+		right: 0;
+		top: 30px;
+	}
+	#SignDownloadModel .theme-form .esignrequests-email-copy-btns button{
+		clear: both;
+		margin-top: 15px;
+	}
+	.esign-patient-information-group .signature-table .single-signature .label-title {
+		height: auto;
+	}
+}
+@media (max-width: 576px) {
+	.top-action.top-action-switch ul li{
+		margin: 5px 0px;
+	}
+	.top-action.top-action-switch ul li a.fa{
+		width: 30px;
+		font-size: 18px;
+	}
+	.esign-header{
+		margin-bottom: 0;
+        border-bottom: 0;
+	}
+	.esign-header .esign-header-left .label-input{
+		margin-left: 0;
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		margin-top: 10px;
+	}
+	.esign-request-main{
+		padding: 0px 15px;
+	}
+	.esign-request{
+        border: 0px;
+		padding: 0px 0px 15px 0px;
+	}
+	.esign-request-main-group .esign-request{
+		border-bottom: 2px dashed black;
+	}
+	.esign-header .esign-header-left .label-input img.esign-header-web{
+		display: none;
+	}
+	.esign-header .esign-header-left .label-input img.esign-header-mobile{
+		display: block;
+	}
+}
+@media (max-width: 400px) {
+	.esign-header .esign-header-left .logo{
+		max-height: 44px;
+	}
+}

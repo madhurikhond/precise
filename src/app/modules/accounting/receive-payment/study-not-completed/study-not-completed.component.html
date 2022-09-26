@@ -1,0 +1,13 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Warning</h5>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <div class="modal-body">
+        <p>
+            The selected study is not considered complete yet. Are you sure you want to apply a payment to this study?
+        </p>
+        <a href="javascript:void(0)" (click)="Yes()" class="btn btn-theme">Yes</a>
+        <a href="javascript:void(0)" (click)="cancel()" class="btn ">Cancel</a>
+    </div>
+</div>

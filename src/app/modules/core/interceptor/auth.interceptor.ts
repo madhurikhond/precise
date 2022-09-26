@@ -1,0 +1,151 @@
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, filter, tap } from 'rxjs/operators';
+import { rootPath } from '../../../constants/api.constant';
+import { AUTH_HEADER } from '../../../constants/route.constant';
+import { StorageService } from 'src/app/services/common/storage.service';
+import { AccountService } from 'src/app/services/account.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+
+declare const $: any;
+
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  matches = [];
+  constructor(private readonly _accountService: AccountService,
+    private readonly storageService: StorageService,
+    private readonly _storageService: StorageService,
+    private readonly _router: Router, private route: ActivatedRoute,
+   ) {
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      let url = this._router.url.toLocaleLowerCase();
+      if (url.indexOf('/login') < 0 &&
+        url.indexOf('/subpoena-pickup-status') < 0 &&
+        url.indexOf('/esign') < 0 &&
+        url.indexOf('/login-request') < 0 &&
+        url.indexOf('/contact-us') < 0 &&
+        url.indexOf('/forgot-password') < 0 &&
+        url.indexOf('/unauthorize-access') < 0 &&
+        url.indexOf('/prescreengrid') < 0 &&
+        url.indexOf('/patient/esignrequest') < 0 &&
+        url.indexOf('/bi') < 0) {
+        this._storageService.LastPageURL = this._router.url;
+      }
+      this.makeActiveTAB();
+      this.makeActive();
+    });
+  }
+
+  makeActiveTAB() {
+    this.matches = [];
+    var data = this.storageService.UserRole;
+    if (data) {
+      let list: any = [];
+      let responseHierarchy = JSON.parse(data);
+      if (responseHierarchy && responseHierarchy.length) {
+        responseHierarchy.forEach(value => {
+          if (value && value.hierarchy) {
+            value.hierarchy = JSON.parse(value.hierarchy);
+          }
+        })
+      }
+      for (let i = 0; i < responseHierarchy.length; i++) {
+        list.push(responseHierarchy[i].hierarchy);
+      }
+      var currentUrl = this.route['_routerState'].snapshot.url;
+      if (currentUrl) {
+        if (currentUrl.lastIndexOf('/') != -1) {
+          let currentUrlItem = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1)
+          if (currentUrlItem) {
+            this.filter(list, currentUrlItem.toLowerCase());
+            if (this.matches.length === 1) {
+              this.UpdateActive();
+            } else {
+              currentUrlItem = currentUrlItem.substring(0, currentUrlItem.length - 1);
+              currentUrlItem = currentUrlItem.substring(0, currentUrlItem.lastIndexOf('/') + 1);
+              if (currentUrlItem) {
+                this.filter(list, currentUrlItem.toLowerCase());
+                if (this.matches.length === 1) {
+                  this.UpdateActive();
+                }else {
+                  currentUrlItem = currentUrlItem.substring(0, currentUrlItem.length - 1);
+                  currentUrlItem = currentUrlItem.substring(0, currentUrlItem.lastIndexOf('/') + 1);
+                  if (currentUrlItem) {
+                    this.filter(list, currentUrlItem.toLowerCase());
+                    if (this.matches.length === 1) {
+                      this.UpdateActive();
+                    }
+                  }
+                }
+              } 
+            }
+          }
+        }
+      }
+    }
+  }
+  filter(arr, term) {
+    arr.forEach((i) => {
+      if (i.Url.includes(term)) {
+        this.matches.push(i);
+      }
+      if (i.Children.length > 0) {
+        this.filter(i.Children, term);
+      }
+    });
+  }
+  makeActive() {
+    $('.left-menu').find('.nav-link').removeClass('active jClass');
+    setTimeout(() => {
+      for (let index = 0; index < 2; index++) {
+        $('.left-menu').find('.nav-link.active').parents('ul').parents('li').children(0).addClass('active jClass')
+      }
+    }, 1000);
+  }
+
+  UpdateActive() {
+    const ModuleId = this.matches[0].ModuleId;
+    $('.left-menu').find('.nav-link').removeClass('active jClass');
+    setTimeout(() => {
+      for (let index = 0; index < 2; index++) {
+        $('.left-menu').find(`#data_${ModuleId}`).parents('ul').parents('li').children(0).addClass('active jClass')
+        $(`#data_${ModuleId}`).addClass('active');
+      }
+    }, 1000);
+  }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let req = request;
+
+    if (this._accountService.isTokenValid) {
+      req = req.clone({
+        setHeaders: {
+          [AUTH_HEADER]: `Bearer ${this._storageService.JWTToken}`
+        }
+      });
+    }
+
+    return next.handle(req).pipe(
+      tap((event: HttpEvent<any>) => {
+        if (event instanceof HttpResponse && event.url.includes(rootPath)) {
+          const header = event.headers.get(AUTH_HEADER);
+          if (header) {
+            this._storageService.JWTToken = header;
+          }
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          this._storageService.clearAll();
+          this._router.navigate(['login']);
+        }
+        return throwError(err);
+      })
+    );
+  }
+
+}

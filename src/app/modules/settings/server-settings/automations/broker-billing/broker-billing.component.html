@@ -1,0 +1,73 @@
+<div class="tab-pane" id="broker-billing-tab">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="borkerBillingForm">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="checkbox-theme">
+                            <input class="form-control" id="active6" type="checkbox">
+                            <label for="active6" class="arrow-label">Active</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Time to Run</div>
+                            <div class="input-group">
+                                <input type="time" formControlName="timepicker14" class="form-control">
+                                <!-- <input type="text" class="form-control" id="timepicker14"> -->
+                                <!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Day of the month of run</div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keypress)="allowNumberOnly($event)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Financial Type</div>
+                            <div class="input-group">
+                                <ng-select [items]="financialTypeList" placeholder="Select"
+                                    formControlName="financialType" bindLabel="financialtypename" [multiple]="true"
+                                    [closeOnSelect]="false" bindValue="financialtypename"
+                                    [(ngModel)]="selectedFinancialTypeList">
+                                </ng-select>
+                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                            aria-hidden="true">×</span>
+                                    </div>
+                                    <div class="ng-value" *ngIf="items.length > 1">
+                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                    </div>
+                                </ng-template>   
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Radius Status</div>
+                            <div class="input-group">
+                                <ng-select [items]="radiusStatusList" placeholder="Select"
+                                    formControlName="radiusStatus" bindLabel="radiusStatus" [multiple]="true"
+                                    [closeOnSelect]="false" bindValue="radiusStatus"
+                                    [(ngModel)]="selectedRadiusStatus">
+                                </ng-select>
+                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                            aria-hidden="true">×</span>
+                                    </div>
+                                    <div class="ng-value" *ngIf="items.length > 1">
+                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <a href="javascript:void(0)" class="btn btn-theme">Update</a>
+            </div>
+        </form>
+    </div>
+</div>

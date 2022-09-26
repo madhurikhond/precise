@@ -1,0 +1,166 @@
+<div class="tab-pane active" id="new-order-caller">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <div class="theme-label-title">Yesterday</div>
+            <div class="table-responsive manual-table">
+                <table class="table table-theme">
+                    <thead>
+                        <tr>
+                            <th width="80">Result</th>
+                            <th width="80"># of Patients(Studies)</th>
+                            <th width="50">% of Total</th>
+                            <th width="80"># Scheduled* Patients(Studies)</th>
+                            <th width="80">% Patients Scheduled*</th>
+                        </tr>
+                    </thead>
+                    <tbody>	
+                        <tr>
+                            <td>Went to Queue</td>
+                            <td>{{callHistoryForYesterday.WentInQueueYesterday}}</td>
+                            <td>{{callHistoryForYesterday.WentInQueueInPrecentageYesterday}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForWentInQueue}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForWentInQueueInPrecentageYesterday}}</td>
+                        </tr>				
+                        <tr>
+                            <td>Did Not Answer</td>
+                            <td>{{callHistoryForYesterday.NoAnswerYesterday}}</td>
+                            <td>{{callHistoryForYesterday.NoAnswerInPrecentageYesterday}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForNoAnswerYesterDay}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForNoAnswerInPrecentageYesterDay}}</td>
+                        </tr>
+                        <tr>
+                            <td>Answered & Hung Up</td>
+                            <td>{{callHistoryForYesterday.HungUpYesterday}}</td>
+                            <td>{{callHistoryForYesterday.HungUpInPrecentageYesterday}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForHungUpYesterDay}}</td>
+                            <td>{{callHistoryForYesterday.PatientAndStudyForHungUpInPrecentageYesterDay}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>		
+                        <tr>
+                            <th>Total</th>
+                            <th>{{callHistoryForYesterday.TotalRecordYesterday}}</th>
+                            <th>&nbsp;</th>
+                            <th>{{callHistoryForYesterday.SumOfPatientAndStudies}}</th>
+                            <th>{{callHistoryForYesterday.SumOfPatientAndStudiesInPercentage}}</th>
+                        </tr>		 		
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <div class="theme-label-title">Last 30 Days</div>
+            <div class="table-responsive manual-table">
+                <table class="table table-theme">
+                    <thead>
+                        <tr>
+                            <th width="100">Result</th>
+                            <th width="80"># of Patients(Studies)</th>
+                            <th width="50">% of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>	
+                        <tr>
+                            <td>Went to Queue</td>
+                            <td>{{callHistoryForLast30Days.WentInQueue30Days}}</td>
+                            <td>{{callHistoryForLast30Days.WentInQueueInPrecentage30Days}}</td>
+                        </tr>				
+                        <tr>
+                            <td>Did Not Answer</td>
+                            <td>{{callHistoryForLast30Days.NoAnswer30Days}}</td>
+                            <td>{{callHistoryForLast30Days.NoAnswerInPrecentage30Days}}</td>
+                        </tr>
+                        <tr>
+                            <td>Answered & Hung Up</td>
+                            <td>{{callHistoryForLast30Days.HungUp30Days}}</td>
+                            <td>{{callHistoryForLast30Days.HungUpInPrecentage30Days}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>		
+                        <tr>
+                            <th>Total</th>
+                            <th>{{callHistoryForLast30Days.TotalRecord30Days}}</th>
+                            <th>&nbsp;</th>
+                        </tr>		 		
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <div class="theme-label-title">Last 90 Days</div>
+            <div class="table-responsive manual-table">
+                <table class="table table-theme">
+                    <thead>
+                        <tr>
+                            <th width="100">Result</th>
+                            <th width="80"># of Patients(Studies)</th>
+                            <th width="50">% of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>	
+                        <tr>
+                            <td>Went to Queue</td>
+                            <td>{{callHistoryForLast90Days.WentInQueue90Days}}</td>
+                            <td>{{callHistoryForLast90Days.WentInQueueInPrecentage90Days}}</td>
+                        </tr>				
+                        <tr>
+                            <td>Did Not Answer</td>
+                            <td>{{callHistoryForLast90Days.NoAnswer90Days}}</td>
+                            <td>{{callHistoryForLast90Days.NoAnswerInPrecentage90Days}}</td>
+                        </tr>
+                        <tr>
+                            <td>Answered & Hung Up</td>
+                            <td>{{callHistoryForLast90Days.HungUp90Days}}</td>
+                            <td>{{callHistoryForLast90Days.HungUpInPrecentage90Days}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>		
+                        <tr>
+                            <th>Total</th>
+                            <th>{{callHistoryForLast90Days.TotalRecord90Days}}</th>
+                            <th>&nbsp;</th>
+                        </tr>		 		
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <div class="theme-label-title">Last 365 Days</div>
+            <div class="table-responsive manual-table">
+                <table class="table table-theme">
+                    <thead>
+                        <tr>
+                            <th width="100">Result</th>
+                            <th width="80"># of Patients(Studies)</th>
+                            <th width="50">% of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>	
+                        <tr>
+                            <td>Went to Queue</td>
+                            <td>{{callHistoryForLast365Days.WentInQueue365Days}}</td>
+                            <td>{{callHistoryForLast365Days.WentInQueueInPrecentage365Days}}</td>
+                        </tr>				
+                        <tr>
+                            <td>Did Not Answer</td>
+                            <td>{{callHistoryForLast365Days.NoAnswer365Days}}</td>
+                            <td>{{callHistoryForLast365Days.NoAnswerInPrecentage365Days}}</td>
+                        </tr>
+                        <tr>
+                            <td>Answered & Hung Up</td>
+                            <td>{{callHistoryForLast365Days.HungUp365Days}}</td>
+                            <td>{{callHistoryForLast365Days.HungUpInPrecentage365Days}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>		
+                        <tr>
+                            <th>Total</th>
+                            <th>{{callHistoryForLast365Days.TotalRecord365Days}}</th>
+                            <th>&nbsp;</th>
+                        </tr>		 		
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Elec. Agree</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="theme-form-center">
+            <form [formGroup]="elecSignForm" class="theme-form">
+                <div class="theme-panel-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <ckeditor #myckeditor
+                            formControlName="body" required id="email-editor"
+											   [config]="CkeConfig" (paste)="onPaste($event)"
+											   (change)="onChange($event)">
+											</ckeditor>
+                            <!-- <ckeditor [editor]="Editor" formControlName="body">
+                                <textarea class="form-control" id="email-editor" cols="300" rows="100" formControlName="body" required></textarea>
+                            </ckeditor> -->
+                            <div *ngIf="submitted && esForm.body" class="tooltiptext text-right">                            
+                                <small class="error text-danger" *ngIf="esForm.body.invalid">Content is required</small>
+                            </div>
+                        </div>
+                    </div>	
+                </div>
+                <div class="theme-panel-footer">
+                    <button  type="button" (click)="onSubmit()" class="btn btn-theme" >SAVE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

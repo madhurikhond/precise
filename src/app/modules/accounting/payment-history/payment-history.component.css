@@ -1,0 +1,8 @@
+.ng-optgroup{
+    background-color: aliceblue !important;
+    font-weight: bold !important;
+}
+
+.enable-check{
+    cursor: pointer !important;
+}

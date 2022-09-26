@@ -1,0 +1,259 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Add a new company</h5>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <form class="theme-form" #f="ngForm" (ngSubmit)="onSubmit();" appInvalidTabHighlight>
+        <div class="modal-body">
+            <div class="tab-section">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#company-details">Options</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#payments">Pricing</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="company-details">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Company Name</div>
+                                    <div class="input-group">
+                                        <input type="text" #CompanyName="ngModel" name="CompanyName"
+                                            [(ngModel)]="lienCompanyModel.CompanyName" required
+                                            [ngClass]="{'is-invalid': f.submitted && CompanyName.invalid}"
+                                            class="form-control">
+                                    </div>
+                                    <div *ngIf="f.submitted && CompanyName.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="CompanyName?.errors?.required">Company
+                                            Name is required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Address 1</div>
+                                    <div class="input-group">
+                                        <input type="text" #Address1="ngModel" name="Address1" required
+                                            [(ngModel)]="lienCompanyModel.Address1" class="form-control"
+                                            [ngClass]="{'is-invalid': f.submitted && Address1.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && Address1.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Address1?.errors?.required">Address 1 is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Address 2</div>
+                                    <div class="input-group">
+                                        <input type="text" #Address2="ngModel" name="Address2" required
+                                            [(ngModel)]="lienCompanyModel.Address2" class="form-control"
+                                            [ngClass]="{'is-invalid': f.submitted && Address2.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && Address2.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Address2?.errors?.required">Address 2 is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">City</div>
+                                    <div class="input-group">
+                                        <input type="text" #City="ngModel" name="City"
+                                            [(ngModel)]="lienCompanyModel.City" class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && City.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && City.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="City?.errors?.required">City is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">State</div>
+                                    <div class="input-group">
+                                        <input type="text" #State="ngModel" name="State"
+                                            [(ngModel)]="lienCompanyModel.State" class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && State.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && State.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="State?.errors?.required">State is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Zip</div>
+                                    <div class="input-group">
+                                        <input type="text" #Zip="ngModel" name="Zip" [(ngModel)]="lienCompanyModel.Zip"
+                                            class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && Zip.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && Zip.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Zip?.errors?.required">Zip is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Contact Name</div>
+                                    <div class="input-group">
+                                        <input type="text" #ContactName="ngModel" name="ContactName" required
+                                            [(ngModel)]="lienCompanyModel.ContactName" class="form-control"
+                                            [ngClass]="{'is-invalid': f.submitted && ContactName.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && ContactName.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="ContactName?.errors?.required">Contact Name is required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Phone#</div>
+                                    <div class="input-group">
+                                        <input type="text" #Phone="ngModel" name="Phone" [pattern]="phoneNoPattern" mask="(000) 000-0000"
+                                            [(ngModel)]="lienCompanyModel.Phone" class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && Phone.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && Phone.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Phone?.errors?.required">Phone is
+                                            required.</small>
+                                        <small class="error text-danger" *ngIf="Phone?.errors?.pattern">Please enter a valid Phone Number</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Fax#</div>
+                                    <div class="input-group">
+                                        <input type="text" #Fax="ngModel" name="Fax" [(ngModel)]="lienCompanyModel.Fax"
+                                            required class="form-control"  mask="(000) 000-0000"
+                                            [ngClass]="{'is-invalid': f.submitted && Fax.invalid}" [pattern]="phoneNoPattern">
+                                    </div>
+                                    <div *ngIf="f.submitted && Fax.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Fax?.errors?.required">Fax is
+                                            required.</small>
+                                        <small class="error text-danger" *ngIf="Fax?.errors?.pattern">Please enter a valid Fax Number</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Tax Id</div>
+                                    <div class="input-group">
+                                        <input type="text" #TaxID="ngModel" name="TaxID"
+                                            [(ngModel)]="lienCompanyModel.TaxID" class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && TaxID.invalid}">
+                                    </div>
+                                    <div *ngIf="f.submitted && TaxID.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="TaxID?.errors?.required">Tax ID is
+                                            required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Email 1</div>
+                                    <div class="input-group">
+                                        <input type="text" #Email1="ngModel" name="Email1" 
+                                            [(ngModel)]="lienCompanyModel.Email1" class="form-control" required
+                                            [ngClass]="{'is-invalid': f.submitted && Email1.invalid}"
+                                            pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$">
+                                    </div>
+                                    <div *ngIf="f.submitted && Email1.invalid" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="Email1?.errors?.required">Email 1 is
+                                            required.</small>
+                                        <small class="error text-danger" *ngIf="Email1?.errors?.pattern">Please enter a
+                                            valid Email Id.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Email 2</div>
+                                    <div class="input-group">
+                                        <input type="text" #Email2="ngModel" name="Email2"
+                                        [ngClass]="{'is-invalid': f.submitted && Email2.invalid}"
+                                        [(ngModel)]="lienCompanyModel.Email2" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$" class="form-control">
+                                    </div>
+                                    <div *ngIf="f.submitted && Email2.invalid" class="tooltiptext text-right">                                      
+                                        <small class="error text-danger" *ngIf="Email2?.errors?.pattern">Please enter a
+                                            valid Email Id.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Email 3</div>
+                                    <div class="input-group">
+                                        <input type="text" #Email3="ngModel" name="Email3"
+                                        [ngClass]="{'is-invalid': f.submitted && Email3.invalid}"
+                                            [(ngModel)]="lienCompanyModel.Email3" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$" class="form-control">
+                                    </div>
+                                    <div *ngIf="f.submitted && Email3.invalid" class="tooltiptext text-right">                                      
+                                        <small class="error text-danger" *ngIf="Email3?.errors?.pattern">Please enter a
+                                            valid Email Id.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="payments">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th> Proc Code Group</th>
+                                    <th> Sell Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                             <div class="input-group">
+                                                <input type="text" #ProcCodeName="ngModel" name="ProcCodeName"
+                                                    [(ngModel)]="lienCompanyModel.ProcCodeName" class="form-control" required
+                                                    [ngClass]="{'is-invalid': f.submitted && ProcCodeName.invalid}">
+                                            </div>
+                                            <div *ngIf="f.submitted && ProcCodeName.invalid" class="tooltiptext text-right">
+                                                <small class="error text-danger" *ngIf="ProcCodeName?.errors?.required">Prod Code group is
+                                                    required.</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                             <div class="input-group">
+                                                <input type="number" #SellPrice="ngModel" name="SellPrice"
+                                                    [(ngModel)]="lienCompanyModel.SellPrice" class="form-control" required
+                                                    [ngClass]="{'is-invalid': f.submitted && SellPrice.invalid}">
+                                            </div>
+                                            <div *ngIf="f.submitted && SellPrice.invalid" class="tooltiptext text-right">
+                                                <small class="error text-danger" *ngIf="SellPrice?.errors?.required">Sell Price is
+                                                    required.</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <!-- <span class="error text-danger" *ngIf="f.submitted && !f.valid">one or more fields are required or invalid</span> -->
+            <a href="javascript:void(0)" (click)="close()" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+            <button type="submit" class="btn btn-theme btn-sm pull-left">Save</button>
+        </div>
+    </form>
+</div>

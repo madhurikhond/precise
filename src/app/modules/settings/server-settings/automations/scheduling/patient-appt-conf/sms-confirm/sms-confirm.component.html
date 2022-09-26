@@ -1,0 +1,243 @@
+<div class="tab-pane" id="sms-confirm-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="smsConfirmForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isPatientReminder" id="active16"
+											type="checkbox">
+										<label for="active16" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select [items]="statusNamesList" placeholder="Select"
+												formControlName="status" bindLabel="status" [multiple]="true"
+												[closeOnSelect]="false" bindValue="status" [(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.status.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template>         
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && scForm.status.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="scForm.status.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								
+									<div class="form-group autocomplete">
+										<div class="theme-label">Modality</div>
+										<div class="input-group">
+											<ng-select [items]="modalityList" placeholder="Select"
+												formControlName="scheduledmodality" bindLabel="scheduledmodality"
+												[multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.scheduledmodality.errors)}"
+												[(ngModel)]="selectedModalityList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:5">
+														<span class="ng-value-label"> {{item.scheduledmodality}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 5">
+														<span class="ng-value-label">{{items.length - 5}} more...</span>
+													</div>
+												</ng-template>         
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && scForm.scheduledmodality.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="scForm.scheduledmodality.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Send Initial reminder at</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control" formControlName="initialAppointment"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.initialAppointment.errors)}"
+												id="timepicker22">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && scForm.initialAppointment.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="scForm.initialAppointment.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side">
+										<span>Send 1st reminder after</span>
+										<div class="icon-active">
+											<input type="text" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted && scForm.firstReminderDays.errors)}"
+											(keypress)="allowNumberOnly($event)" formControlName="firstReminderDays">
+											<div *ngIf="submitted && scForm.firstReminderDays.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.firstReminderDays.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="scForm.firstReminderDays.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+									  <span>  days at</span>
+										<div class="icon-active">
+											<input type="time" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.firstAppointment.errors)}"
+												formControlName="firstAppointment" id="timepicker23">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && scForm.firstAppointment.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.firstAppointment.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+										<span>Send 2nd reminder after</span>
+										 <div class="icon-active">	
+											<input type="text" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.secondReminderDays.errors)}"
+												(keypress)="allowNumberOnly($event)" formControlName="secondReminderDays">
+											<div *ngIf="submitted && scForm.secondReminderDays.errors"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.secondReminderDays.errors)}"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.secondReminderDays.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="scForm.secondReminderDays.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+										<span>days at</span>
+										<div class="icon-active">
+											<input type="time" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.secondAppointment.errors)}"
+												formControlName="secondAppointment" id="timepicker24">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+									   
+											<div *ngIf="submitted && scForm.secondAppointment.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.secondAppointment.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+									   <span> Send 3rd reminder after</span>
+										 <div class="icon-active">
+											<input type="text" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted && scForm.thirdReminderDays.errors)}"
+											(keypress)="allowNumberOnly($event)" formControlName="thirdReminderDays">
+											<div *ngIf="submitted && scForm.thirdReminderDays.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.thirdReminderDays.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="scForm.thirdReminderDays.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+										<span>days at</span>
+										<div class="icon-active">
+											<input type="time" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.thirdAppointment.errors)}"
+												formControlName="thirdAppointment" id="timepicker25">
+											<div *ngIf="submitted && scForm.thirdAppointment.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.thirdAppointment.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+										<span>Send 4th reminder after </span>
+										<div class="icon-active">
+											<input type="text" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.fourthReminderDays.errors)}"
+												(keypress)="allowNumberOnly($event)" formControlName="fourthReminderDays">
+											<div *ngIf="submitted && scForm.fourthReminderDays.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.fourthReminderDays.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="scForm.fourthReminderDays.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+									  <span>  days at</span>
+										<div class="icon-active">
+											<input type="time" class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted && scForm.fourthAppointment.errors)}"
+												formControlName="fourthAppointment" id="timepicker26">
+											<div *ngIf="submitted && scForm.fourthAppointment.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="scForm.fourthAppointment.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<a routerLink="/settings/server-settings/template" href="" target="_blank" routerLinkActive="active"
+										class="internal-link">Modify SMS Template</a>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && scForm.comment.errors)}"
+                                formControlName="comment" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && scForm.comment.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="scForm.comment.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

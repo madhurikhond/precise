@@ -1,0 +1,38 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">User</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'users'" routerLinkActive="active">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'role-permission'" routerLinkActive="active">Role Permission</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'department'" routerLinkActive="active">Department</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'link'" routerLinkActive="active">Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'file-manager'" routerLinkActive="active">File Manager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'notification'" routerLinkActive="active">Notifications</a>
+                </li>
+              
+            </ul>
+            <div class="tab-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+

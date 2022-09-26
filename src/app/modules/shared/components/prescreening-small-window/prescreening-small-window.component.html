@@ -1,0 +1,39 @@
+<div class="modal fade modal-theme in modal-small" id="prescreening-small-window" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <form [formGroup]="preScreeningForm" class="theme-form">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Patient Pre-Screening Questions</h5>
+            <div class="close-dismiss" data-dismiss="modal" (click)="close(false)"></div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="theme-label">Please Enter the Patient ID</div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" width="10px" formControlName="patientID" 
+                                [ngClass]="{ 'is-invalid': (IsSubmitted && preForm.patientID.errors) }">
+                        </div>
+                        <div *ngIf="IsSubmitted &&  preForm.patientID.errors"
+                            class="tooltiptext text-right">
+                            <small class="error text-danger"
+                                *ngIf="preForm.patientID.errors.required">Patient ID is required</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" (click)="onSubmit()" data-dismiss="modal" class="btn btn-theme btn-sm pull-right"
+            id="btnUpdate">Next</button>
+            <a href="javascript:void(0)" (click)="close(false)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Cancel</a>
+            <a #hiddenModalclose href="javascript:void(0)" [hidden]="true" (click)="close(true)"></a>
+
+        </div>
+    </div>  
+    </form>
+</div>
+</div>
+

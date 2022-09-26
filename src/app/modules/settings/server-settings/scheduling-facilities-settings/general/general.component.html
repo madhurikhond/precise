@@ -1,0 +1,33 @@
+<div class="tab-pane active" id="general-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="addEditForm" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <div class="theme-label">Doller Weight</div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" formControlName="dollerweight" appTwoDigitDecimaNumber [ngClass]="{ 'is-invalid': submitted && aeForm.dollerweight.errors }">                                        
+                            </div>
+                            <div *ngIf="submitted && aeForm.dollerweight" class="tooltiptext text-right">                            
+                                <small class="error text-danger" *ngIf="aeForm.dollerweight.invalid">Doller weight required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Mile Weight</div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" formControlName="mileweight" appTwoDigitDecimaNumber [ngClass]="{ 'is-invalid': submitted && aeForm.mileweight.errors }">
+                            </div>
+                            <div *ngIf="submitted && aeForm.mileweight" class="tooltiptext text-right">                            
+                                <small class="error text-danger" *ngIf="aeForm.mileweight.invalid">Mile weight is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <a href="javascript:void(0)" (click)="onInsertSubmit()" class="btn btn-theme"> Save </a>
+            </div>
+        </form>
+    </div>
+</div>

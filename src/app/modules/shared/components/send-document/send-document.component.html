@@ -1,0 +1,859 @@
+<div class="modal fade modal-theme" id="send-documents" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{popUpTitle}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <form class="theme-form">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="theme-label-title">Send Method</div>
+                        </div>
+                        <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 col-12">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="chkSendMethodEmail" type="checkbox"
+                                    (change)="sendMethodClick($event,'Email')" [(ngModel)]="chkSendMethodEmailModel"
+                                    [ngModelOptions]="{standalone: true}">
+                                <label for="chkSendMethodEmail" class="arrow-label">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 col-12">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="chkSendMethodFax" type="checkbox"
+                                    (change)="sendMethodClick($event,'Fax')" [(ngModel)]="chkSendMethodFaxModel"
+                                    [ngModelOptions]="{standalone: true}">
+                                <label for="chkSendMethodFax" class="arrow-label">Fax</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 col-12">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="chkSendMethodMail" type="checkbox"
+                                    (change)="sendMethodClick($event,'Mail')" [(ngModel)]="chkSendMethodMailModel"
+                                    [ngModelOptions]="{standalone: true}">
+                                <label for="chkSendMethodMail" class="arrow-label">Mail</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" *ngIf="chkSendMethodFaxModel">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="chkSendMethodCoverPage"
+                                    (change)="sendMethodClick($event,'CoverPage')"
+                                    [(ngModel)]="chkSendMethodCoverPageModel" [ngModelOptions]="{standalone: true}"
+                                    type="checkbox">
+                                <label for="chkSendMethodCoverPage" class="arrow-label">Include a cover page</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="theme-label-title">Send To</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToAttorney" type="checkbox"
+                                            [(ngModel)]="chkSendToAttorneyModel" [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'Attorney')">
+                                        <label for="chkSendToAttorney" class="arrow-label">Attorney</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToReferrerPhy" type="checkbox"
+                                            [(ngModel)]="chkSendToReferrerPhyModel"
+                                            [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'ReferringPhy')">
+                                        <label for="chkSendToReferrerPhy" class="arrow-label">Referring Phy.</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToBroker" type="checkbox"
+                                            [(ngModel)]="chkSendToBrokerModel" [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'Broker')">
+                                        <label for="chkSendToBroker" class="arrow-label">Funding CO</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToFacility" type="checkbox"
+                                            [(ngModel)]="chkSendToFacilityModel" [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'Facility')">
+                                        <label for="chkSendToFacility" class="arrow-label">Imaging Fac.</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToReadingPhy" type="checkbox"
+                                            [(ngModel)]="chkSendToReadingPhyModel" [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'ReadingPhy')">
+                                        <label for="chkSendToReadingPhy" class="arrow-label">Reading Phy.</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="checkbox-theme">
+                                        <input class="form-control" id="chkSendToPatient" type="checkbox"
+                                            [(ngModel)]="chkSendToPatientModel" [ngModelOptions]="{standalone: true}"
+                                            (change)="sendToClick($event,'Patient')">
+                                        <label for="chkSendToPatient" class="arrow-label">Patient</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12">
+
+                            <ng-template #attornetNotAvailable>
+                                <div class="row" *ngIf="isShowAttorneyNameList">
+                                    <h3 class="error text-danger">No Attorney Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToAttorneyModel">
+                                <div class="row" *ngIf="attorneyList?.length>0;else attornetNotAvailable">
+                                    <!-- Attorney  Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowAttorneyNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let attorneyItem of attorneyList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="attorneyNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="attorneyItem.Name=='N/A' || attorneyItem.Name==''">
+                                                    <label for="attorneyNameCheckBox{{i}}" class="arrow-label">Attorney:
+                                                        {{attorneyItem.Name==''?'N/A':attorneyItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowAttorneyEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let attorneyItem of attorneyList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="attorneyEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="attorneyItem.Email=='N/A' || attorneyItem.Email==''"
+                                                        (change)="getEmail($event,attorneyItem.Email, attorneyItem.Name, attorneyItem.ID,'attorney')">
+                                                    <label id="attorneyEmailCheckBox{{i}}" class="arrow-label">Email:
+                                                        {{attorneyItem.Email==''?'N/A':attorneyItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowAttorneyFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let attorneyItem of attorneyList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="attorneyFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="attorneyItem.Fax=='N/A' || attorneyItem.Fax==''"
+                                                        (change)="getFax($event,attorneyItem.Fax, attorneyItem.Name, attorneyItem.ID,'attorney')">
+                                                    <label id="attorneyFaxCheckBox{{i}}" class="arrow-label">Fax:
+                                                        {{attorneyItem.Fax==''?'N/A':attorneyItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowAttorneyAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let attorneyItem of attorneyList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="attorneyAddressCheckBox{{i}}"
+                                                        type="checkbox" [value]="attorneyItem.Address"
+                                                        [disabled]="attorneyItem.Address=='N/A' || attorneyItem.Address=='' || attorneyItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,attorneyItem.Address,attorneyItem.Name, attorneyItem.ID,'attorney')">
+                                                    <label id="attorneyAddressCheckBox{{i}}"
+                                                        class="arrow-label">Address:
+                                                        {{attorneyItem.Address==''?'N/A':attorneyItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Attorney End-->
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isShowReferrerPhyNameList && chkSendToAttorneyModel">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <ng-template #referrerNotAvailable>
+                                <div class="row" *ngIf="isShowReferrerPhyNameList">
+                                    <h3 class="error text-danger">No Referrer Physician Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToReferrerPhyModel">
+                                <div class="row" *ngIf="referrerPhysicianList?.length>0;else referrerNotAvailable">
+                                    <!-- Rferrer Physician   Row Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReferrerPhyNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let referrerPhysicianItem of referrerPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="referrerNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="referrerPhysicianItem.Name=='N/A' || referrerPhysicianItem.Name==''">
+                                                    <label for="referrerNameCheckBox{{i}}" class="arrow-label">Referrer
+                                                        :
+                                                        {{referrerPhysicianItem.Name==''?'N/A':referrerPhysicianItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReferrerPhyEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let referrerPhysicianItem of referrerPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="referrerEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="referrerPhysicianItem.Email=='N/A' || referrerPhysicianItem.Email==''"
+                                                        (change)="getEmail($event,referrerPhysicianItem.Email,referrerPhysicianItem.Name, referrerPhysicianItem.ID,'attorney')">
+                                                    <label id="referrerEmailCheckBox{{i}}" class="arrow-label">Email:
+                                                        {{referrerPhysicianItem.Email==''?'N/A':referrerPhysicianItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReferrerPhyFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let referrerPhysicianItem of referrerPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="referrerFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="referrerPhysicianItem.Fax=='N/A' || referrerPhysicianItem.Fax==''"
+                                                        (change)="getFax($event,referrerPhysicianItem.Fax,referrerPhysicianItem.Name, referrerPhysicianItem.ID,'attorney')">
+                                                    <label id="referrerFaxCheckBox{{i}}" class="arrow-label">Fax:
+                                                        {{referrerPhysicianItem.Fax==''?'N/A':referrerPhysicianItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReferrerPhyAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let referrerPhysicianItem of referrerPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="referrerAddressCheckBox{{i}}"
+                                                        type="checkbox" [value]="referrerPhysicianItem.Address"
+                                                        [disabled]="referrerPhysicianItem.Address=='N/A' || referrerPhysicianItem.Address=='' || referrerPhysicianItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,referrerPhysicianItem.Address,referrerPhysicianItem.Name, referrerPhysicianItem.ID,'attorney')">
+                                                    <label id="referrerAddressCheckBox{{i}}"
+                                                        class="arrow-label">Address:
+                                                        {{referrerPhysicianItem.Address==''?'N/A':referrerPhysicianItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Referrer Physician  Row End-->
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isShowBrokerNameList && chkSendToReferrerPhyModel">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <ng-template #brokerNotAvailable>
+                                <div class="row" *ngIf="isShowBrokerNameList">
+                                    <h3 class="error text-danger">No funding co Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToBrokerModel">
+                                <div class="row" *ngIf="brokerList?.length>0;else brokerNotAvailable">
+                                    <!-- Broker   Row Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowBrokerNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let brokerItem of brokerList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="brokerNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="brokerItem.Name=='N/A' || brokerItem.Name==''">
+                                                    <label for="brokerNameCheckBox{{i}}" class="arrow-label">Broker :
+                                                        {{brokerItem.Name==''?'N/A':brokerItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowBrokerEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let brokerItem of brokerList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="brokerEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="brokerItem.Email=='N/A' || brokerItem.Email==''"
+                                                        (change)="getEmail($event,brokerItem.Email,brokerItem.Name, brokerItem.ID,'broker')">
+                                                    <label id="brokerEmailCheckBox{{i}}" class="arrow-label">Email:
+                                                        {{brokerItem.Email==''?'N/A':brokerItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowBrokerFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let brokerItem of brokerList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="brokerFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="brokerItem.Fax=='N/A' || brokerItem.Fax==''"
+                                                        (change)="getFax($event,brokerItem.Fax,brokerItem.Name, brokerItem.ID,'broker')">
+                                                    <label id="brokerFaxCheckBox{{i}}" class="arrow-label">Fax:
+                                                        {{brokerItem.Fax==''?'N/A':brokerItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowBrokerAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let brokerItem of brokerList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="brokerAddressCheckBox{{i}}"
+                                                        type="checkbox" [value]="brokerItem.Address"
+                                                        [disabled]="brokerItem.Address=='N/A' || brokerItem.Address=='' || brokerItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,brokerItem.Address,brokerItem.Name, brokerItem.ID,'broker')">
+                                                    <label id="brokerAddressCheckBox{{i}}" class="arrow-label">Address:
+                                                        {{brokerItem.Address==''?'N/A':brokerItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Broker End-->
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isShowFacilityNameList && chkSendToBrokerModel">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <ng-template #facilityNotAvailable>
+                                <div class="row" *ngIf="isShowFacilityNameList && chkSendToFacilityModel">
+                                    <h3 class="error text-danger">No Facility Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToFacilityModel">
+                                <div class="row" *ngIf="facilityList?.length>0;else facilityNotAvailable">
+                                    <!-- Facility Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowFacilityNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let facilityItem of facilityList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="facilityNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="facilityItem.Name=='N/A' || facilityItem.Name==''">
+                                                    <label for="facilityNameCheckBox{{i}}" class="arrow-label">Facility
+                                                        :
+                                                        {{facilityItem.Name==''?'N/A':facilityItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowFacilityEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let facilityItem of facilityList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="facilityEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="facilityItem.Email=='N/A' || facilityItem.Email==''"
+                                                        (change)="getEmail($event,facilityItem.Email,facilityItem.Name, facilityItem.ID,'facility')">
+                                                    <label id="facilityEmailCheckBox{{i}}" class="arrow-label">Email:
+                                                        {{facilityItem.Email==''?'N/A':facilityItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowFacilityFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let facilityItem of facilityList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="facilityFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="facilityItem.Fax=='N/A' || facilityItem.Fax==''"
+                                                        (change)="getFax($event,facilityItem.Fax,facilityItem.Name, facilityItem.ID,'facility')">
+                                                    <label id="facilityFaxCheckBox{{i}}" class="arrow-label">Fax:
+                                                        {{facilityItem.Fax==''?'N/A':facilityItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowFacilityAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let facilityItem of facilityList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="facilityAddressCheckBox{{i}}"
+                                                        type="checkbox" [value]="facilityItem.Address"
+                                                        [disabled]="facilityItem.Address=='N/A' || facilityItem.Address=='' || facilityItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,facilityItem.Address,facilityItem.Name, facilityItem.ID,'facility')">
+                                                    <label id="facilityAddressCheckBox{{i}}"
+                                                        class="arrow-label">Address:
+                                                        {{facilityItem.Address==''?'N/A':facilityItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Facility End-->
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isShowReadingPhyNameList &&chkSendToReadingPhyModel">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <ng-template #readingPhysicianNotAvailable>
+                                <div class="row" *ngIf="isShowReadingPhyNameList">
+                                    <h3 class="error text-danger">No Reading Physician Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToReadingPhyModel">
+                                <div class="row"
+                                    *ngIf="readingPhysicianList?.length>0;else readingPhysicianNotAvailable">
+                                    <!-- Reading Physician Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReadingPhyNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let readingPhysicianItem of readingPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="readingPhysicianNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="readingPhysicianItem.Name=='N/A' || readingPhysicianItem.Name==''">
+                                                    <label for="readingPhysicianNameCheckBox{{i}}"
+                                                        class="arrow-label">Reading :
+                                                        {{readingPhysicianItem.Name==''?'N/A':readingPhysicianItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReadingPhyEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let readingPhysicianItem of readingPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="readingPhysicianEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="readingPhysicianItem.Email=='N/A' || readingPhysicianItem.Email==''"
+                                                        (change)="getEmail($event,readingPhysicianItem.Email,readingPhysicianItem.Name, readingPhysicianItem.ID,'attorney')">
+                                                    <label id="readingPhysicianEmailCheckBox{{i}}"
+                                                        class="arrow-label">Email:
+                                                        {{readingPhysicianItem.Email==''?'N/A':readingPhysicianItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReadingPhyFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let readingPhysicianItem of readingPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="readingPhysicianFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="readingPhysicianItem.Fax=='N/A' || readingPhysicianItem.Fax==''"
+                                                        (change)="getFax($event,readingPhysicianItem.Fax,readingPhysicianItem.Name, readingPhysicianItem.ID,'attorney')">
+                                                    <label id="readingPhysicianFaxCheckBox{{i}}"
+                                                        class="arrow-label">Fax:
+                                                        {{readingPhysicianItem.Fax==''?'N/A':readingPhysicianItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowReadingPhyAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let readingPhysicianItem of readingPhysicianList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control"
+                                                        id="readingPhysicianAddressCheckBox{{i}}" type="checkbox"
+                                                        [value]="readingPhysicianItem.Address"
+                                                        [disabled]="readingPhysicianItem.Address=='N/A' || readingPhysicianItem.Address=='' || readingPhysicianItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,readingPhysicianItem.Address,readingPhysicianItem.Name, readingPhysicianItem.ID,'attorney')">
+                                                    <label id="readingPhysicianAddressCheckBox{{i}}"
+                                                        class="arrow-label">Address:
+                                                        {{readingPhysicianItem.Address==''?'N/A':readingPhysicianItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Reading Physician End-->
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isShowPatientNameList && chkSendToPatientModel">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <ng-template #patientNotAvailable>
+                                <div class="row" *ngIf="isShowPatientNameList">
+                                    <h3 class="error text-danger">No Patient Detail Found For This Patient</h3>
+                                </div>
+                            </ng-template>
+                            <div *ngIf="chkSendToPatientModel">
+                                <div class="row" *ngIf="patientList?.length>0;else patientNotAvailable">
+                                    <!-- Patient Start-->
+                                    <!-- Name -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowPatientNameList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let patientItem of patientList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="patientNameCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="patientItem.Name=='N/A' || patientItem.Name==''">
+                                                    <label for="patientNameCheckBox{{i}}" class="arrow-label">Patient :
+                                                        {{patientItem.Name==''?'N/A':patientItem.Name}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowPatientEmailList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let patientItem of patientList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="patientEmailCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="patientItem.Email=='N/A' || patientItem.Email==''"
+                                                        (change)="getEmail($event,patientItem.Email,patientItem.Name, patientItem.ID,'patient')">
+                                                    <label id="patientEmailCheckBox{{i}}" class="arrow-label">Email:
+                                                        {{patientItem.Email==''?'N/A':patientItem.Email}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fax -->
+                                    <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowPatientFaxList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let patientItem of patientList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="patientFaxCheckBox{{i}}"
+                                                        type="checkbox"
+                                                        [disabled]="patientItem.Fax=='N/A' || patientItem.Fax==''"
+                                                        (change)="getFax($event,patientItem.Fax,patientItem.Name, patientItem.ID,'patient')">
+                                                    <label id="patientFaxCheckBox{{i}}" class="arrow-label">Fax:
+                                                        {{patientItem.Fax==''?'N/A':patientItem.Fax}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Address -->
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12"
+                                        *ngIf="isShowPatientAddressList">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                                *ngFor="let patientItem of patientList; let i = index">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" id="patientAddressCheckBox{{i}}"
+                                                        type="checkbox" [value]="patientItem.Address"
+                                                        [disabled]="patientItem.Address=='N/A' || patientItem.Address=='' || patientItem.Address.split(',')?.length<4"
+                                                        (change)="getAddress($event,patientItem.Address,patientItem.Name, patientItem.ID,'patient')">
+                                                    <label id="patientAddressCheckBox{{i}}" class="arrow-label">Address:
+                                                        {{patientItem.Address==''?'N/A':patientItem.Address}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Patient End-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <div class="row"
+                        *ngIf="chkSendMethodEmailModel || chkSendMethodFaxModel || chkSendMethodMailModel || chkSendMethodCoverPageModel">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="theme-label-title">Manual Destinations</div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="chkSendMethodEmailModel">
+                        <form [formGroup]="addEmailForm" class="theme-form">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="FirstEmail"
+                                            placeholder="1st Email"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetEmailForm.FirstEmail.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addGetEmailForm.FirstEmail" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="addGetEmailForm.FirstEmail.invalid">Invalid email</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="SecondEmail"
+                                            placeholder="2nd Email"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetEmailForm.SecondEmail.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addGetEmailForm.SecondEmail"
+                                        class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="addGetEmailForm.SecondEmail.invalid">Invalid email</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="ThirdEmail"
+                                            placeholder="3rd Email"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetEmailForm.ThirdEmail.errors }">
+                                        <div *ngIf="submitted && addGetEmailForm.ThirdEmail"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetEmailForm.ThirdEmail.invalid">Invalid email</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row" *ngIf="chkSendMethodFaxModel">
+                        <form [formGroup]="addFaxForm" class="theme-form">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" mask="(000)-000-0000"
+                                            formControlName="FirstFax" placeholder="1st Fax"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetFaxForm.FirstFax.errors }">
+                                        <div *ngIf="submitted && addGetFaxForm.FirstFax" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetFaxForm.FirstFax.invalid">Invalid Fax</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" mask="(000)-000-0000"
+                                            formControlName="SecondFax" placeholder="2nd Fax"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetFaxForm.SecondFax.errors }">
+                                        <div *ngIf="submitted && addGetFaxForm.SecondFax"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetFaxForm.SecondFax.invalid">Invalid Fax</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" mask="(000)-000-0000"
+                                            formControlName="ThirdFax" placeholder="3rd Fax"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetFaxForm.ThirdFax.errors }">
+                                        <div *ngIf="submitted && addGetFaxForm.ThirdFax" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetFaxForm.ThirdFax.invalid">Invalid Fax</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <form [formGroup]="addPostMailForm" class="theme-form">
+                        <div class="row" *ngIf="chkSendMethodMailModel">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                            (keyup)="insertPostMailValidation()"
+                                            formControlName="Name" placeholder="Name"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetPostMailForm.Name.errors }">
+                                        <div *ngIf="submitted && addGetPostMailForm.Name"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetPostMailForm.Name.invalid">Name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                            (keyup)="insertPostMailValidation()"
+                                            formControlName="Address" placeholder="Address"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetPostMailForm.Address.errors }">
+                                        <div *ngIf="submitted && addGetPostMailForm.Address"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetPostMailForm.Address.invalid">Address is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" *ngIf="chkSendMethodMailModel">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                            (keyup)="insertPostMailValidation()"
+                                            formControlName="City" placeholder="City"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetPostMailForm.City.errors }">
+                                        <div *ngIf="submitted && addGetPostMailForm.City"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetPostMailForm.City.invalid">City is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="input-group">
+                                    <select name="selectedstate" #sel [(ngModel)]="selectedstate"
+                                        (change)="insertPostMailValidation()" formControlName="StateID"
+                                        class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && addGetPostMailForm.StateID.errors }">
+                                        <option value="" selected>Select</option>
+                                        <option *ngFor="let group of stateList" value={{group.StateID}}>
+                                            {{group.StateName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && addGetPostMailForm.StateID" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="addGetPostMailForm.StateID.invalid">State is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                            (keyup)="insertPostMailValidation()"
+                                            formControlName="ZipCode" placeholder="Zip Code"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetPostMailForm.ZipCode.errors }">
+                                        <div *ngIf="submitted && addGetPostMailForm.ZipCode"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetPostMailForm.ZipCode.invalid">Zip Code is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row" *ngIf="chkSendMethodCoverPageModel && chkSendMethodFaxModel">
+                        <form [formGroup]="addCoverPageForm" class="theme-form">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">From</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="From" (keyup)="insertCoverPageValidation()" placeholder="Precise Imaging"
+                                            class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetCoverPageForm.From.errors }">
+                                        <div *ngIf="submitted && addGetCoverPageForm.From"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetCoverPageForm.From.invalid">From is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Attention</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="Attention" (keyup)="insertCoverPageValidation()" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetCoverPageForm.Attention.errors }">
+                                        <div *ngIf="submitted && addGetCoverPageForm.Attention"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetCoverPageForm.Attention.invalid">Attention is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Body</div>
+                                    <div class="input-group">
+                                        <textarea class="form-control" formControlName="Body" (keyup)="insertCoverPageValidation()"
+                                            [ngClass]="{ 'is-invalid': submitted && addGetCoverPageForm.Body.errors }"></textarea>
+                                        <div *ngIf="submitted && addGetCoverPageForm.Body"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="addGetCoverPageForm.Body.invalid">Body is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-border-clear pull-right btn-sm"
+                    (click)="setSendToAndSendMethodCheckBox()" >Clear</a>
+                <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal" (click)="sendDocuments()">Send Document</button>
+            </div>
+        </div>
+    </div>
+</div>

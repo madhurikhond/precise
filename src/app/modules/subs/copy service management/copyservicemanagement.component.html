@@ -1,0 +1,516 @@
+<div class="main-page-body">
+	<div class="page-header">
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="page-header-title">Copy Service Management</div>
+			</div>
+		</div>
+	</div>
+	<div class="inner-page-body">
+		<div class="search-field search-field-theme collapse show">
+			<form [formGroup]="copyServiceForm" class="theme-form">
+				<div class="form-group">
+					<div class="theme-label">Search</div>
+					<div class="input-group">
+						<input type="text" formControlName="searchText" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="theme-label">Status</div>
+					<div class="input-group">
+						<select class="form-control" formControlName="search_isactive">
+							<option value="" selected>Show All</option>
+							<option value=true>Active</option>
+							<option value=false>Not Active</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-action">
+					<a href="javascript:void(0)" (click)="searchCopyServiceMgt(1)" class="btn btn-theme">Search</a>
+					<a href="javascript:void(0)" (click)="clearCopyServiceMgt()"
+						class="btn btn-border">Clear</a>&nbsp;&nbsp;
+					<!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#create-alert"
+						class="btn btn-theme">Create Alert</a> -->
+				</div>
+			</form>
+		</div>
+		<div class="search-field search-field-theme page-top-action">
+			<div class="row">
+				<div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+					<a class="btn btn-theme btn-sm pull-left" data-toggle="modal" (click)="resetCopyServiceForm()"
+						data-target="#add-Edit-new-record"><i class="fa fa-plus"></i> Add New Record</a>
+				</div>
+				<div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+					<div class="precisemri-search page-select right">
+						<div class="theme-label">Page Size</div>
+						<select class="form-search" (change)="onPageSizeChange($event.target.value)">
+							<option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+								value={{item.value}}>{{item.value}}</option>
+						</select>
+					</div>
+					<a href="javascript:void(0)" class="right btn btn-theme" 
+						(click)="rebindCopyServiceManagementGrid()"><i class="fa fa-repeat"></i> Refresh</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="table-responsive">
+		<dx-data-grid id="gridContainer" [dataSource]="copyServiceManagementList" [allowColumnResizing]="true"
+			[columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+			[columnMinWidth]="30" keyExpr="CompanyID" [showBorders]="true">
+			<dxo-paging [enabled]="false"></dxo-paging>
+			<dxo-sorting mode="multiple"></dxo-sorting>
+			<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+			<!-- </dxo-filter-row> -->
+			<!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+
+			<!-- </dxo-header-filter> -->
+			<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+
+			<dxo-load-panel [enabled]="true">
+			</dxo-load-panel>
+
+			<dxi-column dataField="CompanyID" [width]="100" caption="Action" [allowFiltering]="false"
+				[allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+
+			<dxi-column dataField="CompanyName" caption="Company Name"></dxi-column>
+			<dxi-column dataField="ContactName" caption="Contact Name"></dxi-column>
+			<dxi-column dataField="PhoneNum" caption="Phone#"></dxi-column>
+			<dxi-column dataField="FaxNum" caption="Fax#"></dxi-column>
+			<dxi-column dataField="Email" caption="Email"></dxi-column>
+
+			<dxi-column dataField="DoNotEmail" cellTemplate="DoNotEmailCellTemplate" caption="Do not Email Updates"
+				[(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="Address" caption="Address" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="City" caption="City" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="State" caption="State" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="Zip" caption="Zip" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="PIN" caption="PIN" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="QBAccountName" caption="QB Account Name" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="isactive" caption="Is Active" cellTemplate="IsActive"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<div *dxTemplate="let data of 'cellTemplate'">
+				<a href="javascript:void(0)" (click)="getCopyServiceManagementCurrentRowDetail(data)"
+					class="single-action fa fa-pencil-square-o" data-toggle="modal"
+					data-target="#add-Edit-new-record"></a>
+			</div>
+			<div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'DoNotEmailCellTemplate'"> {{data.value ? "Yes":"No"}} </div>
+
+		</dx-data-grid>
+	</div>
+	<div class="pagination-theme">
+		<div
+			*ngFor="let item of copyServiceManagementList | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+		</div>
+		<pagination-controls id="pagination1" (pageChange)="pageChanged($event)"></pagination-controls>
+	</div>
+</div>
+
+<!-- Add Edit Pop Up Start -->
+<div class="modal fade modal-theme in modal-small" id="add-Edit-new-record" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{popUpTittle}}</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<div class="tab-section">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link" id="companyDetailTab" (click)="setActiveTab('Company_Details')"
+								[ngClass]="{'active':activeTab==='Company_Details'}" data-toggle="tab"
+								href="#add-company-details">Company Details</a>
+						</li>
+						<li class="nav-item" *ngIf="isRepsTabVisible">
+							<a class="nav-link" data-toggle="tab" (click)="setActiveTab('Reps')"
+								[ngClass]="{'active':activeTab==='Reps'}"  href="#add-reps-details">Reps</a>
+						</li>
+						<li class="nav-item" *ngIf="isGroupTabVisible">
+							<a class="nav-link" data-toggle="tab" (click)="setActiveTab('Grouping')"
+								[ngClass]="{'active':activeTab==='Grouping'}" href="#add-grouping">Grouping</a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane" [ngClass]="activeTab == 'Company_Details' ? 'active show' : 'fade'"
+							id="add-company-details">
+							<form class="theme-form" [formGroup]="copyServiceManagementForm">
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Company Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="CompanyName"
+													[ngClass]="{ 'is-invalid': (isCopyServiceFormSubmitted && getFromControls.CompanyName.errors) }">
+											</div>
+											<div *ngIf="isCopyServiceFormSubmitted &&  getFromControls.CompanyName.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.CompanyName.errors.required">Company Name is
+													required</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Contact Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="ContactName">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Phone #</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													[ngClass]="{ 'is-invalid': (isCopyServiceFormSubmitted && getFromControls.PhoneNum.errors) }"
+													mask="(000)-000-0000" formControlName="PhoneNum">
+											</div>
+											<div *ngIf="isCopyServiceFormSubmitted && getFromControls.PhoneNum"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.PhoneNum.invalid">Invalid phone
+													number</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Fax #</div>
+											<div class="input-group">
+												<input type="text" class="form-control" mask="(000)-000-0000"
+													formControlName="FaxNum"
+													[ngClass]="{ 'is-invalid': (isCopyServiceFormSubmitted && getFromControls.FaxNum.errors) }">
+											</div>
+											<div *ngIf="isCopyServiceFormSubmitted && getFromControls.FaxNum"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.FaxNum.invalid">Invalid Fax</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Email</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Email"
+													[ngClass]="{ 'is-invalid': (isCopyServiceFormSubmitted && getFromControls.Email.errors) }">
+											</div>
+											<div *ngIf="(getFromControls.Email.touched || isCopyServiceFormSubmitted) && getFromControls.Email"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.Email.invalid">Invalid email</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="addinfo2" type="checkbox"
+												formControlName="DoNotEmail">
+											<label for="addinfo2" class="arrow-label">Do Not Email</label>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Address</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Address">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">City</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="City">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">State</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="State">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Zip</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Zip">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Pin</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="PIN">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">QB Account Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="QBAccountName">
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="addinfo3" type="checkbox"
+												formControlName="isactive">
+											<label for="addinfo3" class="arrow-label">Is Active</label>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" [ngClass]="activeTab == 'Reps' ? 'active show' : 'fade'"
+							id="add-reps-details">
+							<div class="search-field search-field-theme page-top-action">
+								<div class="row">
+									<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+										<button type="button" (click)="showRepsForm()"
+											[disabled]="isRepsAddRefButtonDisabled" class="btn btn-theme btn-sm"><i
+												class="fa fa-plus"></i>&nbsp;Add New Record</button>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+										<button id = 'refresh' #refresh_tab type="button" [disabled]="isRepsAddRefButtonDisabled"
+											(click)="rebindCopyServiceRepGrid()"
+											class="btn btn-theme btn-sm pull-right">Refresh</button>
+									</div>
+								</div>
+							</div>
+							<div class="table-responsive" id="reps-table" *ngIf="isRespsGridVisible">
+
+								<dx-data-grid id="gridContainer" [dataSource]="repsList" [allowColumnResizing]="true"
+									[columnAutoWidth]="true" [allowColumnReordering]="true"
+									[columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="RepID"
+									[showBorders]="true">
+									<dxo-sorting mode="multiple"></dxo-sorting>
+									<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+									<!-- </dxo-filter-row> -->
+									<!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+									<!-- </dxo-header-filter> -->
+									<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+									<dxo-load-panel [enabled]="true">
+									</dxo-load-panel>
+									<dxi-column dataField="RepID" caption="Action" [allowFiltering]="false"
+										[allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+									<dxi-column dataField="CompanyID" caption="CompanyID" [visible]="false">
+									</dxi-column>
+									<dxi-column dataField="FirstName"  caption="First Name"></dxi-column>
+									<dxi-column dataField="LastName" caption="Last Name"></dxi-column>
+									<dxi-column dataField="Email" caption="Email"></dxi-column>
+									<dxi-column dataField="Phone" caption="Phone"></dxi-column>
+									<dxi-column dataField="DoNotEmail" caption="Do Not Email" cellTemplate="IsActive">
+									</dxi-column>
+
+									<div class="table-responsive copy-service-popup manual-table"
+										*dxTemplate="let data of 'cellTemplate'">
+										<table class="table table-theme">
+											<tr>
+												<td>
+													<div class="table-actions">
+														<a href="javascript:void(0)"
+															class="single-action fa fa-pencil-square-o add-new-reps"
+															(click)="getRepServiceCurrentRowDetail(data)"></a>
+													</div>
+												</td>
+												<td>
+													<div class="table-actions">
+														<a href="javascript:void(0)" class="single-action fa fa-trash"
+															data-toggle="modal" data-target="#delete-enty"
+															(click)="getRepServiceCurrentId(data)"></a>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+
+								</dx-data-grid>
+								<div class="pagination-theme">
+									<div
+										*ngFor="let item of repsList | paginate: { id: 'paginationRepsList' , itemsPerPage: pageSizeRepsList, currentPage: pageNumberRepsList, totalItems:totalRecordsRepsList }">
+									</div>
+									<pagination-controls id="paginationRepsList"
+										(pageChange)="pageChangedRepsList($event)">
+									</pagination-controls>
+								</div>
+							</div>
+							<div *ngIf="isRespsFormVisible">
+								<form class="theme-form" [formGroup]="repsForm">
+									<div class="row">
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">First Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control" formControlName="FirstName"
+														[ngClass]="{ 'is-invalid': (isRepFormSubmitted && getRepsFromControls.FirstName.errors) }">
+												</div>
+												<div *ngIf="isRepFormSubmitted &&  getRepsFromControls.FirstName.errors"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="getRepsFromControls.FirstName.errors.required">First Name
+														is required</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Last Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control" formControlName="LastName"
+														[ngClass]="{ 'is-invalid': (isRepFormSubmitted && getRepsFromControls.LastName.errors) }">
+												</div>
+												<div *ngIf="isRepFormSubmitted &&  getRepsFromControls.LastName.errors"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="getRepsFromControls.LastName.errors.required">Last Name
+														is required</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control" formControlName="Email"
+														[ngClass]="{ 'is-invalid': (isRepFormSubmitted && getRepsFromControls.Email.errors) }">
+												</div>
+												<div *ngIf="(getRepsFromControls.Email.touched || isRepFormSubmitted) && getRepsFromControls.Email"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="getRepsFromControls.Email.invalid">Invalid email</small>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="checkbox-theme">
+												<input class="form-control" id="repscheck1" type="checkbox"
+													formControlName="DoNotEmail">
+												<label for="repscheck1" class="arrow-label">Do Not Email</label>
+											</div>
+										</div>
+										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Phone</div>
+												<div class="input-group">
+													<input type="text" class="form-control" mask="(000)-000-0000"
+														[ngClass]="{ 'is-invalid': (isRepFormSubmitted && getRepsFromControls.Phone.errors) }"
+														formControlName="Phone">
+												</div>
+												<div *ngIf="(getRepsFromControls.Phone.touched || isRepFormSubmitted)  && getRepsFromControls.Phone"
+													class="tooltiptext text-right">
+													<small class="error text-danger"
+														*ngIf="getRepsFromControls.Phone.invalid">Invalid phone
+														number</small>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<a href="javascript:void(0)" class="btn btn-border btn-sm close-form"
+												(click)="showRepsGrid()">Cancel</a>&nbsp;
+											<button class="btn btn-theme btn-sm close-form" id="btnUpdateReps"
+												*ngIf="isRepUpdateBtnVisible"
+												(click)="onSubmitRepsForm()">Update</button>
+											<button class="btn btn-theme btn-sm close-form" id="btnInsertReps"
+												*ngIf="isRepInsertBtnVisible"
+												(click)="onSubmitRepsForm()">Insert</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane" [ngClass]="activeTab == 'Grouping' ? 'active show' : 'fade'"
+							id="add-grouping">
+							<div class="table-responsive">
+								<dx-data-grid id="gridContainer" [dataSource]="companyGroupingList"
+									[allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+									[columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="CompanyID"
+									[showBorders]="true">
+									<dxo-sorting mode="multiple"></dxo-sorting>
+									<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+									<!-- </dxo-filter-row> -->
+									<!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+									<!-- </dxo-header-filter> -->
+									<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+									<dxo-load-panel [enabled]="true">
+									</dxo-load-panel>
+									<dxi-column dataField="GroupId" caption="Action" [allowFiltering]="false"
+										[allowSorting]="false" [visible]="false"></dxi-column>
+									<dxi-column dataField="IsSelected" caption="Selected" [allowFiltering]="false"
+										[allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
+									</dxi-column>
+									<dxi-column dataField="CompanyID" caption="CompanyID" [visible]="false">
+									</dxi-column>
+									<dxi-column dataField="CompanyName" caption="Company Name"></dxi-column>
+									<dxi-column dataField="SelectedCompany" [visible]="false" caption="SelectedCompany">
+									</dxi-column>
+
+									<div *dxTemplate="let data of 'cellTemplate'">
+										<input type="checkbox" [checked]="data.value"
+											(click)="insertUpdateCompanyGrouping(data,$event)">
+									</div>
+								</dx-data-grid>
+							</div>
+
+							<div class="pagination-theme">
+								<div
+									*ngFor="let item1 of companyGroupingList | paginate: { id: 'versionPagination' , itemsPerPage: pageSizeCG, currentPage: pageNumberCG, totalItems:totalRecordsCG }">
+								</div>
+								<pagination-controls id='versionPagination' (pageChange)="pageChangedCG($event)">
+								</pagination-controls>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Close</a>
+				<button type="button" (click)="onSubmitCopyServiceForm()" [attr.data-dismiss]="modelValue"
+					class="btn btn-theme pull-left btn-sm" id="btnUpdate">Save Changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Add Edit Pop Up End  -->
+
+<!--Delete Pop Up Start-->
+<div class="modal fade modal-theme in modal-small" id="delete-enty" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this rep?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+					(click)="deleteRepServiceByRepId()">Ok</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!--Delete Pop Up End-->

@@ -1,0 +1,315 @@
+<div class="tab-pane" id="cannot-schedule-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="cannotScheduleForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isScheduleActive" id="active13" type="checkbox">
+										<label for="active13" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select" 
+												formControlName="statusSchedule" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.statusSchedule.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template>                                      
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.statusSchedule.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.statusSchedule.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="checkbox-theme">
+										<input class="form-control"  formControlName="secondCriteriaSchedule" id="active14" type="checkbox">
+										<label for="active14" class="arrow-label">Second Criteria (OR</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select" 
+												formControlName="statusSecondSchedule" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList1"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.statusSecondSchedule.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template>                                      
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.statusSecondSchedule.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.statusSecondSchedule.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Priority</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="masterNameList" 
+												placeholder="Select" 
+												formControlName="prioritySchedule" 
+												bindLabel="priorityname" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="priorityname" 
+												[(ngModel)]="selectedPriorityList"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.prioritySchedule.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.priorityname}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                      
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.prioritySchedule.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.prioritySchedule.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Send Initial reminder at</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted && csForm.initialreminderAfterSchedule.errors)}" formControlName="initialreminderAfterSchedule" id="timepicker16">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && csForm.initialreminderAfterSchedule.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.initialreminderAfterSchedule.errors.required">
+												Required
+											</small>
+										</div>	
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side">
+										<span>Send 1st reminder after</span>
+										<div class="icon-active">
+											<input type="text" (keypress)="allowNumberOnly($event)"
+											[ngClass]="{ 'is-invalid': (submitted && csForm.firstreminderDaysSchedule.errors)}" class="form-control" formControlName="firstreminderDaysSchedule">
+											<div *ngIf="submitted && csForm.firstreminderDaysSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.firstreminderDaysSchedule.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="csForm.firstreminderDaysSchedule.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+									   <span> days at </span>
+										<div class="icon-active">
+											<input type="time" class="form-control" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.firstreminderAfterSchedule.errors)}"formControlName="firstreminderAfterSchedule" id="timepicker17">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && csForm.firstreminderAfterSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.firstreminderAfterSchedule.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+										<span>Send 2nd reminder after</span>
+										<div class="icon-active">
+											<input type="text" (keypress)="allowNumberOnly($event)"
+											[ngClass]="{ 'is-invalid': (submitted && csForm.secondreminderDaysSchedule.errors)}" class="form-control" formControlName="secondreminderDaysSchedule">
+											<div *ngIf="submitted && csForm.secondreminderDaysSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.secondreminderDaysSchedule.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="csForm.secondreminderDaysSchedule.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+									   <span> days at</span> 
+										<div class="icon-active">
+											<input type="time" class="form-control" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.secondreminderAfterSchedule.errors)}"formControlName="secondreminderAfterSchedule" id="timepicker18">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && csForm.secondreminderAfterSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.secondreminderAfterSchedule.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+										<span>Send 3rd reminder after</span>
+										<div class="icon-active">
+											<input type="text" (keypress)="allowNumberOnly($event)" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.thirdreminderDaysSchedule.errors)}"class="form-control" formControlName="thirdreminderDaysSchedule">
+											<div *ngIf="submitted && csForm.thirdreminderDaysSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.thirdreminderDaysSchedule.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="csForm.thirdreminderDaysSchedule.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+										<span>days at </span>
+										<div class="icon-active">
+											<input type="time" formControlName="thirdreminderAfterSchedule"
+											[ngClass]="{ 'is-invalid': (submitted && csForm.thirdreminderAfterSchedule.errors)}" class="form-control" id="timepicker19">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && csForm.thirdreminderAfterSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.thirdreminderAfterSchedule.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+									   <span> Send 4th reminder after</span>
+									   <div class="icon-active">
+											<input type="text" (keypress)="allowNumberOnly($event)" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.fourthreminderDaysSchedule.errors)}"class="form-control"  formControlName="fourthreminderDaysSchedule">
+											<div *ngIf="submitted && csForm.fourthreminderDaysSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.fourthreminderDaysSchedule.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="csForm.fourthreminderDaysSchedule.errors.max">
+													Required Max 3
+												</small>
+											</div>
+										</div>
+										<span>days at </span>
+										<div class="icon-active">
+											<input type="time" formControlName="fourthreminderAfterSchedule" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.fourthreminderAfterSchedule.errors)}"class="form-control" id="timepicker20">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && csForm.fourthreminderAfterSchedule.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="csForm.fourthreminderAfterSchedule.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<a routerLink="/settings/server-settings/template" href="" target="_blank" routerLinkActive="active" class="internal-link">Modify SMS Template</a>
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="feIsActive" id="active15" type="checkbox">
+										<label for="active15" class="arrow-label">Fax/Email Active</label>
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+									<div class="form-group">
+										<div class="theme-label">Send initial reminder at</div>
+										<div class="input-group icon-active">
+											<input type="time" formControlName="faxEmailInitialAppointment" 
+											[ngClass]="{ 'is-invalid': (submitted && csForm.faxEmailInitialAppointment.errors)}"class="form-control" id="timepicker21">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>	
+										<div *ngIf="submitted && csForm.faxEmailInitialAppointment.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.faxEmailInitialAppointment.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select" 
+												formControlName="faxEmailStatus" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList2"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.faxEmailStatus.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template>                                      
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.faxEmailStatus.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.faxEmailStatus.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="comment"
+                            [ngClass]="{ 'is-invalid': (submitted && csForm.comment.errors)}"  placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && csForm.comment.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="csForm.comment.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>

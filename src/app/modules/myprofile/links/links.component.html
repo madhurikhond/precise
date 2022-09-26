@@ -1,0 +1,61 @@
+<div class="search-field search-field-theme page-top-action">
+  <div class="row">
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+      <div class="theme-form">
+        <div class="form-group">
+          <div class="theme-label">Search</div>
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="search" (keyup.enter)="applyFilter()">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <button type="submit" class="btn   btn-theme" (click)="applyFilter()">
+              Search
+            </button>
+            <button type="button" class="btn btn-border" (click)="clearFilters()">
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <dx-data-grid id="gridContainer" [dataSource]="linksList" [allowColumnResizing]="true" [columnAutoWidth]="true"
+    [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="LinkId"
+    [showBorders]="true">
+
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <!-- <dxo-filter-row  -->
+    <!-- [visible]="showFilterRow"  -->
+    <!-- [applyFilter]="currentFilter"> -->
+    <!-- </dxo-filter-row> -->
+    <!-- <dxo-header-filter  -->
+    <!-- [visible]="showHeaderFilter" > -->
+    <!-- </dxo-header-filter> -->
+    <dxo-paging [enabled]="false"></dxo-paging>
+    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+    <dxo-load-panel [enabled]="true">
+    </dxo-load-panel>
+    <dxi-column dataField="Category" caption="Category" [groupIndex]="0" [visible]="false"></dxi-column>
+    <dxi-column dataField="Did" [width]="100" caption="id" [allowFiltering]="false" [allowSorting]="false"
+      [visible]="false"></dxi-column>
+    <dxi-column dataField="Link" caption="Link" [visible]="false"></dxi-column>
+    <dxi-column dataField="Anchor" caption="Anchor" [visible]="false"></dxi-column>
+    <dxi-column caption="URL" cellTemplate="cellTemplate"></dxi-column>
+    <dxi-column dataField="Description" caption="Description"></dxi-column>
+
+    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+    <div *dxTemplate="let data of 'cellTemplate'">
+      <a [href]="data.data.Link" target="_blank">{{data.data.Anchor}}</a>
+    </div>
+  </dx-data-grid>
+</div>
+<div class="pagination-theme">
+  <div
+    *ngFor="let item of linksList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+  </div>
+  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+</div>

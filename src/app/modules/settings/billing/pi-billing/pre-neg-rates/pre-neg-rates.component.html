@@ -1,0 +1,15 @@
+<div class="tab-pane" id="pre-neg-rates">
+    <div class="tab-section">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'default-min-pricing'" routerLinkActive="active">Default Min Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'override-pricing'" routerLinkActive="active">Override Pricing</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <router-outlet></router-outlet>  
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Player Type</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="theme-form-center">
+            <form class="theme-form"> 
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <div class="theme-label">Search Player Type</div>
+                            <div class="input-group">
+                                <input class="form-control" type="text" [(ngModel)]="searchKeyword" name="searchText"/>
+                            </div>
+                        </div>
+                    </div> 
+                </div> 
+                <div class="use-book-marks">
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme"> 
+                            <tbody>		
+                                <tr *ngFor="let player of playerTypeList | playerType: searchKeyword;">
+                                    <td width="300">{{player.PlayerId}}</td> 
+                                    <td>{{player.PlayerType}}</td>
+                                    <td width="120"><div (click)="copyToClipboard(player.PlayerType)" class="copy-button"><i class="fa fa-copy"></i></div></td>
+                                </tr>                          
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

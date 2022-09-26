@@ -1,0 +1,387 @@
+<div class="main-page-body">
+	<div class="page-header">
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="page-header-title">Collection Management</div>
+			</div>
+		</div>
+	</div>
+	<div class="inner-page-body">
+		<div class="page-top-action">
+			<div class="row">
+				<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+					<a class="btn btn-theme btn-sm pull-left" data-toggle="modal" (click)="restForm()"
+						data-target="#addEditrecord"><i class="fa fa-plus"></i> Add New Record</a>
+				</div>
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+					<div class="precisemri-search page-select">
+						<div class="theme-label">Page Size</div>
+							<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+								<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+							</select>
+					</div>
+					<a class="right btn btn-theme" (click)="rebindGrid()"><i class="fa fa-repeat"></i> Refresh</a>
+				</div>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<dx-data-grid id="gridContainer" [dataSource]="collectionManagementList" [allowColumnResizing]="true"
+				[columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+				[columnMinWidth]="30" keyExpr="CompanyID" [showBorders]="true">
+
+				<dxo-sorting mode="multiple"></dxo-sorting>
+				<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+				<!-- </dxo-filter-row> -->
+				<!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+
+				<!-- </dxo-header-filter> -->
+
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+				<dxo-load-panel [enabled]="true">
+				</dxo-load-panel>
+
+				<dxi-column dataField="CompanyID" [width]="100" caption="Action" [allowFiltering]="false"
+					[allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+				<!-- <dxi-column dataField="CompanyID" [width]="100" caption="CompanyID"></dxi-column> -->
+				<dxi-column dataField="CompanyName" caption="Company Name"></dxi-column>
+				<dxi-column dataField="ContactName" caption="Contact Name"></dxi-column>
+				<dxi-column dataField="PhoneNum" caption="Phone#" cellTemplate="phone" ></dxi-column>
+				<dxi-column dataField="FaxNum" caption="Fax#" cellTemplate="fax"></dxi-column>
+				<dxi-column dataField="Email" caption="Email"></dxi-column>
+
+				<dxi-column dataField="DoNotEmail" caption="Do not Email Updates" cellTemplate="DoNotEmail"></dxi-column>
+				<dxi-column dataField="Address" caption="Address"></dxi-column>
+				<dxi-column dataField="City" caption="City"></dxi-column>
+				<dxi-column dataField="State" caption="State" [(visible)]="isShowColumnWithNoData"></dxi-column>
+				<dxi-column dataField="Zip" caption="Zip" [(visible)]="isShowColumnWithNoData"></dxi-column>
+				<dxi-column dataField="PIN" caption="PIN" [(visible)]="isShowColumnWithNoData"></dxi-column>
+				<dxi-column dataField="QBAccountName" caption="QB Account Name" [(visible)]="isShowColumnWithNoData">
+				</dxi-column>
+				<dxi-column dataField="CommissionPercentage" caption="Commission" [(visible)]="isShowColumnWithNoData">
+				</dxi-column>
+				<dxi-column dataField="IsActive" caption="Is Active" cellTemplate="IsActive"  [(visible)]="isShowColumnWithNoData"></dxi-column>
+				<dxi-column dataField="Type" caption="Type" [(visible)]="isShowColumnWithNoData"></dxi-column>
+				<div *dxTemplate="let data of 'DoNotEmail'"> {{data.value ? "Yes":"No"}} </div>
+				<div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+				<div *dxTemplate="let data of 'phone'">
+                    <p *ngIf="data && data.value">
+                        {{ data.value | mask: '(000) 000-0000' }}
+                    </p>
+                </div>
+				<div *dxTemplate="let data of 'fax'">
+                    <p *ngIf="data && data.value">
+                        {{ data.value | mask: '(000) 000-0000' }}
+                    </p>
+                </div>
+				<div *dxTemplate="let data of 'cellTemplate'">
+					<a href="javascript:void(0)" (click)="getRowCurrentDetail(data)"
+						class="single-action fa fa-pencil-square-o" data-toggle="modal"
+						data-target="#addEditrecord"></a>
+				</div>
+			</dx-data-grid>
+		</div>
+	</div>
+
+	<div class="pagination-theme">
+		<div
+			*ngFor="let item of collectionManagementList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+		</div>
+		<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+	</div>
+</div>
+
+
+
+
+<!--Add/Update Pop Up Star-->
+<div class="modal fade modal-theme in modal-small" id="addEditrecord" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{popUpTittle}}</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<div class="tab-section">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#company-details">Company Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#payments">Payments</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#options">Options</a>
+						</li>
+					</ul>
+					<form class="theme-form" [formGroup]="collectionManagementForm">
+						<div class="tab-content">
+							<div class="tab-pane active" id="company-details">
+								<div class="row">
+									<!-- <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+									<div class="form-group">
+										<div class="theme-label">Company Details</div>
+										<div class="input-group">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+								</div> -->
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Company Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="CompanyName"
+													[ngClass]="{ 'is-invalid': (IsSubmitted && getFromControls.CompanyName.errors) }">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.CompanyName.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.CompanyName.errors.required">Company Name is
+													required</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Contact name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="ContactName">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Type</div>
+											<div class="input-group">
+												<!-- <select class="form-control">
+												<option selected>Select</option>
+												<option>Select Type1</option>
+												<option>Select Type2</option>
+											</select> -->
+												<select [value]="selectedCollectionsTypes"
+													(change)="onChangeTypeDropDown($event.target.value)"
+													formControlName="Type" id="type" class="form-control">
+													<option [value]="" disabled>Select Type</option>
+													<option *ngFor="let Obj of collectionsTypesList" [value]="Obj.Type">
+														{{Obj.Type}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Phone#</div>
+											<div class="input-group">
+
+												<input type="text" class="form-control font-size"
+													formControlName="PhoneNumber" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.PhoneNumber.errors?.minlength }">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.PhoneNumber.errors?.minlength"
+												class="invalid-feedback">
+												<div
+													*ngIf="IsSubmitted &&  getFromControls.PhoneNumber.errors?.minlength">
+													phone must be at least 10 numbers</div>
+											</div>
+
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Fax#</div>
+											<div class="input-group">
+												<input type="text" class="form-control font-size"
+													formControlName="FaxNumber" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.FaxNumber.errors?.minlength }">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.FaxNumber.errors?.minlength"
+												class="invalid-feedback">
+												<div
+													*ngIf="IsSubmitted &&  getFromControls.FaxNumber.errors?.minlength">
+													fax must be at least 10 numbers</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Email</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Email"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.Email.errors }">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.Email.errors"
+												class="invalid-feedback">
+												<div *ngIf="getFromControls.Email.errors">
+													Email must be a valid email address</div>
+											</div>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="check7" class="styled" type="checkbox"
+												formControlName="DoNotEmail">
+											<label for="check7" class="arrow-labe2">Do not email</label>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Address</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Address">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">City</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="City">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">State</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="State">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Zip</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="Zip">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Pin</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="PIN">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">QB Account Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="QBAccountName">
+											</div>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="IsActive" class="styled"
+												formControlName="IsActive" type="checkbox">
+											<label for="check8" class="arrow-labe2">Is Active</label>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<div class="tab-pane fade" id="payments">
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Commission Percentage</div>
+											<div class="input-group">
+												<input type="number" class="form-control"
+													(keypress)="allowNumberOnly($event)"
+													formControlName="CommissionPercentage">
+											</div>
+											<div *ngIf="(getFromControls.CommissionPercentage.touched || IsSubmitted) && getFromControls.CommissionPercentage && getFromControls.CommissionPercentage.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.CommissionPercentage.errors">Invalid
+													Commission Percentage</small>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="options">
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="default-biller">
+												<div class="checkbox-theme">
+													<input class="form-control" id="check9" class="styled"
+														(change)="onChangechecked($event)" type="checkbox"
+														formControlName="DefaultBiller">
+													<label for="check9" class="arrow-labe2">Default Biller</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Biller email1</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="BillerEmail1"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.BillerEmail1.errors }">
+											</div>
+											<div *ngIf="( IsSubmitted) && getFromControls.BillerEmail1"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.BillerEmail1.invalid">Invalid email</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Biller email2</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="BillerEmail2"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.BillerEmail2.errors }">
+											</div>
+											<div *ngIf="( IsSubmitted) && getFromControls.BillerEmail2"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.BillerEmail2.invalid">Invalid email</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Biller email3</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="BillerEmail3"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.BillerEmail3.errors }">
+											</div>
+											<div *ngIf="( IsSubmitted) && getFromControls.BillerEmail3"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.BillerEmail3.invalid">Invalid email</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Biller email4</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="BillerEmail4"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.BillerEmail4.errors }">
+											</div>
+											<div *ngIf="( IsSubmitted) && getFromControls.BillerEmail4"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.BillerEmail4.invalid">Invalid email</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Biller email5</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="BillerEmail5"
+													[ngClass]="{ 'is-invalid': IsSubmitted &&  getFromControls.BillerEmail5.errors }">
+											</div>
+											<div *ngIf="( IsSubmitted) && getFromControls.BillerEmail5"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.BillerEmail5.invalid">Invalid email</small>
+											</div>
+										</div>
+										<div *ngIf="isShownFinType" class="form-group autocomplete">
+											<div class="theme-label">Finan. Type</div>
+											<div class="input-group">
+												<ng-select [items]="financialTypeList" placeholder="Select"
+													formControlName="BulkBillingFinancialType"
+													bindLabel="financialtypename" [multiple]="true"
+													[closeOnSelect]="false" bindValue="financialtypename"
+													[(ngModel)]="selectedFinancialTypeList">
+													<ng-template ng-multi-label-tmp let-items="items" let-index="index">
+													<div class="ng-value" *ngFor="let item of items | slice: 0:2">
+													  {{ item.financialtypename }}
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+													  <span class="ng-value-label">{{ items.length - 2}} more...</span>
+													</div>
+													  </ng-template>
+												</ng-select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</a>
+				<button type="button" (click)="onSubmit()" [attr.data-dismiss]="modelValue" class="btn btn-theme btn-sm pull-left"
+					id="btnUpdate">Save Changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Add Update Pop Up End-->

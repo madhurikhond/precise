@@ -1,0 +1,12 @@
+<div class="table-responsive receive-payment-table-bottom-inner">
+	<dx-data-grid class='dxDataGrid' id = "bottomGridDetailContainer" [dataSource]= "bottomGridDetail" [allowColumnResizing]="true" 
+	[columnAutoWidth]="true" 
+	[allowColumnReordering]="true"
+ 	[showBorders]="true"
+	[columnResizingMode]="columnResizingMode" >
+		<dxi-column dataField="INSTITUTION NAME" caption="INSTITUTION NAME" [width] = "360" [allowEditing]="false"></dxi-column>
+		<dxi-column dataField="STUDY DESCRIPTION" caption="STUDY DESCRIPTION" [width] = "360" [allowEditing]="false"></dxi-column>
+		<dxi-column dataField="REFERRING PHYSICIAN" caption="REFERRING PHYSICIAN" [allowEditing]="false" [width] = "360"></dxi-column>
+		<dxi-column dataField="Amount" caption="Amount"  [allowEditing]="false" [width] = "360"></dxi-column>
+	</dx-data-grid>
+</div>

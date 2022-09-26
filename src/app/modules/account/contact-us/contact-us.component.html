@@ -1,0 +1,74 @@
+<form [formGroup]="contactUsForm" (ngSubmit)="onSubmit()" class="theme-form">
+    <div class="dislpaytable">
+        <div class="valign-content">
+            <div class="valign-content-inner">
+                <div class="center-login">
+                    <div class="title-group">
+                        <div class="title">Contact Us</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon">
+                            <input class="form-control" formControlName="name" placeholder="Name (Required)"
+                                [ngClass]="{ 'is-invalid': (submitted &&  cuForm.name.errors)}">
+                        </div>
+                        <div *ngIf="submitted && cuForm.name.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="cuForm.name.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon">
+                            <input class="form-control" formControlName="company" placeholder="Company (Optional)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon">
+                            <input class="form-control" formControlName="email" placeholder="Email (Required)"
+                                [ngClass]="{ 'is-invalid': (submitted &&  cuForm.email.errors)}">
+                        </div>
+                        <div *ngIf="submitted && cuForm.email.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="cuForm.email.errors.required">
+                                Required
+                            </small>
+                            <small class="error text-danger" *ngIf="cuForm.email.errors.pattern">Invalid email</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon">
+                            <input class="form-control" formControlName="phone" mask="(000)-000-0000"
+                                [ngClass]="{ 'is-invalid': submitted &&  cuForm.phone.errors }"
+                                placeholder="Phone (Optional)">
+                        </div>
+                        <div *ngIf="submitted && cuForm.phone.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="cuForm.phone.errors">
+                                Please enter the valid number 
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-with-icon">
+                            <textarea class="form-control" formControlName="message" placeholder="Message (Required)"
+                                [ngClass]="{ 'is-invalid': (submitted &&  cuForm.message.errors)}"></textarea>
+                        </div>
+                        <div *ngIf="submitted && cuForm.message.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="cuForm.message.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-btn-bottom">
+                        <div class="form-btn">
+                            <button type="submit" class="form-main-btn"> Send Message</button>
+                        </div>
+                    </div>
+                    <ul class="login-footer-buttons">
+                        <li><a routerLink="/login" class="footer-link">Login</a></li>
+                        <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>
+                        <li><a routerLink="/subpoena-pickup-status" class="footer-link">Subpoena Pickup Status</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

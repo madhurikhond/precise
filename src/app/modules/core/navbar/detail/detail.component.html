@@ -1,0 +1,44 @@
+<ng-container *ngIf="parentItem ">
+    <ng-container *ngFor=" let item of parentItem ">
+        <ng-container>
+            <li [attr.class]="liClass" *ngIf="item.Children.length == 0 && item.Url">
+                <a [routerLink]="item.Url" routerLinkActive="active"(click)="makeActive()" class="nav-link"
+                    [title]="item.PageTitle"  [id]="'data_'+item.ModuleId">
+                    <i [class]="item.Icon" *ngIf="item.Icon"></i>
+                    <ng-container *ngIf="item.Icon">
+                        <span class="nav-name">{{item.PageTitle}}</span>
+                        <span class="nav-name-small">{{item.PageTitle}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="!item.Icon">
+                        {{item.PageTitle}}
+                    </ng-container>
+                </a>
+            </li>
+
+            <li class="nav-item panel" *ngIf="item.Children.length > 0 ">
+                <a href="javascript:void(0)" class="nav-link collapse-title collapsed" [title]="item.PageTitle" 
+                    data-toggle="collapse" [attr.data-target]="'#collapse-'+item.ModuleId" aria-expanded="true"
+                    [id]="'data_'+item.ModuleId"
+                    [attr.aria-controls]="'#collapse-'+item.ModuleId">
+                    <i [class]="item.Icon" *ngIf="item.Icon"></i>
+                    <ng-container *ngIf="item.Icon">
+                        <span class="nav-name">{{item.PageTitle}}</span>
+                        <span class="nav-name-small">{{item.PageTitle}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="!item.Icon">
+                        {{item.PageTitle}}
+                    </ng-container>
+
+                    <span class="arrow-icon"></span>
+                </a>
+                <div [id]="'collapse-'+item.ModuleId" class="panel-collapse collapse" [attr.data-parent]="'#'+parentId">
+                    <ul class="nav nav-second-level">                   
+                        <app-detail [parentItem]="item.Children" liClass="" [id]="'M_'+item.ModuleId" [parentId]="'collapse-'+item.ModuleId">
+                        </app-detail>
+                    </ul>
+                </div>
+
+            </li>
+        </ng-container>
+    </ng-container>
+</ng-container>

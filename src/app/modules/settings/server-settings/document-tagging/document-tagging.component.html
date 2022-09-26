@@ -1,0 +1,192 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Document Tagging</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left" data-toggle="modal" data-target="#add-new-record"><i class="fa fa-plus"></i> Add New Record</a>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                                <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                            </select>
+                    </div>
+                    <a href="javascript:void(0)" (click)="getDocumentsTypes()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+            <div class="table-responsive">
+                <dx-data-grid
+                id="gridContainer"
+                [dataSource]="documentTypeList"
+                [allowColumnResizing]="true"
+                [columnAutoWidth]="true"
+                [allowColumnReordering]="true"
+                [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30"
+                keyExpr="docId"  
+                [showBorders]="true">
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                
+                <dxi-column dataField="docId" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+                <dxi-column dataField="docId" caption="Doc ID"></dxi-column>
+                <dxi-column dataField="barcodeId" caption="Barcode ID"></dxi-column>
+                <dxi-column dataField="docType" caption="Type"></dxi-column>
+                <dxi-column dataField="abbreviation" caption="Abbreviation"></dxi-column>
+                <dxi-column dataField="docGroup" caption="DocGroup"></dxi-column>
+                <dxi-column dataField="isActive" caption="Active" cellTemplate="IsActive"></dxi-column>
+    
+                <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <a href="javascript:void(0)" (click)="edit(data.data.docId)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-user"></a>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div *ngFor="let item of documentTypeList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-theme in modal-small" id="add-new-record" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+			<form [formGroup]="addDocumentTypeForm" class="theme-form">
+				<div class="modal-body">
+					<div class="modal-body-inner">
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+								<div class="form-group">
+									<div class="theme-label">Doc Group</div>
+									<div class="input-group">
+										<select formControlName="docGroup" class="form-control">
+											<option value="">Select Doc Group</option>
+											<option value="Scheduling">Scheduling</option>
+											<option value="Reports">Reports</option>
+											<option value="Billing/Payments">Billing/Payments</option>
+											<option value="Subs">Subs</option>
+										</select>
+									</div>
+									<div *ngIf="submitted && addForm.docGroup" class="tooltiptext text-right">                            
+										<small class="error text-danger" *ngIf="addForm.docGroup.invalid">Doc group is required</small>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="theme-label">Enter Type</div>
+									<div class="input-group">
+										<input formControlName="docType" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && addForm.docType.errors }">
+									</div>
+									<div *ngIf="submitted && addForm.docType" class="tooltiptext text-right">                            
+										<small class="error text-danger" *ngIf="addForm.docType.invalid">Doc type is required</small>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="theme-label">Abbreviation</div>
+									<div class="input-group">
+										<input type="text" formControlName="docAbbreviation" class="form-control" [ngClass]="{ 'is-invalid': submitted && addForm.docAbbreviation.errors }">
+									</div>
+									<div *ngIf="submitted && addForm.docAbbreviation" class="tooltiptext text-right">                            
+										<small class="error text-danger" *ngIf="addForm.docAbbreviation.invalid">Abbreviation is required</small>
+									</div>
+								</div>
+								<div class="checkbox-theme">
+									<input class="form-control" id="user-isactive" type="checkbox" formControlName="isActive" checked>
+									<label for="user-isactive" class="arrow-label">Is Active</label>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				</div>
+					<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+					<button type="submit" (click)="onInsertSubmit()" [attr.data-dismiss]="modelValue" class="btn btn-theme pull-left btn-sm">Insert</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editDocumentTypeForm" class="theme-form">
+				<div class="modal-body">
+					<div class="modal-body-inner">
+						<div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Doc Group</div>
+                                    <div class="input-group">
+                                        <select formControlName="docGroup" class="form-control">
+                                            <option value="">Select Droc Group</option>
+                                            <option value="Scheduling">Scheduling</option>
+                                            <option value="Reports">Reports</option>
+                                            <option value="Billing/Payments">Billing/Payments</option>
+                                            <option value="Subs">Subs</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="submitted && editForm.docGroup" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.docGroup.invalid">Doc group is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Enter Type</div>
+                                    <div class="input-group">
+                                        <input formControlName="docType" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.docType.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.docType" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.docType.invalid">Doc type is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Abbreviation</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="docAbbreviation" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.docAbbreviation.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.docAbbreviation" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.docAbbreviation.invalid">Abbreviation is required</small>
+                                    </div>
+                                </div>
+                                <div class="checkbox-theme">
+                                    <input formControlName="isActive" class="form-control" id="edit-isactive" type="checkbox">
+                                    <label for="edit-isactive" class="arrow-label">Is Active</label>
+                                </div>
+                            </div>
+                        </div>
+                    
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

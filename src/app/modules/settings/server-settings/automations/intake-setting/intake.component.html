@@ -1,0 +1,22 @@
+<div class="tab-pane" id="intakesetting-tab">
+    <div class="tab-section"> 
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'templatemapping'" routerLinkActive="active">Template Mapping</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'patientschedulesetting'" routerLinkActive="active">Patient Schedule Setting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'dailysummary'" routerLinkActive="active">Daily Summary</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" [routerLink]="'missingrx'" routerLinkActive="active">Missing RX</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+</div>
+

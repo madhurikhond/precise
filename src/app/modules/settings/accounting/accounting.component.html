@@ -1,0 +1,34 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">AR Settings</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'defaults'" routerLinkActive="active">Defaults</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'payment-type'" routerLinkActive="active">Payment Type</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'payment-bank'" routerLinkActive="active">Payment Bank</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'qb-account'" routerLinkActive="active">QB Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'payee'" routerLinkActive="active">Payee</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+

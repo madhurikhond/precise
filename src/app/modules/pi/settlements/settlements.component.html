@@ -1,0 +1,778 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Settlements</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <div class="remove-cataloge" data-toggle="collapse" data-target="#fillter"></div>
+            <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()" class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">LAST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="lastName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FIRST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="firstName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">PATIENT ID</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="patientId" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOB</div>
+                    <div class="input-group">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date"
+                            [showClearButton]="true" [useMaskBehavior]="true" >
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">ATTORNEY</div>
+                    <div class="input-group input-loader">
+                        <select formControlName="attorney" class="form-control">
+                            <option value=null selected>SELECT</option>
+                            <option *ngFor="let item of attorneyList" value={{item.Attorney}}>
+                                {{item.Attorney}}
+                            </option>
+                        </select>
+                        <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOI</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date"
+                            [showClearButton]="true" [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM FROM</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examFromDate"
+                            type="date" [showClearButton]="true" [useMaskBehavior]="true">
+                           
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM TO</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examToDate"
+                            type="date" [showClearButton]="true" [useMaskBehavior]="true">
+                           
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">STATUS</div>
+                    <ng-select [items]="statusList" [multiple]="true" bindLabel="Status" placeholder="Select"
+                        groupBy="Type" formControlName="status" [selectableGroup]="true"
+                        [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="Status"
+                        [loading]="showDropdownLoader">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Type | uppercase}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Status}}
+                        </ng-template>
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.Status}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">SETTLED BY</div>
+                    <ng-select [items]="settledByList" placeholder="Select" bindLabel="USERNAME"
+                        formControlName="settledBy" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="USERID">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.USERNAME}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FINANCIAL TYPE</div>
+                    <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="FINANCIALTYPENAME"
+                        formControlName="financialType" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.FINANCIALTYPENAME}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Funding Company</div>
+                    <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
+                        [multiple]="true" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="Broker">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.Broker}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">INSURANCE CARRIER</div>
+                    <ng-select [items]="insuranceCompanyList" placeholder="Select" bindLabel="CompanyName"
+                        formControlName="insuranceCompany" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="CompanyName">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">WORK LIST</div>
+                    <div class="input-group">
+                        <select formControlName="work" class="form-control">
+                            <option value=null selected>SELECT</option>
+                            <option *ngFor="let item of workList" value={{item.WorkName}}>
+                                {{item.WorkName}}
+                            </option>
+                        </select>
+                        <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <button type="submit" class="btn btn-theme">SEARCH</button>
+                    <button type="button" (click)="onReset()" class="btn btn-border">CLEAR</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="pull-left">
+                        <!-- <a href="javascript:void(0)" class="btn btn-theme" data-toggle="modal" data-target="#conformation">Settle</a> -->
+                        <button type="button" (click)="onSettleClick()"
+                            [ngClass]="{'disabled': !dataList || dataList.length === 0}"
+                            [disabled]="!dataList || dataList.length === 0" class="btn btn-theme">Settle</button>
+                        <button type="button" (click)="onClearSelection()" class="btn btn-border">Clear
+                            Selection</button>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+
+                    <div class="precisemri-search">
+                        <select class="form-search" #actionDropDown>
+                            <option selected value="0">Select an Action</option>
+                            <option value="Save Grid">Save Grid</option>
+                            <option value="Approve & Settle">Approve & Settle</option>
+                        </select>
+                        <button type="button" class="search" [disabled]="actionDropDown.value==0?true:false"
+                            [ngStyle]="{'background-color': (actionDropDown.value==0) ? '#bfbfbf' : '#3b8beb'}"
+                            (click)="goButtonClick(actionDropDown)">Go</button>
+                    </div>
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                            <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                value={{item.value}}>{{item.value}}</option>
+                        </select>
+                    </div>
+
+
+                    <dx-button text="" type="normal" (onClick)="columnChooserClick($event)">
+                        <div class="right btn btn-theme"><i class="fa fa-cog fa-lg"></i>
+                        </div>
+                    </dx-button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="myId" [(selectedRowKeys)]="selectedRows"
+                (onCellPrepared)="onCellPrepared($event)" (onSelectionChanged)="onSelectionChanged($event)"
+                [showBorders]="true" (onInitialized)="onInitialized($event)">
+
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+                <dxo-selection mode="multiple" showCheckBoxesMode="always"></dxo-selection>
+                <dxi-column caption="Action" cellTemplate="editTemplate" [allowFiltering]="false"
+                    [allowSorting]="false"></dxi-column>
+                <dxi-column dataField="PROCCODENAME" caption="PROCCODE NAME"></dxi-column>
+                <dxi-column dataField="FAMILYNAME" caption="LAST NAME"></dxi-column>
+                <dxi-column dataField="GIVENNAME" caption="FIRST NAME"></dxi-column>
+                <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                <dxi-column dataField="AllocatedAmount" caption="Alloc"></dxi-column>
+                <dxi-column caption="Docs" cellTemplate="docTemplate" [allowFiltering]="false" [allowSorting]="false">
+                </dxi-column>
+                <dxi-column dataField="INSTITUTIONNAME" caption="FACILITY"></dxi-column>
+                <dxi-column dataField="NUMIMAGES" caption="NO OF IMAGES"></dxi-column>
+                <dxi-column dataField="StudyStatus" caption="STATUS"></dxi-column>
+                <dxi-column dataField="UserName" caption="SETTLED BY"></dxi-column>
+                <dxi-column dataField="SettlementAmount" caption="SETTLEMENT $">
+                </dxi-column>
+                <dxi-column dataField="SettlementDate" caption="SETTLEMENT Date" cellTemplate="settleTemplate">
+                </dxi-column>
+                <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+                <dxi-column dataField="PAYMENTSTATUS" caption="PAYMENT STATUS">
+                </dxi-column>
+                <dxi-column dataField="ADJUSTEDSTATUS" caption="ADJUSTED STATUS">
+                </dxi-column>
+                <dxi-column dataField="EstPaymentDate" caption="ES PAYMENT DATE" cellTemplate="esTemplate"></dxi-column>
+
+                <dxi-column dataField="PATIENTID" [width]="100" caption="Patient ID" groupCellTemplate="group1Template"
+                    [groupIndex]="1"></dxi-column>
+                <dxi-column dataField="ACCESSIONNUMBER" caption="ACCESSIONNUMBER"></dxi-column> <!-- false -->
+                <dxi-column dataField="INTERNALPATIENTID" caption="INTERNALPATIENTID"></dxi-column> <!-- false -->
+                <dxi-column dataField="INTERNALSTUDYID" caption="INTERNALSTUDYID"></dxi-column> <!-- false -->
+                <dxi-column dataField="RadPSL" caption="RAD PSL" cellTemplate="RadPSL"></dxi-column>
+                <dxi-column dataField="TechPSL" caption="TECH PSL" cellTemplate="TechPSL"></dxi-column>
+                <dxi-column dataField="RadASL" caption="RAD ASL" cellTemplate="RadASL"></dxi-column>
+                <dxi-column dataField="TechASL" caption="TECH ASL" cellTemplate="TechASL"></dxi-column>
+
+
+                <dxi-column dataField="ProcGroupName" caption="ProcGroup Name"></dxi-column> <!-- false -->
+                <dxi-column dataField="Exiled" caption="Exiled" cellTemplate="Exiled"></dxi-column>
+
+
+                <dxi-column dataField="ExiledComment" caption="ExiledComment"></dxi-column> <!-- false -->
+                <dxi-column dataField="ExiledDate" caption="ExiledDate"></dxi-column> <!-- false -->
+                <dxi-column dataField="REFERRINGPHYSICIAN" caption="REFERRINGPHYSICIAN"></dxi-column> <!-- false -->
+                <dxi-column dataField="BROKER" caption="BROKER"></dxi-column> <!-- false -->
+                <dxi-column dataField="FullAddress" caption="ADDRESS"></dxi-column> <!-- false -->
+
+                <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column> <!-- false -->
+                <dxi-column dataField="Sex" caption="GENDER"></dxi-column> <!-- false -->
+                <dxi-column dataField="AttorneyPrice" caption="Attorney Price"></dxi-column> <!-- false -->
+                <dxi-column dataField="FAXNUMBER" caption="FAXNUMBER"></dxi-column> <!-- false -->
+                <dxi-column dataField="InjuryDate" caption="DOI"></dxi-column> <!-- false -->
+
+                <div *dxTemplate="let data of 'RadPSL'"> {{data.value ? "Yes":"No"}} </div>
+                <div *dxTemplate="let data of 'TechPSL'"> {{data.value ? "Yes":"No"}} </div>
+                <div *dxTemplate="let data of 'RadASL'"> {{data.value ? "Yes":"No"}} </div>
+                <div *dxTemplate="let data of 'TechASL'"> {{data.value ? "Yes":"No"}} </div>
+                <div *dxTemplate="let data of 'Exiled'"> {{data.value ? "Yes":"No"}} </div>
+
+                <div *dxTemplate="let data of 'group1Template'">
+                    <pat-detail [data]="data"></pat-detail>
+                </div>
+                <div *dxTemplate="let data of 'editTemplate'">
+                    <a *ngIf="data.data.IsEditable == 1" href="javascript:void(0)"
+                        (click)="getSettleStudyData(data.data.Id, data.data.intId, data.data.PATIENTID)"
+                        class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-record"></a>
+                </div>
+                <div *dxTemplate="let data of 'docTemplate'">
+                    <i class="fa fa-file-text-o cursor-pointer" data-toggle="modal" data-target="#docManager"
+                        (click)="showDocManager(data.data.PATIENTID)"></i>
+                </div>
+
+                <div *dxTemplate="let data of 'settleTemplate'">
+                    {{data.data.SettlementDate | date: 'short' }}
+                </div>
+                <div *dxTemplate="let data of 'esTemplate'">
+                    {{data.data.EstPaymentDate | date: 'short' }}
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div
+                    *ngFor="let item of dataList | paginate: { id: 'pagination3' ,itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+                <pagination-controls id="pagination3" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme" id="edit-record" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{editPopupTitle ? editPopupTitle : 'Fetching data...'}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body" *ngIf="studyDetail">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="user-detail">
+                                    <form [formGroup]="editSettleForm" class="theme-form">
+                                        <div class="form-group">
+                                            <div class="theme-label">Settle $</div>
+                                            <div class="input-group">
+                                                <input formControlName="settlementAmount" type="text"
+                                                    [ngClass]="{'is-invalid': settleSubmitted && settleForm.settlementAmount.invalid}"
+                                                    class="form-control" appTwoDigitDecimaNumber>
+                                            </div>
+                                            <div *ngIf="settleSubmitted && settleForm.settlementAmount"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="settleForm.settlementAmount.invalid">Settlement amount is
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Settle Date</div>
+                                            <div class="input-group">
+                                                <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                    formControlName="settlementDate" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true">
+                                                    
+                                                </dx-date-box>
+                                            </div>
+                                            <div *ngIf="settleSubmitted && settleForm.settlementDate"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="settleForm.settlementDate.invalid">Settlement date is
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Total Case $</div>
+                                            <div class="input-group">
+                                                <input formControlName="totalCaseSettlement" type="text"
+                                                    class="form-control" appTwoDigitDecimaNumber>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">Total Med $</div>
+                                            <div class="input-group">
+                                                <input formControlName="totalMedicalBills" type="text"
+                                                    class="form-control" appTwoDigitDecimaNumber>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="theme-label">EST DATE</div>
+                                            <div class="input-group">
+                                                <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                    formControlName="radEstPaymentDate" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true">
+                                                  
+                                                </dx-date-box>
+                                            </div>
+                                        </div>
+                                        <div class="switch-group">
+                                            <label class="switch">
+                                                <input formControlName="prop123" type="checkbox">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span class="slider-label">PROP 213</span>
+                                        </div>
+                                        <div class="switch-group">
+                                            <label class="switch">
+                                                <input formControlName="underPayment" type="checkbox">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span class="slider-label">UNDER PAYMENT</span>
+                                        </div>
+                                        <div class="switch-group">
+                                            <label class="switch">
+                                                <input formControlName="overPayment" type="checkbox">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <span class="slider-label">OVER PAYMENT</span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="table-responsive manual-table">
+                                    <table class="table table-theme">
+                                        <tbody>
+                                            <tr>
+                                                <td>PATIENT ID</td>
+                                                <td>{{studyDetail.PATIENTID}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>LAST NAME</td>
+                                                <td>{{studyDetail.FAMILYNAME}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FIRST NAME</td>
+                                                <td>{{studyDetail.GIVENNAME}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DOB</td>
+                                                <td>{{studyDetail.BIRTHDATE | date: dateTimeFormatCustom.Date}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DOI</td>
+                                                <td>{{studyDetail.InjuryDate | date: dateTimeFormatCustom.Date}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>EXILED ATTORNEY</td>
+                                                <td>{{studyDetail.Exiled == null ? '' : (studyDetail.Exiled ? 'Yes' :
+                                                    'No')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>EOB</td>
+                                                <td>
+                                                    <a href="{{filePath}}" target="_blank" *ngIf="filePath">ATTACHED</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>MIN SETTLE</td>
+                                                <!-- <td>${{studyDetail.MinSettleMent}}</td> -->
+                                                <td style="color: #ff5d55;">
+                                                    <ng-container
+                                                        *ngIf="studyDetail.settleData && studyDetail.settleData.length>0">
+                                                        ${{minSettleMent}}
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <thead>
+                                    <tr>
+                                        <th width="100">DOS</th>
+                                        <th width="100">DOCTOR</th>
+                                        <th width="100">FACILITY</th>
+                                        <th width="100">ATTORNEY</th>
+                                        <th width="100">FUNDING COMPANY</th>
+                                        <th width="100">STUDY DESCRIPTION</th>
+                                        <th width="100">MIN</th>
+                                        <th width="100">ALLOC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let settle of studyDetail.settleData">
+                                        <td>{{settle.Dos | date: dateTimeFormatCustom.Date}}</td>
+                                        <td>{{settle.Doctor}}</td>
+                                        <td>{{settle.FacilityName}}</td>
+                                        <td>{{settle.ATTORNEY}}</td>
+                                        <td>{{settle.BROKER}}</td>
+                                        <td>{{settle.STUDYDESCRIPTION}}</td>
+                                        <td>{{settle.MinPrice==null?settle.Defaulltprice: settle.MinPrice}}</td>
+                                        <td><input class="form-control" type="text" appTwoDigitDecimaNumber
+                                                [(ngModel)]="settle.AllocatedAmount"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form [formGroup]="addNoteForm">
+                            <div class="user-detail">
+                                <div class="input-group">
+                                    <textarea formControlName="noteText" class="form-control"
+                                        placeholder="Enter any notes related to this settlement here"></textarea>
+                                </div>
+                            </div>
+                            <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
+                                    text</small>
+                            </div>
+                            <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
+                                class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
+                        </form>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div id="divNoteList" class="note-list">
+                            <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
+                                <div class="name">{{note.UserName}}</div>
+                                <p>{{note.Note}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="approveStudy()" type="button" class="btn btn-theme pull-left btn-sm"
+                    [attr.data-dismiss]="modelValue">Approve</button>
+                <button (click)="settleSubmit()" type="button" class="btn btn-theme pull-left btn-sm"
+                    [attr.data-dismiss]="modelValue">Save Changes</button>
+                <button (click)="resetSettleForm()" type="button" class="btn btn-border-gray pull-right btn-sm"
+                    [attr.data-dismiss]="modelValue">Clear</button>
+                <button (click)="deleteSettlementClick()" [attr.data-dismiss]="modelValue1" data-toggle="modal"
+                    data-target="#delete-settlement" class="btn btn-border-gray pull-right btn-sm">Clear & Delete
+                    Settlement
+                    Data</button>
+                <button #btnCancel class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="delete-settlement" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure to delete this settlement record?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="deleteSettlement()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in" [ngStyle]="{'display': isSettle ? 'block' : 'none'}"
+    [ngClass]="(isSettle)?'show':''" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{editPopupTitle ? editPopupTitle : 'Fetching data...'}}</h5>
+                <div (click)="closeMultiSettlePopup()" class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body" *ngIf="studyDetail">
+
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+                            <form [formGroup]="editSettleForm1" class="theme-form">
+                                <div class="form-group">
+                                    <div class="theme-label">Settle $</div>
+                                    <div class="input-group">
+                                        <input formControlName="settlementAmount" type="text"
+                                            [ngClass]="{ 'is-invalid': (settleSubmitted1 && settleForm1.settlementAmount.errors)}"
+                                            class="form-control" appTwoDigitDecimaNumber>
+                                    </div>
+                                    <div *ngIf="settleSubmitted1 && settleForm1.settlementAmount"
+                                        class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="settleForm1.settlementAmount.invalid">Settlement amount is
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Settle Date</div>
+                                    <div class="input-group">
+                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                            [ngClass]="{ 'is-invalid': (settleSubmitted1 && settleForm1.settlementDate.errors)}"
+                                            formControlName="settlementDate" type="date" [showClearButton]="true"
+                                            [useMaskBehavior]="true">
+                                        </dx-date-box>
+                                    </div>
+                                    <div *ngIf="settleSubmitted1 && settleForm1.settlementDate"
+                                        class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="settleForm1.settlementDate.invalid">Settlement date is
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Total Case $</div>
+                                    <div class="input-group">
+                                        <input formControlName="totalCaseSettlement" type="text" class="form-control"
+                                            appTwoDigitDecimaNumber>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Total Med $</div>
+                                    <div class="input-group">
+                                        <input formControlName="totalMedicalBills" type="text" class="form-control"
+                                            appTwoDigitDecimaNumber>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">EST DATE</div>
+                                    <div class="input-group">
+                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                            formControlName="radEstPaymentDate" type="date" [showClearButton]="true"
+                                            [useMaskBehavior]="true" >
+                                        </dx-date-box>
+                                    </div>
+                                </div>
+                                <div class="switch-group">
+                                    <label class="switch">
+                                        <input id="prop123" formControlName="prop123" type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="slider-label">PROP 213</span>
+                                </div>
+                                <div class="switch-group">
+                                    <label class="switch">
+                                        <input formControlName="underPayment" type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="slider-label">UNDER PAYMENT</span>
+                                </div>
+                                <div class="switch-group">
+                                    <label class="switch">
+                                        <input formControlName="overPayment" type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="slider-label">OVER PAYMENT</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <tbody>
+                                    <tr>
+                                        <td>PATIENT ID</td>
+                                        <td>{{studyDetail.PATIENTID}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LAST NAME</td>
+                                        <td>{{studyDetail.FAMILYNAME}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FIRST NAME</td>
+                                        <td>{{studyDetail.GIVENNAME}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DOB</td>
+                                        <td>{{studyDetail.BIRTHDATE | date: dateTimeFormatCustom.Date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DOI</td>
+                                        <td>{{studyDetail.InjuryDate | date: dateTimeFormatCustom.Date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EXILED ATTORNEY</td>
+                                        <td>{{studyDetail.Exiled == null ? '' : (studyDetail.Exiled ? 'Yes' :
+                                            'No')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EOB</td>
+                                        <td>
+                                            <a href="{{filePath}}" target="_blank" *ngIf="filePath">ATTACHED</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>MIN SETTLE</td>
+                                        <!-- <td>${{studyDetail.MinSettleMent}}</td> -->
+
+                                        <td style="color: #ff5d55;">
+                                            <ng-container
+                                                *ngIf="studyDetail.settleData && studyDetail.settleData.length>0">
+                                                ${{minSettleMent}}
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div id="divNoteList" class="note-list">
+                            <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
+                                <div class="name">{{note.UserName}}</div>
+                                <p>{{note.Note}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive manual-table">
+                    <table class="table table-theme">
+                        <thead>
+                            <tr>
+                                <th width="100">DOS</th>
+                                <th width="100">DOCTOR</th>
+                                <th width="100">FACILITY</th>
+                                <th width="100">ATTORNEY</th>
+                                <th width="100">FUNDING COMPANY</th>
+                                <th width="100">STUDY DESCRIPTION</th>
+                                <th width="100">MIN</th>
+                                <th width="100">ALLOC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let settle of studyDetail.settleData">
+                                <td>{{settle.Dos | date: dateTimeFormatCustom.Date}}</td>
+                                <td>{{settle.Doctor}}</td>
+                                <td>{{settle.FacilityName}}</td>
+                                <td>{{settle.ATTORNEY}}</td>
+                                <td>{{settle.BROKER}}</td>
+                                <td>{{settle.STUDYDESCRIPTION}}</td>
+                                <td>{{settle.MinPrice==null?settle.Defaulltprice: settle.MinPrice}}</td>
+                                <td><input class="form-control" type="text" appTwoDigitDecimaNumber
+                                        [(ngModel)]="settle.AllocatedAmount"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form [formGroup]="addNoteForm">
+                    <div class="user-detail">
+                        <div class="input-group">
+                            <textarea formControlName="noteText" class="form-control"
+                                placeholder="Enter any notes related to this settlement here"></textarea>
+                        </div>
+                    </div>
+                    <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
+                        <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
+                            text</small>
+                    </div>
+                    <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
+                        class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button (click)="settleSubmit1(true)" type="button" class="btn btn-theme pull-left btn-sm"
+                    [attr.data-dismiss]="modelValue2">Submit</button>
+                <button (click)="resetSettleForm()" type="button" class="btn btn-border-clear pull-right btn-sm"
+                    [attr.data-dismiss]="modelValue2">Clear</button>
+                <button (click)="closeMultiSettlePopup()" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="isSettle" class="modal-backdrop fade show"></div>
+<app-patient-detail></app-patient-detail>

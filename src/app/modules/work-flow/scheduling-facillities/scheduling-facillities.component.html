@@ -1,0 +1,2558 @@
+<div class="main-page-body scheduling-facilities-page">
+   <div class="page-header">
+      <div class="row">
+         <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+            <div class="page-header-title">Scheduling Facilities</div>
+         </div>
+         <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+            <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                  aria-hidden="true"></i> Filter</a>
+         </div>
+      </div>
+   </div>
+   <div class="inner-page-body">
+      <div class="search-field search-field-theme collapse show">
+         <div class="theme-form">
+            <div class="form-group">
+               <div class="theme-label">Facility Name</div>
+               <ng-select [items]="facilityList" placeholder="Select" bindLabel="facilityName" [multiple]="false"
+                  [closeOnSelect]="false" bindValue="facilityName" [(ngModel)]="selectedFacility">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.facilityName}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Parent Company</div>
+               <ng-select [items]="facilityParentList" placeholder="Select" bindLabel="facilityParentName"
+                  [multiple]="false" [closeOnSelect]="false" bindValue="facilityParentName"
+                  [(ngModel)]="selectedParentFacility">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.facilityParentName}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Funding Company</div>
+               <ng-select [items]="brokerList" placeholder="Select" bindLabel="broker" [multiple]="false"
+                  [closeOnSelect]="false" bindValue="brokerId" [(ngModel)]="selectedBroker">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.broker}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Modality</div>
+               <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName" [multiple]="true"
+                  [closeOnSelect]="false" bindValue="ModalityName" [(ngModel)]="selectedModality"
+                  (change)="filterFacility($event)">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.ModalityName}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Hours</div>
+               <ng-select [items]="hoursOrXrayHours" placeholder="Select" bindLabel="day" [multiple]="true"
+                  [closeOnSelect]="false" bindValue="day" [(ngModel)]="selectedHours">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.day}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Work Zip</div>
+               <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="workZipModel" (keyup.enter)="applyFilter()">
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Home Zip</div>
+               <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="homeZipModel" (keyup.enter)="applyFilter()">
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="theme-label">Financial Type</div>
+               <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="financialtypename"
+                  [multiple]="true" [closeOnSelect]="false" bindValue="financialtypeid"
+                  [(ngModel)]="selectedFinancialType">
+                  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                     <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.financialtypename}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                     </div>
+                     <div class="ng-value" *ngIf="items.length > 1">
+                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                     </div>
+                  </ng-template>
+               </ng-select>
+            </div>
+            <div class="form-action">
+               <a href="javascript:void(0)" class="btn btn-theme" (click)="applyFilter()">Search</a>
+               <a href="javascript:void(0)" class="btn btn-border" (click)="clearApplyFilter()">Clear</a>
+            </div>
+         </div>
+      </div>
+      <div class="search-field search-field-theme page-top-action">
+         <div class="theme-form">
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                     <div class="theme-label">MRI Type</div>
+                     <ng-select [items]="mriType" placeholder="Select" bindLabel="type" [multiple]="true"
+                        [disabled]="isMriDropDownDisabled" [closeOnSelect]="false" bindValue="type"
+                        [(ngModel)]="selectedMriType">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.type}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Strength</div>
+                     <ng-select [items]="mriStrength" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="strength" [multiple]="true" [closeOnSelect]="false" bindValue="strength"
+                        [(ngModel)]="selectedMriStrength">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.strength}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Make</div>
+                     <ng-select [items]="mriOrCtMake" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="make" [multiple]="true" [closeOnSelect]="false" bindValue="make"
+                        [(ngModel)]="selectedMriMake">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.make}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Weight</div>
+                     <ng-select [items]="mriOrCtWeight" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="weight" [multiple]="true" [closeOnSelect]="false" bindValue="weight"
+                        [(ngModel)]="selectedMriWeight">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.weight}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Contrast</div>
+                     <ng-select [items]="mriOrCtContrast" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="contrast" [multiple]="true" [closeOnSelect]="false" bindValue="contrast"
+                        [(ngModel)]="selectedMriContrast">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.contrast}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Sedation</div>
+                     <ng-select [items]="mriOrCtSedation" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="sedation" [multiple]="true" [closeOnSelect]="false" bindValue="sedation"
+                        [(ngModel)]="selectedMriSedation">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.sedation}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">MRI Breast</div>
+                     <ng-select [items]="mriOrCtBreast" placeholder="Select" [disabled]="isMriDropDownDisabled"
+                        bindLabel="breast" [multiple]="true" [closeOnSelect]="false" bindValue="breast"
+                        [(ngModel)]="selectedMriBreast">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.breast}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+               </div>
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                     <div class="theme-label">CT Make</div>
+                     <ng-select [items]="mriOrCtMake" placeholder="Select" [disabled]="isCtDropDownDisabled"
+                        bindLabel="make" [multiple]="true" [closeOnSelect]="false" bindValue="make"
+                        [(ngModel)]="selectedCtMake">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.make}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">CT Slices</div>
+                     <ng-select [items]="ctSlices" placeholder="Select" bindLabel="slices" [multiple]="true"
+                        [disabled]="isCtDropDownDisabled" [closeOnSelect]="false" bindValue="slices"
+                        [(ngModel)]="selectedCtSlices">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.slices}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">CT Weight</div>
+                     <ng-select [items]="mriOrCtWeight" placeholder="Select" bindLabel="weight" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="weight" [disabled]="isCtDropDownDisabled"
+                        [(ngModel)]="selectedCtWeight">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.weight}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">CT Contrast</div>
+                     <ng-select [items]="mriOrCtContrast" placeholder="Select" bindLabel="contrast" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="contrast" [disabled]="isCtDropDownDisabled"
+                        [(ngModel)]="selectedCtContrast">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.contrast}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">CT Sedation</div>
+                     <ng-select [items]="mriOrCtSedation" placeholder="Select" bindLabel="sedation" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="sedation" [disabled]="isCtDropDownDisabled"
+                        [(ngModel)]="selectedCtSedation">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.sedation}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">CT Breast</div>
+                     <ng-select [items]="mriOrCtBreast" placeholder="Select" bindLabel="breast" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="breast" [disabled]="isCtDropDownDisabled"
+                        [(ngModel)]="selectedCtBreast">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.breast}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">Xray Walk In</div>
+                     <ng-select [items]="xrayWalkIn" placeholder="Select" bindLabel="walkIn" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="walkIn" [disabled]="isXrayDropDownDisabled"
+                        [(ngModel)]="selectedXrayWalkIn">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.walkIn}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+                  <div class="form-group">
+                     <div class="theme-label">Xray Hour</div>
+                     <ng-select [items]="hoursOrXrayHours" placeholder="Select" bindLabel="day" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="day" [disabled]="isXrayDropDownDisabled"
+                        [(ngModel)]="selectedXrayHours">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                           <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                              <span class="ng-value-label"> {{item.day}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                           </div>
+                           <div class="ng-value" *ngIf="items.length > 1">
+                              <span class="ng-value-label">{{items.length - 1}} more...</span>
+                           </div>
+                        </ng-template>
+                     </ng-select>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="precisemri-search page-select">
+            <div class="theme-label">Page Size</div>
+            <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+               <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true" value={{item.value}}>
+                  {{item.value}}</option>
+            </select>
+         </div>
+         <div class="table-responsive scheduling-facillities-table">
+            <div class="table-responsive page-table">
+               <dx-data-grid id="schedulingFacilityGrid" [dataSource]="schedulingFacilityList"
+                  [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                  [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="facilityID"
+                  [showBorders]="true" (onEditorPreparing)="onEditorPreparing($event)">
+                  <dxo-paging [enabled]="false"></dxo-paging>
+                  <dxo-sorting mode="multiple"></dxo-sorting>
+                  <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                  <!-- </dxo-filter-row> -->
+                  <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                  <dxi-column dataField="facilityID" caption="facilityID" [visible]="false"></dxi-column>
+                  <dxi-column dataField="facilityParentID" caption="facilityParentID" [visible]="false"></dxi-column>
+                  <dxi-column dataField="facilityParentName" caption="facilityParentName" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="facilityName" caption="FACILITY NAME" cellTemplate="facilityNameTemplate">
+                  </dxi-column>
+                  <dxi-column dataField="street" caption="STREET" [allowFiltering]="false" [allowSorting]="false"
+                     cellTemplate="streetTemplate"></dxi-column>
+                  <dxi-column dataField="city" caption="CITY"></dxi-column>
+                  <dxi-column dataField="state" caption="STATE" [allowHeaderFiltering]="false"></dxi-column>
+                  <dxi-column dataField="zip" caption="ZIP"></dxi-column>
+                  <dxi-column dataField="homeDistance" [allowResizing]="false" [width]="55" caption="HOME DIST.">
+                  </dxi-column>
+                  <dxi-column dataField="workDistance" [allowResizing]="false" [width]="55" caption="WORK DIST.">
+                  </dxi-column>
+                  <dxi-column dataField="homeZipTotalscore" caption="HOME SCORE" [allowResizing]="false"
+                     [allowHeaderFiltering]="false" cellTemplate="homeZipTotalscoreTemplate"></dxi-column>
+                  <dxi-column dataField="workZipTotalscore" caption="WORK SCORE" [allowResizing]="false"
+                     [allowHeaderFiltering]="false" cellTemplate="workZipTotalscoreTemplate"></dxi-column>
+                  <dxi-column dataField="schedulingOfficePhone" caption="SCHEDULING PHONE"
+                     cellTemplate="schedulingOfficePhone"></dxi-column>
+                  <dxi-column dataField="schedulingFax" caption="SCHED. FAX" cellTemplate="schedulingFaxFormate">
+                  </dxi-column>
+                  <!-- for MRI Service -->
+                  <dxi-column caption="MRI" cellTemplate="mriserviceTemplate"></dxi-column>
+                  <dxi-column dataField="mriType" caption="TYPE" cellTemplate="mriTypeTemplate"></dxi-column>
+                  <!-- for MRI1 Contrast Service -->
+                  <dxi-column dataField="mri1contrast" [width]="50"  caption="CONTRAST" cellTemplate="mri1contrastTemplate">
+                  </dxi-column>
+                  <!-- for CT Service -->
+                  <dxi-column caption="CT" cellTemplate="ctserviceTemplate"></dxi-column>
+                  <!-- for XRAY Service -->
+                  <dxi-column caption="XRAY" cellTemplate="xrayServiceTemplate"></dxi-column>
+                  <dxi-column caption="ARTHRO" cellTemplate="arthrogramServiceTemplate"></dxi-column>
+                  <dxi-column caption="BONE DENSITY" cellTemplate="boneDensityServiceTemplate"></dxi-column>
+                  <dxi-column caption="MAMMO" cellTemplate="mammographServiceTemplate"></dxi-column>
+                  <dxi-column caption="NUC MED" cellTemplate="nuclearMedicineServiceTemplate"></dxi-column>
+                  <dxi-column caption="PET" cellTemplate="petscanServiceTemplate"></dxi-column>
+                  <dxi-column caption="US" cellTemplate="ultrasoundServiceTemplate"></dxi-column>
+                  <dxi-column dataField="xrayWalkIn" caption="xrayWalkIn" [visible]="false"></dxi-column>
+                  <dxi-column dataField="mriexceptionDescription" caption="mriexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="ctexceptionDescription" caption="ctexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="xrexceptionDescription" caption="xrexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="arthoExceptionDescription" caption="arthoExceptionDescription"
+                     [visible]="false"></dxi-column>
+                  <dxi-column dataField="bnexceptionDescription" caption="bnexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="mammoExceptionDescription" caption="mammoExceptionDescription"
+                     [visible]="false"></dxi-column>
+                  <dxi-column dataField="nmexceptionDescription" caption="nmexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="psexceptionDescription" caption="psexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <dxi-column dataField="usexceptionDescription" caption="usexceptionDescription" [visible]="false">
+                  </dxi-column>
+                  <div *dxTemplate="let data of 'facilityNameTemplate'">
+                     <a href="javascript:void(0)" (click)="getSchedulingFacilityDetail(data)" data-toggle="modal"
+                        data-target="#Edit-scheduling-Facility"
+                        style="text-decoration: underline !important;">{{data.data.facilityName}}</a>
+                  </div>
+                  <div *dxTemplate="let data of 'streetTemplate'" class="street-address-row">
+                     <a class="map-icon"
+                        [href]="'https://www.google.com/maps/place/' + data.data.street+'/'+data.data.state+'/'+data.data.zip"
+                        target="blank">
+                        <img src="assets/images/google-maps.png" width="20" height="20">
+                     </a>
+                     <span
+                        class="street-address">{{data.data.street?data.data.street:''+','+data.data.state?data.data.state:''+','+data.data.zip?data.data.zip:''}}</span>
+                     <a class="copy-button" (click)="copyToClipboard(data.data)"><i class="fa fa-copy"></i></a>
+                  </div>
+                  <div *dxTemplate="let data of 'mriserviceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.mriexceptionDescription!='' && data.data.mriexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.mriexceptionDescription!='' && data.data.mriexceptionDescription!=null ? data.data.mriexceptionDescription:''">
+                        <img [src]="data.data.mriservice==true?'assets/images/yes.png':'assets/images/no.png'"
+                           width="20" height="20" />
+                     </div>
+                  </div>
+                  <div *dxTemplate="let data of 'ctserviceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.ctexceptionDescription!='' && data.data.ctexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.ctexceptionDescription!='' && data.data.ctexceptionDescription!=null ? data.data.ctexceptionDescription:''">
+                        <img [src]="data.data.ctservice==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                           height="20" />
+                     </div>
+                  </div>
+                  <div *dxTemplate="let data of 'xrayServiceTemplate'">
+                     <div>
+                        <img
+                           [src]="data.data.xrayService==false? 'assets/images/no.png' :data.data.xrayService==true && data.data.xrayWalkIn=='Yes' ?'assets/images/walk.png':data.data.xrayService==true && data.data.xrayWalkIn=='No'?'assets/images/calender3.png':data.data.xrayService==true && data.data.xrayWalkIn=='w/ MRI Only'?'assets/images/alert.png':'assets/images/yes.png'"
+                           width="20" height="20" />
+                     </div>
+                  </div>
+                  <div *dxTemplate="let data of 'mri1contrastTemplate'">
+                     <img
+                        [src]="(data.data.mri1contrast=='' || data.data.mri1contrast==null || data.data.mri1contrast=='No') ? 'assets/images/no.png':'assets/images/yes.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'mriTypeTemplate'">
+                     <p [innerText]="(data.data.mriservice==false  || data.data.mriservice==null || data.data.mriservice=='') ? '-':data.data.mriType"
+                        width="20" height="20"></p>
+                  </div>
+                  <div *dxTemplate="let data of 'arthrogramServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.arthoExceptionDescription!='' && data.data.arthoExceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.arthoExceptionDescription!='' && data.data.arthoExceptionDescription!=null ? data.data.arthoExceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.arthrogramService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'boneDensityServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.bnexceptionDescription!='' && data.data.bnexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.bnexceptionDescription!='' && data.data.bnexceptionDescription!=null ? data.data.bnexceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.boneDensityService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'mammographServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.mammoExceptionDescription!='' && data.data.mammoExceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.mammoExceptionDescription!='' && data.data.mammoExceptionDescription!=null ? data.data.mammoExceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.mammographService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'mammographServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.mammoExceptionDescription!='' && data.data.mammoExceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.mammoExceptionDescription!='' && data.data.mammoExceptionDescription!=null ? data.data.mammoExceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.mammographService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'nuclearMedicineServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.nmexceptionDescription!='' && data.data.nmexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.nmexceptionDescription!='' && data.data.nmexceptionDescription!=null ? data.data.nmexceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.nuclearMedicineService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'petscanServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.psexceptionDescription!='' && data.data.psexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.psexceptionDescription!='' && data.data.psexceptionDescription!=null ? data.data.psexceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.petscanService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'ultrasoundServiceTemplate'">
+                     <div
+                        [ngStyle]="{'background-color':data.data.usexceptionDescription!='' && data.data.usexceptionDescription!=null ? 'yellow' : '' }"
+                        [title]="data.data.usexceptionDescription!='' && data.data.usexceptionDescription!=null ? data.data.usexceptionDescription:''">
+                     </div>
+                     <img [src]="data.data.ultrasoundService==true?'assets/images/yes.png':'assets/images/no.png'"
+                        width="20" height="20" />
+                  </div>
+                  <div *dxTemplate="let data of 'homeZipTotalscoreTemplate'">
+                     <p [innerText]="data.data.homeZipTotalscore==0?'':data.data.homeZipTotalscore"></p>
+                  </div>
+                  <div *dxTemplate="let data of 'workZipTotalscoreTemplate'">
+                     <p [innerText]="data.data.workZipTotalscore==0?'':data.data.workZipTotalscore"></p>
+                  </div>
+                  <div *dxTemplate="let data of 'schedulingOfficePhone'">
+                   <a [href]="'tel:'+data.data.schedulingOfficePhone" target="blank">{{data.value | phoneNumberFormate}} </a>  
+                  </div>
+                  <div *dxTemplate="let data of 'schedulingFaxFormate'">
+                     {{data.value}}
+                  </div>
+               </dx-data-grid>
+            </div>
+         </div>
+         <div class="pagination-theme">
+            <div class="pagination-theme">
+               <div
+                  *ngFor="let item of schedulingFacilityList | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalSchedulingFacility }">
+               </div>
+               <pagination-controls id="pagination1" (pageChange)="onPageNoChange($event)"></pagination-controls>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Pop Up Start -->
+   <div class="modal fade modal-theme" id="Edit-scheduling-Facility" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-modal="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">{{facilityName}}</h5>
+               <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+               <div class="tab-section">
+                  <ul class="nav nav-tabs">
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#general-info">General Info</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#contact-details">Facility Contact Details</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#modalities">Modalities</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#scheduling-details">Scheduling Details</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#cash-prices">Cash Prices</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#notes-tab">Notes</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#policies">Policies</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#parent-company">Parent Company</a>
+                     </li>
+                  </ul>
+                  <div class="tab-content">
+                     <div class="tab-pane" id="general-info">
+                        <form class="theme-form view-mode" [formGroup]="generalInfoForm">
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Parent Company</div>
+                                    <div class="input-group md-input-focused">
+                                       <select class="form-control" formControlName="facilityParentId">
+                                          <option value="" disabled>Select Parent Company</option>
+                                          <option *ngFor="let parentCompany of facilityParentList"
+                                             [ngValue]="parentCompany.facilityParentID">
+                                             {{parentCompany.facilityParentName }}
+                                          </option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Facility Name</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="facilityName">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Street</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="street">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">City</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="city">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">State</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="state">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Zip</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="zip">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="checkbox-theme">
+                                    <input class="form-control" formControlName="isActive" type="checkbox">
+                                    <label for="editinfo4" class="arrow-label">Active</label>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="checkbox-theme">
+                                    <input class="form-control" formControlName="doNotScheduleFacility" type="checkbox">
+                                    <label for="editinfo5" class="arrow-label">Do not schedule this
+                                       facility</label>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="checkbox-theme">
+                                    <input class="form-control" id="info1" type="checkbox" disabled>
+                                    <label for="info1" class="arrow-label">La County</label>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- <div class="row"> -->
+                           <!-- <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"> -->
+                           <!-- <div class="checkbox-theme"> -->
+                           <!-- <input class="form-control" formControlName="overridePrice" type="checkbox"> -->
+                           <!-- <label for="editinfo2" class="arrow-label">Override Facility Prices</label> -->
+                           <!-- </div> -->
+                           <!-- </div> -->
+                           <!-- </div> -->
+                        </form>
+                     </div>
+                     <div class="tab-pane fade" id="contact-details">
+                        <form class="theme-form" [formGroup]="facilityContactDetailForm">
+                           <div class="row">
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">IT Support</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="itSupportContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="itSupportEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="itSupportOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="itSupportCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="itSupportHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="itSupportFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">Reports</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="reportsContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="reportsEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="reportsOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="reportsCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="reportsHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="reportsFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">Status Check</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="statusCheckContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="statusCheckEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="statusCheckOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="statusCheckCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="statusCheckHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="statusCheckFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">Scheduling</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="schedulingContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="schedulingEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="schedulingOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="schedulingCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="schedulingHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="schedulingFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">Images</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="imagesContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="imagesEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="imagesOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="imagesCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="imagesHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="imagesFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="theme-label-title">Billing</div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Contact Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="billingContact">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="billingEmail">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Office Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="billingOfficePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Cell Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="billingCellPhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Home Phone #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="billingHomePhone">
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax #</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" mask="(000)-000-0000"
+                                             formControlName="billingFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                     <div class="tab-pane fade" id="modalities">
+                        <div class="tab-section">
+                           <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                 <a class="nav-link active" data-toggle="tab" href="#services-info">Services</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" data-toggle="tab" href="#exceptions-info">Exceptions</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" data-toggle="tab" href="#mri-info">MRI</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" data-toggle="tab" href="#ct-info">CT</a>
+                              </li>
+                           </ul>
+                           <div class="tab-content">
+                              <div class="tab-pane active show" id="services-info">
+                                 <form class="theme-form" [formGroup]="modalityServiceForm">
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="MriServices" type="checkbox"
+                                                formControlName="mriservice">
+                                             <label for="MriServices" class="arrow-label">MRI</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="CtServices" type="checkbox"
+                                                formControlName="ctservice">
+                                             <label for="CtServices" class="arrow-label">CT</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="XrayServices" type="checkbox"
+                                                formControlName="xrayService">
+                                             <label for="XrayServices" class="arrow-label">XRAY</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="ArthrogramServices" type="checkbox"
+                                                formControlName="arthrogramService">
+                                             <label for="ArthrogramServices" class="arrow-label">Arthrogram</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="BoneDensityServices" type="checkbox"
+                                                formControlName="boneDensityService">
+                                             <label for="BoneDensityServices" class="arrow-label">Bone
+                                                Density</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="MammographServices" type="checkbox"
+                                                formControlName="mammographService">
+                                             <label for="MammographServices" class="arrow-label">Mammograph</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="NuclearMedicineServices" type="checkbox"
+                                                formControlName="nuclearMedicineService">
+                                             <label for="NuclearMedicineServices" class="arrow-label">Nuclear
+                                                Medicine</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="UltrasoundServices" type="checkbox"
+                                                formControlName="ultrasoundService">
+                                             <label for="UltrasoundServices" class="arrow-label">Ultrasound</label>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                              <div class="tab-pane" id="exceptions-info">
+                                 <form class="theme-form" [formGroup]="modalityExceptionsForm">
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsMri" type="checkbox"
+                                                formControlName="mriexception">
+                                             <label for="exptionsMri" class="arrow-label">MRI</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="mriexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control1" id="exptionsCT" type="checkbox"
+                                                formControlName="ctexception">
+                                             <label for="exptionsCT" class="arrow-label">CT</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="ctexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsXray" type="checkbox"
+                                                formControlName="xrexception">
+                                             <label for="exptionsXray" class="arrow-label">XRAY</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="xrexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsArthrogram" type="checkbox"
+                                                formControlName="arthoException">
+                                             <label for="exptionsArthrogram" class="arrow-label">Arthrogram</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="arthoExceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsBoneDensity" type="checkbox"
+                                                formControlName="bnexception">
+                                             <label for="exptionsBoneDensity" class="arrow-label">Bone
+                                                Density</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="bnexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsMammograph" type="checkbox"
+                                                formControlName="mammoException">
+                                             <label for="exptionsMammograph" class="arrow-label">Mammograph</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="mammoExceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsNuclearMedicine" type="checkbox"
+                                                formControlName="nmexception">
+                                             <label for="exptionsNuclearMedicine" class="arrow-label">Nuclear
+                                                Medicine</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="nmexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsPETScan" type="checkbox"
+                                                formControlName="psexception">
+                                             <label for="exptionsPETScan" class="arrow-label">PET
+                                                Scan</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="psexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="checkbox-theme">
+                                             <input class="form-control" id="exptionsUltrasound" type="checkbox"
+                                                formControlName="usexception">
+                                             <label for="exptionsUltrasound" class="arrow-label">Ultrasound</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                                          <div class="form-group">
+                                             <div class="theme-label"></div>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" maxlength="10"
+                                                   formControlName="usexceptionDescription">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                              <div class="tab-pane" id="mri-info">
+                                 <form class="theme-form" [formGroup]="modalityMriForm">
+                                    <div class="table-responsive manual-table">
+                                       <table class="table table-theme">
+                                          <thead>
+                                             <tr>
+                                                <th width="100">Machine #</th>
+                                                <th width="100">Type</th>
+                                                <th width="100">Strength</th>
+                                                <th width="100">Make</th>
+                                                <th width="100">Weight</th>
+                                                <th width="100">Contrast</th>
+                                                <th width="100">Incl. Flex & Ext</th>
+                                                <th width="100">Sedation</th>
+                                                <th width="100">Breast</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr>
+                                                <td>1</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1type">
+                                                      <option></option>
+                                                      <option value="Open">Open</option>
+                                                      <option value="Closed">Closed</option>
+                                                      <option value="Stand Up">Stand Up</option>
+                                                      <option value="Wide Bore">Wide Bore</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1strength">
+                                                      <option></option>
+                                                      <option value=".3T">.3T</option>
+                                                      <option value=".6T">.6T</option>
+                                                      <option value="1.0T">1.0T</option>
+                                                      <option value="1.2T">1.2T</option>
+                                                      <option value="1.5T">1.5T</option>
+                                                      <option value="3T">3T</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1contrast">
+                                                      <option></option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="No">No</option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="Rectal">Rectal</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mriwFlexandEXT">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri1breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>2</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2type">
+                                                      <option></option>
+                                                      <option value="Open">Open</option>
+                                                      <option value="Closed">Closed</option>
+                                                      <option value="Stand Up">Stand Up</option>
+                                                      <option value="Wide Bore">Wide Bore</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2strength">
+                                                      <option></option>
+                                                      <option value=".3T">.3T</option>
+                                                      <option value=".6T">.6T</option>
+                                                      <option value="1.0T">1.0T</option>
+                                                      <option value="1.2T">1.2T</option>
+                                                      <option value="1.5T">1.5T</option>
+                                                      <option value="3T">3T</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2contrast">
+                                                      <option></option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="No">No</option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="Rectal">Rectal</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mrI2WFlexandEXT">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri2breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>3</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3type">
+                                                      <option></option>
+                                                      <option value="Open">Open</option>
+                                                      <option value="Closed">Closed</option>
+                                                      <option value="Stand Up">Stand Up</option>
+                                                      <option value="Wide Bore">Wide Bore</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3strength">
+                                                      <option></option>
+                                                      <option value=".3T">.3T</option>
+                                                      <option value=".6T">.6T</option>
+                                                      <option value="1.0T">1.0T</option>
+                                                      <option value="1.2T">1.2T</option>
+                                                      <option value="1.5T">1.5T</option>
+                                                      <option value="3T">3T</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3contrast">
+                                                      <option></option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="No">No</option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="Rectal">Rectal</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mrI3WFlexandEXT">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="mri3breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                    <div class="input-group">
+                                       <div class="theme-label-title">Notes</div>
+                                       <div
+                                          *ngIf="refmodalityMriForm.mrinotes.value==null || refmodalityMriForm.mrinotes.value==''"
+                                          class="nodata-display"> No note to display </div>
+                                       <textarea class="form-control" formControlName="mrinotes"></textarea>
+                                    </div>
+                                 </form>
+                              </div>
+                              <div class="tab-pane" id="ct-info">
+                                 <form class="theme-form" [formGroup]="modalityCtForm">
+                                    <div class="table-responsive manual-table">
+                                       <table class="table table-theme">
+                                          <thead>
+                                             <tr>
+                                                <th width="100">Machine #</th>
+                                                <th width="100">Make</th>
+                                                <th width="100">Slices</th>
+                                                <th width="100">Weight</th>
+                                                <th width="100">Contrast</th>
+                                                <th width="100">Sedation</th>
+                                                <th width="100">Breast</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr>
+                                                <td>1</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1slices">
+                                                      <option></option>
+                                                      <option value="1">1</option>
+                                                      <option value="4">4</option>
+                                                      <option value="6">6</option>
+                                                      <option value="8">8</option>
+                                                      <option value="16">16</option>
+                                                      <option value="32">32</option>
+                                                      <option value="64">64</option>
+                                                      <option value="NA">NA</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1contrast">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct1breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>2</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2slices">
+                                                      <option></option>
+                                                      <option value="1">1</option>
+                                                      <option value="4">4</option>
+                                                      <option value="6">6</option>
+                                                      <option value="8">8</option>
+                                                      <option value="16">16</option>
+                                                      <option value="32">32</option>
+                                                      <option value="64">64</option>
+                                                      <option value="NA">NA</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2contrast">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct2breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>3</td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3make">
+                                                      <option></option>
+                                                      <option value="GE">GE</option>
+                                                      <option value="Fonar">Fonar</option>
+                                                      <option value="Hitachi">Hitachi</option>
+                                                      <option value="Phillips">Phillips</option>
+                                                      <option value="Siemens">Siemens</option>
+                                                      <option value="Toshiba">Toshiba</option>
+                                                      <option value="Other">Other</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3slices">
+                                                      <option></option>
+                                                      <option value="1">1</option>
+                                                      <option value="4">4</option>
+                                                      <option value="6">6</option>
+                                                      <option value="8">8</option>
+                                                      <option value="16">16</option>
+                                                      <option value="32">32</option>
+                                                      <option value="64">64</option>
+                                                      <option value="NA">NA</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3weight">
+                                                      <option></option>
+                                                      <option value="300">300</option>
+                                                      <option value="350">350</option>
+                                                      <option value="400">400</option>
+                                                      <option value="450">450</option>
+                                                      <option value="500">500</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3contrast">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3sedation">
+                                                      <option></option>
+                                                      <option value="Oral">Oral</option>
+                                                      <option value="IV">IV</option>
+                                                      <option value="Both">Both</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                                <td>
+                                                   <select class="form-control" formControlName="ct3breast">
+                                                      <option></option>
+                                                      <option value="Yes">Yes</option>
+                                                      <option value="No">No</option>
+                                                   </select>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                    <div class="input-group">
+                                       <div class="theme-label-title">Notes</div>
+                                       <div
+                                          *ngIf="refmodalityCtFormForm.ctnotes.value==null || refmodalityCtFormForm.ctnotes.value==''"
+                                          class="nodata-display"> No note to display </div>
+                                       <textarea class="form-control" formControlName="ctnotes"></textarea>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="tab-pane fade active show" id="scheduling-details">
+                        <form class="theme-form view-mode" [formGroup]="facilitySchedulingDetailForm">
+
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Parking</div>
+                                    <div class="input-group">
+                                       <select class="form-control" formControlName="parking">
+                                          <option value="" disabled>Select</option>
+                                          <option value="Free parking lot">Free parking lot</option>
+                                          <option value="Paid parking only">Paid parking only</option>
+                                          <option value="Street parking Free">Street parking Free</option>
+                                          <option value="Street parking Meter">Street parking Meter</option>
+                                          <option value="Valet">Valet</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Pre-Arrival Time</div>
+                                    <div class="input-group">
+                                       <select class="form-control" formControlName="preArrivalTime">
+                                          <option value="" disabled>Select</option>
+                                          <option>10 min</option>
+                                          <option>15 min</option>
+                                          <option>20 min</option>
+                                          <option>25 min</option>
+                                          <option>30 min</option>
+                                          <option>45 min</option>
+                                          <option>60 min</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">XRay Walk In</div>
+                                    <div class="input-group">
+                                       <select class="form-control" formControlName="xrayWalkIn">
+                                          <option value="" disabled>Select</option>
+                                          <option>Yes</option>
+                                          <option>No</option>
+                                          <option value="w/ MRI Only">w/ MRI Only</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="row">
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="theme-label-title">MRI Hours</div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Sunday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="sunOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="sunOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="sunOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="sunOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Monday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="monOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="monOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="monOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="monOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Tuesday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="tueOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="tueOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="tueOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="tueOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Wednesday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="wedOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="wedOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="wedOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="wedOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Thursday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="thuOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="thuOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="thuOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="thuOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Friday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="friOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="friOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="friOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="friOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Saturday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="satOpenFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="satOpenTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="satOpenFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="satOpenTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+                                 <div class="user-detail">
+                                    <div class="row">
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="theme-label-title">XRAY Hours</div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Sunday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="sunXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="sunXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="sunXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="sunXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Monday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="monXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="monXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="monXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="monXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Tuesday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="tueXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="tueXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="tueXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="tueXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Wednesday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="wedXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="wedXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="wedXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="wedXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Thursday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="thuXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="thuXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="thuXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="thuXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Friday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="friXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="friXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="friXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="friXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div class="form-group time-group">
+                                             <div class="theme-label">Saturday</div>
+                                             <div class="time-group-list">
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="satXrayFrom">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="satXrayTo">
+                                                </div>
+                                                <div class="timelist">
+                                                   <input type="time" class="form-control"
+                                                      formControlName="satXrayFrom2">
+                                                   <span>to</span>
+                                                   <input type="time" class="form-control" formControlName="satXrayTo2">
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                     <div class="tab-pane fade" id="cash-prices">
+                        <div class="cash-price-table">
+                           <div class="table-responsive manual-table">
+                              <table class="table table-theme">
+                                 <thead>
+                                    <tr>
+                                       <th width="100">Facility Name</th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                MRI
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                Arthrogram
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                MRI w/ &amp; w/o contrast
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                MRI w/ contrast
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                CT
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                CT w/ &amp; w/o contrast
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                XRAY
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                Ultrasound
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                PET Scan
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                Nuclear Medicine
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                Bone Density
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                       <th width="100">
+                                          <div class="th-group">
+                                             <div class="th-single">
+                                                Mammo
+                                             </div>
+                                             <div class="th-list">
+                                                <span>Tech</span>
+                                                <span>Global</span>
+                                             </div>
+                                          </div>
+                                       </th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let pricing of schedulingPricing">
+                                       <td>
+                                          {{pricing.facilityName}}
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.mriPriceTech}}</span>
+                                             <span>{{pricing.mriPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.arthrogramPriceTech}}</span>
+                                             <span>{{pricing.arthrogramPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.mriwoContrastPriceTech}}</span>
+                                             <span>{{pricing.mriwoContrastPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.mriwContrastPriceNewTech}}</span>
+                                             <span>{{pricing.mriwContrastPriceNewGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.ctPriceTech}}</span>
+                                             <span>{{pricing.ctPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.ctwoContrastPriceTech}}</span>
+                                             <span>{{pricing.ctwoContrastPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.xRayPriceTech}}</span>
+                                             <span>{{pricing.xRayPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.ultrasoundPriceTech}}</span>
+                                             <span>{{pricing.ultrasoundPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.petPriceTech}}</span>
+                                             <span>{{pricing.petPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.nuclearMedicinePriceTech}}</span>
+                                             <span>{{pricing.nuclearMedicinePriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.boneDensityPriceTech}}</span>
+                                             <span>{{pricing.boneDensityPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="td-list">
+                                             <span>{{pricing.mammographPriceTech}}</span>
+                                             <span>{{pricing.mammographPriceGlobal}}</span>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="notes-tab">
+                        <div class="note-list">
+                           <ng-container *ngIf="facilityNotesList?.length > 0">
+                              <div class="note-list-inner" *ngFor="let note of facilityNotesList;">
+                                 <div class="name">{{note.Username}} {{note.Timestamp | date: dateTimeFormatCustom.DateTime}}</div>
+                                 <p>{{note.Note}}</p>
+                              </div>
+                           </ng-container>
+                           <ng-container *ngIf="facilityNotesList?.length==0">
+                              <h2>No Notes..</h2>
+                           </ng-container>
+                        </div>
+                        <!-- <div class="user-detail">
+                        <div class="input-group">
+                        <textarea class="form-control" placeholder="Add Note Here" disabled></textarea>
+                        </div>
+                        </div> -->
+                     </div>
+                     <div class="tab-pane fade" id="policies">
+                        <div class="theme-form">
+                           <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                 <div class="theme-label-title">Scheduling Facility Policies</div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                 <div class="cke-editor-group">
+                                    <ckeditor #myckeditor [(ngModel)]="facilityPolicy" [config]="ckConfig"
+                                       (paste)="onPaste($event)" (change)="onChange($event)">
+                                    </ckeditor>
+                                    <!-- <ckeditor [editor]="Editor" [(ngModel)]="facilityPolicy" [disabled]="true"></ckeditor> -->
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                 <div class="theme-label-title">Parent Company Policies</div>
+                              </div>
+                              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                 <div class="cke-editor-group">
+                                    <ckeditor #myckeditor [(ngModel)]="parentPolicy" [config]="ckConfig"
+                                       (paste)="onPaste($event)" (change)="onChange($event)">
+                                    </ckeditor>
+                                    <!-- <ckeditor [editor]="Editor" [(ngModel)]="parentPolicy"  [disabled]="true"></ckeditor> -->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="parent-company">
+                        <form class="theme-form" [formGroup]="facilityParentCompanyForm">
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Company Name</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="facilityParentName">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Address</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="parentAddress">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">City</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="parentCity">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Zip</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="parentZip">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                 <div class="form-group">
+                                    <div class="theme-label">Website</div>
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" formControlName="parentWebsite">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="user-detail">
+                              <div class="row">
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Owner Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentOwnerName">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentOwnerEmail">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Phone</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentOwnerPhone">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentOwnerFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Manager Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentManagerName">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentManagerEmail">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Phone</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentManagerPhone">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentManagerFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">IT Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentITName">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentITEmail">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Phone</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentITPhone">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentITFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Billing Name</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentBillingName">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Email</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentBillingEmail">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Phone</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentBillingPhone">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                       <div class="theme-label">Fax</div>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" formControlName="parentBillingFax">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Pop Up End -->

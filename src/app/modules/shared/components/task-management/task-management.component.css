@@ -1,0 +1,58 @@
+.modal-theme .modal-body  {
+	height: auto;
+}
+.modal-theme .modal-body .task-header .task-header-single {
+    padding-right: 10px;
+}
+.modal-theme .modal-body .task-header .task-header-single .task-radio .slider {
+    padding: 0px 8px;
+}
+.modal-theme .modal-body .task-header .task-header-single .btn {
+    padding: 0px 8px;
+    line-height: 30px;
+}
+.modal-theme .modal-body .tasklist-group .title {
+    width: 100%;
+    float: left;
+    position: relative;
+    margin-bottom: 10px;
+    max-width: 100%;
+    background: #3b8beb;
+    color: #fff;
+    border: 0;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 16px;
+}
+.modal-theme .modal-body .tasklist-group .single-task {
+    max-width: 100%;	
+}
+.modal-theme .modal-body .tasklist-group .title .qty {
+    font-size: 9px;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
+    text-align: center;
+    color: #ffffff;
+    font-weight: normal;
+    position: absolute;
+    top: 4px;
+    background: #e74c3b;
+    border-radius: 50%;
+}
+.modal-theme .modal-body .tasklist-group {
+    height: calc(780px - 120px);
+    overflow-x: hidden;
+    overflow-y: auto;
+	margin: 0;
+}
+.modaltask-detail .single-details .fa-external-link {
+    font-size: 20px;
+    color: #3b8beb;
+    margin-left: 5px;
+}
+@media (max-width: 991px) {
+    .modal-theme .modal-body .tasklist-group .title, .tasklist-group .single-task {
+        max-width: 100%;
+    }
+}

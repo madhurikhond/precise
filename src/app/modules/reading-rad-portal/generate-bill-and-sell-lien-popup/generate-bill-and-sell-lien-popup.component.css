@@ -1,0 +1,7 @@
+.toogle-lien{
+    list-style: none;
+    padding: 0;
+}
+.toogle-lien li{
+    display: inline-block;
+}

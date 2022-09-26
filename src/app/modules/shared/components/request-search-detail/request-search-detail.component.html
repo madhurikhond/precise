@@ -1,0 +1,1257 @@
+<!-- Pops Up Start -->
+<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="new-cnr-request" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{popUpTitle}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="tab-section">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#1" (click)="updateTabId('1')"
+                                [ngClass]="{'active': tabId === '1'}">Request Details</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#2" (click)="updateTabId('2')"
+                                [ngClass]="{'active': tabId === '2'}">Records</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#3" (click)="updateTabId('3')"
+                                [ngClass]="{'active': tabId === '3'}">Check
+                                Details</a>
+                        </li>
+                        <li *ngIf="isShowDocTab==true" class="nav-item"> <a class="nav-link" data-toggle="modal"
+                                data-target="#docManager" (click)="showDocManager()">Documents</a>
+                        </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#5" (click)="updateTabId('5')"
+                                [ngClass]="{'active': tabId === '5'}">Notes</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#6" (click)="updateTabId('6')"
+                                [ngClass]="{'active': tabId === '6'}">Log</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '1'}" id="1">
+                            <form class="theme-form" [formGroup]="requestDetailForm">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                       <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Last Name</div>
+                                                <div class="input-group"
+                                                    *ngIf="requestDetailForm.value.patientId; else displayLastName">
+                                                    <input type="text" class="form-control" formControlName="lastNameCnr"
+                                                        disabled>
+                                                </div>
+                                                <ng-template #displayLastName>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors) }"
+                                                            formControlName="lastNameCnr">
+                                                    </div>                                                             
+                                                </ng-template>
+                                                <div *ngIf="(isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors)"
+                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                        *ngIf="requestDetailFormControls.lastNameCnr.errors.required">Last
+                                                        Name required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">First Name</div>
+                                                <div class="input-group"
+                                                    *ngIf="requestDetailForm.value.patientId; else dislayFirstName">
+                                                    <input type="text" class="form-control" formControlName="firstNameCnr"
+                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
+                                                        disabled>
+                                                </div>
+                                                <ng-template #dislayFirstName>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
+                                                            formControlName="firstNameCnr">
+                                                    </div>
+                                                </ng-template>
+                                                <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.firstNameCnr.errors"
+                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                        *ngIf="requestDetailFormControls.firstNameCnr.errors.required">First
+                                                        Name required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">DOB</div>
+                                                <div class="input-group icon-active"
+                                                    *ngIf="requestDetailForm.value.patientId; else dispayBirthDate">
+                                                    <!-- <input type="date" class="form-control" id="dobadd" formControlName="birthDate" disabled> -->
+                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" class="form-control" 
+                                                        type="date" [max]="maxDate" formControlName="birthDate">
+                                                    </dx-date-box>
+                                                    <!-- <dx-date-box formControlName="birthDate" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="MM-dd-yyyy"></dx-date-box> -->
+                                                </div>
+                                                <ng-template #dispayBirthDate>
+                                                    <div class="input-group">
+                                                        <!-- <input type="text" class="form-control" formControlName = "birthDateCnr" > -->
+                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="birthDateCnr" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                       
+                                                    </div>
+                                                </ng-template>
+                                                <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.birthDate.errors"
+                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                        *ngIf="requestDetailFormControls.birthDate.errors.required">BirthDate
+                                                        required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Company Name</div>
+                                                <div class="input-group">
+                                                    <ng-select [items]="companyList" placeholder="Select"
+                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && CompanyIDModel.errors) }"
+                                                        bindLabel="CompanyName" [multiple]="false" [closeOnSelect]="true"
+                                                        bindValue="CompanyID" [(ngModel)]="selectedCompanyIDModel"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        (change)="getAllRepNameByCompanyId(selectedCompanyIDModel)"
+                                                        id="CompanyIDModel" #CompanyIDModel="ngModel" required>
+                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 3"> <span
+                                                                    class="ng-value-label">{{items.length - 3}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </div>
+                                                <div *ngIf="CompanyIDModel.errors  && isrequestDetailFormSubmitted">
+                                                    <small class="error text-danger pull-right"
+                                                        *ngIf="CompanyIDModel.errors?.required">Company Name
+                                                        required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Rep</div>
+                                                <div class="input-group">
+                                                    <ng-select [items]="repNameList" placeholder="Select"
+                                                        bindLabel="RepName" [multiple]="false" [closeOnSelect]="true"
+                                                        bindValue="RepID" [(ngModel)]="selectedRapIDModel"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                <span class="ng-value-label"> {{item.RepName}}</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Status</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="status"
+                                                        disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Ref Number</div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.refNum.errors) }"
+                                                            formControlName="refNum">
+                                                    </div>
+                                                    <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.refNum.errors"
+                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                            *ngIf="requestDetailFormControls.refNum.errors.required">Ref Number
+                                                            required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Secondary Ref Number</div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.secondaryRefNum.errors) }"
+                                                            formControlName="secondaryRefNum">
+                                                    </div>
+                                                    <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.secondaryRefNum.errors"
+                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                            *ngIf="requestDetailFormControls.secondaryRefNum.errors.required">Secondary
+                                                            Ref Number required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList && requestAndProvidedTypeList.length>0">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Requested Type</div>
+                                                    <div class="input-group">
+                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
+                                                            bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                            bindValue="Name" [(ngModel)]="selectedRequestedTypeList"
+                                                            [ngClass]="{ 'is-invalid': (RequestedTypeList.errors && ( isrequestDetailFormSubmitted)) }"
+                                                            [ngModelOptions]="{standalone: true}" id="RequestedTypeList"
+                                                            #RequestedTypeList="ngModel" required>
+                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                    <span class="ng-value-label"> {{item.Name}}</span>
+                                                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                                                        aria-hidden="true">×</span>
+                                                                </div>
+                                                                <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                        class="ng-value-label">{{items.length - 1}}
+                                                                        more...</span>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ng-select>
+                                                    </div>
+                                                    <div *ngIf="RequestedTypeList.errors && ( isrequestDetailFormSubmitted)">
+                                                        <small class="error text-danger pull-right"
+                                                            *ngIf="RequestedTypeList.errors?.required">Requested Type
+                                                            required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Provided Type</div>
+                                                    <div class="input-group">
+                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select" bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && ProvidedTypeList.errors) }"
+                                                    bindValue="Name" [(ngModel)]="selectedProvidedTypeList"
+                                                    [ngModelOptions]="{standalone: true}" id="ProvidedTypeList"
+                                                    #ProvidedTypeList="ngModel" required>
+                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                    <span class="ng-value-label"> {{item.Name}}</span>
+                                                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                                                        aria-hidden="true">×</span>
+                                                                </div>
+                                                                <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                        class="ng-value-label">{{items.length - 1}}
+                                                                        more...</span>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ng-select>
+                                                    </div>
+                                                    <div *ngIf="ProvidedTypeList.errors && ( isrequestDetailFormSubmitted)">
+                                                        <small class="error text-danger pull-right" *ngIf="ProvidedTypeList.errors?.required">Provided Type required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Media</div>
+                                                    <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName"
+                                                        [multiple]="true" [closeOnSelect]="false" bindValue="mediaName"
+                                                        [(ngModel)]="selectedMediaList" formControlName="media">
+                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1"> <span class="ng-value-label"> {{item.mediaName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Date Requested</div>
+                                                    <div class="input-group icon-active">
+                                                        <!-- <input type="date" class="form-control" formControlName="dateRequested" disabled> -->
+                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateRequested" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                           
+                                                        <!-- <dx-date-box formControlName="dateRequested" type="date" [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-mm-dd"></dx-date-box> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Date Entered</div>
+                                                    <div class="input-group">
+                                                        <!-- <input type="date" class="form-control" formControlName="dateEntered" disabled>  -->
+                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateEntered" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                            
+                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Date Ready</div>
+                                                    <div class="input-group">
+                                                        <!-- <input type="date" class="form-control" formControlName="dateReady" disabled> -->
+                                                        <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="dateReady" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true"
+                                                          [disabled]="true"></dx-date-box>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="checkbox-input">
+                                                        <div class="checkbox-theme">
+                                                            <input id="mailed1" type="checkbox"
+                                                                (change)="setMailedateTime($event)"
+                                                                formControlName="isMailedChecked">
+                                                            <label for="mailed1" class="arrow-label">Mailed</label>
+                                                        </div>
+                                                        <input type="text" class="form-control" formControlName="mailedDateTime"
+                                                            disabled
+                                                            *ngIf="this.requestDetailFormControls.isMailedChecked.value">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Pickup Amount Due</div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" formControlName="pickupCost"
+                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.pickupCost.errors) }"
+                                                            appOnlyNumbers (change)="removeComma($event)"
+                                                            (blur)="removeComma($event)"
+                                                            (blur)="converNumberToDecimal2($event,'pickupCost')">
+                                                    </div>
+                                                    <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.pickupCost.errors"
+                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
+                                                            *ngIf="requestDetailFormControls.pickupCost.errors.required">Pickup
+                                                            Amount required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Date Picked Up</div>
+                                                    <div class="input-group icon-active">
+                                                        <!-- <input type="date" class="form-control" id="date-picked-up" formControlName="datePickedUp"> -->
+                                                        <dx-date-box formControlName="datePickedUp" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true">
+                                                        </dx-date-box>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Picked Up By</div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" formControlName="pickedUpBy">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="">
+                                                    <div class="theme-label">Signature</div>
+                                                    <div class="input-group" *ngIf="imageSignature">
+                                                        <img [src]="imageSignature" height="100px" width="200px" alt="No Image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '2'}" id="2">
+                            <div class="tab-section">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab"
+                                            href="#custodian-records">Custodian Records</a>
+                                    </li>
+                                    <li class="nav-item"> <a class="nav-link" data-toggle="tab"
+                                            href="#breakdown-tab">Breakdown</a>
+                                    </li>
+                                    <li class="nav-item"> <a class="nav-link" data-toggle="tab"
+                                            href="#labels-tab">Labels</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="custodian-records">
+                                        <div class="page-top-action">
+                                            <div class="row" *ngIf="isSubsPageInEditMode">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-right"
+                                                        data-toggle="modal" (click)="fillTabType('Custodian')"
+                                                        data-target="#emailCustodianRecords">Email
+                                                        Custodian of
+                                                        Records</a>
+                                                    <a href="javascript:void(0)" (click)="fillTabType('Custodian')"
+                                                        class="btn btn-theme btn-sm pull-right"
+                                                        (click)="printCustodianRecords()">Print
+                                                        Custodian of Records</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form class="theme-form" [formGroup]="custodianRecordsForm">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian1" type="checkbox"
+                                                            formControlName="copiedRecords">
+                                                        <label for="custodian1" class="arrow-label"><b>Certification of
+                                                                Records Copied</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian2" type="checkbox"
+                                                            formControlName="copiedRecordsBilling">
+                                                        <label for="custodian2" class="arrow-label">Billing
+                                                            Records</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian3" type="checkbox"
+                                                            formControlName="copiedRecordsMedical">
+                                                        <label for="custodian3" class="arrow-label">Medical
+                                                            Records</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian4" type="checkbox"
+                                                            formControlName="copiedRecordsBreakdown">
+                                                        <label for="custodian4" class="arrow-label">Breakdown
+                                                            Records</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-input-group">
+                                                        <div class="checkbox-theme">
+                                                            <input class="form-control" id="custodian5" type="checkbox"
+                                                                formControlName="copiedRecordsOther">
+                                                            <label for="custodian5" class="arrow-label">Other (please
+                                                                explain)</label>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                formControlName="copiedRecordsOtherDesc">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian6" type="checkbox"
+                                                            formControlName="noRecords">
+                                                        <label for="custodian6" class="arrow-label"><b>Certification of
+                                                                No Records</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian7" type="checkbox"
+                                                            formControlName="noRecordsBilling">
+                                                        <label for="custodian7" class="arrow-label">Billing
+                                                            Records
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian8" type="checkbox"
+                                                            formControlName="noRecordsMedical">
+                                                        <label for="custodian8" class="arrow-label">Medical
+                                                            Records
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian9" type="checkbox"
+                                                            formControlName="noRecordsLost">
+                                                        <label for="custodian9" class="arrow-label">Records/Films Are
+                                                            Lost
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="custodian10" type="checkbox"
+                                                            formControlName="noRecordsDestroyed">
+                                                        <label for="custodian10" class="arrow-label">Records/Films Are
+                                                            Destroyed</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="checkbox-input-group">
+                                                        <div class="checkbox-theme">
+                                                            <input class="form-control" id="custodian11" type="checkbox"
+                                                                formControlName="noRecordsOther">
+                                                            <label for="custodian11" class="arrow-label">Other
+                                                                (please
+                                                                explain)
+                                                            </label>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                formControlName="noRecordsOtherDesc">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="breakdown-tab">
+                                        <div class="page-top-action">
+                                            <div class="row" *ngIf="isSubsPageInEditMode">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-right"
+                                                        data-toggle="modal"
+                                                        (click)="fillTabType('Breakdown','email')">Email
+                                                        Email Breakdown of Records</a>
+                                                    <a href="javascript:void(0)"
+                                                        (click)="fillTabType('Breakdown','print')"
+                                                        class="btn btn-theme btn-sm pull-right">Print Breakdown
+                                                        Summary</a>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <dx-data-grid id="gridcontainerBreakdown" #gridcontainerBreakdown
+                                                [dataSource]="breakdownAndLabelsList" keyExpr="InternalStudyID"
+                                                (onSelectionChanged)="selectionChanged($event)" [showBorders]="true">
+                                                <dxo-selection [selectAllMode]="allMode"
+                                                    [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                                                </dxo-selection>
+                                                <dxi-column dataField="InternalStudyID" caption="Internal Study ID"
+                                                    [visible]="true"></dxi-column>
+                                                <dxi-column dataField="StudyDateTime" caption="Date of Service"
+                                                    cellTemplate="studyDateTimeCellTemplate"></dxi-column>
+                                                <dxi-column dataField="StudyDescription" caption="Description">
+                                                </dxi-column>
+                                                <dxi-column dataField="Imagecount" caption="Images" [visible]="false">
+                                                </dxi-column>
+                                                <div *dxTemplate="let data of 'studyDateTimeCellTemplate'">
+                                                    {{data.value | date: dateTimeFormatCustom.Date}}</div>
+                                            </dx-data-grid>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="labels-tab">
+                                        <div class="page-top-action">
+                                            <div class="row" *ngIf="isSubsPageInEditMode">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"> <a
+                                                        href="javascript:void(0)"
+                                                        class="btn btn-theme btn-sm pull-right"
+                                                        (click)="fillTabType('Label','print')">Print Film Jacket
+                                                        Label</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <dx-data-grid id="labelsGridContainer" #labelsGridContainer
+                                                [dataSource]="breakdownAndLabelsList" keyExpr="InternalStudyID"
+                                                (onSelectionChanged)="selectionLabelChanged($event)"
+                                                [showBorders]="true">
+                                                <dxo-paging [enabled]="false"></dxo-paging>
+                                                <dxo-selection [selectAllMode]="allMode"
+                                                    [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                                                </dxo-selection>
+                                                <dxi-column dataField="InternalStudyID" caption="Internal Study ID"
+                                                    [visible]="true"></dxi-column>
+                                                <dxi-column dataField="StudyDateTime" caption="Date of Service"
+                                                    cellTemplate="studyDateTimeCellTemplate"></dxi-column>
+                                                <dxi-column dataField="StudyDescription" caption="Description">
+                                                </dxi-column>
+                                                <dxi-column dataField="Imagecount" caption="Images"
+                                                    cellTemplate="imageCountCellTemplate"></dxi-column>
+                                                <div *dxTemplate="let data of 'imageCountCellTemplate'">
+                                                    <ng-container *ngIf="data.value>0;then template1 else template2">
+                                                    </ng-container>
+                                                    <ng-template #template1>{{data.value}}</ng-template>
+                                                    <ng-template #template2><a href="javascript:void(0)"
+                                                            class="link-btn"
+                                                            (click)="updateImageCount(data)">{{data.value}}</a>
+                                                    </ng-template>
+                                                </div>
+                                                <div *dxTemplate="let data of 'studyDateTimeCellTemplate'">
+                                                    {{data.value | date:dateTimeFormatCustom.Date}}</div>
+                                            </dx-data-grid>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '3'}" id="3">
+                            <div class="table-responsive manual-table">
+                                <form class="theme-form" [formGroup]="checkDetailForm">
+                                    <table class="table table-theme">
+                                        <thead>
+                                            <tr>
+                                                <th width="100"></th>
+                                                <th width="100">Company</th>
+                                                <th width="100">Check Number</th>
+                                                <th width="100">Check Date</th>
+                                                <th width="100">Check Amount</th>
+                                                <th width="100">QB Exp</th>
+                                                <th width="100">QB Exp Date</th>
+                                                <th width="40"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Check #1</td>
+                                                <td>
+                                                    <ng-select class="auto-grow" [items]="companyList"
+                                                        placeholder="Select" bindLabel="CompanyName" [multiple]="false"
+                                                        [closeOnSelect]="false" bindValue="CompanyID"
+                                                        [(ngModel)]="selectedCompanyIDCheck1"
+                                                        formControlName="check1CompanyID">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1"> <span
+                                                                    class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" formControlName="check1Num"
+                                                    appOnlyNumbersWithoutComma (change)="removeComma($event)"
+                                                        (blur)="removeComma($event)">
+                                                </td>
+                                                <td>
+                                                    <!-- <input class="form-control" type="date" formControlName="check1Date"> -->
+                                                    <dx-date-box formControlName="check1Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                       
+                                                   
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                        formControlName="check1Amount" appOnlyNumbers
+                                                        (blur)="converNumberToDecimal($event,'check1Amount')">
+                                                </td>
+                                                <td>
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="checktd1" type="checkbox"
+                                                            formControlName="check1QBExp"
+                                                            (click)="onQBExportCheckChange($event,'check1QBExp')"
+                                                            data-toggle="modal"
+                                                            data-target="#exportCheckConfirmationPopUp">
+                                                        <label for="checktd1" class="arrow-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control"
+                                                        formControlName="check1QBExpDate">
+                                                </td>
+                                                <td>
+                                                    <img (click)="displayFile(filename,CheckDetailFile)"
+                                                        style="width:50px;cursor:pointer;"
+                                                        [src]="CheckDetailFile == null? 'assets/images/BankCheckIconLG.png': 'assets/images/BankCheckIconBlack.png'" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Check #2</td>
+                                                <td>
+                                                    <ng-select [items]="companyList" placeholder="Select"
+                                                        bindLabel="CompanyName" [multiple]="false"
+                                                        [closeOnSelect]="false" bindValue="CompanyID"
+                                                        [(ngModel)]="selectedCompanyIDCheck2"
+                                                        formControlName="check2CompanyID">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1"> <span
+                                                                    class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" formControlName="check2Num"
+                                                    appOnlyNumbersWithoutComma (change)="removeComma($event)"
+                                                        (blur)="removeComma($event)">
+                                                </td>
+                                                <td>
+                                                    <!-- <input class="form-control" type="date" formControlName="check2Date"> -->
+                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"formControlName="check2Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="shortdate" >
+                                                    </dx-date-box>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                        formControlName="check2Amount" appOnlyNumbers
+                                                        (blur)="converNumberToDecimal($event,'check2Amount')">
+                                                </td>
+                                                <td>
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="checktd2" type="checkbox"
+                                                            formControlName="check2QBExp"
+                                                            (click)="onQBExportCheckChange($event,'check2QBExp')"
+                                                            data-toggle="modal"
+                                                            data-target="#exportCheckConfirmationPopUp">
+                                                        <label for="checktd2" class="arrow-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control"
+                                                        formControlName="check2QBExpDate">
+                                                </td>
+                                                <td>
+                                                    <img (click)="displayFile(filename2,CheckDetailFile2)"
+                                                        style="width:50px;cursor:pointer;"
+                                                        [src]="CheckDetailFile2 == null? 'assets/images/BankCheckIconLG.png': 'assets/images/BankCheckIconBlack.png'" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Check #3</td>
+                                                <td>
+                                                    <ng-select [items]="companyList" placeholder="Select"
+                                                        bindLabel="CompanyName" [multiple]="false"
+                                                        [closeOnSelect]="false" bindValue="CompanyID"
+                                                        [(ngModel)]="selectedCompanyIDCheck3"
+                                                        formControlName="check3CompanyID">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1"> <span
+                                                                    class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" formControlName="check3Num"
+                                                    appOnlyNumbersWithoutComma (change)="removeComma($event)"
+                                                        (blur)="removeComma($event)">
+                                                </td>
+                                                <td>
+                                                    <!-- <input class="form-control" type="date" formControlName="check3Date"> -->
+                                                    <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="check3Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                      
+                                                  
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                        formControlName="check3Amount" appOnlyNumbers
+                                                        (blur)="converNumberToDecimal($event,'check3Amount')">
+                                                </td>
+                                                <td>
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="checktd3" type="checkbox"
+                                                            formControlName="check3QBExp"
+                                                            (click)="onQBExportCheckChange($event,'check3QBExp')"
+                                                            data-toggle="modal"
+                                                            data-target="#exportCheckConfirmationPopUp">
+                                                        <label for="checktd3" class="arrow-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control"
+                                                        formControlName="check3QBExpDate">
+                                                </td>
+                                                <td>
+                                                    <img (click)="displayFile(filename3,CheckDetailFile3)"
+                                                        style="width:50px;cursor:pointer;"
+                                                        [src]="CheckDetailFile3 == null? 'assets/images/BankCheckIconLG.png': 'assets/images/BankCheckIconBlack.png'" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Check #4</td>
+                                                <td>
+                                                    <ng-select [items]="companyList" placeholder="Select"
+                                                        bindLabel="CompanyName" [multiple]="false"
+                                                        [closeOnSelect]="false" bindValue="CompanyID"
+                                                        [(ngModel)]="selectedCompanyIDCheck4"
+                                                        formControlName="check4CompanyID">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1"> <span
+                                                                    class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" formControlName="check4Num"
+                                                    appOnlyNumbersWithoutComma (change)="removeComma($event)"
+                                                        (blur)="removeComma($event)">
+                                                </td>
+                                                <td>
+                                                    <!-- <input class="form-control" type="date" formControlName="check4Date"> -->
+                                                    <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="check4Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                                       
+                                                   
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                        formControlName="check4Amount" appOnlyNumbers
+                                                        (blur)="converNumberToDecimal($event,'check4Amount')">
+                                                </td>
+                                                <td>
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="checktd4" type="checkbox"
+                                                            formControlName="check4QBExp"
+                                                            (click)="onQBExportCheckChange($event,'check4QBExp')"
+                                                            data-toggle="modal"
+                                                            data-target="#exportCheckConfirmationPopUp">
+                                                        <label for="checktd4" class="arrow-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control"
+                                                        formControlName="check4QBExpDate">
+                                                </td>
+                                                <td>
+                                                    <img (click)="displayFile(filename4,CheckDetailFile4)"
+                                                        style="width:50px;cursor:pointer;"
+                                                        [src]="CheckDetailFile4 == null? 'assets/images/BankCheckIconLG.png': 'assets/images/BankCheckIconBlack.png'" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Check #5</td>
+                                                <td>
+                                                    <ng-select [items]="companyList" placeholder="Select"
+                                                        bindLabel="CompanyName" [multiple]="false"
+                                                        [closeOnSelect]="false" bindValue="CompanyID"
+                                                        [(ngModel)]="selectedCompanyIDCheck5"
+                                                        formControlName="check5CompanyID">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1"> <span
+                                                                    class="ng-value-label"> {{item.CompanyName}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                    class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" formControlName="check5Num"
+                                                    appOnlyNumbersWithoutComma (change)="removeComma($event)"
+                                                        (blur)="removeComma($event)">
+                                                </td>
+                                                <td>
+                                                    <!-- <input class="form-control" type="date" formControlName="check5Date"> -->
+                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="check5Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true">
+                                                      
+                                                    </dx-date-box>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                        formControlName="check5Amount" appOnlyNumbers
+                                                        (blur)="converNumberToDecimal($event,'check5Amount')">
+                                                </td>
+                                                <td>
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" id="checktd5" type="checkbox"
+                                                            formControlName="check5QBExp"
+                                                            (click)="onQBExportCheckChange($event,'check5QBExp')"
+                                                            data-toggle="modal"
+                                                            data-target="#exportCheckConfirmationPopUp">
+                                                        <label for="checktd5" class="arrow-label">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="form-control"
+                                                        formControlName="check5QBExpDate">
+                                                </td>
+                                                <td>
+                                                    <img (click)="displayFile(filename5,CheckDetailFile5)"
+                                                        style="width:50px;cursor:pointer;"
+                                                        [src]="CheckDetailFile5 == null? 'assets/images/BankCheckIconLG.png': 'assets/images/BankCheckIconBlack.png'" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '4'}" id="4">
+
+
+                        </div>
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '5'}" id="5">
+                            <div class="theme-form">
+                                <div class="note-list" *ngIf="notesListForNotesTab">
+                                    <!-- <div class="note-list-inner"  *ngFor="let note of notesListForNotesTab;">
+                                        <div class="name">{{note.Username}} {{note.Timestamp | date: 'MM/dd/yyyy h:mm:ss a'}}</div>
+                                        <p>{{note.SubsNote}}</p>								
+                                    </div> -->
+                                    <ng-container *ngIf="notesListForNotesTab?.length > 0">
+                                        <div class="note-list-inner" *ngFor="let note of notesListForNotesTab;">
+                                            <div class="name">{{note.Username}} {{note.Timestamp | date:dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                            <p>{{note.SubsNote}}</p>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="notesListForNotesTab?.length==0">
+                                        <h2>No Notes..</h2>
+                                    </ng-container>
+                                </div>
+                                <div class="user-detail">
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Add Note Here"
+                                            [(ngModel)]="subsNotesModel"></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-theme btn-sm"
+                                        [disabled]='subsNotesModel?false:true'
+                                        (click)="addSubsNotes(subsNotesModel)">Add Note</button>
+                                </div>
+                                <div class="modal-footer" *ngIf="isSubsPageInEditMode"> <a href="javascript:void(0)"
+                                        class="btn btn-border-gray pull-right btn-sm" data-toggle="modal"
+                                        data-target="#seeAndClearNotespickupConfirmation"
+                                        (click)="seeAndClearNotes(true,'See Notes Added')">See Notes Alert</a>
+                                    <a href="javascript:void(0)" class="btn btn-border-clear pull-right btn-sm"
+                                        data-toggle="modal" data-target="#seeAndClearNotespickupConfirmation"
+                                        (click)="seeAndClearNotes(false,'Clear See Notes')">Clear Notes Alert</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane show" [ngClass]="{'active': tabId === '6'}" id="6">
+
+                            <div class="table-responsive">
+                                <dx-data-grid id="SubLogGridContainer" [dataSource]="logListForLogTabPagging"
+                                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [columnResizingMode]="columnResizingMode" keyExpr="LogId" [showBorders]="true">
+                                    <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                                    <!-- </dxo-filter-row> -->
+                                    <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                    <dxi-column dataField="PatientID" caption="PatientId"></dxi-column>
+                                    <dxi-column dataField="CreatedOn" caption="Time Stamp"
+                                        cellTemplate="timeStampCellTemplate"></dxi-column>
+                                    <dxi-column dataField="UserName" caption="User"></dxi-column>
+                                    <dxi-column dataField="LogType" caption="Type"></dxi-column>
+                                    <dxi-column dataField="LogMethod" caption="Method"></dxi-column>
+                                    <dxi-column dataField="UserType" caption="Contact"></dxi-column>
+                                    <dxi-column dataField="UserDetail" caption="Details"></dxi-column>
+                                    <dxi-column dataField="PreviousState" caption="Previous State"></dxi-column>
+                                    <dxi-column dataField="NextState" caption="Next State"></dxi-column>
+                                    <dxi-column dataField="UserID" caption="UserID" [visible]="false"></dxi-column>
+                                    <dxi-column dataField="Accession" caption="Accession" [visible]="false">
+                                    </dxi-column>
+                                    <div *dxTemplate="let data of 'timeStampCellTemplate'">{{data.value | date:
+                                        dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                </dx-data-grid>
+                            </div>
+                            <div class="pagination-theme">
+                                <div class="pagination-theme">
+                                    <div
+                                        *ngFor="let item of logListForLogTab | paginate: { id: 'pagination1011' , itemsPerPage: pageSizeLog, currentPage: pageNumberLog, totalItems:totalRecords}">
+                                    </div>
+                                    <pagination-controls id="pagination1011"
+                                        (pageChange)="onPageNumberChangeLog($event)">
+                                    </pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"> <a *ngIf="isSubsPageInEditMode" [disabled]="" href="javascript:void(0)"
+                    class="btn btn-border-gray pull-right btn-sm" (click)="subsReadyForPickup()">Ready for Pickup</a>
+                <a *ngIf="isSubsPageInEditMode" href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    (click)="subsNotReadyForPickup()">Not Ready for Pickup</a>
+                <a *ngIf="isSubsPageInEditMode" href="javascript:void(0)" class="btn btn-border-clear pull-right btn-sm"
+                    data-toggle="modal" data-target="#delete-pickup-confirmation">Delete Pickup Confirmation</a>
+                <a *ngIf="isSubsPageInEditMode" href="javascript:void(0)" class="btn btn-border-clear pull-right btn-sm"
+                    data-toggle="modal" data-target="#delete-request">Delete Request</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    (click)="resetDetailPageForm()" data-dismiss="modal" #mainPopCloseButton>Close</a>
+                <a *ngIf="!isSubsPageInEditMode" href="javascript:void(0)" [attr.data-dismiss]="modelValue"
+                    class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+                    (click)="createAndUpdateSubsDetail(true)">Insert</a>
+                <a *ngIf="isSubsPageInEditMode" href="javascript:void(0)" [attr.data-dismiss]="modelValue"
+                    class="btn btn-border pull-left btn-sm" data-dismiss="modal"
+                    (click)="createAndUpdateSubsDetail(false)">Apply Changes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="seeAndClearNotespickupConfirmation" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notes Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>{{seeAndClearNotesPopUpMessage}}</p>
+            </div>
+            <div class="modal-footer"> <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+                    (click)="manageSeeAndClearNotes()">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="delete-pickup-confirmation" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Pickup Confirmation</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the pickup confirmation for this Copy Service Request?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+                    (click)="subsDeletePickupConfirmation()">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small custom-fade" id="delete-request" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Request</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this Copy Service Request for this patient?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+                    (click)="subsDeleteRequest()">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="emailConfirmationPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Email Request Send</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>An Image request has been sent to the reports department. Your Department will get an email once the
+                    images are available.</p>
+            </div>
+            <div class="modal-footer"> <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small custom-fade" id="exportCheckConfirmationPopUp" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QB EXPORTED</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>{{exportCheckConfirmationMessage}}</p>
+            </div>
+            <div class="modal-footer"> <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal" (click)="qbCheckAllowExport()">Ok</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+                    (click)="qbCheckNotAllowExport()">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in" id="viewFile" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{fileName}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <iframe width="100%" height="100%" frameBorder="0" [src]="fileData" *ngIf="fileData"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" *ngIf="requestDetailForRequestDetailTab" id="emailCustodianRecords"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form [formGroup]="emailCustodianRecordsForm" class="theme-form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Email {{tabType}} of Records</h5>
+                    <div class="close-dismiss" (click)="resetEmailCustodianRecordsForm()" data-dismiss="modal"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="theme-label-title">{{requestDetailForRequestDetailTab.CompanyName}}</div>
+                            <div class="checkbox-group">
+                                <div class="checkbox-theme" *ngIf="requestDetailForRequestDetailTab.CompanyEmail">
+                                    <input class="form-control" formControlName="isActiveCompanyEmail" type="checkbox">
+                                    <label for="printSubs"
+                                        class="arrow-label">{{requestDetailForRequestDetailTab.CompanyEmail}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="theme-label-subtitle">Add Emails</div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="emailAddressFirst"
+                                        [ngClass]="{ 'is-invalid': isemailCustodianSubmitted && emailCustodianFormControls.emailAddressFirst.errors }"
+                                        placeholder="Email Address">
+                                </div>
+                                <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressFirst.errors"
+                                    class="tooltiptext text-right">
+                                    <small class="error text-danger pull-right"
+                                        *ngIf="emailCustodianFormControls.emailAddressFirst.errors.pattern">Invalid
+                                        email address</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="emailAddressSec"
+                                        [ngClass]="{ 'is-invalid': isemailCustodianSubmitted && emailCustodianFormControls.emailAddressSec.errors }"
+                                        placeholder="Email Address">
+                                </div>
+                                <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressSec.errors"
+                                    class="tooltiptext text-right">
+                                    <small class="error text-danger pull-right"
+                                        *ngIf="emailCustodianFormControls.emailAddressSec.errors.pattern">Invalid email
+                                        address</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="emailAddressThird"
+                                        [ngClass]="{ 'is-invalid': isemailCustodianSubmitted && emailCustodianFormControls.emailAddressThird.errors }"
+                                        placeholder="Email Address">
+                                </div>
+                                <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressThird.errors"
+                                    class="tooltiptext text-right">
+                                    <small class="error text-danger pull-right"
+                                        *ngIf="emailCustodianFormControls.emailAddressThird.errors.pattern">Invalid
+                                        email address</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
+                            <div class="theme-label-subtitle">Subject</div>
+                        </div>
+                        <div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="Subject">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea class="form-control" style="height: 261px;"
+                                        formControlName="emailBody"></textarea>
+                                </div>
+                                <small class="error text-danger pull-right">*File will be attached to the email</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" [attr.data-dismiss]="modalValue" (click)="sendEmail('Finalize')"
+                        class="btn btn-theme pull-left btn-sm">Send Email
+                        & Finalize</a>
+                    <a href="javascript:void(0)" [attr.data-dismiss]="modalValue" (click)="sendEmail('Email')"
+                        class="btn btn-theme pull-left btn-sm">Send Email Only</a>
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        (click)="resetEmailCustodianRecordsForm()" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile"></button>
+<button #buttonemailCustodianRecordsPopUp [hidden]="true" data-toggle="modal"
+    data-target="#emailCustodianRecords"></button>
+<button #buttonEmailConfirmationPopUp [hidden]="true" data-toggle="modal"
+    data-target="#emailConfirmationPopUp"></button>
+
+<app-document-manager></app-document-manager>
+<!-- Pops Up End -->

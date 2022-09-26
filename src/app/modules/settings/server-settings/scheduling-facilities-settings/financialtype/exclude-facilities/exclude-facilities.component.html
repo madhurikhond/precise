@@ -1,0 +1,117 @@
+<div class="tab-pane active" id="exclude-facilities">
+    <div class="alert alert-info" role="alert">
+        Add text above the list of financial types:
+    </div>
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid
+            id="gridContainer"
+            [dataSource]="financialTypeList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="FINANCIALTYPEID"  
+            [showBorders]="true">
+
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxi-column dataField="FINANCIALTYPEID" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="FINANCIALTYPEID" caption="FINANCIALTYPE ID"></dxi-column>
+            <dxi-column dataField="FINANCIALTYPENAME" caption="FINANCIAL TYPE NAME"></dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="getExculdeList(data.data.FINANCIALTYPEID)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-financialtype"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div *ngFor="let item of financialTypeList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme in" id="edit-financialtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="tab-section">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#facility-exclude">Facility Exclude</a>
+                        </li>			
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="facility-exclude">
+                            <div class="alert alert-danger" role="alert">
+                                Check mark the facilities you do <b>NOT</b>  want to show on the scheduling facility page.
+                            </div>
+                            <div class="table-responsive manual-table">
+                                <table class="table table-theme">
+                                    <thead>
+                                        <tr>
+                                            <th width="60">Facility ID</th>
+                                            <th width="100">Facility Name</th>
+                                            <th width="100">Parent Company</th>
+                                            <th width="100">Street</th>
+                                            <th width="100">City</th>
+                                            <th width="60">Zip</th>
+                                            <th width="40">
+                                                <div class="checkbox-theme">
+                                                    <input id="chkSelectAll" class="form-control" type="checkbox" [(ngModel)]="masterSelected" [checked]="masterSelected" (change)="checkUncheckAll()"/> 
+                                                    <label for="chkSelectAll" class="arrow-label"><strong>ALL</strong></label>
+                                                </div>
+                                            </th>									
+                                    </thead>														
+                                    <tbody>		
+                                        <tr *ngFor="let eList of excludeList;">			
+                                            <td>{{eList.FacilityID}}</td>
+                                            <td>{{eList.FacilityName}}</td>
+                                            <td>{{eList.ParentCoName}}</td>
+                                            <td>{{eList.Street}}</td>
+                                            <td>{{eList.City}}</td>
+                                            <td>{{eList.Zip}}</td>
+                                            <td>
+                                                <div class="checkbox-new">
+                                                    <input class="checkbox-input" [(ngModel)]="eList.IsFinancialExclude" type="checkbox" [checked]="eList.IsFinancialExclude" (change)="isAllSelected()">
+                                                    <label class="checkbox-label">&nbsp;</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+				<a href="javascript:void(0)" (click)="saveFinancialTypeExcludeList()" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Save Changes</a>
+			</div>
+        </div>
+    </div>
+</div>

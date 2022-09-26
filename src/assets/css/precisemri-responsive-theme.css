@@ -1,0 +1,430 @@
+@media screen and (min-width: 1600px) and (max-width: 3000px){
+	.search-field-theme .theme-form .form-group .ng-select .ng-select-container .ng-placeholder, .search-field-theme .theme-form .form-group .ng-select .ng-select-container .ng-value-container .ng-value span, .search-field-theme .theme-form .form-group .ng-select .ng-select-container .ng-value-container .ng-value, .search-field-theme .theme-form .form-group .ng-select .ng-select-container, .search-field .theme-form .form-action .btn, .search-field-theme .theme-form .form-group .input-group .form-control,.dx-datagrid.dx-datagrid-borders > .dx-datagrid-header-panel .dx-texteditor-input, .dx-datagrid-table .dx-header-row td, .dx-datagrid-rowsview .dx-datagrid-content tr td, .page-top-action .btn, .precisemri-search ng-select.form-search, .page-top-action .precisemri-search select.form-search, .page-top-action .precisemri-search .search, .theme-form .form-group .dx-texteditor.dx-editor-outlined .dx-texteditor-input-container .dx-texteditor-input, .table-theme thead tr th, .table-theme tbody tr td, .table-theme tbody tr td .form-control, .table-theme tbody tr.sub-table .sub-table-td .table-theme thead tr th, .table-theme tbody tr.sub-table .sub-table-td .table-theme tbody tr td, .table-theme thead tr th .dropdown .dropdown-toggle, .table-theme thead tr th .dropdown .dropdown-menu li a, .ng-dropdown-panel .ng-dropdown-panel-items .ng-option, .theme-form .form-group .input-group .ng-select .ng-select-container, .theme-form .form-group .input-group .ng-select .ng-select-container .ng-value-container, .theme-form .form-group .input-group .ng-select .ng-select-container .ng-value-container .ng-placeholder, table-theme tbody tr td a.tb-modal-action .fa,  .table-theme thead tr th .dropdown .dropdown-menu li .form-control,  .table-theme tbody tr.sub-active td span.fa,  .table-theme tbody tr td .page-top-action .btn,  .table-theme tfoot tr td, .checkbox-theme label  {
+		font-size: 14px !important;
+	}
+}
+@media (min-width: 1200px){
+	.fax-intake-packet .checkbox-theme, .email-intake-packet .checkbox-theme{
+		padding-left: 0px !important;
+	}
+	.fax-intake-packet div:first-child .checkbox-theme, .email-intake-packet div:first-child .checkbox-theme{
+		padding-left: 30px !important; 
+	}
+}
+@media (max-width:991px){
+	.search-field.collapse {
+		display: none;
+	}
+	.page-header .filter-btn {
+		display: none;
+	}
+	.page-header .filter-btn.filter-mobile {
+		display: block !important;
+	}
+	.search-field-mobile.show .remove-cataloge {
+		position: fixed;
+		top: 0px;
+		background: transparent;
+		width: 22px;
+		height: 22px;
+		margin: 16px 6px;
+		z-index: 2;
+		left: 0px;
+		-webkit-transition: all 0.2s ease-in-out;
+		-moz-transition: all 0.2s ease-in-out;
+		-o-transition: all 0.2s ease-in-out;
+		transition: all 0.2s ease-in-out;
+		display: block;
+	}
+	.search-field-mobile.show .remove-cataloge:after {
+		content: "";
+		width: 100%;
+		height: 2px;
+		background: #fff;
+		position: absolute;
+		left: 0px;
+		transform: rotate(135deg);
+		top: 50%;
+		margin-top: -1px;
+	}
+	.search-field-mobile.show .remove-cataloge:before {
+		content: "";
+		width: 100%;
+		height: 2px;
+		background: #fff;
+		position: absolute;
+		left: 0px;
+		transform: rotate(45deg);
+		top: 50%;
+		margin-top: -1px;
+	}
+	.search-field-mobile {
+		position: fixed;
+		top: 0px;
+		opacity: 0;
+		margin: 0px;
+		height: 100%;
+		padding: 0;
+		z-index: 60000;
+		background: #f1f6ff;
+		border-radius: 0px;
+		overflow: hidden !important;
+		width: 280px;
+		right: -280px;
+		display: block;
+	}
+	.search-field-mobile.show {
+		opacity: 1;
+		right: 0px;
+	}
+	.search-field-mobile.show:before {
+		content: "";
+		background: #000000;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0px;
+		left: 0px;
+		z-index: -1;
+		opacity: 0.5;
+	}
+	.search-field-mobile .theme-form {
+		background-color: #f1f6ff;
+		height: 100%;
+		border-left: 1px solid #cccccc;
+		padding-bottom: 55px;
+	}
+	.search-field-mobile .theme-form .filter-data {
+		width: 100%;
+		float: left;
+		position: relative;
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding: 15px;
+	}
+	.search-field-mobile .theme-form .form-action {
+		padding: 10px;
+		border-top: 1px solid #cccccc;
+		width: 100%;
+	}
+	.search-field-mobile .theme-form .filter-data .form-group {
+		display: flex;
+		width: 100%;
+	}
+	.search-field-mobile .theme-form .filter-data .form-group .theme-label {
+		border-radius: 6px 0px 0px 6px;
+		border: 0;
+	}
+	.search-field-mobile .theme-form .filter-data .form-group .input-group .form-control {
+		border-radius: 0 6px 6px 0;
+		border: 0;
+		width: 100%;
+	}
+	.page-top-action .btn {
+		margin-bottom: 10px;
+		padding: 0px 8px;
+		font-size: 12px;
+	}
+	.page-top-action .precisemri-search .search {		 
+		font-size: 12px;	 
+		padding: 0 8px;
+	}
+	.page-top-action .precisemri-search select.form-search {
+		font-size: 12px;
+		padding: 6px 6px 6px 6px;
+	}
+	.tab-section .nav-tabs .nav-item .nav-link {
+		padding: 4px 8px;
+		font-size: 11px;
+	}
+	.login-page.subpoena-status-page .subpoena-status-view .subpoena-picked-amount .single-facilty {
+		margin-bottom: 80px;
+		height: auto;
+	}
+	.login-page.subpoena-status-page .subpoena-status-view .subpoena-picked-amount .single-facilty.last-child {
+		margin-bottom: 20px;
+	}
+	.form-group .custom-datepicker .md-drppicker {
+		display: block;
+	}
+}
+
+@media (max-width: 767px){
+	.header-action-right {
+		width: 100%;
+		padding: 0 20px 15px 20px;
+		margin: 0;
+		text-align: right;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.precisemri-search {
+		float: none;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.header-action {
+		float: none;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.page-area .left-menu, .page-area .page-working-area {
+		top: 94px;
+		height: calc(100% - 94px);
+	}
+	.search-field .theme-form .form-group {
+		/* width: 100%; */
+	}
+	.page-top-action .precisemri-search {
+	    margin-bottom: 9px;	
+	}
+	.login-page .login-right .login-logo img {
+		max-width: 190px;
+	}
+	.page-top-action .btn {
+		padding: 0px 15px;
+		font-size: 11px;
+	}
+	.page-top-action .precisemri-search select.form-search {
+		font-size: 11px;
+		padding: 6px 5px 6px 5px;
+		width: 160px;
+		min-width: 160px;
+		height: 30px;
+	}
+	.precisemri-search .form-search {
+		padding: 4px 10px 4px 28px;
+		width: 160px;
+		min-width: 160px;
+		height: 30px;
+	} 
+	.precisemri-search .pe-icon {
+		width: 28px;
+		line-height: 30px;
+		font-size: 16px;
+	}
+	.modal-theme .modal-body {
+		height: 500px;
+	}
+	.modal-theme .modal-body .tab-section .tab-content .tab-pane {
+	    padding: 15px 0px;	
+	}
+	.theme-panel-footer .btn {
+		font-size: 13px;
+		padding: 5px 8px;
+	}
+	.same-data {
+		height: 200px;
+	}
+	.modal-theme .modal-body .modal-body-inner.subpoena-status-page .subpoena-status-view .subpoena-picked-amount .single-facilty {
+		margin-bottom: 80px;
+		height: auto;
+	}
+	.modal-theme .modal-body .modal-body-inner.subpoena-status-page .subpoena-status-view .subpoena-picked-amount .single-facilty.last-child {
+		margin-bottom: 20px;
+	}
+	.tab-section .tab-content .theme-form .send-lien-row{
+		display: block;
+	}
+	.tab-section .tab-content .theme-form .send-lien-col{
+		float: left;
+		width: 100%;
+	}
+	.tab-section .tab-content .theme-form .send-lien-col:first-child{
+		margin-right: 0px;
+	}
+	.tab-section .tab-content .theme-form .send-lien-col .checkbox-theme{
+		margin-bottom: 15px;
+	}
+	.tab-section .tab-content .theme-form .send-lien-col .form-group{
+		margin-bottom: 20px;
+		margin-left: 30px;
+		width: auto;
+	}
+	#edit-contact-details .user-detail.billing-03{
+		min-height: auto;
+	}
+}
+@media (max-width:575px){
+	.header-action-mobile {
+		display: block;
+		float: right;
+		margin: 15px 0px;
+		padding-right: 15px;
+	}
+	.header-action.action-web {
+		display: none;
+	}
+	.header-action-right {
+		padding: 0 10px 15px 10px;
+	}
+	.header-action .dropdown-toggle {
+		margin-left: 0px;
+	}
+	.header-action .user-name {
+		padding-left: 5px;
+	}
+	.header-action .icon-group {
+		padding: 0px 5px;
+	}
+	.page-title-group .page-title {
+		padding: 10px 2px;
+	}
+	.main-page-body {
+		padding: 10px;
+	}
+	.page-header .page-header-title {
+		font-size: 15px;
+	}
+	.page-header .filter-btn {
+		padding: 0px 15px;
+		min-width: inherit;
+		font-size: 13px;
+	}
+	.page-header {
+	    margin-bottom: 15px;
+	}
+	.page-title-group .page-title img {
+		height: 42px;
+		padding: 12px 0px;
+	}
+	.page-area .left-menu, .page-area .page-working-area {
+		top: 104px;
+		height: calc(100% - 104px);
+	}
+	.login-page {
+		padding: 0;
+	}
+	.login-page .login-left {
+		width: 100%;
+		position: relative;
+		display: none;
+	}
+	.login-page .login-right {
+		width: 100%;
+	}
+	.login-top-buttons.mobile-login-top-buttons {
+		display: block;
+	}
+	.login-top-buttons {
+		z-index: 5;
+		width: 100%;
+		padding: 0 15px;
+		top: 66px;
+		background-color: #fff;
+		position: fixed;
+	}
+	.login-top-buttons li {
+		display: inline-block;
+		width: auto;
+	}
+	.login-top-buttons li .btn {
+		color: gray;
+		border-radius: 0;
+		padding: 10px 15px;
+		font-size: 12px;
+	}
+	.btn-login-white.active, .btn-login-white:hover {
+		background: #1c5192;
+		box-shadow: 3px 0px 4px 0px #000;
+		color: #ffffff !important;
+		border-radius: 15px !important;
+	}
+	.login-page .login-right .login-logo {
+		left: 0;
+		right: inherit;
+		text-align: center;
+		padding: 10px;
+	}
+	.profile-page .profile-page-header {
+		padding: 0 15px;
+	}
+	.profile-page .profile-page-body {
+		padding: 15px 0;
+	}
+	.theme-panel-header .panel-actions {
+		right: 0;
+	}
+	.theme-panel-body {
+		padding: 10px;
+	}
+	.theme-form .form-group.time-group {
+		display: block;
+	}
+	.theme-form .form-group.time-group .theme-label {
+		height: auto;
+		line-height: inherit;
+		padding: 0 0 3px 0;
+		text-align: left;
+	}
+	.modal-theme .modal-footer .btn {
+		padding: 4px 10px;
+	}
+	.modal-theme .modal-footer {
+		text-align: center;
+	}
+	.search-field .theme-form.view-mode .form-group {
+		margin-bottom: 10px;
+	}
+	.tab-section .nav-tabs .nav-item .nav-link {
+		padding: 4px 8px;
+	    font-size: 11px;
+	}
+	.theme-panel-footer .btn {
+		font-size: 12px;
+		padding: 5px 5px;
+	}
+	.login-page.subpoena-status-page .login-right .valign-content-inner .login-footer-buttons {
+		width: 100%;
+	}
+	.modal-theme .modal-dialog {
+		width: calc(100% - 20px);
+	}
+	.fax-intake-packet .checkbox-theme, .email-intake-packet .checkbox-theme{
+		padding-left: 30px !important;
+	}
+	.fax-intake-packet div:nth-child(even) .checkbox-theme, .email-intake-packet div:nth-child(even) .checkbox-theme{
+		padding-left: 30px !important;
+	}
+}
+@media (max-width:414px){
+	.login-top-buttons {
+		padding: 0 8px;
+	}
+	.login-top-buttons li .btn {
+		padding: 4px 4px;
+		font-size: 11px;
+	}
+	.btn-login-white.active, .btn-login-white:hover {
+		background: transparent;
+		color: gray !important;
+		border-radius: 0 !important;
+		border-bottom: 2px solid #1c5192 !important;
+	}
+	.theme-form .form-group {
+		display: block;
+		border: 0;
+		height: auto;
+	}
+	.theme-form .form-group .theme-label {
+		border-radius: 6px 6px 0 0;
+		text-align: left;
+	}
+	.theme-form .form-group .input-group .form-control {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0 0 6px 6px;
+		width: 100%;
+	}
+	.theme-form .form-group .input-group .view-mode-data {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0 0 6px 6px;
+	}
+	.theme-form .form-group .input-group .form-control + .form-control {
+		border-radius: 0 0 6px 6px;
+	}
+	.subpoena-status-page .subpoena-status-view .subpoena-picked-amount .subpoena-header a {
+		width: 100%;
+		float: left !important;
+	}
+}

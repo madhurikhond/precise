@@ -1,0 +1,22 @@
+<div class="tab-pane" id="status-collections-tab">
+    <div class="tab-section">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'pslpatient'" routerLinkActive="active">PSL Patient</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'casestatus'" routerLinkActive="active">Case Status</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'personell'" routerLinkActive="active">Personell</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="'bulkbillingemail'" routerLinkActive="active">Bulk Billing Email</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <router-outlet></router-outlet>
+        </div>
+   </div>
+
+</div>

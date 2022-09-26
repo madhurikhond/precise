@@ -1,0 +1,206 @@
+<div class="tab-pane" id="links">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="search-field search-field-theme collapse show">
+                <form [formGroup]="SearchForm" class="theme-form" (submit)="Search()">
+                    <div class="form-group">
+                        <div class="theme-label">Search</div>
+                        <div class="input-group">
+                            <input type="text" formControlName="Search" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-action">
+                        <button type="submit" class="btn btn-theme">Search</button>
+                        <a href="javascript:void(0)" (click)="Clear()" class="btn btn-border">Clear</a>&nbsp;&nbsp;
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+                    data-target="#add-link"><i class="fa fa-plus"></i> Add New Record</a>
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                    <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                        <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                            value={{item.value}}>{{item.value}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid id="gridContainer" [dataSource]="linkList" [allowColumnResizing]="true" [columnAutoWidth]="true"
+            [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30"
+            keyExpr="LinkId" [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+            <dxo-header-filter [visible]="false" [allowSearch]="false"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+            <dxi-column dataField="LinkId" [width]="100" caption="Action" [allowFiltering]="false"
+                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="Link" caption="Link"></dxi-column>
+            <dxi-column dataField="Anchor" caption="ANCHOR Text"></dxi-column>
+            <dxi-column dataField="Description" caption="DESCRIPTION"></dxi-column>
+            <dxi-column dataField="Category" caption="CATEGORY"></dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="edit(data.data.LinkId)"
+                    class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-link"></a>
+                <a href="javascript:void(0)" (click)="delete(data.data.LinkId)" class="single-action fa fa-trash"
+                    data-toggle="modal" data-target="#delete-link"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of linkList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in  modal-small" id="add-link" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="addLinkForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Link</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="link"
+                                            [ngClass]="{ 'is-invalid': submitted && addForm.link.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.link" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="addForm.link.invalid">Link is
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Anchor Text</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="anchor">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Description</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="description">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Category</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="category">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onInsertSubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-theme pull-left btn-sm">Insert</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in  modal-small" id="edit-link" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editLinkForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Link</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="link"
+                                            [ngClass]="{ 'is-invalid': submitted && editForm.link.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.link" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="editForm.link.invalid">Link is
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Anchor Text</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="anchor">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Description</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="description">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Category</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="category">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1"
+                        class="btn btn-theme btn-sm pull-left">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="delete-link" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>ARE YOU SURE YOU WANT TO DELETE THIS LINK?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="deleteLink()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>

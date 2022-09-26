@@ -1,0 +1,24 @@
+<div class="tab-pane active" id="scheduler-tab">
+	<div class="tab-section">
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" [routerLink]="'orderedoutbounddailer'" routerLinkActive="active">Ordered Outbound Dailer</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" [routerLink]="'pendpiacceptliab'" routerLinkActive="active">Pend PI Accept Liab</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" [routerLink]="'orderedsms'" routerLinkActive="active">Ordered SMS</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" [routerLink]="'orderedreview'" routerLinkActive="active">Ordered Review</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" [routerLink]="'orderedsheduler'" routerLinkActive="active">Ordered Sheduler</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>  

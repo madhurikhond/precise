@@ -1,0 +1,38 @@
+<div class="theme-form-center">
+    <form [formGroup]="unsatisfiedForm" class="theme-form">
+        <div class="theme-panel-body">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="theme-label">Time to check for new patient ID</div>
+                        <div class="input-group icon-active">
+                            <input type="time" formControlName="patientTime" class="form-control" id="timepicker1"/>
+                        </div>	
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="theme-label">PatientId Not found </div>
+                        <div class="input-group">
+                            <input type="text" formControlName="unsatisfiedSubject" class="form-control" value="PatientIdNot found  - Alert cannot be created"/>
+                        </div>	
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="cke-editor-group">
+                        <div class="theme-label">Unsatisfied Alert Body</div>
+                        <ckeditor #myckeditor
+                        formControlName="unsatisfiedBody"  
+                          [config]="CkeConfig" (paste)="onPaste($event)"
+                          (change)="onChange($event)">
+                       </ckeditor>
+                        <!-- <ckeditor [editor]="Editor" formControlName="unsatisfiedBody"></ckeditor> -->
+                    </div>
+                </div>
+            </div>	
+        </div>
+        <div class="theme-panel-footer">
+            <a href="javascript:void(0)" (click)="updateUnsatisfiedSetting()" class="btn btn-theme">Update</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,121 @@
+<div class="tab-pane" id="sms-confirm-general">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="callSettingForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" id="active17" formControlName="isActive" type="checkbox">
+										<label for="active16" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Study Must Equal	</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select"                                             
+												formControlName="status" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.status.errors)}"
+												(change)="onChange($event)">  
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:1">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 1">
+														<span class="ng-value-label">{{items.length - 1}} more...</span>
+													</div>
+												</ng-template>                                  
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.status.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.status.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Finan. Type</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="financialTypesList" 
+												placeholder="Select"                                            
+												formControlName="financialType" 
+												bindLabel="financialtypename" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="financialtypename" 
+												[(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted && csForm.financialType.errors)}"
+												(change)="onChange($event)">            
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:1">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 1">
+														<span class="ng-value-label">{{items.length - 1}} more...</span>
+													</div>
+												</ng-template>                        
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && csForm.financialType.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="csForm.financialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="comment" 
+                            [ngClass]="{ 'is-invalid': (submitted && csForm.comment.errors)}"placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && csForm.comment.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="csForm.comment.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>						
+    </div>
+</div>

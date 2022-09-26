@@ -1,0 +1,515 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Receive Payment</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()" class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">LAST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="lastName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FIRST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="firstName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">PATIENT ID</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="patientId" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOB</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date" [showClearButton]="true" [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">ATTORNEY</div>
+                    <div class="input-group input-loader">
+                        <select formControlName="attorney" class="form-control">
+                            <option value=null selected>Select</option>
+                            <option *ngFor="let item of attorneyList" value={{item.Attorney}}>
+                                {{item.Attorney}}
+                            </option>
+                        </select>
+                        <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOI</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="doi" type="date" [showClearButton]="true" [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM FROM</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examFromDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true" >
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM TO</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examToDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true" >
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Accession</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="accession" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">STATUS</div>
+                    <ng-select [items]="statusList" [multiple]="true" bindLabel="Status" placeholder="Select"
+                        groupBy="Type" formControlName="status" [selectableGroup]="true"
+                        [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="Status"
+                        [loading]="showDropdownLoader" id="id15"  (add)="a1=changefn('id15',a1)">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Type | uppercase}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Status}}
+                        </ng-template>
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                                <span class="ng-value-label"> {{item.Status}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a1">
+                                <span class="ng-value-label">{{items.length - a1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Funding Company</div>
+                    <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
+                        [multiple]="true" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="Broker" id="id16"  (add)="a2=changefn('id16',a2)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                                <span class="ng-value-label"> {{item.Broker}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a2">
+                                <span class="ng-value-label">{{items.length - a2}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">INSURANCE CARRIER</div>
+                    <ng-select [items]="insuranceCompanyList" placeholder="Select" bindLabel="CompanyName"
+                        formControlName="insuranceCompany" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="CompanyName" id="id17"  (add)="a3=changefn('id17',a3)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                                <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a3">
+                                <span class="ng-value-label">{{items.length - a3}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-action">
+                    <button type="submit" class="btn btn-theme">Search</button>
+                    <button type="button" (click)="onReset()" class="btn btn-border">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="search-field search-field-mobile">
+            <div class="remove-cataloge"></div>
+            <form class="theme-form">
+                <div class="filter-data">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+                                <script>
+                                    $(function () {
+                                        $("#dob1").datepicker();
+                                    });
+                                </script>
+                                <div class="input-group icon-active">
+                                    <input type="text" class="form-control" id="dob1" />
+                                    <i class="fa-right-icon fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">ATTORNEY</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">DOI</div>
+                                <script>
+                                    $(function () {
+                                        $("#doi1").datepicker();
+                                    });
+                                </script>
+                                <div class="input-group icon-active">
+                                    <input type="text" class="form-control" id="doi1" />
+                                    <i class="fa-right-icon fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">EXAM FROM</div>
+                                <script>
+                                    $(function () {
+                                        $("#examfrom1").datepicker();
+                                    });
+                                </script>
+                                <div class="input-group icon-active">
+                                    <input type="text" class="form-control" id="examfrom1" />
+                                    <i class="fa-right-icon fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">EXAM TO</div>
+                                <script>
+                                    $(function () {
+                                        $("#examto1").datepicker();
+                                    });
+                                </script>
+                                <div class="input-group icon-active">
+                                    <input type="text" class="form-control" id="examto1" />
+                                    <i class="fa-right-icon fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">ACCESSION</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">STATUS</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Funding Company</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">INSURANCE CARRIER</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme" (click)="onSearchSubmit()">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="onReset()">Clear</a>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="search-field page-top-action">
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                    
+                </div>
+            </div>
+        </div> -->
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-7 col-lg-8 col-md-7 col-sm-12 col-12">
+                    <form class="theme-form mb-0" [formGroup]="checkdetailForm">
+                        <div class="form-group">
+                            <div class="theme-label">CHECK NUMBER</div>
+                            <div class="input-group">
+                                <input type="text" [readonly]="this.disableTextBox" formControlName="chkNumber" ng-disabled="IschkNumber" class="form-control" (keyup.enter)="onSearchSubmit()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Payment Amount</div>
+                            <div class="input-group">
+                                <input type="text" [readonly]="this.disableTextBox" formControlName="chkAmount" ng-disabled="IschkAmount" class="form-control" (keyup.enter)="onSearchSubmit()">
+                            </div>
+                        </div>
+                        <div class="theme-form view-mode payment-view-mode mb-0">
+                            <div class="form-group">
+                                <div class="theme-label">Chk Amt  </div>
+                                <div class="input-group">
+                                    <div class="view-mode-data">${{CheckAmount}}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">Selected  </div>
+                                <div class="input-group">
+                                    <div class="view-mode-data">${{SelectedAmount}}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">Balance  </div>
+                                <div class="input-group">
+                                    <div [ngClass]="BalanceAmount === 0 ? 'balanceGreen' :BalanceAmount >0 ?'balanceBlue': 'balanceRed'" class="view-mode-data">${{BalanceAmount}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xl-5 col-lg-4 col-md-5 col-sm-12 col-12">
+                    <form class="theme-form mb-0" [formGroup]="checkdetailForm">
+                        <a href="javascript:void(0)" data-toggle="modal" (click)="AddSelected()" data-target="#AddSelected" class="btn btn-theme pull-right">Add Selected</a>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="precisemri-search">
+                        <!-- <div class="precisemri-search page-select">
+                            <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                                <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                    value={{item.value}}>{{item.value}}</option>
+                            </select>
+                        </div> -->
+                        <select id="btnOption1GO" (change)="onDropdownChange($event.target.value)" #actionDropDown class="form-search">                         
+                            <option value=0 selected>Select an Action</option>
+                            <option value="1">Remove Check</option>
+                            <!-- <option value="2">4Review</option> -->
+                        </select>                       
+                        <button type="button" class="search" [disabled]="actionDropDown.value==0?true:false"
+                            [ngStyle]="{'background-color': (actionDropDown.value==0) ? '#bfbfbf' : '#3b8beb'}"
+                            (click)="option1Go()">Go</button>              
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="table-responsive receive-payment-table receive-payment-table-top">
+            <dx-data-grid id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="INTERNALSTUDYID" [showBorders]="true" [(selectedRowKeys)]="selectedRows"
+                (onSelectionChanged)="OnRowselected($event)" (onEditingStart)="onEditingStart($event)"
+                (onRowUpdating)="onCellUpdating($event)" (onSaving)="onSaving($event)"  (onEditorPreparing)="onEditorPreparing($event)">
+
+                <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>             
+                <dxo-paging [enabled]="false"></dxo-paging>         
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-sorting mode="multiple"></dxo-sorting>             
+                <dxo-selection mode="multiple" [showCheckBoxesMode]="checkBoxesMode"></dxo-selection>
+
+                <dxi-column dataField="NewPatientId" caption="Patient ID" [groupIndex]="0" [allowEditing]="false"
+                    groupCellTemplate="groupTemplate"></dxi-column>
+                <dxi-column dataField="ATTORNEY" caption="ATTORNEY" [allowEditing]="false" [width]="100"></dxi-column>
+                <dxi-column dataField="BROKER" caption="FUNDING CO." [allowEditing]="false" [width]="100"></dxi-column>
+                <dxi-column dataField="STUDYDATETIME" caption="DOS" cellTemplate="dosCellTemplate" [allowEditing]="false" [width]="90"></dxi-column>
+                <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION" [width]="100" [allowEditing]="false"></dxi-column>
+                <dxi-column dataField="STATUS" caption="RAMSOFT" [width]="100" [allowEditing]="false"></dxi-column>
+                <dxi-column dataField="PAYMENTSTATUS" caption="PMT" [width]="70" [allowEditing]="false"></dxi-column>
+                <dxi-column dataField="BILLINGSTATUS" caption="BILLING" [width]="100" [allowEditing]="false">
+                </dxi-column>
+                <dxi-column dataField="COLLECTIONSSTATUS" caption="Collec" [width]="80" [allowEditing]="false">
+                </dxi-column>
+                <dxi-column dataField="SettlementStatus" caption="SETTLE STATUS" [width]="100" [allowEditing]="false">
+                </dxi-column>
+                <dxi-column dataField="SettlementDate" caption="SETTLEMENT DATE" [width]="100" [allowEditing]="false">
+                </dxi-column>
+                <dxi-column dataField="Price" caption="MIN $" [allowEditing]="false" [width]="70"></dxi-column>
+                <dxi-column dataField="AllocatedAmount" caption="SETTLE ALLOC $" [width]="100"></dxi-column>
+                <dxi-column dataField="PendingAmount" caption="AMTDUE $" [allowEditing]="false" [width]="90">
+                </dxi-column>
+                <dxi-column dataField="AlreadyPaid" caption="PAID AMT $" [allowEditing]="false" [width]="90">
+                </dxi-column>
+                <dxi-column dataField="Nowpaid" caption="PAYMNT $"></dxi-column>
+                <dxi-column dataField="FINANCIALTYPEID" caption="FINANCIAL TYPE ID" [(visible)]="isColumnVisible"
+                    [allowEditing]="false"></dxi-column>
+                <div *dxTemplate="let data of 'groupTemplate'">
+                    <adetail-group [data]="data"></adetail-group>
+                </div>
+                <div *dxTemplate="let data of 'dosCellTemplate'">
+                    <ng-container *ngIf="data && data.value">
+                        {{data.value | date:dateTimeFormatCustom.Date}}
+                    </ng-container>
+                </div>
+                <!-- <div *dxTemplate="let data of 'dos'">
+                    {{data.value | date: 'MM/dd/yyyy'}}
+                </div> -->
+            </dx-data-grid>
+        </div>
+        <div class="pagination-theme">
+            <div class="pagination-theme">
+                <div
+                    *ngFor="let item of dataList | paginate: { id: 'pagination1100011' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:topTotalRecords}">
+                </div>
+                <pagination-controls id="pagination1100011" (pageChange)="topGridPageChanged($event)">
+                </pagination-controls>
+            </div>
+        <div class="page-top-action">
+            <div class="precisemri-search">
+                <select id="btnOption2GO"  #btnOption2GO (change)="onDropdownChange($event.target.value)" class="form-search">
+                    <option selected value=0>Select an option</option>
+                    <option value="3">Export All Checks</option>
+                    <!-- <option value="4">Save & DO NOT Export</option> -->
+                    <option value="5">Remove Payment</option>
+                </select>
+                <button type="button" class="search" [disabled]="btnOption2GO.value==0?true:false"
+                            [ngStyle]="{'background-color': (btnOption2GO.value==0) ? '#bfbfbf' : '#3b8beb'}"
+                            (click)="option2Go()">Go</button>   
+            </div>
+        </div>
+        <div class="table-responsive receive-payment-table receive-payment-table2">
+            <dx-data-grid
+            id="gridBottomContainer"
+            [dataSource]="bottomDataList"
+            [allowColumnResizing]="true" 
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="ArpaymentId"           
+            [(selectedRowKeys)]="bottomSelectedRows"
+            [showBorders]="true">
+            <dxo-editing
+            mode="cell"
+            [allowUpdating]="true">
+            </dxo-editing>            
+            <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+            <dxo-paging [enabled]="false"></dxo-paging>         
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>         
+            <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+            <dxo-selection mode="multiple" [showCheckBoxesMode]="checkBoxesMode"></dxo-selection>
+            
+            <dxi-column dataField="PatientId" caption="Line Meno" [width] = "200" [allowEditing]="false" style="text-align: center;"></dxi-column>
+            <dxi-column dataField="PaymentType" caption="Payment Type" [width] = "200" [allowEditing]="false" style="text-align: center;"></dxi-column>
+            <dxi-column dataField="Payee" caption="Payee" [allowEditing]="false" style="text-align: center;" [width] = "200"></dxi-column>
+            <dxi-column dataField="Bank" caption="Bank"  [allowEditing]="false" style="text-align: center;" [width] = "190"></dxi-column>
+            <dxi-column dataField="QBAct" caption="QB Act" [allowEditing]="false" style="text-align: center;" [width] = "190"></dxi-column>
+            <dxi-column dataField="CheckNo" caption="Check No" style="text-align: center;" [allowEditing]="false" [width] = "190"></dxi-column>
+            <dxi-column dataField="CheckAmount" caption="Check Amount" style="text-align: center;"  [allowEditing]="false" [width] = "190"></dxi-column>
+
+                <dxi-column dataField="PatientId" caption="Line Meno" [width]="200" [allowEditing]="false"
+                    style="text-align: center;"></dxi-column>
+                <dxi-column dataField="PaymentType" caption="Payment Type" [width]="200" [allowEditing]="false"
+                    style="text-align: center;"></dxi-column>
+                <dxi-column dataField="Payee" caption="Payee" [allowEditing]="false" style="text-align: center;"
+                    [width]="200"></dxi-column>
+                <dxi-column dataField="Bank" caption="Bank" [allowEditing]="false" style="text-align: center;"
+                    [width]="190"></dxi-column>
+                <dxi-column dataField="QBAct" caption="QB Act" [allowEditing]="false" style="text-align: center;"
+                    [width]="190"></dxi-column>
+                <dxi-column dataField="CheckNo" caption="Check No" style="text-align: center;" [allowEditing]="false"
+                    [width]="190"></dxi-column>
+                <dxi-column dataField="CheckAmount" caption="Check Amount" style="text-align: center;"
+                    [allowEditing]="false" [width]="190"></dxi-column>
+
+                <div *dxTemplate="let data of 'detail'">
+                    <app-bottom-grid-detail [key]="data.key"></app-bottom-grid-detail>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div class="pagination-theme">
+            <div class="pagination-theme">
+                <div
+                    *ngFor="let item of bottomDataList | paginate: { id: 'pagination100011' , itemsPerPage:pageSize, currentPage: bottomPageNumber, totalItems:bottomTotalRecords}">
+                </div>
+                <pagination-controls id="pagination100011" (pageChange)="bottomGridPageChanged($event)">
+                </pagination-controls>
+            </div>
+        </div>
+        <!-- <div class="pagination-theme">
+            <ul>
+                <li><a href="javascript:void(0)">First</a></li>
+                <li><a href="javascript:void(0)"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                <li class="active"><a href="javascript:void(0)">1</a></li>
+                <li><a href="javascript:void(0)">2</a></li>
+                <li><a href="javascript:void(0)">3</a></li>
+                <li><a href="javascript:void(0)">4</a></li>
+                <li><a href="javascript:void(0)">5</a></li>
+                <li><a href="javascript:void(0)"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="javascript:void(0)">Last</a></li>
+            </ul>
+        </div> -->
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="responseConfirmPopUp" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Payments have been applied. Payment file has been exported via SFTP View csv export file <a
+                        href="javascript:void(0)" data-dismiss="modal" (click)="downloadCSV()">here</a> </p>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="d-none" #hiddenresponseConfirmPopUp [hidden]="true" data-toggle="modal"
+    data-target="#responseConfirmPopUp"></button>
+<app-patient-detail></app-patient-detail>

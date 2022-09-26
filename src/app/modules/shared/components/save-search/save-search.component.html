@@ -1,0 +1,80 @@
+<div class="modal fade modal-theme modal-small" id="saved-searches" data-backdrop="static" data-keyboard="false"
+   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Saved Searches</h5>
+            <div class="close-dismiss" (click)="UpdateSaveSearch()" data-dismiss="modal"></div>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="saved-search-as">
+                     <span>Save Search as: </span>
+
+                     <input type="text" class="form-control" [(ngModel)]="savedSearchNgModel">
+                     <div class="form-action">
+                        <button type="button" class="btn btn-theme"
+                           [disabled]="savedSearchNgModel.trim()=='' ? true:false"
+                           [ngStyle]="{'background-color': (savedSearchNgModel.trim()=='') ? '#bfbfbf' : '#3b8beb'}"
+                           (click)="savedSearch()">Save Search</button>
+                        <!-- <button type="button" class="search" [disabled]="actionDropDown.value==''?true:false" [ngStyle]="{'background-color': (actionDropDown.value==0) ? '#bfbfbf' : '#3b8beb'}"  (click)="goButtonClick(actionDropDown.value)">Go</button> -->
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <a href="javascript:void(0)" class="model-back-link" data-dismiss="modal">Go back to Seach Results</a>
+               </div>
+
+            </div>
+            <div class="row">
+               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <!-- <div class="model-header-title">Saved Searches</div> -->
+                  <div class="model-header-title">&nbsp;</div>
+               </div>
+               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <a href="javascript:void(0)" class="right btn btn-theme pull-right"
+                     (click)="getAllSavedSearchList()"><i class="fa fa-repeat"></i> Refresh</a>
+               </div>
+            </div>
+           
+            <div class="table-responsive">
+               <dx-data-grid id="gridContainer" [dataSource]="paginationRecords" [allowColumnResizing]="true"
+                  [columnAutoWidth]="true" [allowColumnReordering]="true"
+                  [columnMinWidth]="5" keyExpr="SearchName" [showBorders]="true">
+                  <dxo-paging [enabled]="false"></dxo-paging>
+                  <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                  <dxo-load-panel [enabled]="true">
+                  </dxo-load-panel>
+                  <dxi-column [allowEditing]="false" dataField="SearchName" caption="NAME"></dxi-column>
+                  <dxi-column dataField="SavedOn" caption="SAVED ON"
+                  cellTemplate="SavedOnCellTemplate"></dxi-column>
+                   <dxi-column [allowEditing]="false" dataField="Delete"  cellTemplate="deletetemplate" caption="DELETE"></dxi-column>
+
+                  <div *dxTemplate="let data of 'deletetemplate'"><a href ="javascript:void(0)" (click)="deleteItem(data.data.ID)"><i class="fa fa-times"></i></a></div>
+              
+                  <div *dxTemplate="let data of 'SavedOnCellTemplate'">
+                    
+                     <ng-container *ngIf="data">
+                         {{data.data.SavedOn | date:dateTimeFormatCustom.DateTime}}
+                     </ng-container>
+                 </div>
+              
+               </dx-data-grid>
+            </div>
+            <div>
+               <div>
+                  <div *ngFor="let item of paginationRecords | paginate: {  id: 'pagination11' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+                  <pagination-controls id="pagination11" (pageChange)="pageChanged($event)"></pagination-controls>
+               </div>
+           </div>
+         </div>
+         <!-- <div class="modal-footer">
+             <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+             <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-dismiss="modal">Create</a>
+          </div> -->
+      </div>
+   </div>
+</div>

@@ -1,0 +1,449 @@
+<div class="modal fade modal-theme create-alert-popup" id="create-alert" role="dialog"
+   aria-labelledby="exampleModalLabel" aria-modal="true">
+   <div class="modal-dialog modal-dialog-centered" role="document" >
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Create Alert</h5>
+            <div class="close-dismiss" (click)="close()" data-dismiss="modal"></div>
+         </div>
+         <div class="modal-body">
+            <div class="modal-body-inner">
+               <form class="theme-form" [formGroup]="contactInfoForm" *ngIf="contactInfoForm">
+                  <div class="row">
+                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="row">
+                           <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                              <div class="theme-label-subtitle">Type</div>
+                           </div>
+                           <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                    <select id="alertSelect" class="form-control"
+                                       [ngClass]="{'is-invalid':Issubmitted && contactInfoFormRef.alertType.errors}"
+                                       (change)="onAlertChange($event.target.value)">
+                                       <option [value]="" disabled selected>Select Alert</option>
+                                       <option *ngFor="let item of alertList" value={{item.Alerttype}}>
+                                          {{item.Alerttype}}</option>
+                                    </select>
+                                 </div>
+                                 <div *ngIf="(Issubmitted && contactInfoFormRef.alertType.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf=" contactInfoFormRef.alertType.errors?.required">
+                                       ALERT TYPE IS REQUIRED</div>
+                                 </div>  
+                              </div>
+                           </div>
+                           <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                              <div class="theme-label-subtitle">Reason</div>
+                           </div>
+                           <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                    <select id="reasonSelect" class="form-control"
+                                       (change)="onReasonChange($event.target.value)"
+                                       [ngClass]="{'is-invalid':Issubmitted && contactInfoFormRef.reason.errors}">
+                                       <option [value]="" disabled selected>Select Reason</option>
+                                       <option *ngFor="let item of reasonList" value={{item.Reason}}>
+                                          {{item.Reason}}
+                                       </option>
+                                    </select>
+                                 </div>
+                                 <div *ngIf="(Issubmitted && contactInfoFormRef.reason.errors)"
+                                 class="invalid-feedback">
+                                 <div *ngIf=" contactInfoFormRef.reason.errors?.required">
+                                    ALERT REASON IS REQUIRED</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                              <div class="theme-label-subtitle">Patient ID</div>
+                           </div> -->
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                    <div class="theme-label">Patient ID</div>
+                                    <input type="text" class="form-control caPatientID" id="patientID"
+                                       [disabled]="patientFieldDisable"
+                                       [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoFormRef.patientID.errors) }"
+                                       [(ngModel)]="patientIdModel" (keyup.enter)="showContactInfo($event.target.value)"
+                                       (focusout)="showContactInfo($event.target.value)"
+                                       (change)="showContactInfo($event.target.value)"
+                                       [ngModelOptions]="{standalone: true}">
+                                 </div>
+                                 <div *ngIf="(Issubmitted && contactInfoFormRef.patientID.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf=" contactInfoFormRef.patientID.errors?.required">
+                                       PATIENT ID IS REQUIRED</div>
+                                 </div>
+                              </div>
+                           </div>
+                        
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                    <div class="theme-label">EMAIL SUBJECT</div>
+                                    <input type="text" class="form-control" formControlName="emailSubModel"
+                                       [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoFormRef.emailSubModel.errors) }">
+                                 </div>
+                                 <div *ngIf="(Issubmitted && contactInfoFormRef.emailSubModel.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf=" contactInfoFormRef.emailSubModel.errors?.required">
+                                       EMAIL SUBJECT IS REQUIRED</div>
+                                 </div>
+                              </div>
+                              <!-- <div class="form-group">
+                                 <div class="input-group">
+                                    <input type="text" id="emailSub" class="form-control"
+                                       formControlName="emailSubModel" />
+                                       <div *ngIf="(contactInfoForm.controls.emailSubModel.errors)"
+                                       class="invalid-feedback">
+                                       <div *ngIf="contactInfoForm.controls.emailSubModel.errors?.required">
+                                         Name is required</div>
+                                    </div>
+                                 </div>
+                              </div> -->
+                           </div>
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                 <div class="cke-editor-group">
+                                    <ckeditor #myckeditor formControlName="emailBodyModel" (click)="onClickToolbarButton()"
+                                     class="ck-editor-valid"
+                                       required [config]="CkeConfig" (paste)="onPaste($event)" id="email-editor"
+                                       [ngClass]="{'is-invalid':Issubmitted && contactInfoFormRef.emailBodyModel.errors}"
+                                       (change)="onChange($event)">
+                                    </ckeditor>
+                                    <div *ngIf="(Issubmitted && contactInfoFormRef.emailBodyModel.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf=" contactInfoFormRef.emailBodyModel.errors?.required">
+                                      REQUIRED FIELD</div>
+                                 </div>
+                                    
+                                    <!-- <ckeditor [editor]="Editor" (click)="onClickToolbarButton()" formControlName="emailBodyModel">
+                                       <textarea class="form-control" id="email-editor" formControlName="emailBodyModel"
+                                          required></textarea>
+                                    </ckeditor> -->
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="form-group">
+                                 <div class="input-group">
+                                    <div class="theme-label">Message Body</div>
+                                    <input type="text" class="form-control" formControlName ='smsTextModel' [(ngModel)]="smsTextModel"
+                                    [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.smsTextModel.errors) }"
+   >
+                                 </div>
+                                 <div *ngIf="(Issubmitted && contactInfoForm.controls.smsTextModel.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf=" contactInfoForm.controls.smsTextModel.errors?.required">
+                                       message body is required</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <textarea class="form-control" cols="10" rows="5" formControlName="notesModel"
+                                 placeholder="Internal Notes (ww to be sent)"></textarea>
+                           </div>
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="checkbox-theme">
+                                 <input id="chkInternalUser" type="checkbox" (change)="onchkUserChange($event)"
+                                    style="opacity: 1; margin: 21px 0px 0px -5px" />
+                                 <label class="arrow-labe2">Notify Internal User</label>
+                                 <select id="inputUser" class="form-control" hidden>
+                                    <option *ngFor="let item of userList" value={{item.UserName}}>
+                                       {{item.UserName}}
+                                    </option>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <ng-container *ngIf="isContactModelShow">
+                        <div id="showContactInfoModel" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                           <div class="create-alert-list">
+                              <div class="row">
+                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="theme-label-subtitle">
+                                       <input type="text" readonly style="border:0"
+                                          formControlName="patientHeaderModel" />
+                                    </div>
+                                 </div>
+                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 text-right">
+                                    <div class="theme-label-subtitle">Click an icon to send to that destination</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="create-alert-list">
+                              <div class="create-alert-list-left">
+                                 <div class="theme-label-subtitle">Attorney</div>
+                              </div>
+                              <div class="create-alert-list-right">
+                                 <div class="create-alert-list-right-top">
+                                    <input type="text" class="theme-label-subtitle" readonly style="border:0"
+                                       formControlName="infoAttorneyName" />
+                                 </div>
+                                 <div class="create-alert-list-right-bottom">
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkAttFax" style="display: none;" type="checkbox"
+                                             formControlName="isAttorneyFax" />
+                                          <label for="chkAttFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoAttorneyFax" />
+                                       </div>
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkAttEmail" style="display: none;" type="checkbox"
+                                             formControlName="isAttorneyEmail" />
+                                          <label for="chkAttEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoAttorneyEmail" />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="create-alert-list">
+                              <div class="create-alert-list-left">
+                                 <div class="theme-label-subtitle">Ref.Phy.</div>
+                              </div>
+                              <div class="create-alert-list-right">
+                                 <div class="create-alert-list-right-top">
+                                    <input type="text" class="theme-label-subtitle" readonly style="border:0"
+                                       formControlName="infoRefPhyName" />
+                                 </div>
+                                 <div class="create-alert-list-right-bottom">
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkRefPhyFax" type="checkbox" style="display: none;"
+                                             formControlName="isRefPhyFax" />
+                                          <label for="chkRefPhyFax"><img
+                                                src="assets/images/FaxIconGray.png"></label>&nbsp;&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoRefPhyFax" />
+                                       </div>
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkRefPhyEmail" style="display: none;" type="checkbox"
+                                             formControlName="isRefPhyEmail" />
+                                          <label for="chkRefPhyEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoRefPhyEmail" />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="create-alert-list">
+                              <div class="create-alert-list-left">
+                                 <div class="theme-label-subtitle">Broker</div>
+                              </div>
+                              <div class="create-alert-list-right">
+                                 <div class="create-alert-list-right-top">
+                                    <input class="theme-label-subtitle" type="text" readonly style="border:0"
+                                       formControlName="infoBrokerName" />
+                                 </div>
+                                 <div class="create-alert-list-right-bottom">
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerMainFax" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerMainFax" />
+                                          <label for="chkBrokerMainFax"><img
+                                                src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerMainFax" />
+                                       </div>
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerMainEmail" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerMainEmail" />
+                                          <label for="chkBrokerMainEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerMainEmail" />&nbsp; Main
+                                       </div>
+                                    </div>
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerBillingFax" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerBillingFax" />
+                                          <label for="chkBrokerBillingFax"><img
+                                                src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerBillingFax" />
+                                       </div>
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerBillingEmail" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerBillingEmail" />
+                                          <label for="chkBrokerBillingEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerBillingEmail" />&nbsp; Billing
+                                       </div>
+                                    </div>             
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerAPFax" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerAPFax" />
+                                          <label for="chkBrokerAPFax"><img
+                                                src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerAPFax" />
+                                       </div>
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkBrokerAPEmail" type="checkbox" style="display: none;"
+                                             formControlName="isBrokerAPEmail" />
+                                          <label for="chkBrokerAPEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoBrokerAPEmail" />&nbsp; AP
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="create-alert-list">
+                              <div class="create-alert-list-left">
+                                 <div class="theme-label-subtitle">Patient</div>
+                              </div>
+                              <div class="create-alert-list-right">
+                                 <div class="create-alert-list-right-top">
+                                    <input class="theme-label-subtitle" type="text" readonly style="border:0"
+                                       formControlName="infoPatientName" />
+                                 </div>
+                                 <div class="create-alert-list-right-bottom">
+                                    <div class="create-alert-icon-list">
+                                       <!--use 2 divs to hide and show acc. to conditions-->
+                                       <div class="create-alert-icon-detail"
+                                          *ngIf="contactInfoFormRef.infoPatientFax.value=='N/A'">
+                                          <input id="chkPatientFax" type="checkbox" style="display: none;"
+                                             formControlName="isPatientFax"
+                                             [attr.disabled]="contactInfoFormRef.infoPatientFax.value=='N/A'" />
+                                          <label for="chkPatientFax">
+                                             <img src="assets/images/FaxIconGray.png">
+                                          </label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoPatientFax" />
+                                       </div>
+                                    </div>
+
+                                    <div class="create-alert-icon-detail"
+                                       *ngIf="contactInfoFormRef.infoPatientFax.value!='N/A'">
+                                       <input id="chkPatientFax" type="checkbox" style="display: none;"
+                                          formControlName="isPatientFax" />
+                                       <label for="chkPatientFax">
+                                          <img src="assets/images/FaxIconGray.png">
+                                       </label>&nbsp;
+                                       <input type="text" readonly style="border:0" formControlName="infoPatientFax" />
+                                    </div>
+
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkPatientEmail" type="checkbox" style="display: none;"
+                                             formControlName="isPatientEmail" />
+                                          <label for="chkPatientEmail">
+                                             <img src="assets/images/EmailIconGray.png">
+                                          </label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoPatientEmail" />
+                                       </div>
+                                    </div>
+                                    <div class="create-alert-icon-list">
+                                       <!--to hide div if phone no. is not available-->
+                                       <div class="create-alert-icon-detail"
+                                          *ngIf="contactInfoFormRef.infoPatientPhone.value=='N/A'">
+                                          <input id="chkPatientPhone" type="checkbox" style="display: none;"
+                                             [attr.disabled]="contactInfoFormRef.infoPatientPhone.value=='N/A'"
+                                             formControlName="isPatientPhone"
+                                             (change)="onchkPatientPhoneChange($event)" />
+                                          <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoPatientPhone" />
+                                       </div>
+                                       <div class="create-alert-icon-detail"
+                                          *ngIf="contactInfoFormRef.infoPatientPhone.value!='N/A'">
+                                          <input id="chkPatientPhone" type="checkbox" style="display: none;"
+                                             formControlName="isPatientPhone"
+                                             (change)="onchkPatientPhoneChange($event)" />
+                                          <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
+                                          <input type="text" readonly style="border:0"
+                                             formControlName="infoPatientPhone" />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="create-alert-list">
+                              <div class="create-alert-list-left">
+                                 <div class="theme-label-subtitle">Addt'tl <br />Desk</div>
+                              </div>
+                              <div class="create-alert-list-right">
+                                 <div class="create-alert-list-right-top">
+                                    <div class="theme-label-subtitle">N/A</div>
+                                 </div>
+                                 <div class="create-alert-list-right-bottom">
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkAddFax" type="checkbox" style="display: none;"
+                                             (change)="onchkFaxChange($event)" />
+                                          <label for="chkAddFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax1"
+                                             formControlName="infoAdditionalFax1" hidden />
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax2"
+                                             formControlName="infoAdditionalFax2" hidden />
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax3"
+                                             formControlName="infoAdditionalFax3" hidden />
+                                       </div>
+                                    </div>
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkAddEmail" type="checkbox" style="display: none;"
+                                             (change)="onchkEmailChange($event)" />
+                                          <label for="chkAddEmail"><img
+                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                          <input type="email" id="AddEmail1" formControlName="infoAdditionalEmail1"
+                                             hidden />
+                                          <input type="email" id="AddEmail2" formControlName="infoAdditionalEmail2"
+                                             hidden />
+                                          <input type="email" id="AddEmail3" formControlName="infoAdditionalEmail3"
+                                             hidden />
+                                       </div>
+                                    </div>
+                                    <div class="create-alert-icon-list">
+                                       <div class="create-alert-icon-detail">
+                                          <input id="chkAddPhone" type="checkbox" style="display: none;"
+                                             (change)="onchkPhoneChange($event)" />
+                                          <label for="chkAddPhone"><img src="assets/images/sms.png"></label>&nbsp;
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone1"
+                                             formControlName="infoAdditionalPhone1" hidden />
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone2"
+                                             formControlName="infoAdditionalPhone2" hidden />
+                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone3"
+                                             formControlName="infoAdditionalPhone3" hidden />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </ng-container>
+                  </div>
+               </form>
+            </div>
+
+         </div>
+         <div class="modal-footer">
+            <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" (click)="close()"
+            [attr.data-dismiss]="modalValue">Cancel</a>
+            <button type="button" class="btn btn-border pull-left btn-sm" 
+             (click)="btnCreateAlert()"
+             [attr.data-dismiss]="modalValue">Create Alert Only</button>
+            <button type="button" class="btn btn-border pull-left btn-sm" (click)="btnCreateSendAlert()"
+            [attr.data-dismiss]="modalValue">Create &amp; Send Alert</button>
+         </div>
+      </div>
+   </div>
+</div>
+<button #hiddenCreateAlertPopUpButton class="d-none" [hidden]="true" data-toggle="modal"
+   data-target="#create-alert"></button>

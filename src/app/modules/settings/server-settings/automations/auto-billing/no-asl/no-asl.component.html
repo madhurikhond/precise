@@ -1,0 +1,64 @@
+<div class="tab-pane" id="no-asl">
+    <div class="theme-form-center">
+        <form [formGroup]="noaslForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="form-group autocomplete">
+                            <div class="theme-label">Financial Type </div>
+                            <div class="input-group">
+                                <ng-select [items]="financialTypesList" placeholder="Select"
+                                    formControlName="financialType" bindLabel="financialtypename" [multiple]="true"
+                                    [closeOnSelect]="false" bindValue="financialtypename"
+                                    [(ngModel)]="selectedFinancialList"
+                                    [ngClass]="{ 'is-invalid': (submitted && noForm.financialType.errors)}"
+                                    (change)="onChange($event)">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:4">
+                                            <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 4">
+                                            <span class="ng-value-label">{{items.length - 4}} more...</span>
+                                        </div>
+                                    </ng-template>    
+                                </ng-select>
+                            </div>
+                            <div *ngIf="submitted && noForm.financialType.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="noForm.financialType.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="input-lable-side"><span>Allow to be QC'ed and billed after</span> 
+							<div class="icon-active">
+								<input type="text"
+                                class="form-control" [ngClass]="{ 'is-invalid': (submitted && noForm.days.errors)}"
+                                formControlName="days" (keypress)="allowNumberOnly($event)">
+								<div *ngIf="submitted && noForm.days.errors" class="tooltiptext text-right">
+									<small class="error text-danger" *ngIf="noForm.days.errors.required">
+										Required
+									</small>
+									<small class="error text-danger" *ngIf="noForm.days.errors.max">
+										Required Max 3 number
+									</small>
+									<small class="error text-danger" *ngIf="noForm.days.errors.min">
+										Number should be greater than 0
+									</small>
+								</div>
+							</div>
+							<span>Days from Report signed time AND ASL is no AND it is a completed study.</span>
+								
+						</div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

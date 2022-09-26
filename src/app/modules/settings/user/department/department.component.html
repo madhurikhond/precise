@@ -1,0 +1,267 @@
+<div class="tab-pane" id="department">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="search-field search-field-theme collapse show">
+                <form [formGroup]="SearchForm" class="theme-form" (submit)="Search()">
+                    <div class="form-group">
+                        <div class="theme-label">Search</div>
+                        <div class="input-group">
+                            <input type="text" formControlName="Search" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-action">
+                        <button type="submit" class="btn btn-theme">Search</button>
+                        <a href="javascript:void(0)" (click)="Clear()" class="btn btn-border">Clear</a>&nbsp;&nbsp;
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+                    data-target="#add-department-record"><i class="fa fa-plus"></i> Add New Record</a>
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                    <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                        <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                            value={{item.value}}>{{item.value}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid id="gridContainer" [dataSource]="departmentList" [allowColumnResizing]="true"
+            [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30" keyExpr="Did" [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+            <dxo-header-filter [visible]="false" [allowSearch]="false"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+            <dxi-column dataField="Did" [width]="100" caption="Action" [allowFiltering]="false" [allowSorting]="false"
+                cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="DepartmentName" caption="DEPARTMENT NAME"></dxi-column>
+            <dxi-column dataField="DirectPhone" caption="DIRECT PHONE" cellTemplate="directPhone"></dxi-column>
+            <dxi-column dataField="Fax" caption="FAX" cellTemplate="fax"></dxi-column>
+            <dxi-column dataField="Extension" caption="EXTENSION"></dxi-column>
+            <dxi-column dataField="Email" caption="EMAIL"></dxi-column>
+            <div *dxTemplate="let data of 'directPhone'">
+                <p *ngIf="data && data.value">
+                    {{ data.value | mask: '(000) 000-0000' }}
+                </p>
+            </div>
+            <div *dxTemplate="let data of 'fax'">
+                <p *ngIf="data && data.value">
+                    {{ data.value | mask: '(000) 000-0000' }}
+                </p>
+            </div>
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="getDepartmentById(data.data.Did)"
+                    class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-department"></a>
+                <a href="javascript:void(0)" (click)="delete(data.data.Did)" class="single-action fa fa-trash"
+                    data-toggle="modal" data-target="#delete-department"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of departmentList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in show modal-small" id="add-department-record" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="addDepartmentForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Department</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="departmentName"
+                                            [ngClass]="{ 'is-invalid': submitted && addForm.departmentName.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.departmentName" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="addForm.departmentName.invalid">Department
+                                            name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Direct Phone</div>
+                                    <div class="input-group">
+                                        <input type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && addForm.directPhone.errors }"
+                                            mask="(000)-000-0000" class="form-control" formControlName="directPhone">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.directPhone" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="addForm.directPhone.invalid">Invalid
+                                            Direct Phone Number</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Fax</div>
+                                    <div class="input-group">
+                                        <input type="text" [ngClass]="{ 'is-invalid': submitted && addForm.fax.errors }"
+                                            mask="(000)-000-0000" class="form-control" formControlName="fax">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.fax" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="addForm.fax.invalid">Invalid FAX
+                                            Number</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Extension</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="extension">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Email</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="email"
+                                            [ngClass]="{ 'is-invalid': submitted && addForm.email.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.email" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="addForm.email.invalid">Invalid
+                                            email</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onInsertSubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-border pull-left btn-sm">Insert</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in show modal-small" id="edit-department" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editDepartmentForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Department</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="departmentName"
+                                            [ngClass]="{ 'is-invalid': submitted && editForm.departmentName.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.departmentName" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="editForm.departmentName.invalid">Department name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Direct Phone</div>
+                                    <div class="input-group">
+                                        <input type="text" mask="(000)-000-0000"
+                                            [ngClass]="{ 'is-invalid': submitted && editForm.directPhone.errors }"
+                                            class="form-control" formControlName="directPhone">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.directPhone.errors "
+                                        class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="editForm.directPhone.invalid">Invalid
+                                            Direct
+                                            Phone Number</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Fax</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && editForm.fax.errors }"
+                                            mask="(000)-000-0000" formControlName="fax">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.fax.errors " class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="editForm.fax.invalid">Invalid FAX
+                                            Number</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Extension</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="extension">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Email</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="email"
+                                            [ngClass]="{ 'is-invalid': submitted && editForm.email.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.email" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="editForm.email.invalid">Invalid
+                                            email</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1"
+                        class="btn btn-theme btn-sm pull-left">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="delete-department" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this Department?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="deleteDepartment()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal-backdrop fade show" [ngStyle]="{'display':displayAddForm}"></div> -->

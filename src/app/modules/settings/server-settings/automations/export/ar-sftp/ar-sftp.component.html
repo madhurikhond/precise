@@ -1,0 +1,45 @@
+<div class="tab-pane" id="ar-sftp-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="arSftpForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="checkbox-theme">
+                            <input class="form-control" formControlName="isActive" id="active11" type="checkbox">
+                            <label for="active11" class="arrow-label">Active</label>
+                        </div>
+                        <div class="form-group autocomplete">
+                            <div class="theme-label">Select Sftp Profile:</div>
+                            <div class="input-group">
+                                <ng-select [items]="sftpList" placeholder="Select" formControlName="profileName"
+                                    bindLabel="profileName" [multiple]="true" [closeOnSelect]="false"
+                                    bindValue="profileName" [(ngModel)]="selectedsftpList"
+                                    [ngClass]="{ 'is-invalid': (submitted && arsForm.profileName.errors)}"
+                                    (change)="onChange($event)">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.profileName}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1">
+                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>    
+                                </ng-select>
+                            </div>
+                            <div *ngIf="submitted && arsForm.profileName.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="arsForm.profileName.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

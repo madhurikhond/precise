@@ -1,0 +1,6 @@
+.dxDataGrid {
+    height: calc(100vh - 140px);
+}
+.tableHeight{
+    min-height: 20px !important;
+}

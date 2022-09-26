@@ -1,0 +1,135 @@
+<div class="tab-pane" id="daily-summary-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="dailySummaryForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isDailySummary"  id="active24" type="checkbox">
+										<label for="active24" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Scheduling  time</div>
+										<div class="input-group icon-active">
+											<input type="time" 
+											[ngClass]="{ 'is-invalid': (submitted && dsForm.dailySummaryScheduling.errors)}"
+											formControlName="dailySummaryScheduling"  class="form-control" id="timepicker35">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && dsForm.dailySummaryScheduling.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="dsForm.dailySummaryScheduling.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select" 
+												formControlName="dailyStatus" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && dsForm.dailyStatus.errors)}"
+												(change)="onChange($event)">   
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                   
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && dsForm.dailyStatus.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="dsForm.dailyStatus.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Financial Type</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="financialTypesList" 
+												placeholder="Select"                                            
+												formControlName="dailyFinancialType" 
+												bindLabel="financialtypename" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="financialtypename" 
+												[(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted && dsForm.dailyFinancialType.errors)}"
+												(change)="onChange($event)">    
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                  
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && dsForm.dailyFinancialType.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="dsForm.dailyFinancialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea class="form-control" 
+                            [ngClass]="{ 'is-invalid': (submitted && dsForm.dailySummaryNote.errors)}"
+                            formControlName="dailySummaryNote"  placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && dsForm.dailySummaryNote.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="dsForm.dailySummaryNote.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>

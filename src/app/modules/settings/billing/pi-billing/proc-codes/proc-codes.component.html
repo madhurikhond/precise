@@ -1,0 +1,153 @@
+<div class="tab-pane" id="proc-codes">
+    <div class="search-field search-field-theme page-top-action">
+        <form [formGroup]="bulkAssignForm" class="theme-form">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="precisemri-search">
+						<div class="icon-active">
+							<select formControlName="procGroup" class="form-control">
+								<option value=null disabled>Select Proc Group</option>
+								<option *ngFor="let group of procGroupList" value={{group.procGroupId}}>
+									{{group.procGroupName}}
+								</option>                                              
+							</select> 
+							<div *ngIf="submitted && baForm.procGroup" class="tooltiptext text-right">                            
+								<small class="error text-danger" *ngIf="baForm.procGroup.invalid">Proc. group is required</small>
+							</div>                  
+                        </div>  
+						<div class="precisemri-search page-select">
+							<div class="theme-label">Page Size</div>
+								<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+									<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+								</select>
+						</div>                
+                        <a href="javascript:void(0)" (click)="onBulkAssignSubmit()" class="search">Bulk Assign</a>
+                        <a href="javascript:void(0)" (click)="getAllProcCodes()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>    
+    <div class="table-responsive">
+        <dx-data-grid #grid
+            id="gridContainer"
+            [dataSource]="procCodeList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="ProcCodeId"  
+            [(selectedRowKeys)]="selectedRows"
+            (onRowUpdated)="onRowUpdated($event)"
+            [showBorders]="true">
+
+            <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
+			<dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxo-selection mode="multiple"></dxo-selection>
+
+            <dxi-column dataField="ProcCodeId" [width]="100" caption="Action" [allowEditing]="false" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="ProcCodeName" caption="PROC CODE NAME" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="Description" caption="DESCRIPTION" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="ProcGroupId" caption="PROC GROUP NAME">
+                <dxo-lookup [dataSource]="procGroupList" displayExpr="procGroupName" valueExpr="procGroupId">
+            </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="DxOverride" caption="DX OVERRIDE"></dxi-column>
+            <dxi-column dataField="DoNotRequirePayment" caption="Do Not Require Payment" cellTemplate="DoNotRequirePayment"></dxi-column>
+            <dxi-column dataField="IsXrayPrescreen" caption="IS XRAY PRE SCREEN" cellTemplate="IsXrayPrescreen"></dxi-column>
+            <dxi-column dataField="IsNoPIBillFee" caption="NO PI RAD BILL FEE"  cellTemplate="IsNoPIBillFee"></dxi-column>
+
+			<div *dxTemplate="let data of 'DoNotRequirePayment'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'IsXrayPrescreen'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'IsNoPIBillFee'"> {{data.value ? "Yes":"No"}} </div>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="edit(data.data.ProcCodeId)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-pc-record"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div *ngFor="let item of procCodeList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="edit-pc-record" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">UPDATE</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+			<form [formGroup]="editForm" class="theme-form">
+				<div class="modal-body">
+					<div class="modal-body-inner">
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+								<div class="form-group">
+									<div class="theme-label">PROC CODE NAME</div>
+									<div class="input-group">
+										<div class="view-mode-data">
+											{{editForm.value.procCodeName}}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="theme-label">Description</div>
+									<div class="input-group">
+										<div class="view-mode-data">
+											{{editForm.value.description}}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="theme-label">PROC GROUP NAME</div>
+									<div class="input-group">
+										<select formControlName="procGroup" class="form-control">
+											<option value="0">Select Proc Group</option>
+											<option *ngFor="let group of procGroupList" value={{group.procGroupId}}>
+												{{group.procGroupName}}
+											</option>                                              
+										</select>
+									</div>                                    
+								</div>                                
+								<div class="form-group">
+									<div class="theme-label">Dx Override</div>
+									<div class="input-group">
+										<input formControlName="dxOverride" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="checkbox-theme">
+									<input formControlName="isXrayPrescreen" class="form-control" id="edit-isactive1" type="checkbox">
+									<label for="edit-isactive1" class="arrow-label">Is Xray Prescreen</label>
+								</div>
+								<div class="checkbox-theme">
+									<input formControlName="doNotRequirePayment" class="form-control" id="edit-isactive2" type="checkbox">
+									<label for="edit-isactive2" class="arrow-label">Do Not Require Payment</label>
+								</div>
+								<div class="checkbox-theme">
+									<input formControlName="isNoPIBillFee" class="form-control" id="edit-isactive" type="checkbox">
+									<label for="edit-isactive" class="arrow-label">NO PI BILL FEE</label>
+								</div>
+							</div>
+						</div>                        
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

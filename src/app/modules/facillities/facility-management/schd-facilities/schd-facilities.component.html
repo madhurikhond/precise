@@ -1,0 +1,3351 @@
+<div class="tab-pane active" id="schd-facilities" *ngIf="isGridDisplay">
+	<div class="page-top-action">
+		<div class="row">
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> <a href="javascript:void(0)"
+					class="btn btn-theme btn-sm pull-left" data-toggle="modal" data-target="#add-Edit-facility"
+					(click)="resetFacilityForm()"><i class="fa fa-plus"></i> Add New
+					Facility</a>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+				<div class="precisemri-search page-select">
+					<div class="theme-label">Page Size</div>
+					<select class="form-search" (change)="onPageSizeChange($event.target.value)">
+						<option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+							value={{item.value}}>{{item.value}}</option>
+					</select>
+				</div>
+				<a href="javascript:void(0)" class="right btn btn-theme" (click)="reLoadAllFacility()">
+					<i class="fa fa-repeat"></i> Refresh</a>
+			</div>
+		</div>
+	</div>
+	<div class="table-responsive">
+		<dx-data-grid id="scheduling-Facility-grid-container" [dataSource]="facilityList" [allowColumnResizing]="true"
+			[columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+			[columnMinWidth]="30" (onSelectionChanged)="selectionChanged($event)" keyExpr="facilityId"
+			[showBorders]="true" [(selectedRowKeys)]="gridSelectedRows">
+			<dxo-sorting mode="multiple"></dxo-sorting>
+			<dxo-paging [enabled]="false"></dxo-paging>
+			<dxo-load-panel [enabled]="true"></dxo-load-panel>
+			<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+			<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+			<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+			<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+			<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."></dxo-search-panel> -->
+			<dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+			</dxo-selection>
+			<dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
+			</dxi-column>
+			<dxi-column dataField="facilityId" caption="facilityId" [visible]="false"></dxi-column>
+			<dxi-column dataField="facilityName" caption="Facility Name" [allowFixing]="true"></dxi-column>
+			<dxi-column dataField="parentCoName" caption="Parent Company" [allowFixing]="false"></dxi-column>
+			<dxi-column dataField="facilityParentId" caption="facilityParentId" [visible]="false"></dxi-column>
+			<dxi-column dataField="street" caption="Street"></dxi-column>
+			<dxi-column dataField="city" caption="City" alignment="left"></dxi-column>
+			<dxi-column dataField="state" caption="State" alignment="center"></dxi-column>
+			<dxi-column dataField="zip" caption="Zip" alignment="center"></dxi-column>
+			<dxi-column dataField="mripriceGlobal" caption="MRI Global"></dxi-column>
+			<dxi-column dataField="mripriceTech" caption="MRI Tech"></dxi-column>
+			<dxi-column dataField="mriwcontrastPriceGlobal" caption="MRI w/ Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="mriwcontrastPriceTech" caption="MRI w/ Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<!--<dxi-column dataField="mriwocontrastPriceGlobal" headerCellTemplate="MRIw/&w/oGlobal"
+				[(visible)]="isShowColumnWithNoData"></dxi-column> -->
+			<dxi-column dataField="mriwocontrastPriceTech" caption="MRI w/ & w/o Tech"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ctpriceGlobal" caption="CT Global" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ctpriceTech" caption="CT Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ctwcontrastPriceGlobal" caption="CT w/ Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="ctwcontrastPriceTech" caption="CT w/ Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="ctwocontrastPriceGlobal" caption="CT w/ & w/o Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ctwocontrastPriceTech" caption="CT w/ & w/o Tech"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="arthrogramPriceGlobal" caption="Arthro Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="arthrogramPriceTech" caption="Arthrogram Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="xrayPriceGlobal" caption="XR Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="xrayPriceTech" caption="XR Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="xrayPriceTier" caption="XR Tier" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ultrasoundPriceGlobal" caption="US Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="ultrasoundPriceTech" caption="US Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="boneDensityPriceGlobal" caption="Bone Den. Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="boneDensityPriceTech" caption="Bone Den. Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="mammographPriceGlobal" caption="Mammo Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="mammographPriceTech" caption="Mammo Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="nuclearMedicinePriceGlobal" caption="Nuc Med Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="nuclearMedicinePriceTech" caption="Nuc Med Tech"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="petpriceGlobal" caption="PET Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="petpriceTech" caption="PET Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="dexaPriceGlobal" caption="Dexa Global" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="dexaPriceTech" caption="Dexa Tech" [(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="myElogramPriceGlobal" caption="Myelogram Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="myElogramPriceTech" caption="Myelogram Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<dxi-column dataField="ctarthrogramPriceGlobal" caption="CTArthro Global"
+				[(visible)]="isShowColumnWithNoData"></dxi-column>
+			<dxi-column dataField="ctarthrogramPriceTech" caption="CTArthro Tech" [(visible)]="isShowColumnWithNoData">
+			</dxi-column>
+			<!-- <div *dxTemplate="let data of 'facilityNameTemplate'">
+         <a  href="javascript:void(0)" (click)="getSchedulingFacilityDetail(data)"  data-toggle="modal"
+         data-target="#Edit-scheduling-Facility" style="text-decoration: underline !important;">{{data.data.facilityName}}</a>
+         </div> -->
+			<div *dxTemplate="let data of 'MRIw/&w/oGlobal'">
+				<div>MRI w/
+					<br>& w/o
+					<br>Global
+				</div>
+			</div>
+			<div *dxTemplate="let data of 'facilityIdTemplate'">
+				<a href="javascript:void(0)" (click)="getFacilityDetail(data)"
+					class="single-action fa fa-pencil-square-o" data-toggle="modal"
+					data-target="#add-Edit-facility"></a>
+			</div>
+		</dx-data-grid>
+	</div>
+	<div>
+		<div>
+			<div
+				*ngFor="let item of facilityList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+			</div>
+			<pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls>
+		</div>
+	</div>
+</div>
+<!-- Pop Up Start -->
+
+<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="add-Edit-facility"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{facilityName}}</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<div class="tab-section">
+					<ul class="nav nav-tabs">
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('General Info')"
+								[ngClass]="{'active': defaultPopupTab === 'General Info'}" data-toggle="tab"
+								href="#edit-general-info">General Info</a>
+						</li>
+						<li class="nav-item"> <a class="nav-link" data-toggle="tab"
+								(click)="tabClick('Facility Contact Details')"
+								[ngClass]="{'active': defaultPopupTab === 'Facility Contact Details'}"
+								href="#edit-contact-details">Facility Contact Details</a>
+						</li>
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Modalities')"
+								[ngClass]="{'active': defaultPopupTab === 'Modalities' || defaultPopupTab === 'Services' || defaultPopupTab === 'MRI' || defaultPopupTab === 'CT' || defaultPopupTab === 'Exceptions' }"
+								data-toggle="tab" href="#edit-gmodalities">Modalities</a>
+						</li>
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Scheduling Details')"
+								[ngClass]="{'active': defaultPopupTab === 'Scheduling Details'}" data-toggle="tab"
+								href="#edit-gscheduling-details">
+								Scheduling Details</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link" (click)="tabClick('Notes')"
+								[ngClass]="{'active': defaultPopupTab === 'Notes'}" data-toggle="tab"
+								href="#edit-notes-tab">Notes</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link"
+								(click)="tabClick('Policies')" [ngClass]="{'active': defaultPopupTab === 'Policies'}"
+								data-toggle="tab" href="#edit-policies">Policies</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link"
+								(click)="tabClick('Parent Company')"
+								[ngClass]="{'active': defaultPopupTab === 'Parent Company'}" data-toggle="tab"
+								href="#edit-parent-company">Parent Company</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link"
+								(click)="tabClick('Pricing')"
+								[ngClass]="{'active': defaultPopupTab === 'Pricing' || defaultPopupTab === 'Current' || defaultPopupTab === 'Historical'}"
+								data-toggle="tab" href="#edit-pricing">Pricing</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode">
+							<a class="nav-link" data-toggle="modal" data-target="#facilityDocManager"
+								(click)="senddocManagerFacility()">Documents</a>
+						</li>
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Intake')"
+								[ngClass]="{'active': defaultPopupTab === 'Intake'}" data-toggle="tab"
+								href="#edit-intake">Intake</a>
+						</li>
+						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link"
+								(click)="tabClick('Analytics')" [ngClass]="{'active': defaultPopupTab === 'Analytics'}"
+								data-toggle="tab" href="#edit-analytics">Analytics</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'General Info' ? 'active show' : 'fade'"
+							id="edit-general-info">
+							<form class="theme-form" [formGroup]="generalInfoForm">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="form-group">
+											<div class="theme-label">Parent Company</div>
+											<div class="input-group md-input-focused">
+												<select class="form-control" formControlName="facilityParentId"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.facilityParentId.errors) }"
+													(change)="parentDropDownOnChange($event)">
+													<option value="" disabled>Select Parent Company</option>
+													<option *ngFor="let parentCompany of facilityParentCompanyList"
+														[ngValue]="parentCompany.facilityParentID">
+														{{parentCompany.facilityParentName }}</option>
+												</select>
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.facilityParentId.errors)"
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.facilityParentId.errors?.required">
+													Parent Company Name is required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Facility Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="facilityName"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.facilityName.errors) }">
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.facilityName.errors) "
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.facilityName.errors?.required ">
+													Facility Name is required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Street</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="street"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.street.errors)}">
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.street.errors) "
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.street.errors?.required ">Street is
+													required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">City</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="city"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.city.errors) }">
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.city.errors)  "
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.city.errors?.required  ">City is
+													required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">State</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="state"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.state.errors) }">
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.state.errors) "
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.state.errors?.required ">State is
+													required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Zip</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="zip"
+													[ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.zip.errors) }">
+											</div>
+											<div *ngIf="(submitted && generalInfoFormControls.zip.errors)  "
+												class="invalid-feedback">
+												<div *ngIf="generalInfoFormControls.zip.errors?.required  ">Zip is
+													required</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Facility Scheduling Level</div>
+											<div class="input-group md-input-focused">
+												<select class="form-control" formControlName="schedulingLevel">
+													<option disabled>Select Scheduling Level</option>
+													<option *ngFor="let level of schedulingFacilityLevelList"
+														[ngValue]="level.FacilitySchedulingLevel">
+														{{level.FacilitySchedulingLevel }}</option>
+												</select>
+											</div>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="lacounty" type="checkbox">
+											<label for="editinfo1" class="arrow-label">La County</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="overridePrice" type="checkbox">
+											<label for="editinfo2" class="arrow-label">Override Facility Prices</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="isActive" type="checkbox">
+											<label for="editinfo4" class="arrow-label">Active</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="doNotScheduleFacility"
+												type="checkbox">
+											<label for="editinfo5" class="arrow-label">Do not schedule this
+												facility</label>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Facility mile</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="facilityMile">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Price weight</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="priceWeight">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Latitude</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="latitude">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Longitude</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="longitude">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Previous Facility Name</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="previousFacilityName">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="previousFacilityName1">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="previousFacilityName2">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Tax ID:</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="schedFacilityTaxID">
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab == 'Facility Contact Details' ? 'active show' : 'fade'"
+							id="edit-contact-details">
+							<form class="theme-form" [formGroup]="facilityContactDetailForm">
+								<div class="row">
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">IT Support</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="itsupportContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="itsupportEmail"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.itsupportEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.itsupportEmail.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.itsupportEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="itsupportOfficePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.itsupportOfficePhone.errors?.minlength }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.itsupportOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.itsupportOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="itsupportCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.itsupportCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.itsupportCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.itsupportCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="itsupportHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.itsupportHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.itsupportHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.itsupportHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="itsupportFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.itsupportFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.itsupportFax.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.itsupportFax.errors">
+														fax number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Reports</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="reportsContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="reportsEmail"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.reportsEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.reportsEmail.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.reportsEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="reportsOfficePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.reportsOfficePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.reportsOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.reportsOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="reportsCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.reportsCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.reportsCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.reportsCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="reportsHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.reportsHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.reportsHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.reportsHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="reportsFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.reportsFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.reportsFax.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.reportsFax.errors">fax
+														number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Status Check</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="statusCheckContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="statusCheckEmail"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.statusCheckEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.statusCheckEmail.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.statusCheckEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="statusCheckOfficePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.statusCheckOfficePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.statusCheckOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.statusCheckOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="statusCheckCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.statusCheckCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.statusCheckCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.statusCheckCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="statusCheckHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.statusCheckHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.statusCheckHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.statusCheckHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="statusCheckFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.statusCheckFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.statusCheckFax.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.statusCheckFax.errors">
+														fax number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Scheduling</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="schedulingContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="schedulingEmail"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.schedulingEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.schedulingEmail.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.schedulingEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="schedulingOfficePhone" mask="(000) 000-0000 "
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.schedulingOfficePhone.errors?.minlength }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.schedulingOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.schedulingOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="schedulingCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.schedulingCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.schedulingCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.schedulingCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="schedulingHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.schedulingHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.schedulingHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.schedulingHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="schedulingFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.schedulingFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.schedulingFax.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.schedulingFax.errors">
+														fax number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Images</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="imagesContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="imagesEmail"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.imagesEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.imagesEmail.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.imagesEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="imagesOfficePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.imagesOfficePhone.errors?.minlength }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.imagesOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.imagesOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="imagesCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.imagesCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.imagesCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.imagesCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="imagesHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.imagesHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.imagesHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.imagesHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="imagesFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.imagesFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.imagesFax.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.imagesFax.errors">fax
+														number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="theme-label-title">Billing</div>
+											<div class="form-group">
+												<div class="theme-label">Contact Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="billingContact">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="billingEmail"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.billingEmail.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.billingEmail.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.billingEmail.errors">
+														Email must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Office Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="billingOfficePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.billingOfficePhone.errors?.minlength }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.billingOfficePhone.errors?.minlength"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.billingOfficePhone.errors?.minlength">
+														office phone number must be at least 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Cell Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="billingCellPhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.billingCellPhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.billingCellPhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.billingCellPhone.errors">
+														cell phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Home Phone #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="billingHomePhone" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.billingHomePhone.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.billingHomePhone.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.billingHomePhone.errors">
+														home phone number must be 10 numbers</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Fax #</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="billingFax" mask="(000) 000-0000"
+														[ngClass]="{ 'is-invalid': facilityContactDetailFormControls.billingFax.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.billingFax.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityContactDetailFormControls.billingFax.errors">fax
+														number must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab === 'Modalities' || defaultPopupTab === 'Services' || defaultPopupTab === 'MRI' || defaultPopupTab === 'CT' || defaultPopupTab === 'Exceptions'  ? 'active show' : 'fade'"
+							id="edit-gmodalities">
+							<div class="tab-section">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('Services')"
+											[ngClass]="{'active': defaultPopupTab === 'Services' || defaultPopupTab === 'Modalities' }"
+											data-toggle="tab" href="#edit-services-info">Services</a>
+									</li>
+									<li class="nav-item" *ngIf="modalityServiceFormControls.mriservice.value==true"> <a
+											class="nav-link" (click)="tabClick('MRI')"
+											[ngClass]="{'active': defaultPopupTab === 'MRI'}" data-toggle="tab"
+											href="#edit-mri-info">MRI</a>
+									</li>
+									<li class="nav-item" *ngIf="modalityServiceFormControls.ctservice.value==true"> <a
+											class="nav-link" (click)="tabClick('CT')"
+											[ngClass]="{'active': defaultPopupTab === 'CT'}" data-toggle="tab"
+											href="#edit-ct-info">CT</a>
+									</li>
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('Exceptions')"
+											[ngClass]="{'active': defaultPopupTab === 'Exceptions'}" data-toggle="tab"
+											href="#edit-exceptions-info">Exceptions</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Services' || defaultPopupTab == 'Modalities' ? 'active show' : 'fade'"
+										id="edit-services-info">
+										<form class="theme-form" [formGroup]="modalityServiceForm">
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="MriServices" type="checkbox"
+															formControlName="mriservice">
+														<label for="MriServices" class="arrow-label">MRI</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="CtServices" type="checkbox"
+															formControlName="ctservice">
+														<label for="CtServices" class="arrow-label">CT</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="XrayServices" type="checkbox"
+															formControlName="xrayService">
+														<label for="XrayServices" class="arrow-label">XRAY</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="ArthrogramServices"
+															type="checkbox" formControlName="arthrogramService">
+														<label for="ArthrogramServices"
+															class="arrow-label">Arthrogram</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="BoneDensityServices"
+															type="checkbox" formControlName="boneDensityService">
+														<label for="BoneDensityServices" class="arrow-label">Bone
+															Density</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="MammographServices"
+															type="checkbox" formControlName="mammographService">
+														<label for="MammographServices"
+															class="arrow-label">Mammograph</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="NuclearMedicineServices"
+															type="checkbox" formControlName="nuclearMedicineService">
+														<label for="NuclearMedicineServices" class="arrow-label">Nuclear
+															Medicine</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" type="checkbox"
+															formControlName="petscanService">
+														<label for="editservices7" class="arrow-label">PET Scan</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="UltrasoundServices"
+															type="checkbox" formControlName="ultrasoundService">
+														<label for="UltrasoundServices"
+															class="arrow-label">Ultrasound</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro" id="MyelogramServices"
+															type="checkbox" formControlName="MyElogramService">
+														<label for="MyelogramServices"
+															class="arrow-label">Myelogram</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro" id="DexaServices" type="checkbox"
+															formControlName="dexaService">
+														<label for="DexaServices" class="arrow-label">DEXA</label>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro11" id="CTArthrogramServices"
+															type="checkbox" formControlName="ctArthroService">
+														<label for="CTArthrogramServices" class="arrow-label">CT
+															Arthrogram</label>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane" [ngClass]="defaultPopupTab == 'MRI' ? 'active show' : 'fade'"
+										id="edit-mri-info">
+										<form class="theme-form" [formGroup]="modalityMriForm">
+											<div class="table-responsive manual-table">
+												<table class="table table-theme">
+													<thead>
+														<tr>
+															<th width="100">Machine #</th>
+															<th width="100">Type</th>
+															<th width="100">Strength</th>
+															<th width="100">Make</th>
+															<th width="100">Weight</th>
+															<th width="100">Contrast</th>
+															<th width="100">Incl. Flex & Ext</th>
+															<th width="100">Sedation</th>
+															<th width="100">Breast</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>
+																<select class="form-control" formControlName="mri1type">
+																	<option></option>
+																	<option value="Open">Open</option>
+																	<option value="Closed">Closed</option>
+																	<option value="Stand Up">Stand Up</option>
+																	<option value="Wide Bore">Wide Bore</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri1strength">
+																	<option></option>
+																	<option value=".3T">.3T</option>
+																	<option value=".6T">.6T</option>
+																	<option value="1.0T">1.0T</option>
+																	<option value="1.2T">1.2T</option>
+																	<option value="1.5T">1.5T</option>
+																	<option value="3T">3T</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control" formControlName="mri1make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri1weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri1contrast">
+																	<option></option>
+																	<option value="IV">IV</option>
+																	<option value="No">No</option>
+																	<option value="Oral">Oral</option>
+																	<option value="Rectal">Rectal</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mriwFlexandEXT">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri1sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri1breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>
+																<select class="form-control" formControlName="mri2type">
+																	<option></option>
+																	<option value="Open">Open</option>
+																	<option value="Closed">Closed</option>
+																	<option value="Stand Up">Stand Up</option>
+																	<option value="Wide Bore">Wide Bore</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri2strength">
+																	<option></option>
+																	<option value=".3T">.3T</option>
+																	<option value=".6T">.6T</option>
+																	<option value="1.0T">1.0T</option>
+																	<option value="1.2T">1.2T</option>
+																	<option value="1.5T">1.5T</option>
+																	<option value="3T">3T</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control" formControlName="mri2make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri2weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri2contrast">
+																	<option></option>
+																	<option value="IV">IV</option>
+																	<option value="No">No</option>
+																	<option value="Oral">Oral</option>
+																	<option value="Rectal">Rectal</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mrI2WFlexandEXT">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri2sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri2breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td>3</td>
+															<td>
+																<select class="form-control" formControlName="mri3type">
+																	<option></option>
+																	<option value="Open">Open</option>
+																	<option value="Closed">Closed</option>
+																	<option value="Stand Up">Stand Up</option>
+																	<option value="Wide Bore">Wide Bore</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri3strength">
+																	<option></option>
+																	<option value=".3T">.3T</option>
+																	<option value=".6T">.6T</option>
+																	<option value="1.0T">1.0T</option>
+																	<option value="1.2T">1.2T</option>
+																	<option value="1.5T">1.5T</option>
+																	<option value="3T">3T</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control" formControlName="mri3make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri3weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri3contrast">
+																	<option></option>
+																	<option value="IV">IV</option>
+																	<option value="No">No</option>
+																	<option value="Oral">Oral</option>
+																	<option value="Rectal">Rectal</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mrI3WFlexandEXT">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri3sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="mri3breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="input-group">
+												<div class="theme-label-title">Notes</div>
+												<textarea class="form-control" formControlName="mrinotes"></textarea>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane" [ngClass]="defaultPopupTab == 'CT' ? 'active show' : 'fade'"
+										id="edit-ct-info">
+										<form class="theme-form" [formGroup]="modalityCtForm">
+											<div class="table-responsive manual-table">
+												<table class="table table-theme">
+													<thead>
+														<tr>
+															<th width="100">Machine #</th>
+															<th width="100">Make</th>
+															<th width="100">Slices</th>
+															<th width="100">Weight</th>
+															<th width="100">Contrast</th>
+															<th width="100">Sedation</th>
+															<th width="100">Breast</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>
+																<select class="form-control" formControlName="ct1make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct1slices">
+																	<option></option>
+																	<option value="1">1</option>
+																	<option value="4">4</option>
+																	<option value="6">6</option>
+																	<option value="8">8</option>
+																	<option value="16">16</option>
+																	<option value="32">32</option>
+																	<option value="64">64</option>
+																	<option value="NA">NA</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct1weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct1contrast">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct1sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct1breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>
+																<select class="form-control" formControlName="ct2make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct2slices">
+																	<option></option>
+																	<option value="1">1</option>
+																	<option value="4">4</option>
+																	<option value="6">6</option>
+																	<option value="8">8</option>
+																	<option value="16">16</option>
+																	<option value="32">32</option>
+																	<option value="64">64</option>
+																	<option value="NA">NA</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct2weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct2contrast">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct2sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct2breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td>3</td>
+															<td>
+																<select class="form-control" formControlName="ct3make">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct3slices">
+																	<option></option>
+																	<option value="1">1</option>
+																	<option value="4">4</option>
+																	<option value="6">6</option>
+																	<option value="8">8</option>
+																	<option value="16">16</option>
+																	<option value="32">32</option>
+																	<option value="64">64</option>
+																	<option value="NA">NA</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct3weight">
+																	<option></option>
+																	<option value="300">300</option>
+																	<option value="350">350</option>
+																	<option value="400">400</option>
+																	<option value="450">450</option>
+																	<option value="500">500</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct3contrast">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct3sedation">
+																	<option></option>
+																	<option value="Oral">Oral</option>
+																	<option value="IV">IV</option>
+																	<option value="Both">Both</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select class="form-control"
+																	formControlName="ct3breast">
+																	<option></option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
+																</select>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="input-group">
+												<div class="theme-label-title">Notes</div>
+												<textarea class="form-control" formControlName="ctnotes"></textarea>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Exceptions' ? 'active show' : 'fade'"
+										id="edit-exceptions-info">
+										<form class="theme-form" [formGroup]="modalityExceptionsForm">
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsMri" type="checkbox"
+															formControlName="mriexception">
+														<label for="exptionsMri" class="arrow-label">MRI</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.mriexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	(keypress)="allowNumberOnly($event)"
+																	formControlName="mriexceptionDescription">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control" formControlName="mriexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mriexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control1" id="exptionsCT" type="checkbox"
+															formControlName="ctexception">
+														<label for="exptionsCT" class="arrow-label">CT</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.ctexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="ctexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control" formControlName="ctexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+																
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsXray" type="checkbox"
+															formControlName="xrexception">
+														<label for="exptionsXray" class="arrow-label">XRAY</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.xrexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="xrexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="xrayexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"formControlName="xrayexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true">
+																	</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsArthrogram"
+															type="checkbox" formControlName="arthoException">
+														<label for="exptionsArthrogram"
+															class="arrow-label">Arthrogram</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.arthoException.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="arthoExceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="arthoExpires" type="date"
+																	[showClearButton]="true" 
+																	[useMaskBehavior]="true">
+																	</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsBoneDensity"
+															type="checkbox" formControlName="bnexception">
+														<label for="exptionsBoneDensity" class="arrow-label">Bone
+															Density</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.bnexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="bnexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="bnexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="bnexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+																	
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsMammograph"
+															type="checkbox" formControlName="mammoException">
+														<label for="exptionsMammograph"
+															class="arrow-label">Mammograph</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.mammoException.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="mammoExceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="mammoExpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mammoExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true">
+																	</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsNuclearMedicine"
+															type="checkbox" formControlName="nmexception">
+														<label for="exptionsNuclearMedicine" class="arrow-label">Nuclear
+															Medicine</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.nmexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="nmexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="nmexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="nmexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate">
+																	</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsPETScan" type="checkbox"
+															formControlName="psexception">
+														<label for="exptionsPETScan" class="arrow-label">PET
+															Scan</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.psexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="psexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="psexpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="psexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true">
+																	</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="exptionsUltrasound"
+															type="checkbox" formControlName="usexception">
+														<label for="exptionsUltrasound"
+															class="arrow-label">Ultrasound</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.usexception.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="usexceptionDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="usexpires"> -->
+																<dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="usexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+																	
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro9" id="exptionsMyelogram"
+															type="checkbox" formControlName="myElogramServiceException">
+														<label for="exptionsMyelogram"
+															class="arrow-label">Myelogram</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.myElogramServiceException.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="myElogramServiceexpDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="myElogramExpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="myElogramExpires"
+																	type="date" [showClearButton]="true"
+																	[useMaskBehavior]="true" ></dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro" id="exptionsDexa" type="checkbox"
+															formControlName="dexaServiceException">
+														<label for="exptionsDexa" class="arrow-label">DEXA</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.dexaServiceException.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="dexaServiceexpDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="dexaExpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dexaExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true">
+																</dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+											<div class="row">
+												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-contro111" id="exptionsCTArthrogram"
+															type="checkbox" formControlName="ctArthroServiceException">
+														<label for="exptionsCTArthrogram" class="arrow-label">CT
+															Arthrogram</label>
+													</div>
+												</div>
+												<ng-container
+													*ngIf="modalityExceptionsFormControls.ctArthroServiceException.value==true">
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label"></div>
+															<div class="input-group">
+																<input type="text" class="form-control" maxlength="10"
+																	formControlName="ctArthroServiceexpDescription"
+																	(keypress)="allowNumberOnly($event)">
+															</div>
+														</div>
+													</div>
+													<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+														<div class="form-group">
+															<div class="theme-label">Expire:</div>
+															<div class="input-group">
+																<!-- <input type="date" class="form-control"
+                                                   formControlName="ctArthoExpires"> -->
+																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctArthoExpires"
+																	type="date" [showClearButton]="true"
+																	[useMaskBehavior]="true" ></dx-date-box>
+															</div>
+														</div>
+													</div>
+												</ng-container>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab == 'Scheduling Details' ? 'active show' : 'fade'"
+							id="edit-gscheduling-details">
+							<form class="theme-form view-mode" [formGroup]="facilitySchedulingDetailForm">
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Parking</div>
+												<div class="input-group">
+													<select class="form-control" formControlName="parking">
+														<option value="" disabled>Select</option>
+														<option value="Free parking lot">Free parking lot</option>
+														<option value="Paid parking only">Paid parking only</option>
+														<option value="Street parking Free">Street parking Free</option>
+														<option value="Street parking Meter">Street parking Meter
+														</option>
+														<option value="Valet">Valet</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Pre-Arrival Time</div>
+												<div class="input-group">
+													<select class="form-control" formControlName="preArrivalTime">
+														<option value="" disabled>Select</option>
+														<option>10 min</option>
+														<option>15 min</option>
+														<option>20 min</option>
+														<option>25 min</option>
+														<option>30 min</option>
+														<option>45 min</option>
+														<option>60 min</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">XRay Walk In</div>
+												<div class="input-group">
+													<select class="form-control" formControlName="xrayWalkIn">
+														<option value="" disabled>Select</option>
+														<option>Yes</option>
+														<option>No</option>
+														<option value="w/ MRI Only">w/ MRI Only</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="theme-label-title">Scheduling Hours</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Sunday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="schedulingSunOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="schedulingSunOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="schedulingSunOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="schedulingSunOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Monday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="schedulingMonOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="schedulingMonOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="schedulingMonOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="schedulingMonOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Tuesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingTueOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingTueOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingTueOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingTueOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Wednesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingWedOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingWedOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingWedOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingWedOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Thursday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingThuOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingThuOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingThuOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingThuOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Friday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingFriOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingFriOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingFriOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingFriOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Saturday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingSatOpenFrom">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingSatOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="shedulingSatOpenFrom2">
+																<span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="shedulingSatOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="theme-label-title">MRI Hours</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Sunday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="sunOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="sunOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="sunOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="sunOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Monday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="monOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="monOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="monOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="monOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Tuesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="tueOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="tueOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="tueOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="tueOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Wednesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="wedOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="wedOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="wedOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="wedOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Thursday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="thuOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="thuOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="thuOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="thuOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Friday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="friOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="friOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="friOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="friOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Saturday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="satOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="satOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="satOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="satOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="theme-label-title">CT Hours</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Sunday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctSunOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctSunOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctSunOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctSunOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Monday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctMonOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctMonOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctMonOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctMonOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Tuesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctTueOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctTueOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctTueOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctTueOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Wednesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctWedOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctWedOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctWedOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctWedOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Thursday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctThuOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctThuOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctThuOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctThuOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Friday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctFriOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctFriOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctFriOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctFriOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Saturday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctSatOpenFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctSatOpenTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="ctSatOpenFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="ctSatOpenTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="theme-label-title">XRAY Hours</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Sunday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="sunXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="sunXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="sunXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="sunXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Monday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="monXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="monXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="monXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="monXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Tuesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="tueXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="tueXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="tueXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="tueXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Wednesday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="wedXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="wedXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="wedXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="wedXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Thursday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="thuXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="thuXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="thuXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="thuXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Friday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="friXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="friXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="friXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="friXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group time-group">
+														<div class="theme-label">Saturday</div>
+														<div class="time-group-list">
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="satXrayFrom"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="satXrayTo">
+															</div>
+															<div class="timelist">
+																<input type="time" class="form-control"
+																	formControlName="satXrayFrom2"> <span>to</span>
+																<input type="time" class="form-control"
+																	formControlName="satXrayTo2">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Notes' ? 'active show' : 'fade'"
+							id="edit-notes-tab" *ngIf="isPopUpInEditMode">
+							<form class="theme-form view-mode" [formGroup]="facilityNotesForm">
+								<div class="note-list">
+									<ng-container *ngIf="facilityNoteList?.length > 0">
+										<div class="note-list-inner" *ngFor="let note of facilityNoteList;">
+											<div class="name">{{note.Username}} {{note.Timestamp | date: 'MM/dd/yyy h:mm
+												a'}}</div>
+											<p>{{note.Note}}</p>
+										</div>
+									</ng-container>
+									<ng-container *ngIf="facilityNoteList?.length==0">
+										<h2>No Notes..</h2>
+									</ng-container>
+								</div>
+								<div class="user-detail">
+									<div class="input-group">
+										<textarea class="form-control" placeholder="Add Note Here"
+											formControlName="Note"
+											(keyup)="checkNotes($event.currentTarget.value)"></textarea>
+									</div>
+									<button type="button" class="btn btn-theme btn-sm" (click)="addNote(true)"
+										[disabled]="noteBtnDisabled">Add Note</button>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Policies' ? 'active show' : 'fade'"
+							id="edit-policies" *ngIf="isPopUpInEditMode">
+							<form class="theme-form" [formGroup]="facilityPoliciesForm">
+								<div class="theme-form">
+									<div class="row">
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="theme-label-title">Scheduling Facility Policies</div>
+										</div>
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="cke-editor-group">
+												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
+												formControlName="facilityPolicy"
+													[config]="CkeConfig" (paste)="onPaste($event)"
+													(change)="onChange($event)">
+												</ckeditor>
+												<!-- <ckeditor [editor]="Editor" debounce="500"
+													formControlName="facilityPolicy" style="text-transform: none;"
+													[disabled]="false" removePlugins: 'Print' class=" ng-untouched ng-pristine ng-invalid">
+												</ckeditor> -->
+
+											</div>
+										</div>
+
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="theme-label-title">Parent Company Policies</div>
+										</div>
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="cke-editor-group ">
+												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
+												formControlName="parentPolicy" name="myckeditor" 
+													[config]="ckConfig"  (paste)="onPaste($event)" 
+													(change)="onChange($event)">
+												</ckeditor>
+												<!-- <ckeditor [editor]="Editor" formControlName="parentPolicy"
+													style="text-transform: none;" [disabled]="true"
+													class=" ng-untouched ng-pristine ng-invalid">
+												</ckeditor> -->
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Parent Company' ? 'active show' : 'fade'"
+							id="edit-parent-company" *ngIf="isPopUpInEditMode">
+							<form class="theme-form" [formGroup]="facilityParentCompanyForm">
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Company Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="facilityParentName">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Address</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentAddress">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">City</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentCity">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Zip</div>
+												<div class="input-group">
+													<input type="text" class="form-control" formControlName="parentZip">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Website</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentWebsite">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Owner Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentOwnerName">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentOwnerEmail">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Phone</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentOwnerPhone" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentOwnerFax" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Manager Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentManagerName">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentManagerEmail">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Phone</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentManagerPhone" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentManagerFax" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">IT Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentITName">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentITEmail">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Phone</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentITPhone" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentITFax" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="user-detail">
+									<div class="row">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Billing Name</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentBillingName">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Email</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="parentBillingEmail">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Phone</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentBillingPhone" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax</div>
+												<div class="input-group">
+													<input type="text" class="form-control font-size"
+														formControlName="parentBillingFax" mask="(000) 000-0000">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab == 'Pricing' || defaultPopupTab === 'Current' || defaultPopupTab === 'Historical' ? 'active show' : 'fade'"
+							id="edit-pricing" *ngIf="isPopUpInEditMode">
+							<div class="tab-section">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('Current')"
+											[ngClass]="{'active': defaultPopupTab === 'Pricing' || defaultPopupTab === 'Current' }"
+											data-toggle="tab" href="#current">Current</a>
+									</li>
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('Historical')"
+											[ngClass]="{'active': defaultPopupTab === 'Historical'}" data-toggle="tab"
+											href="#historical">Historical</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Current' || defaultPopupTab == 'Pricing'  ? 'active show' : 'fade'"
+										id="current">
+										<div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
+												(click)="saveChangesCurrentPricing()">Save Changes</a>
+											<a href="javascript:void(0)" class="btn btn-border"
+												(click)="getFacilityDetailById()">Cancel Changes</a>
+										</div>
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerFacilityPricingList"
+												[dataSource]="facilityPricingList" [showBorders]="true" [(selectedRowKeys)]="selectedRows"   (onRowUpdating)="onCellUpdating($event)"  >
+												<dxo-editing mode="cell" [allowUpdating]="allowUpdatingPrice">
+												</dxo-editing>
+												<dxi-column dataField="facilityId" caption="facilityId"
+													[visible]="false"></dxi-column>
+												<dxi-column dataField="modType" caption="TYPE" [allowEditing]="false">
+												</dxi-column>
+												<dxi-column dataField="priceTier" caption="PRICE TIER"></dxi-column>
+												<dxi-column dataField="currentGlobal" caption="CURRENT GLOBAL">
+												</dxi-column>
+												<dxi-column dataField="currentTech" caption="CURRENT TECH"></dxi-column>
+												<dxi-column dataField="pricingCutOff" dataType="date"
+													caption="PRICING CUT OFF"></dxi-column>
+												<dxi-column dataField="newGlobal" caption="NEW GLOBAL"></dxi-column>
+												<dxi-column dataField="newTech" caption="NEW TECH"></dxi-column>
+												<!-- <dxi-column dataField="leaseTime" caption="Lease Time"
+													dataType="number"></dxi-column>
+												<dxi-column dataField="hourlyLeaseRate" caption="Hourly Lease Rate"
+													dataType="number"
+													[format]="{ style: 'currency', currency: 'USD', useGrouping: true, minimumSignificantDigits: 3 }"
+													[customizeText]="customizeText" [customizeText]="customizeText">
+													<dxi-validation-rule type="pattern" [pattern]="numberPattern"
+														message="Enter valid values">
+													</dxi-validation-rule>
+												</dxi-column> -->
+												<dxi-column dataField="isCopyPrice" caption="IS COPY PRICE"  
+													[visible]="true"></dxi-column>
+												<dxi-column dataField="service" caption="SERVICE" [visible]="false">
+												</dxi-column>
+												<dxi-column dataField="isReadOnly" caption="ISREADONLY"
+													[visible]="false"></dxi-column>
+												<dxi-column dataField="overridePrice" caption="OVERRIDEPRICE"
+													[visible]="false"></dxi-column>
+											</dx-data-grid>
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Historical' ? 'active show' : 'fade'"
+										id="historical">
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerfacilityPricingHistoryList"
+												[dataSource]="facilityPricingHistoryList" [allowColumnResizing]="true"
+												[columnAutoWidth]="true" [allowColumnReordering]="true"
+												[columnResizingMode]="columnResizingMode" [columnMinWidth]="30"
+												keyExpr="id" [showBorders]="true">
+												<dxo-sorting mode="multiple"></dxo-sorting>
+												<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+												<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+												<dxo-header-filter [visible]="true" [allowSearch]="true">
+												</dxo-header-filter>
+												<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."> 
+												</dxo-search-panel> -->
+												<dxo-load-panel [enabled]="true"></dxo-load-panel>
+												<dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
+												<dxi-column dataField="facilityId" caption="facilityId"
+													[visible]="false"></dxi-column>
+												<dxi-column dataField="type" caption="TYPE" [allowFixing]="true"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="oldGlobalPrice" caption="OLD GLOBAL PRICE"
+													[allowFixing]="false" alignment="center"></dxi-column>
+												<dxi-column dataField="newGlobalPrice" caption="NEW GLOBAL PRICE"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="globalPriceDifference" caption="$  +/-"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="globalPriceDifferencePr" caption="%  +/-"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="oldTechPrice" caption="OLD TECH PRICE"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="newTechPrice" caption="NEW TECH PRICE"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="techPriceDifference" caption="$  +/-"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="techPriceDifferencePr" caption="%  +/-"
+													alignment="center"></dxi-column>
+												<dxi-column dataField="lastEffectiveDate" caption="LAST EFFECTIVE DATE"
+													alignment="center" dataType="date" format="shortDate"></dxi-column>
+												<dxi-column dataField="priceTier" caption="PRICE TIER"
+													alignment="center"></dxi-column>
+											</dx-data-grid>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Intake' ? 'active show' : 'fade'"
+							id="edit-intake">
+							<form class="theme-form" [formGroup]="facilityIntakeForm">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake1"
+												(change)="onPacketDocOnlyChanged($event.target.checked)" type="checkbox"
+												formControlName="isPacketDocOnly">
+											<label for="intake1" class="arrow-label">Create Packet Documents
+												only</label>
+										</div>
+									</div>
+									<ng-container *ngIf="isIntakeScreeningAndWaiverVisible">
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="checkbox-theme">
+												<input class="form-control" id="intake2" type="checkbox"
+													formControlName="isMriScreeningForm">
+												<label for="intake2" class="arrow-label">MRI Screening Form</label>
+											</div>
+										</div>
+										<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+											<div class="checkbox-theme">
+												<input class="form-control" id="intake3" type="checkbox"
+													formControlName="IsXrayWaiverForm">
+												<label for="intake3" class="arrow-label">XRAY/CT Preg. Waiver</label>
+											</div>
+										</div>
+									</ng-container>
+								</div>
+								<div class="row">
+									<div class="col-xl-2 col-lg-6 col-md-4 col-sm-6 col-6">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake4"
+												(change)="onIntakeFaxChanged($event.target.checked)" type="checkbox"
+												formControlName="IsFaxIntakePacket">
+											<label for="intake4" class="arrow-label">Fax Intake Packet</label>
+										</div>
+									</div>
+
+
+								</div>
+
+
+								<ng-container *ngIf="isIntakeFaxVisible">
+
+									<div class="row fax-intake-packet">
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax #1</div>
+												<input class="form-control font-size" type="text"
+													formControlName="intakeFax1" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': facilityIntakeFormControls.intakeFax1.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeFax1.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeFax1.errors">fax number
+														must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax #2</div>
+												<input class="form-control font-size" type="text"
+													formControlName="intakeFax2" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': facilityIntakeFormControls.intakeFax2.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeFax2.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeFax2.errors">fax number
+														must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+
+											<div class="form-group">
+												<div class="theme-label">Fax #3</div>
+												<input class="form-control font-size" type="text"
+													formControlName="intakeFax3" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': facilityIntakeFormControls.intakeFax3.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeFax3.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeFax3.errors">fax number
+														must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax #4</div>
+												<input class="form-control font-size" type="text"
+													formControlName="intakeFax4" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': facilityIntakeFormControls.intakeFax4.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeFax4.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeFax4.errors">fax number
+														must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">Fax #5</div>
+												<input class="form-control font-size" type="text"
+													formControlName="intakeFax5" mask="(000) 000-0000"
+													[ngClass]="{ 'is-invalid': facilityIntakeFormControls.intakeFax5.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeFax5.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeFax5.errors">fax number
+														must be 10 numbers</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</ng-container>
+
+								<div class="row">
+									<div class="col-xl-2 col-lg-6 col-md-4 col-sm-6 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake5"
+												(change)="onIntakeEmailChanged($event.target.checked)" type="checkbox"
+												formControlName="isEmailIntakePacket">
+											<label for="intake5" class="arrow-label">Email Intake Packet</label>
+										</div>
+									</div>
+
+								</div>
+
+								<ng-container *ngIf="isIntakeEmailVisible">
+
+									<div class="row email-intake-packet">
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">email #1</div>
+												<input class="form-control" type="text" formControlName="intakeEmail1"
+													[ngClass]="{'is-invalid': facilityIntakeFormControls.intakeEmail1.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeEmail1.errors"
+													class="invalid-feedback" style="margin-top: 1px !important;">
+													<div *ngIf="facilityIntakeFormControls.intakeEmail1.errors">
+														Invalid email address</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">email #2</div>
+												<input class="form-control" type="text" formControlName="intakeEmail2"
+													[ngClass]="{'is-invalid': facilityIntakeFormControls.intakeEmail2.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeEmail2.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityIntakeFormControls.intakeEmail2.errors">Invalid
+														email address</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">email #3</div>
+												<input class="form-control" type="text" formControlName="intakeEmail3"
+													[ngClass]="{'is-invalid': facilityIntakeFormControls.intakeEmail3.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeEmail3.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityIntakeFormControls.intakeEmail3.errors">Invalid
+														email address</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">email #4</div>
+												<input class="form-control" type="text" formControlName="intakeEmail4"
+													[ngClass]="{'is-invalid': facilityIntakeFormControls.intakeEmail4.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeEmail4.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityIntakeFormControls.intakeEmail4.errors">Invalid
+														email address</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12">
+											<div class="form-group">
+												<div class="theme-label">email #5</div>
+												<input class="form-control" type="text" formControlName="intakeEmail5"
+													[ngClass]="{'is-invalid': facilityIntakeFormControls.intakeEmail5.errors }">
+												<div *ngIf="facilityIntakeFormControls.intakeEmail5.errors"
+													class="invalid-feedback">
+													<div *ngIf="facilityIntakeFormControls.intakeEmail5.errors">Invalid
+														email address</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</ng-container>
+
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake6" type="checkbox"
+												formControlName="isElectricIntake">
+											<label for="intake6" class="arrow-label">Electronic Intake</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake7" type="checkbox"
+												formControlName="isElecScreenForm">
+											<label for="intake7" class="arrow-label">Electronic Screening Form</label>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="send-lien-row">
+									<div class="send-lien-col">
+										<div class="checkbox-theme">
+											<div class="theme-label">Send Lien without patient signature</div>
+										</div>
+									</div>
+									<div class="send-lien-col">
+										<div class="form-group md-input-focused">
+											<ng-select [items]="EpicUserList" placeholder="Select"
+												formControlName="userList" bindLabel="UserName" [multiple]="true"
+												[closeOnSelect]="false" bindValue="UserName"
+												[(ngModel)]="selectedEpicUserList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
+															class="ng-value-label"> {{item.UserName}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 1"> <span
+															class="ng-value-label">{{items.length - 1}} more..</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+									</div>
+								</div> -->
+								<div class="send-lien-row">
+									<div class="send-lien-col">
+										
+											<div class="theme-label">Next Day Summary</div>
+										
+									</div>
+									<div class="send-lien-col">
+										<div class="form-group md-input-focused">
+											<ng-select [items]="EpicUserList" placeholder="Select"
+												formControlName="userList" bindLabel="UserName" [multiple]="true"
+												[closeOnSelect]="false" bindValue="UserName"
+												[(ngModel)]="selectedEpicUserList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
+															class="ng-value-label"> {{item.UserName}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 1"> <span
+															class="ng-value-label">{{items.length - 1}} more..</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+									</div>
+								</div> 
+								<!-- <div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake8" type="checkbox">
+											<label for="intake8" class="arrow-label">Next Day Summary</label>
+										</div>
+									</div>
+								</div> -->
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake9" type="checkbox"
+												formControlName="isRxnotification">
+											<label for="intake9" class="arrow-label">Require RX for Intake
+												Packet</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="intake10" type="checkbox"
+												formControlName="isPrescreening">
+											<label for="intake10" class="arrow-label">Do NOT include pre-screening
+												questions</label>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Analytics' ? 'active show' : 'fade'"
+							id="edit-analytics" *ngIf="isPopUpInEditMode">
+							<div class="search-field search-field-theme page-top-action">
+								<form class="theme-form autocomplete" [formGroup]= "facilityTagForm">
+									<div class="form-group">
+										<div class="theme-label">Enter Tag</div>
+										<div class="input-group md-input-focused">
+											<dx-autocomplete placeholder="Search ..." [showClearButton]="true"
+												class="form-control"
+												[ngClass]="{ 'is-invalid': submiited && facilityTagFormControls.tagName.errors }"
+												[dataSource]="tagNameList" searchMode='contains' minSearchLength=2
+												maxItemCount=100 formControlName="tagName"
+												(change)="onTagChange($event)">
+											</dx-autocomplete>
+											<div *ngIf=" submiited && facilityTagFormControls.tagName.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger">Tag name is
+													required</small>
+											</div>
+											<!-- <ng-select [items]="TagList" placeholder="Select" formControlName="tagName"
+												bindLabel="tagName" [multiple]="false" [closeOnSelect]="false"
+												bindValue="tagName" searchable="true"  (change)="onTagChange($event)">
+											</ng-select> -->
+										</div>
+									</div>
+									<div class="form-action">
+										<button type="button" class="btn btn-theme btn-sm"
+											(click)="addFacilityTag(true)">Insert</button>
+									</div>
+								</form>
+							</div>
+							<div class="table-responsive">
+								<dx-data-grid id="gridContainer" [dataSource]="facilityTagList"
+									[allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+									[columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="id"
+									[showBorders]="true">
+									<dxo-paging [enabled]="false"></dxo-paging>
+									<dxo-sorting mode="multiple"></dxo-sorting>
+									<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+									<dxo-load-panel [enabled]="true"></dxo-load-panel>
+									<dxi-column dataField="id" [width]="100" caption="Action" [allowFiltering]="false"
+										[allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
+									</dxi-column>
+									<dxi-column dataField="tagName" [width]="250" caption="Tag Name"></dxi-column>
+
+									<div *dxTemplate="let data of 'cellTemplate'">
+										<a href="javascript:void(0)" (click)="deleteTag(data.data.id)"
+											class="single-action fa fa-trash"></a>
+									</div>
+								</dx-data-grid>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
+				<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+					[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
+				<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+					[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
+				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
+					(click)="updateFacility(true)">Apply</button>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
+			</div>
+		</div>
+	</div>
+</div>
+<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
+	data-target="#deleteLink"></button>
+<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
+    data-target="#add-Edit-facility"></button>
+<app-document-manager-facility></app-document-manager-facility>

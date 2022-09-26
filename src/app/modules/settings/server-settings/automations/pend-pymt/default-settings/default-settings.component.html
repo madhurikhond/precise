@@ -1,0 +1,115 @@
+<div class="tab-pane active" id="default-settings-pend">
+    <div class="theme-form-center">
+        <form [formGroup]="defaultSettingForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+					<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isactive" id="active7" type="checkbox">
+										<label for="active7" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Time</div>
+										<div class="input-group icon-active">
+											<input type="time" formControlName="time"  class="form-control" id="timepicker9">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>	
+										<div *ngIf="submitted && dsForm.time.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="dsForm.time.errors">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Default ePIC Payment Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="paymentLists" 
+												placeholder="Select"
+												formControlName="paymentStatus" 
+												bindLabel="paymentstatus" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="paymentstatus" 
+												[(ngModel)]="selectedPaymentList"
+												[ngClass]="{ 'is-invalid': submitted && dsForm.paymentStatus.errors }"												
+												(change)="onChange($event)">   
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.paymentstatus}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                 
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && dsForm.paymentStatus.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="dsForm.paymentStatus.errors">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group autocomplete">
+                                    <div class="theme-label">Change Legacy Studies ePIC Payment status based on Radius Status</div>								
+                                    <div class="input-group">
+                                        <ng-select 
+                                            [items]="statusNamesList" 
+                                            placeholder="Select"
+                                            formControlName="studyStatus" 
+                                            bindLabel="status" 
+                                            [multiple]="true"
+                                            [closeOnSelect]="false"
+                                            bindValue="status" 
+                                            [(ngModel)]="selectedStatusList"
+											[ngClass]="{ 'is-invalid': submitted && dsForm.studyStatus.errors }"	
+                                            (change)="onChange($event)"> 
+                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+												<div class="ng-value" *ngFor="let item of items | slice:0:4">
+													<span class="ng-value-label"> {{item.status}}</span>
+													<span class="ng-value-icon right" (click)="clear(item)"
+														aria-hidden="true">×</span>
+												</div>
+												<div class="ng-value" *ngIf="items.length > 4">
+													<span class="ng-value-label">{{items.length - 4}} more...</span>
+												</div>
+											</ng-template>                                   
+                                        </ng-select>
+                                    </div>
+									<div *ngIf="submitted && dsForm.studyStatus.errors" class="tooltiptext text-right">
+										<small class="error text-danger" *ngIf="dsForm.studyStatus.errors.required">
+											Required
+										</small>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">                        
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="notes" placeholder="Add Note"></textarea>
+                        </div>
+						<div *ngIf="submitted && dsForm.notes.errors" class="tooltiptext text-right">
+							<small class="error text-danger" *ngIf="dsForm.notes.errors">
+								Required
+							</small>
+						</div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>

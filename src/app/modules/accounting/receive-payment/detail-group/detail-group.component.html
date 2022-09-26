@@ -1,0 +1,15 @@
+
+    <table class="table table-theme">
+        <tbody>
+            <tr class="collapse-active-data1">
+                <td class="table-sub-header">
+                    <i class="fa fa-2x fa-file-text-o" data-toggle="modal" data-target="#docManager"
+                        (click)="showDocManager(data.key[0])"></i>
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById()"
+                        data-toggle="modal" data-target="#patient-Detail-Window">{{data.data.NewPatientId}}
+                    <strong>{{patientId}}</strong></a> -
+                    <strong>{{FullNameLF}}</strong> - {{BIRTHDATE}} 
+                </td>
+            </tr>
+        </tbody>
+    </table>

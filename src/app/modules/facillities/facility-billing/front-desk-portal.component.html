@@ -1,0 +1,79 @@
+<!-- <p>facility-billing works!</p> -->
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Front Desk Portal</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme">
+			<form [formGroup]="facilityBillingForm" class="theme-form">
+				<div class="form-group">
+					<div class="theme-label">Patient ID</div>
+					<div class="input-group">
+						<input type="text" #patientId formControlName="patientIdText" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="theme-label">Last Name</div>
+					<div class="input-group">
+						<input type="text" #lastName formControlName="lastNameText" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="theme-label">First Name</div>
+					<div class="input-group">
+						<input type="text" #firstName formControlName="firstNameText" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="theme-label">DOB</div>
+					<div class="input-group">
+						<dx-date-box #refDob [displayFormat]="dateTimeFormatCustom.Date" type="date" formControlName="dobText" [value]="" [showClearButton]="true" 
+							[useMaskBehavior]="true" >
+						</dx-date-box>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="theme-label">Modiality</div>
+					<div class="input-group">
+						<select class="form-control form-control-modiality"  formControlName="Modiality">
+							<option [ngValue]="null">Select Modiality</option>
+							<option *ngFor="let item of dropdownListModiality">{{item.MODALITYNAME}}</option>
+						</select>
+					</div>
+				</div>  
+				<div class="form-group">
+					<div class="theme-label">Facility</div>
+					<div class="input-group">
+						<select class="form-control form-control-facility" formControlName="Facility">
+							<option [ngValue]="null">Select Facility</option>
+                       <option *ngFor="let item of dropdownListFacility">{{item.FacilityName}}</option>
+						</select>						
+					</div>
+				</div>
+				<div class="form-action">
+					<a href="javascript:void(0)" (click)="searchFacility()" class="btn btn-theme">Search</a>
+					<a href="javascript:void(0)" (click)="clearFacility()" class="btn btn-border">Clear</a>
+				</div>
+			
+			<div class="theme-form">
+			                    
+			
+			</div>
+		</form>
+        </div>
+		<div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" *ngFor="let item of facilityDepartment;">					
+                    <a class="nav-link" data-toggle="tab" (click)="getTabIndex(item.FacilityConstant)"  [routerLink]=item.FacilityConstant routerLinkActive="active">{{item.FacilityType}}</a>					
+                </li>                
+            </ul>
+            <div class="tab-content">
+				<router-outlet></router-outlet>
+            </div>			
+        </div>
+    </div>
+</div>

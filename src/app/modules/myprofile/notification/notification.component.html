@@ -1,0 +1,132 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Notifications</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <div class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">Search</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="notificationMessage">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">From</div>
+                    <dx-date-box #fromDate [displayFormat]="dateTimeFormatCustom.Date" type="date" [value]="filterForm" 
+                        [showClearButton]="true" [useMaskBehavior]="true"
+                        [(ngModel)]="filterForm">
+                    </dx-date-box>
+
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">To</div>
+                    <dx-date-box #toDate [displayFormat]="dateTimeFormatCustom.Date" type="date" [value]="filterTo"
+                        [showClearButton]="true" [useMaskBehavior]="true"
+                        [(ngModel)]="filterTo">
+                    </dx-date-box>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Status</div>
+                    <div class="input-group">
+                        <select class="form-control" [(ngModel)]="dropDownValue">
+                            <option></option>
+                            <option value="Show All">Show All</option>
+                            <option value="Unread">Unread</option>
+                            <option value="Read">Read</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Uncompleted">Uncompleted</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme" (click)="filterNoticifation()">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">Clear</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <dx-data-grid id="gridContainer" [dataSource]="notificationList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="NotificationID" [showBorders]="true">
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true">
+                </dxo-load-panel>
+
+                <dxi-column dataField="NotificationID" [width]="100" caption="Action" [allowFiltering]="false"
+                    [allowSorting]="false" [visible]="false"></dxi-column>
+                <dxi-column dataField="NotificationMessage" caption="Message" cellTemplate="messageTemplate">
+                </dxi-column>
+                <dxi-column dataField="ShowOn" caption="Date" cellTemplate="dateTemplate"></dxi-column>
+                <dxi-column dataField="From" caption="From" cellTemplate="fromTemplate"></dxi-column>
+
+                <dxi-column dataField="ReadOn" caption="Read" [width]="100" [allowFiltering]="false"
+                    [allowSorting]="false" cellTemplate="ReadOnTemplate"></dxi-column>
+                <dxi-column dataField="IsNotificationRead" caption="IsNotificationRead" [visible]="false"></dxi-column>
+                <dxi-column dataField="IsCompleted" caption="Completed" cellTemplate="CompletedTemplate"></dxi-column>
+                <div *dxTemplate="let data of 'ReadOnTemplate'">
+                    <img *ngIf="data.data.IsNotificationRead" src="assets/images/mail-open.png" width="40" height="40"
+                        title="Read On: {{data.value}}" id="img-open-close" (click)="markReadNotification(data,true)">
+                    <img *ngIf="!data.data.IsNotificationRead" src="assets/images/mail-closed.png" width="40"
+                        height="40" title="Read On: {{data.value}}" id="img-open-close"
+                        (click)="markReadNotification(data,true)">
+                </div>
+                <div *dxTemplate="let data of 'CompletedTemplate'">
+                    <input type="checkbox" [checked]="data.value" (change)="mrakCompleteOrUncomplete(data,$event)">
+                </div>
+                <div *dxTemplate="let data of 'messageTemplate'" id="template-div-height" data-toggle="modal"
+                    data-target="#message-pop-up" (click)="markReadNotification(data,false)">
+                    <div id="message">{{data.value}}</div>
+                    <dx-context-menu [dataSource]="contextMenu" [width]="200" target="#message"
+                        (onItemClick)="contextMenuClick(data,$event)">
+                    </dx-context-menu>
+                </div>
+                <div *dxTemplate="let data of 'dateTemplate'" id="template-div-height">
+                    <div id="date">  {{data.value | date:dateTimeFormatCustom.Date}}</div>
+                    <dx-context-menu [dataSource]="contextMenu" [width]="200" target="#date"
+                        (onItemClick)="contextMenuClick(data,$event)">
+                    </dx-context-menu>
+                </div>
+                <div *dxTemplate="let data of 'fromTemplate'" id="template-div-height">
+                    <div id="from">{{data.value}}</div>
+                    <dx-context-menu [dataSource]="contextMenu" [width]="200" target="#from"
+                        (onItemClick)="contextMenuClick(data,$event)">
+                    </dx-context-menu>
+                </div>
+            </dx-data-grid>
+        </div>
+       
+    </div>
+</div>
+
+<!--Pop Up Star-->
+<div class="modal fade modal-theme in" id="message-pop-up" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">message</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    {{popUpNotificationMessage}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-border btn-sm pull-left" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Pop Up End-->

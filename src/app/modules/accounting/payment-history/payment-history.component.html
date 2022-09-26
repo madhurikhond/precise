@@ -1,0 +1,340 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Payment History</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+
+                <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile"><i class="fa fa-filter"
+                        aria-hidden="true"></i> Filter</a>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme collapse show">
+            <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()" class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">PATIENTID</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="patientId" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">LAST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="lastName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FIRST NAME</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="firstName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOB</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date"
+                            [showClearButton]="true" [useMaskBehavior]="true" >
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">ATTORNEY</div>
+                    <div class="input-group">
+                        <select formControlName="attorney" class="form-control">
+                            <option value=null selected>Select</option>
+                            <option *ngFor="let item of attorneyList" value={{item.Attorney}}>
+                                {{item.Attorney}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">DOI</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="doi" type="date" [showClearButton]="true" [useMaskBehavior]="true"
+                           >
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">ACCESSION</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="accession" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM From Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="examFromDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">EXAM To Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="examToDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">STATUS</div>
+                    <ng-select [items]="statusList" [multiple]="true" bindLabel="Status" placeholder="Select"
+                        groupBy="Type" formControlName="status" [selectableGroup]="true"
+                        [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="Status"
+                        [loading]="showDropdownLoader" [(ngModel)]="selectedStatus" id="id9"  (add)="a1=changefn('id9',a1)">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Type | uppercase}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
+                                [(ngModel)]="item$.selected" /> {{item.Status}}
+                        </ng-template>
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                                <span class="ng-value-label"> {{item.Status}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a1">
+                                <span class="ng-value-label">{{items.length - a1}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Funding Company</div>
+                    <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
+                        [(ngModel)]="selectedBroker" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="Broker" id="id10"  (add)="a2=changefn('id10',a2)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                                <span class="ng-value-label"> {{item.Broker}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a2">
+                                <span class="ng-value-label">{{items.length - a2}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">INSURANCE CARRIER</div>
+                    <ng-select [items]="insuranceCompanyList" placeholder="Select" bindLabel="CompanyName"
+                        formControlName="insuranceCompany" [(ngModel)]="selectedInsuranceCompany" [multiple]="true"
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="CompanyName" id="id11"  (add)="a3=changefn('id11',a3)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                                <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a3">
+                                <span class="ng-value-label">{{items.length - a3}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">CHECK NUMBER</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="checkNumber" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">CHECK AMOUNT</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="checkAmount" class="form-control" appTwoDigitDecimaNumber>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">BANK NAME</div>
+                    <ng-select [items]="paymentBankList" placeholder="Select" bindLabel="PaymentBank"
+                        formControlName="bankName" [(ngModel)]="selectedBank" [multiple]="true" [closeOnSelect]="false"
+                        [loading]="showDropdownLoader" bindValue="PaymentBank" id="id12"  (add)="a4=changefn('id12',a4)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                                <span class="ng-value-label"> {{item.PaymentBank}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a4">
+                                <span class="ng-value-label">{{items.length - a4}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">QB ACCOUNT</div>
+                    <ng-select [items]="qbAccountList" placeholder="Select" bindLabel="QBAccount"
+                        formControlName="qbAccount" [(ngModel)]="selectedQBAccount" [multiple]="true"
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="QBAccount" id="id13"  (add)="a5=changefn('id13',a5)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a5">
+                                <span class="ng-value-label"> {{item.QBAccount}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a5">
+                                <span class="ng-value-label">{{items.length - a5}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">PAYMENT TYPE</div>
+                    <ng-select [items]="paymentTypeList" placeholder="Select" bindLabel="PaymentType"
+                        formControlName="paymentType" [(ngModel)]="selectedPaymentType" [multiple]="true"
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="PaymentType" id="id14"  (add)="a6=changefn('id14',a6)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a6">
+                                <span class="ng-value-label"> {{item.PaymentType}}</span>
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </div>
+                            <div class="ng-value" *ngIf="items.length > a6">
+                                <span class="ng-value-label">{{items.length - a6}} more...</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">FROM Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="fromDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">To Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="toDate" type="date" [showClearButton]="true"
+                            [useMaskBehavior]="true">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <button type="submit" class="btn btn-theme">Search</button>
+                    <button type="button" (click)="onReset()" class="btn btn-border">Clear</button>
+                </div>
+            </form>
+        </div>
+        <div class="page-top-action">
+            <form [formGroup]="deleteForm">
+                <div class="precisemri-search">
+                    <select formControlName="action" class="form-search">
+                        <option value=null disabled>Select an action</option>
+                        <option value=1>Remove Selected Payments</option>
+                    </select>
+                    <div *ngIf="submitted1 && dForm.action" class="tooltiptext text-right">
+                        <small class="error text-danger" *ngIf="dForm.action.invalid">Action is required</small>
+                    </div>
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                                <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                            </select>
+                    </div>
+                    <button type="button" (click)="onDeletePaymentHistory()" [ngClass]="{'disabled': !deleteForm.valid}"
+                        [disabled]="!deleteForm.valid" class="search">GO</button>
+                </div>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid id="gridContainer" [remoteOperations]="true" [dataSource]="paymentHistoryList"
+                [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" [(selectedRowKeys)]="selectedRows"
+                keyExpr="ArPaymentId" [showBorders]="true">
+
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+                <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+
+                <dxo-selection mode="multiple"></dxo-selection>
+
+                <dxi-column dataField="Payor" caption="Payor"></dxi-column>
+                <dxi-column dataField="PatientId" caption="Line Memo"></dxi-column>
+                <dxi-column dataField="PaymentType" caption="Payment Type"></dxi-column>
+                <dxi-column dataField="Payee" caption="Payee"></dxi-column>
+                <dxi-column dataField="Bank" caption="Bank"></dxi-column>
+                <dxi-column dataField="QBAct" caption="QB Account"></dxi-column>
+                <dxi-column dataField="checkno" caption="Check No"></dxi-column>
+                <dxi-column dataField="CheckAmount" caption="Amount"></dxi-column>
+                <dxi-column dataField="STATUS" caption="STATUS"></dxi-column>
+                <dxi-column dataField="ImageUrl" caption="View Check" [width]="100" [allowFiltering]="false"
+                    [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+
+                <div *dxTemplate="let obj of 'detail'">
+                    <check-patient-details [key]="obj.key"></check-patient-details>
+
+                </div>
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <button (click)="showCheck(data.data.PatientId, data.data.FileName)"
+                        [disabled]="data.value != 'BankCheckIconBlack.png'">
+                        <img [ngClass]="{'enable-check': data.value === 'BankCheckIconBlack.png'}" width="50px"
+                            [src]="'assets/images/' + data.value" />
+                    </button>
+                </div>
+            </dx-data-grid>
+        </div>
+
+
+        <div>
+            <div>
+                <div
+                    *ngFor="let item of paymentHistoryList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" [ngStyle]="{'display': isDeletePayment ? 'block' : 'none'}"
+    [ngClass]="(isDeletePayment)?'show':''" id="delete-link" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="closeModal()"></div>
+            </div>
+            <div class="modal-body">
+                <p>This will remove the selected payments. This action is not reversible. Do you want to continue ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="closeModal()" class="btn btn-border-gray btn-sm pull-right"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="deletePaymentHistory()" href="javascript:void(0)" class="btn btn-theme btn-sm pull-left"
+                    data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" [ngStyle]="{'display': isPdf ? 'block' : 'none'}"
+    [ngClass]="(isPdf)?'show':''" id="delete-link" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Check Details</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="closeModal1()"></div>
+            </div>
+            <div class="modal-body">
+                <iframe [src]="pdfSrc" width="100%"></iframe>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="closeModal1()" class="btn btn-border-gray btn-sm pull-right"
+                    data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isPdf || isDeletePayment" class="modal-backdrop fade show"></div>

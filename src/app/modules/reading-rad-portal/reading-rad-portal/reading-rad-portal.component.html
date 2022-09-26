@@ -1,0 +1,581 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Reading Rad Portal</div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <ng-container *ngFor="let t of radPortalTabs;let i= index">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active': i===0}" data-toggle="tab" [attr.href]="'#tab'+i"
+                            (click)='bindData(i)'>{{t.tabName}}
+                        </a>
+                    </li>
+
+                </ng-container>
+            </ul>
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="tab0">
+                    <br>
+                    <div class="search-field search-field-theme collapse show">
+                        <div class="theme-form">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="PatientId"
+                                        [(ngModel)]="AssignedAndPendingToBeReadFilter.PatientId">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="LastName"
+                                        [(ngModel)]="AssignedAndPendingToBeReadFilter.LastName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="FirstName"
+                                        [(ngModel)]="AssignedAndPendingToBeReadFilter.FirstName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #refDob type="date" [value]="filterDOB"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filterDOB">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS From</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #refDosFrom type="date" [value]="filterDOSFROM" 
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filterDOSFROM">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS To</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #refDosTo type="date" [value]="filterDOSTO"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filterDOSTO">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <a href="javascript:void(0)" class="btn btn-theme"
+                                    (click)="applyFilterAssignedAndPendingToBeReadStudies()">SEARCH</a>
+                                <a href="javascript:void(0)" class="btn btn-border"
+                                    (click)="clearFilterAssignAndPendingToBeRead()">CLEAR</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <dx-data-grid id="gridContainer" [dataSource]="assignAndPendingToBeRead"
+                            [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id" [showBorders]="true">
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                            <!-- </dxo-filter-row> -->
+                            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                            <!-- </dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="false"></dxi-column>
+                            <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                            <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FIRSTNAME" caption="FIRST NAME"></dxi-column>
+                            <!-- <dxi-column dataField="DESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+                            <dxi-column dataField="BODYPART" caption="BODYPART"></dxi-column> -->
+                            <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                            <dxi-column dataField="STUDYDATE" caption="DOS"></dxi-column>
+                            <dxi-column dataField="INJURYDATE" caption="DOI"></dxi-column>
+                            <dxi-column dataField="MODALITY" caption="Modality"></dxi-column>
+                            <dxi-column dataField="LATERALITY" caption="Laterality"></dxi-column>
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                                <a href="javascript:void(0)" class="single-action fa fa-pencil-square-o"
+                                    data-toggle="modal" data-target="#addEditrecord"></a>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme" *ngIf="this.assignAndPendingToBeReadTotalRecords>0">
+                        <div class="pagination-theme">
+                            <div
+                                *ngFor="let item of assignAndPendingToBeRead | paginate: { id: 'pagination1' , itemsPerPage: AssignedAndPendingToBeReadFilter.PageSize, currentPage: AssignedAndPendingToBeReadFilter.PageNumber, totalItems:assignAndPendingToBeReadTotalRecords}">
+                            </div>
+                            <pagination-controls id="pagination1"
+                                (pageChange)="AssignedPendingToBeReadPageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="tab-pane" id="tab1">
+                    <br>
+                    <div class="search-field search-field-theme collapse show">
+                        <div class="theme-form">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" #refPatientId>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" #refLastName>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" #refFirstName>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref1Dob type="date" [value]="filter1DOB" [showClearButton]="true"
+                                         [(ngModel)]="filter1DOB" [useMaskBehavior]="true"
+                                        displayFormat="shortdate">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS From</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref1DosFrom type="date" [value]="filter1DOSFROM" 
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter1DOSFROM">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS To</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref1DosTo type="date" [value]="filter1DOSTO"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter1DOSTO">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <a href="javascript:void(0)" (click)="applyFiltersignedAndPendingBillStudies();"
+                                    class="btn btn-theme">SEARCH</a>
+                                <a href="javascript:void(0)" (click)="clearFilterSignedAndPendingBill();"
+                                    class="btn btn-border">CLEAR</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="precisemri-search" style="float: right !important;padding-bottom: 5px;">
+                        <a href="javascript:void(0)" data-toggle="modal" (click)="GenerateBillAndSellLien()"
+                            data-target="#GenerateBillAndSellLien" class="btn btn-theme">Generate Bill & Sell Lien</a>
+
+                        <a href="javascript:void(0)" (click)="GenerateBillAndHoldLien()" class="btn btn-theme">Generate
+                            Bill & Hold Lien</a>
+                        &nbsp;
+                        <select class="form-search" style="padding: 6px 0px 6px 6px;">
+                            <option selected>Select</option>
+                            <option>Generate Bill & Sell Lien</option>
+                            <option>Generate Bill & Hold Lien</option>
+                        </select>
+                        <a href="javascript:void(0)" class="btn btn-theme">Go</a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <dx-data-grid id="gridContainer2" [dataSource]="signedAndPendingBill"
+                            [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id"
+                            (onCellPrepared)="onCellPrepared($event)" (onSelectionChanged)="onSelectionChanged($event)"
+                            [showBorders]="true">
+                            <dxo-sorting mode="multiple">
+                            </dxo-sorting>
+                            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                            <!-- </dxo-filter-row> -->
+                            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                            <!-- </dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+                            <dxo-selection mode="multiple" showCheckBoxesMode="always"></dxo-selection>
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="false"></dxi-column>
+                            <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                            <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FIRSTNAME" caption="FIRST NAME"></dxi-column>
+                            <dxi-column dataField="DESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+                            <dxi-column dataField="BODYPART" caption="BODYPART"></dxi-column>
+                            <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                            <dxi-column dataField="STUDYDATE" caption="DOS"></dxi-column>
+                            <dxi-column dataField="INJURYDATE" caption="DOI"></dxi-column>
+                            <dxi-column dataField="MODALITY" caption="Modality"></dxi-column>
+                            <dxi-column dataField="LATERALITY" caption="Laterality"></dxi-column>
+
+
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                                <!-- <a href="javascript:void(0)" class="single-action fa fa-pencil-square-o"
+                                    data-toggle="modal" data-target="#addEditrecord"></a> -->
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme" *ngIf="this.signedAndPendingBillTotalRecords>0">
+                        <div class="pagination-theme">
+                            <div
+                                *ngFor="let item of signedAndPendingBill | paginate: { id: 'pagination2' , itemsPerPage: SignedAndPendingBillFilter.PageSize, currentPage: SignedAndPendingBillFilter.PageNumber, totalItems:signedAndPendingBillTotalRecords}">
+                            </div>
+                            <pagination-controls id="pagination2"
+                                (pageChange)="SignedAndPendingBillPageChanged($event)"></pagination-controls>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="tab2">
+
+                    <div class="search-field search-field-theme collapse show">
+                        <div class="theme-form">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="PatientId"
+                                        [(ngModel)]="BilledAndLiensSoldFilter.PatientId">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="LastName"
+                                        [(ngModel)]="BilledAndLiensSoldFilter.LastName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="FirstName"
+                                        [(ngModel)]="BilledAndLiensSoldFilter.FirstName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref2Dob type="date" [value]="filter2DOB"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter2DOB">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS From</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #refDos2From type="date" [value]="filter2DOSFROM" 
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter2DOSFROM">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS To</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref2DosTo type="date" [value]="filter2DOSTO"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter2DOSTO">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">Liens Batch</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="BatchName"
+                                        [(ngModel)]="BilledAndLiensSoldFilter.BatchName">
+                                </div>
+                            </div>
+                            <div class="form-action">
+                                <a href="javascript:void(0)" class="btn btn-theme"
+                                    (click)="applyFilterBilledAndLiensSoldStudies()">SEARCH</a>
+                                <a href="javascript:void(0)" class="btn btn-border"
+                                    (click)="onNeedToBilledAndLiensSoldStudies()">CLEAR</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div class="table-responsive">
+                        <dx-data-grid id="gridContainer2" [dataSource]="billedAndLiensSold" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id"
+                            (onCellPrepared)="onCellPrepared($event)" (onSelectionChanged)="onSelectionChanged($event)"
+                            [showBorders]="true">
+                            <dxo-sorting mode="multiple">
+                            </dxo-sorting>
+                            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                            <!-- </dxo-filter-row> -->
+                            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                            <!-- </dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+                            <!-- <dxo-selection mode="multiple" showCheckBoxesMode="always"></dxo-selection> -->
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false"  [visible]="false"></dxi-column>
+                            <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                            <dxi-column dataField="DocIcon" caption="Document" cellTemplate="cellTemplate"></dxi-column>
+                            <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FIRSTNAME" caption="FIRST NAME"></dxi-column>
+                            <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                            <dxi-column dataField="SignatureDate" caption="SIGNED DATE"></dxi-column>
+                            <dxi-column dataField="DESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+                            <dxi-column dataField="LienSoldDate" caption="LIEN SOLD DATE"></dxi-column>
+                            <dxi-column dataField="IsPaid" caption="PAID"></dxi-column>
+                            <dxi-column dataField="PaidDate" caption="PAID DATE"  cellTemplate="paidDateCellTemplate"></dxi-column>
+                            <dxi-column dataField="STUDYDATE" caption="DOS"></dxi-column>
+                            <dxi-column dataField="INJURYDATE" caption="DOI"></dxi-column> 
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                                <a href="javascript:void(0)" (click)="showDocManager(data.data.PATIENTID)">
+                                    <img src="/assets/images/copy-icon.png" />
+                                </a> 
+                            </div>
+                            <div *dxTemplate="let data of 'paidDateCellTemplate'">
+                                <div *ngIf=data.data.IsPaid>{{data.data.PaidDate}}</div>
+                                <div *ngIf=!data.data.IsPaid>N/A</div>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme" *ngIf="this.billedAndLiensSoldTotalRecords>0">
+                        <div class="pagination-theme">
+                            <div
+                                *ngFor="let item of billedAndLiensSold | paginate: { id: 'pagination3' , itemsPerPage: BilledAndLiensSoldFilter.PageSize, currentPage: BilledAndLiensSoldFilter.PageNumber, totalItems:billedAndLiensSoldTotalRecords}">
+                            </div>
+                            <pagination-controls id="pagination3" (pageChange)="BilledAndLiensSoldPageChanged($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab3">
+
+                    <div class="search-field search-field-theme collapse show">
+                        <div class="theme-form">
+                            <div class="form-group">
+                                <div class="theme-label">PATIENT ID</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="PatientId"
+                                        [(ngModel)]="BilledAndLiensHeldFilter.PatientId">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">LAST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="LastName"
+                                        [(ngModel)]="BilledAndLiensHeldFilter.LastName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">FIRST NAME</div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="FirstName"
+                                        [(ngModel)]="BilledAndLiensHeldFilter.FirstName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">DOB</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref3Dob type="date" [value]="filter3DOB"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter3DOB">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS From</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #refDos3From type="date" [value]="filter3DOSFROM" 
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter3DOSFROM">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="theme-label">DOS To</div>
+                                <div class="input-group icon-active dob">
+                                    <dx-date-box #ref3DosTo type="date" [value]="filter3DOSTO"
+                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [(ngModel)]="filter3DOSTO">
+                                    </dx-date-box>
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <a href="javascript:void(0)" class="btn btn-theme"
+                                    (click)="applyFilterBilledAndLiensHeldStudies()">SEARCH</a>
+                                <a href="javascript:void(0)" class="btn btn-border"
+                                    (click)="onNeedToBilledAndLiensHeldToBeReadStudies()">CLEAR</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="table-responsive">
+                        <dx-data-grid id="gridContainer" [dataSource]="billedAndLiensHeld" [allowColumnResizing]="true"
+                            [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [columnResizingMode]="columnResizingMode" keyExpr="Id" [showBorders]="true">
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
+                            <!-- </dxo-filter-row> -->
+                            <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
+                            <!-- </dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true">
+                            </dxo-load-panel>
+                            <dxi-column dataField="Id" [width]="100" caption="Action" [allowFiltering]="false"
+                                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="false"></dxi-column>
+                            <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                            <dxi-column dataField="DocIcon" caption="Document" cellTemplate="cellTemplate"></dxi-column>
+                            <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+                            <dxi-column dataField="FIRSTNAME" caption="FIRST NAME"></dxi-column>
+                            <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                            <dxi-column dataField="SIGNEDDATE" caption="Singed Date"></dxi-column>
+                            <dxi-column dataField="DESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+                            <dxi-column dataField="STUDYDATE" caption="DOS"></dxi-column>
+                            <dxi-column dataField="INJURYDATE" caption="DOI"></dxi-column>
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                                <a href="javascript:void(0)" class="single-action fa fa-pencil-square-o"
+                                    data-toggle="modal" data-target="#addEditrecord"></a>
+                            </div>
+                            <div *dxTemplate="let data of 'cellTemplate'"> 
+                                <a href="javascript:void(0)" (click)="showDocManager(data.data.PATIENTID)">
+                                    <img src="/assets/images/copy-icon.png" />
+                                </a> 
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="pagination-theme" *ngIf="this.billedAndLiensHeldTotalRecords>0">
+                        <div class="pagination-theme">
+                            <div
+                                *ngFor="let item of billedAndLiensHeld | paginate: { id: 'pagination4' , itemsPerPage: BilledAndLiensHeldFilter.PageSize, currentPage: BilledAndLiensHeldFilter.PageNumber, totalItems:billedAndLiensHeldTotalRecords}">
+                            </div>
+                            <pagination-controls id="pagination4" (pageChange)="BilledAndLiensHeldPageChanged($event)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="modal fade modal-theme modal-small" id="generate-bill-sell-lien" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Generate Bill & Sell Lien</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+				   <div class="generate-bill-sell">
+				    <div class="generate-bill-sell-group">
+					 <div class="precisemri-search" style="padding-bottom: 5px;">
+                    <p class="float-left">Sell studies to</p>
+                    <select class="form-search" style="padding: 6px 0px 6px 6px;">
+                        <option selected>Select</option>
+                        <option>Generate Bill & Sell Lien</option>
+                        <option>Generate Bill & Hold Lien</option>
+                    </select>
+					</div>
+					</div>
+					<div class="generate-bill-sell-group">
+					
+							<div class="switch-group">
+							<span class="slider-label">VIEW LEFT SIDE</span>
+																<label class="switch">
+																	<input type="checkbox" name="crawlsubdomain">
+																	<span class="slider round"></span>																	
+																</label>
+																<span class="slider-label">EDIT ON RIGHT SIDE</span>
+															</div>
+					 
+					</div>
+					<div class="generate-bill-sell-group">
+					<div class="row">
+					 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							Proc code
+					 </div>
+					 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							Sell Price
+					 </div>
+					</div>
+					</div>
+					<div class="generate-bill-sell-group">
+					<div class="row">
+					 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+							Signature
+					 </div>
+					 
+					</div>
+					</div>
+                </div>
+				
+				</div>
+				<div class="modal-footer">
+									<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+									<button type="button" class="btn btn-theme btn-sm" data-dismiss="modal">Yes</button>
+									
+								</div>
+			</div>
+		</div>
+	</div> -->
+
+
+<!-- <div class="modal fade modal-theme in modal-small" id="GenerateBillAndHoldLien" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generate Bill & Hold Lien</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure to want to generate bills for the selected studies and hold the liens?
+                </p>
+                <a href="javascript:void(0)" class="btn btn-theme">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn ">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div> -->

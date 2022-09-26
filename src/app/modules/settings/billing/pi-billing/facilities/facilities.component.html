@@ -1,0 +1,96 @@
+<div class="tab-pane" id="facilities">
+    <div class="search-field search-field-theme page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <!-- <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left">Save Changes</a>
+                <a href="javascript:void(0)" class="left btn btn-border">Cancel Changes</a> -->
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+                </div>
+                <a href="javascript:void(0)" (click)="getAllFacilityGroups()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid
+            id="gridContainer"
+            [dataSource]="facilityGroupList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="ProcGroupId"  
+            [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxi-column dataField="ProcGroupId" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="ProcGroupId" caption="PROC GROUP ID"></dxi-column>
+            <dxi-column dataField="ProcGroupName" caption="PROC GROUP NAME"></dxi-column>
+            <dxi-column dataField="ModalityName" caption="MODALITY TYPE"></dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="getFacilityGroupById(data.data.ProcGroupId)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#editmin"></a>
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div *ngFor="let item of facilityGroupList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme in show modal-small" id="editmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editForm" class="theme-form">
+				<div class="modal-body">
+					<div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Proc. Group</div>
+                                    <div class="input-group">
+                                        <input type="hidden" formControlName="procGroupId" class="form-control" />                                      
+                                        <input type="text" [value]="procGroupName" class="form-control" readonly />
+                                    </div>
+                                </div>                                
+                                <div class="form-group">
+                                    <div class="theme-label">Modality</div>
+                                    <div class="input-group">
+                                        <select formControlName="modalityId" class="form-control">
+                                            <option value="" selected>Select</option>
+                                            <option *ngFor="let item of modalityList" value={{item.MasterModalityID}}>
+                                                {{item.ModalityName}}
+                                            </option>                                              
+                                        </select>
+                                    </div>
+                                    <div *ngIf="submitted1 && eForm.modalityId" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="eForm.modalityId.invalid">Modality is required</small>
+                                    </div>
+                                </div>                                
+                            </div>                            
+                        </div>                    
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+				</div> 
+			</form>
+        </div>
+    </div>
+</div>

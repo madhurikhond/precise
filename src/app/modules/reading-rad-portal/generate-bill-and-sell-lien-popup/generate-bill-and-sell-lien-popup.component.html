@@ -1,0 +1,138 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Generate Bill & Sell Lien</h5>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <form #f="ngForm" (ngSubmit)="OnSellLiens()">
+        <div class="modal-body">
+            <div class="generate-bill-sell">
+                <div class="generate-bill-sell-group">
+                    <div class="precisemri-search" style="padding-bottom: 5px;">
+                        
+                        <div class="form-group">
+                            <div class="input-group">
+                                <p class="float-left">Sell studies to</p>
+                                <select class="form-search" #SellStudiesTo="ngModel" name="SellStudiesTo"
+                                    [(ngModel)]="SellLienModel.SellStudiesTo" (change)="changeLienComp($event)"
+                                    style="padding: 6px 0px 6px 6px;" required  [ngClass]="{'is-invalid': f.submitted && SellStudiesTo.invalid}">
+                                    <option selected value="" [attr.ProcSellPrice]="0">Select</option>
+                                    <option *ngFor="let l of LienConpaniesList" [value]="l.ProcCodeName"
+                                        [attr.ProcSellPrice]="l.SellPrice" [attr.SellStudyTo]="l.id">{{l.CompanyName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="f.submitted && SellStudiesTo.invalid" class="invalid-feedback">
+                                    <div *ngIf="SellStudiesTo?.errors?.required">Sell Study to is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="generate-bill-sell-group">
+
+                    <div class="switch-group">
+                        <span class="slider-label">VIEW LEFT SIDE</span>
+                        <label class="switch">
+                            <input type="checkbox" (change)="toggle($event)" name="crawlsubdomain">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="slider-label">EDIT ON RIGHT SIDE</span>
+                    </div>
+
+                </div>
+                <div class="generate-bill-sell-group">
+
+                    <table class="table table-bordered table-stripped">
+                        <thead>
+                            <tr>
+                                <th>Proc code group names</th>
+                                <th>Sell Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" required #ProcCodeName="ngModel" name="ProcCodeName"
+                                                [(ngModel)]="SellLienModel.ProcCodeName"
+                                                [ngClass]="{'is-invalid': f.submitted && ProcCodeName.invalid}"
+                                                [disabled]="isLockedTable" class="form-control">
+
+                                            <div *ngIf="f.submitted && ProcCodeName.invalid" class="invalid-feedback">
+                                                <div *ngIf="ProcCodeName?.errors?.required">Proc Code Name is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" required #SellPrice="ngModel" name="SellPrice"
+                                                [(ngModel)]="SellLienModel.SellPrice"
+                                                [ngClass]="{'is-invalid': f.submitted && SellPrice.invalid}"
+                                                [disabled]="isLockedTable" class="form-control">
+                                            <div *ngIf="f.submitted && SellPrice.invalid" class="invalid-feedback">
+                                                <div *ngIf="SellPrice?.errors?.required">Sell Price is required.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <P>Authorized representative selling the liens</P>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+
+                            <div class="form-group">
+                                <div class="theme-label">First Name</div>
+                                <div class="input-group">
+                                    <input type="text" required #FirstName="ngModel" name="FirstName"
+                                        [ngClass]="{'is-invalid': f.submitted && FirstName.invalid}"
+                                        [(ngModel)]="SellLienModel.FirstName" [disabled]="isLockedTable"
+                                        class="form-control">
+                                    <div *ngIf="f.submitted && FirstName.invalid" class="invalid-feedback">
+                                        <div *ngIf="FirstName?.errors?.required">First Name is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Last Name</div>
+                                <div class="input-group">
+                                    <input type="text" required #LastName="ngModel" name="LastName"
+                                        [ngClass]="{'is-invalid': f.submitted && LastName.invalid}"
+                                        [(ngModel)]="SellLienModel.LastName" [disabled]="isLockedTable"
+                                        class="form-control">
+                                    <div *ngIf="f.submitted && LastName.invalid" class="invalid-feedback">
+                                        <div *ngIf="LastName?.errors?.required">Last Name is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="tab1Model.BulkLienAssignmentSignatureEmail">
+                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete()">
+                                    </signature-pad>
+                                </div>
+                                <a href="javascript:void(0)" (click)="clearSign();" class="btn btn-theme btn-sm">Clear
+                                    Signature</a>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-theme pull-left btn-sm">Sell Liens</button>
+            <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" (click)="close();">Cancel</a>
+        </div>
+    </form>
+</div>

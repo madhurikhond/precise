@@ -1,0 +1,8 @@
+
+  select.form-control.radiologist-width {
+    width: calc(100% - 13px);
+}
+.input-group.input-loader.input-flex
+{
+display:block !important;
+}

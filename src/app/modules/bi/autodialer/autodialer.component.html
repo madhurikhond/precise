@@ -1,0 +1,22 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Auto Dialer</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" [routerLink]="'/newordercaller'" routerLinkActive="active">New Order Caller</a>
+                    <!-- <a class="nav-link active" data-toggle="tab" href="#new-order-caller">New Order Caller</a> -->
+                </li>
+            </ul>
+            <div class="tab-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>	

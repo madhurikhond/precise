@@ -1,0 +1,20 @@
+.link-btn {
+  color: #3b8beb;
+  text-decoration: underline !important;
+}
+  .alerttabcolor
+  {
+    background-color: yellow !important;
+    color: black  !important;
+  }
+  .is-invalid
+{
+    border-color: red !important;
+}
+:host ::ng-deep .ck-editor__editable_inline {
+    height: 280px !important;
+    overflow-y: scroll !important
+}
+.disable {
+  pointer-events: none;
+}

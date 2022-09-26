@@ -1,0 +1,15 @@
+
+    .dx-filemanager-toolbar .dx-filemanager-breadcrumbs{
+        display: none;
+    }
+
+    .dx-filemanager-toolbar .dx-filemanager-general-toolbar
+    {
+        display: none;
+    }
+
+    .dx-widget .dx-filemanager-breadcrumbs{
+        display: none;
+    }
+    
+    .disabled{ pointer-events: none }

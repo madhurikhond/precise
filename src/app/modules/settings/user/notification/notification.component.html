@@ -1,0 +1,140 @@
+<div class="tab-pane" id="notifications">
+    <div class="theme-form-center">
+        <form [formGroup]="notificationUser" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <div class="theme-label">Notification Title</div>
+                            <div class="input-group">
+                                <input type="text" formControlName="notificationTitle" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && notificationForm.notificationTitle.errors }">
+                            </div>
+                            <div *ngIf="submitted && notificationForm.notificationTitle.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="notificationForm.notificationTitle.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Embedded Title Icon</div>
+                            <div class="input-group">
+                                <select class="form-control" formControlName="notificationTitleDropDown"
+                                [ngClass]="{ 'is-invalid': submitted && notificationForm.notificationTitleDropDown.errors }">
+                                    <option value=''>Select</option>
+                                    <option value='Info'>Info</option>
+                                    <option value='Delete'>Delete</option>
+                                    <option value='Deny'>Deny</option>
+                                    <option value='Edit'>Edit</option>
+                                    <option value='Ok'>Ok</option>
+                                    <option value='Warning'>Warning</option>
+                                    <option value='None'>None</option>
+                                </select>
+                            </div>
+                            <div *ngIf="submitted && notificationForm.notificationTitleDropDown.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="notificationForm.notificationTitleDropDown.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Embedded Content Icon</div>
+                            <div class="input-group">
+                                <select class="form-control" formControlName="embeddedDropDown" 
+                                [ngClass]="{ 'is-invalid': submitted && notificationForm.embeddedDropDown.errors }">
+                                    <option value=''>Select</option>
+                                    <option value='Info'>Info</option>
+                                    <option value='Delete'>Delete</option>
+                                    <option value='Deny'>Deny</option>
+                                    <option value='Edit'>Edit</option>
+                                    <option value='Ok'>Ok</option>
+                                    <option value='Warning'>Warning</option>
+                                    <option value='None'>None</option>
+                                </select>
+                            </div>
+                            <div *ngIf="submitted && notificationForm.embeddedDropDown.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="notificationForm.embeddedDropDown.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Content Scrolling</div>
+                            <div class="input-group">
+                                <select class="form-control" formControlName="contentScrollDropDown"
+                                [ngClass]="{ 'is-invalid': submitted && notificationForm.contentScrollDropDown.errors }">
+                                    <option value=''>Select</option>
+                                    <option value='Auto'>Auto</option>
+                                    <option value='None'>None</option>
+                                    <option value='X'>X</option>
+                                    <option value='Y'>Y</option>
+                                    <option value='Both'>Both</option>
+                                </select>
+                            </div>
+                            <div *ngIf="submitted && notificationForm.contentScrollDropDown.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="notificationForm.contentScrollDropDown.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="checkbox-input-group">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="check1" type="checkbox" (change)="checkSendLater()" formControlName="isNotificationLater">
+                                <label for="check1" class="arrow-label">Send Notification later</label>
+                            </div>
+                            <div class="input-group icon-active">
+                                <!-- <input type="date" class="form-control" *ngIf="notificationForm.isNotificationLater.value" formControlName="notificationDate" id="notification-date"> -->
+                                
+                                <div class="form-group"><dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                    *ngIf="notificationForm.isNotificationLater.value"
+                                    formControlName="notificationDate"
+                                    [ngClass]="{ 'is-invalid': submitted && notificationForm.isNotificationLater.value && notificationForm.notificationDate.errors }"
+                                    type="date"
+                                    [showClearButton]="true"
+                                    [useMaskBehavior]="true">
+                                   
+                                </dx-date-box> 
+                                <span  *ngIf="notificationForm.isNotificationLater.value">
+                                    <div *ngIf="submitted && notificationForm.isNotificationLater.value && notificationForm.notificationDate.errors" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="notificationForm.notificationDate.errors.required">
+                                            Required
+                                        </small>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                    <input type="time" class="form-control" 
+                                *ngIf="notificationForm.isNotificationLater.value" 
+                                formControlName="notificationTime" 
+                                [ngClass]="{ 'is-invalid': submitted && notificationForm.isNotificationLater.value && notificationForm.notificationTime.errors }"
+                                id="notification-time">
+                                <span  *ngIf="notificationForm.isNotificationLater.value">
+                                    <div *ngIf="submitted && notificationForm.isNotificationLater.value && notificationForm.notificationTime.errors" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="notificationForm.notificationTime.errors.required">
+                                            Required
+                                        </small>
+                                    </div>
+                                </span>
+                            </div></div>
+                        </div>
+                        <div class="form-group">
+							<div class="input-group">
+								<textarea class="form-control" formControlName="notificationNote" placeholder="Notification Text"
+								[ngClass]="{ 'is-invalid': submitted && notificationForm.notificationNote.errors }"></textarea>
+							</div>
+							<div *ngIf="submitted && notificationForm.notificationNote.errors" class="tooltiptext text-right">
+								<small class="error text-danger" *ngIf="notificationForm.notificationNote.errors.required">
+									Required
+								</small>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button href="javascript:void(0)" type="submit" (click)="onSubmit()" [disabled]="notificationForm.isNotificationLater.value" class="btn btn-theme">Send Message</button>
+                <button href="javascript:void(0)" type="submit" (click)="onSubmit()" [disabled]="!notificationForm.isNotificationLater.value" class="btn btn-theme">Send Later</button>
+            </div>
+        </form>									
+    </div>
+</div>

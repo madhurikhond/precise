@@ -1,0 +1,174 @@
+<div class="tab-pane" id="bulk-billing-email">
+    <div class="theme-form-center">
+        <form [formGroup]="bulkBillingForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isbulkBiller" id="active5"
+											type="checkbox">
+										<label for="active5" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Service Time</div>
+										<div class="input-group icon-active">
+											<input type="time" formControlName="bulkBillerServiceTime"
+												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillerServiceTime.errors)}"
+												class="form-control" id="timepicker7">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted &&  bbForm.bulkBillerServiceTime.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="bbForm.bulkBillerServiceTime.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Days Of Week</div>
+										<div class="input-group">
+											<select class="form-control"
+												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBilllerWeekDays.errors)}"
+												formControlName="bulkBilllerWeekDays">
+												<option>Sunday</option>
+												<option>Monday</option>
+												<option>Tuesday</option>
+												<option>Wednesday</option>
+												<option>Thrusday</option>
+												<option>Friday</option>
+												<option>Saturday</option>
+											</select>
+											<div *ngIf="submitted && bbForm.bulkBilllerWeekDays.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="bbForm.bulkBilllerWeekDays.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Financial Type</div>
+										<div class="input-group">
+											<ng-select [items]="financialTypesList" placeholder="Select"
+												formControlName="bulkBillingPatientFinancialType"
+												bindLabel="financialtypename" [multiple]="true" [closeOnSelect]="false"
+												bindValue="financialtypename" [(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillingPatientFinancialType.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template> 
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && bbForm.bulkBillingPatientFinancialType.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="bbForm.bulkBillingPatientFinancialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Doc Type</div>
+										<div class="input-group">
+											<ng-select [items]="docTypesList" placeholder="Select"
+												formControlName="bulkBillerDocType" bindLabel="docType" [multiple]="true"
+												[closeOnSelect]="false" bindValue="docType" [(ngModel)]="selectedDocList"
+												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillerDocType.errors)}"
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.docType}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template> 
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && bbForm.bulkBillerDocType.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="bbForm.bulkBillerDocType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side"><span>After</span> 
+										<div class="icon-active">
+											<input type="text" class="form-control"
+											[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillingDays.errors)}"
+											(keypress)="allowNumberOnly($event)" formControlName="bulkBillingDays">
+											<div *ngIf="submitted && bbForm.bulkBillingDays.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="bbForm.bulkBillingDays.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="bbForm.bulkBillingDays.errors.max">
+													Required Max 3
+												</small>
+											</div> 
+										</div> 
+										<span>days from the signed report date email all files from the patient's document
+										manager to the respective outside biller.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea formControlName="bulkBillingCommentBox"
+                                [ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillingCommentBox.errors)}"
+                                class="form-control" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && bbForm.bulkBillingCommentBox.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="bbForm.bulkBillingCommentBox.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

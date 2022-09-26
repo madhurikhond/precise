@@ -1,0 +1,21 @@
+<div class="tab-pane" id="revised-bills">
+    <div class="search-field search-field-theme page-top-action">
+        <form [formGroup]="revisedForm" class="theme-form">
+            <div class="form-group">
+                <div class="theme-label">Patient Id</div>
+                <div class="input-group">
+                    <input formControlName="patientId" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && rForm.patientId.errors }">
+                </div>
+                <div *ngIf="submitted && rForm.patientId" class="tooltiptext text-right">                            
+                    <small class="error text-danger" *ngIf="rForm.patientId.invalid">Patient ID is required</small>
+                </div>
+            </div>
+            <div class="form-action">
+                <button type="submit" [disabled]="revisedForm.invalid"  (click)="onSubmit()" class="btn btn-theme">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<h1>COMING SOON</h1>

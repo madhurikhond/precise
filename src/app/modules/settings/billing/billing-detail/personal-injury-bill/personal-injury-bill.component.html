@@ -1,0 +1,55 @@
+<div class="tab-pane" id="payee">
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+                </div>
+                <a href="javascript:void(0)" (click)="getPersonalInjuryBill()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid
+            id="gridContainer"
+            [dataSource]="billList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="PatientId"  
+            [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            
+            <dxi-column dataField="PatientId" caption="Patient Id"></dxi-column>
+            <dxi-column dataField="InternalStudyId" caption="Internal Study Id"></dxi-column>
+            <dxi-column dataField="STUDYDATETIME" caption="STUDY DATE TIME" cellTemplate="dateTemplate1"></dxi-column>
+            <dxi-column dataField="GIVENNAME" caption="GIVEN NAME"></dxi-column>
+            <dxi-column dataField="FAMILYNAME" caption="FAMILY NAME"></dxi-column>
+            <dxi-column dataField="BIRTHDATE" caption="BIRTH DATE" cellTemplate="dateTemplate2"></dxi-column>
+            <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
+
+            <div *dxTemplate="let data of 'dateTemplate1'">
+                {{data.value | date: dateTimeFormatCustom.DateTimeWithSec}}
+            </div>	
+            <div *dxTemplate="let data of 'dateTemplate2'">
+                {{data.value | date: dateTimeFormatCustom.Date}}
+            </div>	
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div *ngFor="let item of billList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>

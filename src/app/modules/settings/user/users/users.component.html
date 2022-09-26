@@ -1,0 +1,741 @@
+<div class="tab-pane active" id="users">
+
+    <div class="inner-page-body">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                <div class="search-field search-field-theme collapse show">
+                    <form [formGroup]="userServiceForm" class="theme-form" (submit)="searchUserMgt()">
+                        <div class="form-group">
+                            <div class="theme-label">Search</div>
+                            <div class="input-group">
+                                <input type="text" formControlName="topSearchText" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Status</div>
+                            <div class="input-group">
+                                <select class="form-control" formControlName="search_isactive">
+                                    <option value="" selected>Show All</option>
+                                    <option value=true>Active</option>
+                                    <option value=false>Not Active</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-action">
+                            <button type="submit" class="btn btn-theme">Search</button>
+                            <a href="javascript:void(0)" (click)="clearUserMgt()"
+                                class="btn btn-border">Clear</a>&nbsp;&nbsp;
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                <div class="page-top-action" style="padding:13px 0 !important">
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                            <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                value={{item.value}}>{{item.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid id="gridContainer" #gridContainer [dataSource]="userList" [allowColumnResizing]="true"
+            [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30" keyExpr="USERID" [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+            <dxo-header-filter [visible]="false" [allowSearch]="false"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+            <dxi-column dataField="USERID" [width]="100" caption="Action" [allowFiltering]="false"
+                [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+            <dxi-column dataField="FIRSTNAME" caption="FIRST NAME"></dxi-column>
+            <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+            <dxi-column dataField="PHONE" caption="PHONE" cellTemplate='phone'></dxi-column>
+            <dxi-column dataField="COMPANYNAME" caption="COMPANY NAME"></dxi-column>
+            <dxi-column dataField="GroupName" caption="User Group"></dxi-column>
+            <dxi-column dataField="UserHire" caption="USER HIRE" cellTemplate="dateTemplate1"></dxi-column>
+            <dxi-column dataField="LunchTime" caption="LUNCH TIME" cellTemplate="timeTemplate1"></dxi-column>
+            <dxi-column dataField="Extention" caption="EXTENSION"></dxi-column>
+            <dxi-column dataField="UserPosition" caption="USER POSITION"></dxi-column>
+            <dxi-column dataField="DepartmentName" caption="DEPARTMENT NAME"></dxi-column>
+            <dxi-column dataField="WorkingPeriod" caption="WORKING PERIOD"></dxi-column>
+            <dxi-column dataField="UserTermination" caption="USER TERMINATION" cellTemplate="dateTemplate2">
+            </dxi-column>
+            <dxi-column dataField="ISACTIVE" caption="ACTIVE" cellTemplate="IsActive"></dxi-column>
+            <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <a href="javascript:void(0)" (click)="edit(data.data.USERID)"
+                    class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-user"></a>
+            </div>
+            <div *dxTemplate="let data of 'dateTemplate1'">
+                {{data.value != "" ? date: dateTimeFormatCustom.Date}}
+            </div>
+            <div *dxTemplate="let data of 'timeTemplate1'">
+                {{data.value != "" ? date: dateTimeFormatCustom.Time}}
+            </div>
+            <div *dxTemplate="let data of 'dateTemplate2'">
+                {{data.value != "" ? date: dateTimeFormatCustom.Date}}
+            </div>
+            <div *dxTemplate="let data of 'phone'">
+                <p *ngIf="data && data.value">
+                    {{ data.value | mask: '(000) 000-0000' }}
+                </p>
+            </div>
+            <dxo-load-panel [enabled]="false">
+            </dxo-load-panel>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of userList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="edit-user" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{fullName}} - {{userType}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editUserForm" class="theme-form">
+                <div class="modal-body">
+
+                    <div class="tab-section">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#user-general">General</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#user-details">Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#user-permission">Permission</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="user-general">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">First name</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="firstName"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.firstName.errors }">
+                                                    </div>
+
+                                                    <div *ngIf=" submitted && editForm.firstName.errors"
+                                                        class="tooltiptext text-right">
+
+                                                        <small class="error text-danger">First name is
+                                                            required</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Last name</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="lastName"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Company name</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="companyName"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">DBA Name</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="dba" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">NPI</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="npi" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">License Number</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="licenceNumber"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Address</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="address"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">City</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="city" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">State</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="state" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Zip</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="zip" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="checkbox-input-group">
+                                                    <div class="checkbox-theme">
+                                                        <input class="form-control" formControlName="isActive"
+                                                            id="user-isactive" type="checkbox">
+                                                        <label for="user-isactive" class="arrow-label">Is Active</label>
+                                                    </div>
+                                                    <!-- <div class="form-group">                                                        
+                                                        <div class="input-group icon-active">
+                                                            <input type="text" class="form-control" id="exiled-date">
+                                                            <i class="fa-right-icon fa fa-calendar"></i>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="form-group">
+                                                        <a href="javascript:void(0)" (click)="resendWelcomeEmail()"
+                                                            class="btn btn-border btn-sm">ReSend Welcome Email</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Cell Phone</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="cell" mask="(000)-000-0000"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.cell.errors }"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.cell.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger">Invalid Cell Number</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Home Phone</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="phone" mask="(000)-000-0000"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.phone.errors }"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.phone.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="editForm.phone.invalid">Invalid phone Number</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Fax #</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="fax" mask="(000)-000-0000"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.fax.errors }"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.fax.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger">Invalid Fax Number</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Personal EMAIL</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="email" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.email.errors }">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.email.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger">Invalid personal
+                                                            email</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Work EMAIL</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="workEmail"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.workEmail.errors }">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.workEmail.errors"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger">Invalid work
+                                                            email</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Date of Birth</div>
+                                                    <div class="input-group icon-active">
+                                                        <!-- <input type="date" formControlName="birthday" class="form-control"> -->
+                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                            formControlName="birthday" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true">
+                                                        </dx-date-box>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Emergency Contact Name 1</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="eContactName1"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Emergency Contact Phone # 1</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="eContactPhone1"
+                                                            mask="(000)-000-0000"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.eContactPhone1.errors }"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.eContactPhone1"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="editForm.eContactPhone1.invalid">Invalid
+                                                            Contact Phone1 Number</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Emergency Contact Name 2</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="eContactName2"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Emergency Contact Phone # 2</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="eContactPhone2"
+                                                            mask="(000)-000-0000"
+                                                            [ngClass]="{ 'is-invalid': submitted && editForm.eContactPhone2.errors }"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div *ngIf="submitted && editForm.eContactPhone2"
+                                                        class="tooltiptext text-right">
+                                                        <small class="error text-danger"
+                                                            *ngIf="editForm.eContactPhone2.invalid">Invalid
+                                                            Contact Phone2 Number</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Location</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="officeLocation" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="modal-footer">
+                                    <a href="javascript:void(0)" class="btn btn-border btn-sm" data-dismiss="modal">Close</a>
+                                    <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-dismiss="modal">Update</a>
+                                </div> -->
+                            </div>
+                            <div class="tab-pane fade" id="user-details">
+                                <div class="tab-section">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab"
+                                                href="#generalsub-details">General</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#roles-uesr">Roles</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="generalsub-details">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Shift Hours</div>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="hours"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">User Type</div>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="userType"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Extension</div>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="extension"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Lunch Time</div>
+                                                        <div class="input-group icon-active">
+                                                            <input type="time" formControlName="lunchTime"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">User Position</div>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="userPosition"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Hire date</div>
+                                                        <div class="input-group icon-active">
+                                                            <!-- <input type="date" formControlName="userHire" class="form-control"> -->
+                                                            <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                                formControlName="userHire" type="date"
+                                                                [showClearButton]="true" [useMaskBehavior]="true">
+
+                                                            </dx-date-box>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Termination date</div>
+                                                        <div class="input-group icon-active">
+                                                            <!-- <input type="date" formControlName="userTermination" class="form-control"> -->
+                                                            <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                                                formControlName="userTermination" type="date"
+                                                                [showClearButton]="true" [useMaskBehavior]="true">
+
+                                                            </dx-date-box>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <div class="theme-label">Slack Auth ID</div>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="userSlackID"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="roles-uesr">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="cke-editor-group">
+                                                        <div class="theme-label">User Duties</div>
+                                                        <ckeditor #myckeditor formControlName="userDuties"
+                                                            [config]="CkeConfig" (paste)="onPaste($event)"
+                                                            (change)="onChange($event)">
+                                                        </ckeditor>
+                                                        <!-- <ckeditor [editor]="Editor" formControlName="userDuties">
+                                                        </ckeditor> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="user-permission">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">User Type</div>
+                                            <div class="input-group">
+                                                <select class="form-control" formControlName="userType"
+                                                    [ngClass]="{ 'is-invalid': submitted && editForm.userType.errors }"
+                                                    [(ngModel)]="selectedUserTypeList">
+                                                    <option value="">Select</option>
+                                                    <ng-container *ngFor="let item of userTypeList">
+                                                        <option [value]="item.UserTypeValue">{{item.UserType}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="submitted && editForm.userType.errors"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="editForm.userType.errors.required">
+                                                    Select an user type
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">User Role Group</div>
+                                            <div class="input-group">
+                                                <select class="form-control" formControlName="groupName"
+                                                    [ngClass]="{ 'is-invalid': submitted && editForm.groupName.errors }"
+                                                    [(ngModel)]="selectedRoleGroupList">
+                                                    <option value="">Select</option>
+                                                    <ng-container *ngFor="let item of roleGroupList">
+                                                        <option [value]="item.GroupValue">{{item.GroupName}}</option>
+                                                    </ng-container>
+                                                </select>
+
+                                            </div>
+                                            <div *ngIf="submitted && editForm.groupName.errors"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="editForm.groupName.errors.required">
+                                                    Select a role group
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">Select Department</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="departmentList" placeholder="Select"
+                                                    bindLabel="DepartmentName" formControlName="departmentId"
+                                                    [(ngModel)]="selectedDepartmentList" [closeOnSelect]="false"
+                                                    [loading]="showDropdownLoader" bindValue="Did">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">Assign to a Funding Company</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker"
+                                                    formControlName="assingBrokerID" [(ngModel)]="selectedBrokerList"
+                                                    [multiple]="true" [closeOnSelect]="false"
+                                                    [loading]="showDropdownLoader" bindValue="BrokerID">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.Broker}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">Assign To Parent Facility</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="parentFacilityList" placeholder="Select"
+                                                    bindLabel="FacilityParentName"
+                                                    formControlName="assignFacilityParentID"
+                                                    [(ngModel)]="selectedParentFacilityList" [multiple]="true"
+                                                    [closeOnSelect]="false" [loading]="showDropdownLoader"
+                                                    bindValue="FacilityParentID">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label">
+                                                                {{item.FacilityParentName}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group autocomplete">
+                                            <div class="theme-label">Assign To Facility</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="facilityList" placeholder="Select"
+                                                    bindLabel="FacilityName" formControlName="assignFacilityID"
+                                                    [(ngModel)]="selectedFacilityList" [multiple]="true"
+                                                    [closeOnSelect]="false" [loading]="showDropdownLoader"
+                                                    bindValue="FacilityID">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.FacilityName}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <!-- <div class="theme-label">Assign To Referrers</div>
+                                            <div class="referrers-grouping">
+                                                <ng-select [items]="referrerList" bindLabel="username"
+                                                    formControlName="assignReferrerID" bindValue="referrerID"
+                                                    [multiple]="true" groupBy="selectedAllGroup" searchable="true"
+                                                    placeholder="Search Referrer" [closeOnSelect]="false"
+                                                    (keyup)="onTagChange($event)" (focus)="onFocus()">
+
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.username}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                class="ng-value-label">{{items.length - 1}}
+                                                                more..</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div> -->
+                                            <div class="theme-label">Assign To Referrers</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="referrerList" placeholder="Select"
+                                                    [virtualScroll]="shouldEnableVirtualScroll(referrerList, 10)"
+                                                    bindLabel="Username" formControlName="assignReferrerID"
+                                                    [(ngModel)]="selectedReferrerList" [multiple]="true"
+                                                    [closeOnSelect]="false" [loading]="showDropdownLoader"
+                                                    bindValue="ReferrerID" appendTo="body"
+                                                    class="assign-referrers-select">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.Username}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-theme btn-sm pull-left">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

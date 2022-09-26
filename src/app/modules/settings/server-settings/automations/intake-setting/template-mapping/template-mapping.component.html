@@ -1,0 +1,80 @@
+<div class="tab-pane" id="slack-tab">
+    <div class="table-responsive manual-table">
+        <div class="search-field search-field-theme page-top-action">
+            <a href="javascript:void(0)" (click)="saveTemplate()" class="btn btn-theme btn-sm left">Save Changes</a>
+            <a href="javascript:void(0)" (click)="CancelChanges()" class="left btn btn-border">Cancel Changes</a>
+            <div class="precisemri-search page-select">
+                <div class="theme-label">Page Size</div>
+                    <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                        <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                    </select>
+            </div>
+            <a href="javascript:void(0)" (click)="refreshTemplate()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+        </div>
+        <br>
+        <div class="table-responsive">
+			<dx-data-grid id="gridContainer" [dataSource]="templateList" [allowColumnResizing]="true"
+				[columnAutoWidth]="true" [allowColumnReordering]="true"
+				[columnMinWidth]="5" keyExpr="intakeSettingID" [showBorders]="true">
+
+				<dxo-sorting mode="multiple"></dxo-sorting>
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+			    <dxo-editing
+                mode="cell"                
+                [allowUpdating]="true"              
+                > </dxo-editing>
+				<dxo-load-panel [enabled]="true">
+				</dxo-load-panel>
+				<dxi-column [allowEditing]="false" dataField="intakeSettingID" caption="INTAKE ID"></dxi-column>
+				<dxi-column [allowEditing]="false" dataField="financialTypeName" caption="FINANCIAL TYPE NAME"></dxi-column>
+				<dxi-column [allowEditing]="false" dataField="templateName" caption="TEMPLATE NAME"></dxi-column>
+                <dxi-column dataField="reportName" [allowEditing]="true"  caption="REPORT NAME">
+                    <dxo-lookup [dataSource]="reportNameList"></dxo-lookup>
+                    <dxo-lookup [dataSource]="reportNameList" valueExpr="reportName" displayExpr="reportName"></dxo-lookup>
+                </dxi-column>
+			</dx-data-grid>
+		</div>
+    </div>
+  
+</div>
+
+
+<!-- 
+<div class="tab-pane" id="template-mapping-tab">
+    <div class="search-field search-field-theme page-top-action">
+        <a href="javascript:void(0)" (click)="saveTemplate()" class="btn btn-theme btn-sm left">Save Changes</a>
+        <a href="javascript:void(0)" (click)="CancelChanges()" class="left btn btn-border">Cancel Changes</a>
+        <a href="javascript:void(0)" (click)="refreshTemplate()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+    </div>
+    <div class="table-responsive manual-table">
+        <table class="table table-theme">
+            <thead>
+                <tr>
+                    <th width="100">INTAKE ID</th>
+                    <th width="100">FINANCIAL TYPE NAME</th>
+                    <th width="100">TEMPLATE NAME</th>
+                    <th width="100">REPORT NAME	</th>
+                </tr>	
+                        
+            </thead>														
+            <tbody>	
+                <tr>	
+                    <td><input type="text" [(ngModel)] ="FilterintakeSettingID" class="form-control"></td>
+                    <td><input type="text" [(ngModel)] ="FilterfinancialTypeName" class="form-control"></td>
+                    <td><input type="text" [(ngModel)] ="FiltertemplateName" class="form-control"></td>
+                    <td><input type="text" [(ngModel)] ="FilterreportName" class="form-control"></td>
+                </tr>
+                <tr *ngFor="let template of templateList | filter : 'templateName' : FiltertemplateName | filter : 'intakeSettingID' : FilterintakeSettingID  | filter : 'reportName' : FilterreportName | filter : 'financialTypeName' : FilterfinancialTypeName; let i = index">	
+                    <td>{{template.intakeSettingID}}</td>
+                    <td>{{template.financialTypeName}}</td>
+                    <td>{{template.templateName}}</td>
+                    <td>
+                        <select class="form-control" [(ngModel)]="template.reportName">
+                            <option  *ngFor="let obj of reportNameList" [Value]="obj.reportName">{{obj.reportName}}</option>
+                        </select>
+                    </td>
+                </tr>                
+            </tbody>	
+        </table>	
+    </div>
+</div> -->

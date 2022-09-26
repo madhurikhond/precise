@@ -1,0 +1,24 @@
+
+    <table class="table table-theme">
+        <tbody>
+            <tr [class.alertTabYellow]="this.hasAlert" class="collapse-active-data1">
+                <td  class="table-sub-header">
+                    <span class="fa fa-file-text-o" data-toggle="modal" data-target="#docManager"
+                        (click)="showDocManager(patientId)" class="cursor-pointer"></span>
+                        <i *ngIf="hasAlert"  class="fa fa-bell my-border" aria-hidden="true"
+                        (click)="getPatientDetailById(1)" data-toggle="modal" data-target="#patient-Detail-Window"></i> 
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#docManager"
+                        (click)="showDocManager(patientId)">
+                        <span class="fa fa-file-text-o"></span> 
+                    </a>      
+                        <a href="javascript:void(0);"  class="link-btn" (click)="getPatientDetailById()"
+                        data-toggle="modal" data-target="#patient-Detail-Window">
+                     {{patientId}} </a> -
+                    {{lastName}}, {{firstName}} - {{dob}} - {{financialTypeName}} - <strong><a [href]="'tel:'+phone" target="blank">{{phone}}</a></strong>
+                    {{language}} {{reason}}
+                </td>
+                <td class="table-sub-header"><span class="psl" [ngClass]="{'active' : smsSent != ''}">PSL</span></td>
+            </tr>
+        </tbody>
+    </table>
+

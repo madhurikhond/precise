@@ -1,0 +1,71 @@
+<div class="page-top-action">
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="precisemri-search page-select">
+				<div class="theme-label">
+					Page Size
+				</div>
+				<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+					<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<div *ngFor="let item of attyBilllist | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+	<div class="table-responsive">
+		<dx-data-grid
+			id="gridContainer"
+			[dataSource]="attyBilllist"
+			[allowColumnResizing]="true"
+			[columnAutoWidth]="true"
+			[allowColumnReordering]="true"
+			[columnResizingMode]="columnResizingMode"
+			[columnMinWidth]="30"
+
+			(onSelectionChanged)="selectionChanged($event)"
+			keyExpr="AttorneyBillingId"  
+			[showBorders]="true">
+			<dxo-paging [enabled]="false"></dxo-paging>
+			<dxo-sorting mode="multiple"></dxo-sorting>
+			<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+			<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+			<!-- <dxo-paging [pageSize]="pageSize"></dxo-paging>
+				<dxo-pager 
+					[showPageSizeSelector]="true"
+					[allowedPageSizes]="[10]"
+					[showInfo]="true" >
+				</dxo-pager>  -->
+			<dxo-load-panel [enabled]="false"></dxo-load-panel>
+			
+			<dxi-column dataField="InternalStudyId" caption="INTERNAL STUDY ID" [allowFixing]="true"></dxi-column>
+			<dxi-column dataField="PatientId" caption="PATIENT ID" [allowFixing]="false"></dxi-column>
+			<dxi-column dataField="MarkReadyDate" caption="MARK READY DATE" [visible]="true" dataType="date" cellTemplate="dateTemplate"></dxi-column>
+			<dxi-column dataField="BillCreated" caption="MANUALLBILLCREATION" cellTemplate="BillCreated"></dxi-column>
+			<dxi-column dataField="BillCreatedDate" caption="BILL CREATED DATE" dataType="date" cellTemplate="dateTemplate"></dxi-column>
+			<dxi-column dataField="BillSent" caption="BILL SENT" alignment="center" cellTemplate="BillSent"></dxi-column>
+			<dxi-column dataField="BillSentDate"  caption="AUTO BILL DATE" dataType="date" cellTemplate="dateTemplate"></dxi-column>
+			<dxi-column dataField="IsEmail" caption="EMAIL" cellTemplate="IsEmail"></dxi-column>
+			<dxi-column dataField="IsFax" caption="FAX" cellTemplate="IsFax"></dxi-column>
+			<dxi-column dataField="RevisedBill" caption="REVISED BILL" cellTemplate="RevisedBill"></dxi-column>
+			<dxi-column dataField="RevisedBillSentDate" caption="REVISED BILL DATE" dataType="date" cellTemplate="dateTemplate"></dxi-column>
+			<dxi-column dataField="sg[0].BILLINGSTATUS" caption="BILLING STATUS" alignment="center"></dxi-column>
+			<dxi-column dataField="sg[0].ADJUSTEDSTATUS"  caption="ADJUSTED STATUS" alignment="center"></dxi-column>
+			<dxi-column dataField="sg[0].PAYMENTSTATUS" caption="PAYMENT STATUS"></dxi-column>
+			<dxi-column dataField="sg[0].WCINSSTATUS" caption="WCINS STATUS"></dxi-column>
+			<dxi-column dataField="sg[0].COLLECTIONSSTATUS" caption="COLLECTIONS STATUS"></dxi-column>
+			
+			<div *dxTemplate="let data of 'BillCreated'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'BillSent'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'IsEmail'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'IsFax'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'RevisedBill'"> {{data.value ? "Yes":"No"}} </div>
+			<div *dxTemplate="let data of 'dateTemplate'">
+				{{data.value | date: dateTimeFormatCustom.DateTime}}
+			</div>
+		</dx-data-grid>
+	</div>
+<div>
+	<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>   
+</div> 

@@ -1,0 +1,70 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Bookmark Tagging</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="theme-form-center">
+			<form class="theme-form" name="form1" #form="ngForm"> 
+				<div class="row">
+					<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+						<div class="form-group">
+							<div class="theme-label">Select Table</div>
+							<ng-select [items]="tableList" placeholder="Select" [loading]="showDropdownLoader" (change)="changeTable($event)"
+									bindLabel="TableName" [(ngModel)]="selectedTableId" name="selectedTable" #selectedTable="ngModel"
+									[closeOnSelect]="true" [loading]="showDropdownLoader" bindValue="TableId">
+							</ng-select>
+						</div>
+					</div>
+					<div class="col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12">
+						<a routerLink="/settings/server-settings/use-bookmark" class="link pull-right">View Bookmarks</a> 
+					</div>
+				</div> 
+			</form>
+            <form *ngIf="showFieldList" class="theme-form">
+                <div class="table-responsive manual-table">
+                    <table class="table table-theme">
+                        <thead>			 	 			
+                            <tr>
+                                <th width="180">SQL Field</th>
+                                <th>Bookmark</th>
+                                <th>Description</th> 
+                                <th width="120">Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>		
+                            <!-- <tr>
+                                <td>Attorney</td> 
+                                <td><input class="form-control" type="text"></td>
+                                <td><input class="form-control" type="text"></td>
+                                <td class="check-td">
+                                    <div class="checkbox-theme md-input-focused">
+                                        <input class="form-control" id="attorney" type="checkbox">
+                                        <label for="attorney" class="arrow-label">&nbsp;</label>
+                                    </div>
+                                </td>
+                            </tr> -->
+                            <tr *ngFor="let item of bookmarkFieldList; let i= index">
+                                <td>{{item.SqlFields}}</td>
+                                <td><input name="text-{{i}}" class="form-control" [(ngModel)]="item.TextFields" ></td>
+                                <td><input name="dec-{{i}}" class="form-control" [(ngModel)]="item.Description" ></td>
+                                <td class="check-td">
+                                    <div class="checkbox-theme md-input-focused">
+                                        <input class="form-control" name="chk-{{i}}" [(ngModel)]="item.IsSelected" type="checkbox" [checked]="item.IsSelected">
+                                        <label for="billingemail1" class="arrow-label">&nbsp;</label>
+                                    </div>
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="theme-panel-footer"> 
+                    <a (click)="saveBookmarkFields()" class="btn btn-theme">Update</a>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>

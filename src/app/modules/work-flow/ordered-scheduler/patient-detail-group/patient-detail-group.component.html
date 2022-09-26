@@ -1,0 +1,32 @@
+<div class="patientDetail">
+    <table class="table table-theme">
+        <tbody>
+            <tr [class.alertTabYellow]="this.hasAlert"  class="collapse-active-data1">
+               
+                <td class="table-sub-header ">
+                    <i *ngIf="isSeen === 1" class="fa fa-eye text-success" style="font-size: 21px;"
+                        aria-hidden="true"></i>
+                    <i *ngIf="isSeen === 0" class="fa fa-eye-slash text-danger" style="font-size: 21px;"
+                        aria-hidden="true"></i>
+                        <i *ngIf="isSeen !== 0 && isSeen !== 1" class="fa fa-eye-slash text-danger idle" style="font-size: 0px; display: none;"
+                        aria-hidden="true" ></i>
+                    <!-- <i *ngIf="isSeen === -1" class="fa fa-eye-slash text-warning" style="font-size: 21px;" aria-hidden="true"></i>
+                    <i *ngIf="!isSeen" class="fa fa-eye-slash text-info" style="font-size: 21px;" aria-hidden="true"></i> -->
+                    <i *ngIf="hasAlert" class="fa fa-bell my-border" aria-hidden="true"
+                        (click)="getPatientDetailById(1)" data-toggle="modal" data-target="#patient-Detail-Window"></i>
+                    <i class="fa fa-2x fa-file-text-o" data-toggle="modal" data-target="#docManager"
+                        (click)="showDocManager(data.key[1])"></i>
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById()" data-toggle="modal"
+                        data-target="#patient-Detail-Window">{{data.data.PATIENTID}}
+                        <strong>{{patientId}}</strong></a> -
+                    <strong>{{name}}</strong> - {{dob}} - {{financialTypeName}} - <strong><a [href]="'tel:'+phone" target="blank">{{phone}}</a></strong> {{zipCode
+                    != null ? 'ZIP: ' + zipCode : '' }} {{language}}
+                    <span class="text-success"> {{fullName}}</span>
+                </td>
+                <td align="right" style="font-style: italic; font-size: smaller;" colspan="10" class="table-sub-header">
+                    {{reason}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

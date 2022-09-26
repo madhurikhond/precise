@@ -1,0 +1,71 @@
+<div class="tab-pane" id="new-export-file-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="newExportForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+					<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isActive" id="active10"
+											type="checkbox">
+										<label for="active10" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Run Service At</div>
+										<div class="icon-active">
+											<input type="time" formControlName="runningServiceTime"
+												[ngClass]="{ 'is-invalid': (submitted &&   neForm.runningServiceTime.errors)}"
+												class="form-control" id="timepicker13">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+											<div *ngIf="submitted && neForm.runningServiceTime.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="neForm.runningServiceTime.errors.required">
+													Required
+												</small>
+											</div>
+										</div>
+									</div>
+									<div class="input-lable-side">
+									<span>Send an email to</span> 
+										<div class="icon-active">
+											<input type="text"
+											formControlName="newExportEmail"
+											[ngClass]="{ 'is-invalid': (submitted &&   neForm.newExportEmail.errors)}"
+											class="form-control email" value="">
+											<div *ngIf="submitted && neForm.newExportEmail.errors" class="tooltiptext text-right">
+												<small class="error text-danger" *ngIf="neForm.newExportEmail.errors.required">
+													Required
+												</small>
+												<small class="error text-danger" *ngIf="neForm.newExportEmail.errors.email">
+													Required Email Pattern
+												</small>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="note"
+                                [ngClass]="{ 'is-invalid': (submitted &&   neForm.note.errors)}"
+                                placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && neForm.note.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="neForm.note.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

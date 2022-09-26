@@ -1,0 +1,114 @@
+<div class="tab-pane" id="ordered-sheduler-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="orderSchedulerForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isOrderScheduler" id="active22" type="checkbox">
+										<label for="active22" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Time To Check</div>
+										<div class="input-group icon-active">
+											<input type="time" formControlName="orderedSchedulerTimeToCheck"
+											[ngClass]="{ 'is-invalid': (submitted && osForm.orderedSchedulerTimeToCheck.errors)}"
+											 class="form-control" id="timepicker32">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && osForm.orderedSchedulerTimeToCheck.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="osForm.orderedSchedulerTimeToCheck.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Financial Type</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="financialTypesList" 
+												placeholder="Select" 
+												formControlName="orderedSchedulerFinancialType" 
+												bindLabel="financialtypename" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="financialtypename" 
+												[(ngModel)]="selectedFinancialList"
+												[ngClass]="{ 'is-invalid': (submitted && osForm.orderedSchedulerFinancialType.errors)}"
+												(change)="onChange($event)">  
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                   
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && osForm.orderedSchedulerFinancialType.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="osForm.orderedSchedulerFinancialType.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Status</div>
+										<div class="input-group">
+											<ng-select 
+												[items]="statusNamesList" 
+												placeholder="Select"
+												formControlName="orderedSchedulerStatus" 
+												bindLabel="status" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="status" 
+												[(ngModel)]="selectedStatusList"
+												[ngClass]="{ 'is-invalid': (submitted && osForm.orderedSchedulerStatus.errors)}"
+												(change)="onChange($event)">         
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													</div>
+												</ng-template>                            
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && osForm.orderedSchedulerStatus.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="osForm.orderedSchedulerStatus.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">                    
+                        <div class="input-group">
+                            <textarea class="form-control" formControlName="orderedShedulerNote" 
+                            [ngClass]="{ 'is-invalid': (submitted && osForm.orderedShedulerNote.errors)}"placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && osForm.orderedShedulerNote.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="osForm.orderedShedulerNote.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>

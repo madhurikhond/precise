@@ -1,0 +1,42 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Reminders</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <form [formGroup]="reminderForm">
+
+            <div class="search-field search-field-theme">
+                <div class="form-group">
+                    <ul class="reminder-body">
+                        <li>Remind Reading Rad after</li>
+                        <li><input type="text" class="form-control" formControlName="RemindReadingAfter" mask="000">
+                            <div *ngIf="IsSubmitted &&  getFromControls.RemindReadingAfter.errors"
+                                class="tooltiptext text-right">
+                                <small class="error text-danger"
+                                    *ngIf="getFromControls.RemindReadingAfter.errors.required">Alert
+                                    Remind Reading After is required</small>
+                            </div>
+                        </li>
+                        <li>days every</li>
+                        <li><input type="text" class="form-control" formControlName="RemindIfNotSignedEvery" mask="000">
+                            <div *ngIf="IsSubmitted &&  getFromControls.RemindIfNotSignedEvery.errors"
+                                class="tooltiptext text-right">
+                                <small class="error text-danger"
+                                    *ngIf="getFromControls.RemindIfNotSignedEvery.errors.required">Alert
+                                    Remind If Not Signed Every is required</small>
+                            </div>
+                        </li>
+                        <li>days if they did not sign the bulk lien assignment</li>
+                        <li>
+                            <input type="button" (click)="onSubmit()" class="btn btn-theme" value="Update">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

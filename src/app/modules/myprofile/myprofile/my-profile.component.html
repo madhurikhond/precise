@@ -1,0 +1,262 @@
+<div class="profile-page">
+    <div class="tab-section">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal-information" role="tab" aria-controls="personal-information" aria-selected="true">Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact-info" role="tab" aria-controls="contact-info" aria-selected="false">Contact Info</a>
+            </li>
+        </ul>
+    </div>
+    <div class="profile-page-body">
+        <div class="container">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="personal-information" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="theme-panel theme-panel-white">
+                        <div class="theme-panel-header">
+                            <div class="panel-title">Details</div>
+                        </div>
+                        <form class="theme-form" name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate> 													
+                            <div class="theme-panel-body">
+                                <div class="theme-form personalinformation-edit-mode">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group"> 
+                                                <div class="theme-label">First Name</div>  
+                                                <div class="input-group">
+                                                    <input type="text" #firstname="ngModel" name="FIRSTNAME"
+                                                        [(ngModel)]="model.FIRSTNAME" required
+                                                        [ngClass]="{'is-invalid': submitted && firstname.invalid}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && firstname.invalid" class="tooltiptext text-right">
+                                                    <small class="error text-danger" *ngIf= "firstname?.errors?.required">
+                                                        First Name is required.</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Last Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" #lastname="ngModel" name="LASTNAME"
+                                                        [(ngModel)]="model.LASTNAME" required
+                                                        [ngClass]="{'is-invalid': submitted && lastname.invalid}"
+                                                        class="form-control">
+                                                </div>
+                                                <div *ngIf="submitted && lastname.invalid" class="tooltiptext text-right">
+                                                    <small class="error text-danger" *ngIf= "lastname?.errors?.required">
+                                                        Last Name is required.</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        											
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Company Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" #companyName="ngModel" name="COMPANYNAME"
+                                                    [(ngModel)]="model.COMPANYNAME"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">DBA Name</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" #dbaName="ngModel" name="DBA"
+                                                    [(ngModel)]="model.DBA"/>
+                                                </div>										
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">NPI</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" #npi="ngModel" name="NPI"
+                                                    [(ngModel)]="model.NPI"/>
+                                                </div>										
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">License Number</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" #licenceNumber="ngModel" name="licenceNumber"
+                                                    [(ngModel)]="model.licenceNumber"/>
+                                                </div>										
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Date Of Birthday</div>
+                                                <div class="input-group">
+                                                    <dx-date-box
+                                                        [displayFormat]="dateTimeFormatCustom.Date"
+                                                        #birthday="ngModel"
+                                                        [(ngModel)]="model.BIRTHDAY"
+                                                        name="BIRTHDAY"
+                                                        class="form-control"
+                                                        type="date"
+                                                        [showClearButton]="true"
+                                                        [useMaskBehavior]="true">
+                                                       
+                                                    </dx-date-box> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">Shift Hours</div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" #shiftHours="ngModel" name="Hours"
+                                                    [(ngModel)]="model.Hours"/>
+                                                </div>										
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>				
+                        </div>
+                    
+                </div>
+                <div class="tab-pane fade" id="contact-info" role="tabpanel" aria-labelledby="password-tab">
+                    <div class="theme-panel theme-panel-white">
+                        <div class="theme-panel-header">
+                            <div class="panel-title">Contact Info</div>
+                        </div>													
+                        <div class="theme-panel-body">
+                            <div class="theme-form">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Address</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" #address="ngModel" name="ADDRESS"
+                                                [(ngModel)]="model.ADDRESS">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">City</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"  #city="ngModel" name="CITY"
+                                                [(ngModel)]="model.CITY" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">State</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"  #state="ngModel" name="STATE"
+                                                [(ngModel)]="model.STATE" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Zip</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" #zip="ngModel" name="ZIP"
+                                                [(ngModel)]="model.ZIP">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Cell Phone</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" mask="(000)-000-0000"  #cellPhone="ngModel" name="CELL"
+                                                [(ngModel)]="model.CELL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Home Phone</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" mask="(000)-000-0000"  #homePhone="ngModel" name="PHONE"
+                                                [(ngModel)]="model.PHONE">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Fax #</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" mask="(000)-000-0000"  #fax="ngModel" name="FAX"
+                                                [(ngModel)]="model.FAX" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Personal Email</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"  #personalEmail="ngModel" name="EMAIL"
+                                                [(ngModel)]="model.EMAIL" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Work Email (If already assigned):</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"  #workEmail="ngModel" name="WORKEMAIL"
+                                                [(ngModel)]="model.WORKEMAIL" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Emergency Contact Name 1</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"  #emergencyContactName="ngModel" name="EContactName1"
+                                                [(ngModel)]="model.EContactName1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Emergency Contact Phone # 1</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" mask="(000)-000-0000"  #emergencyContactPhone1="ngModel" name="EContactPhone1"
+                                                [(ngModel)]="model.EContactPhone1" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Emergency Contact Name 2</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" #emergencyContactName2="ngModel" name="EContactName2"
+                                                [(ngModel)]="model.EContactName2" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Emergency Contact Phone # 2</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" mask="(000)-000-0000"  #emergencyContactPhone2="ngModel" name="EContactPhone2"
+                                                [(ngModel)]="model.EContactPhone2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>				
+                    </div>			
+                </div>
+            </div> 
+        </div>
+        <div class="theme-panel-footer">
+            <a href="javascript:void(0)" class="btn btn-theme" (click)="updateUser()">Update</a>
+            <a href="javascript:void(0)" class="btn btn-border">Cancel</a>
+        </div>
+    </div>
+</div>

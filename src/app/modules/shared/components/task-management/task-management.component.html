@@ -1,0 +1,385 @@
+
+<div  class="modal fade modal-theme" id="task-manager" tabindex="-1" role="dialog" 
+aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true" *ngIf="isTaskManagementPopShow">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Manager</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="cancelButtonClicked()"></div>
+            </div>
+            <div class="modal-body">
+                <div class="task-header">
+                    <div class="task-header-single">
+                        <div class="task-label">Assigned By:</div>
+                        <ul class="task-selection">
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio"  name="assignedby"  (click)="filterAssignBy('All')" [checked]="assignedByDefaultRadioButtonValue == 'All' ? true : false">
+                                    <span class="slider">All</span>
+                                    
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="assignedby"  (click)="filterAssignBy('Self')" [checked]="assignedByDefaultRadioButtonValue == 'Self' ? true : false">
+                                    <span class="slider">Self</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="assignedby" (click)="filterAssignBy('Others')" [checked]="assignedByDefaultRadioButtonValue == 'Others' ? true : false">
+                                    <span class="slider">Others</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="task-header-single">
+                        <div class="task-label">Assigned To:</div>
+                        <ul class="task-selection">
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio"  name="assignedto" (click)="filterAssignTo('All')" [checked]="assignedToDefaultRadioButtonValue == 'All' ? true : false">
+                                    <span class="slider">All</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="assignedto" (click)="filterAssignTo('Self')" [checked]="assignedToDefaultRadioButtonValue == 'Self' ? true : false">
+                                    <span class="slider">Self</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="assignedto" (click)="filterAssignTo('Others')" [checked]="assignedToDefaultRadioButtonValue == 'Others' ? true : false">
+                                    <span class="slider">Others</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="task-header-single">
+                        <div class="task-label">Due:</div>
+                        <ul class="task-selection">
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="due" (click)="filterDueDate('All')" [checked]="dueDateDefaultRadioButtonValue == 'All' ? true : false">
+                                    <span class="slider">All</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="due" (click)="filterDueDate('Today')" [checked]="dueDateDefaultRadioButtonValue == 'Today' ? true : false">
+                                    <span class="slider">Today</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="due" (click)="filterDueDate('Tomorrow')" [checked]="dueDateDefaultRadioButtonValue == 'Tomorrow' ? true : false">
+                                    <span class="slider">Tommorow</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="due" (click)="filterDueDate('Past')" [checked]="dueDateDefaultRadioButtonValue == 'Past' ? true : false">
+                                    <span class="slider">Past</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="due" (click)="filterDueDate('Later')" [checked]="dueDateDefaultRadioButtonValue == 'Later' ? true : false">
+                                    <span class="slider">Later</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="task-header-single">
+                        <select class="form-control" (change)="onLabelDropDownChange($event.target.value)"  [(ngModel)]="labelValue" >
+                            <option value="All">All</option>
+                            <option *ngFor="let label of labelNameList" value={{label}}>
+                                {{label}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="task-header-single">
+                        <div class="precisemri-search">
+                            <input type="text" class="form-search" placeholder="Search" [(ngModel)]="filterSearch" 
+                            (ngModelChange)="searchData($event)">
+                            <a href="javascript:void(0)" class="pe-icon pe-7s-search"></a>
+                        </div>
+                    </div>
+                    <div class="task-header-single">
+                        <a href="javascript:void(0)" class="btn btn-theme" data-toggle="modal" data-target="#add-task" (click)="addTaskButtonClick()" title="add Task" style="font-size: 30px;">+</a>
+                    </div>
+                </div>
+                <div class="task-header">
+                    <div class="task-header-single">
+                        <div class="task-label">Status:</div>
+                        <ul class="task-selection">
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio"  name="status" (click)="filterStatus('All')" [checked]="statusDefaultRadioButtonValue == 'All' ? true : false">
+                                    <span class="slider">All</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio"  name="status" (click)="filterStatus('ToDo')" [checked]="statusDefaultRadioButtonValue == 'ToDo' ? true : false">
+                                    <span class="slider">To-Do
+                                          <div class="title" style="color:white">
+                                            <span class="qty">{{toDoTask}}</span>
+                                           </div>
+                                    </span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="status" (click)="filterStatus('Complete')" [checked]="statusDefaultRadioButtonValue == 'Complete' ? true : false">
+                                    <span class="slider">Completed</span>
+                                </label>
+                            </li>
+                            <li class="task-radio">
+                                <label class="switch">
+                                    <input type="radio" name="status" (click)="filterStatus('Archive')" [checked]="statusDefaultRadioButtonValue == 'Archive' ? true : false">
+                                    <span class="slider">Archive</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tasklist-group">
+                    <div class="single-task" *ngFor="let singleTask of allTaskArray;let i=index;">
+                        <div class="task-name">{{singleTask.TaskTitle}}</div>
+                        <div class="task-description">
+                            {{singleTask.TaskSpecifics}}...
+                            <a href="javascript:void(0)" class="readmore" data-toggle="modal" data-target="#view-task" (click)="viewTask(singleTask.TaskId)">Read More</a>
+                        </div>
+                        <div class="task-detail">
+                            <div class="task-left-group">
+                                <div class="single-details">Assigned to: <span>{{singleTask.TaskAssignTo}}</span></div>
+                                <div class="single-details">Assigned by: <span>{{singleTask.TaskAssignBy}}</span> <a href="javascript:void(0)" class="blue-btn">{{singleTask.Tag}}</a></div>
+                            </div>
+                            <div class="task-right-group">
+                                <div class="single-details">
+                                    <div class="single-details-label">{{singleTask.DueDate}}</div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-more dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="showMenu(singleTask.IsCompleted,singleTask.IsArchived,i)">
+                                            <i class="pe-icon pe-7s-more"></i>
+                                        </button>
+                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="menuDivId{{i}}" attr.name="menuDivName{{i}}">
+                                            <a class="dropdown-item" href="javascript:void(0)" id="menuArchive{{i}}" (click)="markTaskArchived(singleTask.TaskId)">Archive</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" id="menuAssignToOther{{i}}" data-toggle="modal" data-target="#assign-to-other" (click)="taskAssignToMenuClick(singleTask.TaskId)">Assign to Other</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" id="menuMoveToCompleted{{i}}" (click)="markTaskCompleted(singleTask.TaskId)">Move to Completed</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" id="menuView{{i}}" (click)="viewTask(singleTask.TaskId)" data-toggle="modal" data-target="#view-task">View</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" id="menuMoveToDo{{i}}" (click)="markTaskToDo(singleTask.TaskId)">Move to To-Do</a>
+                                          </div>
+                                    </div>
+                                </div>
+                                <span class="single-details" *ngIf="singleTask.IsCompleted==true" style="float: none !important;"> <span></span> <a href="javascript:void(0)" class="blue-btn" style="background-color: #e600e6 !important;">Completed</a></span>
+                                <span class="single-details" *ngIf="singleTask.IsArchived==true" style="float: none !important;"> <span></span> <a href="javascript:void(0)" class="blue-btn" >Archived</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-task"  *ngIf="allTaskArray.length==0">
+                        <h3>No Task Found</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="add-task" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true" *ngIf="isTaskManagementPopShow">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create a New Task</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">					
+                <form class="theme-form" [formGroup]="addTaskForm">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Assign To</div>
+                                <div class="input-group icon-active">
+									<select class="form-control" formControlName="taskAssignTo" 
+									[ngClass]="{ 'is-invalid': (submitted && addTaskFormControl.taskAssignTo.errors) || addTaskFormControl.taskAssignTo.touched && addTaskFormControl.taskAssignTo.errors}">
+										<option selected disabled value="">select user</option>
+										<option *ngFor="let user of epicUserList" value={{user.userId}}>
+											{{user.userName}}
+										</option>
+									</select>
+								</div>
+								<div class="tooltiptext text-right" *ngIf="(submitted && addTaskFormControl.taskAssignTo.errors)  || (addTaskFormControl.taskAssignTo.touched && addTaskFormControl.taskAssignTo.errors)">
+									<small class="error text-danger" *ngIf="addTaskFormControl.taskAssignTo.errors?.required  || addTaskFormControl.taskAssignTo.touched">User required</small>
+								</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+							<div class="theme-label">Patient ID</div>
+								<input type="text" class="form-control" placeholder="Enter Patient ID" formControlName="patientId" (keypress)="patientBoxKeyPress()"  (blur)="checkPatientExist(addTaskForm.get('patientId').value)"
+								>
+								<div class="tooltiptext text-right" *ngIf="!isPatientValid">
+									<small class="error text-danger">patient is not valid</small>
+								</div>
+							</div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Due Date</div>
+                                <div>
+                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
+                                    formControlName="dueDate"
+                                    [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+                                    
+                              
+								</div>	
+							   <div class="tooltiptext text-right invalid-feedback" *ngIf="(submitted && addTaskFormControl.dueDate.errors)  || (addTaskFormControl.dueDate.touched && addTaskFormControl.dueDate.errors)">
+									<small class="error text-danger" *ngIf="addTaskFormControl.dueDate.errors?.required  || addTaskFormControl.dueDate.touched">due date required</small>
+								</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="theme-label">Label With</div>
+                                <div class="input-group icon-active">
+                                    <select class="form-control" formControlName="tag"
+                                    [ngClass]="{ 'is-invalid': (submitted && addTaskFormControl.tag.errors) || addTaskFormControl.tag.touched && addTaskFormControl.tag.errors}">
+                                        <option selected value="" disabled>Select Label</option>
+                                        <option *ngFor="let label of labelNameList" value={{label}}>
+                                            {{label}}
+                                        </option>
+                                    </select>
+                                </div>
+								<div class="tooltiptext text-right invalid-feedback" *ngIf="(submitted && addTaskFormControl.tag.errors)  || (addTaskFormControl.tag.touched && addTaskFormControl.tag.errors)">
+									<small class="error text-danger" *ngIf="addTaskFormControl.tag.errors?.required  || addTaskFormControl.tag.touched">tag required</small>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <div class="theme-label">Task Title</div>
+                        <div class="input-group icon-active">
+                            <input type="text" class="form-control" formControlName="taskTitle"
+                            [ngClass]="{ 'is-invalid': (submitted && addTaskFormControl.taskTitle.errors) || addTaskFormControl.taskTitle.touched && addTaskFormControl.taskTitle.errors}">
+                            <div class="tooltiptext text-right invalid-feedback" *ngIf="(submitted && addTaskFormControl.taskTitle.errors)  || (addTaskFormControl.taskTitle.touched && addTaskFormControl.taskTitle.errors)">
+                                <small class="error text-danger" *ngIf="addTaskFormControl.taskTitle.errors?.required  || addTaskFormControl.taskTitle.touched">title required</small>
+                            </div>
+                        </div>
+                   
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Task Specifics</div>
+                    <div class="input-group  icon-active">
+                        <textarea type="text" class="form-control" formControlName="taskSpecifics"
+                        [ngClass]="{ 'is-invalid': (submitted && addTaskFormControl.taskSpecifics.errors) || addTaskFormControl.taskSpecifics.touched && addTaskFormControl.taskSpecifics.errors}"></textarea>
+                        <div class="tooltiptext text-right invalid-feedback"  *ngIf="(submitted && addTaskFormControl.taskSpecifics.errors)  || (addTaskFormControl.taskSpecifics.touched && addTaskFormControl.taskSpecifics.errors)" style="margin-top: 6rem !important;">
+                            <small class="error text-danger" *ngIf="addTaskFormControl.taskSpecifics.errors?.required  || addTaskFormControl.taskSpecifics.touched">task specifics required</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="switch-group switch-small">
+                    <label class="switch">
+                        <input type="checkbox" name="assignedby">
+                        <span class="slider"></span>
+                    </label>
+                    Notify via Slack
+                </div> -->
+              </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal" [attr.data-dismiss]="modalValue" (click)="createTask()">Create</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="view-task" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true" *ngIf="isTaskManagementPopShow">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{taskDetail.TaskTitle}}</h5>
+                <div class="close-dismiss" #modalClose data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modaltask-detail">
+                    <div class="task-left-group">
+                        <div class="single-details">Assigned to: <span>{{taskDetail.TaskAssignTo}}</span></div>
+                        <div class="single-details">Due Date: <span>{{taskDetail.DueDate | date: dateTimeFormatCustom.DateMMMddy}}</span></div>
+                        <div class="single-details">Assigned by: <span>{{taskDetail.TaskAssignBy}}</span></div>
+                        <div class="single-details">Status: <span>{{taskDetail.TaskStatus}}</span> <a href="javascript:void(0)" class="blue-btn">{{taskDetail.Tag}}</a></div>
+                        
+                    </div>
+                    <div class="task-right-group">
+                        <div class="single-details">
+                            <!-- <div class="single-details-label">{{taskDetail.DueDate}}</div> -->
+                            <div class="fa fa-external-link" aria-hidden="true" *ngIf="taskDetail.IsIconShow==true"></div>
+                            <div class="dropdown">
+                                <button class="btn btn-more dropdown-toggle" type="button" id="dropdownMenuButton2" 
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="showDtailWindowMenu(taskDetail.TaskStatus)">
+                                    <i class="pe-icon pe-7s-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuArchive2" (click)="markTaskArchived(taskDetail.TaskId)">Archive</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuAssignToOther2" data-toggle="modal" data-target="#assign-to-other" (click)="taskAssignToMenuClick(taskDetail.TaskId)">Assign to Other</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuMoveToComplete2" (click)="markTaskCompleted(taskDetail.TaskId)">Move to Completed</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuMoveToTo-Do2" (click)="markTaskToDo(taskDetail.TaskId)">Move to To-Do</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modaltask-detail-description">
+                    <ng-container *ngIf="taskDetail.IsPatientExist==true"> 
+                        <div class="single-details">Patient ID: <a href="javascript:void(0)" style="text-decoration: underline !important;" (click)="openPatientDetailWindow(taskDetail.patientDetail)" data-toggle="modal" [attr.data-target]="'#'+divPateintId">{{taskDetail.PatientId}}</a> {{taskDetail.PatientRecord}} </div>
+                    <!-- <div class="single-details">Patient ID: <a href="javascript:void(0)" style="text-decoration: underline !important;" (click)="openPatientDetailWindow(taskDetail.patientDetail)" data-toggle="modal" data-target="#patient-Detail-Window">{{taskDetail.PatientId}}</a> {{taskDetail.PatientRecord}} </div> -->
+                    </ng-container>
+                    <div class="single-details">Detail:</div>
+                    <p>{{taskDetail.TaskSpecifics}}</p>
+                </div>
+                <div class="modaltask-detail-description" *ngIf="IsAssignedToOtherUser==true">
+                    <div class="single-details">originally assigned from {{taskDetail.InitialyAssignedTo}}</div>
+                </div>
+                
+            </div>
+            <!-- <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border btn-sm" data-dismiss="modal" (click)="cancelButtonClicked()">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-dismiss="modal">Save</a>
+            </div> -->
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="assign-to-other" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true" *ngIf="isTaskManagementPopShow"> 
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Assign to Other</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">					
+                <div class="theme-form">
+                    <div class="row">
+                        <div class="col-xl-12 center-block">
+                            <div class="form-group">
+                                <div class="theme-label">Assign To</div>
+                                <div class="input-group">
+                                    <select class="form-control" [(ngModel)]="taskAssignToOtherUserModel">
+                                        <option selected disabled value="">select user</option>
+                                        <option *ngFor="let user of epicUserList" value={{user.userId}}>
+                                            {{user.userName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+                <button href="javascript:void(0)" class="btn btn-border pull-left btn-sm" data-dismiss="modal" [disabled]="taskAssignToOtherUserModel==null?true:false" (click)="taskAssignButtonClick(taskAssignToOtherUserModel)">Assign</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<app-patient-detail [pateintIdDynamic]="divPateintId" ></app-patient-detail>

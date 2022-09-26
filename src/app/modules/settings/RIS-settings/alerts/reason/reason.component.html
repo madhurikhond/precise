@@ -1,0 +1,695 @@
+<div class="page-top-action">
+	<div class="row">
+		<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+			<a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" data-toggle="modal" (click)="restForm()"
+				data-target="#add-Edit-alert-reason"><i class="fa fa-plus"></i>&nbsp;Add Alert Reason</a>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+			<div class="precisemri-search page-select">
+				<div class="theme-label">Page Size</div>
+					<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+						<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+					</select>
+			</div>
+			<a href="javascript:void(0)" (click)="refresh()" class="right btn btn-theme"><i class="fa fa-repeat"></i>
+				Refresh</a>
+		</div>
+	</div>
+</div>
+<div class="table-responsive">
+	<dx-data-grid id="gridContainer" [dataSource]="reasonList" [allowColumnResizing]="true" [columnAutoWidth]="true"
+		[allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="rid"
+		[showBorders]="true">
+		<dxo-paging [enabled]="false"></dxo-paging>
+		<dxo-sorting mode="multiple"></dxo-sorting>
+		<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+		<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+		<dxo-paging [pageSize]="20"></dxo-paging>
+		<dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20]" [showInfo]="true">
+		</dxo-pager>
+		<dxo-load-panel [enabled]="true"></dxo-load-panel>
+		<dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+		</dxi-column>
+		<dxi-column dataField="rid" caption="rid" [visible]="false"></dxi-column>
+		<dxi-column dataField="alerttype" caption="TYPE" [visible]="true"></dxi-column>
+		<dxi-column dataField="reason" caption="REASON"></dxi-column>
+		<dxi-column dataField="defaultContact" caption="DEFAULT CONTACT"></dxi-column>
+		<dxi-column dataField="isActive" caption="Active" cellTemplate="IsActive"></dxi-column>
+		<div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+		<div *dxTemplate="let data of 'cellTemplate'">
+			<a href="javascript:void(0)" (click)="getCurrentRowDetail(data)" class="single-action fa fa-pencil-square-o"
+				data-toggle="modal" data-target="#add-Edit-alert-reason"></a>
+		</div>
+	</dx-data-grid>
+</div>
+
+<div>
+	<div>
+		<div
+			*ngFor="let item of reasonList | paginate: { id:'paginatePage2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords  }">
+		</div>
+		<pagination-controls id="paginatePage2" (pageChange)="pageChanged($event)"></pagination-controls>
+	</div>
+</div>
+<div class="modal fade modal-theme" id="add-Edit-alert-reason" data-backdrop="static" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{popUpTitle}}</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+
+			<div class="modal-body">
+				<form class="theme-form" [formGroup]="reasonForm">
+					<div class="tab-section">
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#general-reason">General</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#resend-reason">Resend</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#settings-reason">Settings</a>
+							</li>
+						</ul>
+
+						<div class="tab-content">
+
+							<div class="tab-pane active" id="general-reason">
+
+								<div class="row">
+
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-isactive" type="checkbox"
+												formControlName="isActive">
+											<label for="reason-isactive" class="arrow-label">Is Active</label>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Reason name</div>
+											<div class="input-group">
+												<input type="text" class="form-control" formControlName="reason">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.reason.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.reason.errors.required">Reason is
+													required</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Type</div>
+											<div class="input-group">
+												<select [value]="selectedAlertType"
+													(change)="onChangeTypeDropDown($event.target.value)"
+													formControlName="alerttype" id="alertType" class="form-control">
+													<option value=null disabled>Select Type</option>
+													<option *ngFor="let Obj of alertTypeList" [value]="Obj.Alerttype">
+														{{Obj.Alerttype}}</option>
+												</select>
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.alerttype.errors"
+												class="tooltiptext text-right">
+												<small class="error text-danger"
+													*ngIf="getFromControls.alerttype.errors.required">Alert type is
+													required</small>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Default Contact</div>
+											<div>
+												<ng-select [items]="defaultContactList" placeholder="Select"
+													bindLabel="name" [multiple]="true" formControlName="defaultContact"
+													[closeOnSelect]="false" bindValue="name"
+													[(ngModel)]="selectedDefaultContactList">
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:5">
+															<span class="ng-value-label"> {{item.name}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 5">
+															<span class="ng-value-label">{{items.length - 5}}
+																more...</span>
+														</div>
+													</ng-template>
+												</ng-select>
+
+											</div>
+
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Default Contact Method</div>
+											<div>
+												<ng-select [items]="defaultContactMethodList" placeholder="Select"
+													formControlName="defaultContactMethod" bindLabel="name"
+													[multiple]="true" [closeOnSelect]="false" bindValue="name"
+													[(ngModel)]="selectedContactMethodList">
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:3">
+															<span class="ng-value-label"> {{item.name}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 3">
+															<span class="ng-value-label">{{items.length - 3}}
+																more...</span>
+														</div>
+													</ng-template>
+												</ng-select>
+
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Default Email Subject</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="defaultEmailSubject">
+											</div>
+										</div>
+										<div class="cke-editor-group">
+											<div class="theme-label">Default Body</div>
+											<!-- <textarea class="form-control" id="default-editor" cols="30" rows="10" required></textarea> -->
+											<ckeditor #myckeditor
+											 formControlName="defaultBody"  
+											   [config]="CkeConfig" (paste)="onPaste($event)"
+											   (change)="onChange($event)">
+											</ckeditor>
+											<!-- <ckeditor [editor]="Editor" formControlName="defaultBody"></ckeditor> -->
+										</div>
+										<div class="cke-editor-group">
+											<div class="theme-label">Default Sms</div>
+											<!-- <textarea class="form-control" id="sms-editor" cols="30" rows="10" required></textarea> -->
+											<ckeditor #myckeditor
+											formControlName="defaultSms"  
+											   [config]="CkeConfig" (paste)="onPaste($event)"
+											   (change)="onChange($event)">
+											</ckeditor>
+											<!-- <ckeditor [editor]="Editor" formControlName="defaultSms"></ckeditor> -->
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane" id="resend-reason">
+
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="reason-referrers"
+															type="checkbox" formControlName="isResendAlert">
+														<label for="reason-referrers" class="arrow-label">Re-Send Alert
+															to</label>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="alert alert-info" role="alert">
+														If Alert is still active and matches below resend the alert to
+														the same referrers and methods with the default text
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Status</div>
+														<div>
+															<ng-select [items]="statusList" placeholder="Select"
+																formControlName="resendStatus" bindLabel="STATUS"
+																[multiple]="true" [closeOnSelect]="false"
+																bindValue="STATUSORDER"
+																[(ngModel)]="selectedResendStatusForReferrerList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:5">
+																		<span class="ng-value-label">
+																			{{item.STATUS}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 5">
+																		<span class="ng-value-label">{{items.length -
+																			5}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Financial Type</div>
+														<div>
+															<ng-select [items]="financialTypeList" placeholder="Select"
+																formControlName="resendFinancial"
+																bindLabel="FINANCIALTYPENAME" [multiple]="true"
+																[closeOnSelect]="false" bindValue="FINANCIALTYPEID"
+																[(ngModel)]="selectedResendFinancialTypeForReferrerList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:4">
+																		<span class="ng-value-label">
+																			{{item.FINANCIALTYPENAME}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 4">
+																		<span class="ng-value-label">{{items.length -
+																			4}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="input-lable-side"><span>Resend after</span> <input
+															type="text" class="form-control"
+															formControlName="resendAfterDays"> <span>business days from
+															the initial alert date</span></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="reason-referrers1"
+															type="checkbox" formControlName="isActionNeededAdded">
+														<label for="reason-referrers1" class="arrow-label">Add to check
+															alert action needed page</label>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Status</div>
+														<div>
+															<ng-select [items]="statusList" placeholder="Select"
+																formControlName="actionNeededStatus" bindLabel="STATUS"
+																[multiple]="true" [closeOnSelect]="false"
+																bindValue="STATUSORDER"
+																[(ngModel)]="selectedResendStatusForActionNeededList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:5">
+																		<span class="ng-value-label">
+																			{{item.STATUS}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 4">
+																		<span class="ng-value-label">{{items.length -
+																			5}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+															<!-- <ng-select [items]="statusList" placeholder="Select"
+																formControlName="actionNeededStatus" bindLabel="STATUS"
+																[multiple]="true" [closeOnSelect]="false"
+																bindValue="STATUSORDER"
+																[(ngModel)]="selectedResendStatusForActionNeededList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:1">
+																		<span class="ng-value-label">
+																			{{item.Status}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 1">
+																		<span class="ng-value-label">{{items.length -
+																			1}} more...</span>
+																	</div>
+																</ng-template>
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:1">
+																		<span class="ng-value-label">
+																			{{item.Status}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 1">
+																		<span class="ng-value-label">{{items.length -
+																			1}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select> -->
+
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Financial Type</div>
+														<div>
+															<ng-select [items]="financialTypeList" placeholder="Select"
+																formControlName="actionNeededFinancial"
+																bindLabel="FINANCIALTYPENAME" [multiple]="true"
+																[closeOnSelect]="false" bindValue="FINANCIALTYPEID"
+																[(ngModel)]="selectedResendFinancialTypeForNeededList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:5">
+																		<span class="ng-value-label">
+																			{{item.FINANCIALTYPENAME}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 5">
+																		<span class="ng-value-label">{{items.length -
+																			5}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="input-lable-side"><span>After</span> <input type="text"
+															class="form-control"
+															formControlName="actionNeededAddedAfterDays"> <span>business
+															days add to action needed page</span></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="user-detail">
+											<div class="row">
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="checkbox-theme">
+														<input class="form-control" id="reason-referrers3"
+															type="checkbox" formControlName="isPatientSendSms">
+														<label for="reason-referrers3" class="arrow-label"> Send an SMS
+															to the patient</label>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="alert alert-info" role="alert">
+														If Alert is still active and matches below send and SMS to the
+														patient with the following text
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Status</div>
+														<div>
+															<ng-select [items]="statusList" placeholder="Select"
+																formControlName="patientStatus" bindLabel="STATUS"
+																[multiple]="true" [closeOnSelect]="false"
+																bindValue="STATUSORDER"
+																[(ngModel)]="selectedResendStatusForPatientList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:5">
+																		<span class="ng-value-label">
+																			{{item.STATUS}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 5">
+																		<span class="ng-value-label">{{items.length -
+																			5}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="form-group">
+														<div class="theme-label">Select Financial Type</div>
+														<div>
+															<ng-select [items]="financialTypeList" placeholder="Select"
+																formControlName="patientFinancial"
+																bindLabel="FINANCIALTYPENAME" [multiple]="true"
+																[closeOnSelect]="false" bindValue="FINANCIALTYPEID"
+																[(ngModel)]="selectedResendFinancialTypeForPatientList">
+																<ng-template ng-multi-label-tmp let-items="items"
+																	let-clear="clear">
+																	<div class="ng-value"
+																		*ngFor="let item of items | slice:0:5">
+																		<span class="ng-value-label">
+																			{{item.FINANCIALTYPENAME}}</span>
+																		<span class="ng-value-icon right"
+																			(click)="clear(item)"
+																			aria-hidden="true">×</span>
+																	</div>
+																	<div class="ng-value" *ngIf="items.length > 5">
+																		<span class="ng-value-label">{{items.length -
+																			5}} more...</span>
+																	</div>
+																</ng-template>
+															</ng-select>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="input-lable-side"><span>Resend after</span> <input
+															type="text" class="form-control"
+															formControlName="sendSmsAfterDays"> <span>business days from
+															the initial alert date</span></div>
+												</div>
+												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+													<div class="cke-editor-group">
+														<div class="theme-label">Default Sms</div>
+														<!-- <textarea class="form-control" id="resend-editor" cols="30" rows="10" required></textarea> -->
+														<ckeditor #myckeditor
+														formControlName="patientSendText"  
+														[config]="CkeConfig" (paste)="onPaste($event)"
+														(change)="onChange($event)">
+														</ckeditor>
+														<!-- <ckeditor [editor]="Editor" formControlName="patientSendText"> -->
+														
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="tab-pane" id="settings-reason">
+
+								<div class="row">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting" type="checkbox"
+												formControlName="isNewRX">
+											<label for="reason-setting" class="arrow-label">New Rx can clear
+												alert</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting1" type="checkbox"
+												formControlName="isSystemAutoCreateAlert">
+											<label for="reason-setting1" class="arrow-label">Auto create alert based on
+												missing data (entered last 30 days)</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting2" type="checkbox"
+												formControlName="pendingInfo">
+											<label for="reason-setting2" class="arrow-label"> Add to Pending
+												Info</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting3" type="checkbox"
+												formControlName="isSystemAutoClearAlert">
+											<label for="reason-setting3" class="arrow-label"> Auto clear alert based on
+												received data (entered last 30 days)</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting4" type="checkbox"
+												formControlName="isCreatedAlertUserSendEmail">
+											<label for="reason-setting4" class="arrow-label"> Notify Unsatisfied Alert
+												creator after 12am via email</label>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Patient Level</div>
+											<div class="input-group">
+												<select [value]="selectedPatientLevelColumn"
+													(change)="onChangePatientLevelDropDown($event.target.value)"
+													formControlName="patientHeader" id="PatientHeaderId"
+													class="form-control">
+													<option [value]="" disabled>Select</option>
+													<option *ngFor="let Obj of patientLevelColumnList"
+														[value]="Obj.column_name">{{Obj.column_name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="checkbox-input-group">
+											<div class="checkbox-theme">
+												<input class="form-control" id="reason-setting5" type="checkbox"
+													formControlName="isSendEmailToOthers">
+												<label for="reason-setting5" class="arrow-label">Notify Unsatisfied
+													Alert after 12am</label>
+											</div>
+											<!-- <div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter Email"
+													formControlName="notifyEmails">
+											</div> -->
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Enter Email</div>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													formControlName="notifyEmails"
+													[ngClass]="{ 'is-invalid': IsSubmitted && getFromControls.notifyEmails.errors }">
+											</div>
+											<div *ngIf="IsSubmitted &&  getFromControls.notifyEmails.errors"
+												class="invalid-feedback">
+												<div
+													*ngIf=" IsSubmitted && getFromControls.notifyEmails.errors">
+													Email must be a valid email address</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="theme-label">Study Level</div>
+											<div class="input-group">
+												<select [value]="selectedPatientStudyLevelColumn"
+													(change)="onChangePatientStudyLevelDropDown($event.target.value)"
+													formControlName="patientStudyHeader" id="patientStudyHeaderId"
+													class="form-control">
+													<option [value]="" disabled>Select</option>
+													<option *ngFor="let Obj of patientStudyLevelColumnList"
+														[value]="Obj.column_name">{{Obj.column_name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="checkbox-input-group">
+											<div class="checkbox-theme">
+												<input class="form-control" id="reason-setting6" type="checkbox"
+													formControlName="isAutoClearAlert">
+												<label for="reason-setting6" class="arrow-label">Auto Clear
+													Alert</label>
+											</div>
+											<div class="form-group autocomplete">
+												<div class="input-group">
+													<ng-select [items]="statusList" placeholder="Select"
+														formControlName="autoClearStatus" bindLabel="STATUS"
+														[multiple]="true" [closeOnSelect]="false"
+														bindValue="STATUSORDER"
+														[(ngModel)]="selectedAutoClearStatusList">
+														<ng-template ng-multi-label-tmp let-items="items"
+															let-clear="clear">
+															<div class="ng-value"
+																*ngFor="let item of items | slice:0:5">
+																<span class="ng-value-label"> {{item.STATUS}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 5">
+																<span class="ng-value-label">{{items.length - 5}}
+																	more...</span>
+															</div>
+														</ng-template>
+													</ng-select>
+												</div>
+											</div>
+											<div class="form-group autocomplete">
+												<div class="input-group">
+													<ng-select [items]="financialTypeList" placeholder="Select"
+														formControlName="autoClearFinancial"
+														bindLabel="FINANCIALTYPENAME" [multiple]="true"
+														[closeOnSelect]="false" bindValue="FINANCIALTYPEID"
+														[(ngModel)]="selectedAutoClearFinancialTypeList">
+														<ng-template ng-multi-label-tmp let-items="items"
+															let-clear="clear">
+															<div class="ng-value"
+																*ngFor="let item of items | slice:0:5">
+																<span class="ng-value-label">
+																	{{item.FINANCIALTYPENAME}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 5">
+																<span class="ng-value-label">{{items.length - 5}}
+																	more...</span>
+															</div>
+														</ng-template>
+													</ng-select>
+												</div>
+											</div>
+											<div class="input-lable-side"><span>After</span> <input type="text"
+													class="form-control" formControlName="autoClearAfterDays">
+												<span>business days auto clear the alert</span></div>
+											<div class="alert" role="alert">
+												Doc Type if uploaded will clear an active alert
+											</div>
+											<div class="form-group autocomplete">
+												<div class="input-group">
+													<ng-select [items]="docTypeList" placeholder="Select"
+														formControlName="docType" bindLabel="DocType" [multiple]="true"
+														[closeOnSelect]="false" bindValue="DocType"
+														[(ngModel)]="selectedDocTypeList">
+														<ng-template ng-multi-label-tmp let-items="items"
+															let-clear="clear">
+															<div class="ng-value"
+																*ngFor="let item of items | slice:0:4">
+																<span class="ng-value-label"> {{item.DocType}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 4">
+																<span class="ng-value-label">{{items.length - 4}}
+																	more...</span>
+															</div>
+														</ng-template>
+													</ng-select>
+												</div>
+											</div>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting7" type="checkbox"
+												formControlName="isAutoDialerUse">
+											<label for="reason-setting7" class="arrow-label">Do NOT use new order auto
+												dialer</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" id="reason-setting8" type="checkbox"
+												formControlName="isOrderedSmsUse">
+											<label for="reason-setting8" class="arrow-label">Do not send ordered
+												SMS</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Close</a>
+				<button type="button" (click)="onSubmit()" [attr.data-dismiss]="modelValue"
+					class="btn btn-theme pull-left btn-sm" id="btnUpdate">{{buttonText}}</button>
+				<button type="button" (click)="generateDulicateRow()" [attr.data-dismiss]="modelValue"
+					class="btn btn-theme pull-left btn-sm" id="btnDuplicate"
+					[style.visibility]="isBtnVisible ? 'visible' : 'hidden'">Duplicate</button>
+			</div>
+
+		</div>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+<div *ngFor="let item of referrerPaidUnpaidStudiesList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+	<div class="table-responsive">
+		<dx-data-grid
+			id="gridContainer"
+			[dataSource]="referrerPaidUnpaidStudiesList"
+			[allowColumnResizing]="true"
+			[columnAutoWidth]="true"
+			[allowColumnReordering]="true"
+			[columnResizingMode]="columnResizingMode"
+			[columnMinWidth]="30"
+			keyExpr="ReferrerID"  
+			[showBorders]="true">
+
+			<dxo-sorting mode="multiple"></dxo-sorting>
+			<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+			<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+			<dxo-search-panel [visible]="true" [width]="300" placeholder="Search..."></dxo-search-panel> 
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+			<dxo-load-panel [enabled]="true"></dxo-load-panel>
+				
+			
+			<dxi-column dataField="Referrer" caption="REFERRER" alignment="left"></dxi-column>
+			<dxi-column dataField="Exiled" caption="EXILED" alignment="center"></dxi-column>
+			<dxi-column dataField="RecentStudy"  caption="RECENT STUDY DATE" alignment="center"></dxi-column>
+			<dxi-column dataField="OldStudy" caption="OLD STUDY DATE" alignment="center"></dxi-column>
+			<dxi-column dataField="UnPaidStudies" caption="UNPAID STUDIES" alignment="center"></dxi-column>
+			<dxi-column dataField="PaidStudies" caption="PAID STUDIES" alignment="center"></dxi-column>
+			<dxi-column dataField="TotalStudies" caption="TOTAL STUDIES" alignment="center"></dxi-column>
+			<dxi-column dataField="UnpaidPercentage" caption="UNPAID %" alignment="center"></dxi-column>
+			<dxi-column dataField="UserId" caption="USER ID" alignment="center"></dxi-column>
+			<dxi-column dataField="ReferrerID" caption="REFERRER ID" alignment="center"></dxi-column>
+		</dx-data-grid>
+	</div>
+<div>
+	<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>   
+</div> 

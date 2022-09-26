@@ -1,0 +1,9 @@
+.todo-title {
+    display: inline-block !important;
+    padding-left: 7px !important;
+    font-weight: 600 !important;
+}
+.dashboard-task .dashboard-item .single-todo{display: inline-flex;align-items: center;}
+.inner_item_child {
+    width: 83%;
+}

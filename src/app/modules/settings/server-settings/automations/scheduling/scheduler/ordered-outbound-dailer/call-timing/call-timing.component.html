@@ -1,0 +1,34 @@
+<div class="tab-pane" id="call-timing-tab">
+    <div class="theme-form-center">
+        <div class="theme-form">
+            <div class="theme-panel-body">
+                <div class="table-responsive manual-table">
+                    <table class="table table-theme">
+                        <thead>
+                            <tr>
+                                <th width="80">Time To Call</th>
+                                <th width="80">% of Calls</th>
+                                <th width="50">Time between Calls(Seconds)</th>
+                            </tr>
+                        </thead>
+                        <tbody>	
+                            <tr *ngFor="let calling of callingList; let i = index">
+                                <td>{{calling.CallAt}}</td>
+                                <td>
+                                    <div class="input-sign">
+                                     <input type="text"  max="100" class="form-control" [(ngModel)]="calling.PrecentageOfCalls" appTwoDigitDecimaNumber>
+                                     <span class="sign">%</span>
+                                    </div>
+                                </td>
+                                <td><input type="text" class="form-control"  [(ngModel)]="calling.TimebetweenCalls" (keypress)="allowNumberOnly($event)"></td>
+                            </tr>                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <a (click)="updateCallTiming()" href="javascript:void(0)" class="btn btn-theme">Update</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+.cke-editor-group{
+    text-transform: none !important;
+}
+:host ::ng-deep .ck-editor__editable_inline {
+    height: 280px !important;
+    overflow-y: scroll !important
+}

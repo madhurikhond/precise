@@ -1,0 +1,17 @@
+
+a.class-Link-Button-Underline{
+    text-decoration: underline !important;
+    cursor: pointer !important;
+}
+.class-background-color{
+    background-color: #ff8080 !important;
+}
+
+.ng-select-container
+{
+    width: 201px !important;
+}
+.search-field-theme .theme-form .form-group .ng-select .ng-select-container
+{
+    all:unset;
+}

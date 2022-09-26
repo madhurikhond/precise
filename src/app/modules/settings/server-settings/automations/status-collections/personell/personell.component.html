@@ -1,0 +1,170 @@
+<div class="tab-pane" id="personell">
+    <div class="theme-form-center">
+        <form  [formGroup]="personellForm" (ngSubmit)="onSubmit()">
+        <div class="theme-form">
+            <div class="theme-panel-body">
+                <div class="page-top-action">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-toggle="modal" (click)="addGridRow()"><i class="fa fa-plus"></i> Add New Record</a>
+                            <button  type="submit" class="btn btn-theme btn-sm">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive manual-table">
+                    <table class="table table-theme">
+                        <thead>
+                            <tr>
+                                <th width="100">STATEMENT</th>
+                                <th width="100">FINANCIAL TYPE</th>
+                                <th width="100">STATUS</th>
+                                <th width="100">&nbsp;</th>
+                            </tr>				
+                        </thead>														
+                        <tbody>	
+                            <tr formArrayName="personellGridForm"
+                            *ngFor="let singleFormGroup of personellGridForm.controls; let i = index">
+                            <ng-container [formGroupName]="i">   
+                             <td>{{i+1}}</td>
+                                        <td>
+                                    <div class="input-group">
+                                        <ng-select 
+                                            [ngStyle]="{'border-color': personellGridForm.controls[i].get('financialtypename').errors?.required && isFormSubmitted ? 'red':''}" class="form-control" id="FinancialTypeId{{i+1}}"
+                                            [items]="financialTypeList" 
+                                            placeholder="Select"                                            
+                                            formControlName="financialtypename" 
+                                            bindLabel="financialtypename" 
+                                            [multiple]="true"
+                                            [closeOnSelect]="false"
+                                            bindValue="financialtypename" 
+                                            >
+                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                    <span class="ng-value-label"> {{item.financialtypename}}</span>
+                                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                                        aria-hidden="true">×</span>
+                                                </div>
+                                                <div class="ng-value" *ngIf="items.length > 1">
+                                                    <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                </div>
+                                            </ng-template>                                     
+                                        </ng-select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <ng-select 
+                                        [ngStyle]="{'border-color': personellGridForm.controls[i].get('status').errors?.required && isFormSubmitted ? 'red':''}" class="form-control" id="StatusId{{i+1}}"
+                                            [items]="statusOrderedList" 
+                                            placeholder="Select"                                            
+                                            formControlName="status" 
+                                            bindLabel="status" 
+                                            [multiple]="true"
+                                            [closeOnSelect]="false"
+                                            bindValue="status" 
+                                            >            
+                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                    <span class="ng-value-label"> {{item.status}}</span>
+                                                    <span class="ng-value-icon right" (click)="clear(item)"
+                                                        aria-hidden="true">×</span>
+                                                </div>
+                                                <div class="ng-value" *ngIf="items.length > 1">
+                                                    <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                </div>
+                                            </ng-template>                         
+                                        </ng-select>
+                                   </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select [ngStyle]="{'border-color': personellGridForm.controls[i].get('andOr').errors?.required && isFormSubmitted ? 'red':''}" class="form-control" formControlName="andOr">
+                                            <option [value]="" disabled>Select Condition</option>
+                                            <option>OR</option>
+                                            <option>AND</option>
+                                        </select>
+                                        <div class="table-actions">
+                                            <a href="javascript:void(0)" class="single-action fa fa-trash" (click)="deleteGridRow(i)"></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container> 
+                            </tr>	
+                        </tbody>	
+                    </table>	
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                    <div class="input-group">
+                        <textarea class="form-control" placeholder="Add Note" formControlName="casePersonellComment"></textarea>
+                    </div>
+                </div>
+                <div class="alert alert-info" role="alert">
+                    When a study equals a status above and its greater than the days below inform the user to call for a case update
+                </div>
+                <div class="tab-section">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#call-attorney">Call Attorney</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#call-referring-doctor">Call Referring Doctor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#call-patient">Call Patient</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="call-attorney">
+                            
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="input-lable-side"><span>After</span>  <input type="text" class="form-control" formControlName="callAttAfterDay" appTwoDigitDecimaNumber> <span>Days from DOS</span></div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="input-lable-side"><span>Every</span> <input type="text" class="form-control" formControlName="callAttEveryDay" appTwoDigitDecimaNumber> <span>Days there after</span></div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        <div class="tab-pane" id="call-referring-doctor">
+                            
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="input-lable-side"><span>After</span>  <input type="text" class="form-control" formControlName="callRefDocAfterDay" appTwoDigitDecimaNumber> <span>Days from DOS</span></div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        <div class="tab-pane" id="call-patient">
+                            
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="input-lable-side"><span>After</span>  
+                                            <input type="text" class="form-control" formControlName="callPatAfterDay" appTwoDigitDecimaNumber>
+                                             <span>Days from DOS and have been unable to get an update from the attorney</span></div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="checkbox-input-group">
+                                            <div class="input-group">
+                                                <select class="form-control" (change)="onChangedPatientDropDown($event.target.value)"  [value]="patientDropDownValue" id="callPatDrop"  formControlName="callPatDrop">
+                                                    <option [value]="" disabled>Please Select</option>
+                                                    <option>Did Not Answer</option>
+                                                    <option>Pending Updates</option>
+                                                    <option>Case Droped</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                     </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button  type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </div>	
+        </form>
+    </div>
+</div>

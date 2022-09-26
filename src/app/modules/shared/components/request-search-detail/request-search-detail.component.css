@@ -1,0 +1,15 @@
+.link-btn 
+{
+  color: #3b8beb;
+  text-decoration: underline !important;
+}
+  .modal-title{
+    height: 40px;
+  }
+  #delete-request{
+    z-index: 10001;
+  }
+  .modal-footer
+  {
+    position: static !important;
+  }

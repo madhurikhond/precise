@@ -1,0 +1,159 @@
+<div class="search-field page-top-action">
+	<ul class="top-left action-menu">		
+		<li><a href="javascript:void(0)" #upload  class="fa fa-upload" data-toggle="modal" (click)="uploadFile()"></a></li>		
+		
+	</ul>
+</div>
+<div class="row">
+  <div class="col-md-2">
+
+    <dx-tree-view #treeview id="treeview" [dataSource]="folderTree" keyExpr="id" displayExpr="folderName"
+      (onItemClick)="selectItem($event)" (onItemContextMenu)="treeViewItemContextMenu($event)"       
+      selectionMode="single"
+      selectByClick=true
+      keyExpr="id" 
+      [selectByClick]="true" 
+      itemsExpr="items">
+    </dx-tree-view>   
+  </div>
+
+  <div class="col-md-9">
+    <dx-file-manager id="fileManager" #fileManager [fileSystemProvider]="allFile"     
+      (onContextMenuItemClick)="onItemClick($event)"
+      (onSelectionChanged)="fileManager_onSelectionChanged($event)"          
+      height="450">     
+      <dxo-item-view [showParentFolder]="false" [showFolders]="false" >
+        <dxo-details>
+          <dxi-column dataField="name"></dxi-column>
+          <dxi-column dataField="docType" caption="Type"></dxi-column>
+          <dxi-column dataField="uploadedBy"  caption="Uploaded By"></dxi-column>
+          <dxi-column dataField="uploadedOn" caption="Uploaded On" ></dxi-column>
+          <dxi-column dataField="docId" [visible]="false" caption="DocId"></dxi-column>
+          <dxi-column dataField="fileBase64" [visible]="false" caption="Image Data"></dxi-column>          
+          <dxi-column dataField="docTypeId" [visible]="false" caption="DocTypeId"></dxi-column>                 
+        </dxo-details>
+    </dxo-item-view>
+   
+
+
+      <dxo-toolbar>
+        <dxi-item name="showNavPane" [visible]="false"></dxi-item>
+        <dxi-item name="refresh" [visible]="false"></dxi-item>
+      </dxo-toolbar>
+      <dxo-context-menu>
+        <dxi-item text="Open" beginGroup="true"></dxi-item>
+        <dxi-item text="Download File" beginGroup="true"></dxi-item>
+    </dxo-context-menu>
+
+    </dx-file-manager>
+
+  </div>
+
+  
+ <div class="modal fade modal-theme modal-small" id="uploadFileManagerPopUp" 
+  data-backdrop="static" data-keyboard="false" 
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true"> 
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-upload" aria-hidden="true" style="font-size:20px"></i></h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">					
+                <div class="theme-form">
+                    <div class="row">
+                        <div class="col-xl-12 center-block">
+                            <div class="form-group">
+                                <div class="theme-label">Select Document Type</div>
+                                <div class="input-group">
+                                    <select class="form-control" [ngModel]="selectedDocumentTypeId" [ngClass]="{ 'is-invalid':selectedDocumentTypeId=='' && docTypeModelChange==true} " (ngModelChange)="setUploadedFileDocType($event)">
+                                        <option selected  value="">Select Document Type</option>
+                                        <option *ngFor="let item of documentTypeList" [ngValue]="item">
+                                            {{item.DocType}}
+                                        </option>
+                                    </select>
+                                   
+                                </div>
+                                <div *ngIf="(selectedDocumentTypeId=='' && docTypeModelChange==true)" class="invalid-feedback">
+                                  <div *ngIf="selectedDocumentTypeId=='' && docTypeModelChange==true">DocType is required</div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xl-12 center-block">
+                          <div class="form-group">
+                              <div class="input-group">
+                      <div class="upload-section">
+                         <div class="fileupload" data-provides="fileupload"  appFileupload (onFileDropped)="onFileDropped($event)">
+                            <span class="btn btn-file drag-drop-box ">								
+                               <span class="fileupload-new"><i class="fa fa-upload"></i>  Drag &amp; Drop  files Here or Browse</span>
+                               <input  type="file" class="file-input" [multiple]="false"
+                                          (change)="fileBrowseHandler($event.target.files)"  #fileUpload id="fileUpload" accept=".jpg,.jpeg,.png,.gif,.bmp,.txt,.doc,.docx,.pdf,.xls,.xlsx">
+                               <span class="fileupload-preview"></span>
+                            </span>							
+                         </div>
+                            
+                                  <p class="red-color" *ngIf="isfileSizeOk">File should be less than 20MB</p> 
+                      </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row" *ngIf="selectedUploadFile || selectedUploadFile?.length>0">
+                      <div class="files-list">
+                          <div class="single-file" *ngFor="let file of selectedUploadFile; let i = index">
+                              <div class="file-icon" style="width: 35px">
+                                  <i class="fa fa-file-image-o" aria-hidden="true" style="font-size: 20px;"></i>
+                              </div>
+                              <div class="info">
+                                  <h4 class="name">
+                                      {{ file?.name }}
+                                  </h4>
+                                  <p class="size">
+                                      {{ formatBytes(file?.size) }}
+                                  </p>                               
+                                  <div class="progress-cont">
+                                    <div class="progress"  [style.width]="file?.progress+'%'">
+                                    </div>
+                                  </div>                                                                
+                              </div>
+                              <div class="delete" (click)="deleteSelectedUploadFile(i)">
+                                  <i class="fa fa-trash-o" style="font-size:24px"></i>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+                <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal" [disabled]="selectedDocumentTypeId=='' || (!selectedUploadFile || selectedUploadFile?.length ==0)" (click)="uploadFileMgr(fileUpload)">Upload</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+  
+ 
+ <div class="modal fade modal-theme in" id="viewFile" data-backdrop="static" data-keyboard="false" 
+ tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title">{{fileName}}</h5>
+             <div class="close-dismiss" data-dismiss="modal"></div>
+           </div>
+             <div class="modal-body" *ngIf="fileData">
+                <iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
+             </div>
+          </div>
+       </div>
+    </div>
+    <!-- <a class="view-btn-attach" [href]="selectedFileBLOB">View</a> -->
+</div>
+
+
+<button #hiddenUploadFilePopUp [hidden]="true" data-toggle="modal" data-target="#uploadFileManagerPopUp"></button>
+<button #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile"></button>

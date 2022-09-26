@@ -1,0 +1,45 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">{{pageTitle}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" [routerLink]="'calender'" routerLinkActive="active">Calender</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'team-members'" routerLinkActive="active">Team Members</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'roles'" routerLinkActive="active">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'department'" routerLinkActive="active">Department</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'links'" routerLinkActive="active">Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'mydocuments'" routerLinkActive="active">My Documents</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'profile'" routerLinkActive="active">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'change-password'" routerLinkActive="active">Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'notification'" routerLinkActive="active">Notification</a>
+                </li>
+            </ul>
+               <div class="tab-content">
+                <router-outlet (activate)="onRouterOutletActivate(this)"></router-outlet>
+                </div>
+        </div>
+    </div>
+</div>	

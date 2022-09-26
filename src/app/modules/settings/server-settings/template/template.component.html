@@ -1,0 +1,159 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Templates</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                            <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                value={{item.value}}>{{item.value}}</option>
+                        </select>
+                    </div>
+                    <a href="javascript:void(0)" (click)="refreshEmailTemplate()" class="right btn btn-theme"><i
+                            class="fa fa-repeat"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid id="gridContainer" [dataSource]="templateList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30" keyExpr="templateId" [showBorders]="true">
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+                <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+                <dxi-column dataField="templateId" [width]="100" caption="Action" [allowFiltering]="false"
+                    [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+                <dxi-column dataField="emailType" caption="Type"></dxi-column>
+                <dxi-column dataField="emailTitle" caption="Title"></dxi-column>
+                <dxi-column dataField="emailSubject" caption="Subject"></dxi-column>
+
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <a href="javascript:void(0)" (click)="getEmailTemplate(data.data.templateId)"
+                        class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-temp"></a>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div
+                    *ngFor="let item of templateList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in" id="edit-temp" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Template</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editTemplateForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Type</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="type" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="checkbox-theme">
+                                    <div class="input-group">
+                                        <a style="text-decoration: underline;"
+                                            routerLink="/settings/server-settings/use-bookmark" target="_blank"
+                                            class="link">Use Bookmarks</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Title</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="title">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="checkbox-theme">
+                                    <input class="form-control" id="user-isactive" (change)="checkValue($event)"
+                                        type="checkbox" formControlName="spanishCheckMark" checked>
+                                    <label for="user-isactive" class="arrow-label">Spanish Version </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Subject</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="subject" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="cke-editor-group">
+                                    <div class="theme-label">Body</div>
+                                    <ckeditor #myckeditor 
+                                        formControlName="body" required [config]="CkeConfig"
+                                        (paste)="onPaste($event)" id="email-editor" (change)="onChange($event)">
+                                    </ckeditor>
+                                    <!-- <ckeditor [editor]="Editor" formControlName="body">
+                                        <textarea class="form-control" id="email-editor" cols="30" rows="10" formControlName="body" required></textarea>
+                                    </ckeditor> -->
+                                    <div *ngIf="submitted && edtForm.body" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="edtForm.body.invalid">Email body is
+                                            required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="cke-editor-group">
+                                    <div class="theme-label">Spanish Body</div>
+                                    <ckeditor #myckeditor 
+                                        formControlName="spanishEmailBody" required id="spanish-editor" 
+                                        [config]="CkeConfig" (paste)="onPaste($event)" (change)="onChange($event)">
+                                    </ckeditor>
+                                    <!-- <ckeditor [editor]="Editor" formControlName="spanishEmailBody">
+                                        <textarea class="form-control" id="spanish-editor" cols="30" rows="10" formControlName="spanishEmailBody" required></textarea>
+                                    </ckeditor> -->
+                                    <div *ngIf="submitted && edtForm.spanishEmailBody" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="edtForm.spanishEmailBody.invalid">Spanish Email body is
+                                            required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Cancel</a>
+                    <button type="button" (click)="onSubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-theme btn-sm pull-left">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,378 @@
+<div class="tab-pane active" id="pending-studies">
+    <div id="fillter1" class="search-field search-field-theme collapse show">
+        <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()" class="theme-form">
+            <div class="form-group">
+                <div class="theme-label">PATIENT ID</div>
+                <div class="input-group">
+                    <input formControlName="patientId" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">LAST NAME</div>
+                <div class="input-group">
+                    <input type="text" formControlName="lastName" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">FIRST NAME</div>
+                <div class="input-group">
+                    <input type="text" formControlName="firstName" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Financial Type</div>
+                <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="FINANCIALTYPENAME"
+                    formControlName="financialType" [multiple]="true" [closeOnSelect]="false"
+                    [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <span class="ng-value-label"> {{item.FINANCIALTYPENAME}}</span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Funding Company</div>
+                <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
+                    [(ngModel)]="selectedBroker" [multiple]="true" [closeOnSelect]="false"
+                    [loading]="showDropdownLoader" bindValue="Broker">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <span class="ng-value-label"> {{item.Broker}}</span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Status</div>
+                <ng-select [items]="studyStatusList" placeholder="Select" bindLabel="STATUS"
+                    formControlName="studyStatus" [(ngModel)]="selectedStudyStatus" [multiple]="true"
+                    [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="STATUS">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <span class="ng-value-label"> {{item.STATUS}}</span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Priority</div>
+                <ng-select [items]="priorityList" placeholder="Select" bindLabel="PRIORITYNAME"
+                    formControlName="priority" [(ngModel)]="selectedPriority" [multiple]="true" [closeOnSelect]="false"
+                    [loading]="showDropdownLoader" bindValue="PRIORITYNAME">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <span class="ng-value-label"> {{item.PRIORITYNAME}}</span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Modality</div>
+                <ng-select [items]="modalityList" placeholder="Select" bindLabel="SCHEDULEDMODALITY"
+                    formControlName="modality" [(ngModel)]="selectedModality" [multiple]="true" [closeOnSelect]="false"
+                    [loading]="showDropdownLoader" bindValue="SCHEDULEDMODALITY">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <span class="ng-value-label"> {{item.SCHEDULEDMODALITY}}</span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </div>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">From Date</div>
+                <div class="input-group">
+                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="fromDate" type="date"
+                        [showClearButton]="true" [useMaskBehavior]="true">
+                    </dx-date-box>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">To Date</div>
+                <div class="input-group">
+                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="toDate" type="date"
+                        [showClearButton]="true" [useMaskBehavior]="true" >
+                    </dx-date-box>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Date Range</div>
+                <div class="input-group">
+                    <select formControlName="dateRange" class="form-control">
+                        <option value=null>SELECT</option>
+                        <option value="Today">Today</option>
+                        <option value="Yesterday">Yesterday</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="14">Last 14 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="60">Last 60 Days</option>
+                        <option value="90">Last 90 Days</option>
+                        <option value="180">Last 180 Days</option>
+                        <option value="365">Last 365 Days</option>
+                        <option value="Year To Date">Year To Date</option>
+                    </select>
+                    <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                </div>
+            </div>
+            <div class="form-action">
+                <button type="submit" class="btn btn-theme">SEARCH</button>
+                <button type="button" (click)="onReset()" class="btn btn-border">CLEAR</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="page-header page-top-action">
+        <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+                <div class="record-found">
+                    <div class="theme-label">Studies Found:</div>
+                    <div class="input-group">
+                        <div class="view-mode-data"><strong> {{totalRecords}} </strong>
+                            <i [tooltip]="HtmlContent" max-width="320" placement="right" hide-delay="100"
+                                content-type="template" class="fa fa-info-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                <form [formGroup]="actionForm">
+                    <div class="precisemri-search">
+                        <!-- we are using option value same like used in patient module  -->
+                        <select formControlName="action" class="form-search">
+                            <option value=null disabled>Select an action</option>
+                            <!-- <option value="1">Save Grid</option> -->
+                            <option value="2">Ready To Bill</option>
+                            <option value="3">Not Ready To Bill</option>
+                            <option value="4">TC Patient Not Lien Signed</option>
+                            <option value="5">TC Patient Lien Signed</option>
+                            <option value="6">P Patient Not Lien Signed</option>
+                            <option value="7">P Patient Lien Signed</option>
+                            <option value="8">TC Attorney Not Lien Signed</option>
+                            <option value="9">TC Attorney Lien Signed</option>
+                            <option value="10">P Attorney Not Lien Signed</option>
+                            <option value="11">P Attorney Lien Signed</option>
+                            <!-- <option value="12">Generate Attorney Bill</option> -->
+                            <option value="13">Preview Attorney Bill</option>
+                        </select>
+                        <div *ngIf="submitted && aForm.action" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="aForm.action.invalid">Action is required</small>
+                        </div>
+                        <button type="button" (click)="onActionClick()" [ngClass]="{'disabled': !actionForm.valid}"
+                            [disabled]="!actionForm.valid" class="search">GO</button>
+                    </div>
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                            <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                                value={{item.value}}>{{item.value}}</option>
+                        </select>
+                    </div>
+                    <a href="javascript:void(0)" class="btn btn-theme filter-btn filter-mobile filter-mobile1"><i
+                            class="fa fa-filter" aria-hidden="true"></i> Filter</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <dx-data-grid id="gridContainer" [dataSource]="dataList"  [columnAutoWidth]="true"
+      [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" sorting="clear"
+            keyExpr="myId" [(selectedRowKeys)]="selectedRows" [showBorders]="true">
+
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+            <dxo-header-filter [visible]="false" [allowSearch]="true" ></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+            <dxo-selection mode="multiple"></dxo-selection> 
+
+            <dxi-column dataField="HardCheck" caption="Hard Check"></dxi-column>
+            <dxi-column dataField="SoftCheck" caption="Soft Check"></dxi-column>
+            <dxi-column caption="Docs" cellTemplate="docTemplate" [allowFiltering]="false" [allowSorting]="false">
+            </dxi-column>
+            <dxi-column dataField="WeekNumber" [width]="100" caption="Week Number" groupCellTemplate="group1Template"
+                [visible]="false" [groupIndex]="0"></dxi-column>
+            <dxi-column dataField="patientid" [width]="100" caption="Patient ID" groupCellTemplate="group2Template"
+                [groupIndex]="1"></dxi-column>
+            <!-- <dxi-column dataField="FirstName" caption="First Name"></dxi-column>
+            <dxi-column dataField="LastName" caption="Last Name"></dxi-column> -->
+            <!-- <dxi-column dataField="isreadytobill" caption="Ready To Bill" cellTemplate="isreadytobill"
+                [allowSorting]="false"></dxi-column> -->
+            <dxi-column caption="PSL TC" cellTemplate="pslTCTemplate" [allowSorting]="false"></dxi-column>
+            <dxi-column  caption="PSL P" cellTemplate="pslPTemplate" [allowSorting]="false">
+            </dxi-column>
+            <dxi-column  caption="ASL TC" cellTemplate="aslTCTemplate" [allowSorting]="false">
+            </dxi-column>
+            <dxi-column  caption="ASL P" cellTemplate="aslPTemplate" [allowSorting]="false">
+            </dxi-column>
+            <dxi-column dataField="proccodename" caption="CPT"></dxi-column>
+            <!-- <dxi-column dataField="financialtypename" caption="Financial Type"></dxi-column> -->
+            <dxi-column dataField="studydescription" caption="Study Description"></dxi-column>
+            <dxi-column dataField="birthdate" caption="DOB" cellTemplate="cell1Template"></dxi-column>
+            <dxi-column dataField="studydatetime" cellTemplate="dosTemplate" caption="DOS"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="institutionname" caption="Facility" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="broker" caption="Funding Company" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="scheduledbodypartexamined" caption="B.Part" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="scheduledlaterality" caption="LAT" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="injurydate" caption="Injury Date" cellTemplate="injTemplate"
+                [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="attorneylf" caption="Attorney LF" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="insurancecompany" caption="Insurance" [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+            <dxi-column dataField="reportsignedtime" caption="Report Signed Time" cellTemplate="cell2Template"
+                [(visible)]="isShowColumnWithNoData">
+            </dxi-column>
+
+            <div *dxTemplate="let data of 'group1Template'">
+                <strong>Week Number: </strong>{{data.key[0]}}
+            </div>
+                <div *dxTemplate="let data of 'group2Template'">
+                    <strong>Patient Id: </strong>
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data.data.items[0])"
+                        data-toggle="modal" data-target="#patient-Detail-Window">
+                        {{data.key[1]}} - </a>{{data.data.items[0].FirstName}},  {{data.data.items[0].LastName}} - {{data.data.items[0].financialtypename}}
+                </div>
+            <div *dxTemplate="let data of 'cell1Template'">
+                {{ data.data.birthdate | date:dateTimeFormatCustom.Date }}
+            </div>
+            <div *dxTemplate="let data of 'cell2Template'">
+                {{data.data.reportsignedtime | date:dateTimeFormatCustom.DateTime }}
+            </div>
+            <div *dxTemplate="let data of 'docTemplate'">
+                <i class="fa fa-file-text-o cursor-pointer" data-toggle="modal" data-target="#docManager"
+                    (click)="showDocManager(data.data.patientid)"></i>
+            </div>
+            <div *dxTemplate="let data of 'pslPTemplate'">
+                <div [ngStyle]="{'background-color':data.data.PSL_P!='' && data.data.PSL_P!=null ? 'white' : '' }"
+                    [title]="data.data.PSL_P!='' && data.data.PSL_P!=null ? data.data.PSL_P:''">
+                    <img  [src]="data.data.PSL_P==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                        height="20" />
+
+                </div>
+            </div>
+
+            <div *dxTemplate="let data of 'pslTCTemplate'">
+                <div [ngStyle]="{'background-color':data.data.PSL_TC!='' && data.data.PSL_TC!=null ? 'white' : '' }"
+                    [title]="data.data.PSL_TC!='' && data.data.PSL_TC!=null ? data.data.PSL_TC:''">
+                    <img  [src]="data.data.PSL_TC==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                        height="20" />
+                </div>
+            </div>
+            <div *dxTemplate="let data of 'aslPTemplate'">
+                <div [ngStyle]="{'background-color':data.data.ASL_P!='' && data.data.ASL_P!=null ? 'white' : '' }"
+                    [title]="data.data.ASL_P!='' && data.data.ASL_P!=null ? data.data.ASL_P:''">
+                    <img [src]="data.data.ASL_P==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                        height="20" />
+                </div>
+            </div>
+            <div *dxTemplate="let data of 'aslTCTemplate'">
+                <div [ngStyle]="{'background-color':data.data.ASL_TC!='' && data.data.ASL_TC!=null ? 'white' : '' }"
+                    [title]="data.data.ASL_TC!='' && data.data.ASL_TC!=null ? data.data.ASL_TC:''">
+                    <img [src]="data.data.ASL_TC==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                        height="20" />
+                </div>
+            </div>
+            <div *dxTemplate="let data of 'isreadytobill'">
+                {{data.data.isreadytobill ? 'Yes' : 'No'}}
+            </div>
+            <div *dxTemplate="let data of 'dosTemplate'">
+                {{data.data.studydatetime | date:dateTimeFormatCustom.Date }}
+            </div>
+            <div *dxTemplate="let data of 'injTemplate'">
+                {{data.data.injurydate | date:dateTimeFormatCustom.Date }}
+            </div>
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of dataList | paginate: { id:'paginatePage5', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls id="paginatePage5" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<ng-template #HtmlContent>
+    <div>
+        FacName - Missing Facility Name in ePIC, <br>
+        Noatty Missing Attorney, <br>
+        miss Funding Company Missing Funding Company, <br>
+        Lat Missing Laterality, <br>
+        Bpart Missing BodyParty, <br>
+        brokins Funding Company & Insurance name do NOT match, <br>
+        multatty Multiple Attorneys listed across Patient's studies, <br>
+        fax# Missing Attorney Billing Fax, <br>
+        attyaddr Missing Attorney Address, <br>
+        attyphn Missing Attorney phone #, <br>
+        PatAdd Missing patient address, <br>
+        DX hard - Missing Billing DX Code, <br>
+        Price Missing Attorney Billing price
+    </div>
+</ng-template>
+
+<div class="modal fade modal-theme modal-small" id="hard-Check" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CAN'T PROCESS AS STUDY HAS HARD CHECK(S) ON IT</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div [innerText]='message'></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button #hiddenButtonHardCheck [hidden]="true" data-toggle="modal" data-target="#hard-Check"></button>
+
+
+<div class="modal fade modal-theme modal-small" id="soft-Check" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Missing Details</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div [innerText]='message'></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="sendSoftChecks(true)" data-dismiss="modal"
+                    class="btn btn-theme">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" (click)="sendSoftChecks(false)" class="btn">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button #hiddenButtonSoftCheck [hidden]="true" data-toggle="modal" data-target="#soft-Check"></button>

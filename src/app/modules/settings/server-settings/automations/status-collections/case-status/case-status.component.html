@@ -1,0 +1,158 @@
+<div class="tab-pane" id="case-status">
+    <div class="theme-form-center">
+        <form [formGroup]="caseStatusForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="caseServiceActive" id="active4"
+											type="checkbox">
+										<label for="active4" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Service Time</div>
+										<div class="input-group icon-active">
+											<input type="time"
+												[ngClass]="{ 'is-invalid': (submitted && caseStatusFormControl.sendStatusTime.errors)}"
+												formControlName="sendStatusTime" class="form-control" id="timepicker6">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted &&  caseStatusFormControl.sendStatusTime.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger"
+												*ngIf="caseStatusFormControl.sendStatusTime.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="page-top-action">
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+										<a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+											(click)="addGridRow()"><i class="fa fa-plus"></i> Add New Record</a>
+										<button type="submit" class="btn btn-theme btn-sm pull-left">Save Changes</button>
+									</div>
+								</div>
+							</div>
+							<div class="table-responsive manual-table">
+								<table class="table table-theme">
+									<thead>
+										<tr>
+											<th width="100">STATEMENT</th>
+											<th width="100">FINANCIAL TYPE</th>
+											<th width="100">STATUS</th>
+											<th width="100">STATUS ORDER</th>
+											<th width="100">&nbsp;</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr formArrayName="caseStatusGridForm"
+											*ngFor="let singleFormGroup of caseStatusGridForm.controls; let i = index">
+											<ng-container [formGroupName]="i">
+												<td>{{i+1}}</td>
+												<td>
+													<ng-select
+														[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('financialtypename').errors?.required && submitted ? 'red':''}"
+														class="form-control" id="FinancialTypeId{{i+1}}"
+														[items]="financialTypeList" placeholder="Select"
+														formControlName="financialtypename" bindLabel="financialtypename"
+														[multiple]="true" [closeOnSelect]="false"
+														bindValue="financialtypename">
+														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
+																<span class="ng-value-label"> {{item.financialtypename}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
+															</div>
+														</ng-template> 
+													</ng-select>
+												</td>
+												<td>
+													<ng-select
+														[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusOrder').errors?.required && submitted ? 'red':''}"
+														class="form-control" id="StatusId{{i+1}}"
+														[items]="statusOrderedList" placeholder="Select"
+														formControlName="statusOrder" bindLabel="status" [multiple]="true"
+														[closeOnSelect]="false" bindValue="status">
+														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
+																<span class="ng-value-label"> {{item.status}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
+															</div>
+														</ng-template> 
+													</ng-select>
+												</td>
+												<td>
+													<ng-select
+														[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusNames').errors?.required && submitted ? 'red':''}"
+														class="form-control" id="StatusId{{i+1}}" [items]="statusNamesList"
+														placeholder="Select" formControlName="statusNames"
+														bindLabel="status" [multiple]="true" [closeOnSelect]="false"
+														bindValue="status">
+														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
+																<span class="ng-value-label"> {{item.status}}</span>
+																<span class="ng-value-icon right" (click)="clear(item)"
+																	aria-hidden="true">×</span>
+															</div>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
+															</div>
+														</ng-template> 
+													</ng-select>
+												</td>
+												<td>
+													<div class="input-group">
+														<select
+															[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('andOr').errors?.required && submitted ? 'red':''}"
+															class="form-control" formControlName="andOr">
+															<option [value]="" disabled>Select Condition</option>
+															<option>OR</option>
+															<option>AND</option>
+														</select>
+														<div class="table-actions">
+															<a href="javascript:void(0)" class="single-action fa fa-trash"
+																(click)="deleteGridRow(i)"></a>
+														</div>
+													</div>
+												</td>
+											</ng-container>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && caseStatusFormControl.caseComment.errors)}"
+                                formControlName="caseComment" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted &&  caseStatusFormControl.caseComment.errors"
+                            class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="caseStatusFormControl.caseComment.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

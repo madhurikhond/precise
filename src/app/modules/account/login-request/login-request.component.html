@@ -1,0 +1,405 @@
+<div class="dislpaytable requestlogin subpoena-login">
+    <form [formGroup]="requestLoginForm" (ngSubmit)="onSubmit()" style="max-width: 600px !important;">
+        <div class="valign-content">
+            <div class="valign-content-inner" style="max-width:600px !important;">
+                <div class="center-login">
+                    <div class="title-group">
+                        <div class="title">Request a Login</div>
+                    </div>
+                    <ng-container *ngIf="isFirstTab">
+                        <div class="form-group">
+                            <div class="form-with-icon validation-tooltip">
+
+                                <select class="form-control" formControlName="UserType"
+                                    (change)="onChangeUserType($event)">
+                                    <ng-container *ngFor="let user of userTypeList">
+                                        <option [value]="user.Value">{{user.Name}}</option>
+                                    </ng-container>
+                                </select>
+                                <div *ngIf="(isNextClicked || lgform.UserType.touched ) &&  lgform.UserType.errors"
+                                    class="tooltiptext text-right">
+                                    <small class="error text-danger" *ngIf="lgform.UserType.errors.required">User type
+                                        is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-btn-bottom">
+                            <div class="form-btn">
+                                <a href="javascript:void(0)" class="form-main-btn" (click)="switchTab(false)">Next</a>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!isFirstTab">
+
+                        <div class="form-group">
+
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf="lgform.UserType.value==='Attorney' || lgform.UserType.value==='Doctor' || lgform.UserType.value==='Reading Radiologist'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">{{dbaText}}<span class="text-danger">*</span> </div>
+                                        <input type="text" class="form-control" formControlName="DBA"
+                                            [placeholder]="dbaText" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.DBA.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.DBA.errors.required">{{dbaText}} is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12  my-2"
+                                    *ngIf="lgform.UserType.value==='Doctor' || lgform.UserType.value==='Reading Radiologist'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">NPI<span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="NPI" formControlName="NPI"
+                                            appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.NPI.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="lgform.NPI.errors.required">NPI is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12  my-2"
+                                    *ngIf="lgform.UserType.value==='Attorney'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">License Number<span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="License Number"
+                                            formControlName="LicenseNumber" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.LicenseNumber.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.LicenseNumber.errors.required">License Number is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12  my-2"
+                                    *ngIf="lgform.UserType.value==='Funding Company' || lgform.UserType.value==='Facility'  ">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Company Name <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Company Name"
+                                            formControlName="CompanyName" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.CompanyName.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.CompanyName.errors.required">Company Name is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12  my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">First Name <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="First Name"
+                                            formControlName="FirstName" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.FirstName.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.FirstName.errors.required">First Name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12  my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Last Name <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Last Name"
+                                            formControlName="LastName" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.LastName.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.LastName.errors.required">Last Name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Address <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Address"
+                                            formControlName="Address" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.Address.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.Address.errors.required">Address is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">City <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="City"
+                                            formControlName="City" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.City.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="lgform.City.errors.required">City is
+                                                required</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-group">
+                                        <div class="form-with-icon validation-tooltip">
+                                            <div class="theme-label">State <span class="text-danger">*</span></div>
+                                            <ng-select [items]="stateList" placeholder="Select state "
+                                                class="form-control ng-select-bottom" formControlName="State"
+                                                appTrimWhiteSpace bindLabel="abbreviation" bindValue="abbreviation"></ng-select>
+                                            <!-- <input type="text" class="form-control" placeholder="State"
+                                                                            formControlName="State" appTrimWhiteSpace> -->
+                                            <div *ngIf="submitted && lgform.State.errors"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="lgform.State.errors.required">State
+                                                    is required</small>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Zip <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Zip" formControlName="Zip"
+                                            appTrimWhiteSpaAternece mask="00000">
+                                        <div *ngIf="submitted && lgform.Zip.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="lgform.Zip.errors.required">Zip is
+                                                required</small>
+                                            <small class="error text-danger" *ngIf="lgform.Zip.errors.minlength">Please
+                                                enter the valid
+                                                Zip code</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Cell Phone <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Cell Phone"
+                                            formControlName="CellPhoneMask" appTrimWhiteSpace mask="(000)-000-0000">
+                                        <div *ngIf="submitted && lgform.CellPhoneMask.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.CellPhoneMask.errors.required">Cell Phone is
+                                                required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.CellPhoneMask.errors.pattern">Please enter the valid
+                                                number</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Home Phone</div>
+                                        <input type="text" class="form-control" placeholder="Home Phone"
+                                            formControlName="HomePhoneMask" mask="(000)-000-0000">
+                                        <div *ngIf="submitted && lgform.HomePhoneMask.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.HomePhoneMask.errors.required">Home Phone is
+                                                required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.HomePhoneMask.errors.pattern">Please enter the valid
+                                                number</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Fax</div>
+                                        <input type="text" class="form-control" placeholder="Fax #"
+                                            formControlName="FaxMask" appTrimWhiteSpace mask="(000)-000-0000">
+                                        <div *ngIf="submitted && lgform.FaxMask.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="lgform.FaxMask.errors.required">Fax
+                                                is required</small> <small class="error text-danger"
+                                                *ngIf="lgform.FaxMask.errors.pattern">Please enter the valid
+                                                number</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value==='Precise Imaging Employee'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Personal Email<span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Personal Email"
+                                            formControlName="PersonalEmail" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.PersonalEmail.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.PersonalEmail.errors.required">Personal Email is
+                                                required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.PersonalEmail.errors.pattern">Invalid
+                                                Email ID</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Work Email <span class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Work Email"
+                                            formControlName="WorkEmail" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.WorkEmail.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.WorkEmail.errors.required">Work Email is
+                                                required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.WorkEmail.errors.pattern && lgform.UserType.value!=='Precise Imaging Employee'">Invalid
+                                                Email ID</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.WorkEmail.errors.pattern && lgform.UserType.value==='Precise Imaging Employee'">Please
+                                                enter your Work email end
+                                                with '@precisemri.com' </small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.WorkEmail.errors.dontMatch">This email was already entered
+                                                for your personal email address. Please make sure to enter your correct
+                                                personal email. If you do not have a work email please contact your
+                                                supervisior to obtain one</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value=='Precise Imaging Employee' ||  lgform.UserType.value==='Patient' || lgform.UserType.value==='Funding Company'|| lgform.UserType.value==='Attorney'||
+                                 lgform.UserType.value==='Facility'|| lgform.UserType.value==='Doctor'|| lgform.UserType.value==='Reading Radiologist'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Password <span class="text-danger">*</span></div>
+                                        <input type="password" class="form-control" placeholder="Password"
+                                            formControlName="Password" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.Password.errors" class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.Password.errors.required">Password is
+                                                required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.Password.errors.hasNumber || lgform.Password.errors.hasSmallCase || 
+                                                lgform.Password.errors.hasCapitalCase || lgform.Password.errors.minlength">
+                                                Password must contain: Minimum 8 characters, one lowercase, one capital
+                                                and one numeric character</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value=='Precise Imaging Employee' || lgform.UserType.value==='Patient' || lgform.UserType.value==='Funding Company'||
+                                 lgform.UserType.value==='Attorney'|| lgform.UserType.value==='Facility'|| lgform.UserType.value==='Doctor'|| lgform.UserType.value==='Reading Radiologist'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Confirm Password <span class="text-danger">*</span>
+                                        </div>
+                                        <input type="password" class="form-control" placeholder="Confirm Password"
+                                            formControlName="ConfirmPassword" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.ConfirmPassword.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.ConfirmPassword.errors.required">Confirm Password
+                                                is required</small>
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.ConfirmPassword.errors.mustMatch">Passwords must
+                                                match</small>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf="lgform.UserType.value==='Patient' || lgform.UserType.value==='precise imaging employee' || lgform.UserType.value==='Funding Company'|| lgform.UserType.value==='Precise Imaging Employee'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Date Of Birth<span class="text-danger">*</span></div>
+                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" class="form-control"
+                                            [value]="now" type="date" [max]="maxDate" formControlName="DateOfBirth">
+                                        </dx-date-box>
+                                        <div *ngIf="submitted && lgform.DateOfBirth.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.DateOfBirth.errors.required">Date Of Birth is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value==='precise imaging employee' || lgform.UserType.value==='Precise Imaging Employee'">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Emergency Contact Name #1<span
+                                                class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Emergency Contact Name #1"
+                                            formControlName="EmergencyContactName1" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.EmergencyContactName1.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.EmergencyContactName1.errors.required">Emergency Contact
+                                                Name #1 is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value==='precise imaging employee'|| lgform.UserType.value==='Precise Imaging Employee'gency">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Emergency Contact Phone #1<span
+                                                class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Emergency Contact Phone #1"
+                                            mask="(000)-000-0000" formControlName="EmergencyContactPhone1"
+                                            appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.EmergencyContactPhone1.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.EmergencyContactPhone1.errors.required">Emergency Contact
+                                                Phone #1 is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value==='precise imaging employee'|| lgform.UserType.value==='Precise Imaging Employee'gency">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Emergency Contact Name #2<span
+                                                class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" placeholder="Emergency Contact Name #2"
+                                            formControlName="EmergencyContactName2" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.EmergencyContactName2.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.EmergencyContactName2.errors.required">Emergency Contact
+                                                Name #2 is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 my-2"
+                                    *ngIf=" lgform.UserType.value==='precise imaging employee'|| lgform.UserType.value==='Precise Imaging Employee'gency">
+                                    <div class="form-with-icon validation-tooltip">
+                                        <div class="theme-label">Emergency Contact Phone #2<span
+                                                class="text-danger">*</span></div>
+                                        <input type="text" class="form-control" mask="(000)-000-0000"
+                                            placeholder="Emergency Contact Phone #2"
+                                            formControlName="EmergencyContactPhone2" appTrimWhiteSpace>
+                                        <div *ngIf="submitted && lgform.EmergencyContactPhone2.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger"
+                                                *ngIf="lgform.EmergencyContactPhone2.errors.required">Emergency Contact
+                                                Phone #2 is
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-btn-bottom">
+                            <div class="form-btn">
+                                <button type="submit" class="btn form-main-btn">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="forgot-password">
+                        <a href="javascript:void(0)" *ngIf="!isFirstTab" (click)="switchTab(true)" class="mr-5">Back</a>
+                        <a routerLink="/login">Back to Login</a>
+                    </div>
+                </div>
+                <ul class="login-footer-buttons">
+                    <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
+                    <li><a routerLink="/login" class="footer-link">Login</a></li>
+                    <li><a routerLink="/subpoena-pickup-status" class="footer-link">Subpoena Pickup Status</a></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>

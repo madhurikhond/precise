@@ -1,0 +1,58 @@
+<div class="page-top-action">
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="precisemri-search page-select">
+				<div class="theme-label">Page Size</div>
+					<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+						<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+					</select>
+		</div>
+	</div>
+</div>
+</div>
+<div class="tab-pane active" id="resolved">
+    <div class="table-responsive">
+        <dx-data-grid id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true" [columnAutoWidth]="true"
+        [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30"
+        keyExpr="LogId" [showBorders]="true">
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+			<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+           
+            <dxi-column dataField="PatientID"  cellTemplate="patientTemplate"  caption="PATIENT ID"></dxi-column>
+            <dxi-column dataField="CreatedBy" caption="RESOLVED BY"></dxi-column>
+            <dxi-column dataField="createdon" cellTemplate="cellTemplate" caption="RESOLVED DATE"></dxi-column>
+            <dxi-column dataField="TYPE" caption="TYPE"></dxi-column>
+            <dxi-column dataField="Method" caption="METHOD"></dxi-column>
+            <dxi-column dataField="DateAttempted" caption="ORIG. SENT DATE" cellTemplate="cell1Template" ></dxi-column>
+            <dxi-column dataField="SentBy" caption="ORIG. SENT BY"></dxi-column>
+            <dxi-column dataField="Recipient" caption="ORIG. SENT TO"></dxi-column>
+            <dxi-column dataField="RecipientContact" caption="RECIPIENT CONTACT"></dxi-column>
+            <dxi-column dataField="COUNTS" caption="PAST FAILS"></dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+                {{data.data.createdon | date:dateTimeFormatCustom.DateTime }}
+            </div>
+            <div *dxTemplate="let data of 'patientTemplate'">
+                <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)" data-toggle="modal"
+                    data-target="#patient-Detail-Window">
+                    {{data.data.PatientID}} </a>
+            </div>
+            <div *dxTemplate="let data of 'cell1Template'">
+                {{data.data.DateAttempted | date: dateTimeFormatCustom.DateTime }}
+            </div>
+         
+        </dx-data-grid>
+    </div>
+    <div>
+        <div>
+            <div
+                *ngFor="let item of dataList | paginate: {  id: 'pagination4',itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            <pagination-controls id="pagination4" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>

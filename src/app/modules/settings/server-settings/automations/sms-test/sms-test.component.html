@@ -1,0 +1,39 @@
+<!--Sms Test Tab Star-->
+<div class="tab-pane" id="sms-test-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="smsTestForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="form-group">
+                            <div class="theme-label">Accession Number</div>
+                            <div class="input-group">
+                                <input type="text" formControlName="accessionNumber" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Template</div>
+                            <div class="input-group">
+                                <ng-select id="templateSelect" class="form-control" [items]="smsTemplateList"
+                                placeholder="Select" formControlName="templateID"
+                                bindLabel="EmailTitle" [closeOnSelect]="false"
+                                bindValue="TemplateID">
+                                 </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label" >Phone Number</div>
+                            <div class="input-group">
+                                <input type="text" formControlName="phoneNumber"  mask="(000)-000-0000" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Send</button>
+            </div>
+        </form>									
+    </div>
+</div>	
+<!-- Sms Test Tab End --> 

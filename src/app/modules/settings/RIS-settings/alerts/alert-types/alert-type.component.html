@@ -1,0 +1,113 @@
+
+<div class="tab-pane active" id="types-tab">
+    <div class="page-top-action">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <a class="btn btn-theme btn-sm pull-left" data-toggle="modal" (click)="restForm()" data-target="#addEditrecord"><i class="fa fa-plus"></i> Add Alert Type</a>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+                </div>
+                <a class="right btn btn-theme" (click)="rebindGrid()"><i class="fa fa-repeat" ></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+<div class="table-responsive">
+<dx-data-grid
+id="gridContainer"
+[dataSource]="alertTypeList"
+[allowColumnResizing]="true"
+[columnAutoWidth]="true"
+[allowColumnReordering]="true"
+[columnResizingMode]="columnResizingMode"
+[columnMinWidth]="30"
+
+keyExpr="cid"  
+[showBorders]="true">
+
+<dxo-sorting mode="multiple"></dxo-sorting>
+<!-- <dxo-filter-row  -->
+<!-- [visible]="showFilterRow"  -->
+<!-- [applyFilter]="currentFilter"> -->
+<!-- </dxo-filter-row> -->
+<!-- <dxo-header-filter  -->
+<!-- [visible]="showHeaderFilter" > -->
+
+<!-- </dxo-header-filter>  -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+<dxo-paging [enabled]="false"></dxo-paging>
+    
+<dxo-load-panel [enabled]="true">
+</dxo-load-panel>
+<dxi-column dataField="cid" [width]="100" caption="Action"  [allowFiltering]="false"
+[allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+<dxi-column dataField="cid" caption="cid"  [visible]="false"></dxi-column>
+<dxi-column dataField="alerttype" caption="Type" [visible]="true"></dxi-column>
+<dxi-column dataField="isActive" caption="Active" cellTemplate="IsActive"></dxi-column>
+<div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+<div *dxTemplate="let data of 'cellTemplate'">
+    <a href="javascript:void(0)" (click)="getCurrentRowDetail(data)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#addEditrecord"></a>
+</div>
+</dx-data-grid>
+    </div>
+    
+    <div>
+        <div>
+            <div
+                *ngFor="let item of alertTypeList | paginate: { id:'paginatePage2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords  }">
+            </div>
+            <pagination-controls id="paginatePage2" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Update Pop Up Start-->
+
+<div class="modal fade modal-theme in modal-small" id="addEditrecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{title}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form class="theme-form" [formGroup]="alertTypeForm" >
+				<div class="modal-body">
+					<div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group" style="display: none;">
+                                    <div class="theme-label">Cid</div>
+                                    <div class="input-group">
+                                        <input type="text"  class="form-control" formControlName="cid">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Type</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="alerttype">
+                                    </div>
+                                    <div *ngIf="IsSubmitted &&  getFromControls.alerttype.errors" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="getFromControls.alerttype.errors.required">Alert Type is required</small>
+                                    </div>
+                                </div>                                
+                                <div class="checkbox-theme">
+                                    <input class="form-control" id="alert-isactive" type="checkbox" formControlName="isActive">
+                                    <label for="alert-isactive" class="arrow-label">Active</label>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+					<button  type="button" (click)="onSubmit()"  [attr.data-dismiss]="modelValue"  class="btn btn-border pull-left btn-sm" id="btnUpdate">Save Changes</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>
+<!--Add/Update Pop Up End -->

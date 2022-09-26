@@ -1,0 +1,78 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Automations</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" [routerLink]="'scheduling'" routerLinkActive="active">Scheduling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'smstest'" routerLinkActive="active">Sms test</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'reminderstatus'" routerLinkActive="active">Reminder Status</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'piacceptliability'" routerLinkActive="active">PI Accept Liability</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'refstudysum'" routerLinkActive="active">Ref. Study Sum</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'intake'" routerLinkActive="active">Intake Setting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'liens'" routerLinkActive="active">Liens</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'options'" routerLinkActive="active">Options</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'autobilling'" routerLinkActive="active">Auto Bill</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'emailform'" routerLinkActive="active">Email From</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'reports'" routerLinkActive="active">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'facilities'" routerLinkActive="active">Facilities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'functionality'" routerLinkActive="active">Functionality</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'statuscollections'" routerLinkActive="active">Status/Collections</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'pendpymt'" routerLinkActive="active">Pend. Pymt</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'export'" routerLinkActive="active">Export</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'slack'" routerLinkActive="active">Slack</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" [routerLink]="'brokerbilling'" routerLinkActive="active">Funding Company Billing</a>
+                </li>
+            </ul>
+               <div class="tab-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>	
+
+
+
+
+
+

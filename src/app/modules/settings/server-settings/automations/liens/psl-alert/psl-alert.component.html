@@ -1,0 +1,188 @@
+<div class="tab-pane" id="psl-alert-tab">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="pslAlertFormSettings" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" id="active27" type="checkbox" formControlName="isPslAlert">
+										<label for="active27" class="arrow-label">Is Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Automation Run At</div>
+										<div class="input-group icon-active">
+											<input type="time" class="form-control" id="timepicker41" formControlName="pslServiceTime">
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Match Status</div>
+										<div class="input-group">
+											<ng-select 
+													[items]="statusList" 
+													placeholder="Select" 
+													formControlName="matchPslStatus" 
+													bindLabel="status" 
+													[multiple]="true"
+													[closeOnSelect]="false"
+													bindValue="status" 
+													[(ngModel)]="selectedMatchStatus"
+													>              
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:2">
+															<span class="ng-value-label"> {{item.status}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 2">
+															<span class="ng-value-label">{{items.length - 2}} more...</span>
+														</div>
+													</ng-template>                        
+												</ng-select> 
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Do Not Match Status</div>
+										<div class="input-group">
+											<ng-select 
+													[items]="statusList" 
+													placeholder="Select"                                                
+													formControlName="pslDoNotMatch" 
+													bindLabel="status" 
+													[multiple]="true"
+													[closeOnSelect]="false"
+													bindValue="status" 
+													[(ngModel)]="selectedDoNotMatchStatus"
+													> 
+													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+														<div class="ng-value" *ngFor="let item of items | slice:0:3">
+															<span class="ng-value-label"> {{item.status}}</span>
+															<span class="ng-value-icon right" (click)="clear(item)"
+																aria-hidden="true">×</span>
+														</div>
+														<div class="ng-value" *ngIf="items.length > 3">
+															<span class="ng-value-label">{{items.length - 3}} more...</span>
+														</div>
+													</ng-template>                    
+												</ng-select> 
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Financial</div>
+										<div class="input-group">
+											<ng-select 
+											   [items]="financialTypeList"                                           
+											   placeholder="Select"
+											   formControlName="pslFinancial" 
+											   bindLabel="financialtypename"
+											   [multiple]="true" 
+											   [closeOnSelect]="false"
+											   bindValue="financialtypeid"
+											   [(ngModel)]="selectedFinancialType">
+											<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+												<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<span class="ng-value-label"> {{item.financialtypename}}</span>
+													<span class="ng-value-icon right" (click)="clear(item)"
+														aria-hidden="true">×</span>
+												</div>
+												<div class="ng-value" *ngIf="items.length > 3">
+													<span class="ng-value-label">{{items.length - 3}} more...</span>
+												</div>
+											</ng-template>
+										</ng-select>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Email 1</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="pslEmail1">
+										</div>
+										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail1.errors"
+										 class="invalid-feedback">
+											 <div *ngIf="getFromControls.pslEmail1.errors">
+											   Email 1 must be a valid email address</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Email 2</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="pslEmail2"> 
+										</div>
+										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail2.errors"
+										 class="invalid-feedback">
+											 <div *ngIf="getFromControls.pslEmail2.errors">
+											   Email 2 must be a valid email address</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Email 3</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="pslEmail3">
+										</div>
+										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail3.errors"
+										class="invalid-feedback">
+											<div *ngIf="getFromControls.pslEmail3.errors">
+											  Email 3 must be a valid email address</div>
+									   </div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Email 4</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="pslEmail4">
+										</div>
+										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail4.errors"
+										class="invalid-feedback">
+										<div *ngIf="getFromControls.pslEmail4.errors">
+											  Email 4 must be a valid email address</div>
+									   </div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Email 5</div>
+										<div class="input-group">
+											<input type="text" class="form-control" formControlName="pslEmail5">
+										</div>
+										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail5.errors"
+										class="invalid-feedback">
+										<div *ngIf="getFromControls.pslEmail5.errors">
+											  Email 5 must be a valid email address</div>
+									   </div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <!-- <div class="note-list">
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                            </div>
+                            <div class="note-list-inner">
+                                <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                            </div>
+                        </div> -->
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="Add Note" formControlName="pslNote"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button  type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>	

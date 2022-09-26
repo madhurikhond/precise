@@ -1,0 +1,39 @@
+.link-btn 
+{
+  color: #3b8beb;
+  text-decoration: underline !important;
+
+}
+  ::ng-deep #exportContainer {
+    text-align: right;
+}
+
+.page-top-action .btn-theme .dx-button {
+  width: auto !important;
+  background-color: transparent;
+  color: #fff;
+  font-size: 13px;
+  border: 0;
+  padding: 0;
+}
+.page-top-action .btn-theme .dx-button .dx-button-content {
+  padding: 0!important;
+}
+.dx-button-has-text .dx-button-content {
+  padding: 0 !important;
+}
+.custom-patient-row-selection{
+	background-color:yellow !important;
+}
+span.previous-button {
+  padding: 2px;
+  color: #121212;
+  font-size: 21px;
+  margin-left: 3px;
+  line-height: 26px;
+  cursor:pointer
+}
+span.previous-button.disabled{
+  color: #9aa0a0;
+  cursor: auto !important;
+}

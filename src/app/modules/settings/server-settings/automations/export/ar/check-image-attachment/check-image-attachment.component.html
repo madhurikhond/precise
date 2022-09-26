@@ -1,0 +1,70 @@
+<div class="tab-pane" id="check-image-attachment-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="checkImageForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="checkbox-theme">
+                            <input class="form-control" formControlName="isActive" id="active9" type="checkbox">
+                            <label for="active9" class="arrow-label">Active</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Run Service At</div>
+                            <div class="icon-active">
+                                <input type="time" formControlName="runServiceTime"
+                                    [ngClass]="{ 'is-invalid': (submitted &&  ciForm.runServiceTime.errors)}"
+                                    class="form-control" id="timepicker12">
+                                <!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+								
+								<div *ngIf="submitted && ciForm.runServiceTime.errors" class="tooltiptext text-right">
+									<small class="error text-danger" *ngIf="ciForm.runServiceTime.errors.required">
+										Required
+									</small>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="input-lable-side">
+							<span>Send an email to</span> 
+							<div class="icon-active">
+								<input type="text"
+                                formControlName="checkImageEmail"
+                                [ngClass]="{ 'is-invalid': (submitted &&  ciForm.checkImageEmail.errors)}"
+                                class="form-control email">
+								<div *ngIf="submitted && ciForm.checkImageEmail.errors" class="tooltiptext text-right">
+									<small class="error text-danger" *ngIf="ciForm.checkImageEmail.errors.required">
+										Required
+									</small>
+									<small class="error text-danger" *ngIf="ciForm.checkImageEmail.errors.pattern">
+										Email must be a valid email address
+									</small>
+								</div>
+							</div><span>for PMRI non-match images</span>
+                        </div>
+                        <div class="input-lable-side">
+                            <span>Send an email to</span> 
+                            <div class="icon-active">
+                            <input type="text"
+                                formControlName="checkImageEmailSubs"
+                                [ngClass]="{ 'is-invalid': (submitted &&  ciForm.checkImageEmailSubs.errors)}"
+                                class="form-control email">
+                        <div *ngIf="submitted && ciForm.checkImageEmailSubs.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="ciForm.checkImageEmailSubs.errors.required">
+                                Required
+                            </small>
+                            <small class="error text-danger" *ngIf="ciForm.checkImageEmailSubs.errors.pattern">
+                                Email must be a valid email address
+                            </small>
+                        </div>
+                    </div><span>for PSUBS non-matched images</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

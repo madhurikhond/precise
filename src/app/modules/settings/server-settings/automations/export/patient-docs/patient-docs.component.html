@@ -1,0 +1,59 @@
+<div class="tab-pane" id="patient-docs-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="checkbox-theme">
+                            <input class="form-control" id="active8" formControlName="sftpActive" type="checkbox">
+                            <label for="active8" class="arrow-label">Active</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="theme-label">Time</div>
+                            <div class="input-group icon-active">
+                                <input type="time" class="form-control" formControlName="sftpTime"
+                                    [ngClass]="{ 'is-invalid': (submitted &&  pdForm.sftpTime.errors)}"
+                                    id="timepicker11">
+                                <!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+                            </div>
+                            <div *ngIf="submitted &&  pdForm.sftpTime.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="pdForm.sftpTime.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group autocomplete">
+                            <div class="theme-label">Exclude these file types:</div>
+                            <div>
+                                <ng-select [items]="docTypesList" placeholder="Select" formControlName="sftpDocType"
+                                    bindLabel="docType" [multiple]="true" [closeOnSelect]="false" bindValue="docType"
+                                    [(ngModel)]="selectedDocList"
+                                    [ngClass]="{ 'is-invalid': (submitted &&  pdForm.sftpDocType.errors)}"
+                                    (change)="onChange($event)">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:3">
+                                            <span class="ng-value-label"> {{item.docType}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 3">
+                                            <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                        </div>
+                                    </ng-template>    
+                                </ng-select>
+                            </div>
+                            <div *ngIf="submitted &&  pdForm.sftpDocType.errors" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="pdForm.sftpDocType.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

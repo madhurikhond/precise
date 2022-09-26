@@ -1,0 +1,151 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">SFTP</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme page-top-action">
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left" data-toggle="modal" data-target="#add-edit-record"><i class="fa fa-plus"></i> Add New Record</a>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                                <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                            </select>
+                    </div>
+                    <a href="javascript:void(0)" (click)="getSftpList()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid
+                id="gridContainer"
+                [dataSource]="sftpList"
+                [allowColumnResizing]="true"
+                [columnAutoWidth]="true"
+                [allowColumnReordering]="true"
+                [columnResizingMode]="columnResizingMode"
+                [columnMinWidth]="30"
+                keyExpr="sftpId"  
+                [showBorders]="true">
+
+                <dxo-sorting mode="multiple"></dxo-sorting>
+                <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                
+                <dxi-column dataField="sftpId" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
+                <dxi-column dataField="ProfileName" caption="Profile Name"></dxi-column>
+                <dxi-column dataField="HostName" caption="Host Name"></dxi-column>
+                <dxi-column dataField="Port" caption="Port"></dxi-column>
+                <dxi-column dataField="User" caption="User"></dxi-column>
+                <dxi-column dataField="DefaultDirectory" caption="Default Directory"></dxi-column>
+                <dxi-column dataField="Notesbox" caption="Notesbox"></dxi-column>
+                <!-- <dxi-column dataField="sftpId" [width]="100" caption="Test"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate1" [visible]="true"></dxi-column> -->
+
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <a href="javascript:void(0)" (click)="edit(data.data.sftpId)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#add-edit-record"></a>
+                </div>
+                <div *dxTemplate="let data of 'cellTemplate1'">
+                    <a href="javascript:void(0)" (click)="testConnection(data.data.sftpId)" class="left btn btn-border">Test</a>
+                </div>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div *ngFor="let item of sftpList | paginate: {id:'paginate1002', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+                <pagination-controls  id="paginate1002" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="modal fade modal-theme in modal-small" id="add-edit-record" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{isAdd?'Add':'Edit'}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="editSftpForm" class="theme-form">
+				<div class="modal-body">
+				
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Profile Name</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="profileName" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.profileName.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.profileName" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.profileName.invalid">Profile name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Host Name</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="hostName" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.hostName.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.hostName" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.hostName.invalid">Host name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Port</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="port" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.port.errors }" appOnlynumber>
+                                    </div>
+                                    <div *ngIf="submitted && editForm.port" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.port.invalid">Port is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Username</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="user" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.user.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.user" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.user.invalid">Username is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Password</div>
+                                    <div class="input-group">
+                                        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && editForm.password.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && editForm.password" class="tooltiptext text-right">                            
+                                        <small class="error text-danger" *ngIf="editForm.password.invalid">Password is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Default Directory</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="defaultDirectory" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="theme-label">Notesbox</div>
+                                    <div class="input-group">
+                                        <input type="text" formControlName="notesbox" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+				
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left"> {{isAdd?'Insert':'Save Changes'}}</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

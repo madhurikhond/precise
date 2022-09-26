@@ -1,0 +1,132 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Pro Rata Calculator</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <form [formGroup]="proRataForm" class="theme-form theme-prorata-form">
+            <div class="form-group">
+                <div class="theme-label">Settlement Amount</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="SettlementAmount">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Bills</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="Bills">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Total Precise Bill</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="TotalPrecieBill">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Additional Costs</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="AdditionalCosts">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Full Lien Pay</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="FullLienPay1">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Full Lien Pay</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="FullLienPay2">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Full Lien Pay</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="FullLienPay3">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Full Lien Pay</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="FullLienPay4">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="theme-label">Pro Rata %</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" (keyup)="onKeyUpEvent()" (change)="inputChange($event)"
+                        appTwoDigitDecimaNumber formControlName="proRata">
+                </div>
+            </div>
+            <div class="form-group">
+                <a href="javascript:void(0)" (click)="clearCalculateProRata()" class="btn btn-border">Clear</a>
+            </div>
+        </form>
+
+        <div class="table-prorata">
+            <div class="table-responsive manual-table">
+                <table class="table table-theme">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Settlement</td>
+                            <td>{{proRataForm.get('SettlementAmount').value | number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Additional Costs</td>
+                            <td>{{proRataForm.get('AdditionalCosts').value | number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Net Settlement</td>
+                            <td>{{netSettlementProRata | negativeSignRemove  | number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Bills</td>
+                            <td>{{proRataForm.get('Bills').value| number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ proRataForm.get('proRata').value| number:'0.2-2'}} % of Settlement</td>
+                            <td>{{percentageSettlement | negativeSignRemove | number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Full Lien Pay</td>
+                            <td>{{fullLienPay | number:'0.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Pro Rata </td>
+                            <td>{{proRata | number:'0.2-2'}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Total Bill</td>
+                            <td>{{proRataForm.get('TotalPrecieBill').value | number:'0.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total to Precise</td>
+                            <td>{{preciseTotal | negativeSignRemove | number:'0.2-2'}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

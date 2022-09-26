@@ -1,0 +1,97 @@
+<div class="tab-pane" id="e-sign-lien-tab">
+    <div class="theme-form-center">
+        <form class="theme-form" [formGroup]="eSignLienSettingForm" (ngSubmit)="onSubmit()">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+						<div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" id="active28" type="checkbox"
+											formControlName="isActive">
+										<label for="active28" class="arrow-label">Is Active</label>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Study Must Equal</div>
+										<div class="input-group">
+											<ng-select [items]="statusList" placeholder="Select" formControlName="status"
+												bindLabel="status" [multiple]="true" [closeOnSelect]="false"
+												bindValue="status" [(ngModel)]="selectedStatusList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.status}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+									</div>
+							  
+									<div class="form-group autocomplete">
+										<div class="theme-label">Finan. Type</div>
+										<div class="input-group">
+											<ng-select [items]="financialTypeList" placeholder="Select"
+												formControlName="financialType" bindLabel="financialtypename"
+												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+												[(ngModel)]="selectedFinancialTypeList">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.financialtypename}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>
+											</ng-select>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Text From Phone #</div>
+										<div class="input-group">
+											<input type="text" class="form-control" mask="(000)-000-0000"
+												[ngClass]="{ 'is-invalid': submitted && getFromControls.phone.errors }"
+												formControlName="phone" (keypress)="allowNumberOnly($event)">
+										</div>
+
+										<div *ngIf="submitted && getFromControls.phone.errors"
+											class="tooltiptext text-right">
+											<small class="error text-danger">Invalid Cell Number</small>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input-lable-side">
+										<span>Resend SMS request to patient</span> 
+										<div class="icon-active">
+											<input type="text"
+											class="form-control" formControlName="daysAfterSend"
+											(keypress)="allowNumberOnly($event)">
+										</div>
+										<span>after DOS if study is considered complete
+										and there is no PSL doc type in doc manager</span>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="Add Note" formControlName="comments"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" class="btn btn-theme">Update</button>
+            </div>
+        </form>
+    </div>
+</div>

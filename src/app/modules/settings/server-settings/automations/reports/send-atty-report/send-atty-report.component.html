@@ -1,0 +1,58 @@
+<div class="tab-pane" id="send-atty-report">
+    <div class="theme-form-center">
+        <div class="theme-form">
+            <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" class="theme-form">
+                <div class="theme-panel-body">
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme">
+                            <thead>
+                                <tr>
+                                    <th width="100">Service Name</th>
+                                    <th width="100">Active Service</th>
+                                    <th width="100">Time Active</th>
+                                    <th width="100">Service Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{setServiceName}}</td>
+                                    <td>
+                                        <div class="checkbox-new">
+                                            <input class="checkbox-input" formControlName="isServiceActive"
+                                                type="checkbox">
+                                            <label class="checkbox-label">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-new">
+                                            <input class="checkbox-input" formControlName="isTimeActive"
+                                                type="checkbox">
+                                            <label class="checkbox-label">&nbsp;</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group icon-active">
+                                            <input type="time" formControlName="serviceTime" class="form-control"
+                                                [ngClass]="{ 'is-invalid': (submitted && rForm.serviceTime.errors)}"
+                                                id="timepicker3">
+                                            <!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+                                        </div>
+                                        <div *ngIf="submitted && rForm.serviceTime.errors"
+                                            class="tooltiptext text-right">
+                                            <small class="error text-danger" *ngIf="rForm.serviceTime.errors.required">
+                                                Required
+                                            </small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="theme-panel-footer">
+                    <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

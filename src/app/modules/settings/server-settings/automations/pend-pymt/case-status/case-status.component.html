@@ -1,0 +1,456 @@
+<div class="tab-pane" id="case-status-pend">
+    <div class="theme-form-center">
+        <form [formGroup]="caseStatusForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-form">
+                <div class="theme-panel-body">
+                    <div class="row">
+                        <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                            <div class="page-top-action">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left"
+                                            (click)="addGridRow()">
+                                            <i class="fa fa-plus"></i> Add New Record</a>
+                                        <a type="submit" (click)="updatePaymentCaseSettingGrid()"
+                                            class="btn btn-theme btn-sm pull-left">Save Changes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive manual-table scroll-y">
+                                <table class="table table-theme">
+                                    <thead>
+                                        <tr>
+                                            <th width="100">STATEMENT</th>
+                                            <th width="100">STATUS</th>
+                                            <th width="100">STATUS ORDER</th>
+                                            <th width="100">Financial Type</th>
+                                            <th width="100">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr formArrayName="caseStatusGridForm"
+                                            *ngFor="let singleFormGroup of caseStatusGridForm.controls; let i = index">
+                                            <ng-container [formGroupName]="i">
+                                                <td>{{i+1}}</td>
+                                                <td>
+                                                    <ng-select
+                                                        [ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusOrder').errors?.required && submitted ? 'red':''}"
+                                                        class="form-control" id="StatusId{{i+1}}"
+                                                        [items]="statusOrderedList" placeholder="Select"
+                                                        formControlName="statusOrder" bindLabel="status"
+                                                        [multiple]="true" [closeOnSelect]="false" bindValue="status">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1">
+                                                                <span class="ng-value-label"> {{item.status}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1">
+                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <ng-select
+                                                        [ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusNames').errors?.required && submitted ? 'red':''}"
+                                                        class="form-control" id="StatusId{{i+1}}"
+                                                        [items]="statusNamesList" placeholder="Select"
+                                                        formControlName="statusNames" bindLabel="status"
+                                                        [multiple]="true" [closeOnSelect]="false" bindValue="status">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1">
+                                                                <span class="ng-value-label"> {{item.status}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1">
+                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <ng-select
+                                                        [ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('financialtypename').errors?.required && submitted ? 'red':''}"
+                                                        class="form-control" id="FinancialTypeId{{i+1}}"
+                                                        [items]="financialTypeList" placeholder="Select"
+                                                        formControlName="financialtypename"
+                                                        bindLabel="financialtypename" [multiple]="true"
+                                                        [closeOnSelect]="false" bindValue="financialtypename">
+                                                        <ng-template ng-multi-label-tmp let-items="items"
+                                                            let-clear="clear">
+                                                            <div class="ng-value"
+                                                                *ngFor="let item of items | slice:0:1">
+                                                                <span class="ng-value-label">
+                                                                    {{item.financialtypename}}</span>
+                                                                <span class="ng-value-icon right" (click)="clear(item)"
+                                                                    aria-hidden="true">×</span>
+                                                            </div>
+                                                            <div class="ng-value" *ngIf="items.length > 1">
+                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                                    more...</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <select
+                                                            [ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('andOr').errors?.required && submitted ? 'red':''}"
+                                                            class="form-control" formControlName="andOr">
+                                                            <option [value]="" disabled selected>Select Condition
+                                                            </option>
+                                                            <option>OR</option>
+                                                            <option>AND</option>
+                                                        </select>
+                                                        <div class="table-actions">
+                                                            <a href="javascript:void(0)"
+                                                                class="single-action fa fa-trash"
+                                                                (click)="deleteGridRow(i)"></a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="user-detail">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="checkbox-theme">
+                                            <input class="form-control" formControlName="active" id="8" type="checkbox">
+                                            <label for="active8" class="arrow-label">Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Time</div>
+                                            <div class="input-group icon-active">
+                                                <input type="time" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.sendReportAt.errors)}"
+                                                    formControlName="sendReportAt" id="timepicker10">
+                                                <!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+                                            </div>
+                                            <div *ngIf="submitted && caseStatusFormControl.sendReportAt.errors"
+                                                class="tooltiptext text-right">
+                                                <small class="error text-danger"
+                                                    *ngIf="caseStatusFormControl.sendReportAt.errors.required">
+                                                    Required
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="input-lable-side"><span>Send a reminder</span>
+                                            <div class="icon-active">
+                                                <input type="text" (keypress)="allowNumberOnly($event)"
+                                                    formControlName="arafterDay"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.arafterDay.errors)}"
+                                                    class="form-control">
+                                                <div *ngIf="submitted && caseStatusFormControl.arafterDay.errors"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.arafterDay.errors.required">
+                                                        Required
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.arafterDay.errors.max">
+                                                        Required Max 3
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-lable-side"><span>days after settling pending payment. Send
+                                                another
+                                                reminder every</span>
+                                            <div class="icon-active">
+                                                <input type="text" (keypress)="allowNumberOnly($event)"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.areveryDay.errors)}"
+                                                    formControlName="areveryDay" class="form-control">
+                                                <div *ngIf="submitted && caseStatusFormControl.areveryDay.errors"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.areveryDay.errors.required">
+                                                        Required
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.areveryDay.errors.max">
+                                                        Required Max 3
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-lable-side"><span>days. Stop sending after</span>
+                                            <div class="icon-active">
+                                                <input type="text"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.arstopAfter.errors)}"
+                                                    (keypress)="allowNumberOnly($event)" formControlName="arstopAfter"
+                                                    class="form-control">
+                                                <div *ngIf="submitted && caseStatusFormControl.arstopAfter.errors"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.arstopAfter.errors.required">
+                                                        Required
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.arstopAfter.errors.max">
+                                                        Required Max 3
+                                                    </small>
+                                                </div>
+                                            </div><span>days.</span>
+                                        </div>
+                                        <div class="input-lable-side"><span>Send status updates on the</span>
+                                            <div class="icon-active">
+                                                <input type="text" (keypress)="allowNumberOnly($event)"
+                                                    formControlName="pymtSendDay1"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.pymtSendDay1.errors)}"
+                                                    class="form-control">
+                                                <div *ngIf="submitted && caseStatusFormControl.pymtSendDay1.errors"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.pymtSendDay1.errors.required">
+                                                        Required
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.pymtSendDay1.errors.max">
+                                                        Required Max 3
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <span>days and</span>
+                                            <div class="icon-active">
+                                                <input type="text" (keypress)="allowNumberOnly($event)"
+                                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.pymtSendDay2.errors)}"
+                                                    formControlName="pymtSendDay2" class="form-control">
+                                                <div *ngIf="submitted && caseStatusFormControl.pymtSendDay2.errors"
+                                                    class="tooltiptext text-right">
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.pymtSendDay2.errors.required">
+                                                        Required
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="caseStatusFormControl.pymtSendDay2.errors.max">
+                                                        Required Max 3
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <span>day of the month</span>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                            <!-- <div class="note-list">
+                                <div class="note-list-inner">
+                                    <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                                </div>
+                                <div class="note-list-inner">
+                                    <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                                </div>
+                                <div class="note-list-inner">
+                                    <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                                </div>
+                                <div class="note-list-inner">
+                                    <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                                </div>
+                                <div class="note-list-inner">
+                                    <p>IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE</p>								
+                                </div>
+                                <div class="note-list-inner">
+                                    <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING</p>								
+                                </div>
+                            </div> -->
+                            <div class="input-group">
+                                <textarea class="form-control" formControlName="pendPytmComment"
+                                    [ngClass]="{ 'is-invalid': (submitted &&  caseStatusFormControl.pendPytmComment.errors)}"
+                                    placeholder="Add Note"></textarea>
+                            </div>
+                            <div *ngIf="submitted && caseStatusFormControl.pendPytmComment.errors"
+                                class="tooltiptext text-right">
+                                <small class="error text-danger"
+                                    *ngIf="caseStatusFormControl.pendPytmComment.errors.required">
+                                    Required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-panel-footer">
+                    <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <div class="modal fade modal-theme in modal-small" id="add-status-pend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true"> -->
+<!-- <div class="modal-dialog modal-dialog-centered" role="document"> -->
+<!-- <div class="modal-content"> -->
+<!-- <div class="modal-header"> -->
+<!-- <h5 class="modal-title">Add</h5> -->
+<!-- <div class="close-dismiss" data-dismiss="modal"></div> -->
+<!-- </div> -->
+<!-- <div class="modal-body"> -->
+<!-- <div class="modal-body-inner"> -->
+<!-- <form class="theme-form"> -->
+<!-- <div class="row"> -->
+<!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> -->
+<!-- <div class="form-group"> -->
+<!-- <div class="theme-label">STATUS</div> -->
+<!-- <div class="input-group"> -->
+<!-- <select class="form-control"> -->
+<!-- <option>Select</option> -->
+<!-- <option>ADJUSTED STATUS</option> -->
+<!-- <option>4APPROVAL</option> -->
+<!-- <option>4REVIEW</option> -->
+<!-- <option>SETTLED</option> -->
+<!-- <option>---------------</option> -->
+<!-- <option>BILLING STATUS</option> -->
+<!-- <option>BILLED PATIENT</option> -->
+<!-- <option>BILLED PRIMARY</option> -->
+<!-- <option>BILLED SECONDARY</option> -->
+<!-- <option>RE-BILLED</option> -->
+<!-- <option>---------------</option> -->
+<!-- <option>COLLECTIONS STATUS</option> -->
+<!-- <option>COLLECTIONS</option> -->
+<!-- <option>UNCOLLECTIBLE (FULL DROP)</option> -->
+<!-- <option>---------------</option> -->
+<!-- <option>PAYMENT STATUS</option> -->
+<!-- <option>4APPROVAL</option> -->
+<!-- <option>ADJUSTED</option> -->
+<!-- <option>APPROVED</option> -->
+<!-- <option>PAID</option> -->
+<!-- <option>PENDING REVIEW</option> -->
+<!-- <option>PRTL PMT</option> -->
+<!-- <option>UNPAID</option> -->
+<!-- <option>---------------</option> -->
+<!-- <option>WCINS STATUS</option> -->
+<!-- <option>APPEALED</option> -->
+<!-- <option>APPEALED-2ND</option> -->
+<!-- <option>APPEALED-3RD</option> -->
+<!-- <option>DEMAND LTR SENT</option> -->
+<!-- <option>DENIED/EOR</option> -->
+<!-- <option>HEARING/C&amp;R</option> -->
+<!-- </select> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> -->
+<!-- <div class="form-group"> -->
+<!-- <div class="theme-label">STATUS ORDER</div> -->
+<!-- <div class="input-group"> -->
+<!-- <select class="form-control"> -->
+<!-- <option>Select</option> -->
+<!-- <option>??COLLECTIONS??</option> -->
+<!-- <option>4APPROVAL</option> -->
+<!-- <option>4REVIEW</option> -->
+<!-- <option>APPEALED</option> -->
+<!-- <option>APPEALED-2ND</option> -->
+<!-- <option>APPEALED-3RD</option> -->
+<!-- <option>ARRIVED</option> -->
+<!-- <option>ATTORNEY SIG REQ</option> -->
+<!-- <option>BILLED PATIENT</option> -->
+<!-- <option>BILLED PRIMARY</option> -->
+<!-- <option>BILLED SECONDARY</option> -->
+<!-- <option>BRKR TO RESCHED</option> -->
+<!-- <option>CANCELLED</option> -->
+<!-- <option>CASE CLOSED</option> -->
+<!-- <option>CHECK NOTES</option> -->
+<!-- <option>COLLECTIONS</option> -->
+<!-- <option>COMPARISON</option> -->
+<!-- <option>CONFIRMED</option> -->
+<!-- <option>COULDNT SCHEDULE</option> -->
+<!-- <option>DEMAND LTR SENT</option> -->
+<!-- <option>DENIED/EOR</option> -->
+<!-- <option>DICTATED</option> -->
+<!-- <option>DISCONTINUED</option> -->
+<!-- <option>DROPPED CASE</option> -->
+<!-- <option>EXAMCOMPLETED</option> -->
+<!-- <option>F AND F</option> -->
+<!-- <option>HEARING/C&amp;R</option> -->
+<!-- <option>HOLD</option> -->
+<!-- <option>IMAGES ON SERVER</option> -->
+<!-- <option>IMG ON SERV</option> -->
+<!-- <option>INPROGRESS</option> -->
+<!-- <option>MC CRD</option> -->
+<!-- <option>MISSING INFO</option> -->
+<!-- <option>NEED TO RESCHED</option> -->
+<!-- <option>NO SHOW</option> -->
+<!-- <option>ORD-PEND AUTH</option> -->
+<!-- <option>ORDERED</option> -->
+<!-- <option>ORDERED-PEND INF</option> -->
+<!-- <option>PAID</option> -->
+<!-- <option>PATIENT SIG REQ</option> -->
+<!-- <option>PRIOR</option> -->
+<!-- <option>PRTL PMT RCVD</option> -->
+<!-- <option>QC RAD</option> -->
+<!-- <option>RE-BILLED</option> -->
+<!-- <option>REJECTED</option> -->
+<!-- <option>REVIEWED</option> -->
+<!-- <option>SCHEDULED</option> -->
+<!-- <option>SETTLED PEND PMT</option> -->
+<!-- <option>SHOWED</option> -->
+<!-- <option>SIGNED</option> -->
+<!-- <option>TO BE AMENDED</option> -->
+<!-- <option>TRANSCRIBED</option> -->
+<!-- <option>UEF</option> -->
+<!-- <option>UNCOLLECTBL/CLSD</option> -->
+<!-- <option>UNPERFRMD/CLOSED</option> -->
+<!-- <option>UNUSED - AVAILAB</option> -->
+<!-- <option>VERIFIED</option> -->
+<!-- </select> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> -->
+<!-- <div class="form-group"> -->
+<!-- <div class="theme-label">Financial Type</div> -->
+<!-- <div class="input-group"> -->
+<!-- <select class="form-control"> -->
+<!-- <option>Select</option> -->
+<!-- <option>CAPITATED</option> -->
+<!-- <option>CHECK</option> -->
+<!-- <option>CREDIT CARD</option> -->
+<!-- <option>BILL DOCTOR</option> -->
+<!-- <option>INSURANCE</option> -->
+<!-- <option>MEDPAY</option> -->
+<!-- <option>OHIP</option> -->
+<!-- <option>PERSONAL INJ-SELF REP</option> -->
+<!-- <option>CASH/INSURANCE</option> -->
+<!-- <option>PERSONAL INJ/INSURANCE</option> -->
+<!-- <option>SELF-PAY</option> -->
+<!-- <option>COMMERCIAL</option> -->
+<!-- <option>MEDICARE</option> -->
+<!-- <option>OTHER</option> -->
+<!-- <option>PERSONAL INJURY</option> -->
+<!-- <option>WORKERS COMP</option> -->
+<!-- <option>Funding Company</option> -->
+<!-- <option>CASH</option> -->
+<!-- </select> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </form> -->
+
+<!-- </div> -->
+<!-- </div> -->
+<!-- <div class="modal-footer"> -->
+<!-- <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a> -->
+<!-- <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-dismiss="modal">Insert</a> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div>  -->

@@ -1,0 +1,440 @@
+<!-- <app-patient-detail></app-patient-detail> -->
+<div class="tab-pane" id="desk-comp">
+    <div class="page-top-action precisemri-search">
+        <div class="row">
+            <div class="col-xl-4 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="checkbox-theme pull-left">
+                    <input id="appointment" class="styled" type="checkbox" (change)="todayAppointment($event)">
+                    <label for="appointment" class="arrow-label">Today's Appointments Only</label>
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-9 col-md-12 col-sm-12 col-12">
+                <!-- <button type="button" class="right btn btn-theme" [disabled]="selectAction.value==0?true:false"
+                    [ngStyle]="{'background-color': (selectAction.value==0) ? '#bfbfbf' : '#3b8beb'}"
+                    (click)="goEventFire(selectAction.value)">Go</button>
+                <select class="form-search right" #selectAction>
+                    <option selected value="0">Select an Action</option>
+                    <option value="1">Patient No Show</option>
+                    <option value="2">Could not complete Exam</option>
+                    <option value="3">Rescheduled Exam </option>x
+                    <option value="4">Attach Paperwork</option>
+                </select> -->
+
+                <a href="javascript:void(0)" (click)="BulkPrintToday()" class="right btn btn-theme">Bulk Print Today's APPT</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+
+
+        <dx-data-grid id="gridContainer" #gridContainer [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
+            [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30"
+            (onInitialized)="onInitialized($event)" (onSelectionChanged)="selectionChanged($event)" 
+            [showBorders]="true">
+            <dxo-load-panel [enabled]="false"> </dxo-load-panel>
+            <dxo-pager [visible]="false"></dxo-pager>            
+            <dxo-header-filter [visible]="true"></dxo-header-filter>           
+            
+            <!-- <dxo-selection mode="multiple" [allowSelectAll]="true" showCheckBoxesMode="always"></dxo-selection> -->
+            <dxo-sorting mode="multiple"></dxo-sorting>
+
+            <dxi-column dataField="PATIENTID" [allowGrouping]="false" [groupIndex]="0"></dxi-column>
+            <dxi-column dataField="FAMILYNAME" caption="LAST NAME" [allowFixing]="false"></dxi-column>
+            <dxi-column dataField="GIVENNAME" caption="FIRST NAME"></dxi-column>
+            <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+
+
+            <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION" alignment="left"></dxi-column>
+            <dxi-column dataField="STUDYDATETIME" caption="APT. TIME" alignment="left"></dxi-column>
+            <dxi-column dataField="SCHEDULEDLATERALITY" caption="LAT" alignment="left"></dxi-column>
+            <dxi-column dataField="CPT" caption="CPT" alignment="left"></dxi-column>
+            <dxi-column dataField="SCHEDULEDMODALITY" caption="MODIALITY" alignment="left"></dxi-column>
+
+
+            <dxi-column [width]="120" [allowFiltering]="false" caption="RAD Lien" [allowSorting]="false" cellTemplate="P_PSLTemplate">
+            </dxi-column>
+            <dxi-column [width]="120" [allowFiltering]="false" caption="TECH Lien" [allowSorting]="false" cellTemplate="TC_PSLTemplate">
+            </dxi-column>
+            <dxi-column [width]="100" [allowFiltering]="false" caption="DEMO" [allowSorting]="false" cellTemplate="demoTemplate">
+            </dxi-column>
+            <dxi-column [width]="120" [allowFiltering]="false" caption="ID" [allowSorting]="false" cellTemplate="PatientIdTemplate">
+            </dxi-column>
+
+            <dxi-column caption="Docs" cellTemplate="DocsCellTemplate"></dxi-column>
+
+            <dxi-column [width]="50" [allowFiltering]="false" [allowSorting]="false" cellTemplate="uploadTemplate">
+            </dxi-column>
+
+            <!-- <dxi-column [width]="50" [allowFiltering]="false" [allowSorting]="false" cellTemplate="scheduleTemplate">
+            </dxi-column> -->
+            <div *dxTemplate="let data of 'P_PSLTemplate'">
+                <a href="javascript:void(0)" [ngClass]="data.data.P_PSL ? 'btn btn-success front-desk-success' : 'btn btn-secondary front-desk-success'"
+                  (click)="getFacilityDetail(data.data.PATIENTID,data.data.P_PSL,data)">RAD Lien </a>
+              </div>
+              <div *dxTemplate="let data of 'TC_PSLTemplate'">
+                <a href="javascript:void(0)" [ngClass]="data.data.TC_PSL ? 'btn btn-success front-desk-success' : 'btn btn-secondary front-desk-success'"
+                  (click)="getFacilityDetail(data.data.PATIENTID,data.data.TC_PSL,data)">TECH Lien </a>
+              </div>
+              
+              <div *dxTemplate="let data of 'demoTemplate'">
+                <a href="javascript:void(0)" [ngClass]="data.data.PATDEM ? 'btn btn-success front-desk-success' : 'btn btn-secondary front-desk-success'"
+                  (click)="getFacilityDetail(data.data.PATIENTID,data.data.PATDEM,data)">DEMO</a>
+              </div>
+              <div *dxTemplate="let data of 'PatientIdTemplate'">
+                <a href="javascript:void(0)" [ngClass]="data.data.ID ? 'btn btn-success front-desk-success' : 'btn btn-secondary front-desk-success'"
+                  (click)="getFacilityDetail(data.data.PATIENTID,data.data.ID,data)">ID</a>
+              </div>
+            
+              <div *dxTemplate="let data of 'DocsCellTemplate'">
+                <div data-toggle="modal" data-target="#docManager"
+                (click)="showDocManager(data.data.PATIENTID)" class="cursor-pointer"><i class="fa fa-file-text-o"></i></div>
+                <!-- <img src="/assets/images/copy-icon.png" style="cursor:pointer;" data-toggle="modal" data-target="#docManager"
+                  (click)="showDocManager(data.data.PATIENTID)" /> -->
+              </div>
+            
+              <div *dxTemplate="let data of 'groupSelectionCellTemplate'">
+                <!-- <dx-check-box [value]="helper.getCheckBoxValue(data)"
+                  [elementAttr]="helper.getCheckBoxElementAttr(data)" (onValueChanged)="helper.checkBoxValueChanged($event)">
+                </dx-check-box> &nbsp; -->
+                <strong>Patient Id:</strong> 
+                <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                  data-toggle="modal" data-target="#patient-Detail-Window">
+                  {{data.data.key}}</a>
+              </div>
+              <div *dxTemplate="let data of 'uploadTemplate'; let i = index">
+                <a href="javascript:void(0)" id="doc_{{data.data.PATIENTID}}"
+                  (click)="getUploadAttachFile(data,'doc_' + data.data.PATIENTID)" class="single-action fa fa-upload"
+                  data-toggle="modal" data-target="#uploaddatafacility">
+                </a>
+              </div>
+              <!-- <div *dxTemplate="let data of 'scheduleTemplate'">
+                <a class="single-action fa fa-calendar"></a>
+              </div> -->
+
+
+        </dx-data-grid>
+
+    </div>
+    <div class="pagination-theme">
+        <div
+            *ngFor="let item of GridData | paginate: { id: 'pagination2' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalFacility }">
+        </div>
+        <pagination-controls id="pagination2" (pageChange)="FacilityFrontDeskPageChanged($event)"></pagination-controls>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="filefacility" #filefacility tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Please verify file attached is accurate</h5>
+                <div class="close-dismiss" (click)="CloseFileUploadModal()" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-inner">
+                    <div class="page-top-action">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <a href="javascript:void(0)" (click)="ViewFile(PreviewFile)"
+                                    class="right btn btn-theme">Preview File</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme">
+                            <thead>
+                                <tr>
+                                    <th>MATCH</th>
+                                    <th>EXPECTING</th>
+                                    <th>FILE UPLOAD</th>
+                                    <th width="80">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let Verify of this.VerifyDocList;let i= index">
+                                    <td>{{Verify.Match}}</td>
+                                    <td>{{Verify.Expecting}}</td>
+                                    <td>{{Verify.File_Upload}}</td>
+                                    <td><span style="cursor:default"
+                                            [ngClass]="Verify.Status ? 'btn btn-success' : 'btn btn-warning'">{{(Verify.Status)?
+                                            'Correct' : 'PLease Verify' }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class=" btn btn-border-gray btn-sm pull-right" id="closeModal" (click)="CloseFileUploadModal()"
+                    data-dismiss="modal">Cancel & Upload New File</a>
+                <button type="button" (click)="VerifedAttachFile()" class="btn btn-theme btn-sm pull-left">Verify &
+                    Attach File</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="uploaddatafacility" #uploaddatafacility 
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" #fileUpload aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Please upload each document requested below</h5>
+                <div class="close-dismiss" id="closeClick" #closeClick data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-inner">
+                    <p>Upload files individually or use the <a href="javascript:void(0)">Faster auto route feature</a>
+                        to upload multiple pages at one time</p>
+                    <div class="page-top-action">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <a href="javascript:void(0)" class="left">How to use video guide <i
+                                        class="fa fa-file-video-o"></i></a>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <a href="javascript:void(0)" class="right" data-toggle="modal"
+                                    data-target="#uploadDataFileFacility"><b>Auto Route Upload <i
+                                            class="fa fa-upload"></i></b></a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme">
+                            <thead>
+                                <tr>
+                                    <th>Doc Type</th>
+                                    <th>Status</th>
+                                    <th width="80">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let doc of this.DocumentList;let i= index">
+                                    <td>{{doc.DocName}}</td>
+                                    <td><span [ngClass]="doc.UploadPreview? 'btn btn-success' : 'btn btn-warning'">{{
+                                            (doc.UploadPreview)? 'Already Received' : 'Please Upload'}}</span></td>
+                                    <td>
+                                        <div class="table-actions">
+
+                                            <div class="upload-icon fa" *ngIf="!doc.UploadPreview; else elseBlock">
+                                                <input name="file" class="fa" type="file"
+                                                    (change)="onFileChange($event,doc.PatientId,doc.DType,doc.DocName,doc.Abbreviation,doc.DocBarcodeID)">
+                                                <span class="single-action fa fa-upload"></span>
+                                            </div>
+                                            <ng-template #elseBlock><a href="javascript:void(0)"
+                                                    (click)="FilePreview(doc.PatientId,doc.DType,doc.Main_row)"
+                                                    Class='single-action fa fa-eye'></a>
+                                                <a href="javascript:void(0)"
+                                                    (click)="DeleteRecordFile(doc.PatientId,doc.DType,doc.Main_row)"
+                                                    class="single-action fa fa-trash" data-toggle="modal" data-target="#deleteRecord"></a>
+                                            </ng-template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <tbody>
+                    <button hidden="hidden" class="fa fa-close" data-dismiss="modal"  id="closeBtn" #closeBtn></button>
+                    <a href="javascript:void(0)" #closebutton class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-theme modal-small" id="uploadDataFileFacility" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Files</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-inner">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="upload-section">
+                        <div class="fileupload">
+                            <p><b>Please Select Your File(s)</b></p>
+                            <span class="btn btn-file drag-drop-box ">
+                                <span class="fileupload-new"><i class="fa fa-upload"></i> Drop &amp; drag files Here
+                                    or Browse</span>
+                                <input type="file" #file multiple (change)="uploadFile($event)">
+                                <span class="fileupload-preview"></span>
+                            </span>
+                        </div>
+                        <span style="color: red;">{{fileMessage}}</span>
+                    </div>
+                    <div class="page-top-action">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <a href="javascript:void(0)" style="pointer-events: none;" class="left"><b>Verify files and assign doc types
+                                        below</b></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme">
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th>File Name</th>
+                                    <th width="300">Doc Type</th>
+                                    <th width="80">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr [ngClass]="item.Duplicacy ? 'error-td' : ''"
+                                    *ngFor="let item of fileListData;let i=index;">
+                                    <td>{{i+1}}</td>
+                                    <td>
+                                        {{item.fileName}}
+                                        <!-- <img [src]= item.image  height="100" width="100px" style="margin: 3px;">   -->
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="input-group input-loader">
+                                                <select class="form-control" (change)="getDocType($event,i)">
+                                                    <!-- <option value = 0 [selected] ="true">Select Document File Type</option> -->
+                                                    <option value=0>Select Document File Type</option>
+                                                    <option *ngFor="let DDl of doctypeList"
+                                                        [selected]="item.DocId == DDl.DocID" value={{DDl.DocID}}>
+                                                        {{DDl.DocType}}
+                                                    </option>
+                                                </select>
+                                                <i *ngIf="showDropdownLoader"
+                                                    class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a href="javascript:void(0)" target="_blank"
+                                                (click)="viewDetail(item.viewUrl)" title="view"
+                                                class="single-action fa fa-eye"></a>
+                                            <a href="javascript:void(0)" (click)="deleteRow(item)"
+                                                class="single-action fa fa-trash"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-clear btn-sm pull-left" id="closeAutoRouteBtn" #closeAutoRouteBtn  (click)="deleteClose()"
+                    data-dismiss="modal">Delete Files & Cancel</a>
+                <button type="button" (click)="uploadfileattach()" class="btn btn-theme btn-sm pull-left">Upload Files &
+                    Attach</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="AppropriateEventPopUp" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Please select appropriate event(s)</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="radio-theme">
+                                    <input class="form-control" name="Patient" id="PatientNoShow" type="radio">
+                                    <label for="PatientNoShow" name="Patient" class="arrow-label">Patient was a no
+                                        show</label>
+                                </div>
+                                <div class="radio-theme">
+                                    <input class="form-control" name="Patient" id="PatientExam" type="radio">
+                                    <label for="PatientExam" name="Patient" class="arrow-label">Patient could not
+                                        complete the exam</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="padding-left">
+                                    <div class="form-group">
+                                        <div class="theme-label">reason</div>
+                                        <div class="input-group">
+                                            <select class="form-control">
+                                                <option value="0" selected>Select the reason</option>
+                                                <option value="1">Claustrophobic</option>
+                                                <option value="2">Machine Failure</option>
+                                                <option value="3">Over Booked</option>
+                                                <option value="4">Felt ill</option>
+                                                <option value="5">Emergency</option>
+                                                <option value="6">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="padding-left">
+                                    <div class="theme-label-title">Was patient rescheduled?</div>
+                                    <div class="radio-theme">
+                                        <input class="form-control" name="rescheduled" id="rescheduledYes" type="radio">
+                                        <label for="rescheduledYes" name="rescheduled" class="arrow-label">Yes <i
+                                                class="fa-right-icon fa fa-calendar"></i></label>
+                                    </div>
+                                    <div class="radio-theme">
+                                        <input class="form-control" name="rescheduled" id="rescheduledNo" type="radio">
+                                        <label for="rescheduledNo" name="rescheduled" class="arrow-label">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-theme btn-sm pull-left">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="deleteRecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure to delete?</p>
+            </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+                    <a (click)="DeleteUploadedFile()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
+                </div>
+        </div>
+    </div>
+</div>
+
+<app-patient-detail></app-patient-detail>
+<button #hiddenCommonMessagePopUpButton [hidden]="true" data-toggle="modal"
+    data-target="#AppropriateEventPopUp"></button>

@@ -1,0 +1,270 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Dashboard</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="dashboard-page">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="report-overview-module"></div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="dashboard-task panel-group" id="tasks-accordion">
+                        <div class="dashboard-task-header">Assigned Tasks</div>
+                        <div class="dashboard-task-body">
+                            <div class="dashboard-item done" *ngFor="let singleTask of allTaskArray;let i=index;">
+                                <div class="single-todo collapsed">
+                                    <div class="todo-title">
+                                        <a href="javascript:void(0)" class="readmore  " data-toggle="modal"
+                                            data-target="#view-task2"
+                                            (click)="viewTask2(singleTask.TaskId)">{{singleTask.TaskTitle}}</a>
+                                    </div>
+
+
+                                    <div class="inner_item_child" data-toggle="collapse" attr.data-target="#task{{i}}"
+                                        aria-expanded="false" attr.aria-controls="task{{i}}">
+                                        <div class="item-details">
+
+                                            <div class="todo-assigned">Assigned By <span
+                                                    style="color: currentColor !important;">{{singleTask.TaskAssignBy3}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="task-detail panel-collapse collapse" id="task{{i}}"
+                                    data-parent="#tasks-accordion">
+                                    <p>{{singleTask.TaskSpecifics}}</p>
+                                </div>
+                            </div>
+                            <div class="single-task" *ngIf="allTaskArray.length==0">
+                                <h3>No Pending Tasks</h3>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-task-footer" *ngIf="allTaskArray.length>0">
+                            <a data-toggle="modal" data-target="#task-manager" class="btn btn-theme"
+                                (click)="showTaskManagementWindow()">View More <i
+                                    class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="dashboard-task">
+                        <div class="dashboard-task-header">Calender</div>
+                        <div class="dashboard-task-body">
+                            <div class="same-data">
+                                <img src="assets/images/calender.png" alt="Calender">
+                            </div>
+                        </div>
+                        <div class="dashboard-task-footer">
+                            <a [routerLink]="['/myprofile/calender']" class="btn btn-theme">View More <i
+                                    class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="dashboard-task">
+                        <div class="dashboard-task-header">Team Members</div>
+                        <div class="dashboard-task-body">
+                            <div class="table-responsive manual-table">
+                                <dx-data-grid id="gridContainer" [dataSource]="teamMemberList"
+                                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [columnMinWidth]="30" keyExpr="USERID" [showBorders]="true">
+                                    <dxo-sorting mode="none"></dxo-sorting>
+                                    <dxo-header-filter [visible]="false" [allowSearch]="false">
+                                    </dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true">
+                                    </dxo-load-panel>
+                                    <dxi-column dataField="USERID" [width]="100" caption="Action"
+                                        [allowFiltering]="false" [allowSorting]="false" [visible]="false">
+                                    </dxi-column>
+                                    <dxi-column dataField="FIRSTNAME" caption="FIRST NAME" cellTemplate="cellTemplate">
+                                    </dxi-column>
+                                    <dxi-column dataField="LASTNAME" caption="LAST NAME"></dxi-column>
+                                    <dxi-column dataField="WORKEMAIL" caption="WORK EMAIL"></dxi-column>
+                                    <dxi-column dataField="DepartmentName" caption="DEPARTMENT Name">
+                                    </dxi-column>
+                                    <dxi-column dataField="Hours" caption="SHIFT HOURS"></dxi-column>
+                                    <div *dxTemplate="let data of 'cellTemplate'">
+                                        <a href="javascript:void(0)" (click)="getRowCurrentDetail(data)"
+                                            data-toggle="modal" data-target="#addEditrecord">{{data.data.FIRSTNAME}}</a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+                        </div>
+                        <div class="dashboard-task-footer">
+                            <a [routerLink]="['/myprofile/team-members']" class="btn btn-theme">View More <i
+                                    class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="dashboard-task">
+                        <div class="dashboard-task-header">Links</div>
+                        <div class="dashboard-task-body">
+                            <div class="table-responsive links-table">
+                                <dx-data-grid id="gridContainer" [dataSource]="linksList" [allowColumnResizing]="true"
+                                    [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="LinkId"
+                                    [showBorders]="true">
+                                    <dxo-sorting mode="multiple"></dxo-sorting>
+                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true">
+                                    </dxo-load-panel>
+                                    <dxi-column dataField="Category" caption="Category" [groupIndex]="0"
+                                        [visible]="false"></dxi-column>
+                                    <dxi-column dataField="Did" [width]="100" caption="id" [allowFiltering]="false"
+                                        [allowSorting]="false" [visible]="false"></dxi-column>
+                                    <dxi-column dataField="Link" caption="Link" [visible]="false"></dxi-column>
+                                    <dxi-column dataField="Anchor" caption="Anchor" [visible]="false"></dxi-column>
+                                    <dxi-column caption="URL" cellTemplate="cellTemplate"></dxi-column>
+                                    <dxi-column dataField="Description" caption="Description"></dxi-column>
+                                    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+                                    <div *dxTemplate="let data of 'cellTemplate'">
+                                        <a [href]="data.data.Link" target="_blank">{{data.data.Anchor}}</a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+                        </div>
+                        <div class="dashboard-task-footer">
+                            <a href="javascript:void(0)" [routerLink]="['/myprofile/links']" class="btn btn-theme">View
+                                More <i class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <app-loader></app-loader> -->
+<!--Add/Update Pop Up Star-->
+<div class="modal fade modal-theme in" id="addEditrecord" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{userName}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <ckeditor #myckeditor [(ngModel)]="userDuties" [config] = "ckConfig" (paste)="onPaste($event)"
+                        (change)="onChange($event)">
+                    </ckeditor>
+                    <!-- <ckeditor [editor]="Editor"  [(ngModel)]="userDuties" [disabled]="true"></ckeditor> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="view-task2" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="exampleModalLabel" aria-modal="true" *ngIf="isTaskManagementPopShow">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{taskDetail.TaskTitle}}</h5>
+                <div class="close-dismiss" #modalClose data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modaltask-detail">
+                    <div class="task-left-group">
+                        <div class="single-details">Assigned to: <span>{{taskDetail.TaskAssignTo}}</span></div>
+                        <div class="single-details">Due Date: <span>{{taskDetail.DueDate | date: dateTimeFormatCustom.DateMMMddy}}</span></div>
+                        <div class="single-details">Assigned by: <span>{{taskDetail.TaskAssignBy}}</span></div>
+                        <div class="single-details">Status: <span>{{taskDetail.TaskStatus}}</span> <a
+                                href="javascript:void(0)" class="blue-btn">{{taskDetail.Tag}}</a></div>
+                        
+                    </div>
+                    <div class="task-right-group">
+                        <div class="single-details">
+                            <!-- <div class="single-details-label">{{taskDetail.DueDate}}</div> -->
+                            <div class="fa fa-external-link" aria-hidden="true" *ngIf="taskDetail.IsIconShow==true">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-more dropdown-toggle" type="button" id="dropdownMenuButton2"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    (click)="showDtailWindowMenu(taskDetail.TaskStatus)">
+                                    <i class="pe-icon pe-7s-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuArchive2"
+                                        (click)="markTaskArchived(taskDetail.TaskId)">Archive</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuAssignToOther2"
+                                        data-toggle="modal" data-target="#assign-to-other"
+                                        (click)="taskAssignToMenuClick(taskDetail.TaskId)">Assign to Other</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" id="menuMoveToComplete2"
+                                        (click)="markTaskCompleted(taskDetail.TaskId)">Move to Completed</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modaltask-detail-description">
+                    <ng-container *ngIf="taskDetail.IsPatientExist==true">
+                        <div class="single-details">Patient ID: <a href="javascript:void(0)"
+                                style="text-decoration: underline !important;"
+                                (click)="openPatientDetailWindow(taskDetail.patientDetail)" data-toggle="modal"
+                                [attr.data-target]="'#'+divPateintId">{{taskDetail.PatientId}}</a>
+                            {{taskDetail.PatientRecord}} </div>
+                        <!-- <div class="single-details">Patient ID: <a href="javascript:void(0)" style="text-decoration: underline !important;" (click)="openPatientDetailWindow(taskDetail.patientDetail)" data-toggle="modal" data-target="#patient-Detail-Window">{{taskDetail.PatientId}}</a> {{taskDetail.PatientRecord}} </div> -->
+                    </ng-container>
+                    <div class="single-details">Detail:</div>
+                    <p>{{taskDetail.TaskSpecifics}}</p>
+                </div>
+                <div class="modaltask-detail-description" *ngIf="IsAssignedToOtherUser==true">
+                    <div class="single-details">originally assigned from {{taskDetail.InitialyAssignedTo}}</div>
+                </div>
+
+            </div>
+            <!-- <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border btn-sm" data-dismiss="modal" (click)="cancelButtonClicked()">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-theme btn-sm" data-dismiss="modal">Save</a>
+            </div> -->
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="assign-to-other" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true" *ngIf="isTaskManagementPopShow"> 
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Assign to Other</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">					
+                <div class="theme-form">
+                    <div class="row">
+                        <div class="col-xl-12 center-block">
+                            <div class="form-group">
+                                <div class="theme-label">Assign To</div>
+                                <div class="input-group">
+                                    <select class="form-control" [(ngModel)]="taskAssignToOtherUserModel">
+                                        <option selected disabled value="">select user</option>
+                                        <option *ngFor="let user of epicUserList" value={{user.userId}}>
+                                            {{user.userName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+                <button href="javascript:void(0)" class="btn btn-border pull-left btn-sm" data-dismiss="modal" [disabled]="taskAssignToOtherUserModel==null?true:false" (click)="taskAssignButtonClick(taskAssignToOtherUserModel)">Assign</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<app-patient-detail [pateintIdDynamic]="divPateintId"></app-patient-detail>

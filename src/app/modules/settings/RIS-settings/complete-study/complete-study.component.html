@@ -1,0 +1,74 @@
+<div class="main-page-body">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header-title">Completed Studies</div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="page-top-action">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="precisemri-search page-select">
+                        <div class="theme-label">Page Size</div>
+                            <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                                <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                            </select>
+                    </div>
+                    <a href="javascript:void(0)" (click)="getCompletedStudies()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <dx-data-grid
+            id="gridContainer"
+            [dataSource]="completeStudyList"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [allowColumnReordering]="true"
+            [columnResizingMode]="columnResizingMode"
+            [columnMinWidth]="30"
+            keyExpr="STATUSORDER" 
+            [showBorders]="true"
+            rowTemplate="rowTemplateName">
+
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter>
+				<!-- <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter> -->
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>            
+            <dxi-column dataField="IsMarkCompleted" caption="COMPLETED"></dxi-column>
+            <dxi-column dataField="STATUSORDER" caption="STATUS ORDER"></dxi-column>
+            <!-- <dxi-column dataField="DoNotCountForBi" caption="Do Not Count For Bi"></dxi-column> -->
+            <dxi-column dataField="STATUS" caption="STATUS"></dxi-column>
+
+            <tbody *dxTemplate="let data of 'rowTemplateName'">		
+                <tr>
+                    <td>
+                        <div class="checkbox-new">
+                            <input class="checkbox-input" [(ngModel)]="data.data.IsMarkCompleted" (change)="isMarkCheck(data.data, $event)" type="checkbox" [checked]="data.data.IsMarkCompleted">
+                            <label class="checkbox-label">&nbsp;</label>
+                        </div>
+                    </td>				
+                    <td>{{data.data.STATUSORDER}}</td>
+                    <!-- <td>
+                        <div class="checkbox-new">
+                            <input class="checkbox-input" [(ngModel)]="data.data.DoNotCountForBi" (change)="doNotCountForBiCheck(data.data)" type="checkbox" [checked]="data.data.DoNotCountForBi">
+                            <label class="checkbox-label">&nbsp;</label>
+                        </div>
+                    </td>	 -->
+                    <td>{{data.data.STATUS}}</td>
+                </tr>                   
+            </tbody>
+            </dx-data-grid>
+        </div>
+        <div>
+            <div>
+                <div *ngFor="let item of completeStudyList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+                <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

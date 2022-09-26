@@ -1,0 +1,464 @@
+
+<div class="page-top-action">
+   <div class="row">      
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pull-right">
+         <div class="precisemri-search">
+            <!-- <div class="date-group">
+               <div class="form-group">
+                  <div class="input-group">
+                     <dx-date-box
+                           formControlName="fromDate"
+                           type="date"
+                           [value]="now"
+                           [showClearButton]="true"
+                           [useMaskBehavior]="true"
+                           displayFormat="shortdate"
+                           dateSerializationFormat="yyyy-MM-dd">
+                     </dx-date-box> 
+                  </div>
+               </div>
+               <div class="form-group">
+                  <div class="input-group">
+                     <dx-date-box
+                           formControlName="toDate"
+                           type="date"
+                           [value]="now"
+                           [showClearButton]="true"
+                           [useMaskBehavior]="true"
+                           displayFormat="shortdate"
+                           dateSerializationFormat="yyyy-MM-dd">
+                     </dx-date-box> 
+                  </div> 
+               </div>
+            </div> -->
+            <div *ngIf="changeActionReview" >
+               <select (change)="onChangeDdlAction($event.target.value)" class="form-search">
+                  <option selected="" value="0">Select an action</option>
+                  <option value="1">Bill Selected Studies</option>
+                  <option value="2">Adjust study lease time</option>                
+               </select>
+               <a href="javascript:void(0)" (click)=selectChange() class="search">Go</a>
+           </div>
+           <div *ngIf="changeActionReBill">
+               <select (change)="onChangeDdlAction($event.target.value)" class="form-search">
+                  <option selected="" value="0">Select an action</option>
+                  <option value="3">Rebill</option>
+                  <option value="4">Remove from billing</option>                
+               </select>
+               <a href="javascript:void(0)" (click)=selectChange() class="search">Go</a>
+           </div>
+            <a href="javascript:void(0)" #adjust_lease_time class="right btn btn-theme" style="display:none" data-toggle="modal" data-target="#adjust-study-lease-time">adjust study lease time</a>
+            <a href="javascript:void(0)" #Bill_Selected_Studies class="right btn btn-theme" style="display:none" data-toggle="modal" data-target="#Bill-Selected-Studies">Frontdesk popup</a>
+            <a href="javascript:void(0)" #rebill_popup class="right btn btn-theme" style="display:none" data-toggle="modal" data-target="#rebill_popup">Rebill popup</a>
+            <a href="javascript:void(0)" #removeBilling_popup class="right btn btn-theme" style="display:none" data-toggle="modal" data-target="#removeBilling_popup">Remove Billing popup</a>
+            
+         </div>
+      </div>
+   </div>
+</div>
+<div class="tab-section">
+   <ul class="nav nav-tabs">
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" (click)="DisplayDataOnTabs(5,'Not_Billed_Yet')" [ngClass]="{'active': tabId === 'Not_Billed_Yet'}"  href="#not-billed-yet">Not Billed Yet</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" (click)="DisplayDataOnTabs(4,'Needs_Review')" [ngClass]="{'active': tabId === 'Needs_Review'}" href="#needs-review">Needs Review</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" (click)="DisplayDataOnTabs(3,'Pending_Payment')" [ngClass]="{'active': tabId === 'Pending_Payment'}" href="#pending-payment">Pending Payment</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" (click)="DisplayDataOnTabs(2,'Paid')" [ngClass]="{'active': tabId === 'Paid'}" href="#paid">Paid</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link active"  data-toggle="tab" (click)="DisplayDataOnTabs(1,'All')" [ngClass]="{'active': tabId === 'All'}" href="#billing-all">All</a>
+      </li>
+   </ul>
+   <div class="tab-content">
+      <div class="tab-pane active"  [attr.id]="tabId" role="tabpanel">
+         <div class="table-responsive">
+            <div class="table-responsive">
+               <dx-data-grid id="gridContainer" [dataSource]="GridData" [allowColumnResizing]="true" [columnAutoWidth]="true"
+                   [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode" [columnMinWidth]="30"
+                   keyExpr="INTERNALSTUDYID"  (onSelectionChanged)="selectionChanged($event)"  [showBorders]="true">
+       
+                   <dxo-sorting mode="multiple"></dxo-sorting>
+                   <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> </dxo-filter-row> -->
+                   <!-- <dxo-header-filter [visible]="showHeaderFilter"> </dxo-header-filter> -->
+					<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                   <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                   <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
+                   <dxo-paging [pageSize]="100"> </dxo-paging>
+                   <dxo-pager [visible]="false"></dxo-pager>
+                   <dxi-column  caption="DOCS" [allowFixing]="false"></dxi-column>
+                   <dxi-column dataField="FAMILYNAME" caption="LAST NAME" [allowFixing]="false"></dxi-column>
+                   <dxi-column dataField="GIVENNAME" caption="FIRST NAME"></dxi-column>
+                   <dxi-column dataField="PATIENTID" caption="PATIENT ID"></dxi-column>
+                   <dxi-column dataField="BIRTHDATE" caption="DOB"></dxi-column>
+                   <dxi-column dataField="PARENTCONAME" caption="PARENT FACILITY" alignment="left"></dxi-column>
+       
+                   <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION" alignment="left"></dxi-column>
+                   <dxi-column dataField="STUDYDATETIME" caption="APT. TIME" alignment="left"></dxi-column>
+                   <dxi-column caption="Lease Time" alignment="left"></dxi-column>                   
+                   <dxi-column dataField="NUMIMAGES" caption="Images" alignment="left"></dxi-column>
+                   <dxi-column dataField="STATUS" caption="Status" alignment="left"></dxi-column>
+                   
+       
+                   <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="radTemplate">
+                   </dxi-column>
+                   <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="techTemplate">
+                   </dxi-column>
+                   <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="demoTemplate">
+                   </dxi-column>
+                   <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="PatientIdTemplate">
+                   </dxi-column>       
+                
+                   <div *dxTemplate="let data of 'radTemplate'">
+                       <a href="javascript:void(0)" [ngClass]="data.data.Radiologist_Lien ? 'btn btn-success' : 'btn btn-secondary'" (click)="getFacilityDetail(data.data.PATIENTID,data.data.Radiologist_Lien,data)"> RAD LIEN </a>
+                   </div>
+                   <div *dxTemplate="let data of 'techTemplate'">
+                       <a href="javascript:void(0)" [ngClass]="data.data.Tech_Lien ? 'btn btn-success' : 'btn btn-secondary'" (click)="getFacilityDetail(data.data.PATIENTID,data.data.Tech_Lien,data)">TECH LIEN</a>
+                   </div>
+                   <div *dxTemplate="let data of 'demoTemplate'">
+                       <a href="javascript:void(0)" [ngClass]="data.data.Patient_Demo ? 'btn btn-success' : 'btn btn-secondary'" (click)="getFacilityDetail(data.data.PATIENTID,data.data.Patient_Demo,data)">DEMO</a>
+                   </div>
+                   <div *dxTemplate="let data of 'PatientIdTemplate'">
+                       <a href="javascript:void(0)" [ngClass]="data.data.Patient_Identification ? 'btn btn-success' : 'btn btn-secondary'" (click)="getFacilityDetail(data.data.PATIENTID,data.data.Patient_Identification,data)">Patient ID</a>
+                   </div>
+                   
+               </dx-data-grid>
+               <div class="pagination-theme">
+                  <div *ngFor="let item of GridData | paginate: { id: 'pagination2' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalFacility }"></div>
+                      <pagination-controls id="pagination2" (pageChange)="FacilityBillingPageChanged($event)"></pagination-controls>   
+               </div>
+           </div>
+
+            <!-- <table class="table table-theme">
+               <thead>
+                  <tr>
+                     <th class="check-td" width="50">
+                        <div class="checkbox-theme">
+                           <input class="form-control" id="check1" class="styled" type="checkbox">
+                           <label for="check1" class="arrow-label">&nbsp;</label>
+                        </div>
+                     </th>
+                     <th width="100">
+                        DOCS
+                     </th>
+                     <th width="100">
+                        Last Name
+                     </th>
+                     <th width="100">
+                        First Name
+                     </th>
+                     <th width="100">
+                        Patient ID
+                     </th>
+                     <th width="100">
+                        DOB
+                     </th>
+                     <th width="100">
+                        Study Description
+                     </th>
+                     <th width="100">
+                        APT. Time
+                     </th>
+                     <th width="100">
+                        Lease Time
+                     </th>
+                     <th width="100">
+                        Images
+                     </th>
+                     <th width="100">
+                        Status
+                     </th>
+                     <th width="100">
+                        &nbsp;
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td class="check-td" width="50">
+                        <div class="checkbox-theme">
+                           <input class="form-control" id="check2" class="styled" type="checkbox">
+                           <label for="check2" class="arrow-label">&nbsp;</label>
+                        </div>
+                     </td>
+                     <td><i class="fa fa-file-text-o"></i></td>
+                     <td>Smith</td>
+                     <td>BOB</td>
+                     <td>PRE6658</td>
+                     <td>2/25/2000</td>
+                     <td>MRI OF KNEE-LT</td>
+                     <td>5/5/21 5:35 PM</td>
+                     <td>30 min</td>
+                     <td class="active">54</td>
+                     <td>Signed 
+                     </td>
+                     <td>
+                        <span class="disable">RAD LIEN</span><span class="enable">TECH LIEN</span><span class="enable">DEMO</span><br /><span class="disable">BILLED</span><span class="disable">4 REVIEW</span><span class="disable">PAID</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="check-td" width="50">
+                        <div class="checkbox-theme">
+                           <input class="form-control" id="check2" class="styled" type="checkbox">
+                           <label for="check2" class="arrow-label">&nbsp;</label>
+                        </div>
+                     </td>
+                     <td><i class="fa fa-file-text-o"></i></td>
+                     <td>Smith</td>
+                     <td>BOB</td>
+                     <td>PRE6658</td>
+                     <td>2/25/2000</td>
+                     <td>MRI OF KNEE-LT</td>
+                     <td>5/5/21 5:35 PM</td>
+                     <td>45 min</td>
+                     <td class="inactive">0</td>
+                     <td>Scheduled 
+                     </td>
+                     <td>
+                        &nbsp;
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="check-td" width="50">
+                        <div class="checkbox-theme">
+                           <input class="form-control" id="check2" class="styled" type="checkbox">
+                           <label for="check2" class="arrow-label">&nbsp;</label>
+                        </div>
+                     </td>
+                     <td><i class="fa fa-file-text-o"></i></td>
+                     <td>Smith</td>
+                     <td>BOB</td>
+                     <td>PRE6658</td>
+                     <td>2/25/2000</td>
+                     <td>MRI OF KNEE-LT</td>
+                     <td>5/5/21 5:35 PM</td>
+                     <td>25 min</td>
+                     <td class="active">100</td>
+                     <td>Signed 
+                     </td>
+                     <td>
+                        &nbsp;
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="check-td" width="50">
+                        <div class="checkbox-theme">
+                           <input class="form-control" id="check2" class="styled" type="checkbox">
+                           <label for="check2" class="arrow-label">&nbsp;</label>
+                        </div>
+                     </td>
+                     <td><i class="fa fa-file-text-o"></i></td>
+                     <td>Smith</td>
+                     <td>BOB</td>
+                     <td>PRE6658</td>
+                     <td>2/25/2000</td>
+                     <td>MRI OF KNEE-LT</td>
+                     <td>5/5/21 5:35 PM</td>
+                     <td>25 min</td>
+                     <td class="inactive">0</td>
+                     <td>Signed 
+                     </td>
+                     <td>
+                        &nbsp;
+                     </td>
+                  </tr>
+               </tbody>
+            </table> -->
+         </div>
+      </div>
+      <div class="tab-pane" id="needs-review">
+      </div>
+      <div class="tab-pane" id="pending-payment">
+      </div>
+      <div class="tab-pane" id="paid">
+      </div>
+      <div class="tab-pane" id="billing-all">
+      </div>
+   </div>
+</div>
+<div class="modal fade modal-theme in modal-small adjust-study-lease-time" id="adjust-study-lease-time" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Adjust Study Lease Time</h5>
+            <div class="close-dismiss" data-dismiss="modal"></div>
+         </div>
+         <div class="modal-body">
+            <form class="theme-form">
+               <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="theme-label-title">Please adjust study lease time</div>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="theme-label-subtitle text-center">Current Lease Time: <strong>45 mins.</strong></div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="theme-label-subtitle">1) Select if Study longer or less than the time above</div>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="radio-theme">
+                        <input class="form-control" name="study-time" id="study-time-overage" type="radio" checked="checked">
+                        <label for="study-time-overage">Overage</label>
+                     </div>
+                     <div class="radio-theme">
+                        <input class="form-control" name="study-time" id="study-time-underage" type="radio">
+                        <label for="study-time-underage">Underage</label>
+                     </div>
+                  </div> 
+               </div>
+               <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="theme-label-subtitle">2) Select how many minutes to adjust by</div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-5 col-12">
+                     <div class="form-group">
+                        <div class="input-group">
+                           <select class="form-control">
+                              <option>Select Type</option>
+                              <option>Time Adjustment</option>
+                           </select>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+			   <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="theme-label-subtitle">Provide detailed notes for the reason of the adjustment</div>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                     <div class="form-group">
+                       <div class="input-group">
+					    <textarea placeholder="Please provide details for the adjustment" class="form-control"></textarea>
+					   </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-left" data-dismiss="modal">Cancel</a>
+            <button type="button" class="btn btn-theme btn-sm pull-left" data-dismiss="modal">Submit Adjustment</button>
+         </div>
+      </div>
+   </div>
+  
+</div>
+
+
+<div class="modal fade modal-theme modal-small" id="Bill-Selected-Studies" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true"> 
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Possible incomplete studies need review</h5>
+            <div class="close-dismiss" data-dismiss="modal"></div>
+         </div>
+         <div class="modal-body">
+		   <div class="possible-studies">
+		   The following studies have are not ready to be billed. Please review below.
+		   </div>
+            <div class="table-responsive manual-table">
+               <table class="table table-theme">
+                  <thead>
+                     <tr>
+                        <th>Patient ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Error</th>
+                        <th>Override &amp; Bill</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let data of WarningPopup">
+                        <td>{{data.PATIENTID}}</td>
+                        <td>{{data.LastName}}</td>
+						      <td>{{data.FirstName}}</td>
+						      <td>{{data.Error}}</td>
+						      <td><div class="switch-group switch-small"><label class="switch"><input type="checkbox" [checked]="data.checked" ([ngModel])="data.checked" (change)="getCheckedBillStudies(data)"><span class="slider round"></span></label></div></td>
+                     </tr>
+					 
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+            <a href="javascript:void(0)" (click)="OverrideSelectedStudies()" data-dismiss="modal" class="btn btn-theme btn-sm pull-left">Override & Bill Selected Studies</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="rebill_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true"> 
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Please enter a detailed note for rebilling the study</h5>
+            <div class="close-dismiss" data-dismiss="modal"></div>
+         </div>
+         <form [formGroup]="RebillNoteForm"  class="theme-form"> 
+           <div class="modal-body">
+               <div class="modal-body-inner">
+                   <div class="row">
+                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                           <div class="form-group">
+                               <div class="theme-label">Note</div>
+                               <div class="input-group">
+                                   <textarea type="text" class="form-control" formControlName="rebillNote" [ngClass]="{ 'is-invalid': submitted && addForm.rebillNote.errors }"></textarea>
+                               </div>
+                           </div>
+                           <div *ngIf="submitted && addForm.rebillNote" class="tooltiptext text-right">                            
+                              <small class="error text-danger" *ngIf="addForm.rebillNote.invalid">Note is required</small>
+                          </div>
+                       </div>
+                   </div>							
+               </div>
+           </div> 
+           <div class="modal-footer">
+               <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+               <button type="submit" (click)="RebillSelectedStudies()" [attr.data-dismiss]="modelValue" class="btn btn-theme btn-sm pull-left">Rebill Selected Studies</button>
+            </div>            
+       </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="removeBilling_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true"> 
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Please enter a detailed note for removing the study</h5>
+            <div class="close-dismiss" data-dismiss="modal"></div>
+         </div>
+         <form [formGroup]="RemoveNoteForm"  class="theme-form"> 
+           <div class="modal-body">
+               <div class="modal-body-inner">
+                   <div class="row">
+                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                           <div class="form-group">
+                               <div class="theme-label">Note</div>
+                               <div class="input-group">
+                                   <textarea type="text" class="form-control" formControlName="removeNote" [ngClass]="{ 'is-invalid': submittedRemove && removeForm.removeNote.errors }"></textarea>
+                               </div>
+                           </div>
+                           <div *ngIf="submittedRemove && removeForm.removeNote" class="tooltiptext text-right">                            
+                              <small class="error text-danger" *ngIf="removeForm.removeNote.invalid">Note is required</small>
+                          </div>
+                       </div>
+                   </div>							
+               </div>
+           </div> 
+           <div class="modal-footer">
+               <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+               <button type="submit" (click)="RemoveSelectedStudies()" [attr.data-dismiss]="modelValue" class="btn btn-border btn-sm pull-right">Remove Selected Studies</button>
+            </div>            
+       </form>
+      </div>
+   </div>
+</div>

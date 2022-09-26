@@ -1,0 +1,52 @@
+  <!-- Reminder Status Tab Start-->
+  <div class="tab-pane" id="reminder-status-tab">
+    <div class="search-field search-field-theme page-top-action">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="precisemri-search">
+                    <select class="form-search" [(ngModel)]="reminder" (change)="reminderTypeChange(reminder)">
+                        <!-- <option selected="">Select an Action</option> -->
+                        <option value = "Patient">PATIENT REMINDER</option>
+                        <option value = "Cannot">CANNOT SCHEDULE</option>
+                    </select>
+                    <!-- <a href="javascript:void(0)" class="search">Go</a> -->
+                </div>
+                <div class="precisemri-search page-select">
+                    <div class="theme-label">Page Size</div>
+                        <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                            <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                        </select>
+                </div>
+                <a href="javascript:void(0)" (click)="refreshReminderStatus()" class="right btn btn-theme"><i class="fa fa-repeat"></i> Refresh</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive manual-table">
+        <table class="table table-theme">
+            <thead>
+                <tr>
+                    <th width="100">Internal Study Id</th>
+                    <th width="100">Patient Id</th>
+                    <th width="100">Initial Reminder</th>
+                    <th width="100">Second Reminder</th>
+                    <th width="100">Third Reminder</th>
+                    <th width="100">Fourth Reminder	</th>
+                </tr>															
+            </thead>														
+            <tbody>		
+                <tr *ngFor="let reminder of reminderList | paginate: { itemsPerPage: 100, currentPage: pageNo, totalItems:totalRecords }">
+                    <td>{{reminder.internalstudyid}}</td>
+                    <td>{{reminder.patientid}}</td>
+                    <td>{{reminder.isInitialReminder}}</td>
+                    <td>{{reminder.isSecondReminder}}</td>
+                    <td>{{reminder.isThirdReminder}}</td>
+                    <td>{{reminder.isFourthReminder}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination-theme">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>	
+<!-- Reminder Status Tab End -->

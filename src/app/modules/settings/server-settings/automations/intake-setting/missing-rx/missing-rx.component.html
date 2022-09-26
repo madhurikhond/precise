@@ -1,0 +1,83 @@
+<div class="tab-pane" id="missing-rx-tab">
+    <div class="theme-form-center">
+        <form [formGroup]="missingRxForm" (ngSubmit)="onSubmit()" class="theme-form">
+            <div class="theme-panel-body">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div class="user-detail">
+							<div class="row">
+								<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+									<div class="checkbox-theme">
+										<input class="form-control" formControlName="isMissingRX" id="active25" type="checkbox">
+										<label for="active25" class="arrow-label">Active</label>
+									</div>
+									<div class="form-group">
+										<div class="theme-label">Scheduling time</div>
+										<div class="input-group icon-active">
+											<input type="time" 
+											[ngClass]="{ 'is-invalid': (submitted && mrxForm.missingRXServiceTime.errors)}"
+											formControlName="missingRXServiceTime" class="form-control" id="timepicker36">
+											<!-- <i class="fa-right-icon fa fa-clock-o"></i> -->
+										</div>
+										<div *ngIf="submitted && mrxForm.missingRXServiceTime.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="mrxForm.missingRXServiceTime.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+									<div class="form-group autocomplete">
+										<div class="theme-label">Days Of Week</div> 
+										<div class="input-group">
+											<ng-select 
+												[items]="dayList" 
+												placeholder="Select" 
+												formControlName="missingRXWeekDays" 
+												bindLabel="day" 
+												[multiple]="true"
+												[closeOnSelect]="false"
+												bindValue="day" 
+												[(ngModel)]="selectedDayList"
+												[ngClass]="{ 'is-invalid': (submitted && mrxForm.missingRXWeekDays.errors)}"
+												(change)="onChange($event)">   
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+														<span class="ng-value-label"> {{item.day}}</span>
+														<span class="ng-value-icon right" (click)="clear(item)"
+															aria-hidden="true">×</span>
+													</div>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													</div>
+												</ng-template>                                   
+											</ng-select>
+										</div>
+										<div *ngIf="submitted && mrxForm.missingRXWeekDays.errors" class="tooltiptext text-right">
+											<small class="error text-danger" *ngIf="mrxForm.missingRXWeekDays.errors.required">
+												Required
+											</small>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="input-group">
+                            <textarea class="form-control" 
+                            [ngClass]="{ 'is-invalid': (submitted && mrxForm.missingRXNote.errors)}"
+                            formControlName="missingRXNote" placeholder="Add Note"></textarea>
+                        </div>
+                        <div *ngIf="submitted && mrxForm.missingRXNote.errors" class="tooltiptext text-right">
+                            <small class="error text-danger" *ngIf="mrxForm.missingRXNote.errors.required">
+                                Required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="theme-panel-footer">
+                <button type="submit" href="javascript:void(0)" class="btn btn-theme">Update</button>
+            </div>
+        </form>									
+    </div>
+</div>	

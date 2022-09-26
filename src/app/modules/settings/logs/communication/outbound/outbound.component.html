@@ -1,0 +1,57 @@
+<div class="page-top-action">
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="precisemri-search page-select">
+				<div class="theme-label">Page Size</div>
+					<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+						<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+					</select>
+		</div>
+	</div>
+</div>
+</div>
+<div *ngFor="let item of outboundlist | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }"></div>
+	<div class="table-responsive">
+		<dx-data-grid
+			id="gridContainer"
+			[dataSource]="outboundlist"
+			[allowColumnResizing]="true"
+			[columnAutoWidth]="true"
+			[allowColumnReordering]="true"
+			[columnResizingMode]="columnResizingMode"
+			[columnMinWidth]="30"
+
+			(onSelectionChanged)="selectionChanged($event)"
+			keyExpr="LogId"  
+			[showBorders]="true">
+			<dxo-paging [enabled]="false"></dxo-paging>
+			<dxo-sorting mode="multiple"></dxo-sorting>
+			<!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+			<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+			<!-- <dxo-paging [pageSize]="pageSize"></dxo-paging>
+				<dxo-pager 
+					[showPageSizeSelector]="true"
+					[allowedPageSizes]="[10]"
+					[showInfo]="true" >
+				</dxo-pager>  -->
+			<dxo-load-panel [enabled]="false"></dxo-load-panel>	
+			<dxi-column dataField="LastName" caption="LAST NAME" [allowFixing]="true"></dxi-column>
+			<dxi-column dataField="FirstName" caption="FIRST NAME" [allowFixing]="false"></dxi-column>
+			<dxi-column dataField="PatientID" caption="PATIENT ID" [visible]="false"></dxi-column>
+			<dxi-column dataField="LType" caption="TYPE"></dxi-column>
+			<dxi-column dataField="OutboundType" caption="OUTBOUND TYPE" alignment="left"></dxi-column>
+			<dxi-column dataField="Status" caption="STATUS" alignment="center"></dxi-column>
+			<dxi-column dataField="SendOn"  caption="SENT ON" alignment="right" dataType="date" cellTemplate="dateTemplate"></dxi-column>
+			<dxi-column dataField="Owner" caption="USER"></dxi-column>
+			<dxi-column dataField="EmailTo" caption="EMAIL TO"></dxi-column>
+			<dxi-column dataField="FaxTo" caption="FAX/PHONE"></dxi-column>
+			
+			<div *dxTemplate="let data of 'dateTemplate'">
+				{{data.value | date: dateTimeFormatCustom.DateTime}}
+			</div>
+		</dx-data-grid>
+	</div>
+<div>
+	<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>   
+</div> 
