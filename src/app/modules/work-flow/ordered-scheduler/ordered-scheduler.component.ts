@@ -1042,7 +1042,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  getOrderedSchedulerData() {
+  getOrderedSchedulerData() {  
     this.deleteOrderedSchedulerActivity();
     var data = {
       'patientId': this.sForm.patientId.value ? this.sForm.patientId.value : null,
@@ -1096,7 +1096,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  onSearchSubmit() {
+  onSearchSubmit() { 
     this.selectedRows = [];
     this.pageNumber = 1;
     this.getOrderedSchedulerData();

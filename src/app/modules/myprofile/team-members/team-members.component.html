@@ -2,27 +2,29 @@
   <div class="search-field search-field-theme page-top-action">
     <div class="row">
       <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-        <div class="theme-form">
-          <div class="form-group">
-            <div class="theme-label">Search</div>
-            <div class="input-group">
-              <input type="text" class="form-control" [(ngModel)]="search"
-                     (keyup.enter)="applyFilter()">
+        <form>
+          <div class="theme-form">
+            <div class="form-group">
+              <div class="theme-label">Search</div>
+              <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="search"
+                       (keyup.enter)="applyFilter()">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <button type="submit" class="btn   btn-theme"
+                        (click)="applyFilter()">
+                  Search
+                </button>
+                <button type="button" class="btn btn-border"
+                        (click)="clearFilters()">
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="input-group">
-              <button type="submit" class="btn   btn-theme"
-                      (click)="applyFilter()">
-                Search
-              </button>
-              <button type="button" class="btn btn-border"
-                      (click)="clearFilters()">
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

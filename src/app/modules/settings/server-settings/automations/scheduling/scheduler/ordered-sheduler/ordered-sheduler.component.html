@@ -33,20 +33,20 @@
 												placeholder="Select" 
 												formControlName="orderedSchedulerFinancialType" 
 												bindLabel="financialtypename" 
-												[multiple]="true"
+												[multiple]="true" id="id94" (add)="a1=ValidateMultiSelectTextLength('id94',a1)"
 												[closeOnSelect]="false"
 												bindValue="financialtypename" 
 												[(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted && osForm.orderedSchedulerFinancialType.errors)}"
 												(change)="onChange($event)">  
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a1">
+														<span class="ng-value-label">{{items.length - a1}} more...</span>
 													</div>
 												</ng-template>                                   
 											</ng-select>
@@ -65,20 +65,20 @@
 												placeholder="Select"
 												formControlName="orderedSchedulerStatus" 
 												bindLabel="status" 
-												[multiple]="true"
+												[multiple]="true" id="id95" (add)="a2=ValidateMultiSelectTextLength('id95',a2)"
 												[closeOnSelect]="false"
 												bindValue="status" 
 												[(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && osForm.orderedSchedulerStatus.errors)}"
 												(change)="onChange($event)">         
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 2">
-														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a2">
+														<span class="ng-value-label">{{items.length - a2}} more...</span>
 													</div>
 												</ng-template>                            
 											</ng-select>

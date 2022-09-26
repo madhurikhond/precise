@@ -20,6 +20,8 @@ export type AutoRouteSettingFormValue = {
   ]
 })
 export class AutoRouteComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   autoRouteForm: FormGroup;
   submitted = false;
 
@@ -40,7 +42,7 @@ export class AutoRouteComponent implements OnInit {
     private readonly notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    this.commonMethodService.setTitle('Auto route');
+    this.commonMethodService.setTitle('Auto Route');
     this.getMasterDocumentTypeList();
     this.getFileExtensionList();
     this.getDefaultAutoRouteSetting();
@@ -216,4 +218,9 @@ debugger;
   }
 
   get arForm() { return this.autoRouteForm.controls; }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

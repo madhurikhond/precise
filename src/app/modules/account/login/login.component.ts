@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   loading: boolean = false;
-  freshLogin: string
+  freshLogin: string;
+  redirectLinkWithPermission : any;
   readonly commonRegex=CommonRegex;
-  redirectLinkWithPermission: any;
   constructor(private fb: FormBuilder,
     private readonly accountService: AccountService,
     private readonly storageService: StorageService,
@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit {
     return this.loggedInUser.value;
   }
   ngOnInit(): void {
-   
     if (this.checkIsLoggedIn()) {
       //this.router.navigate(['dashboard']);
       this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
@@ -183,5 +182,4 @@ export class LoginComponent implements OnInit {
         }
         return valReturn;
   }
-  
 }

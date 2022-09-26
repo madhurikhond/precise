@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <div class="search-field search-field-theme collapse show">
-                    <form [formGroup]="userServiceForm" class="theme-form" (submit)="searchUserMgt()">
+                    <form [formGroup]="userServiceForm" class="theme-form" (submit)="search()">
                         <div class="form-group">
                             <div class="theme-label">Search</div>
                             <div class="input-group">
@@ -328,7 +328,7 @@
                                                     <div class="input-group icon-active">
                                                         <!-- <input type="date" formControlName="birthday" class="form-control"> -->
                                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
-                                                            formControlName="birthday" type="date"
+                                                            formControlName="birthday" type="date" [max]="maxDate"
                                                             [showClearButton]="true" [useMaskBehavior]="true">
                                                         </dx-date-box>
                                                     </div>
@@ -602,16 +602,16 @@
                                             <div class="input-group">
                                                 <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker"
                                                     formControlName="assingBrokerID" [(ngModel)]="selectedBrokerList"
-                                                    [multiple]="true" [closeOnSelect]="false"
+                                                    [multiple]="true" id="id112" (add)="a1=ValidateMultiSelectTextLength('id112',a1)" [closeOnSelect]="false"
                                                     [loading]="showDropdownLoader" bindValue="BrokerID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                                             <span class="ng-value-label"> {{item.Broker}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > 1">
-                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                        <div class="ng-value" *ngIf="items.length > a1">
+                                                            <span class="ng-value-label">{{items.length - a1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -628,18 +628,18 @@
                                                 <ng-select [items]="parentFacilityList" placeholder="Select"
                                                     bindLabel="FacilityParentName"
                                                     formControlName="assignFacilityParentID"
-                                                    [(ngModel)]="selectedParentFacilityList" [multiple]="true"
+                                                    [(ngModel)]="selectedParentFacilityList" [multiple]="true" id="id113" (add)="a2=ValidateMultiSelectTextLength('id113',a2)"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityParentID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a2">
                                                             <span class="ng-value-label">
                                                                 {{item.FacilityParentName}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > 1">
-                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                        <div class="ng-value" *ngIf="items.length > a2">
+                                                            <span class="ng-value-label">{{items.length - a2}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -655,17 +655,17 @@
                                             <div class="input-group">
                                                 <ng-select [items]="facilityList" placeholder="Select"
                                                     bindLabel="FacilityName" formControlName="assignFacilityID"
-                                                    [(ngModel)]="selectedFacilityList" [multiple]="true"
+                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a3">
                                                             <span class="ng-value-label"> {{item.FacilityName}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > 1">
-                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                        <div class="ng-value" *ngIf="items.length > a3">
+                                                            <span class="ng-value-label">{{items.length - a3}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -703,18 +703,18 @@
                                                 <ng-select [items]="referrerList" placeholder="Select"
                                                     [virtualScroll]="shouldEnableVirtualScroll(referrerList, 10)"
                                                     bindLabel="Username" formControlName="assignReferrerID"
-                                                    [(ngModel)]="selectedReferrerList" [multiple]="true"
+                                                    [(ngModel)]="selectedReferrerList" [multiple]="true" id="id115" (add)="a4=ValidateMultiSelectTextLength('id115',a4)"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="ReferrerID" appendTo="body"
                                                     class="assign-referrers-select">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a4">
                                                             <span class="ng-value-label"> {{item.Username}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > 1">
-                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                        <div class="ng-value" *ngIf="items.length > a4">
+                                                            <span class="ng-value-label">{{items.length - a4}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>

@@ -23,10 +23,17 @@ declare const $: any;
   providers: [DatePipe]
 })
 export class PatientDetailComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
+  a6: any = 20;
   @ViewChild('hiddenButton1', { static: false }) hiddenButton1: ElementRef;
   @ViewChild('hiddenBtnWarningMsg', { static: false }) hiddenBtnWarningMsg: ElementRef;
   @ViewChild('closebtn', { static: false }) closebtn: ElementRef;
   @ViewChild('notes') inputNotes;
+
 
   patientDetailForm: FormGroup;
   patientStudyDetailForm: FormGroup;
@@ -753,6 +760,7 @@ export class PatientDetailComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
   onFocusedRowChanged(e: any) {
     
     this.studySummaryrowData = e.row && e.row.data;
@@ -1093,7 +1101,11 @@ export class PatientDetailComponent implements OnInit {
       this.repNameList3 = this.repNameList2;
     }
   }
-
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }
 
 

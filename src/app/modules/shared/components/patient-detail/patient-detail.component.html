@@ -315,10 +315,15 @@
                                     <div class="table-responsive">
 
                                         <dx-data-grid id="studySummaryGridContainer"
-                                            [dataSource]="patientStudySummaryList" [allowColumnResizing]="true"
-                                            [columnAutoWidth]="true" [allowColumnReordering]="true"
-                                            [columnResizingMode]="columnResizingMode" [focusedRowEnabled]="true"
-                                            keyExpr="INTERNALSTUDYID" [hoverStateEnabled]="true" [showBorders]="true"
+                                            [dataSource]="patientStudySummaryList" 
+                                            [allowColumnResizing]="true"
+                                            [columnAutoWidth]="true" 
+                                            [allowColumnReordering]="true"
+                                            [columnResizingMode]="columnResizingMode" 
+                                            [focusedRowEnabled]="true"
+                                            keyExpr="INTERNALSTUDYID" 
+                                            [hoverStateEnabled]="true" 
+                                            [showBorders]="true"
                                             (onFocusedRowChanged)="onFocusedRowChanged($event)">
                                             <!-- <dxo-selection mode="single"></dxo-selection> -->
                                             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
@@ -1046,18 +1051,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id116" (add)="a1=ValidateMultiSelectTextLength('id116',a1)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList1">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a1">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a1">
+                                                                <span class="ng-value-label">{{items.length - a1}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1065,18 +1070,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id117" (add)="a2=ValidateMultiSelectTextLength('id117',a2)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList1">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a2">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a2">
+                                                                <span class="ng-value-label">{{items.length - a2}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1172,18 +1177,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id118" (add)="a3=ValidateMultiSelectTextLength('id118',a3)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList2">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a3">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a3">
+                                                                <span class="ng-value-label">{{items.length - a3}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1191,18 +1196,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id119" (add)="a4=ValidateMultiSelectTextLength('id119',a4)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList2">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a4">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a4">
+                                                                <span class="ng-value-label">{{items.length - a4}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1299,18 +1304,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id120" (add)="a5=ValidateMultiSelectTextLength('id120',a5)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList3">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a5">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a5">
+                                                                <span class="ng-value-label">{{items.length - a5}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1318,18 +1323,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id121" (add)="a6=ValidateMultiSelectTextLength('id121',a6)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList3">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a6">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a6">
+                                                                <span class="ng-value-label">{{items.length - a6}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>

@@ -13,7 +13,7 @@
     <div class="inner-page-body">
         <div class="search-field search-field-theme">
             <div class="theme-form">
-                <div  class="theme-label-title">By Patient Details</div>
+                <div class="theme-label-title">By Patient Details</div>
                 <div class="form-group">
                     <div class="theme-label">LAST NAME</div>
                     <div class="input-group">
@@ -33,20 +33,24 @@
                     <div class="input-group">
                         <input type="text" class="form-control" [(ngModel)]="patientIdModel"
                             (keyup.enter)="applyFilter(true)">
-                            <!-- <button (click)="recordChange(0)" [disabled] = "previouButtonDisable"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                        <!-- <button (click)="recordChange(0)" [disabled] = "previouButtonDisable"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
                             <button (click)="recordChange(1)" [disabled] = "nextButtonDisable"><i class="fa fa-chevron-right" aria-hidden="true"></i></button> -->
-                                <span (click)="recordChange(0,previouButtonDisable)" class="previous-button "[ngClass]="{'disabled':previouButtonDisable}"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+                        <span (click)="recordChange(0,previouButtonDisable)" class="previous-button "
+                            [ngClass]="{'disabled':previouButtonDisable}"><i class="fa fa-angle-left"
+                                aria-hidden="true"></i></span>
 
-                                <span (click)="recordChange(1,nextButtonDisable)" class="previous-button" [ngClass]="{'disabled':nextButtonDisable}"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
-                        </div>
-                    
+                        <span (click)="recordChange(1,nextButtonDisable)" class="previous-button"
+                            [ngClass]="{'disabled':nextButtonDisable}"><i class="fa fa-angle-right"
+                                aria-hidden="true"></i></span>
+                    </div>
+
                 </div>
                 <div class="form-group">
                     <div class="theme-label">DOB</div>
                     <div class="input-group icon-active">
                         <!-- <input type="date" class="form-control" id="dob" [(ngModel)]="dobModel"/> -->
-                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="dobModel" type="date"
-                            [showClearButton]="true" [useMaskBehavior]="true" >
+                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [max]="maxDate" [(ngModel)]="dobModel"
+                            type="date" [showClearButton]="true" [useMaskBehavior]="true">
                         </dx-date-box>
                     </div>
                 </div>
@@ -64,8 +68,8 @@
                             (keyup.enter)="applyFilter(true)">
                     </div>
                 </div>
-       
-                
+
+
                 <div class="form-group autocomplete">
                     <div class="theme-label">Attorney</div>
                     <div class="input-group md-input-focused">
@@ -81,7 +85,7 @@
                     <div class="input-group icon-active">
                         <!-- <input type="date" class="form-control" id="doi" [(ngModel)]="doiModel"/> -->
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="doiModel" type="date"
-                            [showClearButton]="true" [useMaskBehavior]="true" >
+                            [showClearButton]="true" [useMaskBehavior]="true">
                         </dx-date-box>
                     </div>
                 </div>
@@ -89,7 +93,8 @@
                     <div class="theme-label">Financial Type</div>
                     <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="financialtypename"
                         [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
-                        [(ngModel)]="financialTypeModelList" id="id1"  (add)="a1=changefn('id1',a1)">
+                        [(ngModel)]="financialTypeModelList" id="id1"
+                        (add)="a1=ValidateMultiSelectTextLength('id1',a1)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                 <span class="ng-value-label"> {{item.financialtypename}}</span>
@@ -99,10 +104,10 @@
                                 <span class="ng-value-label">{{items.length - a1}} more...</span>
                             </div>
                         </ng-template>
-                    </ng-select> 
+                    </ng-select>
 
                 </div>
-              
+
 
             </div>
         </div>
@@ -129,7 +134,8 @@
                 <div class="form-group">
                     <div class="theme-label">Funding Company</div>
                     <ng-select [items]="brokerList" placeholder="Select" bindLabel="broker" [multiple]="true"
-                        [closeOnSelect]="false" bindValue="broker" [(ngModel)]="brokerModelList" id="id2"  (add)="b=changefn('id2',b)">
+                        [closeOnSelect]="false" bindValue="broker" [(ngModel)]="brokerModelList" id="id2"
+                        (add)="b=ValidateMultiSelectTextLength('id2',b)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:b">
                                 <span class="ng-value-label"> {{item.broker}}</span>
@@ -143,8 +149,9 @@
                 </div>
                 <div class="form-group">
                     <div class="theme-label">Imaging Facility</div>
-                    <ng-select  [items]="facilityList" placeholder="Select" bindLabel="facilityName" [multiple]="true"
-                        [closeOnSelect]="false" bindValue="facilityName" [(ngModel)]="facilityModelList" id="id3"  (add)="c=changefn('id3',c)">
+                    <ng-select [items]="facilityList" placeholder="Select" bindLabel="facilityName" [multiple]="true"
+                        [closeOnSelect]="false" bindValue="facilityName" [(ngModel)]="facilityModelList" id="id3"
+                        (add)="c=ValidateMultiSelectTextLength('id3',c)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:c">
                                 <span class="ng-value-label"> {{item.facilityName}}</span>
@@ -156,11 +163,11 @@
                         </ng-template>
                     </ng-select>
                 </div>
-                <div  class="form-group">
-                    <div  class="theme-label">Parent Company</div>
-                    <ng-select  [items]="parentFacilityList" placeholder="Select" bindLabel="facilityParentName"
+                <div class="form-group">
+                    <div class="theme-label">Parent Company</div>
+                    <ng-select [items]="parentFacilityList" placeholder="Select" bindLabel="facilityParentName"
                         [multiple]="true" [closeOnSelect]="false" bindValue="facilityParentID"
-                        [(ngModel)]="parentFacilityModelList" id="id4"  (add)="d=changefn('id4',d)">
+                        [(ngModel)]="parentFacilityModelList" id="id4" (add)="d=ValidateMultiSelectTextLength('id4',d)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:d">
                                 <span class="ng-value-label"> {{item.facilityParentName}}</span>
@@ -177,7 +184,7 @@
                     <div class="input-group icon-active">
                         <!-- <input type="date" class="form-control" id="from-date" [(ngModel)]="fromDateModel"/> -->
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="fromDateModel" type="date"
-                            [showClearButton]="true" [useMaskBehavior]="true" >
+                            [showClearButton]="true" [useMaskBehavior]="true">
                         </dx-date-box>
                     </div>
                 </div>
@@ -186,7 +193,7 @@
                     <div class="input-group icon-active">
                         <!-- <input type="date" class="form-control" id="to-date" [(ngModel)]="toDateModel"/> -->
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="toDateModel" type="date"
-                            [showClearButton]="true" [useMaskBehavior]="true" >
+                            [showClearButton]="true" [useMaskBehavior]="true">
                         </dx-date-box>
                     </div>
                 </div>
@@ -211,7 +218,7 @@
                     <div class="theme-label">Status</div>
                     <ng-select [items]="statusNameList" placeholder="Select" bindLabel="status" [multiple]="true"
                         [closeOnSelect]="false" bindValue="status" [(ngModel)]="statusNameModelList"
-                        class="patient-status-dropdown" id="id5"  (add)="e=changefn('id5',e)">
+                        class="patient-status-dropdown" id="id5" (add)="e=ValidateMultiSelectTextLength('id5',e)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:e">
                                 <span class="ng-value-label"> {{item.status}}</span>
@@ -227,7 +234,7 @@
                     <div class="theme-label">Priority</div>
                     <ng-select [items]="priorityNamesList" placeholder="Select" bindLabel="priorityname"
                         [multiple]="true" [closeOnSelect]="false" bindValue="priorityname"
-                        [(ngModel)]="priorityNamesModelList" id="id6"  (add)="f=changefn('id6',f)">
+                        [(ngModel)]="priorityNamesModelList" id="id6" (add)="f=ValidateMultiSelectTextLength('id6',f)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:f">
                                 <span class="ng-value-label"> {{item.priorityname}}</span>
@@ -243,7 +250,7 @@
                     <div class="theme-label">Modality</div>
                     <ng-select [items]="modalityList" placeholder="Select" bindLabel="scheduledmodality"
                         [multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
-                        [(ngModel)]="modalityModelList" id="id7"  (add)="g=changefn('id7',g)">
+                        [(ngModel)]="modalityModelList" id="id7" (add)="g=ValidateMultiSelectTextLength('id7',g)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:g">
                                 <span class="ng-value-label"> {{item.scheduledmodality}}</span>
@@ -265,7 +272,8 @@
                 <div class="form-group">
                     <div class="theme-label">Marketing</div>
                     <ng-select [items]="marketingUserList" placeholder="Select" bindLabel="userName" [multiple]="true"
-                        [closeOnSelect]="false" bindValue="userId" [(ngModel)]="marketingUserModelList" id="id8"  (add)="h=changefn('id8',h)">
+                        [closeOnSelect]="false" bindValue="userId" [(ngModel)]="marketingUserModelList" id="id8"
+                        (add)="h=ValidateMultiSelectTextLength('id8',h)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:h">
                                 <span class="ng-value-label"> {{item.userName}}</span>
@@ -339,8 +347,8 @@
                                 <div class="input-group icon-active">
                                     <!-- <input type="date" format="YYYY-MM-DD" class="form-control" id="dob1" [(ngModel)]="dobModel"/> -->
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="dobModel"
-                                        type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                                        
+                                        type="date" [max]="maxDate" [showClearButton]="true" [useMaskBehavior]="true">
+
                                     </dx-date-box>
                                 </div>
                             </div>
@@ -370,12 +378,12 @@
                                     <!-- <input type="date" class="form-control" id="doi1" [(ngModel)]="doiModel"/> -->
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="doiModel"
                                         type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                                        
+
                                     </dx-date-box>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <div class="theme-label">Financial Type</div>
@@ -512,7 +520,7 @@
                                     <!-- <input type="date" class="form-control" id="from-date1" [(ngModel)]="fromDateModel"/> -->
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="fromDateModel"
                                         type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                                       
+
                                     </dx-date-box>
                                 </div>
                             </div>
@@ -524,7 +532,7 @@
                                     <!-- <input type="date" class="form-control" id="to-date1" [(ngModel)]="toDateModel"/> -->
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" [(ngModel)]="toDateModel"
                                         type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                                       
+
                                     </dx-date-box>
                                 </div>
                             </div>
@@ -735,7 +743,7 @@
                 </div>
             </div>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive patient-table-responsive">
             <dx-data-grid #gridPatient id="patient-grid-container" [dataSource]="patientGridList"
                 [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
                 [columnResizingMode]="columnResizingMode" (onSelectionChanged)="selectionChanged($event)"
@@ -753,7 +761,7 @@
                 <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
                 <!-- <dxo-header-filter [visible]="false"></dxo-header-filter> -->
                 <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                <dxi-column dataField="PATIENTID" caption="View" [fixed]="true" [showInColumnChooser]="false"
+                <dxi-column  caption="View" [fixed]="true" [showInColumnChooser]="false"
                     fixedPosition="left" cellTemplate="patientIdCellTemplate" [allowGrouping]="false" tabindex="1">
                 </dxi-column>
                 <dxi-column dataField="PATIENTID" caption="PATIENT ID" groupCellTemplate="groupCellTemplate"
@@ -932,9 +940,20 @@
                                 <tbody *ngFor="let item of GenerateEsignLinkList">
                                     <tr>
                                         <td style="text-transform: initial">{{currentPageUrl +
-                                            '/esignrequesta?patientid=' + item.patientid+'&Token='+ item.SMSLink}}</td>
+                                            '/esignrequesta?patientid=' + item.patientid+'&Token='+ item.SMSLink}}
+                                            <a class="copy-button"
+                                                (click)="copyToClipboard(currentPageUrl +
+                                                '/esignrequesta?patientid=' + item.patientid+'&Token='+ item.SMSLink)"><i
+                                                    class="fa fa-copy"></i></a>
+                                        </td>
+
                                         <td style="text-transform: initial">{{currentPageUrl +
-                                            '/esignrequest?patientid=' + item.patientid+'&Token='+ item.SMSLink}}</td>
+                                            '/esignrequest?patientid=' + item.patientid+'&Token='+ item.SMSLink}}
+                                            <a class="copy-button"
+                                                (click)="copyToClipboard(currentPageUrl +
+                                                '/esignrequest?patientid=' + item.patientid+'&Token='+ item.SMSLink)"><i
+                                                    class="fa fa-copy"></i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1264,8 +1283,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <div class="switch-group">
+                            <div class="switch-group">
                             <label class="switch">
                                 <input type="checkbox" (change)="changelanguage($event)" name="sendBillToAttorney"
                                     formControlName="isSentPatAttorney">
@@ -1273,6 +1291,7 @@
                             </label>
                             <span class="slider-label">Send Bill To Attorney</span>
                         </div>
+                    </form>
                     </div>
 
                 </div>

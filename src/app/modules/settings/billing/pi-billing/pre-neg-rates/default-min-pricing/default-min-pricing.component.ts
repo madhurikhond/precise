@@ -44,7 +44,7 @@ export class DefaultMinPricingComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Default Min Pricing');
+    this.commonMethodService.setTitle('Pi Billing');
     this.getAllProcGroups();
     this.getDefaultMinPricings();
     this.myForm = this.fb.group({
@@ -88,6 +88,7 @@ export class DefaultMinPricingComponent implements OnInit {
     this.getDefaultMinPricings();
   }
   getDefaultMinPricings(){
+   
     this.settingsService.getDefaultMinPricings(true, this.pageNumber, this.pageSize).subscribe((res) => {
       var data: any = res;   
       this.totalRecords=res.totalRecords;   

@@ -14,6 +14,7 @@ import { MyprofileService } from 'src/app/services/myprofile/myprofile.service';
 })
 export class ProfileComponent implements OnInit {
  user:userDetail;
+ maxDate = new Date();
  model:any={};
  submitted:boolean=false;
  readonly dateTimeFormatCustom = DateTimeFormatCustom;

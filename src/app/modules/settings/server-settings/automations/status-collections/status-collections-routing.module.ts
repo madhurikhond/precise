@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { RoleGuard } from 'src/app/modules/core/guards/role.guard';
 import { BulkBillingEmailComponent } from './bulk-billing-email/bulk-billing-email.component';
 import { CaseStatusComponent } from './case-status/case-status.component';
 import { PersonellComponent } from './personell/personell.component';
@@ -10,19 +11,19 @@ const routes: Routes = [
 {
   path:'',component:StatusCollectionsComponent,children:[
   {
-   path:'' , redirectTo: 'pslpatient', pathMatch: 'full'
+   path:'' , redirectTo: 'pslpatient', pathMatch: 'full',canActivate:[RoleGuard]
   },
   {
-    path:'pslpatient' , component:PslPatientComponent
+    path:'pslpatient' , component:PslPatientComponent,canActivate:[RoleGuard]
    },
    {
-    path:'casestatus' , component:CaseStatusComponent
+    path:'casestatus' , component:CaseStatusComponent,canActivate:[RoleGuard]
    },
    {
-    path:'bulkbillingemail' , component:BulkBillingEmailComponent
+    path:'bulkbillingemail' , component:BulkBillingEmailComponent,canActivate:[RoleGuard]
    },
    {
-     path:'personell',component:PersonellComponent
+     path:'personell',component:PersonellComponent,canActivate:[RoleGuard]
    }
 
   ]

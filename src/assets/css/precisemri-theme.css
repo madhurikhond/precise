@@ -1682,6 +1682,7 @@ button {
 	height: 100%;
 	width: 100%;
 	text-transform: uppercase;
+	overflow-x: hidden;
 }
 .page-area.full-menu-active .page-working-area {
 	width: calc(100% - 180px);
@@ -5344,6 +5345,14 @@ textarea.form-control {
 .search-field-theme .theme-form .form-group .patient-status-dropdown .ng-dropdown-panel .ng-dropdown-panel-items{
 	max-height: 362px !important;
 }
+
+#patient-Detail-Window .patient-subs-table tr:nth-last-child(-n+2) .ng-dropdown-panel-items {
+	max-height: 70px !important;
+    border: 1px solid #dedede;
+	bottom: 32px !important;;
+	position: absolute;
+  }
+  #patient-Detail-Window .patient-subs-table tr .ng-dropdown-panel-items {max-height: 70px !important;width: 100%;}
 .input-label-title {
 	width: 100%;
 	position: relative;
@@ -6768,10 +6777,10 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #add-reps-details .dx-datagrid-rowsview .dx-datagrid-content tr:nth-child(odd) td .table-responsive.copy-service-popup .table-theme {
     background: #fff;
 }
-#patient-Detail-Window, #create-alert, #alertDetailModal, #ReferrerDetailWindow, #susbErrorMsgPopUp, #add-edit-record{
+#patient-Detail-Window, #create-alert, #alertDetailModal, #susbErrorMsgPopUp, #add-edit-record{
     z-index: 1051;
 }
-#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
+#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #ReferrerDetailWindow, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
 	z-index: 1052;
 }
 #viewFileFundingCo, #uploadFilePopUpFundingCo, #send-documents, #deleteItemConfirmPopUpFundingCo, #RenamePopUpFundingCo{
@@ -6922,7 +6931,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	float: none;
 }
 .custom-patient-row-selection td{
-	background-color: yellow !important;
+	background-color: #f7bb9b  !important;
 }
 .release-note{
 	display: block;
@@ -7125,4 +7134,32 @@ ngb-modal-window.modal{
 }
 .dynamsoft-dwt-dialogProgress br{
 	display: none;
+}
+
+.patient-table-responsive .dx-datagrid-header-panel .dx-toolbar{
+	overflow-x: auto;
+    overflow-y: hidden;
+}
+.patient-table-responsive .dx-toolbar .dx-toolbar-items-container{
+	margin-bottom: 10px;
+}
+#openLinkModal .table-theme tbody tr td{
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 4px 30px 4px 10px;
+}
+#openLinkModal .table-theme tbody tr td a i{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+
+
+.hideBreadCrumps .dx-filemanager .dx-filemanager-breadcrumbs {
+    display: none;
+}
+
+.hideBreadCrumps .dx-filemanager .dx-filemanager-toolbar {
+    display: none;
+
 }

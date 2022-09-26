@@ -15,6 +15,8 @@ import { TaskManagementService } from 'src/app/services/task-management/task-man
   providers:[TaskManagementService]
 })
 export class TaskManagementSettingComponent implements OnInit,OnDestroy {
+  a1: any = 20;
+  a2: any = 20;
   days:Array<Object>=[];
   taskManagementSlackGlobalSettingsForm:FormGroup;
   taskManagementSettingsFormForLabelTab:FormGroup;
@@ -39,7 +41,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
   constructor(private readonly commonMethodService:CommonMethodService,private fb: FormBuilder,
     private readonly taskManagementService:TaskManagementService,
     private readonly notificationService:NotificationService) {
-    this.commonMethodService.setTitle('Task Management Setting');
+    this.commonMethodService.setTitle('Task Management');
    }
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
@@ -309,7 +311,11 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
   get slackGlobleControls(){ return this.taskManagementSlackGlobalSettingsForm.controls};
 
   get labelTabFormControl(){ return   this.taskManagementSettingsFormForLabelTab.controls}
-  
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }
 
 

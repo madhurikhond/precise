@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { RadPortalService } from 'src/app/services/rad-portal-service/rad-portal.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { AddLienHoldingCompanyPopupComponent } from '../add-lien-holding-company-popup/add-lien-holding-company-popup.component';
 export interface LienConpanyModel {
   id: number;
@@ -52,6 +53,7 @@ export class LienManagementComponent implements OnInit {
   constructor(
     
     private readonly notificationService: NotificationService,
+    private readonly commanMethodService : CommonMethodService,
 
     private readonly _radPortalService: RadPortalService,
     private _modalService: NgbModal,
@@ -72,6 +74,7 @@ export class LienManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetLientCompanies(this.LienCompFilter);
+    this.commanMethodService.setTitle('Lien Companies');
   }
   //// Common Method Start
   SetFilter() {

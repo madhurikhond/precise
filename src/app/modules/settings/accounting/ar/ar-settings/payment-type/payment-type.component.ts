@@ -42,7 +42,7 @@ export class PaymentTypeComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Payment Type');
+    this.commonMethodService.setTitle('Ar Settings');
     this.getAllPaymentTypes();
     this.addForm = this.fb.group({
       paymentType:['', [Validators.required]],

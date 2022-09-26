@@ -22,8 +22,8 @@
 .dx-button-has-text .dx-button-content {
   padding: 0 !important;
 }
-.custom-patient-row-selection{
-	background-color:yellow !important;
+.custom-patient-row-selection td{
+	background-color: #f7bb9b !important;
 }
 span.previous-button {
   padding: 2px;

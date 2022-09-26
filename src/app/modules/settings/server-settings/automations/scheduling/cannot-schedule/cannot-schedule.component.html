@@ -19,20 +19,20 @@
 												placeholder="Select" 
 												formControlName="statusSchedule" 
 												bindLabel="status" 
-												[multiple]="true"
+												[multiple]="true" id="id78" (add)="a1=ValidateMultiSelectTextLength('id78',a1)"
 												[closeOnSelect]="false"
 												bindValue="status" 
 												[(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && csForm.statusSchedule.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 2">
-														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a1">
+														<span class="ng-value-label">{{items.length - a1}} more...</span>
 													</div>
 												</ng-template>                                      
 											</ng-select>
@@ -55,20 +55,20 @@
 												placeholder="Select" 
 												formControlName="statusSecondSchedule" 
 												bindLabel="status" 
-												[multiple]="true"
+												[multiple]="true" id="id79" (add)="a2=ValidateMultiSelectTextLength('id79',a2)"
 												[closeOnSelect]="false"
 												bindValue="status" 
 												[(ngModel)]="selectedStatusList1"
 												[ngClass]="{ 'is-invalid': (submitted && csForm.statusSecondSchedule.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 2">
-														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a2">
+														<span class="ng-value-label">{{items.length - a2}} more...</span>
 													</div>
 												</ng-template>                                      
 											</ng-select>
@@ -87,20 +87,20 @@
 												placeholder="Select" 
 												formControlName="prioritySchedule" 
 												bindLabel="priorityname" 
-												[multiple]="true"
+												[multiple]="true" id="id80" (add)="a3=ValidateMultiSelectTextLength('id80',a3)"
 												[closeOnSelect]="false"
 												bindValue="priorityname" 
 												[(ngModel)]="selectedPriorityList"
 												[ngClass]="{ 'is-invalid': (submitted && csForm.prioritySchedule.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a3">
 														<span class="ng-value-label"> {{item.priorityname}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a3">
+														<span class="ng-value-label">{{items.length - a3}} more...</span>
 													</div>
 												</ng-template>                                      
 											</ng-select>
@@ -266,20 +266,20 @@
 												placeholder="Select" 
 												formControlName="faxEmailStatus" 
 												bindLabel="status" 
-												[multiple]="true"
+												[multiple]="true" id="id81" (add)="a4=ValidateMultiSelectTextLength('id81',a4)"
 												[closeOnSelect]="false"
 												bindValue="status" 
 												[(ngModel)]="selectedStatusList2"
 												[ngClass]="{ 'is-invalid': (submitted && csForm.faxEmailStatus.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a4">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 2">
-														<span class="ng-value-label">{{items.length - 2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a4">
+														<span class="ng-value-label">{{items.length - a4}} more...</span>
 													</div>
 												</ng-template>                                      
 											</ng-select>

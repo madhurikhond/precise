@@ -28,16 +28,16 @@
                                 <ng-select [items]="financialTypeList" placeholder="Select"
                                     formControlName="financialType" bindLabel="financialtypename" [multiple]="true"
                                     [closeOnSelect]="false" bindValue="financialtypename"
-                                    [(ngModel)]="selectedFinancialTypeList">
+                                    [(ngModel)]="selectedFinancialTypeList" id="id37"  (add)="a1=ValidateMultiSelectTextLength('id37',a1)">
                                 </ng-select>
                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                         <span class="ng-value-label"> {{item.financialtypename}}</span>
                                         <span class="ng-value-icon right" (click)="clear(item)"
                                             aria-hidden="true">×</span>
                                     </div>
-                                    <div class="ng-value" *ngIf="items.length > 1">
-                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                    <div class="ng-value" *ngIf="items.length > a1">
+                                        <span class="ng-value-label">{{items.length - a1}} more...</span>
                                     </div>
                                 </ng-template>   
                             </div>
@@ -48,16 +48,16 @@
                                 <ng-select [items]="radiusStatusList" placeholder="Select"
                                     formControlName="radiusStatus" bindLabel="radiusStatus" [multiple]="true"
                                     [closeOnSelect]="false" bindValue="radiusStatus"
-                                    [(ngModel)]="selectedRadiusStatus">
+                                    [(ngModel)]="selectedRadiusStatus" id="id38"  (add)="a2=ValidateMultiSelectTextLength('id38',a2)">
                                 </ng-select>
                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:a2">
                                         <span class="ng-value-label"> {{item.financialtypename}}</span>
                                         <span class="ng-value-icon right" (click)="clear(item)"
                                             aria-hidden="true">×</span>
                                     </div>
-                                    <div class="ng-value" *ngIf="items.length > 1">
-                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                    <div class="ng-value" *ngIf="items.length > a2">
+                                        <span class="ng-value-label">{{items.length - a2}} more...</span>
                                     </div>
                                 </ng-template>
                             </div>

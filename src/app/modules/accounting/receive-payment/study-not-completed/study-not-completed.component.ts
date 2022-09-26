@@ -18,8 +18,9 @@ export class StudyNotCompletedComponent implements OnInit {
     this.activeModal.dismiss(false);
   }
   cancel(){
+
     this.e.cancel;
-    this.activeModal.close(false);
+    this.activeModal.close(false);   
     //this.close();
   }
   Yes(): void {

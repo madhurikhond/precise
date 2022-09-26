@@ -42,7 +42,7 @@ export class QbAccountComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('QB Account');
+    this.commonMethodService.setTitle('Ar Settings');
     this.getAllQBAccounts();
     this.addForm = this.fb.group({
       qbAccount:['', [Validators.required]],

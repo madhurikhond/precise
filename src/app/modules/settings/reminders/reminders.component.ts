@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { SettingsService } from 'src/app/services/settings.service';
-
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 @Component({
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
@@ -19,7 +19,8 @@ export class RemindersComponent implements OnInit {
     private fb: FormBuilder,
     private readonly _settingsService: SettingsService,
     private readonly notificationService: NotificationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private readonly commonMethodService : CommonMethodService
   ) {
   }
 
@@ -30,6 +31,7 @@ export class RemindersComponent implements OnInit {
       ReminderId: [0]
     });
     this.getReminders();
+    this.commonMethodService.setTitle('Reminders');
   }
   ngAfterViewInit() {
     this.cdr.detectChanges();

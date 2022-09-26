@@ -38,15 +38,15 @@
 												bindValue="day" 
 												[(ngModel)]="selectedDayList"
 												[ngClass]="{ 'is-invalid': (submitted && mrxForm.missingRXWeekDays.errors)}"
-												(change)="onChange($event)">   
+												(change)="onChange($event)" id="id48"  (add)="a1=ValidateMultiSelectTextLength('id48',a1)">   
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 														<span class="ng-value-label"> {{item.day}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a1">
+														<span class="ng-value-label">{{items.length - a1}} more...</span>
 													</div>
 												</ng-template>                                   
 											</ng-select>

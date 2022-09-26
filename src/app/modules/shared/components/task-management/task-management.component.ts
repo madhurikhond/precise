@@ -45,10 +45,12 @@ export class TaskManagementComponent implements OnInit {
   taskAssignToOtherUserModel: any = null;
   currentTaskId: any = null;
   filterSearchModel: any = null;
+  filterSearch:any;
   divPateintId: any = 'testxxxx';
   searchText: string;
   userType: number;
   labelValue: any;
+  SavedSearchFilter:any;
 
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
 
@@ -63,10 +65,8 @@ export class TaskManagementComponent implements OnInit {
   ngOnInit(): void {
     this.taskAssignToOtherUserModel = this.storageService.user.UserId;
 
-    this.commonMethodService.showTaskManagementWindowEmitter.
-      subscribe((res: boolean) => {
-
-        this.isTaskManagementPopShow = res;
+    this.commonMethodService.showTaskManagementWindowEmitter.subscribe((res: boolean) => {
+      this.isTaskManagementPopShow = res;
         if (res == true) {
           this.createAddTaskForm();
           //this.setPageTitle();
@@ -96,12 +96,15 @@ export class TaskManagementComponent implements OnInit {
         this.assignedToFilter = this.applyFilterBody.assignedTo;
         this.DueDateFilter = this.applyFilterBody.dueDate;
         this.LabelFilter = this.applyFilterBody.label;
+        this.SavedSearchFilter=this.applyFilterBody.savedSearch;
         this.stausFilter = this.applyFilterBody.status;
         this.assignedByDefaultRadioButtonValue = this.assignedByFilter;
         this.assignedToDefaultRadioButtonValue = this.assignedToFilter;
         this.dueDateDefaultRadioButtonValue = this.DueDateFilter;
         this.labelValue = this.LabelFilter === "" ? 'All' : this.LabelFilter;
+        this.filterSearch=this.SavedSearchFilter;
         this.statusDefaultRadioButtonValue = this.stausFilter === "" ? 'ToDo' : this.stausFilter;
+
       }
       else {
         this.searchText = '';
@@ -111,7 +114,8 @@ export class TaskManagementComponent implements OnInit {
         //this.getSchedulingFacilities();
       }
       if (isLoadGrid) {
-        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, true, false);
+        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter, this.stausFilter, true, false);
+
       }
 
     }, (err: any) => {
@@ -120,15 +124,15 @@ export class TaskManagementComponent implements OnInit {
   }
   //  , isSendSearchData: boolean = true
   GetToDoRecords() {
-    this.applyFilterBody = new TaskManagementApplyFilter('', '', '', '', 'ToDo', this.storageService.user.UserId);
+    this.applyFilterBody = new TaskManagementApplyFilter('', '', '', '', '', 'ToDo', this.storageService.user.UserId);
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
       this.commonMethodService.toDoTaskCountForHeader.emit(res.toDoRecords);
     })
   }
-  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, status: string, isOnLoad: boolean, isUpdateSearch = true) {
+  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, savedSearch:string,status: string, isOnLoad: boolean, isUpdateSearch = true) {
 
 
-    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, status, this.storageService.user.UserId);
+    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, savedSearch, status, this.storageService.user.UserId);
     this.allTaskArray = [];
     // console.log(this.assignedByDefaultRadioButtonValue)
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
@@ -159,6 +163,7 @@ export class TaskManagementComponent implements OnInit {
       if (res.response != null && res.response?.length > 0) {
         this.allTaskArray = res.response;
         this.allTaskCopyArray = res.response;
+        this.searchData(this.filterSearch);
       }
       else {
         this.allTaskArray = [];
@@ -251,7 +256,7 @@ export class TaskManagementComponent implements OnInit {
 
         this.successNotification(res);
         this.GetToDoRecords();
-        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, true);
+        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter, this.stausFilter, true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -260,28 +265,55 @@ export class TaskManagementComponent implements OnInit {
   filterAssignBy(assignByFilterValue: string) {
     this.assignedByDefaultRadioButtonValue = assignByFilterValue;
     this.assignedByFilter = assignByFilterValue;
-    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, false);
   }
   filterAssignTo(assignToFilterValue: string) {
     this.assignedToDefaultRadioButtonValue = assignToFilterValue;
     this.assignedToFilter = assignToFilterValue;
-    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter, this.stausFilter, false);
   }
   filterDueDate(dueDateFilterValue: string) {
     this.dueDateDefaultRadioButtonValue = dueDateFilterValue;
     this.DueDateFilter = dueDateFilterValue;
-    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter, this.stausFilter, false);
   }
   filterStatus(statusFilterValue: string) {
 
     this.statusDefaultRadioButtonValue = statusFilterValue;
     this.stausFilter = statusFilterValue;
-    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter, this.stausFilter, false);
   }
   onLabelDropDownChange(lableValue: any) {
 
     this.LabelFilter = lableValue;
-    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, false);
+  }
+  searchData(searchText: any) {
+    searchText = searchText.toLocaleLowerCase();
+    if (searchText === null || searchText.trim() === '') {
+      this.allTaskArray = this.allTaskCopyArray;
+      this.toDoTask = this.toDoTaskGlobal;
+      return;
+    }
+    this.allTaskArray = this.allTaskCopyArray.filter((data) => JSON.stringify(data).toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+
+
+    if (this.stausFilter === 'ToDo') {
+      this.toDoTask = this.allTaskArray.length;
+    }
+  }
+  saveSearchonFocusOut(e:any)
+  {
+    this.SavedSearchFilter=this.filterSearch;
+      this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, false);
+      this.searchData(this.SavedSearchFilter);
+      
+  }
+  searchDataChange(e)
+  {
+    this.SavedSearchFilter=this.filterSearch;
+    this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, false);
+    this.searchData(this.SavedSearchFilter);  
   }
   viewTask(taskId: any) {
 
@@ -340,7 +372,7 @@ export class TaskManagementComponent implements OnInit {
         this.successNotification(res);
         this.modalClose.nativeElement.click();
         this.GetToDoRecords();
-        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, true);
+        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -354,7 +386,7 @@ export class TaskManagementComponent implements OnInit {
         this.successNotification(res);
         this.modalClose.nativeElement.click();
         this.GetToDoRecords();
-        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, true);
+        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -367,7 +399,7 @@ export class TaskManagementComponent implements OnInit {
       if (res.response.length > 0) {
         this.successNotification(res);
         this.GetToDoRecords();
-        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, true);
+        this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter,this.SavedSearchFilter,  this.stausFilter, true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -442,26 +474,13 @@ export class TaskManagementComponent implements OnInit {
         if (res.response.length > 0) {
           this.successNotification(res);
           this.GetToDoRecords();
-          this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter, false);
+          this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter, this.stausFilter, false);
         }
       }, (err: any) => {
         this.errorNotification(err);
       });
     }
   }
-  searchData(searchText: any) {
-
-    searchText = searchText.toLocaleLowerCase();
-    if (searchText === null || searchText.trim() === '') {
-      this.allTaskArray = this.allTaskCopyArray;
-      this.toDoTask = this.toDoTaskGlobal;
-      return;
-    }
-    this.allTaskArray = this.allTaskCopyArray.filter((data) => JSON.stringify(data).toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
-
-    if (this.stausFilter === 'ToDo') {
-      this.toDoTask = this.allTaskArray.length;
-    }
-  }
+ 
   get addTaskFormControl() { return this.addTaskForm.controls; }
 }

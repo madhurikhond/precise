@@ -12,6 +12,9 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./general-settings.component.css']
 })
 export class GeneralSettingsComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
   generalSettingForm: FormGroup;
   financialTypesList: any = [];
   statusNamesList: any = [];
@@ -208,4 +211,10 @@ export class GeneralSettingsComponent implements OnInit {
     );
   }
   get gsForm() { return this.generalSettingForm.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

@@ -14,8 +14,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'funding-company-bill', pathMatch: 'full'},
       { path: 'funding-company-bill', component: BrokerBillComponent, canActivate: [AuthGuard,RoleGuard] },
-      { path: 'personal-injury-bill', component: PersonalInjuryBillComponent, canActivate: [AuthGuard] },
-      { path: 'revised-bill', component: RevisedBillComponent, canActivate: [AuthGuard] },
+      { path: 'personal-injury-bill', component: PersonalInjuryBillComponent, canActivate: [AuthGuard,RoleGuard] },
+      { path: 'revised-bill', component: RevisedBillComponent, canActivate: [AuthGuard,RoleGuard] },
     ]
   }
   ];

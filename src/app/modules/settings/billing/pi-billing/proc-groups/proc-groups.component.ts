@@ -43,7 +43,7 @@ export class ProcGroupsComponent implements OnInit {
     this.showFilterRow = true;
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
-    this.commonMethodService.setTitle('Proc. Groups');
+    this.commonMethodService.setTitle('Pi Billing');
     this.getAllProcGroups();
     this.getModalityList();
     this.addForm = this.fb.group({

@@ -11,6 +11,9 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./case-status.component.css']
 })
 export class CaseStatusComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
   id:number;
   caseStatusForm:FormGroup;
   submitted = false;
@@ -24,7 +27,7 @@ export class CaseStatusComponent implements OnInit {
   isGridAddError:boolean=false;
   
   
-  constructor(private fb: FormBuilder,
+  constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly settingsService:  SettingsService,
     private readonly notificationService: NotificationService) { }
 
@@ -382,5 +385,10 @@ export class CaseStatusComponent implements OnInit {
   get caseStatusFormControl() { return this.caseStatusForm.controls; }
   get caseStatusGridForm(): FormArray {
     return this.caseStatusForm.get('caseStatusGridForm') as FormArray;
+    }
+    ValidateMultiSelectTextLength(id, a)
+    {
+      a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+    return a;
     }
 }

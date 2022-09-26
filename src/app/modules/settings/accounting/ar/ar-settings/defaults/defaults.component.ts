@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 @Component({
   selector: 'app-defaults',
   templateUrl: './defaults.component.html',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DefaultsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly commonMethodService : CommonMethodService 
+  ) { }
 
   ngOnInit(): void {
+    this.commonMethodService.setTitle('Ar Settings');
   }
 
 }

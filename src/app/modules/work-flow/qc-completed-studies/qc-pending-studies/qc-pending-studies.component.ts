@@ -21,6 +21,12 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
   styleUrls: ['./qc-pending-studies.component.css']
 })
 export class QcPendingStudiesComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
+
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @ViewChild('hiddenButtonHardCheck', { static: false }) hiddenButtonHardCheck: ElementRef;
   @ViewChild('hiddenButtonSoftCheck', { static: false }) hiddenButtonSoftCheck: ElementRef;
@@ -593,5 +599,10 @@ export class QcPendingStudiesComponent implements OnInit {
       bytes[i] = binary_string.charCodeAt(i);
     }
     return bytes.buffer;
+  }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

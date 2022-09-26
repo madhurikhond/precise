@@ -11,6 +11,7 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./ar-sftp.component.css']
 })
 export class ArSftpComponent implements OnInit {
+  a1: any = 20;
   arSftpForm:FormGroup
   id:number
   submitted=false
@@ -20,7 +21,7 @@ export class ArSftpComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService) { }
+    private readonly notificationService: NotificationService,private readonly commonService: CommonMethodService) { }
 
   ngOnInit(): void {
     this.arSftpForm = this.fb.group({
@@ -122,4 +123,10 @@ export class ArSftpComponent implements OnInit {
   }
 
   get arsForm() {return this.arSftpForm.controls;}
+ 
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

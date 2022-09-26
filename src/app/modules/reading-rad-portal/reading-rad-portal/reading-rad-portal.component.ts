@@ -44,7 +44,7 @@ export class ReadingRadPortalComponent implements OnInit {
   @ViewChild('ref3Dob', { static: true }) dob3FilterRef: ElementRef;
   @ViewChild('ref3DosFrom', { static: true }) dosFrom3FilterRef: ElementRef;
   @ViewChild('ref3DosTo', { static: true }) dosTo3FilterRef: ElementRef;
-
+  maxDate = new Date();
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   assignAndPendingToBeRead = [] as any;

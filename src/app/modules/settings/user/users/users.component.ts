@@ -61,6 +61,11 @@ export type EditUserFormValue = {
 })
 
 export class UsersComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  maxDate = new Date();
   @ViewChild('gridContainer') dataGrid: DxDataGridComponent;
   editUserForm: FormGroup;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
@@ -273,6 +278,7 @@ export class UsersComponent implements OnInit {
     });
   }
   searchUserMgt(pageNumber = 0) {
+   
     this.pageNumber = pageNumber > 0 ? pageNumber : this.pageNumber;
     //this.pageSize = 20;
     this.isSearchReferrer = true;
@@ -292,11 +298,13 @@ export class UsersComponent implements OnInit {
       //this.searchUserService();
       this.getUsers(this.topSearchText, this.search_isactive);
   }
+  search(){
+    debugger
+    this.pageNumber = 1;
+    this.searchUserMgt()
+  }
   clearUserMgt() {
-    //this.pageNumber = 1;
-    //this.pageSize = 20;
     this.isSearchReferrer = false;
-
     this.topSearchText = ''
     this.search_isactive = ''
     this.copyForm.topSearchText.setValue('');
@@ -377,6 +385,7 @@ export class UsersComponent implements OnInit {
     this.referrerList = []
   }
   getUsers(topSearchText, status) {
+   
     this.settingService.getUsers(true, topSearchText, status, this.pageNumber, this.pageSize).subscribe((res) => {
       var data: any = res;
       this.userList = []
@@ -493,4 +502,9 @@ export class UsersComponent implements OnInit {
 
   get editForm() { return this.editUserForm.controls; }
   get copyForm() { return this.userServiceForm.controls; }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

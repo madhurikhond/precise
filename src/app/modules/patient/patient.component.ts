@@ -47,6 +47,7 @@ export class PatientComponent implements OnInit {
   // billingFax3: string = '';
   // billingFax4: string = '';
   // billingFax5: string = '';
+  maxDate = new Date();
   a1: any = 20;
   b: any = 20;
   c: any = 20;
@@ -113,6 +114,7 @@ export class PatientComponent implements OnInit {
   totalRecordAppLog: number = 1;
   pageNumberLogs: number = 1;
   patientBillingDetailForm: FormGroup;
+  FormGroupName:FormGroup;
   patientID: any;
   BillingData: any;
   logsPageTitle: any = '';
@@ -1870,35 +1872,21 @@ export class PatientComponent implements OnInit {
       return res && res.INTERNALPATIENTID ? res.INTERNALPATIENTID : 0;
     }
   }
-  changefn(id, a) {
-    var endCellWidth: any = 0;
-    const ngSelectContainer = document.getElementById(id);
-    // const containerWidth = ngSelectContainer.offsetWidth;
-    const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
-    const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
-    for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
-      endCellWidth = endCellWidth + insideCellWidth1;
-      console.log(endCellWidth);
-    }
-    if (endCellWidth > 100) {
-      a = 1;
-    }
-    else if (insideCellWidth > 60) {
-      a = 1
-    }
-    else if (insideCellWidth < 60) {
-      a = 2;
-    }
-    else {
-      a = 20;
-    }
-    return a;
-    // let checkWidth: any = e.getElementsByClassName("ng-value")
-    // let x: any = checkWidth[0].offsetWidth
-    // console.log(x);
+ 
+ValidateMultiSelectTextLength(id, a)
+  {
+    a =this._commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
-
+  copyToClipboard(currentPageUrl) {
+    debugger
+     navigator.clipboard.writeText(currentPageUrl).catch(() => {
+      console.error("Unable to copy text");
+    });
+     this.notificationService.showToaster({
+       alertHeader: '',
+      alertMessage: currentPageUrl,
+       alertType: null
+     });
+  }
 }

@@ -11,6 +11,7 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./no-asl.component.css']
 })
 export class NoAslComponent implements OnInit {
+  a1: any = 20;
   financialTypesList:any =[]
   noaslForm:FormGroup;
   id:number
@@ -135,4 +136,9 @@ export class NoAslComponent implements OnInit {
   }  
 
   get noForm() { return this.noaslForm.controls; }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }
