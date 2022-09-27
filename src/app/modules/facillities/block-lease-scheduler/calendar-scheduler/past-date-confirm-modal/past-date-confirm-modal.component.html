@@ -1,0 +1,15 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Alert</h5>
+        
+        <div class="close-dismiss"></div>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <div class="modal-body">  
+                <p>You have selected past date. do you want to continue</p>
+    </div>
+    <div class="modal-footer">      
+        <button type="button" class="btn btn-theme btn-sm pull-right" (click)="confirm()">Yes</button>
+        <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="cancel()">No</a>
+    </div>
+</div>

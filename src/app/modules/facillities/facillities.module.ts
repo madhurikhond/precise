@@ -18,9 +18,10 @@ import { SchedulerPopupComponent } from './block-lease-scheduler/calendar-schedu
 import { ConfirmModalComponent } from './block-lease-scheduler/calendar-scheduler/confirm-modal/confirm-modal.component';
 import { CreditReasonsSettingComponent } from './block-lease-scheduler/credit-reasons-settings/credit-reasons-settings.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
+import { PastDateConfirmModalComponent } from './block-lease-scheduler/calendar-scheduler/past-date-confirm-modal/past-date-confirm-modal.component';
 
 @NgModule({
-  declarations: [MyFacilityComponent, FacilityBillingComponent, BlockLeaseSchedulerComponent, CalendarSchedulerComponent,SchedulerPopupComponent, ConfirmModalComponent, CreditReasonsSettingComponent],
+  declarations: [MyFacilityComponent, FacilityBillingComponent, BlockLeaseSchedulerComponent, CalendarSchedulerComponent,SchedulerPopupComponent, ConfirmModalComponent, CreditReasonsSettingComponent, PastDateConfirmModalComponent],
   imports: [
     SharedModule,
     FacillitiesRoutingModule,

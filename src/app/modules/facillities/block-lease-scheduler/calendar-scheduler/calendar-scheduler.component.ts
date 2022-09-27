@@ -9,6 +9,7 @@ import {
     DxDateBoxModule
 } from 'devextreme-angular';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { PastDateConfirmModalComponent } from './past-date-confirm-modal/past-date-confirm-modal.component';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 
@@ -25,8 +26,9 @@ export class CalendarSchedulerComponent implements OnInit {
     FacilityID: string = '';
     modalityResourcesList: any[] = [];
     selectedModalityResources: any = [];
+    forTimelineList: Array<{ key: number, label: string }> = [];
     bodyRes: any = [];
-    testData: any = [];
+    SchedulerDayWeekMonth: any = [];
     reasonId: number = 0;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal
@@ -36,6 +38,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.bodyRes = res;
                 this.FacilityName = res.FacilityName;
                 this.FacilityID = res.FacilityID;
+                this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
                 setTimeout(() => {
                     this.GetBlockLeaseData();
                 }, 200);
@@ -145,11 +148,37 @@ export class CalendarSchedulerComponent implements OnInit {
         // scheduler.locale.labels.timeline_tab ="Timeline";
         scheduler.date.timeline_start = scheduler.date.week_start;
         scheduler.plugins({
+            multisection: true,
             timeline: true,
-            treetimeline: true,
-            daytimeline: true
+            // treetimeline: true,
+            // daytimeline: true,
+            multiselect: true,
         });
+        scheduler.config.multisection = true;
+        scheduler.templates.event_class = function (start, end, event) {
+            var css = "";
+            if (event.ModalityType) // if event has subject property then special class should be assigned
+                css += "section_" + event.ModalityType;
+            return css; // default return
+        };
 
+
+
+        var sections: any[] = [{
+            "resourceId": 62, "label": "CT With Contrast",
+            "children": [{ "key": "46", "label": "CT With Contrast" }]
+        }, {
+            "resourceId": 61, "label": "MRI With Contrast",
+            "children": [{ "key": "45", "label": "MRI With Contrast" }]
+        }];
+        // var sections: any[] =[
+        //     {key: 1, label: "James Smith"},
+        //     {key: 2, label: "John Williams"},
+        //     {key: 3, label: "David Miller"},
+        //     {key: 4, label: "Linda Brown"}
+        // ]
+        console.log(this.forTimelineList);
+        console.log(sections);
         scheduler.createTimelineView({
             name: "timeline",
             x_unit: "hour",
@@ -159,8 +188,8 @@ export class CalendarSchedulerComponent implements OnInit {
             x_length: 33,
             event_dy: 60,
             resize_events: false,
-            y_unit: '',
-            y_property: "section_id",
+            y_unit: this.forTimelineList,
+            y_property: "key",
             render: "bar",
             second_scale: {
                 x_unit: "day", // unit which should be used for second scale
@@ -191,6 +220,13 @@ export class CalendarSchedulerComponent implements OnInit {
         //     return true;
         // });
 
+        // scheduler.templates.event_class = function (start, end, event) {
+        //     console.log("section_" + event.ModalityType);
+        //     var original = scheduler.getEvent(event.id);
+        //     if (!scheduler.isMultisectionEvent(original))
+        //         return "";
+        //     return "multisection section_" + event.ModalityType;
+        // };
 
         scheduler.attachEvent("onEventDrag", function (id, mode, e) {
             if (mode == "move") {
@@ -256,26 +292,34 @@ export class CalendarSchedulerComponent implements OnInit {
         });
         scheduler.showLightbox = (id: any) => {
             const event = scheduler.getEvent(id);
-            console.log(event);
-            scheduler.startLightbox(id, this.openForm(event));
+            var currentDate = new Date();           
+            if (event.start_date.toLocaleDateString() < currentDate.toLocaleDateString()) {
+                const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                modalRef.result.then().catch((reason: ModalResult | any) => {
+                    if (reason == 5) {
+                        scheduler.startLightbox(id, this.openForm(event));
+                    } else {
+                        scheduler.deleteEvent(event.id);
+                    }
+                });
+            } else {
+                scheduler.startLightbox(id, this.openForm(event));
+            }
+
         };
         scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
-        console.log(this.testData);
-        //scheduler.parse(this.testData);
-        scheduler.parse(JSON.stringify(this.testData));
+        scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
     }
     openConfirm(id: number) {
         const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
         modalRef.componentInstance.deleted.subscribe(() => this.delete(id));
         modalRef.result.then().catch((reason: ModalResult | any) => {
-
             // if (this.isError(reason)) {
             //   console.error(reason);
             // }
         });
     }
     delete(id: number) {
-        console.log('deleteEvent');
         scheduler.deleteEvent(id);
     }
     getSelectedIds() {
@@ -286,7 +330,7 @@ export class CalendarSchedulerComponent implements OnInit {
         return res;
     }
     openCancel(id: number) {
-        alert(id);
+
     }
     openForm(event: any) {
         const modalRef = this.modalService.open(SchedulerPopupComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
@@ -298,7 +342,6 @@ export class CalendarSchedulerComponent implements OnInit {
         modalRef.result
             .then()
             .catch((reason: ModalResult | any) => {
-                console.log(reason);
                 if ((reason == 5)) {
                     this.reasonId = 5;
                     this.GetBlockLeaseData();
@@ -309,8 +352,14 @@ export class CalendarSchedulerComponent implements OnInit {
                 else if ((reason == 3 || reason == 6)) {
                     scheduler.deleteEvent(event.id);
                 }
+                this.backToCalendar();
             })
         //.finally(() => scheduler.endLightbox(false, null));
+    }
+    backToCalendar() {
+        const elm = document.querySelector<HTMLElement>('.dhx_cal_cover')!;
+        elm.style.display = 'none';
+        scheduler.lightbox.close();
     }
     show_minical() {
         if (scheduler.isCalendarVisible()) {
@@ -328,17 +377,30 @@ export class CalendarSchedulerComponent implements OnInit {
         }
     }
     GetBlockLeaseData() {
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID).subscribe((res) => {
-            if (res.response != null) {
-                this.testData = res.response;
-                if (this.reasonId == 5) {
-                    scheduler.clearAll();
-                    scheduler.parse(JSON.stringify(this.testData), "json");
-                } else {
-                    this.schedulerLoad();
+            this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
+            var forTimelineView = res.response[0].ModalityResources;
+            if (forTimelineView) {
+                if (forTimelineView.length > 0) {
+                    for (let i = 0; i < forTimelineView.length; i++) {
+                        if (forTimelineView[i].Contrast.toLocaleLowerCase() == 'w') {
+                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' with contrast' });
+
+                        } else {
+                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' without contrast' });
+                        }
+                        for (let j = 0; j < forTimelineView[i].BlockLeases.length; j++) {
+                            this.SchedulerDayWeekMonth.filter(a => a.LeaseId == forTimelineView[i].BlockLeases[j].LeaseId)[0].key = i + 1;
+                        }
+                    }
                 }
-
-
+            }
+            scheduler.clearAll();
+            if (this.reasonId == 5) {
+                scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth), "json");
+            } else {
+                this.schedulerLoad();
             }
         }, (err: any) => {
             this.errorNotification(err);

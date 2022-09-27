@@ -6980,3 +6980,9 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	padding: 10px;
 	text-align: center;
 }
+.section_CT{
+    background-color: #684f8c !important;
+}
+.section_MRI{
+    background-color: #0FC4A7 !important;
+}

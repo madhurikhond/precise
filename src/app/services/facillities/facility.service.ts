@@ -364,6 +364,11 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
+  getBlockLeasePricing(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post('BlockLeaseScheduler/ManageLeaseFacilityPricing/',body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 
   checkUserType(){
     let checkUser = 0;
