@@ -19,6 +19,7 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
+  @ViewChild('hiddenConfirmationLeaseBtn', { static: false }) hiddenConfirmationLeaseBtn: ElementRef;
   @Input() isGridDisplay: boolean = true
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
@@ -50,6 +51,7 @@ export class SchdFacilitiesComponent implements OnInit {
   allMode: string;
   checkBoxesMode: string;
   selectedItemKeys: any[] = [];
+  eventBlockLeasePricingData: any[] = [];
   facilityName: string = '';
   facilityNoteList: any = [];
   facilityId: number;
@@ -69,6 +71,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityParentCompanyList: any = [];
   parentDropDownModel: string = '';
   facilityPricingList: any = [];
+  blockLeasePricingList: any = [];
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -94,6 +97,7 @@ export class SchdFacilitiesComponent implements OnInit {
   ckConfig: any;
   mycontent: string;
   log: string = '';
+  ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
   //   config = {
@@ -123,11 +127,11 @@ export class SchdFacilitiesComponent implements OnInit {
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
-    facilityService.sendDataToschdFacilities.subscribe(res => {     
-      if (res.FacilityID) {     
+    facilityService.sendDataToschdFacilities.subscribe(res => {
+      if (res.FacilityID) {
         this.isGridDisplay = false;
         this.getFacilityDetail(res.FacilityID);
-        if(res.isShowSchedulingTab){
+        if (res.isShowSchedulingTab) {
           this.defaultPopupTab = 'Scheduling Details';
         }
         this.hiddenAddEditPopUpItem.nativeElement.click();
@@ -859,6 +863,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityPricingHistory(this.facilityId);
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
+        this.getBlockLeasePricing(this.facilityId);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -941,6 +946,68 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityPricingList = res.response;
       }
     });
+  }
+  checkForLease(event: any, from: string) {
+    this.ConfirmationLeaseCheckedFrom = from;
+    if (!event.target.checked) {
+      this.hiddenConfirmationLeaseBtn.nativeElement.click();
+    }
+  }
+  confirmationLease(checked: boolean) {
+    if (!checked) {
+      if (this.ConfirmationLeaseCheckedFrom == 'isActive') {
+        this.generalInfoForm.patchValue({
+          isActive: true
+        });
+      } else {
+        this.generalInfoForm.patchValue({
+          useBlockLease: true
+        });
+      }
+    }
+  }
+  getBlockLeasePricing(facilityId: number) {
+    this.blockLeasePricingList = [];
+    // let body = {
+    //   'FacilityID': facilityId,
+    //   'Operation': 5      
+    // }
+    let body = [{ FacilityID: facilityId, Operation: 5 }];
+    this.facilityService.getBlockLeasePricing(true, body).subscribe((res) => {
+      if (res.response != null) {
+        this.blockLeasePricingList = res.response;
+      }
+    });
+  }
+  onRowUpdated(e) {
+    this.eventBlockLeasePricingData = e;
+  }
+  saveBlockLeasePricing() {
+    this.submitted = true;
+    console.log(this.eventBlockLeasePricingData)
+    if (this.eventBlockLeasePricingData['data']) {
+      let body = {
+        'ID': this.eventBlockLeasePricingData['data'].ID,
+        'FacilityID': this.facilityId,
+        'Modality': this.eventBlockLeasePricingData['data'].Modality,
+        'LeaseRatePerHour': this.eventBlockLeasePricingData['data'].LeaseRatePerHour,
+        'ContrastCostPerUnit': this.eventBlockLeasePricingData['data'].ContrastCostPerUnit,
+        'Operation': 2
+      }
+      for (var i = 0; i < this.blockLeasePricingList.length; i++) {
+        this.blockLeasePricingList[i]["Operation"] = 2;
+      }
+      this.facilityService.getBlockLeasePricing(true, this.blockLeasePricingList).subscribe((res) => {
+        if (res.response != null) {
+          this.blockLeasePricingList = res.response;
+          this.showNotificationOnSucess(res);
+        }
+      }, (err: any) => {
+        this.errorNotification(err);
+      });
+    }
+
+
   }
   getFacilityPricingHistory(facilityId: number) {
     this.facilityPricingHistoryList = [];
