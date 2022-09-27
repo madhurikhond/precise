@@ -60,7 +60,7 @@ export class SchedulerPopupComponent implements OnInit {
   submitted: boolean = false;
   pastDate_start_date: string;
   pastDate_end_date: string;
-  eventLeaseTime:any;
+  eventLeaseTime: any;
 
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
 
@@ -296,7 +296,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-  saveBlockLeaseData() {
+  saveBlockLeaseData() {    
     if (this.checkValidation == true) {
       this.submitted = true;
       if (this.leaseForm.invalid) {
@@ -326,6 +326,8 @@ export class SchedulerPopupComponent implements OnInit {
           this.errorNotification(err);
         });
       }
+    } else {
+      this.hiddenCheckFacilityPopupBtn.nativeElement.click();
     }
   }
   saveCreditInfo() {
@@ -353,6 +355,7 @@ export class SchedulerPopupComponent implements OnInit {
     return Array.from(Array(N), (_, i) => i + 1)
   }
   confirmPastDate(isValid: boolean) {
+
     if (!isValid) {
       if (this.pastDate_start_date) {
         this.leaseForm.patchValue({
@@ -365,7 +368,10 @@ export class SchedulerPopupComponent implements OnInit {
         });
       }
     }
-    this.handleValueChange( this.eventLeaseTime,'')
+    setTimeout(() => {
+      this.handleValueChange(this.eventLeaseTime, '')
+    }, 500);
+
   }
   handleValueChange(e: any, from: string) {
     this.eventLeaseTime = e;
@@ -373,19 +379,21 @@ export class SchedulerPopupComponent implements OnInit {
     this.pastDate_end_date = '';
     const previousValue = e.previousValue;
     const newValue = e.value;
+    let isValid = true;
     const current_Date = new Date(currentDate.toLocaleDateString());
     const newValueDate = new Date(newValue.toLocaleDateString());
     if (from == 'start_date' || from == 'end_date') {
       if (from == 'start_date' && newValueDate < current_Date) {
         this.pastDate_start_date = previousValue;
+        isValid = false;
         this.hiddenpastDateConfirm.nativeElement.click();
       }
       else if (from == 'end_date' && newValueDate < current_Date) {
-        this.pastDate_end_date = previousValue;
+        this.pastDate_end_date = previousValue; isValid = false;
         this.hiddenpastDateConfirm.nativeElement.click();
       }
     }
-    if (previousValue != newValue) {
+    if ((previousValue != newValue) && isValid) {
       this.getTotalLeaseAndCreditHours();
       if (this.selectedresourceId && this.selectedModality) {
         this.MatchFacilityHours();

@@ -292,8 +292,11 @@ export class CalendarSchedulerComponent implements OnInit {
         });
         scheduler.showLightbox = (id: any) => {
             const event = scheduler.getEvent(id);
-            var currentDate = new Date();           
-            if (event.start_date.toLocaleDateString() < currentDate.toLocaleDateString()) {
+            var currentDate = new Date();   
+            console.log(event.LeaseId);
+            const current_Date = new Date(currentDate.toLocaleDateString());
+            const startDate = new Date(event.start_date.toLocaleDateString());        
+            if ((startDate < current_Date) && event.LeaseId==undefined ) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.result.then().catch((reason: ModalResult | any) => {
                     if (reason == 5) {
