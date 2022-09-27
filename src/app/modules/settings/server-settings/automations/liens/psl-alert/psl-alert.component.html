@@ -25,19 +25,19 @@
 													placeholder="Select" 
 													formControlName="matchPslStatus" 
 													bindLabel="status" 
-													[multiple]="true" id="id53" (add)="a1=ValidateMultiSelectTextLength('id53',a1)"
+													[multiple]="true"
 													[closeOnSelect]="false"
 													bindValue="status" 
 													[(ngModel)]="selectedMatchStatus"
-													required>              
+													>              
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+														<div class="ng-value" *ngFor="let item of items | slice:0:2">
 															<span class="ng-value-label"> {{item.status}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a1">
-															<span class="ng-value-label">{{items.length - a1}} more...</span>
+														<div class="ng-value" *ngIf="items.length > 2">
+															<span class="ng-value-label">{{items.length - 2}} more...</span>
 														</div>
 													</ng-template>                        
 												</ng-select> 
@@ -51,19 +51,19 @@
 													placeholder="Select"                                                
 													formControlName="pslDoNotMatch" 
 													bindLabel="status" 
-													[multiple]="true" id="id54" (add)="a2=ValidateMultiSelectTextLength('id54',a2)"
+													[multiple]="true"
 													[closeOnSelect]="false"
 													bindValue="status" 
 													[(ngModel)]="selectedDoNotMatchStatus"
-													required> 
+													> 
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+														<div class="ng-value" *ngFor="let item of items | slice:0:3">
 															<span class="ng-value-label"> {{item.status}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a2">
-															<span class="ng-value-label">{{items.length - a2}} more...</span>
+														<div class="ng-value" *ngIf="items.length > 3">
+															<span class="ng-value-label">{{items.length - 3}} more...</span>
 														</div>
 													</ng-template>                    
 												</ng-select> 
@@ -77,18 +77,18 @@
 											   placeholder="Select"
 											   formControlName="pslFinancial" 
 											   bindLabel="financialtypename"
-											   [multiple]="true"  id="id55" (add)="a3=ValidateMultiSelectTextLength('id55',a3)"
+											   [multiple]="true" 
 											   [closeOnSelect]="false"
 											   bindValue="financialtypeid"
-											   [(ngModel)]="selectedFinancialType" required>
+											   [(ngModel)]="selectedFinancialType">
 											<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-												<div class="ng-value" *ngFor="let item of items | slice:0:a3">
+												<div class="ng-value" *ngFor="let item of items | slice:0:3">
 													<span class="ng-value-label"> {{item.financialtypename}}</span>
 													<span class="ng-value-icon right" (click)="clear(item)"
 														aria-hidden="true">×</span>
 												</div>
-												<div class="ng-value" *ngIf="items.length > a3">
-													<span class="ng-value-label">{{items.length - a3}} more...</span>
+												<div class="ng-value" *ngIf="items.length > 3">
+													<span class="ng-value-label">{{items.length - 3}} more...</span>
 												</div>
 											</ng-template>
 										</ng-select>
@@ -97,7 +97,7 @@
 									<div class="form-group">
 										<div class="theme-label">Email 1</div>
 										<div class="input-group">
-											<input type="text" class="form-control" formControlName="pslEmail1" required>
+											<input type="text" class="form-control" formControlName="pslEmail1">
 										</div>
 										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail1.errors"
 										 class="invalid-feedback">
@@ -108,7 +108,7 @@
 									<div class="form-group">
 										<div class="theme-label">Email 2</div>
 										<div class="input-group">
-											<input type="text" class="form-control" formControlName="pslEmail2" required> 
+											<input type="text" class="form-control" formControlName="pslEmail2"> 
 										</div>
 										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail2.errors"
 										 class="invalid-feedback">
@@ -119,7 +119,7 @@
 									<div class="form-group">
 										<div class="theme-label">Email 3</div>
 										<div class="input-group">
-											<input type="text" class="form-control" formControlName="pslEmail3" required>
+											<input type="text" class="form-control" formControlName="pslEmail3">
 										</div>
 										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail3.errors"
 										class="invalid-feedback">
@@ -130,7 +130,7 @@
 									<div class="form-group">
 										<div class="theme-label">Email 4</div>
 										<div class="input-group">
-											<input type="text" class="form-control" formControlName="pslEmail4" required>
+											<input type="text" class="form-control" formControlName="pslEmail4">
 										</div>
 										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail4.errors"
 										class="invalid-feedback">
@@ -141,7 +141,7 @@
 									<div class="form-group">
 										<div class="theme-label">Email 5</div>
 										<div class="input-group">
-											<input type="text" class="form-control" formControlName="pslEmail5" required>
+											<input type="text" class="form-control" formControlName="pslEmail5">
 										</div>
 										<div *ngIf="IsSubmitted &&  getFromControls.pslEmail5.errors"
 										class="invalid-feedback">

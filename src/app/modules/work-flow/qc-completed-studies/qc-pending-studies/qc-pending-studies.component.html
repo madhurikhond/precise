@@ -22,15 +22,15 @@
             <div class="form-group">
                 <div class="theme-label">Financial Type</div>
                 <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="FINANCIALTYPENAME"
-                    formControlName="financialType" [multiple]="true" id="id141" (add)="a1=ValidateMultiSelectTextLength('id141',a1)" [closeOnSelect]="false"
+                    formControlName="financialType" [multiple]="true" [closeOnSelect]="false"
                     [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME">
                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                             <span class="ng-value-label"> {{item.FINANCIALTYPENAME}}</span>
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         </div>
-                        <div class="ng-value" *ngIf="items.length > a1">
-                            <span class="ng-value-label">{{items.length - a1}} more...</span>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
                         </div>
                     </ng-template>
                 </ng-select>
@@ -38,15 +38,15 @@
             <div class="form-group">
                 <div class="theme-label">Funding Company</div>
                 <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
-                    [(ngModel)]="selectedBroker" [multiple]="true" id="id142" (add)="a2=ValidateMultiSelectTextLength('id142',a2)" [closeOnSelect]="false"
+                    [(ngModel)]="selectedBroker" [multiple]="true" [closeOnSelect]="false"
                     [loading]="showDropdownLoader" bindValue="Broker">
                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                             <span class="ng-value-label"> {{item.Broker}}</span>
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         </div>
-                        <div class="ng-value" *ngIf="items.length > a2">
-                            <span class="ng-value-label">{{items.length - a2}} more...</span>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
                         </div>
                     </ng-template>
                 </ng-select>
@@ -54,15 +54,15 @@
             <div class="form-group">
                 <div class="theme-label">Status</div>
                 <ng-select [items]="studyStatusList" placeholder="Select" bindLabel="STATUS"
-                    formControlName="studyStatus" [(ngModel)]="selectedStudyStatus" [multiple]="true" id="id143" (add)="a3=ValidateMultiSelectTextLength('id143',a3)"
+                    formControlName="studyStatus" [(ngModel)]="selectedStudyStatus" [multiple]="true"
                     [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="STATUS">
                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                             <span class="ng-value-label"> {{item.STATUS}}</span>
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         </div>
-                        <div class="ng-value" *ngIf="items.length > a3">
-                            <span class="ng-value-label">{{items.length - a3}} more...</span>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
                         </div>
                     </ng-template>
                 </ng-select>
@@ -70,15 +70,15 @@
             <div class="form-group">
                 <div class="theme-label">Priority</div>
                 <ng-select [items]="priorityList" placeholder="Select" bindLabel="PRIORITYNAME"
-                    formControlName="priority" [(ngModel)]="selectedPriority" [multiple]="true" id="id144" (add)="a4=ValidateMultiSelectTextLength('id144',a4)" [closeOnSelect]="false"
+                    formControlName="priority" [(ngModel)]="selectedPriority" [multiple]="true" [closeOnSelect]="false"
                     [loading]="showDropdownLoader" bindValue="PRIORITYNAME">
                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                             <span class="ng-value-label"> {{item.PRIORITYNAME}}</span>
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         </div>
-                        <div class="ng-value" *ngIf="items.length > a4">
-                            <span class="ng-value-label">{{items.length - a4}} more...</span>
+                        <div class="ng-value" *ngIf="items.length > 1">
+                            <span class="ng-value-label">{{items.length - 1}} more...</span>
                         </div>
                     </ng-template>
                 </ng-select>
@@ -86,7 +86,7 @@
             <div class="form-group">
                 <div class="theme-label">Modality</div>
                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="SCHEDULEDMODALITY"
-                    formControlName="modality" [(ngModel)]="selectedModality" [multiple]="true" id="id145" (add)="a5=ValidateMultiSelectTextLength('id145',a5)" [closeOnSelect]="false"
+                    formControlName="modality" [(ngModel)]="selectedModality" [multiple]="true" [closeOnSelect]="false"
                     [loading]="showDropdownLoader" bindValue="SCHEDULEDMODALITY">
                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
@@ -103,7 +103,7 @@
                 <div class="theme-label">From Date</div>
                 <div class="input-group">
                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="fromDate" type="date"
-                        [showClearButton]="true" [useMaskBehavior]="true">
+                        [showClearButton]="true" [useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
                     </dx-date-box>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="theme-label">To Date</div>
                 <div class="input-group">
                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="toDate" type="date"
-                        [showClearButton]="true" [useMaskBehavior]="true" >
+                        [showClearButton]="true" [useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
                     </dx-date-box>
                 </div>
             </div>
@@ -206,7 +206,7 @@
             <dxo-header-filter [visible]="false" [allowSearch]="true" ></dxo-header-filter>
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
             <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-            <dxo-selection mode="multiple"></dxo-selection> 
+            <dxo-selection mode="multiple"></dxo-selection>
 
             <dxi-column dataField="HardCheck" caption="Hard Check"></dxi-column>
             <dxi-column dataField="SoftCheck" caption="Soft Check"></dxi-column>
@@ -216,10 +216,10 @@
                 [visible]="false" [groupIndex]="0"></dxi-column>
             <dxi-column dataField="patientid" [width]="100" caption="Patient ID" groupCellTemplate="group2Template"
                 [groupIndex]="1"></dxi-column>
-            <!-- <dxi-column dataField="FirstName" caption="First Name"></dxi-column>
-            <dxi-column dataField="LastName" caption="Last Name"></dxi-column> -->
-            <!-- <dxi-column dataField="isreadytobill" caption="Ready To Bill" cellTemplate="isreadytobill"
-                [allowSorting]="false"></dxi-column> -->
+            <dxi-column dataField="FirstName" caption="First Name"></dxi-column>
+            <dxi-column dataField="LastName" caption="Last Name"></dxi-column>
+            <dxi-column dataField="isreadytobill" caption="Ready To Bill" cellTemplate="isreadytobill"
+                [allowSorting]="false"></dxi-column>
             <dxi-column caption="PSL TC" cellTemplate="pslTCTemplate" [allowSorting]="false"></dxi-column>
             <dxi-column  caption="PSL P" cellTemplate="pslPTemplate" [allowSorting]="false">
             </dxi-column>
@@ -228,7 +228,7 @@
             <dxi-column  caption="ASL P" cellTemplate="aslPTemplate" [allowSorting]="false">
             </dxi-column>
             <dxi-column dataField="proccodename" caption="CPT"></dxi-column>
-            <!-- <dxi-column dataField="financialtypename" caption="Financial Type"></dxi-column> -->
+            <dxi-column dataField="financialtypename" caption="Financial Type"></dxi-column>
             <dxi-column dataField="studydescription" caption="Study Description"></dxi-column>
             <dxi-column dataField="birthdate" caption="DOB" cellTemplate="cell1Template"></dxi-column>
             <dxi-column dataField="studydatetime" cellTemplate="dosTemplate" caption="DOS"
@@ -251,18 +251,22 @@
             <div *dxTemplate="let data of 'group1Template'">
                 <strong>Week Number: </strong>{{data.key[0]}}
             </div>
-                <div *dxTemplate="let data of 'group2Template'">
-                    <strong>Patient Id: </strong>
-                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data.data.items[0])"
-                        data-toggle="modal" data-target="#patient-Detail-Window">
-                        {{data.key[1]}} - </a>{{data.data.items[0].FirstName}},  {{data.data.items[0].LastName}} - {{data.data.items[0].financialtypename}}
-                </div>
-            <div *dxTemplate="let data of 'cell1Template'">
-                {{ data.data.birthdate | date:dateTimeFormatCustom.Date }}
+            <div *dxTemplate="let data of 'group2Template'">
+                <strong>Patient Id: </strong>
+                <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data.data.items[0])"
+                    data-toggle="modal" data-target="#patient-Detail-Window">
+                    {{data.key[1]}} </a>
+
             </div>
+            <div *dxTemplate="let data of 'cell1Template'">
+                {{data.data.birthdate | date:dateTimeFormatCustom.Date }}
+            </div>
+
             <div *dxTemplate="let data of 'cell2Template'">
                 {{data.data.reportsignedtime | date:dateTimeFormatCustom.DateTime }}
             </div>
+
+
             <div *dxTemplate="let data of 'docTemplate'">
                 <i class="fa fa-file-text-o cursor-pointer" data-toggle="modal" data-target="#docManager"
                     (click)="showDocManager(data.data.patientid)"></i>

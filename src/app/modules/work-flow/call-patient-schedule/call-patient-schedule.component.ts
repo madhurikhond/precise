@@ -5,7 +5,6 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
-import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
 declare const $: any
 @Component({
@@ -36,7 +35,7 @@ export class CallPatientScheduleComponent implements OnInit {
   showHeaderFilter: boolean;
   readonly pageSizeArray = PageSizeArray;
   constructor(private readonly fb: FormBuilder, private readonly notificationService: NotificationService,
-    private readonly commonMethodService: CommonMethodService,private facilityService : FacilityService,
+    private readonly commonMethodService: CommonMethodService,
     private readonly workflowService: WorkflowService) { }
 
   ngOnInit(): void {
@@ -56,10 +55,11 @@ export class CallPatientScheduleComponent implements OnInit {
     this.RescheduleNoteForm = this.fb.group({
       RescheduleNote: ['', Validators.required]
     });
-    this.getCallConfirmationData();
-   
+    this.onSearchSubmit();
+    setTimeout(() => {
+      $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+    }, 100);
   }
-
 
   getCallPatientConfirmationCount() {
     this.workflowService.getCallPatientConfirmationCount(false).subscribe((res) => {
@@ -88,7 +88,6 @@ export class CallPatientScheduleComponent implements OnInit {
       });
   }
   saveCallPatientConfirmationLog(type) {
-    debugger
     if (!this.selectedRows || this.selectedRows.length == 0) {
       this.notificationService.showNotification({
         alertHeader: null,
@@ -105,10 +104,8 @@ export class CallPatientScheduleComponent implements OnInit {
       }
     }
   }
-
-
   saveCallPatientConfirmationMethod(type: string, Note: string) {
-    debugger
+
     const internalStudies = this.dataList.filter(name => this.selectedRows.includes(name.myId)).map(x => x.internalstudyid).toString()
     this.workflowService.saveCallPatientConfirmationLog(type, internalStudies, Note, true).subscribe((res) => {
       if (res.responseCode == 200) {
@@ -137,133 +134,74 @@ export class CallPatientScheduleComponent implements OnInit {
   }
 
   RescheduleSelectedStudies(type: any) {
-    debugger
     this.modelValue = 'modal';
     this.saveCallPatientConfirmationMethod(type, this.addForm.RescheduleNote.value);
   }
 
   onReset() {
     this.searchForm.reset();
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
+
   }
-  getCallConfirmationData(){
-    this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
-    this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
-    this.pageNumber, this.pageSize).subscribe((res) => {
-      var data: any = res;
-      this.totalRecords = res.totalRecords
-      this.dataList = data.response;
-      console.log(this.dataList);
-      if (this.dataList != null) {
-        this.dataList.forEach((element, index) => {
-          element.myId = index;
-          // if (element.Facilitydetail)
-          //   var address = element.Facilitydetail.trim();
-          // if (address)
-          //   var stateZip = address.split(',')[1].trim();
-          // if (stateZip) {
-          //   var state = stateZip.split(' ')[0];
-          //   var zip = stateZip.split(' ')[1];
-          // }
-          // if (address) {
-          //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
-            // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
-            // element.Address = address;
-            // if (state) {
-            //   element.Address = element.Address + '/' + state;
-            // }
-            // if (zip) {
-            //   element.Address = element.Address + '/' + zip;
-            // }
-          }
-        // }
-       );
-      }
-      else {
-        this.totalRecords = 1;
-        this.dataList = [];
-      }
-      setTimeout(() => {
-        $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
-      }, 100);
-    },
-      (err: any) => {
-        this.notificationService.showNotification({
-          alertHeader: err.statusText,
-          alertMessage: err.message,
-          alertType: err.status
-        });
-      });
-  }
+
   onSearchSubmit() {
-    debugger
-    this.pageNumber = 1;
-    this.getCallConfirmationData();
-    // this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
-    //   this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
-    //   this.pageNumber, this.pageSize).subscribe((res) => {
-    //     var data: any = res;
-    //     this.totalRecords = res.totalRecords
-    //     this.dataList = data.response;
-    //     console.log(this.dataList);
-    //     if (this.dataList != null) {
-    //       this.dataList.forEach((element, index) => {
-    //         element.myId = index;
-    //         // if (element.Facilitydetail)
-    //         //   var address = element.Facilitydetail.trim();
-    //         // if (address)
-    //         //   var stateZip = address.split(',')[1].trim();
-    //         // if (stateZip) {
-    //         //   var state = stateZip.split(' ')[0];
-    //         //   var zip = stateZip.split(' ')[1];
-    //         // }
-    //         // if (address) {
-    //         //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
-    //           // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
-    //           // element.Address = address;
-    //           // if (state) {
-    //           //   element.Address = element.Address + '/' + state;
-    //           // }
-    //           // if (zip) {
-    //           //   element.Address = element.Address + '/' + zip;
-    //           // }
-    //         }
-    //       // }
-    //      );
-    //     }
-    //     else {
-    //       this.totalRecords = 1;
-    //       this.dataList = [];
-    //     }
-    //     setTimeout(() => {
-    //       $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
-    //     }, 100);
-    //   },
-    //     (err: any) => {
-    //       this.notificationService.showNotification({
-    //         alertHeader: err.statusText,
-    //         alertMessage: err.message,
-    //         alertType: err.status
-    //       });
-    //     });
+    this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
+      this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
+      this.pageNumber, this.pageSize).subscribe((res) => {
+        var data: any = res;
+        this.totalRecords = res.totalRecords
+        this.dataList = data.response;
+        console.log(this.dataList);
+        if (this.dataList != null) {
+          this.dataList.forEach((element, index) => {
+            element.myId = index;
+            if (element.Facilitydetail)
+              var address = element.Facilitydetail.split('~')[1].trim();
+            if (element.address)
+              var stateZip = address.split(',')[1].trim();
+            if (element.stateZip) {
+              var state = stateZip.split(' ')[0];
+              var zip = stateZip.split(' ')[1];
+            }
+            if (address) {
+              element.Address = address.split(',')[0] + '/' + state + '/' + zip;
+              element.Address = address;
+              if (state) {
+                element.Address = element.Address + '/' + state;
+              }
+              if (zip) {
+                element.Address = element.Address + '/' + zip;
+              }
+            }
+
+          });
+        }
+        else {
+          this.totalRecords = 1;
+          this.dataList = [];
+        }
+        setTimeout(() => {
+          $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+        }, 100);
+      },
+        (err: any) => {
+          this.notificationService.showNotification({
+            alertHeader: err.statusText,
+            alertMessage: err.message,
+            alertType: err.status
+          });
+        });
   }
 
   pageChanged(event) {
     this.pageNumber = event;
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
   }
   onPageSizeChange(event) {
     this.pageSize = event;
     this.pageNumber = 1;
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
   }
   get sForm() { return this.searchForm.controls; }
   get addForm() { return this.RescheduleNoteForm.controls; }
-  senddatatoschd_facilities(row:any)
-  {
-    if (row) {
-      let body = row;
-      this.facilityService.sendDataToschdFacilitiesWin(body);
-    }
-  }
 }

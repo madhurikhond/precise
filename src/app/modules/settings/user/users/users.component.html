@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <div class="search-field search-field-theme collapse show">
-                    <form [formGroup]="userServiceForm" class="theme-form" (submit)="search()">
+                    <form [formGroup]="userServiceForm" class="theme-form" (submit)="searchUserMgt()">
                         <div class="form-group">
                             <div class="theme-label">Search</div>
                             <div class="input-group">
@@ -328,8 +328,9 @@
                                                     <div class="input-group icon-active">
                                                         <!-- <input type="date" formControlName="birthday" class="form-control"> -->
                                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
-                                                            formControlName="birthday" type="date" [max]="maxDate"
-                                                            [showClearButton]="true" [useMaskBehavior]="true">
+                                                            formControlName="birthday" type="date"
+                                                            [showClearButton]="true" [useMaskBehavior]="true"
+                                                            dateSerializationFormat="yyyy-MM-dd">
                                                         </dx-date-box>
                                                     </div>
                                                 </div>
@@ -383,14 +384,6 @@
                                                         <small class="error text-danger"
                                                             *ngIf="editForm.eContactPhone2.invalid">Invalid
                                                             Contact Phone2 Number</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Location</div>
-                                                    <div class="input-group">
-                                                        <input type="text" formControlName="officeLocation" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -478,8 +471,8 @@
                                                             <!-- <input type="date" formControlName="userHire" class="form-control"> -->
                                                             <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                                 formControlName="userHire" type="date"
-                                                                [showClearButton]="true" [useMaskBehavior]="true">
-
+                                                                [showClearButton]="true" [useMaskBehavior]="true"
+                                                                dateSerializationFormat="yyyy-MM-dd">
                                                             </dx-date-box>
                                                         </div>
                                                     </div>
@@ -493,8 +486,8 @@
                                                             <!-- <input type="date" formControlName="userTermination" class="form-control"> -->
                                                             <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                                 formControlName="userTermination" type="date"
-                                                                [showClearButton]="true" [useMaskBehavior]="true">
-
+                                                                [showClearButton]="true" [useMaskBehavior]="true"
+                                                                dateSerializationFormat="yyyy-MM-dd">
                                                             </dx-date-box>
                                                         </div>
                                                     </div>
@@ -602,16 +595,16 @@
                                             <div class="input-group">
                                                 <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker"
                                                     formControlName="assingBrokerID" [(ngModel)]="selectedBrokerList"
-                                                    [multiple]="true" id="id112" (add)="a1=ValidateMultiSelectTextLength('id112',a1)" [closeOnSelect]="false"
+                                                    [multiple]="true" [closeOnSelect]="false"
                                                     [loading]="showDropdownLoader" bindValue="BrokerID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                             <span class="ng-value-label"> {{item.Broker}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > a1">
-                                                            <span class="ng-value-label">{{items.length - a1}}
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -628,18 +621,18 @@
                                                 <ng-select [items]="parentFacilityList" placeholder="Select"
                                                     bindLabel="FacilityParentName"
                                                     formControlName="assignFacilityParentID"
-                                                    [(ngModel)]="selectedParentFacilityList" [multiple]="true" id="id113" (add)="a2=ValidateMultiSelectTextLength('id113',a2)"
+                                                    [(ngModel)]="selectedParentFacilityList" [multiple]="true"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityParentID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                             <span class="ng-value-label">
                                                                 {{item.FacilityParentName}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > a2">
-                                                            <span class="ng-value-label">{{items.length - a2}}
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -655,17 +648,17 @@
                                             <div class="input-group">
                                                 <ng-select [items]="facilityList" placeholder="Select"
                                                     bindLabel="FacilityName" formControlName="assignFacilityID"
-                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)"
+                                                    [(ngModel)]="selectedFacilityList" [multiple]="true"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                             <span class="ng-value-label"> {{item.FacilityName}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > a3">
-                                                            <span class="ng-value-label">{{items.length - a3}}
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
@@ -677,7 +670,7 @@
                                 <div class="row">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <!-- <div class="theme-label">Assign To Referrers</div>
+                                            <div class="theme-label">Assign To Referrers</div>
                                             <div class="referrers-grouping">
                                                 <ng-select [items]="referrerList" bindLabel="username"
                                                     formControlName="assignReferrerID" bindValue="referrerID"
@@ -697,29 +690,28 @@
                                                         </div>
                                                     </ng-template>
                                                 </ng-select>
-                                            </div> -->
-                                            <div class="theme-label">Assign To Referrers</div>
-                                            <div class="input-group">
+                                            </div>
+                                            <!-- <div class="theme-label">Assign To Referrers</div>
+                                            <div class="input-group">                                              
                                                 <ng-select [items]="referrerList" placeholder="Select"
-                                                    [virtualScroll]="shouldEnableVirtualScroll(referrerList, 10)"
+                                                [virtualScroll]="shouldEnableVirtualScroll(referrerList, 10)"
                                                     bindLabel="Username" formControlName="assignReferrerID"
-                                                    [(ngModel)]="selectedReferrerList" [multiple]="true" id="id115" (add)="a4=ValidateMultiSelectTextLength('id115',a4)"
+                                                    [(ngModel)]="selectedReferrerList" [multiple]="true" 
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
-                                                    bindValue="ReferrerID" appendTo="body"
-                                                    class="assign-referrers-select">
+                                                    bindValue="ReferrerID"  appendTo="body" class="assign-referrers-select">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                             <span class="ng-value-label"> {{item.Username}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > a4">
-                                                            <span class="ng-value-label">{{items.length - a4}}
+                                                        <div class="ng-value" *ngIf="items.length > 1">
+                                                            <span class="ng-value-label">{{items.length - 1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>
                                                 </ng-select>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

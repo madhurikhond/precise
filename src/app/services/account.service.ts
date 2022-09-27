@@ -41,11 +41,7 @@ export class AccountService {
       map((res: ApiResponse) => res)
     );
   }
-  GetVersionDetail(showGlobalLoader: boolean = true){
-    return this._httpService.get(`MasterValues/GetVersionDetail`, showGlobalLoader).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
+
   getPickupDetails(companyId: string, refNumber: string,pageNumber:any,pageSize:any, showGlobalLoader: boolean = true) {
     return this._httpService.get(`Account/GetPickupStatus?companyId=${companyId}&refNumber=${refNumber}&pageNumber=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
@@ -65,11 +61,6 @@ export class AccountService {
   }
   ContactUs(modelValue: string, showGlobalLoader: boolean = true) {
     return this._httpService.post(`Account/ContactUs`, modelValue, showGlobalLoader,true);
-  }
-  getServiceStateList(showGlobalLoader: boolean = true) {
-    return this._httpService.get('Account/GetUSAStates', showGlobalLoader).pipe(
-      map((res: ApiResponse) => res)
-    );
   }
 
 }

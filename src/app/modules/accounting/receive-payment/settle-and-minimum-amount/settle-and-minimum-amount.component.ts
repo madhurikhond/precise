@@ -4,7 +4,7 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { AccoutingService } from 'src/app/services/accouting-service/accouting.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { createPartiallyEmittedExpression } from 'typescript';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
+
 @Component({
   selector: 'app-settle-and-minimum-amount',
   templateUrl: './settle-and-minimum-amount.component.html',
@@ -13,7 +13,6 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 export class SettleAndMinimumAmountComponent implements OnInit {
   @Input() data : any;
   @Input() checkNumber : any;
-  @Input() e : any;
   arPaymentUpdate: {
     tobeupdated : string,
     internalstudyid : string,
@@ -30,35 +29,24 @@ export class SettleAndMinimumAmountComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal,private readonly storageService: StorageService,
      private readonly accountingService: AccoutingService,
-     private commanMethodService :CommonMethodService,
     private cdr: ChangeDetectorRef
     ) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+    
   }
-
   ngAfterViewInit() {
     this.cdr.detectChanges();
   }
-
   close(loadApi: Boolean = false): void {
-    
     this.activeModal.dismiss(loadApi);
-    this.commanMethodService.sendDatatoRequestSearch(false);
-    this.activeModal.close(false);
-  
   }
-  
   createARPayment(){
-     debugger
-     this.createPaymemts(this.data); 
-     this.activeModal.dismiss(false);
-     this.commanMethodService.sendDatatoRequestSearch(true);
-     this.activeModal.close(true);
-   
+     this.createPaymemts(this.data);
+     this.close();
   }
-  
   createPaymemts(data){
+    debugger;
     this.arPaymentUpdate = {
       tobeupdated : 'Row_Select_DeSelect',
       internalstudyid : data.oldData.INTERNALSTUDYID,
@@ -73,16 +61,15 @@ export class SettleAndMinimumAmountComponent implements OnInit {
       userid : this.storageService.user.UserId
     }
     this.accountingService.ArPaymentUpdate(true,this.arPaymentUpdate).subscribe((res) => {
-   
     var data: any = res;
     if (data.response != null) {
-          
+ 
     }
     else {
     }
   },
   (err : any) => {  
-
+    
   });
   this.arPaymentUpdate.tobeupdated = 'Payment Amount';
   this.accountingService.ArPaymentUpdate(true,this.arPaymentUpdate).subscribe((res) => {

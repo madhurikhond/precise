@@ -39,7 +39,7 @@ export class StudyDescriptionComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('Study Description');
     this.studyTypeForm = this.fb.group({
     studytypecode: ['',[Validators.required]],
     description: ['',[Validators.required]],

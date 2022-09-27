@@ -5,29 +5,28 @@ import { LiensComponent } from './liens.component';
 import { PslAlertComponent } from './psl-alert/psl-alert.component';
 import { ESignLienComponent } from './e-sign-lien/e-sign-lien.component';
 import { BrokerPslComponent } from './broker-psl/broker-psl.component';
-import { RoleGuard } from 'src/app/modules/core/guards/role.guard';
 
 const routes: Routes = [
 
   {
     path: '', component: LiensComponent, children: [
       {
-        path: '', redirectTo: 'pi', pathMatch: 'full',canActivate:[RoleGuard]
+        path: '', redirectTo: 'pi', pathMatch: 'full'
       },
       {
-        path:'pi',component:PiComponent,canActivate:[RoleGuard]
+        path:'pi',component:PiComponent
       }
       ,
       {
-        path:'brokerpsl',component:BrokerPslComponent,canActivate:[RoleGuard]
+        path:'brokerpsl',component:BrokerPslComponent
       },
       
       {
-        path:'pslalert',component:PslAlertComponent,canActivate:[RoleGuard]
+        path:'pslalert',component:PslAlertComponent
       }
       ,
       {
-        path:'esignlien',component:ESignLienComponent,canActivate:[RoleGuard]
+        path:'esignlien',component:ESignLienComponent
       }
     ]
   }

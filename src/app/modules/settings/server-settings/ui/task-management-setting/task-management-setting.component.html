@@ -154,18 +154,18 @@
 													[items]="days" 
 													placeholder="Select"                                            
 													bindLabel="day" 
-													[multiple]="true" id="id110" (add)="a1=ValidateMultiSelectTextLength('id110',a1)"
+													[multiple]="true"
 													[closeOnSelect]="false"
 													bindValue="day" 
 													formControlName="sendDailySummaryOnDaysGlobal"> 
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
 															<span class="ng-value-label"> {{item.day}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a1">
-															<span class="ng-value-label">{{items.length - a1}} more..</span>
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}} more..</span>
 														</div>
 													</ng-template>                                   
 												</ng-select>
@@ -187,19 +187,19 @@
 													[items]="epicEmployees" 
 													placeholder="Select"                                            
 													bindLabel="UserName" 
-													[multiple]="true" id="id111" (add)="a2=ValidateMultiSelectTextLength('id111',a2)"
+													[multiple]="true"
 													[closeOnSelect]="false"
 													bindValue="USERID" 
 													formControlName="epicUser"
 													> 
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
 															<span class="ng-value-label"> {{item.UserName}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a2">
-															<span class="ng-value-label">{{items.length - a2}} more..</span>
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}} more..</span>
 														</div>
 													</ng-template>                                   
 												</ng-select>

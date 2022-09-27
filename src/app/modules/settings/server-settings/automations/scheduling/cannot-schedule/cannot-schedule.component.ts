@@ -11,10 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./cannot-schedule.component.css']
 })
 export class CannotScheduleComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
   cannotScheduleForm : FormGroup
   id:number;
   submitted = false
@@ -240,9 +236,4 @@ export class CannotScheduleComponent implements OnInit {
     );
   }  
   get csForm() { return this.cannotScheduleForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

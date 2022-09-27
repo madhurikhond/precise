@@ -3,3 +3,4 @@
     height: 280px !important;
     overflow-y: scroll !important
 }
+.disabled{ pointer-events: none }

@@ -38,7 +38,7 @@ export class ExcludeFacilitiesComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Scheduling Facilities Settings');  
+    this.commonMethodService.setTitle('Exclude Facility');
     this.getFinancialTypeList();
   }
 

@@ -44,7 +44,7 @@ export class DxCodesComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('DX Codes');
     this.dxForm = this.fb.group({
       dxcode: ['',[Validators.required]],
       bodyPart: ['',[Validators.required]],

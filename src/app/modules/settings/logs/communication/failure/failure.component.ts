@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { LogsService } from 'src/app/services/logs.service';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
+
 @Component({
   selector: 'app-failure',
   templateUrl: './failure.component.html',
@@ -28,7 +28,6 @@ export class FailureComponent implements OnInit {
   constructor(
     private logService:LogsService,
     private notificationService:NotificationService,
-    private readonly commonMethodService : CommonMethodService 
   ) {
       this.allMode = 'page';
       this.checkBoxesMode = 'always'
@@ -52,8 +51,7 @@ export class FailureComponent implements OnInit {
       this.searchText = res.searchText;
       this.pageNumber = 1;
       this.pageSize = 20;
-      this.getAllFailure(); 
-      this.commonMethodService.setTitle('Failure');    
+      this.getAllFailure();     
     });
     this.logService.clearClickedEvent.subscribe((res: string) => {
       if (res === 'clearFilter') {

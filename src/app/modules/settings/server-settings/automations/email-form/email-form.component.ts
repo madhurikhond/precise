@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SettingsService } from 'src/app/services/settings.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
 
 @Component({
   selector: 'app-email-form',
@@ -15,14 +14,14 @@ export class EmailFormComponent implements OnInit {
   modelValue:string='modal';
   submitted = false
   emailForm:FormGroup;
-  readonly commonRegex=CommonRegex;
+
   constructor( private readonly settingsService:  SettingsService,private fb: FormBuilder,
     private readonly notificationService: NotificationService) { }
 
   ngOnInit(): void {    
     this.emailForm = this.fb.group({
       AttorneyLienReminder: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
-      BillsEmail: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],
+      BillsEmail: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       FacilityPackage: [''],
       LiabPersisRemind: [''],
       RefStudySum: [''],

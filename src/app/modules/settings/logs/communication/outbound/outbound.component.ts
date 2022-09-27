@@ -6,7 +6,6 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { LogsService } from 'src/app/services/logs.service';
 
-
 @Component({
   selector: 'app-outbound',
   templateUrl: './outbound.component.html',
@@ -56,8 +55,7 @@ export class OutboundComponent implements OnInit {
       this.searchText = res.searchText;
       this.pageNumber = 1;
       this.pageSize = 20;
-      this.getAllOutBounds();  
-      this.commonMethodService.setTitle('Outbound');   
+      this.getAllOutBounds();     
     });
     this.logService.clearClickedEvent.subscribe((res: string) => {
       if (res === 'clearFilter') {

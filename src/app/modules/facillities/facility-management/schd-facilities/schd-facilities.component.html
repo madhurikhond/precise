@@ -4,7 +4,7 @@
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> <a href="javascript:void(0)"
 					class="btn btn-theme btn-sm pull-left" data-toggle="modal" data-target="#add-Edit-facility"
 					(click)="resetFacilityForm()"><i class="fa fa-plus"></i> Add New
-					Facility</a>
+					Facility  {{isGridDisplay}}</a>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 				<div class="precisemri-search page-select">
@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<div *dxTemplate="let data of 'facilityIdTemplate'">
-				<a href="javascript:void(0)" (click)="getFacilityDetail(data)"
+				<a href="javascript:void(0)" (click)="getFacilityDetail(data.data.facilityId)"
 					class="single-action fa fa-pencil-square-o" data-toggle="modal"
 					data-target="#add-Edit-facility"></a>
 			</div>
@@ -130,8 +130,8 @@
 </div>
 <!-- Pop Up Start -->
 
-<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="add-Edit-facility"
-	role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="add-Edit-facility" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -302,6 +302,10 @@
 												type="checkbox">
 											<label for="editinfo5" class="arrow-label">Do not schedule this
 												facility</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" formControlName="useBlockLease" type="checkbox">
+											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
 										<div class="form-group">
 											<div class="theme-label">Facility mile</div>
@@ -1011,6 +1015,7 @@
 															<th width="100">Incl. Flex & Ext</th>
 															<th width="100">Sedation</th>
 															<th width="100">Breast</th>
+															<th width="100">Resource Name </th>
 														</tr>
 													</thead>
 													<tbody>
@@ -1096,6 +1101,19 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<select #mri1ResourceName
+																	(change)="updateResourceName(mri1ResourceName.value,'mri',1)"
+																	formControlName="mri1ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
+																</select>
+															</td>
 														</tr>
 														<tr>
 															<td>2</td>
@@ -1177,6 +1195,19 @@
 																	<option></option>
 																	<option value="Yes">Yes</option>
 																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select #mri2ResourceName
+																	(change)="updateResourceName(mri2ResourceName.value,'mri',2)"
+																	formControlName="mri2ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
 																</select>
 															</td>
 														</tr>
@@ -1262,6 +1293,19 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<select #mri3ResourceName
+																	(change)="updateResourceName(mri3ResourceName.value,'mri',3)"
+																	formControlName="mri3ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
+																</select>
+															</td>
 														</tr>
 													</tbody>
 												</table>
@@ -1286,6 +1330,7 @@
 															<th width="100">Contrast</th>
 															<th width="100">Sedation</th>
 															<th width="100">Breast</th>
+															<th width="100">Resource Name </th>
 														</tr>
 													</thead>
 													<tbody>
@@ -1356,6 +1401,19 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<select #ct1ResourceName
+																	(change)="updateResourceName(ct1ResourceName.value,'ct',1)"
+																	formControlName="ct1ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
+																</select>
+															</td>
 														</tr>
 														<tr>
 															<td>2</td>
@@ -1422,6 +1480,19 @@
 																	<option></option>
 																	<option value="Yes">Yes</option>
 																	<option value="No">No</option>
+																</select>
+															</td>
+															<td>
+																<select #ct2ResourceName
+																	(change)="updateResourceName(ct2ResourceName.value,'ct',2)"
+																	formControlName="ct2ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
 																</select>
 															</td>
 														</tr>
@@ -1492,6 +1563,19 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<select #ct3ResourceName
+																	(change)="updateResourceName(ct3ResourceName.value,'ct',3)"
+																	formControlName="ct3ResourceName"
+																	class="form-control">
+																	<option value=null>Select Resource Name
+																	</option>
+																	<option *ngFor="let item of ResourceNameList"
+																		value={{item.INTERNALRESOURCEID}}>
+																		{{item.RESOURCENAME}}
+																	</option>
+																</select>
+															</td>
 														</tr>
 													</tbody>
 												</table>
@@ -1531,8 +1615,10 @@
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
 																<!-- <input type="date" class="form-control" formControlName="mriexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mriexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+																<dx-date-box formControlName="mriexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1563,9 +1649,10 @@
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
 																<!-- <input type="date" class="form-control" formControlName="ctexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																
+																<dx-date-box formControlName="ctexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1597,9 +1684,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="xrayexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"formControlName="xrayexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="xrayexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1630,10 +1718,10 @@
 														<div class="form-group">
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="arthoExpires" type="date"
-																	[showClearButton]="true" 
-																	[useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="arthoExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1666,9 +1754,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="bnexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="bnexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																	
+																<dx-date-box formControlName="bnexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1701,9 +1790,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="mammoExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mammoExpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="mammoExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1736,10 +1826,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="nmexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="nmexpires" type="date"
+																<dx-date-box formControlName="nmexpires" type="date"
 																	[showClearButton]="true" [useMaskBehavior]="true"
-																	displayFormat="shortdate">
-																	</dx-date-box>
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1772,9 +1862,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="psexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="psexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="psexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1807,9 +1898,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="usexpires"> -->
-																<dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="usexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																	
+																<dx-date-box formControlName="usexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1842,9 +1934,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="myElogramExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="myElogramExpires"
+																<dx-date-box formControlName="myElogramExpires"
 																	type="date" [showClearButton]="true"
-																	[useMaskBehavior]="true" ></dx-date-box>
+																	[useMaskBehavior]="true" displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1876,9 +1969,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="dexaExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dexaExpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																</dx-date-box>
+																<dx-date-box formControlName="dexaExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1911,9 +2005,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="ctArthoExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctArthoExpires"
+																<dx-date-box formControlName="ctArthoExpires"
 																	type="date" [showClearButton]="true"
-																	[useMaskBehavior]="true" ></dx-date-box>
+																	[useMaskBehavior]="true" displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1986,7 +2081,8 @@
 													<div class="theme-label-title">Scheduling Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div [class.disabled]="facilitySchedulingDetailFormControls.sundayschedulingIsClosed.value"
+														class="form-group time-group">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2005,9 +2101,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','scheduling',$event)"
+															formControlName="sundayschedulingIsClosed" type="checkbox">
+														<label for="sundayschedulingIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayschedulingIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2024,11 +2128,20 @@
 																<input type="time" class="form-control"
 																	formControlName="schedulingMonOpenTo2">
 															</div>
+
 														</div>
+													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','scheduling',$event)"
+															formControlName="mondayschedulingIsClosed" type="checkbox">
+														<label for="mondayschedulingIsClosed" class="arrow-label">Closed
+															entire day</label>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayschedulingIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2047,9 +2160,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','scheduling',$event)"
+															formControlName="tuesdayschedulingIsClosed" type="checkbox">
+														<label for="tuesdayschedulingIsClosed"
+															class="arrow-label">Closed entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayschedulingIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2068,9 +2189,18 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','scheduling',$event)"
+															formControlName="wednesdayschedulingIsClosed"
+															type="checkbox">
+														<label for="wednesdayschedulingIsClosed"
+															class="arrow-label">Closed entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayschedulingIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2089,9 +2219,18 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','scheduling',$event)"
+															formControlName="thursdayschedulingIsClosed"
+															type="checkbox">
+														<label for="thursdayschedulingIsClosed"
+															class="arrow-label">Closed entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayschedulingIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2110,9 +2249,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','scheduling',$event)"
+															formControlName="fridayschedulingIsClosed" type="checkbox">
+														<label for="fridayschedulingIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayschedulingIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2131,6 +2278,14 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','scheduling',$event)"
+															formControlName="saturdayschedulingIsClosed"
+															type="checkbox">
+														<label for="saturdayschedulingIsClosed"
+															class="arrow-label">Closed entire day</label>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2142,7 +2297,8 @@
 													<div class="theme-label-title">MRI Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundaymriIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2159,9 +2315,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','mri',$event)"
+															formControlName="sundaymriIsClosed" type="checkbox">
+														<label for="sundaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondaymriIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2178,9 +2342,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','mri',$event)"
+															formControlName="mondaymriIsClosed" type="checkbox">
+														<label for="mondaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdaymriIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2197,9 +2369,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','mri',$event)"
+															formControlName="tuesdaymriIsClosed" type="checkbox">
+														<label for="tuesdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdaymriIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2216,9 +2396,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','mri',$event)"
+															formControlName="wednesdaymriIsClosed" type="checkbox">
+														<label for="wednesdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdaymriIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2235,9 +2423,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','mri',$event)"
+															formControlName="thursdaymriIsClosed" type="checkbox">
+														<label for="thursdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridaymriIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2254,9 +2450,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','mri',$event)"
+															formControlName="fridaymriIsClosed" type="checkbox">
+														<label for="fridaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdaymriIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2273,6 +2477,13 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','mri',$event)"
+															formControlName="saturdaymriIsClosed" type="checkbox">
+														<label for="saturdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2284,7 +2495,8 @@
 													<div class="theme-label-title">CT Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundayctIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2301,9 +2513,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','ct',$event)"
+															formControlName="sundayctIsClosed" type="checkbox">
+														<label for="sundayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayctIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2320,9 +2540,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','ct',$event)"
+															formControlName="mondayctIsClosed" type="checkbox">
+														<label for="mondayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayctIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2339,9 +2567,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','ct',$event)"
+															formControlName="tuesdayctIsClosed" type="checkbox">
+														<label for="tuesdayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayctIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2358,9 +2594,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','ct',$event)"
+															formControlName="wednesdayctIsClosed" type="checkbox">
+														<label for="wednesdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayctIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2377,9 +2621,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','ct',$event)"
+															formControlName="thursdayctIsClosed" type="checkbox">
+														<label for="thursdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayctIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2396,9 +2648,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','ct',$event)"
+															formControlName="fridayctIsClosed" type="checkbox">
+														<label for="fridayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayctIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2415,6 +2675,13 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','ct',$event)"
+															formControlName="saturdayctIsClosed" type="checkbox">
+														<label for="saturdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2426,7 +2693,8 @@
 													<div class="theme-label-title">XRAY Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundayxrayIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2443,9 +2711,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','xray',$event)"
+															formControlName="sundayxrayIsClosed" type="checkbox">
+														<label for="sundayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayxrayIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2462,9 +2738,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','xray',$event)"
+															formControlName="mondayxrayIsClosed" type="checkbox">
+														<label for="mondayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayxrayIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2481,9 +2765,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','xray',$event)"
+															formControlName="tuesdayxrayIsClosed" type="checkbox">
+														<label for="tuesdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayxrayIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2500,9 +2792,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','xray',$event)"
+															formControlName="wednesdayxrayIsClosed" type="checkbox">
+														<label for="wednesdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayxrayIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2519,9 +2819,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','xray',$event)"
+															formControlName="thursdayxrayIsClosed" type="checkbox">
+														<label for="thursdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayxrayIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2538,9 +2846,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','xray',$event)"
+															formControlName="fridayxrayIsClosed" type="checkbox">
+														<label for="fridayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayxrayIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2556,6 +2872,13 @@
 																	formControlName="satXrayTo2">
 															</div>
 														</div>
+													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','xray',$event)"
+															formControlName="saturdayxrayIsClosed" type="checkbox">
+														<label for="saturdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
 													</div>
 												</div>
 											</div>
@@ -2601,9 +2924,8 @@
 										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 											<div class="cke-editor-group">
 												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
-												formControlName="facilityPolicy"
-													[config]="CkeConfig" (paste)="onPaste($event)"
-													(change)="onChange($event)">
+													formControlName="facilityPolicy" [config]="CkeConfig"
+													(paste)="onPaste($event)" (change)="onChange($event)">
 												</ckeditor>
 												<!-- <ckeditor [editor]="Editor" debounce="500"
 													formControlName="facilityPolicy" style="text-transform: none;"
@@ -2619,9 +2941,8 @@
 										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 											<div class="cke-editor-group ">
 												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
-												formControlName="parentPolicy" name="myckeditor" 
-													[config]="ckConfig"  (paste)="onPaste($event)" 
-													(change)="onChange($event)">
+													formControlName="parentPolicy" name="myckeditor" [config]="ckConfig"
+													(paste)="onPaste($event)" (change)="onChange($event)">
 												</ckeditor>
 												<!-- <ckeditor [editor]="Editor" formControlName="parentPolicy"
 													style="text-transform: none;" [disabled]="true"
@@ -2871,7 +3192,7 @@
 										</div>
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerFacilityPricingList"
-												[dataSource]="facilityPricingList" [showBorders]="true" [(selectedRowKeys)]="selectedRows"   (onRowUpdating)="onCellUpdating($event)"  >
+												[dataSource]="facilityPricingList" [showBorders]="true">
 												<dxo-editing mode="cell" [allowUpdating]="allowUpdatingPrice">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
@@ -2896,7 +3217,7 @@
 														message="Enter valid values">
 													</dxi-validation-rule>
 												</dxi-column> -->
-												<dxi-column dataField="isCopyPrice" caption="IS COPY PRICE"  
+												<dxi-column dataField="isCopyPrice" caption="IS COPY PRICE"
 													[visible]="true"></dxi-column>
 												<dxi-column dataField="service" caption="SERVICE" [visible]="false">
 												</dxi-column>
@@ -3200,30 +3521,30 @@
 								</div> -->
 								<div class="send-lien-row">
 									<div class="send-lien-col">
-										
-											<div class="theme-label">Next Day Summary</div>
-										
+
+										<div class="theme-label">Next Day Summary</div>
+
 									</div>
 									<div class="send-lien-col">
 										<div class="form-group md-input-focused">
 											<ng-select [items]="EpicUserList" placeholder="Select"
 												formControlName="userList" bindLabel="UserName" [multiple]="true"
 												[closeOnSelect]="false" bindValue="UserName"
-												[(ngModel)]="selectedEpicUserList" id="id19"  (add)="a1=ValidateMultiSelectTextLength('id19',a1)">
+												[(ngModel)]="selectedEpicUserList">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1"> <span
+													<div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
 															class="ng-value-label"> {{item.UserName}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1"> <span
-															class="ng-value-label">{{items.length - a1}} more..</span>
+													<div class="ng-value" *ngIf="items.length > 1"> <span
+															class="ng-value-label">{{items.length - 1}} more..</span>
 													</div>
 												</ng-template>
 											</ng-select>
 										</div>
 									</div>
-								</div> 
+								</div>
 								<!-- <div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="checkbox-theme">
@@ -3257,7 +3578,7 @@
 						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Analytics' ? 'active show' : 'fade'"
 							id="edit-analytics" *ngIf="isPopUpInEditMode">
 							<div class="search-field search-field-theme page-top-action">
-								<form class="theme-form autocomplete" [formGroup]= "facilityTagForm">
+								<form class="theme-form autocomplete" [formGroup]="facilityTagForm">
 									<div class="form-group">
 										<div class="theme-label">Enter Tag</div>
 										<div class="input-group md-input-focused">
@@ -3347,5 +3668,5 @@
 <button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
 	data-target="#deleteLink"></button>
 <button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
-    data-target="#add-Edit-facility"></button>
+	data-target="#add-Edit-facility"></button>
 <app-document-manager-facility></app-document-manager-facility>

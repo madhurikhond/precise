@@ -10,8 +10,7 @@ import { SelectStudyComponent } from './select-study/select-study.component'
 import { StudyNotCompletedComponent } from './study-not-completed/study-not-completed.component'
 import { SettleAndMinimumAmountComponent } from './settle-and-minimum-amount/settle-and-minimum-amount.component';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
-
+import { DateTimeFormatYearCustom } from 'src/app/constants/dateTimeFormatYearCustom';
 declare const $: any;
 
 @Component({
@@ -22,11 +21,6 @@ declare const $: any;
 export class ReceivePaymentComponent implements OnInit {
 
   @ViewChild('hiddenresponseConfirmPopUp', { static: false }) hiddenresponseConfirmPopUp: ElementRef;
-  
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  maxDate = new Date();
   searchForm: FormGroup;
   checkdetailForm: FormGroup;
   showDropdownLoader = true;
@@ -56,8 +50,6 @@ export class ReceivePaymentComponent implements OnInit {
   allMode: string;
   checkBoxesMode: string;
   dropDownText: Number;
-  updateSelectedData : boolean  = false;
-  data : any
   createARPayments: {
     userId: number,
     CheckNo: string,
@@ -90,25 +82,17 @@ export class ReceivePaymentComponent implements OnInit {
   completedStudyId: number = 0;
   filename: string;
   fileData: string;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+  readonly DateTimeFormatYearCustom = DateTimeFormatYearCustom;
   readonly pageSizeArray = PageSizeArray;
 
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly accountingService: AccoutingService, private readonly notificationService: NotificationService,
-    private readonly storageService: StorageService, private _modalService: NgbModal,) { 
-      this.commonMethodService.requestSearchObservable.subscribe((res) => {
-        debugger
-       this.updateSelectedData = res ;
-  
-      }, (err: any) => {
-      })
-    }
+    private readonly storageService: StorageService, private _modalService: NgbModal,) { }
 
   ngOnInit(): void {
-    
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.setGridSetting();
-    this.commonMethodService.setTitle('Receive Payment');
+    this.commonMethodService.setTitle('Receive Payments');
     this.getDropdown();
     this.getBottomGrid();
     this.checkedData = [null]
@@ -410,7 +394,6 @@ export class ReceivePaymentComponent implements OnInit {
       }
       this.accountingService.getARPaymentData(true, data, this.pageNumber, this.pageSize).subscribe((res) => {
         if (res) {
-          debugger
           var data: any = res;
           this.dataList = data.response;
           this.SelectedAmount = 0;
@@ -466,7 +449,6 @@ export class ReceivePaymentComponent implements OnInit {
     }, 200);
   }
   OnRowselected(data: any) {
-    debugger
     this.SelectedRow = data.selectedRowsData.length;
     if (data.selectedRowsData.length > 0) {
       this.oncreateARPayments(data);
@@ -474,73 +456,31 @@ export class ReceivePaymentComponent implements OnInit {
     }
     this.onDeleteCurrentSelectedStudy(data);
   }
-  onSaving(e) {
-    console.log('in');
-  }
+
   onCellUpdating(data: any) {
-    debugger
     var e = false;
-    let ssx:any ={...data.oldData}; 
     var a: NgbModalRef;
-    // if (!data.newData.Nowpaid ) {
-    //   data.newData.Nowpaid = '0.00'
-    // } 
-    if (data.newData != null && (data.newData.Nowpaid && data.newData.Nowpaid != 0)) {
+   
+      // if (!data.newData.Nowpaid ) {
+      //   data.newData.Nowpaid = '0.00'
+      // } 
+    if (data.newData != null && data.newData.Nowpaid) {
       if (data.oldData.AllocatedAmount && Number(data.oldData.AllocatedAmount) > Number(data.newData.Nowpaid)) { e = true; }
       else if (data.oldData.MinSettleMent && Number(data.oldData.MinSettleMent) > Number(data.newData.Nowpaid)) { e = true; }
       if (e === true) {
         const modalReff = this._modalService.open(SettleAndMinimumAmountComponent,
           { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-        modalReff.componentInstance.data = data       
-          modalReff.result.then((res: any) => {           
-          }, (reson) => {           
-            // if (!reson) {
-            //   if(this.updateSelectedData){
-            //     debugger    
-            //     this.SelectedAmount = Number(this.SelectedAmount) + Number(data.newData.Nowpaid) - Number(ssx.Nowpaid);
-            //     this.BalanceAmount = Number(this.CheckAmount) - Number(this.SelectedAmount);
-            //   }
-            //   else{
-            //         data.newData.Nowpaid = '0.00'
-            //         data.oldData.Nowpaid = '0.00'
-            //   }
-            // }
-            if (!this.updateSelectedData)
-            {
-              data.newData.Nowpaid = '0.00'
-              data.oldData.Nowpaid = '0.00'
-            }
-            this.SelectedAmount = Number(this.SelectedAmount) + Number(data.newData.Nowpaid) - Number(ssx.Nowpaid);
-            this.BalanceAmount = Number(this.CheckAmount) - Number(this.SelectedAmount);
-          })
-          modalReff.componentInstance.checkNumber = this.checkNumber;
+        modalReff.componentInstance.data = data
+        modalReff.componentInstance.checkNumber = this.checkNumber
       }
       else {
         this.CreateCurrentSelectedStudy(data);
-        this.SelectedAmount = Number(this.SelectedAmount) + Number(data.newData.Nowpaid) - Number(ssx.Nowpaid);
-        this.BalanceAmount = Number(this.CheckAmount) - Number(this.SelectedAmount);
       }
+      this.SelectedAmount = Number(this.SelectedAmount) + Number(data.newData.Nowpaid) - Number(data.oldData.Nowpaid);
+      this.BalanceAmount = Number(this.CheckAmount) - Number(this.SelectedAmount);
     }
     else if (data.newData.AllocatedAmount) {
       this.onUpdateSettleAlloc(data)
-    }
-
-    if (data.newData.Nowpaid == '-3.00') {
-      data.newData.Nowpaid = '0.00'
-    }
-    if (this.updateSelectedData == false)
-    {
-      //data.oldData.Nowpaid = '0.00'
-
-    }
-    if (data.oldData.Nowpaid && (data.newData.Nowpaid == '' || Number(data.newData.Nowpaid) == 0)) {
-      data.newData.Nowpaid = data.oldData.Nowpaid;
-    }
-    else if (data.newData.Nowpaid == '') {
-      data.newData.Nowpaid = '0.00'
-    }
-    else if (data.newData.AllocatedAmount == '') {
-      data.newData.AllocatedAmount = '0.00'
     }
   }
   CreateCurrentSelectedStudy(data: any) {
@@ -604,7 +544,6 @@ export class ReceivePaymentComponent implements OnInit {
   onDeleteCurrentSelectedStudy(data: any) {
     if (data.currentDeselectedRowKeys.length > 0) {
       for (let i = 0; i < data.currentDeselectedRowKeys.length; i++) {
-        debugger
         let deselectedKey = data.currentDeselectedRowKeys[i];
         let deselectedrow = this.dataList.filter(x => x.INTERNALSTUDYID === deselectedKey);
         this.SelectedAmount = Number(this.SelectedAmount) - Number(deselectedrow[0].Nowpaid);
@@ -625,7 +564,7 @@ export class ReceivePaymentComponent implements OnInit {
         this.accountingService.ArPaymentUpdate(true, this.arPaymentUpdate).subscribe((res) => {
           var data: any = res;
           if (data.responseCode == 200) {
-            //this.showNotificationOnSucess(res);THE PAYMENT AMOUNT IS LESS THAN SETTLEMENT. DO YOU WISH TO CONTINUE?
+            //this.showNotificationOnSucess(res);
           }
           else {
             this.errorNotification(res);
@@ -635,8 +574,11 @@ export class ReceivePaymentComponent implements OnInit {
             this.errorNotification(err);
           });
         var index = this.dataList.findIndex(x => x.INTERNALSTUDYID === deselectedKey)
-        this.dataList[index].Nowpaid = '0.00';
+        this.dataList[index].Nowpaid = 0;
       }
+
+
+
       // let deselectedKey = data.currentDeselectedRowKeys[0];
       // let deselectedrow = this.dataList.filter(x => x.INTERNALSTUDYID === deselectedKey);
       // this.SelectedAmount = Number(this.SelectedAmount) - Number(deselectedrow[0].Nowpaid);
@@ -791,10 +733,4 @@ export class ReceivePaymentComponent implements OnInit {
 
   get sForm() { return this.searchForm.controls; }
   get cform() { return this.checkdetailForm.controls; }
-
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

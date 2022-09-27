@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -13,11 +12,6 @@ import { RequestSearchDetailComponent } from '../../shared/components/request-se
   styleUrls: ['./request-search.component.css']
 })
 export class RequestSearchComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  maxDate = new Date();
   @ViewChild('hiddenButton1', { static: false }) hiddenButton1: ElementRef;
   @ViewChild(RequestSearchDetailComponent) childComponent;
   statusList: any = [{ statusName: 'PICKED UP' },
@@ -68,8 +62,7 @@ export class RequestSearchComponent implements OnInit {
   checksModel: string = '';
   actionModel: string;
   dropDownNameModel: any = [];
-  isReadyForPickUp : string ='';
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   // Grid Properties
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
@@ -173,11 +166,11 @@ export class RequestSearchComponent implements OnInit {
       'filterDropDown': this.dropDownNameModel == null ? '' : this.dropDownNameModel.toString()
     }
     this.subsService.getSubsDataByFilter(true, body, this.pageNumber, this.pageSize).subscribe((res) => {
-      
       this.totalRecords = 1;
       if (res.response != null) {
         this.subsGridList = res.response;
         this.totalRecords = res.totalRecords;
+
         this.isShowColumnWithNoData = true;
       }
       else {
@@ -323,11 +316,6 @@ export class RequestSearchComponent implements OnInit {
       alertMessage: err.message,
       alertType: err.status
     });
-  }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }
 

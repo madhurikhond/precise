@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
+
 @Component({
   selector: 'app-scheduling-facilities-settings',
   templateUrl: './scheduling-facilities-settings.component.html',
@@ -7,10 +7,9 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 })
 export class SchedulingFacilitiesSettingsComponent implements OnInit {
 
-  constructor(private readonly commonMethodService : CommonMethodService ) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.commonMethodService.setTitle('Scheduling Facilities Settings');  
   }
 
 }

@@ -4,18 +4,14 @@
 
 export const environment = {
   production: false,
-  // baseUrl: `http://localhost:64465/api`,
-  onlyDomain: `https://localhost:52232/api/`,
-  // onlyDomain: `https://radlogix.radflow360.com/`,
-  // baseUrl: `http://192.168.1.23:81/api`,
+  //baseUrl: `http://localhost:64465/api`,
+  onlyDomain: `http://localhost:64465/api/`,
+  //onlyDomain: `https://radlogix.radflow360.com/`,
+  //baseUrl: `http://192.168.1.23:81/api`,
   // baseUrl: `https://dev-precise.radflow360.com/API/api`,
- // baseUrl: `http://localhost:64465/api`,
- baseUrl: `https://localhost:52232/api`,
+ //baseUrl: `https://dev-precise.radflow360.com/api/api`,
+   baseUrl: `http://localhost:64465/api`,
   currentVersion: `1`,
-  Dynamsoft: {
-    resourcesPath: 'assets/dwt-resources',
-    uploadTargetURL: ''
-  }
 };
 
 /*

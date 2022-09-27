@@ -38,15 +38,15 @@
 												bindValue="status" 
 												[(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && dsForm.dailyStatus.errors)}"
-												(change)="onChange($event)" id="id46"  (add)="a1=ValidateMultiSelectTextLength('id46',a1)">   
+												(change)="onChange($event)">   
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>                                   
 											</ng-select>
@@ -70,15 +70,15 @@
 												bindValue="financialtypename" 
 												[(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted && dsForm.dailyFinancialType.errors)}"
-												(change)="onChange($event)" id="id47"  (add)="a2=ValidateMultiSelectTextLength('id47',a2)">    
+												(change)="onChange($event)">    
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a2">
-														<span class="ng-value-label">{{items.length - a2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>                                  
 											</ng-select>

@@ -41,17 +41,15 @@ export class TaskManagementApplyFilter
     public  assignedTo: string;
     public  dueDate: string;
     public  label: string;
-    public savedSearch:string;
     public  status: string;
     public  userId: string;
 
-    constructor(assignedBy:string,assignedTo:string,dueDate:string,label:string,savedSearch:string,status:string,userId:string)
+    constructor(assignedBy:string,assignedTo:string,dueDate:string,label:string,status:string,userId:string)
     { 
        this.assignedBy=assignedBy;
        this.assignedTo=assignedTo;
        this.dueDate=dueDate;
        this.label=label;
-       this.savedSearch=savedSearch;
        this.status=status;
        this.userId=userId;
     }

@@ -1,61 +1,64 @@
-<div class="dislpaytable">
-    <div class="valign-content">
+<div class="dislpaytable">    
+    <div class="valign-content">        
         <div class="valign-content-inner">
             <div [innerHTML]="pageContent"></div>
             <div class="center-login subpoena-login">
                 <form [formGroup]="pickupForm">
-                    <div class="title-group">
-                        <!-- <textarea class="form-control" formControlName="body"  id="email-editor" required></textarea> -->
-                    </div>
-                </form>
+                <div class="title-group">                    
+                    <!-- <textarea class="form-control" formControlName="body"  id="email-editor" required></textarea> -->
+                </div> 
+            </form>
                 <form [formGroup]="pickupForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <div class="form-with-icon validation-tooltip">
-                            <ng-select [items]="companyList" placeholder="Select Company Name" class="form-control"
-                                formControlName="companyId" bindLabel="CompanyName" [loading]="showDropdownLoader"
-                                autofocus bindValue="CompanyID"
+                            <ng-select [items]="companyList"
+                                placeholder="Select Company Name"
+                                class="form-control"
+                                formControlName = "companyId"
+                                bindLabel="CompanyName"
+                                [loading]="showDropdownLoader"
+                                autofocus
+                                bindValue="CompanyID"
                                 [ngClass]="{ 'is-invalid': submitted && pForm.companyId.errors }">
                             </ng-select>
+						
+                                <div *ngIf="submitted && pForm.companyId.errors" class="tooltiptext text-right">                            
+                                    <small class="error text-danger" *ngIf="pForm.companyId.errors.required">Company is required</small>
+                               </div>  
 
-                            <div *ngIf="submitted && pForm.companyId.errors" class="tooltiptext text-right">
-                                <small class="error text-danger" *ngIf="pForm.companyId.errors.required">Company is
-                                    required</small>
-                            </div>
+                             
+                              						   
                             <div class="iconimg"><i class="pe-7s-portfolio"></i></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-with-icon validation-tooltip">
-                            <input class="form-control" placeholder="Enter Reference Number"
-                                formControlName="referenceNumber"
-                                [ngClass]="{ 'is-invalid': submitted && pForm.referenceNumber.errors }">
+                            <input class="form-control" placeholder="Enter Reference Number" formControlName="referenceNumber" [ngClass]="{ 'is-invalid': submitted && pForm.referenceNumber.errors }">
                             <div class="iconimg"><i class="pe-7s-share"></i></div>
-                            <div *ngIf="submitted && pForm.referenceNumber.errors" class="tooltiptext text-right">
-                                <small class="error text-danger" *ngIf="pForm.referenceNumber.errors.required">Reference
-                                    number is required</small>
+                            <div *ngIf="submitted && pForm.referenceNumber.errors" class="tooltiptext text-right">                            
+                                    <small class="error text-danger" *ngIf="pForm.referenceNumber.errors.required">Reference number is required</small>
                             </div>
                         </div>
                     </div>
                     <div class="form-btn-bottom">
                         <div class="form-btn">
-                            <button type="submit" class="form-main-btn">Check Status</button>
-                            <button type="button" (click)="onReset()" class="form-clear-btn">Clear All</button>
-                        </div>
-                    </div>
-                </form>
-                <ul class="login-footer-buttons">
-                    <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
-                    <li><a routerLink="/login" class="footer-link">Login</a></li>
-                    <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>
-                </ul>
+                            <button type="submit" class="form-main-btn">Check Status</button>      
+                            <button type="button" (click)="onReset()" class="form-clear-btn">Clear All</button>                  
+                        </div>					
+                    </div>	   
+                </form>    
+                    <ul class="login-footer-buttons">
+                        <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
+                        <li><a routerLink="/login" class="footer-link">Login</a></li>
+                        <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>                    
+                    </ul>	                					
             </div>
         </div>
     </div>
 </div>
 
 <!--  Modal popup  -->
-<div class="modal fade modal-theme custom-fade  show" id="subpoena-status-modal" tabindex="-1" role="dialog"
-    [ngStyle]="{'display':showPickupDetailModal}">
+<div class="modal fade modal-theme custom-fade  show" id="subpoena-status-modal" tabindex="-1" role="dialog" [ngStyle]="{'display':showPickupDetailModal}">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -63,13 +66,12 @@
                 <div class="close-dismiss" data-dismiss="modal" (click)="closePickupModal()"></div>
             </div>
             <div class="modal-body">
-                <div class="modal-body-inner subpoena-status-page">
+                <div class="modal-body-inner subpoena-status-page">	
                     <div class="subpoena-status-view">
                         <div class="subpoena-picked-amount">
                             <div class="subpoena-header">
                                 <a href="javascript:void(0)" class="subpoena-picked">{{Status}}</a>
-                                <a href="javascript:void(0)" class="subpoena-amount">Amount Due: {{subDetail != null ?
-                                    (subDetail.PickupCost | currency) : (0 | currency)}}</a>
+                                <a href="javascript:void(0)" class="subpoena-amount">Amount Due: {{subDetail != null ? (subDetail.PickupCost | currency) : (0 | currency)}}</a>
                             </div>
                             <div class="facilty-group">
                                 <div class="row">
@@ -82,23 +84,19 @@
                                             <ul *ngIf="!showDivLoader" class="case-requests-data">
                                                 <li>
                                                     <div class="label">Last Name:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.FirstNameDisplay +
-                                                        ' ' + subDetail.LastNameDisplay : ''}}</div>
+                                                    <div class="data">{{subDetail != null ? subDetail.FirstNameDisplay + ' ' + subDetail.LastNameDisplay : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Reference #:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.RefNum : ''}}
-                                                    </div>
+                                                    <div class="data">{{subDetail != null ? subDetail.RefNum : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">2nd Ref. #:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.SecondaryRefNum :
-                                                        ''}}</div>
+                                                    <div class="data">{{subDetail != null ? subDetail.SecondaryRefNum : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Company:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.CompanyName : ''}}
-                                                    </div>
+                                                    <div class="data">{{subDetail != null ? subDetail.CompanyName : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Type:</div>
@@ -127,23 +125,20 @@
                                             <ul *ngIf="!showDivLoader" class="case-requests-data">
                                                 <li>
                                                     <div class="label">Check #:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.CheckNum : ''}}
-                                                    </div>
+                                                    <div class="data">{{subDetail != null ? subDetail.CheckNum : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Check Date:</div>
-                                                    <div class="data">{{subDetail != null ? (subDetail.CheckDate | date:
+                                                    <div class="data">{{subDetail != null ? (subDetail.CheckDate |  date:
                                                         dateTimeFormatCustom.Date) : ''}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Amount:</div>
-                                                    <div class="data">{{subDetail != null ? (subDetail.CheckAmount |
-                                                        currency) : (0 | currency)}}</div>
+                                                    <div class="data">{{subDetail != null ? (subDetail.CheckAmount | currency) : (0 | currency)}}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Company</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.CompanyName : ''}}
-                                                    </div>
+                                                    <div class="data">{{subDetail != null ? subDetail.CompanyName : ''}}</div>
                                                 </li>
                                             </ul>
                                             <ul *ngIf="showDivLoader" class="case-requests-data">
@@ -164,14 +159,12 @@
                                             <ul *ngIf="!showDivLoader" class="case-requests-data">
                                                 <li>
                                                     <div class="label">Date Picked Up:</div>
-                                                    <div class="data">{{subDetail != null ? (subDetail.DatePickedUp |
-                                                        date:
-                                                        dateTimeFormatCustom.DateTime ) : '' }}</div>
+                                                    <div class="data">{{subDetail != null ? (subDetail.DatePickedUp | date:
+                                                        dateTimeFormatCustom.DateTime  ) : '' }}</div>
                                                 </li>
                                                 <li>
                                                     <div class="label">Picked Up by:</div>
-                                                    <div class="data">{{subDetail != null ? subDetail.PickedUpBy : '' }}
-                                                    </div>
+                                                    <div class="data">{{subDetail != null ? subDetail.PickedUpBy : ''  }}</div>
                                                 </li>
                                             </ul>
                                             <ul *ngIf="showDivLoader" class="case-requests-data">
@@ -190,66 +183,59 @@
                             <div class="theme-label-title">View Same Case Requests</div>
                             <div class="table-responsive">
                                 <dx-data-grid id="gridContainer" [dataSource]="subDetails" [allowColumnResizing]="true"
-                                    [columnAutoWidth]="true" [allowColumnReordering]="true" [columnMinWidth]="30"
-                                    [(selectedRowKeys)]="selectedRows" [focusedRowEnabled]="true" keyExpr="SubsID"
-                                    (onFocusedRowChanged)="onFocusedRowChanged($event)" [showBorders]="true">
-                                    <dxo-paging [enabled]="false"></dxo-paging>
-                                    <dxo-sorting mode="multiple"></dxo-sorting>
-                                    <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode"
-                                        mode="multiple">
-                                    </dxo-selection>
+                                   [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                   [columnMinWidth]="30" [(selectedRowKeys)]="selectedRows" [focusedRowEnabled]="true" 
+                                   keyExpr="SubsID" 
+                                   (onFocusedRowChanged)="onFocusedRowChanged($event)" [showBorders]="true">
+                                   <dxo-paging [enabled]="false"></dxo-paging>
+                                   <dxo-sorting mode="multiple"></dxo-sorting>
+                                   <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                                </dxo-selection>
                                     <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                                    <dxi-column dataField="CheckNum" caption="Check #" [allowFixing]="true">
-                                    </dxi-column>
-                                    <dxi-column dataField="CheckDate" caption="Check Date" [allowFixing]="false"
-                                        cellTemplate='CheckDate'></dxi-column>
-                                    <dxi-column dataField="CheckAmount" caption="Check Amount"
-                                        cellTemplate='CheckAmount'></dxi-column>
-                                    <dxi-column dataField="RefNum" caption="Reference No #"></dxi-column>
-                                    <dxi-column dataField="Media" caption="Media" alignment="left"></dxi-column>
-                                    <dxi-column dataField="Type" caption="Type" alignment="center"></dxi-column>
-                                    <dxi-column dataField="DateRequested" caption="Requested"
-                                        cellTemplate='DateRequested' alignment="center"></dxi-column>
-                                    <dxi-column dataField="Status" caption="Status" alignment="center"></dxi-column>
-                                    <dxi-column dataField="PickupCost" caption="Picked up amount Due"
-                                        cellTemplate='PickupCost'></dxi-column>
-                                    <dxi-column dataField="DatePickedUp" caption="Picked up Date"
-                                        cellTemplate='pickedUpDate'></dxi-column>
-                                    <dxi-column dataField="PickedUpBy" caption="Picked Up By"></dxi-column>
-
+                                   <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                                   <dxi-column dataField="CheckNum" caption="Check #" [allowFixing]="true"></dxi-column>
+                                   <dxi-column dataField="CheckDate" caption="Check Date"  [allowFixing]="false" cellTemplate='CheckDate' ></dxi-column>
+                                   <dxi-column dataField="CheckAmount" caption="Check Amount" cellTemplate='CheckAmount'></dxi-column>
+                                   <dxi-column dataField="RefNum" caption="Reference No #"></dxi-column>
+                                   <dxi-column dataField="Media" caption="Media" alignment="left"></dxi-column>
+                                   <dxi-column dataField="Type" caption="Type"   alignment="center"></dxi-column>
+                                   <dxi-column dataField="DateRequested" caption="Requested"  cellTemplate ='DateRequested' alignment="center"></dxi-column>
+                                   <dxi-column dataField="Status" caption="Status" alignment="center"></dxi-column>
+                                   <dxi-column dataField="PickupCost" caption="Picked up amount Due" cellTemplate='PickupCost'></dxi-column>
+                                   <dxi-column dataField="DatePickedUp" caption="Picked up Date" cellTemplate='pickedUpDate'></dxi-column>
+                                   <dxi-column dataField="PickedUpBy" caption="Picked Up By"></dxi-column>
+                  
                                     <div *dxTemplate="let data of 'CheckAmount'">
-                                        <span *ngIf="data && data.value">
-                                            {{ data.value | currency}}
-                                        </span>
-                                    </div>
+                                      <span *ngIf="data && data.value">
+                                          {{ data.value | currency}}
+                                      </span>
+                                  </div>
                                     <div *dxTemplate="let data of 'CheckDate'">
-                                        <span *ngIf="data && data.value">
-                                            {{ data.value | date:
-                                            dateTimeFormatCustom.Date }}
-                                        </span>
-                                    </div>
+                                   <span *ngIf="data && data.value">
+                                       {{ data.value  | date:
+											dateTimeFormatCustom.Date }}
+                                   </span>
+                               </div>
                                     <div *dxTemplate="let data of 'DateRequested'">
-                                        {{data.value | date:
+                                      {{data.value  | date:
                                         dateTimeFormatCustom.Date}}
-                                    </div>
-                                    <div *dxTemplate="let data of 'PickupCost'">
-                                        {{data.value | currency}}
-                                    </div>
+                                   </div>
+                                   <div *dxTemplate="let data of 'PickupCost'">
+                                      {{data.value | currency}}
+                                   </div>  
                                     <div *dxTemplate="let data of 'pickedUpDate'">
-                                        {{data.value | date:
+                                      {{data.value  | date:
                                         dateTimeFormatCustom.DateTime}}
-                                    </div>
+                                   </div>  
                                 </dx-data-grid>
-                            </div>
-                            <div class="pagination-theme">
+                             </div>
+                             <div class="pagination-theme">
                                 <div
                                     *ngFor="let item of subDetails | paginate: {id:'paginate1000001', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords}">
                                 </div>
-                                <pagination-controls id="paginate1000001" (pageChange)="onPageChanged($event)">
-                                </pagination-controls>
+                                <pagination-controls  id="paginate1000001" (pageChange)= "onPageChanged($event)"></pagination-controls>
                             </div>
-                            <!-- <div class="table-responsive manual-table">
+							<!-- <div class="table-responsive manual-table">
                                 <table class="table table-theme">
                                     <thead>
                                         <tr>
@@ -291,10 +277,10 @@
                                     </tbody>	
                                 </table>	
                             </div> -->
-                        </div>
-                    </div>
+                        </div>	 
+                    </div>	
                 </div>
             </div>
         </div>
-    </div>
+    </div>		
 </div>

@@ -1008,24 +1008,7 @@ p {
 	padding: 12px 50px 12px 15px;
 	line-height: normal;
 }
-.esign-successful{
-	position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-	margin-bottom: 0px;
-}
-.esign-successful img{
-    width: 130px;	
-}
-.esign-successful p{
-    padding-top: 15px;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 23px;
-	margin-bottom: 0;
-}
+
 @media (max-width: 1200px) {
 	.signature-table {
 		display: flex;
@@ -1242,10 +1225,6 @@ p {
 	}
 	.esign-header .esign-header-left .label-input{
 		margin-left: 0;
-		display: flex;
-		width: 100%;
-		justify-content: center;
-		margin-top: 10px;
 	}
 	.esign-request-main{
 		padding: 0px 15px;
@@ -1262,6 +1241,9 @@ p {
 	}
 	.esign-header .esign-header-left .label-input img.esign-header-mobile{
 		display: block;
+		position: absolute;
+		left: 0px;
+		top: 0px;
 	}
 }
 @media (max-width: 400px) {

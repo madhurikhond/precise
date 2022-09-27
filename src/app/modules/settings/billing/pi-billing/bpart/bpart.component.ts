@@ -41,7 +41,7 @@ export class BpartComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('Body Parts');
     this.editForm = this.fb.group({
       bPart:['',[Validators.required]],
       descriptionText:['']

@@ -40,7 +40,7 @@ export class NeedToResolveComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter = false;
 
-    this.commonMethodService.setTitle('Need to Resolve');
+    this.commonMethodService.setTitle('Need to be Resolve');
 
     this.getRecordList();
 

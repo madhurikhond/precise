@@ -238,7 +238,7 @@
         <div class="table-responsive page-table">
             <dx-data-grid id="gridContainer" #targetDataGrid [dataSource]="dataList" 
             [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
-            [columnMinWidth]="30" (onCellPrepared)="onCellPrepared($event)" keyExpr="myId" [wordWrapEnabled]="true"
+            [columnMinWidth]="30" (onCellPrepared)="onCellPrepared($event)" keyExpr="myId"
             [(selectedRowKeys)]="selectedRows" (onRowExpanding)="onRowExpanding($event)"
             (onRowExpanded)="onRowExpanded($event)" (onRowCollapsed)="onRowCollapsed($event)" [showBorders]="true">
 
@@ -261,11 +261,11 @@
                 <dxi-column dataField="Studydatetime" cellTemplate="dosTemplate" caption="DOS"></dxi-column>
                 <dxi-column dataField="StudyDescription" caption="Study Description"></dxi-column>
                 <dxi-column dataField="InternalStudyId" caption="Internal Study Id" [visible] = 'false'></dxi-column>
-                <dxi-column dataField="Attorneynumber"  cellTemplate="attorneyNumber" caption="Attorney"></dxi-column>
-                <dxi-column dataField="DoctorNumber" cellTemplate="doctor" caption="Doctor"></dxi-column>
-                <dxi-column dataField="BrokerNumber" cellTemplate="broker" caption="FUNDING COMPANY"></dxi-column>
+                <dxi-column dataField="Attorneynumber" caption="Attorney"></dxi-column>
+                <dxi-column dataField="DoctorNumber" caption="Doctor"></dxi-column>
+                <dxi-column dataField="BrokerNumber" caption="FUNDING COMPANY"></dxi-column>
 
-                <dxi-column dataField="VM" caption="VM#"></dxi-column>
+                <dxi-column dataField="institutionname" caption="VM#"></dxi-column>
                 <dxi-column dataField="LastAttemptedBy" caption="Last Attempt By"></dxi-column>
                 <dxi-column dataField="scheduledbodypartexamined" cellTemplate="fullDateTemplate" caption="VM DATE">
                 </dxi-column>
@@ -273,21 +273,6 @@
 
                 <div *dxTemplate="let data of 'group1Template'">
                     <strong>Sorted Date : </strong> &nbsp; {{data.key[0] | date : dateTimeFormatCustom.Date}}
-                </div>
-                <div *dxTemplate="let data of 'attorneyNumber'">
-                    <a href="javascript:void(0)" class=" link-btn" (click)="getReferrerDetailById(data.data.Attorneynumber,data.data.AttorneyID,false)">
-                        <span> {{data.data.Attorneynumber}}</span>
-                    </a>
-                </div>
-                <div *dxTemplate="let data of 'doctor'">
-                    <a href="javascript:void(0)" class=" link-btn" (click)="getReferrerDetailById(data.data.Attorneynumber,data.data.ReferrerID,false)">
-                        <span> {{data.data.DoctorNumber}}</span>
-                    </a>
-                </div>
-                <div *dxTemplate="let data of 'broker'">
-                    <a href="javascript:void(0)" class=" link-btn" (click)="getBrokerDetailById(data.data.BrokerNumber,data.data.brokerID)">
-                        <span> {{data.data.BrokerNumber}} </span>
-                    </a>
                 </div>
                 <div *dxTemplate="let data of 'group2Template'">
                     <patient-detail-group [data]="data" [viewingData]="viewingData"></patient-detail-group>
@@ -373,7 +358,7 @@
                                             <div class="input-group">
                                                 <div class="view-mode-data">{{this.preScreeningQuestionData ?
                                                     (this.preScreeningQuestionData.patientData.DOB | date:
-                                                    dateTimeFormatCustom.Date) : ''}}</div>
+                                                    'MM/dd/yyyy') : ''}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1559,10 +1544,10 @@
             <div class="modal-footer">
                 <button (click)="cancelAndClose()" type="button" class="btn btn-border-gray pull-right btn-sm"
                     data-dismiss="modal">Cancel &amp; Close</button>
-                <button (click)="saveAndDoNotSubmit()" type="button" class="btn btn-theme pull-right btn-sm"
-                    [attr.data-dismiss]="preScreeningQuestionModal">Save &amp; Do Not Submit</button>
+                <button (click)="saveAndDoNotSubmit()" type="button" class="btn btn-theme pull-left btn-sm"
+                    [attr.data-dismiss]="preScreeningQuestionModal">Save and Do Not Submit</button>
                 <button (click)="saveAndSubmit()" type="button" class="btn btn-theme pull-left btn-sm"
-                    [attr.data-dismiss]="preScreeningQuestionModal">Save &amp; Submit</button>
+                    [attr.data-dismiss]="preScreeningQuestionModal">Save and Submit</button>
             </div>
         </div>
     </div>
@@ -1573,7 +1558,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">ConfirmatisPoliciesTabon</h5>
+                <h5 class="modal-title">Confirmation</h5>
                 <div class="close-dismiss" data-dismiss="modal" (click)="confirmRowExpandedClick(false)"></div>
             </div>
             <div class="modal-body">
@@ -1590,4 +1575,4 @@
 </div>
 <button #confirmRowExpanded [hidden]="true" data-toggle="modal" data-target="#confirmationPopUp"></button>
 <div *ngIf="isPrescreeningQuestion" class="modal-backdrop fade show"></div>
-<app-patient-detail ></app-patient-detail> 
+<app-patient-detail></app-patient-detail> 

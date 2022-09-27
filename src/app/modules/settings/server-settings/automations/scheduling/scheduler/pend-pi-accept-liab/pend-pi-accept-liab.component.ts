@@ -10,8 +10,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./pend-pi-accept-liab.component.css']
 })
 export class PendPiAcceptLiabComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
    pendPiAcceptLiabWithoutGridForm:FormGroup;
    body:any;
    caseConditionID:number;
@@ -377,10 +375,5 @@ export class PendPiAcceptLiabComponent implements OnInit {
 		return this.pendPiAcceptLiabWithoutGridForm.get('pendPiAcceptLiabWithGridForm') as FormArray;
   }
   get pendPiAcceptLiabWithoutGridFormControl() { return this.pendPiAcceptLiabWithoutGridForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
   }
 

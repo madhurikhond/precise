@@ -15,13 +15,6 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
   styleUrls: ['./payment-history.component.css']
 })
 export class PaymentHistoryComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
-  a6: any = 20;
-  maxDate = new Date();
   searchForm: FormGroup;
   deleteForm: FormGroup;
   showDropdownLoader = true;
@@ -327,10 +320,4 @@ export class PaymentHistoryComponent implements OnInit {
 
   get sForm() { return this.searchForm.controls; }
   get dForm() { return this.deleteForm.controls; }
-  
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

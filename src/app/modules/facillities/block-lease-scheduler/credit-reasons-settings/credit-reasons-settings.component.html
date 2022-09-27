@@ -1,0 +1,202 @@
+<div class="modal fade modal-theme in" id="creditReasonsSettings" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Credit Reasons Settings </h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="updateTabId('Reasons',false)"></div>
+            </div>
+            <div class="modal-body">
+                <div class="tab-section">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Reasons"
+                                [ngClass]="{'active': tabId == 'Reasons'}">Credit Reasons Setting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#eSignSetting"
+                                (click)="updateTabId('eSignSetting',true)"
+                                [ngClass]="{'active': tabId == 'eSignSetting'}">eSign Signature Setting</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
+                            <div class="row">
+                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
+                                        data-toggle="modal" data-target="#add-new-record"><i class="fa fa-plus"></i> Add
+                                        New Record</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <dx-data-grid id="gridContainer" [dataSource]="creditReasonsList"
+                                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ID"
+                                    [showBorders]="true">
+                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                                    <dxi-column dataField="ID" [width]="2" caption="Action" [allowFiltering]="false"
+                                        [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
+                                    </dxi-column>
+                                    <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
+                                    <dxi-column dataField="IsActive" caption="Active" cellTemplate="IsActive">
+                                    </dxi-column>
+                                    <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+                                    <div *dxTemplate="let data of 'cellTemplate'">
+                                        <a href="javascript:void(0)" (click)="edit(data.data.ID)"
+                                            class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                                            data-target="#add-new-record"></a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" [ngClass]="tabId == 'eSignSetting' ? 'active show' : 'fade'"
+                            id="eSignSetting">
+                            <div class="row">
+                                <div *ngIf="esignList.length==0" class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                                    <a href="javascript:void(0)" (click)="addEsign()"
+                                        class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+                                        data-target="#addEsign"><i class="fa fa-plus"></i> Add
+                                        New Record</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <dx-data-grid [dataSource]="esignList" [allowColumnResizing]="true"
+                                    [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ID"
+                                    [showBorders]="true">
+                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                                    <dxi-column dataField="ID" [width]="2" caption="Action" [allowFiltering]="false"
+                                        [allowSorting]="false" cellTemplate="editCellTemplate" [visible]="true">
+                                    </dxi-column>
+                                    <dxi-column caption="Name" [width]="100" cellTemplate="getName"> </dxi-column>
+                                    <dxi-column dataField="DefaultSign" [width]="100" [allowFiltering]="false"
+                                        [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+
+
+
+                                    <div *dxTemplate="let data of 'getName'"> {{this.storageService.user.FullName}}
+                                    </div>
+                                    <div *dxTemplate="let data of 'cellTemplate'">
+                                        <img id="imgSign" [src]="data.value" />
+                                    </div>
+                                    <div *dxTemplate="let data of 'editCellTemplate'">
+                                        <a href="javascript:void(0)" (click)="editEsign(data.data.ID)"
+                                            class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                                            data-target="#addEsign"></a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-theme in modal-small" id="add-new-record" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{reasonId==0?'Add':'Edit'}}</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="addCreditReasonForm" class="theme-form">
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Enter Reason</div>
+                                    <div class="input-group">
+                                        <input formControlName="reason" type="text" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && addForm.reason.errors }">
+                                    </div>
+                                    <div *ngIf="submitted && addForm.reason" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="addForm.reason.invalid">reason is
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="checkbox-theme">
+                                    <input class="form-control" id="isActive" type="checkbox" formControlName="isActive"
+                                        checked>
+                                    <label for="user-isactive" class="arrow-label">Is Active</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                        data-dismiss="modal">Close</a>
+                    <button type="submit" (click)="onInsertSubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-theme pull-left btn-sm">{{reasonId==0?'Insert':'Update'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-theme modal-small" #SignPopUp id="addEsign" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{esignId==0?'Add':'Edit'}}</h5>
+                <div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
+            </div>
+            <form name="form" (ngSubmit)="f.form.valid && (model.signature!='') && submitSign(true)" #f="ngForm"
+                class="theme-form" novalidate>
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" disabled name="firstName"
+                                            [(ngModel)]="model.name" #firstName="ngModel"
+                                            [ngModelOptions]="{ standalone : true }">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div
+                                        [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                                        <signature-pad id="signature-pad" [options]="signaturePadOptions"
+                                            [(ngModel)]="model.signature" [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
+                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div *ngIf="f.submitted && model.signature==''" class="invalid-feedback">
+                                        <div>signature is required</div>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                    class="btn btn-theme btn-sm">Clear Signature</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">{{esignId==0?'Save':'Update'}}</button>
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                        #closeBtn (click)="signConfirm(false)">Close</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

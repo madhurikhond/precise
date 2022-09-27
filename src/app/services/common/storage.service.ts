@@ -9,7 +9,7 @@ const LAST_PAGE_URL = 'last_page_url';
 //const User_Role = 'user_permission';
 const EXPAND_ROWS = 'expand_rows';
 const ROLES = 'roles';
-const FRESH_LOGIN = 'fresh_login'
+const FRESH_LOGIN='fresh_login'
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +41,7 @@ export class StorageService {
     this.clearAll();
     this.JWTToken = token;
   }
-
+ 
   public set JWTToken(token: string) {
     localStorage.setItem(JWT_TOKEN, JSON.stringify(token));
   }
@@ -87,18 +87,8 @@ export class StorageService {
   // }
 
   public get UserRole(): string {
-    let roles = this._tokenservice.getDecodedAccessToken(this.JWTTokenRoles);
-    if (roles) {
-      return roles.Roles;
-    }
-    else {
-      localStorage.removeItem('user');
-      localStorage.removeItem('roles');
-      localStorage.removeItem('_cr_u_infor');
-      localStorage.removeItem('jwt_t');
-      window.location.reload();
-    }
-    // return JSON.parse(localStorage.getItem(User_Role));
+    return this._tokenservice.getDecodedAccessToken(this.JWTTokenRoles).Roles;  
+   // return JSON.parse(localStorage.getItem(User_Role));
   }
   setItem(name, value) {
     localStorage.setItem(name, JSON.stringify(value));

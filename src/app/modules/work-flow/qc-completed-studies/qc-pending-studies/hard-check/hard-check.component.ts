@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StorageService } from 'src/app/services/common/storage.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-hard-check',
@@ -15,7 +14,6 @@ export class HardCheckComponent implements OnInit {
   @Input() filterData : any;
   @Input() condition : any;
   checkedPatientIdInternalStudyid:any=[];
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   constructor(private activeModal: NgbActiveModal, private readonly storageService: StorageService,
   private readonly patientService: PatientService, private readonly notificationService: NotificationService) { }
 

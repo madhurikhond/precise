@@ -71,7 +71,7 @@ export class PrescreengridComponent implements OnInit {
   isPrescreeningQuestion: boolean = false;
   internalStudyId: string
   patientId: string
-  patientIdExist : boolean = false;
+
 
   isMR: boolean = false;
   isMRWC: boolean = false;
@@ -134,7 +134,6 @@ export class PrescreengridComponent implements OnInit {
   getPreScreenGrid() {
     this.workflowService.GetPrescreenGridRecord(this.patientId, true).subscribe((res) => {
       if (res.response) {
-        this.patientIdExist = true;
         this.preScreenGridList = JSON.parse(res.response);
         if (this.preScreenGridList.length > 0) {
           this.preScreenGridList.forEach((element, index) => {
@@ -143,7 +142,6 @@ export class PrescreengridComponent implements OnInit {
         }
       }
       else {
-        this.patientIdExist = false;
         var message = "Patient ID " + this.patientId.toString().replace(",", ", ") + " is not in the system yet. If the Patient ID is correct and was just added today, you may choose to proceed with the questions.\n";
         const modalReff = this._modalService.open(NoPatientExistPopupComponent,
           { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
@@ -378,7 +376,6 @@ export class PrescreengridComponent implements OnInit {
       "internalStudyId": uniqueInternalStudyIds.toString(),
     }
     this.workflowService.getPrescreeningQuestionData(data).subscribe((res) => {
-      
       var data: any = res;
       if (data.response != null) {
         this.preScreeningQuestionData = data.response;
@@ -565,11 +562,11 @@ export class PrescreengridComponent implements OnInit {
   populatePreScreeningQuestionData(questionData) {
     questionData.forEach(data => {
       switch (data.Questions) {
-        case PreScreeningGeneralQuestion.Gender:
-          this.preScreeningQuestionForm.patchValue({
-            gender: data.Answers
-          });
-          break; // gender was not binding properly. Mridula uncommented it 
+        // case PreScreeningGeneralQuestion.Gender:
+        //   this.preScreeningQuestionForm.patchValue({
+        //     gender: data.Answers
+        //   });
+        //   break;
         case PreScreeningGeneralQuestion.Weight:
           this.preScreeningQuestionForm.patchValue({
             weight: data.Answers
@@ -1150,7 +1147,6 @@ export class PrescreengridComponent implements OnInit {
   savePreScreeningQuestionData(isSubmitAndSave: boolean) {
     this.preScreeningQuestionAnswerData = [];
     this.preScreeningQuestionData.patientStudyData.forEach((element, index) => {
-
       var studyDescription = element.STUDYDESCRIPTION.toLowerCase();
       this.psqForm.gender.value ? this.createQuestionAnswerJsonObject(PreScreeningGeneralQuestion.Gender, this.psqForm.gender.value) : null;
       if (this.psqForm.gender.value == "F") {
@@ -1324,12 +1320,13 @@ export class PrescreengridComponent implements OnInit {
     this.pageNumber = 1;
   }
 
-  downloadFile(fileData, fileName) {;
+  downloadFile(fileData, fileName) {
+    debugger;
     let ArrayBuff = this._base64ToArrayBuffer(fileData);
     let file = new Blob([ArrayBuff], { type: 'application/pdf' });
     fileData = URL.createObjectURL(file)
     // FileSaver.saveAs(fileData, fileName);
-    //window.open(fileData, '_blank');
+    window.open(fileData, '_blank');
   }
 
   showDocManager(patientId: any) {
@@ -1352,8 +1349,8 @@ export class PrescreengridComponent implements OnInit {
       this.preScreeningQuestionModal = "";
       return;
     }
+
     this.savePreScreeningQuestionData(true);
-    //this.showDocManager(this.preScreeningQuestionData.patientData.PatientId)
     //alert('Form valid');
   }
 
@@ -1380,18 +1377,14 @@ export class PrescreengridComponent implements OnInit {
   }
 
   closePopup() {
-
     this.isPrescreeningQuestion = false;
     this.preScreeningQuestionSubmitted = false;
-    if(!this.patientIdExist){
-      this.clearNoPatient();
-    }
+    this.clearNoPatient();
   }
   closePopupPrescrenning() {
     this.isPrescreeningQuestion = false;
     this.preScreeningQuestionSubmitted = false; 
   }
-     
 
   get psqForm() { return this.preScreeningQuestionForm.controls; }
   get noExistForm() { return this.noExistPatientForm.controls; }

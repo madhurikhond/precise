@@ -58,15 +58,15 @@
 												formControlName="missingPSLStatus" bindLabel="status" [multiple]="true"
 												[closeOnSelect]="false" bindValue="status" [(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && pslForm.missingPSLStatus.errors)}"
-												(change)="onChange($event)" id="id43"  (add)="a1=ValidateMultiSelectTextLength('id43',a1)">
-												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear" required>
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+												(change)="onChange($event)">
+												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>  
 											</ng-select>
@@ -87,15 +87,15 @@
 												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
 												[(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted && pslForm.missingPSLFinanType.errors)}"
-												(change)="onChange($event)" id="id44"  (add)="a2=ValidateMultiSelectTextLength('id44',a2)" required>
+												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a2">
-														<span class="ng-value-label">{{items.length - a2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>  
 											</ng-select>
@@ -115,15 +115,15 @@
 												formControlName="missingPSLModality" bindLabel="scheduledmodality"
 												[multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
 												[ngClass]="{ 'is-invalid': (submitted && pslForm.missingPSLModality.errors)}"
-												[(ngModel)]="selectedModalityList" id="id45"  (add)="a3=ValidateMultiSelectTextLength('id45',a3)" required>
+												[(ngModel)]="selectedModalityList">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:6">
 														<span class="ng-value-label"> {{item.scheduledmodality}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a3">
-														<span class="ng-value-label">{{items.length - a3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 6">
+														<span class="ng-value-label">{{items.length - 6}} more...</span>
 													</div>
 												</ng-template>  
 											</ng-select>

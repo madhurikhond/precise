@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -35,7 +34,7 @@ export class OverridePricingComponent implements OnInit {
   currentFilter: any;
   showHeaderFilter: boolean;
   readonly pageSizeArray=PageSizeArray;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   constructor(private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService, 
     private readonly settingsService:  SettingsService,
@@ -49,7 +48,7 @@ export class OverridePricingComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('Override Pricing');
     this.fillDropDown();
     this.getOverridePricings();
     this.myForm = this.fb.group({

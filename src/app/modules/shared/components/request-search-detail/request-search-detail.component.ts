@@ -7,9 +7,6 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { CommonRegex } from 'src/app/constants/commonregex';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
-
 declare const $: any;
 
 @Component({
@@ -20,10 +17,6 @@ declare const $: any;
 
 })
 export class RequestSearchDetailComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  maxDate = new Date();
   @ViewChild('buttonEmailConfirmationPopUp', { static: false }) emailPopUp: ElementRef;
   @ViewChild('buttonemailCustodianRecordsPopUp', { static: false }) HiddenemailCustodianRecords: ElementRef;
   @ViewChild('mainPopCloseButton', { static: false }) mainPopCloseButton: ElementRef;
@@ -48,7 +41,13 @@ export class RequestSearchDetailComponent implements OnInit {
   checkBoxesMode: string;
   tabId: string = '1'
   isShowDocTab: boolean = false;
-  requestAndProvidedTypeList: any =[];
+  requestAndProvidedTypeList: any = [{ Name: 'Medical' },
+  { Name: 'Billing' },
+  { Name: 'Breakdown' },
+  { Name: 'CNR' },
+  { Name: 'Refund Check' },
+  { Name: 'Media Only' }
+  ];
 
   mediaList: any = [{ mediaName: 'Films' },
   { mediaName: 'CD' },
@@ -98,24 +97,12 @@ export class RequestSearchDetailComponent implements OnInit {
   selectedStudyID: any = [];
   selectedLabelStudyID: any = [];
   requestPayloadData: any;
-  status :string = '';
- 
-  disabledInsertUpdate : boolean;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
-  readonly commonRegex=CommonRegex;
   CheckDetailFile: string = ''; CheckDetailFile2: string = ''; CheckDetailFile3: string = ''; CheckDetailFile4: string = ''; CheckDetailFile5: string = '';
   filename: string = ''; filename2: string = ''; filename3: string = ''; filename4: string = ''; filename5: string = '';
   constructor(private fb: FormBuilder, private readonly subsService: SubsService,
     private readonly notificationService: NotificationService
     , private readonly storageService: StorageService, private datePipe: DatePipe,
     private commonMethodService: CommonMethodService, private sanitizer: DomSanitizer, private decimalPipe: DecimalPipe) {
-      this.requestAndProvidedTypeList= [{ Name: 'Medical' },
-      { Name: 'Billing' },
-      { Name: 'Breakdown' },
-      { Name: 'CNR' },
-      { Name: 'Refund Check' },
-      { Name: 'Media Only' }
-      ];
   }
   ngOnInit(): void {
     this.setGridSetting();
@@ -231,9 +218,9 @@ export class RequestSearchDetailComponent implements OnInit {
   emailCustodianRecordsFormInit() {
     this.emailCustodianRecordsForm = this.fb.group({
       isActiveCompanyEmail: ['false'],
-      emailAddressFirst: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      emailAddressSec: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      emailAddressThird: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      emailAddressFirst: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      emailAddressSec: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      emailAddressThird: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       Subject: [''],
       emailBody: ['']
     })
@@ -471,7 +458,7 @@ export class RequestSearchDetailComponent implements OnInit {
         }, (err: any) => {
           this.errorMessage(err);
         });
-      } else if (this.tabType == 'Breakdown'){
+      } else if (this.tabType == 'Breakdown') {
         this.subsService.emailBreakDownRecords(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
             this.sucessMessage(res);
@@ -591,8 +578,6 @@ export class RequestSearchDetailComponent implements OnInit {
     this.breakdownAndLabelsList = [];
     this.subsService.getSubsDetailBySubsId(true, data.subsId, data.patientId).subscribe((res) => {
       if (res.response != null) {
-        //this.status = res.response[0][0]['RequestDetails_And_CustodianRecords_And_CheckDetail_Tab'][0].Status;
-        //this.disableDateReady = this.status === 'READY FOR PICKUP';
         this.requestDetailForRequestDetailTab = res.response[0][0]['RequestDetails_And_CustodianRecords_And_CheckDetail_Tab'][0];
         if (res.response[1][0]['Log_Tab'] != null) {
           this.logListForLogTab = res.response[1][0]['Log_Tab'];
@@ -615,7 +600,6 @@ export class RequestSearchDetailComponent implements OnInit {
     });
   }
   setRequestDetailForm(requestDetail: any) {
-    
     if (requestDetail.Type != null && requestDetail.Type != '') {
       this.selectedRequestedTypeList = requestDetail.Type.toString().split(',').map(function (item) {
         return item.trim();
@@ -645,7 +629,6 @@ export class RequestSearchDetailComponent implements OnInit {
 
     this.imageSignature = requestDetail.Signature != null ? this.convertBase64ToImage(requestDetail.Signature) : '';
     this.requestDetailForm.patchValue({
-    
       patientId: requestDetail.PATIENTID,
       familyName: requestDetail.FAMILYNAME,
       givenName: requestDetail.GIVENNAME,
@@ -661,8 +644,7 @@ export class RequestSearchDetailComponent implements OnInit {
       dateReady: requestDetail.DateReady,
       isMailedChecked: requestDetail.IsMailedChecked,
       mailedDateTime: requestDetail.MailedDateTime,
-      // pickupCost: parseFloat(requestDetail.PickupCost).toFixed(2),
-      pickupCost: requestDetail.PickupCost > -1 ? parseFloat(requestDetail.PickupCost).toFixed(2) : '',
+      pickupCost: requestDetail.PickupCost ? parseFloat(requestDetail.PickupCost).toFixed(2) : '',
       datePickedUp: requestDetail.DatePickedUp,
       pickedUpBy: requestDetail.PickedUpBy,
     });
@@ -685,11 +667,11 @@ export class RequestSearchDetailComponent implements OnInit {
     });
   }
   setCheckDetailForm(data: any) {
-    this.selectedCompanyIDCheck1 = data.CheckCompanyId??data.CompanyID;
-    this.selectedCompanyIDCheck2 = data.Check2CompanyID;
-    this.selectedCompanyIDCheck3 = data.Check3CompanyID;
-    this.selectedCompanyIDCheck4 = data.Check4CompanyID;
-    this.selectedCompanyIDCheck5 = data.Check5CompanyID;
+    this.selectedCompanyIDCheck1 = data.check1CompanyID;
+    this.selectedCompanyIDCheck2 = data.check2CompanyID;
+    this.selectedCompanyIDCheck3 = data.check3CompanyID;
+    this.selectedCompanyIDCheck4 = data.check4CompanyID;
+    this.selectedCompanyIDCheck5 = data.check5CompanyID;
     this.CheckDetailFile = data.CheckDetailFile;
     this.CheckDetailFile2 = data.CheckDetailFile2;
     this.CheckDetailFile3 = data.CheckDetailFile3;
@@ -701,40 +683,40 @@ export class RequestSearchDetailComponent implements OnInit {
     this.filename4 = data.filename4;
     this.filename5 = data.filename5;
     this.checkDetailForm.patchValue({
-      check1CompanyID: data.CheckCompanyId??data.CompanyID,
+      check1CompanyID: data.CheckCompanyId,
       check1Num: data.CheckNum,
       check1Date: data.CheckDate,
       check1Amount: data.CheckAmount ? parseFloat(data.CheckAmount).toFixed(2) : '',
       check1QBExp: data.CheckQBExp,
-      check1QBExpDate: this.datePipe.transform(data.CheckQBExpDate, this.dateTimeFormatCustom.DateTimeWithSec),
+      check1QBExpDate: this.datePipe.transform(data.CheckQBExpDate, 'MM/dd/yyyy h:mm:ss a'),
 
       check2CompanyID: data.Check2CompanyId,
       check2Num: data.Check2Num,
       check2Date: data.Check2Date,
       check2Amount: data.Check2Amount ? parseFloat(data.Check2Amount).toFixed(2) : '',
       check2QBExp: data.Check2QBExp,
-      check2QBExpDate: this.datePipe.transform(data.Check2QBExpDate, this.dateTimeFormatCustom.DateTimeWithSec),
+      check2QBExpDate: this.datePipe.transform(data.Check2QBExpDate, 'MM/dd/yyyy h:mm:ss a'),
 
       check3CompanyID: data.Check3CompanyId,
       check3Num: data.Check3Num,
       check3Date: data.Check3Date,
       check3Amount: data.Check3Amount ? parseFloat(data.Check3Amount).toFixed(2) : '',
       check3QBExp: data.Check3QBExp,
-      check3QBExpDate: this.datePipe.transform(data.Check3QBExpDate, this.dateTimeFormatCustom.DateTimeWithSec),
+      check3QBExpDate: this.datePipe.transform(data.Check3QBExpDate, 'MM/dd/yyyy h:mm:ss a'),
 
       check4CompanyID: data.Check4CompanyId,
       check4Num: data.Check4Num,
       check4Date: data.Check4Date,
       check4Amount: data.Check4Amount ? parseFloat(data.Check4Amount).toFixed(2) : '',
       check4QBExp: data.Check4QBExp,
-      check4QBExpDate: this.datePipe.transform(data.Check4QBExpDate, this.dateTimeFormatCustom.DateTimeWithSec),
+      check4QBExpDate: this.datePipe.transform(data.Check4QBExpDate, 'MM/dd/yyyy h:mm:ss a'),
 
       check5CompanyID: data.Check5CompanyId,
-      check5Num: data.Check5Num,                                             
+      check5Num: data.Check5Num,
       check5Date: data.Check5Date,
       check5Amount: data.Check5Amount ? parseFloat(data.Check5Amount).toFixed(2) : '',
       check5QBExp: data.Check5QBExp,
-      check5QBExpDate: this.datePipe.transform(data.Check5QBExpDate, this.dateTimeFormatCustom.DateTimeWithSec),
+      check5QBExpDate: this.datePipe.transform(data.Check5QBExpDate, 'MM/dd/yyyy h:mm:ss a'),
     });
   }
   getAllRepNameByCompanyId(compnayId: any) {
@@ -806,6 +788,7 @@ export class RequestSearchDetailComponent implements OnInit {
 
   }
   updateImageCount(row: any) {
+
     let internalStudyId = row.data.InternalStudyID;
     let userId = Number(this.storageService.user.UserId);
     this.subsService.subsUpdateImageCount(true, internalStudyId, userId).subscribe((res) => {
@@ -818,8 +801,9 @@ export class RequestSearchDetailComponent implements OnInit {
     });
   }
   setMailedateTime(event: any) {
+
     if (event.target.checked) {
-      this.requestDetailForm.get('mailedDateTime').setValue(this.datePipe.transform(new Date(), this.dateTimeFormatCustom.DateTimeWithSec))
+      this.requestDetailForm.get('mailedDateTime').setValue(this.datePipe.transform(new Date(), 'MM/dd/yyyy h:mm:ss a'))
       return;
     }
     this.requestDetailForm.get('mailedDateTime').setValue('');
@@ -831,6 +815,7 @@ export class RequestSearchDetailComponent implements OnInit {
     }
   }
   converNumberToDecimal2(event: any, formControlName: any) {
+
     if (event.target.value) {
       this.requestDetailForm.get(formControlName).setValue(this.decimalPipe.transform(parseFloat(event.target.value.toString().replace(/,/g, "")).toFixed(2), '1.0-2'))
     }
@@ -904,7 +889,7 @@ export class RequestSearchDetailComponent implements OnInit {
 
     this.subsService.subsReadyForPickup(true, this.subsId.toString(), Number(this.storageService.user.UserId)).subscribe((res) => {
       if (res.response != null) {
-        this.sucessMessage(res);  
+        this.sucessMessage(res);
         this.getSubsDetailById(this.requestPayloadData);
 
       }
@@ -963,13 +948,13 @@ export class RequestSearchDetailComponent implements OnInit {
       type: this.selectedRequestedTypeList != null ? this.selectedRequestedTypeList.toString() : '',
       providedType: this.selectedProvidedTypeList != null ? this.selectedProvidedTypeList.toString() : '',
       media: this.selectedMediaList != null ? this.selectedMediaList.toString() : '',
-      dateRequested: this.datePipe.transform(this.requestDetailFormControls.dateRequested.value, this.dateTimeFormatCustom.Date),
-      dateEntered: this.datePipe.transform(this.requestDetailFormControls.dateEntered.value, this.dateTimeFormatCustom.Date),
-      dateReady: this.datePipe.transform(this.requestDetailFormControls.dateReady.value, this.dateTimeFormatCustom.Date),
+      dateRequested: this.datePipe.transform(this.requestDetailFormControls.dateRequested.value, 'MM-dd-yyyy'),
+      dateEntered: this.datePipe.transform(this.requestDetailFormControls.dateEntered.value, 'MM-dd-yyyy'),
+      dateReady: this.datePipe.transform(this.requestDetailFormControls.dateReady.value, 'MM-dd-yyyy'),
       isMailedChecked: this.requestDetailFormControls.isMailedChecked.value,
       mailedDateTime: this.requestDetailFormControls.mailedDateTime.value,
       pickupCost: this.requestDetailFormControls.pickupCost.value,
-      datePickedUp: this.datePipe.transform(this.requestDetailFormControls.datePickedUp.value, this.dateTimeFormatCustom.Date),
+      datePickedUp: this.datePipe.transform(this.requestDetailFormControls.datePickedUp.value, 'MM-dd-yyyy'),
       pickedUpBy: this.requestDetailFormControls.pickedUpBy.value,
       signature: this.requestDetailFormControls.signature.value,
       copiedRecords: this.custodianRecordsFormControls.copiedRecords.value,
@@ -1114,11 +1099,6 @@ export class RequestSearchDetailComponent implements OnInit {
     } else {
       event.target.value = "";
     }
-  }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }
 

@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { SettingsService } from 'src/app/services/settings.service';
 
@@ -13,9 +10,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./psl-alert.component.css']
 })
 export class PslAlertComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
   pslAlertFormSettings: FormGroup;
   statusList:any=[];
   financialTypeList:any=[];
@@ -27,22 +21,21 @@ export class PslAlertComponent implements OnInit {
   body:any;
   IsSubmitted:boolean=false;
   modelValue:string;
-  readonly commonRegex=CommonRegex;
+
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService,
-    private readonly commonMethodService: CommonMethodService) { }
+    private readonly notificationService: NotificationService) { }
     
   ngOnInit(): void {
     this.pslAlertFormSettings = this.fb.group({
       isPslAlert: [''],
       pslServiceTime: [''],
       pslNote: [''],
-      pslEmail1: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],     
-      pslEmail2: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],     
-      pslEmail3: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],     
-      pslEmail4: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],     
-      pslEmail5: ['',[Validators.pattern(this.commonRegex.EmailRegex )]],          
+      pslEmail1: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],     
+      pslEmail2: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],     
+      pslEmail3: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],     
+      pslEmail4: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],     
+      pslEmail5: ['',[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],          
       matchPslStatus:[''],
       pslDoNotMatch:[''],
       pslFinancial:['']
@@ -192,10 +185,5 @@ export class PslAlertComponent implements OnInit {
           }
           );
         } 
-  }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }

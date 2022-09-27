@@ -40,7 +40,7 @@ export class LinkComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter = false;
 
-    this.commonMethodService.setTitle('Links');
+    this.commonMethodService.setTitle('Link');
     this.getLinks();
     this.addLinkForm = this.fb.group({
       link: ['', [Validators.required]],

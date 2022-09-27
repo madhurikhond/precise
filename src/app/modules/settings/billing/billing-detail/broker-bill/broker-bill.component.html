@@ -46,10 +46,10 @@
         <div *dxTemplate="let data of 'OVERRIDEADDRESSFORBILLING'"> {{data.value ? "Yes":"No"}} </div>
         <div *dxTemplate="let data of 'ISADDENDUM'"> {{data.value ? "Yes":"No"}} </div>
         <div *dxTemplate="let data of 'dateTemplate1'">
-            {{data.value | date: dateTimeFormatCustom.DateTimeWithSec}}
+            {{data.value | date: 'MM/dd/yyyy h:mm:ss a'}}
         </div>	
         <div *dxTemplate="let data of 'dateTemplate2'">
-            {{data.value | date:dateTimeFormatCustom.Date}}
+            {{data.value | date: 'MM/dd/yyyy'}}
         </div>	
     </dx-data-grid>
     </div>

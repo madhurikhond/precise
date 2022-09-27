@@ -31,8 +31,8 @@
 				<div class="form-group">
 					<div class="theme-label">DOB</div>
 					<div class="input-group">
-						<dx-date-box #refDob [displayFormat]="dateTimeFormatCustom.Date" type="date" formControlName="dobText" [value]="" [showClearButton]="true" 
-							[useMaskBehavior]="true" >
+						<dx-date-box #refDob type="date" formControlName="dobText" [value]="" [showClearButton]="true" 
+							[useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
 						</dx-date-box>
 					</div>
 				</div>

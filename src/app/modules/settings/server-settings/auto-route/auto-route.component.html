@@ -19,21 +19,21 @@
 										bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
 										[(ngModel)]="selectedDocumentList" [loading]="showDocumentDropdownLoader"
 										bindValue="docId" (change)="onChange($event)"
-										[ngClass]="{ 'is-invalid': submitted && arForm.docIds.errors }" id="id41"  (add)="a1=ValidateMultiSelectTextLength('id41',a1)">
+										[ngClass]="{ 'is-invalid': submitted && arForm.docIds.errors }">
 										<ng-template ng-header-tmp ng-multi-label-tmp let-items="items"
 											let-clear="clear">
 											<div>
 												<button class="btn btn-link" (click)="onSelectAll()">Select All</button>
 												<button class="btn btn-link" (click)="onClearAll()">Clear All</button>
 											</div>
-											<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+											<div class="ng-value" *ngFor="let item of items | slice:0:3">
 												<span class="ng-value-label"> {{item.docType}}</span>
 												<span class="ng-value-icon right" (click)="clear(item)"
 													aria-hidden="true">×</span>
 											</div>
-											<div class="ng-value" *ngIf="items.length > a1">
+											<div class="ng-value" *ngIf="items.length > 3">
 												<span *ngIf="(items.length - 3)>0" class="ng-value-label">{{items.length
-													- a1}} more...</span>
+													- 3}} more...</span>
 											</div>
 										</ng-template>
 
@@ -115,7 +115,7 @@
 									[(ngModel)]="selectedExtensionList" [closeOnSelect]="false"
 									[loading]="showFileExtensionDropdownLoader" autofocus bindValue="ExtensionId"
 									[selectableGroup]="true" [selectableGroupAsModel]="false"
-									[ngClass]="{ 'is-invalid': submitted && arForm.extensionIds.errors }" id="id42"  (add)="a2=ValidateMultiSelectTextLength('id42',a2)">
+									[ngClass]="{ 'is-invalid': submitted && arForm.extensionIds.errors }">
 
 									<ng-template ng-header-tmp let-items="items" let-index="index">
 										<div>
@@ -124,12 +124,12 @@
 											<button class="btn btn-link" (click)="onClearAllExtension()">Clear
 												All</button>
 										</div>
-										<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+										<div class="ng-value" *ngFor="let item of items | slice:0:1">
 											<span class="ng-value-label"> {{item.Extension}}</span>
 										</div>
-										<div class="ng-value" *ngIf="items.length > a2">
-											<span *ngIf="(items.length - 3)>0" class="ng-value-label">{{items.length -
-												a2}} more...</span>
+										<div class="ng-value" *ngIf="items.length > 1">
+											<span *ngIf="(items.length - 1)>0" class="ng-value-label">{{items.length -
+												1}} more...</span>
 										</div>
 									</ng-template>
 								</ng-select>

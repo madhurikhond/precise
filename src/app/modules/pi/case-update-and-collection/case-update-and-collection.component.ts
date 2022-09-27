@@ -6,7 +6,6 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
 import CheckBox from 'devextreme/ui/check_box';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-case-update-and-collection',
@@ -46,7 +45,7 @@ export class CaseUpdateAndCollectionComponent implements OnInit {
   selectedPaymentType: any = [];
 
   selectedRows: number[];
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   showFilterRow: boolean;
@@ -68,7 +67,7 @@ export class CaseUpdateAndCollectionComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter = false;
 
-    this.commonMethodService.setTitle('Case Updates & Collections');
+    this.commonMethodService.setTitle('Case Update & Collection');
     this.getDropdown();
     this.searchForm = this.fb.group({
       lastName: [''],

@@ -16,18 +16,18 @@
 										<div class="theme-label">Status</div>
 										<div class="input-group">
 											<ng-select [items]="statusNamesList" placeholder="Select"
-												formControlName="status" bindLabel="status" [multiple]="true" id="id86" (add)="a1=ValidateMultiSelectTextLength('id86',a1)"
+												formControlName="status" bindLabel="status" [multiple]="true"
 												[closeOnSelect]="false" bindValue="status" [(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && scForm.status.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
 													</div>
 												</ng-template>         
 											</ng-select>
@@ -44,17 +44,17 @@
 										<div class="input-group">
 											<ng-select [items]="modalityList" placeholder="Select"
 												formControlName="scheduledmodality" bindLabel="scheduledmodality"
-												[multiple]="true" id="id87" (add)="a2=ValidateMultiSelectTextLength('id87',a2)" [closeOnSelect]="false" bindValue="scheduledmodality"
+												[multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
 												[ngClass]="{ 'is-invalid': (submitted && scForm.scheduledmodality.errors)}"
 												[(ngModel)]="selectedModalityList">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:5">
 														<span class="ng-value-label"> {{item.scheduledmodality}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a2">
-														<span class="ng-value-label">{{items.length - a2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 5">
+														<span class="ng-value-label">{{items.length - 5}} more...</span>
 													</div>
 												</ng-template>         
 											</ng-select>

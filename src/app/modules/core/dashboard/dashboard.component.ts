@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TaskManagementApplyFilter } from 'src/app/models/taskManagementSlackGlobalSettings';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -6,18 +6,16 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import { TaskManagementService } from 'src/app/services/task-management/task-management.service';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { MyprofileService } from 'src/app/services/myprofile/myprofile.service';
-import { PatientService } from 'src/app/services/patient/patient.service';
-declare const $: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styles: [
+  ]
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('modalClose', { static: false }) modalClose: ElementRef;
   applyFilterBody: TaskManagementApplyFilter;
   allTaskArray: Array<object> = [];
-  epicUserList: Array<object> = [];
+
   pageNumber: number = 1;
   pageSize: number = 10;
   totalRecords: number;
@@ -29,46 +27,26 @@ export class DashboardComponent implements OnInit {
   mycontent: string;
   log: string = '';
 
-  taskDetail: any = <any>{};
+
 
   teamMemberList: any = [];
   resizingModes: string[] = ['widget', 'nextColumn'];
 
-  isTaskManagementPopShow: boolean = true;
-  assignedByFilter: string = '';
-  assignedToFilter: string = '';
-
-  DueDateFilter: string = '';
-  SavedSearchFilter: string='';
-  LabelFilter: string = '';
-  stausFilter: string = '';
-  currentTaskId: any = null;
-  taskAssignToOtherUserModel: any = null;
-  divPateintId: any = 'dashboardPatientDetail';
-  totalDoTasks: number = 0;
 
   public userDuties = '';
   userName: any;
   columnResizingMode: string;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   constructor(private readonly myprofileService: MyprofileService, private readonly storageService: StorageService, private readonly commonMethodService: CommonMethodService,
-    private taskManagementService: TaskManagementService, private readonly notificationService: NotificationService, private patientService: PatientService) {
+    private taskManagementService: TaskManagementService, private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
     this.linkList();
     this.columnResizingMode = this.resizingModes[0];
-    this.getEpicUser();
     this.commonMethodService.setTitle('Dashboard');
-    this.applyFilter('', 'Self', '', '','', 'ToDo');
+    this.applyFilter('', '', '', '', 'ToDo');
     this.getTeamMembers();
-    this.taskAssignToOtherUserModel = this.storageService.user.UserId;
-    this.assignedByFilter = '';
-    this.assignedToFilter = '';
-    this.DueDateFilter = '';
-    this.LabelFilter = '';
-    this.SavedSearchFilter='';
-    this.stausFilter = '';
     // this.ckConfig = {
     //   allowedContent: false,
     //   extraPlugins: 'divarea',
@@ -96,7 +74,7 @@ export class DashboardComponent implements OnInit {
         this.teamMemberList = res.response;
         this.totalRecords = res.totalRecords;
       }
-
+     
     }, (err: any) => {
       this.errorNotification(err);
     });
@@ -123,10 +101,9 @@ export class DashboardComponent implements OnInit {
     this.pageNumber = event;
     this.getTeamMembers();
   }
-  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, savedSearch:string, status: string) {
+  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, status: string) {
 
-    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, savedSearch, status, this.storageService.user.UserId);
-    debugger
+    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, status, this.storageService.user.UserId);
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
       this.allTaskArray = [];
       if (res.response != null && res.response?.length > 0) {
@@ -134,13 +111,6 @@ export class DashboardComponent implements OnInit {
       }
       else {
         this.allTaskArray = [];
-      }
-      if (res.toDoRecords > 0) {
-        this.totalDoTasks = res.toDoRecords;
-        this.commonMethodService.toDoTaskCountForHeader.emit(this.totalDoTasks);     
-      }
-      else {
-        this.totalDoTasks = res.totalRecords;
       }
 
     }, (err: any) => {
@@ -172,120 +142,4 @@ export class DashboardComponent implements OnInit {
       alertType: err.status
     });
   }
-  viewTask2(taskId: any) {
-    debugger
-    $('.no-collapsable').on('click', function (e) {
-      e.stopPropagation();
-    });
-    this.taskDetail = {};
-    this.taskManagementService.getTaskDetailById(true, taskId, this.storageService.user.UserId.toString()).subscribe((res) => {
-      if (res.response.length > 0) {
-        this.taskDetail = res.response.slice(0, 1).shift();
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
-  showDtailWindowMenu(taskStatus: string) {
-
-    document.getElementById('menuArchive2').style.display = 'inline-block';
-    document.getElementById('menuAssignToOther2').style.display = 'inline-block';
-    document.getElementById('menuMoveToComplete2').style.display = 'inline-block';
-    if (taskStatus === 'Completed') {
-      document.getElementById('menuMoveToComplete2').style.display = 'none';
-      document.getElementById('menuAssignToOther2').style.display = 'none';
-      document.getElementById('menuArchive2').style.display = 'none';
-    }
-
-    else if (taskStatus === 'Archived') {
-      document.getElementById('menuArchive2').style.display = 'none';
-      document.getElementById('menuAssignToOther2').style.display = 'none';
-    }
-    else if (taskStatus === 'Completed and Archived') {
-      document.getElementById('menuMoveToComplete2').style.display = 'none';
-      document.getElementById('menuAssignToOther2').style.display = 'none';
-      document.getElementById('menuArchive2').style.display = 'none';
-    }
-  }
-
-  markTaskArchived(taskId: any) {
-    debugger
-    let body = { 'taskId': taskId }
-    this.taskManagementService.markTaskArchived(true, body).subscribe((res) => {
-
-      if (res.response.length > 0) {
-        this.successNotification(res);
-        this.modalClose.nativeElement.click();
-        this.applyFilter('', '', '', '','', 'ToDo');
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
-  successNotification(data: any) {
-    this.notificationService.showNotification({
-      alertHeader: 'Success',
-      alertMessage: data.message,
-      alertType: data.responseCode
-    });
-  }
-
-  taskAssignToMenuClick(taskId: any) {
-    this.currentTaskId = taskId;
-    this.taskAssignToOtherUserModel = this.storageService.user.UserId;
-    this.modalClose.nativeElement.click();
-
-  }
-  taskAssignButtonClick(taskAssignToOtherId: any) {
-
-    if (taskAssignToOtherId != '' && taskAssignToOtherId != null) {
-      let body = {
-        'taskId': this.currentTaskId,
-        'taskAssignedToOtherUser': taskAssignToOtherId
-      };
-      this.taskManagementService.taskAssignToOther(true, body).subscribe((res) => {
-
-        if (res.response.length > 0) {
-          this.successNotification(res);
-          this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter,this.stausFilter);
-        }
-      }, (err: any) => {
-        this.errorNotification(err);
-      });
-    }
-  }
-  markTaskCompleted(taskId: any) {
-    let body = { 'taskId': taskId }
-    this.taskManagementService.markTaskCompleted(true, body).subscribe((res) => {
-
-      if (res.response.length > 0) {
-        this.successNotification(res);
-        this.modalClose.nativeElement.click();
-        this.applyFilter('', '', '', '','', 'ToDo');
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
-  
-  openPatientDetailWindow(patientDetail: string) {
-    debugger;
-    let patient = patientDetail.split(',');
-    let body = {
-      'internalPatientId': patient[0],
-      'internalStudyId': patient[1],
-      'hasAlert': patient[2] == '1' ? 1 : 0
-    }
-    this.patientService.sendDataToPatientDetailWindow(body);
-  }
-  getEpicUser() {
-    this.taskManagementService.getEpicUser(false, this.storageService.user.UserId).subscribe((res) => {
-      if (res.response != null) {
-        this.epicUserList = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
-
 }

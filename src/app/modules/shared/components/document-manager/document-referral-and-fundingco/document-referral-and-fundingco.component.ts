@@ -13,8 +13,7 @@ import * as JSZip from 'jszip';
 import { interval, observable, Subscription } from 'rxjs';
 import { SendDocumentService } from 'src/app/services/send-document-service/Send.document.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
-declare const $ : any;
+declare const $: any;
 
 @Component({
   selector: 'app-document-referral-and-fundingco',
@@ -39,7 +38,6 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
 
   fileData: SafeResourceUrl;
   fileName: string;
-  path :any
   popupVisible = false;
   CustomMenuItem: any;
   CustomToolBarItem1: any;
@@ -70,8 +68,6 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
   currentRenameItemRecord: any = {};
   isfileSizeOk: boolean = false;
   headerTitle: string;
-  downloadAllBasePath:any ;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   @HostListener('document:click', ['$event'])
   onClickEvent(event: MouseEvent) {
     let docManagerHeadertd = <HTMLElement>event.target;
@@ -154,62 +150,29 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
       this.errorNotification(err);
     })
   }
-
-  getFilesByKey(name: any, path:any,text:any){
-    
-    this.documentmanagerService.getFilesByKey(true,JSON.stringify(path)).subscribe((res) => { 
-      if (res.response != null) {
-        this.path = JSON.parse(res.response).Base64 ;  
-        if(text == 'Open'){
-          this.displayFile(name, this.path);
-        }
-        else if (text == 'Download Selected'){
-          this.downloadFile(this.selectedFileNames, this.path);
-        } 
-      }
-    }) 
-  }
-
-  getFilesByKeys(){
-   
-    var IdString: string = '';
-    let paths =  this.fileItems.map(m => m.filePath);
-    paths.forEach(res => {
-      IdString = paths + "," 
-     
-    })
-    this.documentmanagerService.getFilesByKeys(true,JSON.stringify(IdString)).subscribe((res) => { 
-      if (res.response != null) {
-          this.downloadAllBasePath = res.response
-      }
-    }) 
-  }
   onItemClick(e) {
+
     if (e.itemData.text == 'Open') {
       if (this.selectedFileKeys.length == 1) {
-        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text)
-       // this.displayFile(e.fileSystemItem.dataItem.name, this.path);
-      // call the Api here. It takes 1 parameter the base64 string
+        this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.fileBase64);
       }
       else if (this.selectedFileKeys.length > 1) {
-        this.CodeErrorNotification('Only single file can display.');
+        this.CodeErrorNotification("only single file can display.");
       }
       else {
-        this.CodeErrorNotification('Please select a file to display.');
+        this.CodeErrorNotification("please select a file to display.");
       }
     }
     else if (e.itemData.text == 'Download Selected') {
- 
       if (this.selectedFileKeys.length == 1) {
-       this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-        this.getFilesByKey('',this.path, e.itemData.text)
+        this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
         this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
         this.downloadAllFilesAsZipFile(this.selectedFileItems);
       }
       else {
-        this.CodeErrorNotification('Please select file to download.');
+        this.CodeErrorNotification("please select file to download.");
       }
     }
     else if (e.itemData.text == 'Download All Files') {
@@ -223,6 +186,7 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
       this.hiddenUploadFilePopUp.nativeElement.click();
     }
     else if (e.itemData.text == 'Scan') {
+
     }
     else if (e.itemData.text == 'Send Document') {
       if (this.selectedFileKeys.length == 1) {
@@ -321,25 +285,7 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
 
   fileManager_onSelectionChanged(e) {
     this.setFileManagerRowColor();
-    this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
-    if(this.selectedFileNames){
-      this.selectedFileKeys = e.selectedItemKeys;
-      var fileExtension = this.selectedFileNames.split('.').pop();
-
-      this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => { 
-        if (res.response != null) {
-          console.log()
-          this.path = JSON.parse(res.response).Base64 ;  
-          if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
-            this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
-          }
-          else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-            this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
-          }
-        }
-    }) 
-   }
-   
+    this.selectedFileKeys = e.selectedItemKeys;
     if (e.selectedItems.length == 1) {
       this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
       let fileExtension = this.selectedFileNames.split('.').pop();
@@ -362,9 +308,8 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
     link.click();
   }
   selectedFileDisplay(e) {
-    this.getFilesByKey( e.file.dataItem.name, e.file.dataItem.filePath,e.fileSystemItem.dataItem.text)
+    this.displayFile(e.file.dataItem.name, e.file.dataItem.fileBase64);
   }
-
   displayFile(fileName: string, fileData: any) {
     if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
       fileData = "data:image/png;base64," + fileData;
@@ -378,9 +323,8 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
   }
 
   downloadAllFilesAsZipFile(fileItems: DocumentManagerModel[]) {
-    let type: string = '';
-    this.getFilesByKeys()
-    let files = this.downloadAllBasePath.map(m => m.fileBase64);;
+    let type: string = "";
+    let files = fileItems.map(m => m.fileBase64);
     const jszip = new JSZip();
     for (let k = 0; k < files.length; k++) {
       var binary = atob(files[k]);

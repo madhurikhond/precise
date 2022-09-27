@@ -23,8 +23,7 @@ export class UnsatisfiedSettingsComponent implements OnInit {
     log: string = '';
   constructor(private fb: FormBuilder,
               private settingsService:SettingsService,
-              private notificationService:NotificationService,
-              private readonly commonMethodService :CommonMethodService
+              private notificationService:NotificationService
              ) { }
 
   ngOnInit(): void {
@@ -32,9 +31,10 @@ export class UnsatisfiedSettingsComponent implements OnInit {
       patientTime: [''],
       unsatisfiedSubject: [''],
       unsatisfiedBody: ['']
+
     })
+    
     this.getUnsatisfiedSetting()
-    this.commonMethodService.setTitle('Settings');
   }
   onChange($event: any): void {
     console.log("onChange");
@@ -81,7 +81,8 @@ export class UnsatisfiedSettingsComponent implements OnInit {
           alertType: res.responseCode
         })
       }
-      this.getUnsatisfiedSetting();   
+      this.getUnsatisfiedSetting(); 
+      
     }, 
     (err : any) => {
       this.notificationService.showNotification({

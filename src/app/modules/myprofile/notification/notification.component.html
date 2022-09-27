@@ -11,50 +11,48 @@
         </div>
     </div>
     <div class="inner-page-body">
-        <form>
-            <div class="search-field search-field-theme collapse show">
-                <div class="theme-form">
-                    <div class="form-group">
-                        <div class="theme-label">Search</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" [(ngModel)]="notificationMessage">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">From</div>
-                        <dx-date-box #fromDate [displayFormat]="dateTimeFormatCustom.Date" type="date" [value]="filterForm" 
-                            [showClearButton]="true" [useMaskBehavior]="true"
-                            [(ngModel)]="filterForm">
-                        </dx-date-box>
-    
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">To</div>
-                        <dx-date-box #toDate [displayFormat]="dateTimeFormatCustom.Date" type="date" [value]="filterTo"
-                            [showClearButton]="true" [useMaskBehavior]="true"
-                            [(ngModel)]="filterTo">
-                        </dx-date-box>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">Status</div>
-                        <div class="input-group">
-                            <select class="form-control" [(ngModel)]="dropDownValue">
-                                <option></option>
-                                <option value="Show All">Show All</option>
-                                <option value="Unread">Unread</option>
-                                <option value="Read">Read</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Uncompleted">Uncompleted</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-action">
-                        <button href="javascript:void(0)" class="btn btn-theme" type="submit" (click)="filterNoticifation()">Search</button>
-                        <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">Clear</a>
+        <div class="search-field search-field-theme collapse show">
+            <div class="theme-form">
+                <div class="form-group">
+                    <div class="theme-label">Search</div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="notificationMessage">
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="theme-label">From</div>
+                    <dx-date-box #fromDate type="date" [value]="filterForm" dateSerializationFormat="yyyy-MM-dd"
+                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                        [(ngModel)]="filterForm">
+                    </dx-date-box>
+
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">To</div>
+                    <dx-date-box #toDate type="date" dateSerializationFormat="yyyy-MM-dd" [value]="filterTo"
+                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                        [(ngModel)]="filterTo">
+                    </dx-date-box>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Status</div>
+                    <div class="input-group">
+                        <select class="form-control" [(ngModel)]="dropDownValue">
+                            <option></option>
+                            <option value="Show All">Show All</option>
+                            <option value="Unread">Unread</option>
+                            <option value="Read">Read</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Uncompleted">Uncompleted</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-action">
+                    <a href="javascript:void(0)" class="btn btn-theme" (click)="filterNoticifation()">Search</a>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">Clear</a>
+                </div>
             </div>
-        </form>
+        </div>
 
         <div class="table-responsive">
             <dx-data-grid id="gridContainer" [dataSource]="notificationList" [allowColumnResizing]="true"

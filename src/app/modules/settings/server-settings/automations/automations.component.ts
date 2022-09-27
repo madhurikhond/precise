@@ -11,7 +11,7 @@ export class AutomationsComponent implements OnInit {
   constructor(private readonly commonMethodService: CommonMethodService) { }
 
   ngOnInit(): void {
-    this.commonMethodService.setTitle('Automations');
+    this.commonMethodService.setTitle('Automation');
   }
 
 }

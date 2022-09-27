@@ -61,16 +61,16 @@
 														class="form-control" id="FinancialTypeId{{i+1}}"
 														[items]="financialTypeList" placeholder="Select"
 														formControlName="financialtypename" bindLabel="financialtypename"
-														[multiple]="true" id="id104" (add)="a1=ValidateMultiSelectTextLength('id104',a1)" [closeOnSelect]="false"
+														[multiple]="true" [closeOnSelect]="false"
 														bindValue="financialtypename">
 														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-															<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
 																<span class="ng-value-label"> {{item.financialtypename}}</span>
 																<span class="ng-value-icon right" (click)="clear(item)"
 																	aria-hidden="true">×</span>
 															</div>
-															<div class="ng-value" *ngIf="items.length > a1">
-																<span class="ng-value-label">{{items.length - a1}} more...</span>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
 															</div>
 														</ng-template> 
 													</ng-select>
@@ -80,16 +80,16 @@
 														[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusOrder').errors?.required && submitted ? 'red':''}"
 														class="form-control" id="StatusId{{i+1}}"
 														[items]="statusOrderedList" placeholder="Select"
-														formControlName="statusOrder" bindLabel="status" [multiple]="true" id="id105" (add)="a2=ValidateMultiSelectTextLength('id105',a2)"
+														formControlName="statusOrder" bindLabel="status" [multiple]="true"
 														[closeOnSelect]="false" bindValue="status">
 														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-															<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
 																<span class="ng-value-label"> {{item.status}}</span>
 																<span class="ng-value-icon right" (click)="clear(item)"
 																	aria-hidden="true">×</span>
 															</div>
-															<div class="ng-value" *ngIf="items.length > a2">
-																<span class="ng-value-label">{{items.length - a2}} more...</span>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
 															</div>
 														</ng-template> 
 													</ng-select>
@@ -99,16 +99,16 @@
 														[ngStyle]="{'border-color': caseStatusGridForm.controls[i].get('statusNames').errors?.required && submitted ? 'red':''}"
 														class="form-control" id="StatusId{{i+1}}" [items]="statusNamesList"
 														placeholder="Select" formControlName="statusNames"
-														bindLabel="status" [multiple]="true" id="id106" (add)="a3=ValidateMultiSelectTextLength('id106',a3)" [closeOnSelect]="false"
+														bindLabel="status" [multiple]="true" [closeOnSelect]="false"
 														bindValue="status">
 														<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-															<div class="ng-value" *ngFor="let item of items | slice:0:a3">
+															<div class="ng-value" *ngFor="let item of items | slice:0:1">
 																<span class="ng-value-label"> {{item.status}}</span>
 																<span class="ng-value-icon right" (click)="clear(item)"
 																	aria-hidden="true">×</span>
 															</div>
-															<div class="ng-value" *ngIf="items.length > a3">
-																<span class="ng-value-label">{{items.length - a3}} more...</span>
+															<div class="ng-value" *ngIf="items.length > 1">
+																<span class="ng-value-label">{{items.length - 1}} more...</span>
 															</div>
 														</ng-template> 
 													</ng-select>

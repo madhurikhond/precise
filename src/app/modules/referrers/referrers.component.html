@@ -30,8 +30,8 @@
                </div>
             </div>
             <div class="form-action">
-               <button href="javascript:void(0)" type="submit" (click)="searchReferrers()" class="btn btn-theme">Search</button>
-               <a href="javascript:void(0)" (click)="clearReferrers()" class="btn btn-border">Clear</a>
+               <a href="javascript:void(0)" (click)= "searchReferrers()" class="btn btn-theme">Search</a>
+               <a href="javascript:void(0)" (click)= "clearReferrers()" class="btn btn-border">Clear</a>
             </div>
          </form>
       </div>
@@ -63,23 +63,22 @@
                </div>
             </div>
             <div class="form-action">
-               <button href="javascript:void(0)" type="submit" class="btn btn-theme">Search</button>
+               <a href="javascript:void(0)" class="btn btn-theme">Search</a>
                <a href="javascript:void(0)" class="btn btn-border">Clear</a>
             </div>
          </form>
       </div>
-
+      
       <div class="page-top-action">
          <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                <div class="precisemri-search">
                   <div class=" precisemri-search page-select">
                      <div class="theme-label">Page Size</div>
-                     <select class="form-search" (change)="onPageSizeChange($event.target.value)">
-                        <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
-                           value={{item.value}}>{{item.value}}</option>
-                     </select>
-                  </div>
+                         <select class="form-search" (change)= "onPageSizeChange($event.target.value)">
+                             <option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
+                         </select>
+                 </div>
                   <select class="form-search" #actionDropDown>
                      <option selected value="0">Select an Action</option>
                      <option value="Save Grid">Save Grid</option>
@@ -104,7 +103,7 @@
             <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"> -->
             <!-- </dxo-filter-row> -->
             <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
-            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
             <!-- <dxo-search-panel 
             [visible]="true" 
             [width]="300" 
@@ -117,29 +116,27 @@
             [showInfo]="true" >
             </dxo-pager> -->
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            <dxi-column [width]="40" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
             </dxi-column>
             <dxi-column dataField="Type" caption="TYPE" [allowFixing]="true"></dxi-column>
-            <dxi-column caption="BI" [allowFixing]="false" cellTemplate="BILINKTemplate"></dxi-column>
+            <dxi-column dataField="ReferrerID" caption="REFERRER ID" [allowFixing]="false"></dxi-column>
             <dxi-column dataField="FullName" caption="COMPANY NAME"></dxi-column>
-            <!-- <dxi-column dataField="Specialty" caption="SPECIALTY"></dxi-column>
-            <dxi-column dataField="NPIPhysicianID" caption="NPI / PHYSICIAN ID" alignment="left"></dxi-column> -->
-            <dxi-column dataField="BusinessPhoneNumber" caption="BUSINESS PHONE" cellTemplate='BusinessPhoneNumber'
-               alignment="center"></dxi-column>
-            <!-- <dxi-column dataField="CellPhoneNumber" caption="CELL PHONE" cellTemplate='cellPhone' alignment="center">
-            </dxi-column>
-            <dxi-column dataField="PagerPhoneNumber" caption="PAGER PHONE"></dxi-column> -->
+            <dxi-column dataField="Specialty" caption="SPECIALTY"></dxi-column>
+            <dxi-column dataField="NPIPhysicianID" caption="NPI / PHYSICIAN ID" alignment="left"></dxi-column>
+            <dxi-column dataField="BusinessPhoneNumber" caption="BUSINESS PHONE"  cellTemplate ='BusinessPhoneNumber' alignment="center"></dxi-column>
+            <dxi-column dataField="CellPhoneNumber" caption="CELL PHONE" cellTemplate = 'cellPhone' alignment="center"></dxi-column>
+            <dxi-column dataField="PagerPhoneNumber" caption="PAGER PHONE"></dxi-column>
             <dxi-column dataField="FaxNumber" caption="FAX NUMBER" cellTemplate='FaxNumber'></dxi-column>
             <dxi-column dataField="Email" caption="EMAIL"></dxi-column>
             <dxi-column dataField="DateAdded" caption="DATE ADDED" cellTemplate="dateTemplate"></dxi-column>
             <!-- <dxi-column dataField="AutoFaxFinal" CellTemplate="AUTO FAX FINAL"
                [(visible)]="isShowColumnWithNoData"></dxi-column> -->
-            <!-- <dxi-column dataField="AutoFaxFinal" caption="AutoFaxFinal" cellTemplate="AUTO FAX FINAL"
+               <dxi-column dataField="AutoFaxFinal" caption="AutoFaxFinal" cellTemplate="AUTO FAX FINAL"
                [(visible)]="isShowColumnWithNoData">
-            </dxi-column>
-            <dxi-column dataField="AutoEmailFinal" caption="AUTO EMAIL FINAL" cellTemplate="AUTO EMAIL FINAL"
+               </dxi-column>
+               <dxi-column dataField="AutoEmailFinal" caption="AUTO EMAIL FINAL" cellTemplate="AUTO EMAIL FINAL"
                [(visible)]="isShowColumnWithNoData">
-            </dxi-column> -->
+               </dxi-column>
             <!-- <dxi-column dataField="AutoEmailFinal" caption="AUTO EMAIL FINAL" [(visible)]="isShowColumnWithNoData">
             </dxi-column> -->
 
@@ -148,7 +145,7 @@
             <dxi-column dataField="ZipPostalCode" caption="ZIP" [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="City" caption="CITY" [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="StateProvince" caption="STATE" [(visible)]="isShowColumnWithNoData"></dxi-column>
-            <!-- <dxi-column dataField="MRI" caption="MRI" [(visible)]="isShowColumnWithNoData"></dxi-column>
+            <dxi-column dataField="MRI" caption="MRI" [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="MRIWithoutContrast" caption="MRI WITHOUT CONTRAST"
                [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="MRIWithContrast" caption="MRI WITH CONTRAST" [(visible)]="isShowColumnWithNoData">
@@ -160,16 +157,12 @@
             </dxi-column>
             <dxi-column dataField="Xray1View" caption="XRAY 1 VIEW" [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="Xray2Views" caption="XRAY 2 VIEW" [(visible)]="isShowColumnWithNoData"></dxi-column>
-            <dxi-column dataField="Xray3Views" caption="XRAY 3 VIEW" [(visible)]="isShowColumnWithNoData"></dxi-column> -->
+            <dxi-column dataField="Xray3Views" caption="XRAY 3 VIEW" [(visible)]="isShowColumnWithNoData"></dxi-column>
 
-            <dxi-column dataField="Exiled" caption="EXILED" cellTemplate="EXILED" [(visible)]="isShowColumnWithNoData">
-            </dxi-column>
+            <dxi-column dataField="Exiled" caption="EXILED" cellTemplate="EXILED"
+            [(visible)]="isShowColumnWithNoData"></dxi-column>
             <!-- <dxi-column dataField="Exiled" caption="EXILED" [(visible)]="isShowColumnWithNoData"></dxi-column> -->
-            <div *dxTemplate="let data of 'BILINKTemplate'">
-               <a *ngIf="data.data.Type!='Doctor'" [href]="data.data.BILink" target="blank">
-                  <img src="assets/images/BILink.png" width="20" height="20">
-               </a>
-            </div>
+
             <dxi-column dataField="ExiledDate" caption="EXILED DATE" cellTemplate="date2Template"
                [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="ExiledComment" caption="EXILED COMMENT" [(visible)]="isShowColumnWithNoData">
@@ -179,24 +172,24 @@
             <div *dxTemplate="let data of 'AUTO EMAIL FINAL'"> {{data.value ? "Yes":"No"}} </div>
             <div *dxTemplate="let data of 'EXILED'"> {{data.value ? "Yes":"No"}} </div>
             <div *dxTemplate="let data of 'cellTemplate'">
-               <a href="javascript:void(0)" class="single-action fa fa-pencil-square-o" style="font-size: 12px"
+               <a href="javascript:void(0)" class="single-action fa fa-pencil-square-o"
                   (click)="getCurrentReferrerDetail(data)" data-toggle="modal" data-target="#ReferrerDetailWindow"></a>
             </div>
             <div *dxTemplate="let data of 'BusinessPhoneNumber'">
                <p *ngIf="data && data.value">
-                  {{ data.value | mask: '(000) 000-0000' }}
+                   {{ data.value | mask: '(000) 000-0000' }}
                </p>
-            </div>
-            <div *dxTemplate="let data of 'FaxNumber'">
-               <p *ngIf="data && data.value">
-                  {{ data.value | mask: '(000) 000-0000' }}
-               </p>
-            </div>
-            <div *dxTemplate="let data of 'cellPhone'">
-               <p *ngIf="data && data.value">
-                  {{ data.value | mask: '(000) 000-0000' }}
-               </p>
-            </div>
+           </div>
+           <div *dxTemplate="let data of 'FaxNumber'">
+            <p *ngIf="data && data.value">
+                {{ data.value | mask: '(000) 000-0000' }}
+            </p>
+        </div>
+        <div *dxTemplate="let data of 'cellPhone'">
+         <p *ngIf="data && data.value">
+             {{ data.value | mask: '(000) 000-0000' }}
+         </p>
+     </div>
             <div *dxTemplate="let data of 'dateTemplate'">
                {{data.value | date:dateTimeFormatCustom.Date}}
             </div>
@@ -434,10 +427,8 @@
 
                   </div>
                   <div class="modal-footer">
-                     <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                        data-dismiss="modal">Cancel</a>
-                     <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Create Alert
-                        Only</button>
+                     <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
+                     <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Create Alert Only</button>
                      <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Create &amp; Send
                         Alert</button>
                   </div>

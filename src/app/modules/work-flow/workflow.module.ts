@@ -14,7 +14,7 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { ActionNeededComponent } from './action-needed/action-needed.component';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { PatientDetailGroupComponent } from './ordered-scheduler/patient-detail-group/patient-detail-group.component';
-import { DxAutocompleteModule, DxButtonModule, DxContextMenuModule } from 'devextreme-angular';
+import { DxAutocompleteModule, DxButtonModule } from 'devextreme-angular';
 import { NgxMaskModule } from 'ngx-mask';
 import { FormsModule } from '@angular/forms';
 
@@ -28,7 +28,6 @@ import { FormsModule } from '@angular/forms';
     DxButtonModule,
     DxAutocompleteModule,
     FormsModule,
-    DxContextMenuModule,
     NgxMaskModule.forRoot({
       // showMaskTyped : true,
       // clearIfNotMatch : true

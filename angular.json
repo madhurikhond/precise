@@ -21,12 +21,7 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "./node_modules/dwt/dist",
-                "output": "/assets/dwt-resources/"
-              }
+              "src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -34,7 +29,8 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/devextreme/dist/css/dx.common.css",
               "node_modules/devextreme/dist/css/dx.light.css",
-              "node_modules/ng2-tree/styles.css"
+              "node_modules/ng2-tree/styles.css",
+              "src/assets/scheduler/codebase/dhtmlxscheduler_material.css"
             ],
             "scripts": [ "./node_modules/jquery/dist/jquery.js" ]
           },
@@ -125,5 +121,4 @@
   "cli": {
     "analytics": "34fba4b1-fb5a-4d1c-b59f-974c3d9f563d"
   }
-
 }

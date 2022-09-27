@@ -12,14 +12,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./ref-study-sum.component.css']
 })
 export class RefStudySumComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
-  a6: any = 20;
-  a7: any = 20;
-  a8: any = 20;
   modalityList:any=[]
   statusNamesList:any=[]
   financialTypesList:any=[]
@@ -46,8 +38,7 @@ export class RefStudySumComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService,
-    private readonly commonMethodService: CommonMethodService) { }
+    private readonly notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.refStudyForm = this.fb.group({
@@ -248,9 +239,4 @@ export class RefStudySumComponent implements OnInit {
     );
   }  
   get refForm() { return this.refStudyForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

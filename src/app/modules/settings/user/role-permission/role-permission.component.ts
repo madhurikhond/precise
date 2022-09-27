@@ -110,9 +110,9 @@ export class RolePermissionComponent implements OnInit {
   selectCheckbox(data, event){
     var status = event.target.checked;
     var index = this.generalPermissionList.findIndex(x => x.ModuleId === data.data.ModuleId)
-    // if(status){
-    //   this.generalPermissionList[index].IsView = status;
-    // }
+    if(status){
+      this.generalPermissionList[index].IsView = status;
+    }
     if(!this.generalPermissionList[index].IsAdd && !this.generalPermissionList[index].IsEdit 
       && !this.generalPermissionList[index].IsDelete && !this.generalPermissionList[index].IsAssignStudy
       && !this.generalPermissionList[index].IsPatientActionHide){

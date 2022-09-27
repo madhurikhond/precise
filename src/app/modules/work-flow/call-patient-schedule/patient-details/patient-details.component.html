@@ -14,7 +14,7 @@
                         <a href="javascript:void(0);"  class="link-btn" (click)="getPatientDetailById()"
                         data-toggle="modal" data-target="#patient-Detail-Window">
                      {{patientId}} </a> -
-                    {{lastName}}, {{firstName}} - {{dob}} - {{financialTypeName}} - <strong><a [href]="'tel:'+phone" target="blank">{{phone}}</a></strong>
+                    {{lastName}}, {{firstName}} - {{dob}} - {{financialTypeName}} - <strong>{{phone}}</strong>
                     {{language}} {{reason}}
                 </td>
                 <td class="table-sub-header"><span class="psl" [ngClass]="{'active' : smsSent != ''}">PSL</span></td>

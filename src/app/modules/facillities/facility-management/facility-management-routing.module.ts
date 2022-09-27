@@ -6,6 +6,7 @@ import { FacilityManagementComponent } from './facility-management.component';
 import { ParentCompComponent } from './parent-comp/parent-comp.component';
 import { SchdFacilitiesComponent } from './schd-facilities/schd-facilities.component';
 
+
 const routes: Routes = [
   {
     path: '', component: FacilityManagementComponent, children: [
@@ -17,8 +18,8 @@ const routes: Routes = [
       }
       ,
       {
-        path:'parent-comp',component:ParentCompComponent, canActivate: [AuthGuard,RoleGuard]
-      }
+        path:'parent-comp',component:ParentCompComponent, canActivate: [AuthGuard]
+      },   
     ]
   }
 

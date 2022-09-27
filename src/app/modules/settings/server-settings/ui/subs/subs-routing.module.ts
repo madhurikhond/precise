@@ -6,7 +6,7 @@ import { SubsComponent } from './subs.component';
 
 const routes: Routes = [
     { path: '', component: SubsComponent, children:[
-    { path:'',redirectTo:'pickup', pathMatch: 'full',canActivate:[RoleGuard] },
+    { path:'',redirectTo:'pickup', pathMatch: 'full' },
     { path:'pickup', component: PickupComponent, canActivate:[RoleGuard] } 
   ]}
 ];

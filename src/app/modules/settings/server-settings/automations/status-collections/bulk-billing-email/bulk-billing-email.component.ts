@@ -11,8 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./bulk-billing-email.component.css']
 })
 export class BulkBillingEmailComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
   id:number;
   bulkBillingForm:FormGroup
   submitted = false
@@ -181,10 +179,4 @@ export class BulkBillingEmailComponent implements OnInit {
   }
 
   get bbForm() { return this.bulkBillingForm.controls; }
-  
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

@@ -30,11 +30,11 @@
         </div>
     </div>
     <div class="header-action-right">	
-        <div class="precisemri-search" *ngIf="docManager">
+        <div class="precisemri-search">
             <input type="text" class="form-search" placeholder="Search Patient Id" #patientId (keyup.enter)="showDocManager(patientId.value)">
             <a href="javascript:void(0)" class="pe-icon fa fa-file-text-o"></a>
         </div>
-        <div class="header-action dropdown" *ngIf="taskManager">
+        <div class="header-action dropdown">
             <div class="dropdown-toggle nav-link">
                 <a href="javascript:void(0)" class="icon-group" data-toggle="modal" data-target="#task-manager" (click)="showTaskManagementWindow()">
                     <i class="pe-icon pe-7s-note2"></i>
@@ -42,40 +42,40 @@
                 </a>
             </div>
         </div>
-        <div class="header-action action-web dropdown" *ngIf="createAlert">
+        <div class="header-action action-web dropdown">
             <div class="dropdown-toggle nav-link" data-toggle="modal" data-target="#create-alert" (click)="showCreateAlertPopup()">
                 <div class="icon-group"><i class="pe-icon pe-7s-bell"></i></div>
             </div>
         </div>
-        <div class="header-action dropdown" *ngIf="preScreenQuestions">
+        <div class="header-action dropdown">
             <div class="dropdown-toggle nav-link" data-toggle="modal" data-target="#prescreening-small-window" data-keyboard="false" data-backdrop="static"
              (click)="showPreScreeningPopup()">
                 <div class="icon-group"><i class="pe-icon pe-7s-headphones"></i></div>
             </div>
         </div>
-        <div class="header-action dropdown" *ngIf="autoRouteV2">
+        <div class="header-action dropdown">
             <a href="javascript:void(0)" routerLink="/auto-route-v2" class="dropdown-toggle nav-link">
                 <div class="icon-group"><i class="pe-icon pe-7s-cloud-upload"></i></div>
             </a>
         </div>
-        <div class="header-action action-web dropdown"  >
+        <div class="header-action action-web dropdown">
             <div class="dropdown-toggle nav-link" id="dropdownlogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="user-photo">
                     <i class="pe-icon pe-7s-user"></i>
                 </div>
                 <div class="user-name">{{username}}</div>									
             </div>
-            <ul class="dropdown-menu animated fadeInUp" aria-labelledby="dropdownlogout" >							
-                <li *ngFor=" let item of rightNavList "><a [routerLink]="item.Url" routerLinkActive="active"><i [class]="item.Icon"></i>{{item.PageTitle}}</a></li>
-                <!-- <li><a routerLink="/myprofile/calender" routerLinkActive="active"><i class="fa fa-calendar"></i>Calender</a></li>
+            <ul class="dropdown-menu animated fadeInUp" aria-labelledby="dropdownlogout">							
+                <li><a routerLink="/myprofile/notification" routerLinkActive="active"><i class="fa fa-bell-o"></i>Notifications</a></li>
+                <li><a routerLink="/myprofile/calender" routerLinkActive="active"><i class="fa fa-calendar"></i>Calender</a></li>
                 <li><a routerLink="/myprofile/team-members" routerLinkActive="active"><i class="fa fa-users"></i>Team Members</a></li>
                 <li><a routerLink="/myprofile/roles" routerLinkActive="active"><i class="fa fa-list-alt"></i>Roles</a></li>
                 <li><a routerLink="/myprofile/links" routerLinkActive="active"><i class="fa fa-paperclip"></i>Links</a></li>
                 <li><a routerLink="/myprofile/mydocuments" routerLinkActive="active"><i class="fa fa-file-text-o"></i>My Documents</a></li>
                 <li><a routerLink="/myprofile/profile" routerLinkActive="active"><i class="fa fa-user-o"></i>My Profile</a></li>
                 <li><a  routerLink="/lien-management" href="javascript:void(0);" routerLinkActive="active"><i class="fa fa-user-o"></i>Lien Management</a></li>
-                <li><a routerLink="/myprofile/change-password" routerLinkActive="active"><i class="fa fa-key"></i>Change Password</a></li>-->
-                <li><a href="javascript: void(0);" (click)="logOut()"><i class="fa fa-sign-out"></i>Logout</a></li> 
+                <li><a routerLink="/myprofile/change-password" routerLinkActive="active"><i class="fa fa-key"></i>Change Password</a></li>
+                <li><a href="javascript: void(0);" (click)="logOut()"><i class="fa fa-sign-out"></i>Logout</a></li>
             </ul>
         </div>
     </div>

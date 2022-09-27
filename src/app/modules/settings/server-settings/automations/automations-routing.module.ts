@@ -11,7 +11,6 @@ import { FunctionalityComponent } from './functionality/functionality.component'
 import {SlackComponent} from './slack/slack.component'
 import { BrokerBillingComponent } from './broker-billing/broker-billing.component';
 import {SchedulingModule} from './scheduling/scheduling.module'
-import { RoleGuard } from 'src/app/modules/core/guards/role.guard';
 
 const routes: Routes = [
   
@@ -19,62 +18,62 @@ const routes: Routes = [
     path: '', component: AutomationsComponent, children:[
       
       {
-        path:'',redirectTo:'scheduling',loadChildren: () => import('./scheduling/scheduling.module').then(m => m.SchedulingModule),canActivate:[RoleGuard]
+        path:'',redirectTo:'scheduling',loadChildren: () => import('./scheduling/scheduling.module').then(m => m.SchedulingModule)
       },
       {
-        path:'scheduling',loadChildren: () => import('./scheduling/scheduling.module').then(m => m.SchedulingModule),canActivate:[RoleGuard]
+        path:'scheduling',loadChildren: () => import('./scheduling/scheduling.module').then(m => m.SchedulingModule)
       },
       {
-        path: 'smstest', component: SmsTestComponent,canActivate:[RoleGuard]
+        path: 'smstest', component: SmsTestComponent
       },
       {
-        path:'reminderstatus',component:ReminderStatusComponent,canActivate:[RoleGuard]
+        path:'reminderstatus',component:ReminderStatusComponent
       },
       {
-        path:'piacceptliability',component:PiAcceptLiabilityComponent,canActivate:[RoleGuard]
+        path:'piacceptliability',component:PiAcceptLiabilityComponent
       },
       {
-        path:'refstudysum',component:RefStudySumComponent,canActivate:[RoleGuard]
+        path:'refstudysum',component:RefStudySumComponent
       },
       {
-        path:'intake',loadChildren: () => import('./intake-setting/intake.module').then(m => m.IntakeModule),canActivate:[RoleGuard]
+        path:'intake',loadChildren: () => import('./intake-setting/intake.module').then(m => m.IntakeModule)
       }
       ,
       {
-        path:'liens',loadChildren: () => import('./liens/liens.module').then(m => m.LiensModule),canActivate:[RoleGuard]
+        path:'liens',loadChildren: () => import('./liens/liens.module').then(m => m.LiensModule)
       },
       // {
       //   path:'options',component:OptionsComponent
       // },
       {
-        path:'autobilling',loadChildren: () => import('./auto-billing/auto-billing.module').then(m => m.AutoBillingModule),canActivate:[RoleGuard]
+        path:'autobilling',loadChildren: () => import('./auto-billing/auto-billing.module').then(m => m.AutoBillingModule)
       },
       {
-        path:'emailform',component:EmailFormComponent,canActivate:[RoleGuard]
+        path:'emailform',component:EmailFormComponent
       },
       {
-        path:'reports',loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),canActivate:[RoleGuard]
+        path:'reports',loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
       },
       {
-        path:'facilities',loadChildren: () => import('./facilities/facilities.module').then(m => m.FacilitiesModule),canActivate:[RoleGuard]
+        path:'facilities',loadChildren: () => import('./facilities/facilities.module').then(m => m.FacilitiesModule)
       },
       {
-        path:'functionality',component:FunctionalityComponent,canActivate:[RoleGuard]
+        path:'functionality',component:FunctionalityComponent
       },
       {
-        path:'statuscollections',loadChildren: () => import('./status-collections/status-collections.module').then(m => m.StatusCollectionsModule),canActivate:[RoleGuard]
+        path:'statuscollections',loadChildren: () => import('./status-collections/status-collections.module').then(m => m.StatusCollectionsModule)
       },
       {
-        path:'pendpymt',loadChildren: () => import('./pend-pymt/pend-pymt.module').then(m => m.PendPymtModule),canActivate:[RoleGuard]
+        path:'pendpymt',loadChildren: () => import('./pend-pymt/pend-pymt.module').then(m => m.PendPymtModule)
       },
       {
-        path:'export',loadChildren: () => import('./export/export.module').then(m => m.ExportModule),canActivate:[RoleGuard]
+        path:'export',loadChildren: () => import('./export/export.module').then(m => m.ExportModule)
       },
       {
-        path:'slack',component:SlackComponent,canActivate:[RoleGuard]
+        path:'slack',component:SlackComponent
       },
       {
-        path:'brokerbilling',component:BrokerBillingComponent,canActivate:[RoleGuard]
+        path:'brokerbilling',component:BrokerBillingComponent
       }
     ]
   }

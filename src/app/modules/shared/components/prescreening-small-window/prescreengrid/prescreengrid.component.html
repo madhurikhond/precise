@@ -9,7 +9,7 @@
     <dxo-load-panel [enabled]="true"></dxo-load-panel>
     <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
     <dxo-selection mode="multiple"></dxo-selection>
-    <dxi-column dataField="STUDYDATETIME" caption="STUDY DATE & TIME" cellTemplate="firstTemplate"></dxi-column>
+    <dxi-column dataField="STUDYDATETIME" caption="STUDY DATE_TIME" cellTemplate="firstTemplate"></dxi-column>
     <dxi-column dataField="FullName" caption="FULLNAME"></dxi-column>
     <dxi-column dataField="SEX" caption="SEX"></dxi-column>
     <dxi-column dataField="DOB" cellTemplate="dobTemplate" caption="DOB"></dxi-column>
@@ -93,8 +93,8 @@
                                             <div class="input-group">
                                                 <div class="view-mode-data">{{this.preScreeningQuestionData ?
                                                     (this.preScreeningQuestionData.patientData.DOB | date :
-                                                    dateTimeFormatCustom.Date) : (this.noExistForm.patientDOB.value | date :
-                                                    dateTimeFormatCustom.Date)}}</div>
+                                                    'MM/dd/yyyy') : (this.noExistForm.patientDOB.value | date :
+                                                    'MM/dd/yyyy')}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1349,8 +1349,8 @@
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                         formControlName="patientDOB" [showClearButton]="true" class="form-control"
                                         [useMaskBehavior]="true" [max]="today"
-                                        [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}">
-                                       
+                                        [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}"
+                                        dateSerializationFormat="MM-dd-yyyy">
                                     </dx-date-box>
                                     <!-- <input type="date" formControlName="patientDOB"
                                        [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}"

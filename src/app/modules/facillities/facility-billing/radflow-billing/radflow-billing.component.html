@@ -385,12 +385,19 @@
 		 </div>
 		 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
 		 
-         <div class="form-group">
-            <div class="theme-label">Next Year</div>
-            <div class="input-group icon-active">
-               <dx-date-box formControlName="dob" type="date" [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                     </div>
-         </div>
+			 <div class="form-group">
+			 <div class="theme-label">Next Year</div>
+				 <div class="input-group icon-active">
+                        <dx-date-box
+                            formControlName="dob"
+                            type="date"
+                            [showClearButton]="true"
+                            [useMaskBehavior]="true"
+                            displayFormat="shortdate"
+                            dateSerializationFormat="yyyy-MM-dd">
+                        </dx-date-box>
+                 </div>
+			 </div>
 		 </div>
 		 </div>
 		 <div class="row">

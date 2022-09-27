@@ -3,13 +3,9 @@ import { AfterContentInit, Component, ElementRef, HostListener, OnInit, ViewChil
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getTime } from 'ngx-bootstrap/chronos/utils/date-getters';
-import { CommonRegex } from 'src/app/constants/commonregex';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
-import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { AccountService } from 'src/app/services/account.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
-import { StorageService } from 'src/app/services/common/storage.service';
 declare const $: any;
 @Component({
   selector: 'app-login-request',
@@ -20,30 +16,17 @@ export class LoginRequestComponent implements OnInit {
   isFirstTab: boolean;
   requestLoginForm: FormGroup;
   userTypeList: any;
-  stateList: any = [];
   isNextClicked = false;
   submitted = false;
-  redirectLinkWithPermission:any;
-  //isWorkEmailRequired:boolean=false;
-  isPasswordRequired:Boolean=false;
-  showDropdownLoader = true;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   dbaText = ''
   maxDate = new Date();
   myclose = false;
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly accountService: AccountService,
-    private readonly storageService: StorageService,
     private readonly notificationService: NotificationService, private router: Router) { }
-    readonly commonRegex = CommonRegex;
 
   ngOnInit(): void {
 
-    if (this.checkIsLoggedIn()) {
-      this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-      this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
-    }
-    this.getStateList();
     this.isFirstTab = true;
     this.commonMethodService.setTitle('Request a Login');
 
@@ -58,16 +41,16 @@ export class LoginRequestComponent implements OnInit {
       Address: ['', [Validators.required]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
-      Zip: ['', [Validators.required, Validators.minLength(5)]],
-      CellPhoneMask: ['', [Validators.required, Validators.pattern(this.commonRegex.PhoneRegex)]],
-      HomePhoneMask: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      FaxMask: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      Zip: ['', [Validators.required, Validators.minLength(6)]],
+      CellPhoneMask: ['', [Validators.required, Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      HomePhoneMask: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      FaxMask: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       CellPhone: [''],
       HomePhone: [''],
       Fax: [''],
       WorkEmail: ['', [Validators.required,
       Validators.email,
-      Validators.pattern(this.commonRegex.EmailRegex)]],
+      Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).com')]],
       PersonalEmail: ['', [Validators.required]],
       Password: ['', [Validators.required,
       this.patternValidator(/\d/, { hasNumber: true }),
@@ -99,12 +82,10 @@ export class LoginRequestComponent implements OnInit {
     }, {
       Name: 'Facility',
       Value: 'Facility'
-    }, 
-    // {
-    //   Name: 'Patient',
-    //   Value: 'Patient'
-    // }, 
-    {
+    }, {
+      Name: 'Patient',
+      Value: 'Patient'
+    }, {
       Name: 'Precise Imaging Employee',
       Value: 'Precise Imaging Employee'
     }, {
@@ -124,25 +105,8 @@ export class LoginRequestComponent implements OnInit {
         }
       }
     });
+  }
 
-  }
-  checkIsLoggedIn() {
-    if (this.storageService.user != null) {
-      var tokenExpiry = new Date(this.storageService.user.exp * 1000);
-      var today = new Date();
-      if (tokenExpiry < today) {
-        this.router.navigate(['login']);
-        this.storageService.clearAll();
-        return false;
-      }
-      else {
-        return true;
-      }
-    }
-    else {
-      return false;
-    }
-  }
   switchTab(value) {
     this.submitted = false;
     this.isNextClicked = true;
@@ -156,7 +120,6 @@ export class LoginRequestComponent implements OnInit {
 
   setRequired() {
     return [Validators.required];
-    
   }
 
   //method to submit form
@@ -186,58 +149,7 @@ export class LoginRequestComponent implements OnInit {
     }
     );
   }
-  //method to get state list
-  getStateList() {
-    this.accountService.getServiceStateList().subscribe((res) => {
-      var data: any = res;
-      if (data.response != null && data.response.length > 0) {
-        this.stateList = data.response;
-      }
-      else {
-        this.notificationService.showNotification({
-          alertHeader: data.statusText,
-          alertMessage: data.message,
-          alertType: data.responseCode
-          
-        });
-      }
-      this.showDropdownLoader = false;
-    },
-      (err: any) => {
-        this.notificationService.showNotification({
-          alertHeader: err.statusText,
-          alertMessage: err.message,
-          alertType: ResponseStatusCode.InternalError
-        });
-        this.showDropdownLoader = false;
-      });
-  }
-  redirectLinkPremission(data: any)
-  {
-    var valReturn: any;
-    let list: any = [];
-    let responseHierarchy = JSON.parse(data);
-        if (responseHierarchy && responseHierarchy.length) {
-          responseHierarchy.forEach((value) => {
-            if (value && value.hierarchy) {
-              value.hierarchy = JSON.parse(value.hierarchy);
-            }
-          });
-        }
-        for (let i = 0; i < responseHierarchy.length; i++) {
-          list.push(responseHierarchy[i].hierarchy);
-          console.log(list);
-          if(list[0].Url!=='')
-          {
-            valReturn=list[0].Url
-          }
-          else if(list[0].Url=='' && list[0].Children)
-          {
-            valReturn=list[0].Children[0].Url
-          }
-        }
-        return valReturn;
-  }
+
   //Method To change user type
   onChangeUserType(event): any {
     let valuex = event.target.value;
@@ -285,15 +197,14 @@ export class LoginRequestComponent implements OnInit {
       this.requestLoginForm.controls.LicenseNumber.setValidators(null);
       this.requestLoginForm.controls.DBA.setValidators(null);
       this.requestLoginForm.controls.NPI.setValidators(null);
+      this.requestLoginForm.controls.DateOfBirth.setValidators(null);
       this.requestLoginForm.controls.PersonalEmail.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactName1.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactPhone1.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactName2.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactPhone2.setValidators(null);
-      this.requestLoginForm.controls.DateOfBirth.setValidators(null);
 
       this.requestLoginForm.controls.CompanyName.setValidators(this.setRequired());
-      //this.requestLoginForm.controls.DateOfBirth.setValidators(this.setRequired());
     }
     else if (valuex === 'Facility') {
       this.requestLoginForm.controls.LicenseNumber.setValidators(null);
@@ -327,14 +238,14 @@ export class LoginRequestComponent implements OnInit {
       this.requestLoginForm.controls.CompanyName.setValidators(null);
       this.requestLoginForm.controls.DBA.setValidators(null);
       this.requestLoginForm.controls.NPI.setValidators(null);
-                    
-      this.requestLoginForm.controls.DateOfBirth.setValidators(this.setRequired());
-      this.requestLoginForm.controls.PersonalEmail.setValidators(this.setRequired());
-      this.requestLoginForm.controls.EmergencyContactName1.setValidators(this.setRequired());
-      this.requestLoginForm.controls.EmergencyContactPhone1.setValidators(this.setRequired());
-      this.requestLoginForm.controls.EmergencyContactName2.setValidators(this.setRequired());
-      this.requestLoginForm.controls.EmergencyContactPhone2.setValidators(this.setRequired());
 
+      this.requestLoginForm.controls.DateOfBirth.setValidators(null);
+      this.requestLoginForm.controls.EmergencyContactName1.setValidators(null);
+      this.requestLoginForm.controls.EmergencyContactPhone1.setValidators(null);
+      this.requestLoginForm.controls.EmergencyContactName2.setValidators(null);
+      this.requestLoginForm.controls.EmergencyContactPhone2.setValidators(null);
+      this.requestLoginForm.controls.PersonalEmail.setValidators(null);
+      
     }
     if (valuex === 'Precise Imaging Employee') {
       this.requestLoginForm.controls.WorkEmail.setValidators(null);
@@ -342,16 +253,10 @@ export class LoginRequestComponent implements OnInit {
       this.requestLoginForm.controls.WorkEmail.setValidators(
         [
           Validators.email,
-          Validators.required,
           Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).com'),
           DontMatch.dontMatch(this.requestLoginForm.get('PersonalEmail'))
         ]
       );
-
-      this.requestLoginForm.controls.PersonalEmail.setValidators(
-        [Validators.required,
-        Validators.email,
-        Validators.pattern(this.commonRegex.EmailRegex)])
 
       // this.requestLoginForm.controls.PersonalEmail.setValidators([
       //   Validators.compose([
@@ -366,8 +271,9 @@ export class LoginRequestComponent implements OnInit {
       this.requestLoginForm.controls.WorkEmail.setValidators(
         [Validators.required,
         Validators.email,
-        Validators.pattern(this.commonRegex.EmailRegex)])
-        this.requestLoginForm.controls.PersonalEmail.setValidators(null);
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).com')])
+
+      this.requestLoginForm.controls.PersonalEmail.setValidators(null);
     }
     this.requestLoginForm.get('LicenseNumber').updateValueAndValidity();
     this.requestLoginForm.get('CompanyName').updateValueAndValidity();
@@ -379,7 +285,7 @@ export class LoginRequestComponent implements OnInit {
     this.requestLoginForm.get('EmergencyContactPhone1').updateValueAndValidity();
     this.requestLoginForm.get('EmergencyContactName2').updateValueAndValidity();
     this.requestLoginForm.get('EmergencyContactPhone2').updateValueAndValidity();
-   // this.requestLoginForm.get('WorkEmail').updateValueAndValidity();
+    this.requestLoginForm.get('WorkEmail').updateValueAndValidity();
 
   }
   // common Notification Method

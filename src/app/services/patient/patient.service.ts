@@ -8,7 +8,6 @@ import { HttpService } from '../common/http.service';
 export class PatientService {
 
   sendDataToPatientDetail: EventEmitter<any> = new EventEmitter<any>();
-  sendDataToOrderedSchedular: EventEmitter<any> = new EventEmitter<any>();
   private sendDataToEsignrequest = new BehaviorSubject<boolean>(false);
   sendDataToEsignrequestKeeper = this.sendDataToEsignrequest.asObservable();
   constructor(private readonly _httpService:HttpService) { }
@@ -16,10 +15,7 @@ export class PatientService {
    sendDataToPatientDetailWindow(body:any): void {
     this.sendDataToPatientDetail.emit(body);
   }
-  sendDataToOrderedSchedularWindow(body:any):void{ 
-  this.sendDataToOrderedSchedular.emit(body)
-}  
-sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
+  sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
     this.sendDataToEsignrequest.next(EsignAgreeCheck);
   }
 
@@ -94,18 +90,6 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
       map((res:ApiResponse) => res)
     );
   }
-
-  getLogs(showGlobalLoader : boolean = true,body: any){
-    return this._httpService.post(`Patient/getLogs`,body,showGlobalLoader,true).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
-
-  crudBillingPaymentDestination(showGlobalLoader : boolean = true,body: any){
-    return this._httpService.post(`Patient/crudBillingPaymentDestination`,body,showGlobalLoader,true).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
   getMarketingUser(showGlobalLoader : boolean = true){
     return this._httpService.get(`MasterValues/GetMarketingUser`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
@@ -116,7 +100,6 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
       map((res:ApiResponse) => res)
     );
   }
-
   getAttorneys(showGlobalLoader : boolean = true ,body:any){
     return this._httpService.post(`MasterValues/GetAttorneys`,body,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
@@ -241,22 +224,6 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
   }
   getClearResultByPatientId(showGlobalLoader : boolean = true ,body: any) {
     return this._httpService.post(`Patient/ClearResultByPatientId`,body,showGlobalLoader,true).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
-  GetLastSearchRecord(showGlobalLoader : boolean = true ){
-    return this._httpService.get(`Patient/GetLastSearchRecord`,showGlobalLoader).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
-  InsertLastSearchRecord(showGlobalLoader : boolean = true,body:any ){
-    return this._httpService.post(`Patient/InsertLastSearchRecord`,body,showGlobalLoader,true).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
-
-  ManageSearch(showGlobalLoader : boolean = true,body:any){
-    return this._httpService.post(`Patient/ManageSearch`,body,showGlobalLoader,true).pipe(
       map((res:ApiResponse) => res)
     );
   }

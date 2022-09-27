@@ -12,15 +12,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./pi-accept-liability.component.css']
 })
 export class PiAcceptLiabilityComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
-  a6: any = 20;
-  a7: any = 20;
-  a8: any = 20;
-  a9: any = 20;
   piAcceptLiabilitySettingForm:FormGroup;
   selectedStatusList:any=[];
   statusList: any = [];
@@ -251,10 +242,4 @@ allowNumberOnly(event:any): boolean
     return this.commonService.alowNumberOnly(event);
   }
   get getFromControls() { return this.piAcceptLiabilitySettingForm.controls; }
-  
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

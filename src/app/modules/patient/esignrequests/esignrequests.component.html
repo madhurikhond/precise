@@ -1,5 +1,3 @@
-
-<div [ngClass]="{'d-none':isSignSuccessflyyMessage}">
 <div class="esign-request-body"
 	[ngClass]="{'esign-request-body-fixed disabled' : alreadySignedbodyDisabled || esignbodyDisabled }" id="esignbody">
 
@@ -90,11 +88,13 @@
 		<div id="englishpatient" class="esign-request" style="display: block;">
 			<div class="esign-header">
 				<div class="esign-header-left">
-					<img src="assets/images/radflowsolutions-logo.png" class="logo">
 					<div class="label-input" (click)="scrollToElement(esign_signature)">
-						<img src="assets/images/newsign-s.png" id="opensign" tabindex="-1" class="esign-header-web animation-large" style="cursor: pointer;">
-						<img src="assets/images/mobile-newsign-s.png" id="opensign" tabindex="-1" class="esign-header-mobile animation-large" style="cursor: pointer;">
+						<img src="assets/images/newsign-s.png" id="opensign" tabindex="-1"
+							class="esign-header-web animation-large" style="cursor: pointer;">
+						<img src="assets/images/mobile-newsign-s.png" id="opensign" tabindex="-1"
+							class="esign-header-mobile animation-large" style="cursor: pointer;">
 					</div>
+					<img src="assets/images/radflowsolutions-logo.png" class="logo">
 				</div>
 				<div class="switch-group switch-small text-right">
 					<span class="text">Click for English</span>
@@ -433,7 +433,7 @@
 									<div class="form-group">
 										<div class="theme-label">Nombre y Apellido del Conductor (Opcional)</div>
 										<div class="input-group">
-											<input type="text" class="form-control" (click)="checkdriverFirstName()" (keyup)="checkdriverFirstName()" name="driverFirstName"
+											<input type="text" class="form-control" name="driverFirstName"
 												[(ngModel)]="model.driverFirstName" #driverFirstName="ngModel"
 												[ngModelOptions]="{ standalone : true }" />
 										</div>
@@ -446,7 +446,6 @@
 										<div
 											[ngClass]="{'signature-pad-group_s':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
 											<signature-pad [options]="signaturePadOptions" [(ngModel)]="model.signature"
-											ngDefaultControl 
 												[ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
 												#signature="ngModel" [ngModelOptions]="{ standalone : true }"
 												(onEndEvent)="drawComplete()">
@@ -503,7 +502,7 @@
 						&nbsp;
 						<!-- <i class="fas fa-bell" aria-hidden="true" style="font-size:20px"></i> -->
 					</h5>
-					<div class="close-dismiss"(click)="onSuccessClose()" data-dismiss="modal"></div>
+					<div class="close-dismiss" data-dismiss="modal"></div>
 				</div>
 				<form [formGroup]="emailSendForm" class="theme-form">
 					<div class="modal-body">
@@ -556,7 +555,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"(click)="onSuccessClose()"
+						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
 							#closeDownloadModelBtn>Cerca</a>
 					</div>
 				</form>
@@ -587,36 +586,6 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-theme modal-small" id="AlreadyExistsDriverNamePopUp" data-backdrop="static" data-keyboard="false"
-	tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Alert</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
-			</div>
-			<form class="theme-form">
-				<div class="modal-body">
-					<div class="modal-body-inner text-center">
-						Su cliente ya ingresó el nombre de un conductor ya que era el pasajero. ¿Está seguro de que desea anularlo y cambiarlo?
-					</div>
-				</div>
-				<div class="modal-footer text-center">
-					<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-					(click)="confirmDriverName(false)" >cancelar</button>
-				    <button type="button" class="btn btn-theme btn-sm pull-left" data-dismiss="modal"
-					(click)="confirmDriverName(true)">Sí</button>					
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
 
 <button #hiddenSignDownloadModel [hidden]="true" data-toggle="modal" data-target="#SignDownloadModel"></button>
 <button #hiddenSignPopUp [hidden]="true" data-toggle="modal" data-target="#SignPopUp"></button>
-<button #hiddenAlreadyExistsDriverNamePopUp [hidden]="true" data-toggle="modal" data-target="#AlreadyExistsDriverNamePopUp"></button>
-</div>
-<div class="esign-successful"  *ngIf="isSignSuccessflyyMessage">
-	<img src="assets/images/award.png">
-	<p>{{message}}</p>
-</div>

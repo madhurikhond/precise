@@ -13,11 +13,6 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
   styleUrls: ['./missing-asl.component.css']
 })
 export class MissingAslComponent implements OnInit {
-  a1: any = 20;
-  a4: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a5: any = 20;
   searchForm: FormGroup;
   actionForm: FormGroup;
   totalRecords: number=1;
@@ -225,11 +220,5 @@ export class MissingAslComponent implements OnInit {
       'hasAlert': data.data.HasAlert,
     }
     this.patientService.sendDataToPatientDetailWindow(body);
-  }
-
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }

@@ -35,7 +35,8 @@
                     <div class="tab-content">
                         <div class="tab-pane active ccc" [attr.id]="tabId">
                             <dx-file-manager id="fileManager" [fileSystemProvider]="fileItems"
-                                [selectedItemKeys]="selectedFileKeys" class="pointer-column"
+                                [selectedItemKeys]="selectedFileKeys"
+                                class="pointer-column"
                                 (onSelectionChanged)="fileManager_onSelectionChanged($event)"
                                 (onContextMenuItemClick)="onItemClick($event)"
                                 (onSelectedFileOpened)="selectedFileDisplay($event)"
@@ -46,10 +47,8 @@
                                     <dxo-details>
                                         <dxi-column dataField="name" width="400"></dxi-column>
                                         <dxi-column dataField="docType" caption="Type" width="300"></dxi-column>
-                                        <dxi-column dataField="uploadedBy" caption="Uploaded By" width="220">
-                                        </dxi-column>
-                                        <dxi-column dataField="uploadedOn" caption="Uploaded On" width="200">
-                                        </dxi-column>
+                                        <dxi-column dataField="uploadedBy" caption="Uploaded By" width="220"></dxi-column>
+                                        <dxi-column dataField="uploadedOn" caption="Uploaded On" width="200"></dxi-column>
                                         <dxi-column dataField="docId" [visible]="false" caption="DocId"></dxi-column>
                                         <dxi-column dataField="fileBase64" [visible]="false" caption="Image Data">
                                         </dxi-column>
@@ -61,16 +60,16 @@
                                             caption="patient First Name"></dxi-column>
                                         <dxi-column dataField="docTypeId" [visible]="false" caption="DocTypeId">
                                         </dxi-column>
-                                        <dxi-column dataField="docFromAttorney" width="200" caption="Doc From Attorney">
-                                        </dxi-column>
+                                        <dxi-column  dataField="docFromAttorney" width="200" caption="Doc From Attorney">
+                                        </dxi-column>                                      
                                     </dxo-details>
-                                    <div *dxTemplate="let data of 'uploadedOn'">
-                                        <ng-container *ngIf="data && data.value">
-                                            {{data.value | date:dateTimeFormatCustom.DateTime }}
-                                        </ng-container>
-                                    </div>
+                                     <div *dxTemplate="let data of 'uploadedOn'">
+                                            <ng-container *ngIf="data && data.value">
+                                                {{data.value | date:dateTimeFormatCustom.DateTime }}
+                                            </ng-container>
+                                        </div>
                                 </dxo-item-view>
-
+                                
                                 <dxo-toolbar>
                                     <dxi-item name="showNavPane" [visible]="false"></dxi-item>
                                     <dxi-item name="separator"></dxi-item>
@@ -263,7 +262,8 @@
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                             <div class="form-group">
-                                <div class="theme-label-subtitle">{{alertInfo.alertCreatedOn|date: dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                <div class="theme-label-subtitle">{{alertInfo.alertCreatedOn | date: 'MM/dd/yyyy h:mm:ss
+                                    a' }}</div>
                             </div>
                         </div>
                     </div>
@@ -383,30 +383,6 @@
 
 <!-- Send Document Pop Up End-->
 
-<div class="modal fade modal-theme modal-large DynamsoftScannerPopUp" id="DynamsoftScannerPopUp" data-backdrop="static" data-keyboard="false"
-    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{headerTitle}} Scanner </h5>
-                <div class="close-dismiss sureshDoc" data-dismiss="modal" (click)="toggleStartDemo()"></div>
-            </div>
-            <div class="modal-body">
-                <div *ngIf="show">
-                    <app-docdwt [data]='currentPatientId' [events]="eventsSubject.asObservable()" 
-                    ></app-docdwt>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
-                    (click)="toggleStartDemo()">Cancel</a>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
 <button class="d-none" #hiddenCommonMessagePopUpButton [hidden]="true" data-toggle="modal"
     data-target="#commonMessagePopUp"></button>
 <button class="d-none" #hiddenFileDeleteItem [hidden]="true" data-toggle="modal"
@@ -419,5 +395,3 @@
     data-target="#send-documents"></button>
 <button class="d-none" #hiddenFileRenamePopUpItem [hidden]="true" data-toggle="modal"
     data-target="#RenamePopUp"></button>
-<button class="d-none" #hiddenDynamsoftScannerPopUp [hidden]="true" data-toggle="modal"
-    data-target="#DynamsoftScannerPopUp"></button>

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -35,7 +33,7 @@ export class DepartmentComponent implements OnInit {
   SearchForm: FormGroup;
   constructor(private fb: FormBuilder, private settingService: SettingsService, 
     private notificationService:NotificationService, private readonly commonMethodService: CommonMethodService) { }
-    readonly commonRegex=CommonRegex;
+
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
@@ -47,18 +45,18 @@ export class DepartmentComponent implements OnInit {
     this.getDepartments();
     this.addDepartmentForm = this.fb.group({
       departmentName: ['', [Validators.required]],
-      directPhone:['',[Validators.pattern(this.commonRegex.PhoneRegex)]],
-      fax:['',[Validators.pattern(this.commonRegex.FaxRegex)]],
+      directPhone:['',[Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      fax:['',[Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       extension:[''],
-      email:['', [Validators.pattern(this.commonRegex.EmailRegex )]]
+      email:['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]]
     }); 
 
     this.editDepartmentForm = this.fb.group({
       departmentName: ['', [Validators.required]],
-      directPhone:['',[Validators.pattern(this.commonRegex.PhoneRegex)]],
-      fax:['',[Validators.pattern(this.commonRegex.FaxRegex)]],
+      directPhone:['',[Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      fax:['',[Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       extension:[''],
-      email:['', [Validators.pattern(this.commonRegex.EmailRegex )]]
+      email:['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]]
     }); 
 
     this.SearchForm = this.fb.group({

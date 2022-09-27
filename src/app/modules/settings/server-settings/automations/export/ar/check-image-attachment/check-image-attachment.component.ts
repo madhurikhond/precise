@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -15,7 +13,7 @@ export class CheckImageAttachmentComponent implements OnInit {
   checkImageForm:FormGroup
   id:number
   submitted=false
-  readonly commonRegex=CommonRegex;
+
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
     private readonly notificationService: NotificationService) { }
@@ -24,8 +22,8 @@ export class CheckImageAttachmentComponent implements OnInit {
     this.checkImageForm =this.fb.group({
       isActive: [''],
       runServiceTime: ['', [Validators.required]],
-      checkImageEmail: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]],
-      checkImageEmailSubs: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]]
+      checkImageEmail: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      checkImageEmailSubs: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]]
     });
     this.getCheckImageSettingList()
   }

@@ -9,8 +9,6 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ReferrersService } from 'src/app/services/referrers.service';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 export type EditUserFormValue = {
   'userId': number,
@@ -50,8 +48,7 @@ export type EditUserFormValue = {
   'assignFacilityDId': string,
   'userTermination': string,
   'hours': string,
-  'userSlackID': string,
-  'officeLocation':string
+  'userSlackID': string
 };
 
 @Component({
@@ -61,11 +58,6 @@ export type EditUserFormValue = {
 })
 
 export class UsersComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  maxDate = new Date();
   @ViewChild('gridContainer') dataGrid: DxDataGridComponent;
   editUserForm: FormGroup;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
@@ -123,7 +115,7 @@ export class UsersComponent implements OnInit {
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly settingService: SettingsService, private readonly notificationService: NotificationService,
     private readonly referrersService: ReferrersService) { }
-    readonly commonRegex=CommonRegex;
+
   ngOnInit(): void {
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
@@ -148,10 +140,10 @@ export class UsersComponent implements OnInit {
       zip: [''],
       isActive: [false],
       cell: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
-      phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      workEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      workEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       birthday: [''],
       eContactName1: [''],
       eContactName2: [''],
@@ -172,8 +164,7 @@ export class UsersComponent implements OnInit {
       assignFacilityParentID: [''],
       assignFacilityID: [''],
       assignReferrerID: [''],
-      assignFacilityDId: [''],
-      officeLocation:['']
+      assignFacilityDId: ['']
     });
     this.userServiceForm = this.fb.group({
       topSearchText: [''],
@@ -197,7 +188,7 @@ export class UsersComponent implements OnInit {
 
     const { userId, email, firstName, lastName, companyName, dba, npi, licenceNumber, cell, address, city, state, zip, phone, workEmail, fax,
       isActive, birthday, eContactName1, eContactPhone1, eContactName2, eContactPhone2, groupName, userType, userPosition, userHire, departmentId, extension,
-      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties, officeLocation } = this.editUserForm.value as (EditUserFormValue);
+      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties } = this.editUserForm.value as (EditUserFormValue);
     (this.settingService.updateUser(true, {
       userId: this.userId,
       firstName: firstName,
@@ -221,7 +212,6 @@ export class UsersComponent implements OnInit {
       eContactName2: eContactName2,
       eContactPhone1: eContactPhone1,
       eContactPhone2: eContactPhone2,
-      officeLocation:officeLocation,
       hours: hours,
       extension: extension,
       lunchTime: lunchTime,
@@ -278,7 +268,6 @@ export class UsersComponent implements OnInit {
     });
   }
   searchUserMgt(pageNumber = 0) {
-   
     this.pageNumber = pageNumber > 0 ? pageNumber : this.pageNumber;
     //this.pageSize = 20;
     this.isSearchReferrer = true;
@@ -298,13 +287,11 @@ export class UsersComponent implements OnInit {
       //this.searchUserService();
       this.getUsers(this.topSearchText, this.search_isactive);
   }
-  search(){
-    debugger
-    this.pageNumber = 1;
-    this.searchUserMgt()
-  }
   clearUserMgt() {
+    //this.pageNumber = 1;
+    //this.pageSize = 20;
     this.isSearchReferrer = false;
+
     this.topSearchText = ''
     this.search_isactive = ''
     this.copyForm.topSearchText.setValue('');
@@ -337,7 +324,7 @@ export class UsersComponent implements OnInit {
 
       var data: any = res;
       if (data.response != null) {
-        this.referrerList = data.response.referrer;
+        //this.referrerList = data.response.referrer;
         this.facilityList = data.response.facility;
         this.parentFacilityList = data.response.parentFacility;
         this.brokerList = data.response.broker;
@@ -385,7 +372,6 @@ export class UsersComponent implements OnInit {
     this.referrerList = []
   }
   getUsers(topSearchText, status) {
-   
     this.settingService.getUsers(true, topSearchText, status, this.pageNumber, this.pageSize).subscribe((res) => {
       var data: any = res;
       this.userList = []
@@ -484,8 +470,7 @@ export class UsersComponent implements OnInit {
           userHire: data.response.UserHire,
           userTermination: data.response.UserTermination,
           userSlackID: data.response.UserSlackID,
-          userDuties: data.response.UserDuties,
-          officeLocation:data.response. OfficeLocation,
+          userDuties: data.response.UserDuties
         });
       }
     },
@@ -502,9 +487,4 @@ export class UsersComponent implements OnInit {
 
   get editForm() { return this.editUserForm.controls; }
   get copyForm() { return this.userServiceForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

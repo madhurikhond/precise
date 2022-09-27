@@ -19,9 +19,6 @@ export class NavbarComponent implements OnInit {
   settingsClick = false;
   responseHierarchy: any = [];
   list:NavigationModel[]= [];
-  leftNavList:NavigationModel[]=[];
-  // headerPopupList:NavigationModel[]=[];
-  // rightNavList:NavigationModel[]=[];
   constructor(private readonly storageService:StorageService) {
   }
 
@@ -61,28 +58,8 @@ export class NavbarComponent implements OnInit {
     for (let i = 0; i < this.responseHierarchy.length; i++) {      
       this.list.push(this.responseHierarchy[i].hierarchy);
    }
-   this.splitListAccToType(this.list);
  }
- splitListAccToType(list1: any)
-  {
-    list1.forEach((i) => {
-      if(i.Type)
-      {
-        if(i.Type==1)
-        {
-          this.leftNavList.push(i);
-        }
-        // if(i.Type==2)
-        // {
-        //   this.headerPopupList.push(i);
-        // }
-        // if(i.Type==3)
-        // {
-        //   this.rightNavList.push(i);  
-        // }
-      }
-    });
-  }
+ 
 
   clearCSS() {
     $('.left-menu').find('.nav-link').removeClass('active jClass');

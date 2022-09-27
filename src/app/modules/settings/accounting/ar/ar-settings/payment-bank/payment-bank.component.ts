@@ -40,7 +40,7 @@ export class PaymentBankComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Ar Settings');
+    this.commonMethodService.setTitle('Payment Bank');
     this.getAllPaymentBanks();
     this.addForm = this.fb.group({
       paymentBank:['', [Validators.required]],

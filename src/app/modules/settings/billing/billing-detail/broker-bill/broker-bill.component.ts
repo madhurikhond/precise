@@ -33,7 +33,7 @@ export class BrokerBillComponent implements OnInit {
     this.showHeaderFilter=false;
 
     this.getBrokerBill();
-    this.commonMethodService.setTitle('Funding Company Bill');
+    this.commonMethodService.setTitle('Broker Bill');
   }
 
   onPageSizeChange(event) {

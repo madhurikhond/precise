@@ -5,7 +5,6 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { Router } from '@angular/router';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-facility-billing',
@@ -29,7 +28,7 @@ export class FacilityBillingComponent implements OnInit {
   patientIdText: any = '';
   Modiality: string = '';
   Facility: string = '';
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
 
 
   constructor(private fb: FormBuilder,

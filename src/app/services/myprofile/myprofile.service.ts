@@ -20,23 +20,13 @@ export class MyprofileService {
       map((res: ApiResponse) => res)
     );
   }
-  getTeamMembersNew(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number, searchText: string) {
-    return this._httpService.get(`MyProfile/GetTeamMembers?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchText}`, showGlobalLoader).pipe(
+  getRoles(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number) {
+    return this._httpService.get(`MyProfile/GetRoles?pageNumber=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
-  getRoles(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number,search:string) {
-    return this._httpService.get(`MyProfile/GetRoles?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`, showGlobalLoader).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-  getAllLinks(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number ) {
+  getAllLinks(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number) {
     return this._httpService.get(`MasterValues/GetAllLinks?pageNumber=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-  getAllLinksNew(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number, searchText: string) {
-    return this._httpService.get(`MasterValues/GetAllLinks?pageNumber=${pageNumber}&pageSize=${pageSize}&searchText=${searchText}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -91,11 +81,6 @@ export class MyprofileService {
 
   getMyDocTree(folderName: any){
     return this._httpService.get(`MasterValues/GetMyDocHierarchy?folderName=${folderName}`,true).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-  getMasterDepartmentsNew(showGlobalLoader: boolean = true, pageNumber: number, pageSize: number,searchText : string) {
-    return this._httpService.get(`MasterValues/GetAllMasterDepartments?pageNumber=${pageNumber}&pageSize=${pageSize}&searchText=${searchText}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }

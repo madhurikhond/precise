@@ -9,8 +9,6 @@ import { HttpService } from './common/http.service';
 export class BrokerService {
 
   sendDataToBrokerFromPatientDetail: EventEmitter<any> = new EventEmitter<any>();
-  sendDataToBrokerFromOrderedSchedular: EventEmitter<any> = new EventEmitter<any>();
-  sendDataToLoaderComponentFromBrokerComponent: EventEmitter<any> = new EventEmitter<any>();
   constructor(private _httpService: HttpService) { }
 
   //    A L L    T Y P E S    OF    H T T P     M E T H O D S
@@ -22,14 +20,6 @@ export class BrokerService {
   // }
   sendDataToBrokerFromPatientDetailWin(body:any): void {
     this.sendDataToBrokerFromPatientDetail.emit(body);
-  }
-
-  sendDataToBrokerFromOrderedSchedularComponent(body:any): void {
-    this.sendDataToBrokerFromOrderedSchedular.emit(body);
-  }
-  sendDataToLoaderFromBrokerComponent(body:any): void {
-    debugger
-    this.sendDataToLoaderComponentFromBrokerComponent.emit(body);
   }
   addBroker(showGlobalLoader : boolean = true, body:any){
     return this._httpService.post('Broker/AddBroker', body, showGlobalLoader).pipe(

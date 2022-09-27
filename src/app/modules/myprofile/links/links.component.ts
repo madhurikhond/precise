@@ -16,14 +16,12 @@ export class LinksComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   showHeaderFilter: boolean;
-  pageNumber: number = 1;
-  pageSize: number = 15;
-  totalRecords: number;
-  linksList: any = [];
-  search: string = '';
-
-  constructor(private readonly myprofileService: MyprofileService,
-    private readonly notificationService: NotificationService,
+  pageNumber:number=1;
+  pageSize:number=15;
+  totalRecords:number;
+  linksList:any=[];
+  constructor(private readonly myprofileService:MyprofileService,
+    private readonly notificationService:NotificationService,
     private readonly commonMethodService: CommonMethodService) { }
 
   ngOnInit(): void {
@@ -31,57 +29,51 @@ export class LinksComponent implements OnInit {
     this.applyFilterTypes = [{
       key: 'auto',
       name: 'Immediately'
-    }, {
+  }, {
       key: 'onClick',
       name: 'On Button Click'
-    }];
-    this.columnResizingMode = this.resizingModes[0];
+  }];
+  this.columnResizingMode = this.resizingModes[0];
     this.showFilterRow = true;
     this.currentFilter = this.applyFilterTypes[0].key;
-    this.showHeaderFilter = false;
+    this.showHeaderFilter=false;
     this.getAllLinks();
   }
-  applyFilter() {
-    this.pageNumber = 1
-    this.getAllLinks();
-  }
-  getAllLinks() {
-    this.myprofileService.getAllLinksNew(true, this.pageNumber, this.pageSize, this.search).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {
-        this.linksList = res.response;
-        this.totalRecords = res.totalRecords;
+  getAllLinks()
+  {
+    this.myprofileService.getAllLinks(true,this.pageNumber,this.pageSize).subscribe((res)=>{
+      if(res.response!=null)
+      {
+        this.linksList=res.response;
+        this.totalRecords=res.totalRecords;
       }
-      else {
-        this.totalRecords = 1
-        this.linksList = [];
-        //this.unSuccessNotification(res,'Record not found.')
+      else{
+     this.unSuccessNotification(res,'Record not found.')
       }
-    }, (err: any) => {
+    },(err:any)=>{
       this.errorNotification(err);
     });
   }
-  unSuccessNotification(res: any, msg: any) {
-
+  unSuccessNotification(res:any,msg:any)
+  {
+    
     this.notificationService.showNotification({
-      alertHeader: msg,
+      alertHeader : msg,
       alertMessage: res.message,
       alertType: res.responseCode
     });
   }
-  errorNotification(err: any) {
+  errorNotification(err:any)
+  {
     this.notificationService.showNotification({
-      alertHeader: err.statusText,
-      alertMessage: err.message,
+      alertHeader : err.statusText,
+      alertMessage:err.message,
       alertType: err.status
     });
   }
-  pageChanged(event) {
+  pageChanged(event){
     this.pageNumber = event;
     this.getAllLinks();
   }
-  clearFilters() {
-    this.pageNumber = 1
-    this.search = ''
-    this.getAllLinks();
-  }
+
 }

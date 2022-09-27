@@ -38,8 +38,4 @@ export class LoadingService {
   private notify(): void {
     this.onLoadingChanged.emit(this.requests.length !== 0);
   }
-
-  showLoader ():void{
-    this.onLoadingChanged.emit(this.requests.length !== 0);
-  }
 }

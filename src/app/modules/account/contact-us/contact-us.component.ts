@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonRegex } from 'src/app/constants/commonregex';
 import { AccountService } from 'src/app/services/account.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -19,13 +18,13 @@ export class ContactUsComponent implements OnInit {
     private readonly notificationService: NotificationService, 
     private readonly commonMethodService: CommonMethodService,
     private router: Router) { }
-    readonly commonRegex=CommonRegex;
+
   ngOnInit(): void {
     this.contactUsForm = this.fb.group({
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex)]],
+      email: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       company: [''],
-      phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       message: ['', [Validators.required]],
     })
     this.commonMethodService.setTitle('Contact us');

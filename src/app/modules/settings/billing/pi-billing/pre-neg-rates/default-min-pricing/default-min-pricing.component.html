@@ -21,12 +21,12 @@
                         <div class="theme-label">AFTER DATE</div>
                         <div class="input-group icon-active">
                             <dx-date-box
-                                [displayFormat]="dateTimeFormatCustom.Date" 
                                 formControlName="afterDate"
                                 type="date"
                                 [showClearButton]="true"
-                                [useMaskBehavior]="true">
-                                
+                                [useMaskBehavior]="true"
+                                displayFormat="shortdate"
+                                dateSerializationFormat="yyyy-MM-dd">
                             </dx-date-box> 
                         </div>
                         <div *ngIf="submitted && mForm.afterDate" class="tooltiptext text-right">                            
@@ -77,7 +77,7 @@
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
             
             <dxi-column dataField="Id" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
-            <dxi-column dataField="ProcGroupID" caption="PROC GROUP NAME"></dxi-column>
+            <dxi-column dataField="ProcGroup" caption="PROC GROUP NAME"></dxi-column>
             <dxi-column dataField="Date" dataType="date" format="shortDate" caption="AFTER DATE" cellTemplate="dateTemplate"></dxi-column>
             <dxi-column dataField="Price" caption="Price"></dxi-column>
 
@@ -86,7 +86,7 @@
                 <a href="javascript:void(0)" (click)="delete(data.data.Id)" class="single-action fa fa-trash" data-toggle="modal" data-target="#deletemin"></a>
             </div>
             <div *dxTemplate="let data of 'dateTemplate'">
-                {{data.value | date: dateTimeFormatCustom.Date}}
+                {{data.value | date: 'MM/dd/yyyy'}}
             </div>	
         </dx-data-grid>
     </div>
@@ -130,8 +130,9 @@
                                             formControlName="afterDate"
                                             type="date"
                                             [showClearButton]="true"
-                                            [useMaskBehavior]="true">
-                                            
+                                            [useMaskBehavior]="true"
+                                            displayFormat="shortdate"
+                                            dateSerializationFormat="yyyy-MM-dd">
                                         </dx-date-box> 
                                     </div>
                                     <div *ngIf="submitted1 && eForm.afterDate" class="tooltiptext text-right">                            

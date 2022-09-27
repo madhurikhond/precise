@@ -8,8 +8,6 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { StorageService } from 'src/app/services/common/storage.service';
 import { ReferrersService } from 'src/app/services/referrers.service';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 
 @Component({
@@ -18,11 +16,8 @@ import { CommonRegex } from 'src/app/constants/commonregex';
   styleUrls: ['./referrer-detail.component.css']
 })
 export class ReferrerDetailComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
+
   @ViewChild('referrer_details', { static: false }) referrer_details: ElementRef;
-  @ViewChild ('hiddenButton2', { static: false }) hiddenButton2: ElementRef;
-  
   submitted = false;
   modelValue: string = 'modal';
   @ViewChild('content') testidRef: any;
@@ -38,7 +33,6 @@ export class ReferrerDetailComponent implements OnInit {
   epicUserList: any = [];
   referrerNoteList: any = [];
   popupVisible = false;
-  isPoliciesTab :any = false ;
   editAccount = 'none';
   userType: number;
   columnResizingMode: string;
@@ -62,12 +56,10 @@ export class ReferrerDetailComponent implements OnInit {
   tagBtnDisabled: boolean = true;
   searchText : string ='';
   groupingNames:boolean = false;
-  getBILink: string = '';
   subscription :any;
   ReferrerPoliciesForm: FormGroup;
-  readonly commonRegex=CommonRegex;
+ 
   name = 'ng2-ckeditor';
-  tabId: string = '1'
   //ckeConfig: CKEDITOR.config;
   ckeConfig:any;
   mycontent: string;
@@ -78,20 +70,10 @@ export class ReferrerDetailComponent implements OnInit {
   constructor(private fb: FormBuilder, private referrersService: ReferrersService, private notificationService: NotificationService,
     private commonMethodService: CommonMethodService, private renderer: Renderer2, private readonly storageService: StorageService) {
     referrersService.sendDataToReferrerDetail.subscribe(res => {
-      debugger
+
       this.getCurrentReferrerDetail(res.title, res.referrerId)
       //this.isPopUpDisplay=true;
       //this.isModalShow=true;
-    });
-    referrersService.sendDataToReferrerDetailToOrderedSchedular.subscribe(res => {
-      debugger
-      if(!this.isPoliciesTab){   
-        this.updateTabId('edit-referrer-details')
-      }else{
-       this.isPoliciesTab = res.isPoliciesTab
-       this.onTabclick(true)
-      }
-      this.getCurrentReferrerDetails(res.title, res.referrerId,res.isPoliciesTab) 
     });
     
   }
@@ -138,33 +120,33 @@ export class ReferrerDetailComponent implements OnInit {
       autoEmailFinal: [''],
       dateAdded: [''],
       accountContactName1: [''],
-      accountEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      accountPhone1: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      accountEmail1: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountPhone1: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       billingContactName1: [''],
-      billingEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingPhone1: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      billingEmail1: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billingPhone1: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       accountContactName2: [''],
-      accountEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      accountPhone2: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      accountEmail2: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountPhone2: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       billingContactName2: [''],
-      billingEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingPhone2: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      billingEmail2: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billingPhone2: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       accountContactName3: [''],
-      accountEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      accountPhone3: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      accountEmail3: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountPhone3: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       billingContactName3: [''],
-      billingEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingPhone3: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      otherContactEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      billingEmail3: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billingPhone3: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      otherContactEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       isAutoEmailReport: [''],
-      autoEmailReport: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      autoEmailReport: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       autoEmailReportDateTime: [''],
-      accountFax1: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      accountFax2: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      accountFax3: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      billingFax1: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      billingFax2: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      billingFax3: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      accountFax1: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      accountFax2: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      accountFax3: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billingFax1: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billingFax2: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billingFax3: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       userid: [''],
       isScheduleEmail: [''],
       scheduleEmail: [''],
@@ -183,8 +165,8 @@ export class ReferrerDetailComponent implements OnInit {
       doNotSendMail: [''],
       removeAllMarketingBlast: [''],
       doNotFaxReport: [''],
-      reportEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      reportFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      reportEmail: ['', [Validators.pattern(/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25}(($)|( *,+ *$)|( *,+ *(?=[a-zA-Z0-9_\-\.]))))*$/)]],
+      reportFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       doNotCouldnotSchedule: [''],
       doNotSendCaseUpdates: [''],
       skipStatus1: [''],
@@ -193,20 +175,20 @@ export class ReferrerDetailComponent implements OnInit {
       skipStatus4: [''],
       skipAllStatusUpdates: [''],
       groupingReferrer: [''],
-      statusUpdateEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      statusUpdateFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      statusUpdateEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      statusUpdateFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       isStatusEmail: [''],
       isStatusFax: [''],
       isCouldntStatusEmail: [''],
-      couldntStatusEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      couldntStatusEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       isCouldntStatusFax: [''],
-      couldntStatusFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      couldntStatusFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       isAcceptLiabilityFax: [''],
       isAcceptLiabilityEmail: [''],
-      acceptLiabilityEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      acceptLiabilityFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      arpaymentEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      arpaymentFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      acceptLiabilityEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      acceptLiabilityFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      arpaymentEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      arpaymentFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       isArpaymentSummaryEmail: [''],
       isArpaymentSummaryFax: [''],
       doNotSendArpaymentSummary: [''],
@@ -229,10 +211,10 @@ export class ReferrerDetailComponent implements OnInit {
       NPI: [''],
       LicenseNumber: [''],
       RadAddress: [''],
-      RadEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      RadBillingEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      RadPhone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      RadFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      RadEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      RadBillingEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      RadPhone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      RadFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       TaxID:['']
     });
     this.createGeneralPoliciesForm();
@@ -244,21 +226,6 @@ export class ReferrerDetailComponent implements OnInit {
       removePlugins: 'exportpdf'
     };
   }
-  onTabclick(isPopOpen: boolean) {
-    debugger
-    if (this.isPoliciesTab) {
-      this.isPoliciesTab = true;
-      this.updateTabId('edit-policies')
-    }
-    else
-      this.isPoliciesTab = false;
-  }
-  
-  updateTabId(tabName: string) {
-    debugger
-    this.tabId = tabName;
-  }
-
   createGeneralPoliciesForm() {
     this.ReferrerPoliciesForm = this.fb.group({
       referrerPolicy: ['',]     
@@ -296,34 +263,20 @@ export class ReferrerDetailComponent implements OnInit {
   //     return styles;
   // }
   getCurrentReferrerDetail(title: any, referrerId: any) {
-    debugger
     this.title = title;
     this.id = referrerId;
     this.getreferrerById();
+    console.log('in');
     this.referrer_details.nativeElement.click();
   }
 
-  getCurrentReferrerDetails(title: any, referrerId: any,isPoliciesTab:any) {
-    debugger
-    this.title = title;
-    this.id = referrerId;
-    this.isPoliciesTab = isPoliciesTab;
-    this.getreferrerById();
-    this.hiddenButton2.nativeElement.click();
-  }
 
-  viewUrl() {
-    window.open(this.getBILink, '_blank');
-    }
-
-  getreferrerById() { 
-    debugger 
-    this.onTabclick(true)
+  getreferrerById() {
     this.referrersService.getReferrerById(true, this.id).subscribe((res) => { 
-      this.title = res.response.FullName
+
       var stringIds = res.response.GroupingReferrer?res.response.GroupingReferrer.split(',').filter(x => x.length>0).toString():''; // split (,).filter(not NULl),.toString
       var array = JSON.parse('[' + stringIds + ']');
-      this.getBILink = res.response.BILink;
+   
       this.selectedReferrers = array
       var docId = res.response.DocID?res.response.DocID.split(',').filter(x => x.length>0).toString():'';
       this.selectedDocType = JSON.parse('[' + docId + ']');
@@ -511,8 +464,11 @@ export class ReferrerDetailComponent implements OnInit {
     {
       this.subscription.unsubscribe();
     }
-      this.subscription  =  this.referrersService.getGroupingNames(true,this.searchText).subscribe((res) => {
+   this.subscription  =  this.referrersService.getGroupingNames(true,this.searchText).subscribe((res) => {
+      
       this.referrerList = res.response;
+     
+
     }, (err: any) => {
       this.notificationService.showNotification({
         alertHeader: err.statusText,
@@ -534,7 +490,7 @@ export class ReferrerDetailComponent implements OnInit {
     });
   }
   getAllEpicUsers() {
-    this.referrersService.getPreciseImagingEmployee(true).subscribe((res) => {
+    this.referrersService.getAllActiveEpicUsers(true).subscribe((res) => {
       this.epicUserList = res.response;
 
     }, (err: any) => {
@@ -844,13 +800,15 @@ export class ReferrerDetailComponent implements OnInit {
 //     return item.id;
 // }
   onTagChange(tagVal: any) {
-   debugger
+   
     this.groupingNames = true;
     this.searchText = tagVal.target.value;
      //this.searchText = tagVal.event.target.value;
     if (tagVal) {
       this.tagBtnDisabled = false;
+ 
       if(this.searchText != ''){
+       
         this.getGroupingNames();
         this.groupingNames = false;
       }
@@ -869,9 +827,4 @@ export class ReferrerDetailComponent implements OnInit {
   }
    get refForm() { return this.referrersForm.controls; }
    get referrerPolicyFormControls() { return this.ReferrerPoliciesForm.controls; }
-   ValidateMultiSelectTextLength(id, a)
-   {
-     a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-   return a;
-   }
 }

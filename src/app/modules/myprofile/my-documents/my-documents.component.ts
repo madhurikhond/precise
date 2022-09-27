@@ -12,7 +12,6 @@ import { FileManagerService, folderTree, FileItem, MenuItem } from 'src/app/serv
 import { MyprofileService } from 'src/app/services/myprofile/myprofile.service';
 import { DatePipe } from '@angular/common'
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 declare const $: any;
 
@@ -57,7 +56,7 @@ export class MyDocumentsComponent implements OnInit {
   fileData: SafeResourceUrl;
   folderFileDelete: string; currentDeleteItemRecord: any = {};
   selectedFileBLOB: any;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   constructor(private readonly myprofileService:MyprofileService,public readonly fileManagerService: FileManagerService, 
     private renderer: Renderer2, private elRef: ElementRef, public documentmanagerService: DocumentmanagerService,
     private notificationService: NotificationService, private readonly storageService: StorageService, 
@@ -366,7 +365,7 @@ export class MyDocumentsComponent implements OnInit {
     let firstname = JSON.parse(localStorage.getItem('_cr_u_infor')).firstname; 
     let lastname = JSON.parse(localStorage.getItem('_cr_u_infor')).lastname; 
     let birthday = JSON.parse(localStorage.getItem('_cr_u_infor')).birthday; 
-    let dateOfbirth =this.datepipe.transform(birthday, this.dateTimeFormatCustom.Date);
+    let dateOfbirth =this.datepipe.transform(birthday, 'MM-dd-yyyy');
     let UserFolder = firstname + lastname + "_" + dateOfbirth + "_" + JSON.parse(localStorage.getItem('_cr_u_infor')).userid
     console.log(UserFolder);
 

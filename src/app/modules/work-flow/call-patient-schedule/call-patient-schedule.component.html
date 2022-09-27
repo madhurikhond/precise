@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="form-action">
-                    <button href="javascript:void(0)" type="submit" class="btn btn-theme">Search</button>
+                    <a href="javascript:void(0)" class="btn btn-theme">Search</a>
                     <a href="javascript:void(0)" class="btn btn-border">Clear</a>
                 </div>
             </form>
@@ -90,30 +90,27 @@
                 <li><a href="javascript:void(0)" (click)="saveCallPatientConfirmationLog('cancel')"
                         title="Counld Not Reach Patient" class="fa fa-times" data-toggle="modal"
                         data-target="#conformation"></a></li>
-                        <li>
-                            <div class="theme-form view-mode view-mode-css">
-                                <div class="form-group">
-                                    <div class="theme-label">PATIENTS TO CALL</div>
-                                        <div class="input-group">
-                                         <div *ngIf="basicData" class="view-mode-data">{{patientCount}}</div>
-                                         <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
-                                        </div>
-                                    </div>
-                                <div class="form-group">
-                                    <div class="theme-label">TOTAL STUDIES</div>
-                                    <div class="input-group">
-                                        <div *ngIf="basicData" class="view-mode-data">{{totalStudies}}</div>
-                                        <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
                 <li class="pull-right"><a href="javascript:void(0)" title="Sms" class="pe-7s-news-paper"
                         data-toggle="modal" data-target="#conformation-note"></a></li>
             </ul>
-            
             <a href="javascript:void(0)" #Reschedule_popup class="right btn btn-theme" style="display:none"
                 data-toggle="modal" data-target="#Reschedule_popup">Rebill popup</a>
+            <div class="theme-form view-mode">
+                <div class="form-group">
+                    <div class="theme-label">PATIENTS TO CALL</div>
+                    <div class="input-group">
+                        <div *ngIf="basicData" class="view-mode-data">{{patientCount}}</div>
+                        <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">TOTAL STUDIES</div>
+                    <div class="input-group">
+                        <div *ngIf="basicData" class="view-mode-data">{{totalStudies}}</div>
+                        <div *ngIf="!basicData" class="view-mode-data"><i class="fa fa-refresh fa-spin"></i></div>
+                    </div>
+                </div>
+            </div>
             <!-- <div class="precisemri-search page-select">
                 <div class="theme-label">Page Size</div>
                 <select class="form-search" (change)="onPageSizeChange($event.target.value)">
@@ -125,7 +122,7 @@
         <div class="table-responsive page-table callPatient">
             <dx-data-grid  id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
                 [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
-                [columnMinWidth]="30" keyExpr="myId" [(selectedRowKeys)]="selectedRows" [showBorders]="true" >
+                [columnMinWidth]="30" keyExpr="myId" [(selectedRowKeys)]="selectedRows" [showBorders]="true">
                 <dxo-paging [enabled]="false"></dxo-paging>
                 <dxo-sorting mode="multiple"></dxo-sorting>
                 <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
@@ -133,7 +130,7 @@
                 <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                 <dxo-load-panel [enabled]="true"></dxo-load-panel>
                 <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
-                <dxo-selection   mode="multiple" [allowSelectAll]="false"></dxo-selection>
+                <dxo-selection mode="multiple" allowSelectAll="false"></dxo-selection>
                 <dxi-column dataField="patientid" [width]="100" groupCellTemplate="groupTemplate" caption="Patient ID"
                     [groupIndex]="0"></dxi-column>
                 <dxi-column dataField="Studydatetime" caption="APPOINTMENT DATE"></dxi-column>
@@ -149,12 +146,10 @@
                    <patient-details [data]="data"></patient-details>
                 </div>
                 <div *dxTemplate="let data of 'facilityTemplate'">
-                    <a [href]="'https://www.google.com/maps/place/' + data.data.street+'/'+data.data.state+'/'+data.data.zip" target="blank">
+                    <a [href]="'https://www.google.com/maps/place/' + data.data.Address" target="blank">
                         <img src="assets/images/google-maps.png" width="30" height="30">
                     </a>
-                    <a href="javascript:void(0)" class=" link-btn" (click)="senddatatoschd_facilities(data)">
-                        <span>{{ data.data.Facilitydetail}} <strong>{{ data.data.Walkin}}</strong></span>
-                    </a>
+                    <span>{{ data.data.Facilitydetail}}</span>
                 </div>
             </dx-data-grid>
         </div>
@@ -224,5 +219,5 @@
         </div>
     </div>
 </div>
-<app-schd-facilities [isGridDisplay]="false"></app-schd-facilities>
+
 <app-patient-detail></app-patient-detail>

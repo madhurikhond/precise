@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -12,8 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./e-sign-lien.component.css']
 })
 export class ESignLienComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
   eSignLienSettingForm: FormGroup;
   statusList: any = [];
   financialTypeList: any = [];
@@ -21,7 +18,6 @@ export class ESignLienComponent implements OnInit {
   selectedFinancialTypeList: any = [];
   body: any;
   id: number;
-  readonly commonRegex=CommonRegex;
   submitted = false
   constructor(private fb: FormBuilder,
     private readonly settingsService: SettingsService,
@@ -33,7 +29,7 @@ export class ESignLienComponent implements OnInit {
       isActive: [''],
       status: [''],
       financialType: [''],
-      phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       daysAfterSend: [''],
       comments: ['']
     });
@@ -165,10 +161,5 @@ export class ESignLienComponent implements OnInit {
         }
       );
     }
-  }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }

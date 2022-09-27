@@ -11,7 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./psl-patient.component.css']
 })
 export class PslPatientComponent implements OnInit {
-  a1: any = 20;
   id:number;
   pslForm:FormGroup
   submitted = false
@@ -150,9 +149,4 @@ export class PslPatientComponent implements OnInit {
   } 
 
   get ppForm() { return this.pslForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

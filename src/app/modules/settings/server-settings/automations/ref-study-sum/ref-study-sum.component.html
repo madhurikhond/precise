@@ -20,16 +20,16 @@
 											<ng-select [items]="modalityList" placeholder="Select"
 												[ngClass]="{ 'is-invalid': (submitted && refForm.studyMOdality.errors)}"
 												formControlName="studyMOdality" bindLabel="scheduledmodality"
-												[multiple]="true" id="id70" (add)="a1=ValidateMultiSelectTextLength('id70',a1)" [closeOnSelect]="false" bindValue="scheduledmodality"
+												[multiple]="true" [closeOnSelect]="false" bindValue="scheduledmodality"
 												[(ngModel)]="selectedModalityList">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+													<div class="ng-value" *ngFor="let item of items | slice:0:6">
 														<span class="ng-value-label"> {{item.scheduledmodality}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 6">
+														<span class="ng-value-label">{{items.length - 6}} more...</span>
 													</div>
 												</ng-template>  
 											</ng-select>
@@ -70,16 +70,16 @@
                                             <ng-select [items]="financialTypesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.scheduledFinacialType.errors)}"
                                                 formControlName="scheduledFinacialType" bindLabel="financialtypename"
-                                                [multiple]="true" id="id71" (add)="a2=ValidateMultiSelectTextLength('id71',a2)" [closeOnSelect]="false" bindValue="financialtypename"
-                                                [(ngModel)]="selectedFinancialList" (change)="onChange($event)" required>
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                                                [(ngModel)]="selectedFinancialList" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.financialtypename}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a2">
-                                                        <span class="ng-value-label">{{items.length - a2}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -99,17 +99,17 @@
                                         <div class="input-group">
                                             <ng-select [items]="statusNamesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.studyStatus.errors)}"
-                                                formControlName="studyStatus" bindLabel="status" [multiple]="true" id="id72" (add)="a3=ValidateMultiSelectTextLength('id72',a3)"
+                                                formControlName="studyStatus" bindLabel="status" [multiple]="true"
                                                 [closeOnSelect]="false" bindValue="status"
-                                                [(ngModel)]="selectedStatusList" (change)="onChange($event)" required>
+                                                [(ngModel)]="selectedStatusList" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.status}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a3">
-                                                        <span class="ng-value-label">{{items.length - a3}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -135,7 +135,7 @@
                                             <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.cutofDate.errors)}"
                                                 formControlName="cutofDate" type="date" [showClearButton]="true"
-                                                [useMaskBehavior]="true">
+                                                [useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
                                             </dx-date-box>
                                             <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
                                         </div>
@@ -159,17 +159,17 @@
                                             <ng-select [items]="financialTypesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.cannotScheduledFinacialType.errors)}"
                                                 formControlName="cannotScheduledFinacialType"
-                                                bindLabel="financialtypename" [multiple]="true" id="id73" (add)="a4=ValidateMultiSelectTextLength('id73',a4)" [closeOnSelect]="false"
+                                                bindLabel="financialtypename" [multiple]="true" [closeOnSelect]="false"
                                                 bindValue="financialtypename" [(ngModel)]="selectedFinancialList1"
-                                                (change)="onChange($event)" required>
+                                                (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.financialtypename}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a4">
-                                                        <span class="ng-value-label">{{items.length - a4}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -190,16 +190,16 @@
                                             <ng-select [items]="statusNamesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.cannotScheduleStatus.errors)}"
                                                 formControlName="cannotScheduleStatus" bindLabel="status"
-                                                [multiple]="true" id="id74" (add)="a5=ValidateMultiSelectTextLength('id74',a5)" [closeOnSelect]="false" bindValue="status"
-                                                [(ngModel)]="selectedStatusList1" (change)="onChange($event)" required>
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="status"
+                                                [(ngModel)]="selectedStatusList1" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a5">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.status}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a5">
-                                                        <span class="ng-value-label">{{items.length - a5}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -225,7 +225,7 @@
                                             <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.cannotCutOff.errors)}"
                                                 formControlName="cannotCutOff" type="date" [showClearButton]="true"
-                                                [useMaskBehavior]="true" >
+                                                [useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
                                             </dx-date-box>
                                             <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
                                         </div>
@@ -250,16 +250,16 @@
                                             <ng-select [items]="financialTypesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.noShowFinacialType.errors)}"
                                                 formControlName="noShowFinacialType" bindLabel="financialtypename"
-                                                [multiple]="true" id="id75" (add)="a6=ValidateMultiSelectTextLength('id75',a6)" [closeOnSelect]="false" bindValue="financialtypename"
-                                                [(ngModel)]="selectedFinancialList2" (change)="onChange($event)" required>
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                                                [(ngModel)]="selectedFinancialList2" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a6">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.financialtypename}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a6">
-                                                        <span class="ng-value-label">{{items.length - a6}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -279,17 +279,17 @@
                                         <div class="input-group">
                                             <ng-select [items]="statusNamesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.noShowStatus.errors)}"
-                                                formControlName="noShowStatus" bindLabel="status" [multiple]="true" id="id76" (add)="a7=ValidateMultiSelectTextLength('id76',a7)"
+                                                formControlName="noShowStatus" bindLabel="status" [multiple]="true"
                                                 [closeOnSelect]="false" bindValue="status"
-                                                [(ngModel)]="selectedStatusList2" (change)="onChange($event)" required>
+                                                [(ngModel)]="selectedStatusList2" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a7">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.status}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a7">
-                                                        <span class="ng-value-label">{{items.length - a7}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -309,17 +309,17 @@
                                         <div class="input-group">
                                             <ng-select [items]="statusNamesList" placeholder="Select"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.appointmentStatus.errors)}"
-                                                formControlName="appointmentStatus" bindLabel="status" [multiple]="true" id="id77" (add)="a8=ValidateMultiSelectTextLength('id77',a8)"
+                                                formControlName="appointmentStatus" bindLabel="status" [multiple]="true"
                                                 [closeOnSelect]="false" bindValue="status"
-                                                [(ngModel)]="selectedStatusList3" (change)="onChange($event)" required>
+                                                [(ngModel)]="selectedStatusList3" (change)="onChange($event)">
                                                 <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                    <div class="ng-value" *ngFor="let item of items | slice:0:a8">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                         <span class="ng-value-label"> {{item.status}}</span>
                                                         <span class="ng-value-icon right" (click)="clear(item)"
                                                             aria-hidden="true">×</span>
                                                     </div>
-                                                    <div class="ng-value" *ngIf="items.length > a8">
-                                                        <span class="ng-value-label">{{items.length - a8}} more...</span>
+                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                     </div>
                                                 </ng-template>  
                                             </ng-select>
@@ -345,7 +345,7 @@
                                             <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                 [ngClass]="{ 'is-invalid': (submitted && refForm.noShowCutOff.errors)}"
                                                 formControlName="noShowCutOff" type="date" [showClearButton]="true"
-                                                [useMaskBehavior]="true" >
+                                                [useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
                                             </dx-date-box>
                                             <!-- <i class="fa-right-icon fa fa-calendar"></i> -->
                                         </div>

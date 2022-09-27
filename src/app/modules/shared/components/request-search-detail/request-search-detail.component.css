@@ -9,7 +9,3 @@
   #delete-request{
     z-index: 10001;
   }
-  .modal-footer
-  {
-    position: static !important;
-  }

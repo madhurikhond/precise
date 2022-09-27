@@ -11,8 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./pi.component.css']
 })
 export class PiComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
   piAttorneyLiensSettingForm: FormGroup;
   lienWithOutPatientStatusList: any = [];
   hpslstatusList:any=[];
@@ -182,10 +180,5 @@ getPiAttorneyLienSettings() {
   allowNumberOnly(event:any): boolean
   {
     return this.commonService.alowNumberOnly(event);
-  }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonService.ValidateMultiSelectTextLength(id,a);
-  return a;
   }
 }

@@ -1,0 +1,12 @@
+{
+  "name": "dhtmlx-scheduler",
+  "version": "1.0.0",
+  "main": "dhtmlxscheduler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "types": "./dhtmlxscheduler.d.ts",
+  "description": ""
+}

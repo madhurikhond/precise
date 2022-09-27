@@ -9,8 +9,6 @@ import { DocumentmanagerService } from 'src/app/services/document-manager-servic
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { FileManagerService, folderTree, FileItem, MenuItem } from 'src/app/services/file-manager-service/file-manager.service';
 import { interval, Subscription } from 'rxjs';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 declare const $: any;
 
 @Component({
@@ -61,8 +59,6 @@ export class DocumentManagerFacilityComponent implements OnInit {
   fileData: SafeResourceUrl;
   folderFileDelete: string; currentDeleteItemRecord: any = {};
   selectedFileBLOB: any;
-  readonly commonRegex=CommonRegex;
-  path :any
 
   MainFolderName: string;;
   facilityId: string;
@@ -72,6 +68,7 @@ export class DocumentManagerFacilityComponent implements OnInit {
   GetRenameFileExtension: string = '';
   UploadedPage:any;
   currentPatientId
+
 
   constructor(private notificationService: NotificationService, public readonly documentmanagerService: DocumentmanagerService, private readonly storageService: StorageService, private elRef: ElementRef,
     private renderer: Renderer2, private readonly facilityService: FacilityService, public readonly fileManagerService: FileManagerService,
@@ -88,7 +85,6 @@ export class DocumentManagerFacilityComponent implements OnInit {
           this.facilityName = res.dataAll.facilityName;
         }
         this.MainFolderName = this.facilityName + '_ID' + this.facilityId;
-        this.allFile = [];
         this.folderFileTree();
         this.menuItems = this.fileManagerService.getMenuFacilityItems();
         this.getDocumentType();
@@ -110,10 +106,10 @@ export class DocumentManagerFacilityComponent implements OnInit {
       renameTxt: ['', [Validators.required]]
     });
     this.sendFaxForm = this.fb.group({
-      sendFaxTxt: ['', [Validators.required, Validators.pattern(this.commonRegex.FaxRegex)]]
+      sendFaxTxt: ['', [Validators.required, Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]]
     });
     this.sendEmailForm = this.fb.group({
-      sendToTxt: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex)]],
+      sendToTxt: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       sendFromTxt: ['', [Validators.required]],
       subjectTxt: ['', [Validators.required]],
       bodyTxt: ['', [Validators.required]]
@@ -295,23 +291,12 @@ export class DocumentManagerFacilityComponent implements OnInit {
     }
   }
   deleteFolder() { this.selectedFileKeys.length > 0 ? this.folderFileDelete = "file" : this.folderFileDelete = "folder"; this.hiddenFileDeleteItem.nativeElement.click(); }
-  
-  getFilesByKey(name: any, path:any){
-    debugger
-    this.documentmanagerService.getFilesByKey(true,JSON.stringify(path)).subscribe((res) => { 
-      if (res.response != null) {
-        this.path = JSON.parse(res.response).Base64 ;  
-        this.displayFile(name, this.path);
-      }
-    }) 
-  }
 
   onItemClick(e) {
     switch (e.itemData.text) {
       case 'Open': {
         if (this.selectedFileKeys.length == 1) {
-          this.getFilesByKey( e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath)
-          //this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.fileBase64);
+          this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.fileBase64);
         } else if (this.selectedFileKeys.length > 1) {
           this.CodeErrorNotification("Only single file can display.");
         }
@@ -623,8 +608,8 @@ export class DocumentManagerFacilityComponent implements OnInit {
       if (res.response) {
         this.folderTree = JSON.parse(JSON.stringify(res.response));
         setTimeout(() => {
-          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
-          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
+          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
+          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
           if (this.selectedTreeItem) {
             this.treeView.instance.expandItem(this.selectedTreeItem.id);
             this.treeView.instance.selectItem(this.selectedTreeItem.id);
@@ -646,22 +631,22 @@ export class DocumentManagerFacilityComponent implements OnInit {
     });
   }
   getAllFIles() {
-    this.allFile = [];
     this.fileManager.instance.refresh();
     this.UploadedPage = this.selectedTreeItem.folderPath;
-   // if (!this.UploadedPage) {
+    if (!this.UploadedPage) {
       this.UploadedPage = this.MainFolderName;
-   // }
+    }
     this.fileManagerService.getAllFacilityFiles(this.storageService.user.UserId, this.UploadedPage, this.from, this.facilityName, this.facilityId).subscribe((res) => {
       if (res != null) {
         this.allFile = res.response;
         setTimeout(() => {
-          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
-          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
+          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
+          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
+
+
         }, 25);
       }
       else {
-        this.allFile = [];
         //this.unSuccessNotification(res);
       }
     }, (err) => {

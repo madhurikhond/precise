@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
+
 @Component({
   selector: 'app-financial-type',
   templateUrl: './financial-type.component.html',
@@ -7,10 +7,9 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 })
 export class FinancialTypeComponent implements OnInit {
 
-  constructor(private readonly commonMethodService:  CommonMethodService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.commonMethodService.setTitle('Scheduling Facilities Settings');  
   }
 
 }

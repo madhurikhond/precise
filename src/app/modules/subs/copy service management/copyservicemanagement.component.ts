@@ -5,8 +5,6 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { SubsService } from 'src/app/services/subs-service/subs.service';
 import { ViewChild, ElementRef } from '@angular/core';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 declare const $: any;
 @Component({
   selector: 'app-copyservicemanagement',
@@ -52,7 +50,6 @@ export class CopyservicemanagementComponent implements OnInit {
   isSearchReferrer: boolean = false;
   searchText: any = '';
   search_isactive: any;
-  readonly commonRegex = CommonRegex;
   isShowColumnWithNoData = true;
   activeTab: string = '';
   readonly pageSizeArray = PageSizeArray;
@@ -68,9 +65,9 @@ export class CopyservicemanagementComponent implements OnInit {
       CompanyID: [''],
       CompanyName: ['', [Validators.required]],
       ContactName: [''],
-      PhoneNum: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      FaxNum: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      Email: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      PhoneNum: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      FaxNum: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       Address: [''],
       City: [''],
       State: [''],
@@ -86,8 +83,8 @@ export class CopyservicemanagementComponent implements OnInit {
       CompanyID: [''],
       FirstName: ['', [Validators.required]],
       LastName: ['', [Validators.required]],
-      Email: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       DoNotEmail: ['']
     });
     this.commonMethodService.setTitle('Copy Service Management');
@@ -204,7 +201,7 @@ export class CopyservicemanagementComponent implements OnInit {
   GetCopyServiceManagementById() {
 
     this.subsService.getCopyServiceManagementByCompanyId(true, this.companyID).subscribe((res) => {
-      this.isCopyServiceFormSubmitted = false;
+
       this.copyServiceManagementForm.reset();
       this.repsForm.reset();
       this.showRepsGrid();
@@ -233,7 +230,6 @@ export class CopyservicemanagementComponent implements OnInit {
       this.getCompanyGroupingById();
 
     }, (err: any) => { this.showError(err); });
-
   }
   getCopyServiceRepById(isShowLoader: boolean = true) {
     if (this.companyID) {
@@ -317,7 +313,6 @@ export class CopyservicemanagementComponent implements OnInit {
     }
   }
   updateCompanyGrouping(body: any) {
-    
     this.subsService.updateCompanyGrouping(true, body).subscribe((res) => {
       if (res.response != null) {
         this.showNotificationOnSucess(res);
@@ -335,7 +330,6 @@ export class CopyservicemanagementComponent implements OnInit {
     });
   }
   insertCompanyGrouping(body: any) {
-    
     this.subsService.updateCompanyGrouping(true, body).subscribe((res) => {
       if (res.response != null) {
         this.showNotificationOnSucess(res);

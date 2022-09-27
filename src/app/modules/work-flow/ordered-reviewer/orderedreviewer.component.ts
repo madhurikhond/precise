@@ -10,7 +10,6 @@ import { PatientService } from 'src/app/services/patient/patient.service';
 import { ReferrersService } from 'src/app/services/referrers.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-orderedreviewer',
@@ -20,8 +19,6 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 })
 
 export class OrderedreviewerComponent implements OnInit {
-  a1: any = 20;
-  maxDate = new Date();
   @ViewChild('refPatientId', { static: true }) patientIdFilterRef: ElementRef;
   @ViewChild('refLastName', { static: true }) lastNameFilterRef: ElementRef;
   @ViewChild('refFirstName', { static: true }) firstNameFilterRef: ElementRef;
@@ -60,7 +57,6 @@ export class OrderedreviewerComponent implements OnInit {
   rxFile: SafeResourceUrl;
   isRxFileAvailable: boolean = false;
   readonly pageSizeArray=PageSizeArray;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
 
   constructor(private fb: FormBuilder, private readonly notificationService: NotificationService,
     private readonly commonMethodService: CommonMethodService,
@@ -306,7 +302,7 @@ export class OrderedreviewerComponent implements OnInit {
 
     this.isFilterApply = true;
     //let NewFinList=this.selectedFinancialTypeList.map(m=>m.financialtypename).toString();
-    let filterDOB = this.datePipe.transform(this.filterDOB, this.dateTimeFormatCustom.Date);
+    let filterDOB = this.datePipe.transform(this.filterDOB, 'MM/dd/yyyy');
     let body = {
       'patientId': this.patientIdFilterRef.nativeElement.value,
       'lastName': this.lastNameFilterRef.nativeElement.value,
@@ -460,10 +456,5 @@ export class OrderedreviewerComponent implements OnInit {
     }
     this.patientService.sendDataToPatientDetailWindow(body);
   }
- 
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
+
 }

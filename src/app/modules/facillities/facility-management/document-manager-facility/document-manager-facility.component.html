@@ -19,6 +19,7 @@
         </div>
         <div class="row" id="facilityDocRow" #facilityDocRow *ngIf="facilityId">
           <div class="col-md-2">
+
             <dx-tree-view #treeview id="treeview" [dataSource]="folderTree" keyExpr="id" displayExpr="folderName"
               (onItemClick)="selectItem($event)" (onItemContextMenu)="treeViewItemContextMenu($event)"
               selectionMode="single" selectByClick=true keyExpr="id" [selectByClick]="true" itemsExpr="items">
@@ -28,7 +29,7 @@
             </dx-context-menu>
           </div>
 
-          <div class="col-md-9 hideBreadCrumps">
+          <div class="col-md-9">
             <dx-file-manager id="fileManager" #fileManager [fileSystemProvider]="allFile"
               (onContextMenuItemClick)="onItemClick($event)"
               (onSelectionChanged)="fileManager_onSelectionChanged($event)" height="450">

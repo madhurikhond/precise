@@ -55,8 +55,7 @@ export class AttyBillLogComponent implements OnInit {
       this.searchText = res.searchText;
       this.pageNumber = 1;
       this.pageSize = 20;
-      this.getAllAttyBills();  
-      this.commonMethodService.setTitle('Atty bill Log');   
+      this.getAllAttyBills();     
     });
     this.logService.clearClickedEvent.subscribe((res: string) => {
       if (res === 'clearFilter') {

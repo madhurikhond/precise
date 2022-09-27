@@ -36,7 +36,8 @@
                     <div class="theme-label">DOB</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date"
-                            [showClearButton]="true" [max]="maxDate" [useMaskBehavior]="true" >
+                            [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                            dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                     <div class="theme-label">DOI</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="doi" type="date" [showClearButton]="true" [useMaskBehavior]="true"
-                           >
+                            displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
                     <div class="theme-label">EXAM From Date</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="examFromDate" type="date" [showClearButton]="true"
-                            [useMaskBehavior]="true">
+                            [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>
@@ -77,7 +78,7 @@
                     <div class="theme-label">EXAM To Date</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="examToDate" type="date" [showClearButton]="true"
-                            [useMaskBehavior]="true">
+                            [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
                     <ng-select [items]="statusList" [multiple]="true" bindLabel="Status" placeholder="Select"
                         groupBy="Type" formControlName="status" [selectableGroup]="true"
                         [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="Status"
-                        [loading]="showDropdownLoader" [(ngModel)]="selectedStatus" id="id9"  (add)="a1=ValidateMultiSelectTextLength('id9',a1)">
+                        [loading]="showDropdownLoader" [(ngModel)]="selectedStatus">
                         <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
                             <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
                                 [(ngModel)]="item$.selected" /> {{item.Type | uppercase}}
@@ -96,12 +97,12 @@
                                 [(ngModel)]="item$.selected" /> {{item.Status}}
                         </ng-template>
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.Status}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a1">
-                                <span class="ng-value-label">{{items.length - a1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -110,14 +111,14 @@
                     <div class="theme-label">Funding Company</div>
                     <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
                         [(ngModel)]="selectedBroker" [multiple]="true" [closeOnSelect]="false"
-                        [loading]="showDropdownLoader" bindValue="Broker" id="id10"  (add)="a2=ValidateMultiSelectTextLength('id10',a2)">
+                        [loading]="showDropdownLoader" bindValue="Broker">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.Broker}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a2">
-                                <span class="ng-value-label">{{items.length - a2}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -126,14 +127,14 @@
                     <div class="theme-label">INSURANCE CARRIER</div>
                     <ng-select [items]="insuranceCompanyList" placeholder="Select" bindLabel="CompanyName"
                         formControlName="insuranceCompany" [(ngModel)]="selectedInsuranceCompany" [multiple]="true"
-                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="CompanyName" id="id11"  (add)="a3=ValidateMultiSelectTextLength('id11',a3)">
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="CompanyName">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.CompanyName}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a3">
-                                <span class="ng-value-label">{{items.length - a3}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -154,14 +155,14 @@
                     <div class="theme-label">BANK NAME</div>
                     <ng-select [items]="paymentBankList" placeholder="Select" bindLabel="PaymentBank"
                         formControlName="bankName" [(ngModel)]="selectedBank" [multiple]="true" [closeOnSelect]="false"
-                        [loading]="showDropdownLoader" bindValue="PaymentBank" id="id12"  (add)="a4=ValidateMultiSelectTextLength('id12',a4)">
+                        [loading]="showDropdownLoader" bindValue="PaymentBank">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.PaymentBank}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a4">
-                                <span class="ng-value-label">{{items.length - a4}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -170,14 +171,14 @@
                     <div class="theme-label">QB ACCOUNT</div>
                     <ng-select [items]="qbAccountList" placeholder="Select" bindLabel="QBAccount"
                         formControlName="qbAccount" [(ngModel)]="selectedQBAccount" [multiple]="true"
-                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="QBAccount" id="id13"  (add)="a5=ValidateMultiSelectTextLength('id13',a5)">
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="QBAccount">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a5">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.QBAccount}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a5">
-                                <span class="ng-value-label">{{items.length - a5}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -186,14 +187,14 @@
                     <div class="theme-label">PAYMENT TYPE</div>
                     <ng-select [items]="paymentTypeList" placeholder="Select" bindLabel="PaymentType"
                         formControlName="paymentType" [(ngModel)]="selectedPaymentType" [multiple]="true"
-                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="PaymentType" id="id14"  (add)="a6=ValidateMultiSelectTextLength('id14',a6)">
+                        [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="PaymentType">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a6">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.PaymentType}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a6">
-                                <span class="ng-value-label">{{items.length - a6}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -202,7 +203,7 @@
                     <div class="theme-label">FROM Date</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="fromDate" type="date" [showClearButton]="true"
-                            [useMaskBehavior]="true">
+                            [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>
@@ -210,7 +211,7 @@
                     <div class="theme-label">To Date</div>
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"  formControlName="toDate" type="date" [showClearButton]="true"
-                            [useMaskBehavior]="true">
+                            [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                         </dx-date-box>
                     </div>
                 </div>

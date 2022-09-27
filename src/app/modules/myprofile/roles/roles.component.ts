@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
+import { NotificationService } from 'src/app/services/common/notification.service';
 import { MyprofileService } from 'src/app/services/myprofile/myprofile.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { NotificationService } from 'src/app/services/common/notification.service';
 
 
 @Component({
@@ -20,8 +20,6 @@ export class RolesComponent implements OnInit {
   ckConfig:any;
   mycontent: string;
   log: string = '';
-  search: string = '';
-  noDataDisplay: boolean = false;
 
   constructor(private readonly commonMethodService: CommonMethodService,
   private readonly myprofileService: MyprofileService, private readonly notificationService: NotificationService) { }
@@ -31,7 +29,9 @@ export class RolesComponent implements OnInit {
     this.getRoles();
     this.ckConfig = {
       allowedContent: false,
+      extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
+      readOnly : true,
       removePlugins: 'blockquote,preview,save,print,newpage,templates,find,replace,selectall,SpellChecker,scayt,flash,smiley,about',
     removeButtons : 'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
     };
@@ -39,17 +39,13 @@ export class RolesComponent implements OnInit {
   
   }
   getRoles() {
-    this.myprofileService.getRoles(true, this.pageNumber, this.pageSize, this.search).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {   
-        this.noDataDisplay = false;
+    this.myprofileService.getRoles(true, this.pageNumber, this.pageSize).subscribe((res) => {
+      if (res.response != null) {
         this.roleList = res.response;
         this.totalRecords = res.totalRecords;
       }
       else {
-        this.noDataDisplay = true;
-        this.totalRecords=1
-        this.roleList = [];
-      //  this.unSuccessNotification(res, 'Record not found.')
+        this.unSuccessNotification(res, 'Record not found.')
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -83,14 +79,5 @@ export class RolesComponent implements OnInit {
   pageChanged(event) {
     this.pageNumber = event;
     this.getRoles();
-  }
-  applyFilter() {
-    this.pageNumber = 1
-    this.getRoles()
-  }
-  clearFilters() {
-    this.pageNumber = 1
-    this.search = ''
-    this.getRoles()
   }
 }

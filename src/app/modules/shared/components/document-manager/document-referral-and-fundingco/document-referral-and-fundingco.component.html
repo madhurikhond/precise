@@ -213,7 +213,8 @@ tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                             <div class="form-group">
-                                <div class="theme-label-subtitle">{{alertInfo.alertCreatedOn | date: dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                <div class="theme-label-subtitle">{{alertInfo.alertCreatedOn | date: 'MM/dd/yyyy h:mm:ss
+                                    a' }}</div>
                             </div>
                         </div>
                     </div>

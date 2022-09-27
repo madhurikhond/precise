@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
-import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { SettingsService } from 'src/app/services/settings.service';
 
@@ -12,17 +10,13 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./no-show-sms.component.css']
 })
 export class NoShowSmsComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
   noShowSmsFormSetting: FormGroup;
   statusList:any=[];
   selectedStatusList:any[];
   noShowAppointmentStatusList:any[];
   selectedNoShowStatusList:any[];
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   id:number;
   constructor(private fb: FormBuilder,
-    private readonly commonMethodService: CommonMethodService,
     private readonly settingsService:  SettingsService,
     private readonly notificationService: NotificationService
     ) { }
@@ -152,10 +146,5 @@ updateNoShowSetting()
 get getFormControl()
 {
  return this.noShowSmsFormSetting.controls;
-}
-ValidateMultiSelectTextLength(id, a)
-{
-  a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-return a;
 }
 }

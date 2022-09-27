@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { userDetail } from 'src/app/models/user-detail';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -14,10 +13,9 @@ import { MyprofileService } from 'src/app/services/myprofile/myprofile.service';
 })
 export class ProfileComponent implements OnInit {
  user:userDetail;
- maxDate = new Date();
  model:any={};
  submitted:boolean=false;
- readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
  constructor(private readonly myprofileService:MyprofileService,
   private readonly notificationService:NotificationService,
   private readonly storageService:StorageService,

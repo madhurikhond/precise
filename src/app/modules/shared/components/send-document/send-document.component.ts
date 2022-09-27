@@ -4,9 +4,6 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { StorageService } from 'src/app/services/common/storage.service';
 import { SendDocumentService } from 'src/app/services/send-document-service/Send.document.service';
 import { SendDocumentInput, AttorneySDDetails, BrokerSDDetails, CoverPage, FacilitySDDetails, PatientSDDetail, SendPostMailToUser, PostMail } from 'src/app/models/SendDocument';
-import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 @Component({
   selector: 'app-send-document',
@@ -33,7 +30,7 @@ export class SendDocumentComponent implements OnInit, AfterViewInit {
   patientList: any[] = [];
   stateList: any = [];
   selectedstate = '';
-  readonly commonRegex=CommonRegex;
+
   isShowAttorneyNameList: boolean = false;
   isShowAttorneyEmailList: boolean = false;
   isShowAttorneyFaxList: boolean = false;
@@ -147,14 +144,14 @@ export class SendDocumentComponent implements OnInit, AfterViewInit {
 
   FormInitialization() {
     this.addEmailForm = this.fb.group({
-      FirstEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      SecondEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      ThirdEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      FirstEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      SecondEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      ThirdEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
     });
     this.addFaxForm = this.fb.group({
-      FirstFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      SecondFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      ThirdFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      FirstFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      SecondFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      ThirdFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
     });
     this.addPostMailForm = this.fb.group({
       Name: [''],
@@ -756,15 +753,9 @@ export class SendDocumentComponent implements OnInit, AfterViewInit {
     this.sendDocumentInput.FacilityDetails = this.FacilityDetailsList
     this.sendDocumentInput.SendPostMailToUser = this.SendPostMailToUser
     this.sendDocumentService.sendDocumentToUser(true, this.sendDocumentInput).subscribe((res) => {
-      var data: any = res;
       if (res != null) {
         console.log(res);
       }
-      this.notificationService.showNotification({
-        alertHeader: null,
-        alertMessage: data.responseCode == ResponseStatusCode.OK ? data.message : data.message,
-        alertType: data.responseCode
-      });
     }, (err: any) => {
       this.errorNotification(err);
     });

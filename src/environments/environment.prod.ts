@@ -6,8 +6,4 @@ export const environment = {
   //baseUrl: `http://localhost:81/api`,
   onlyDomain: ``,
   currentVersion: `1.0`,
-  Dynamsoft: {
-    resourcesPath: 'assets/dwt-resources',
-    uploadTargetURL: ''
-  }
 };

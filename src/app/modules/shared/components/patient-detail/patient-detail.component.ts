@@ -12,8 +12,6 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { BrokerService } from 'src/app/services/broker.service';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 declare const $: any;
 @Component({
@@ -23,17 +21,10 @@ declare const $: any;
   providers: [DatePipe]
 })
 export class PatientDetailComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
-  a6: any = 20;
   @ViewChild('hiddenButton1', { static: false }) hiddenButton1: ElementRef;
   @ViewChild('hiddenBtnWarningMsg', { static: false }) hiddenBtnWarningMsg: ElementRef;
   @ViewChild('closebtn', { static: false }) closebtn: ElementRef;
   @ViewChild('notes') inputNotes;
-
 
   patientDetailForm: FormGroup;
   patientStudyDetailForm: FormGroup;
@@ -91,9 +82,7 @@ export class PatientDetailComponent implements OnInit {
   filterBody: any = {};
   isShowColumnWithNoData = true;
   status: any;
-  studySummaryrowData :any ;
   subsTabClick: boolean = true;
-  readonly commonRegex = CommonRegex;
   //// Subs tab fields
 
   dropDownActionList: any = [
@@ -154,8 +143,6 @@ export class PatientDetailComponent implements OnInit {
   pageSizeAppLog: number = 20;
   totalRecordAppLog: number = 1;
 
-  studySummaryClick: boolean = false;
-
   @Input() pateintIdDynamic: any;
   divPatientId: any = 'patient-Detail-Window';
 
@@ -168,7 +155,6 @@ export class PatientDetailComponent implements OnInit {
     private brokerService: BrokerService, private decimalPipe: DecimalPipe) {
     patientService.sendDataToPatientDetail.subscribe(res => {
       this.patientID = res.PatientId;
-      this.studySummaryClick = res.click ;
       this.totalRecordsCreateAlerts = 1;
       this.totalrecordsFullLog = 1;
       this.resetPateintDetailFormAndFields();
@@ -181,10 +167,12 @@ export class PatientDetailComponent implements OnInit {
       this.selectedInternalstudyId = null;
       //this.gridPatient.instance.refresh();
       this.getPatientDetailById(res.internalPatientId, res.internalStudyId);
+
       if (!this.isHasAlertSelectedTab) {
         this.updateTabId('1')
       }
       else {
+
         this.onTabclick(true)
       }
 
@@ -293,7 +281,6 @@ export class PatientDetailComponent implements OnInit {
     this.pageSize = this.pageSize;
   }
   createPatientDetailFormForPatientDetailTab() {
-    
     this.patientDetailForm = this.fb.group({
       patientId: [''],
       familyName: [''],
@@ -350,11 +337,11 @@ export class PatientDetailComponent implements OnInit {
       isNotLienReminder: [''],
       isSentPatAttorney: [''],
       accidentTypeCode: [''],
-      billingEmail1: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail2: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail3: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail4: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail5: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      billingEmail1: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      billingEmail2: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      billingEmail3: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      billingEmail4: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      billingEmail5: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       billingFax1: ['', [Validators.minLength(10)]],
       billingFax2: ['', [Validators.minLength(10)]],
       billingFax3: ['', [Validators.minLength(10)]],
@@ -364,7 +351,6 @@ export class PatientDetailComponent implements OnInit {
   }
 
   setPatientDetailFormForPatientDetailTab(data: any) {
-    
     this.patientID = data.PATIENTID;
     this.patientDetailPageTitle = data.PATIENTID + ', ' + data.FAMILYNAME + ' ' + data.GIVENNAME + ', ' + this.datePipe.transform(data.BIRTHDATE, this.dateTimeFormatCustom.Date) + ', ' + data.FINANCIALTYPENAME
     this.patientDetailForm.patchValue({
@@ -466,11 +452,9 @@ export class PatientDetailComponent implements OnInit {
         if (res.response[2][0]['Patien Detail Notes'].length > 0 && JSON.stringify(res.response[2][0]['Patien Detail Notes'][0]) != '{}') {
           this.patientDetailNotes = res.response[2][0]['Patien Detail Notes'];
         }
-
         if (res.response[6][0]['Study Notes'].length > 0 && JSON.stringify(res.response[6][0]['Study Notes'][0]) != '{}') {
           this.studyNotes = res.response[6][0]['Study Notes'];
         }
-
         this.piDetails = res.response[7][0]['PI Detail'][0];
 
         if (res.response[8][0]['PI Notes'].length > 0 && JSON.stringify(res.response[8][0]['PI Notes'][0]) != '{}') {
@@ -490,7 +474,7 @@ export class PatientDetailComponent implements OnInit {
         }
         else {
           this.alertList = [];
-          this.totalRecordsCreateAlerts = 1;
+          this.totalRecordsCreateAlerts = 1
         }
 
         if (res.response[11][0]['Full Log'].length > 0 && JSON.stringify(res.response[11][0]['Full Log'][0]) != '{}') {
@@ -722,7 +706,6 @@ export class PatientDetailComponent implements OnInit {
         this.showNotificationOnSucess(res);
         this.piDetailTabNotesModel = null;
         this.patientDetailTabNotesModel = null;
-        this.studyDetailTabNotesModel = null;
         this.getPatientDetailById(this.selectedInternalPatientId, this.selectedInternalstudyId);
       }
       else {
@@ -760,15 +743,12 @@ export class PatientDetailComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-
   onFocusedRowChanged(e: any) {
-    
-    this.studySummaryrowData = e.row && e.row.data;
-    for (let index = 0; index < e.row.cells.length; index++) {
-      e.row.cells[index].cellElement.parentElement.classList.add("dx-row-focused");
-    }
+
+    var rowData = e.row && e.row.data;
+
     this.isStudySummaryRowClicked = true;
-    this.selectedInternalstudyId = this.studySummaryrowData.INTERNALSTUDYID;
+    this.selectedInternalstudyId = rowData.INTERNALSTUDYID;
     let operation = 2;
     this.patientService.getPatientDetail(this.isStudySummaryRowClicked, this.selectedInternalPatientId, this.selectedInternalstudyId, operation).subscribe((res) => {
       if (res.response != null) {
@@ -794,7 +774,6 @@ export class PatientDetailComponent implements OnInit {
   }
 
   getBrokerDetailById(brokerName: string, brokerId: any) {
-    
     if (brokerId) {
       let body = { 'brokerId': brokerId, 'brokerName': brokerName };
       this.brokerService.sendDataToBrokerFromPatientDetailWin(body);
@@ -810,14 +789,7 @@ export class PatientDetailComponent implements OnInit {
   }
 
   onTabclick(isAlertTabClick: boolean) {
-    
-    if (this.studySummaryClick || this.tabId == '2') {
-      let studySummary: any = document.getElementsByTagName("tr");
-      for (var i = 0; i < studySummary.length; i++) {
-        studySummary[i].classList.remove("dx-row-focused")
-      } 
-    }
-    this.studySummaryClick = false ; 
+
     this.isPatient = false;
     if (isAlertTabClick) {
       this.isHasAlertSelectedTab = true;
@@ -1025,7 +997,6 @@ export class PatientDetailComponent implements OnInit {
   get subsTabTopFormControls() { return this.subsTabTopForm.controls; }
 
   createAlert() {
-    
     $('.caPatientID').val(this.patientID);
     this.commonMethodService.sendDatatoCreateAlertPage(true);
     setTimeout(() => {
@@ -1037,7 +1008,6 @@ export class PatientDetailComponent implements OnInit {
   }
 
   onPageNumberChangeStudySummary(pageNumber: number) {
-    
     this.pageNumberStudy = pageNumber
     this.patientStudySummaryList = this.patientStudySummary.slice((this.pageNumberStudy - 1) * this.pageSizeStudySummary, ((this.pageNumberStudy - 1) * this.pageSizeStudySummary) + this.pageSizeStudySummary)
   }
@@ -1101,11 +1071,7 @@ export class PatientDetailComponent implements OnInit {
       this.repNameList3 = this.repNameList2;
     }
   }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
+
 }
 
 

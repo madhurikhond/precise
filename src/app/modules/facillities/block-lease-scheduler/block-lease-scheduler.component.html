@@ -1,0 +1,303 @@
+<div class="main-page-body block-scheduler-page">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                <div class="page-header-title">Block Lease Scheduler</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="inner-page-body">
+        <div class="search-field search-field-theme">
+            <div class="row">
+                <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11">
+                    <div class="theme-form">
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Facility Parent</div>
+                            <div class="input-group">
+                                <ng-select [items]="facilityParentList" placeholder="Select"
+                                    bindLabel="facilityParentName" [multiple]="false" [closeOnSelect]="false"
+                                    bindValue="facilityParentName" [(ngModel)]="selectedParentFacility">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.facilityParentName}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1">
+                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Facility</div>
+                            <div class="input-group">
+                                <ng-select [items]="facilityList" placeholder="Select" bindLabel="facilityName"
+                                    [multiple]="false" [closeOnSelect]="false" bindValue="facilityName"
+                                    [(ngModel)]="selectedFacility">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.facilityName}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1">
+                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Modality</div>
+                            <div class="input-group">
+                                <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
+                                    [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName"
+                                    [(ngModel)]="selectedModality">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.ModalityName}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1">
+                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Schedule Status</div>
+                            <div class="input-group">
+                                <ng-select [items]="scheduleStatusList" placeholder="Select" bindLabel="STATUS"
+                                    [multiple]="true" [closeOnSelect]="false" bindValue="STATUS"
+                                    [(ngModel)]="selectedscheduleStatus">
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label"> {{item.STATUS}}</span>
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1">
+                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Lease Status</div>
+                            <div class="input-group">
+                                <select class="form-control" [(ngModel)]="SelectedsLeaseStatus">
+                                    <option value="0">Select</option>
+                                    <option value="1">Both parties not signed</option>
+                                    <option value="1">Facility not signed</option>
+                                    <option value="2">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-action">
+                            <a href="javascript:void(0)" class="btn btn-theme" (click)="applyFilter()">SEARCH</a>
+                            <a href="javascript:void(0)" class="btn btn-border" (click)="clearApplyFilter()">CLEAR</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
+                    <ul class="top-left action-menu">
+                        <li class="pull-right">
+                            <!-- <a href="javascript:void(0)" title="Settings" class="pe-7s-config"></a> -->
+                            <a href="javascript:void(0);" class="pe-7s-config" data-toggle="modal" data-target="#creditReasonsSettings">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12">
+                <div class="cash-price-table">
+                    <div class="table-responsive">
+                        <dx-data-grid #gridPatient id="patient-grid-container" [dataSource]="blockLeaseGridList"
+                            [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                            [showBorders]="true">
+                            <!-- <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export> -->
+                            <dxo-state-storing [enabled]="true"></dxo-state-storing>
+                            
+                            <dxo-paging [enabled]="false"></dxo-paging>
+                            <dxo-grouping [contextMenuEnabled]="true" ></dxo-grouping>
+                          
+
+                            <dxi-column cellTemplate="viewCellTemplate" caption="Facility Name"></dxi-column>
+                           
+                            <div *dxTemplate="let data of 'viewCellTemplate'">
+                                <a href="javascript:void(0);" class="link-btn" (click)="getCalendarSchedulerWindowById(data)"
+                                    data-toggle="modal" data-target="#CalendarSchedulerWindow">
+                                    {{data.data.FacilityName}}</a>
+                            </div>
+            
+                            <dxo-context-menu>
+                                <!-- <dxi-item text="Open" [disabled]="getDisabled" beginGroup="true"></dxi-item> -->
+                                <dxi-item text="Columns" beginGroup="true"></dxi-item>
+                            </dxo-context-menu>
+                           
+                        </dx-data-grid>
+                    </div>
+                    <div class="table-responsive manual-table">
+                        <table class="table table-theme">
+                            <thead>
+                                <tr>
+                                    <th width="100">Facility Name</th>
+                                    <th width="100">
+                                        <div class="th-group">
+                                            <div class="th-single">Dec</div>
+                                            <div class="th-list">
+                                                <span>MRI</span>
+                                                <span>CT</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th width="100">
+                                        <div class="th-group">
+                                            <div class="th-single">Jan</div>
+                                            <div class="th-list">
+                                                <span>MRI</span>
+                                                <span>CT</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a href="javascript:void(0)" data-toggle="modal"
+                                            data-target="#block-scheduler-popup">Broadway</a>
+                                    </td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span>
+                                                <ul>
+                                                    <li><img src="/assets/images/schedule-check.png"
+                                                            style="width: 18px;" /><strong>8</strong></li>
+                                                    <li><img src="/assets/images/sign-lease.png" style="width: 18px;" />
+                                                    </li>
+                                                </ul>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Precise Imaging - Van Nuys</td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span>
+                                                <ul>
+                                                    <li><img src="/assets/images/schedule-cross.png"
+                                                            style="width: 18px;" /></li>
+                                                </ul>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Advanced Imaging - 1</td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span>
+                                                <ul>
+                                                    <li><img src="/assets/images/schedule-uncancel.png"
+                                                            style="width: 18px;" /></li>
+                                                    <li><img src="/assets/images/sign-pending.png"
+                                                            style="width: 18px;" /></li>
+                                                </ul>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fresno Imaging - 2</td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-list">
+                                            <span></span>
+                                            <span>
+                                                <ul>
+                                                    <li><img src="/assets/images/schedule-cancel.png"
+                                                            style="width: 18px;" /><strong>8</strong></li>
+                                                    <li><img src="/assets/images/sign-parties.png"
+                                                            style="width: 18px;" /></li>
+                                                </ul>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cash-price-list">
+            <ul>
+                <li>
+                    <img src="/assets/images/schedule-check.png" />
+                    <span>Schedule Complete</span>
+                </li>
+                <li>
+                    <img src="/assets/images/schedule-cross.png" />
+                    <span>Modality is not offered at facility</span>
+                </li>
+                <li>
+                    <img src="/assets/images/schedule-cancel.png" />
+                    <span>Schedule not complete</span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="/assets/images/sign-lease.png" />
+                    <span>Lease signed</span>
+                </li>
+                <li>
+                    <img src="/assets/images/sign-pending.png" />
+                    <span>Pending facility signature</span>
+                </li>
+                <li>
+                    <img src="/assets/images/sign-parties.png" />
+                    <span>Lease not signed by both parties</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<app-calendar-scheduler></app-calendar-scheduler>
+<app-credit-reasons-setting ></app-credit-reasons-setting>
+<app-schd-facilities [isGridDisplay]="false"></app-schd-facilities>

@@ -34,347 +34,344 @@
                         <div class="tab-pane show" [ngClass]="{'active': tabId === '1'}" id="1">
                             <form class="theme-form" [formGroup]="requestDetailForm">
                                 <div class="row">
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                       <div class="row">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Last Name</div>
-                                                <div class="input-group"
-                                                    *ngIf="requestDetailForm.value.patientId; else displayLastName">
-                                                    <input type="text" class="form-control" formControlName="lastNameCnr"
-                                                        disabled>
-                                                </div>
-                                                <ng-template #displayLastName>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors) }"
-                                                            formControlName="lastNameCnr">
-                                                    </div>                                                             
-                                                </ng-template>
-                                                <div *ngIf="(isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors)"
-                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                        *ngIf="requestDetailFormControls.lastNameCnr.errors.required">Last
-                                                        Name required</small>
-                                                </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Last Name</div>
+                                            <div class="input-group"
+                                                *ngIf="requestDetailForm.value.patientId; else displayLastName">
+                                                <input type="text" class="form-control" formControlName="lastNameCnr"
+                                                    disabled>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">First Name</div>
-                                                <div class="input-group"
-                                                    *ngIf="requestDetailForm.value.patientId; else dislayFirstName">
-                                                    <input type="text" class="form-control" formControlName="firstNameCnr"
-                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
-                                                        disabled>
-                                                </div>
-                                                <ng-template #dislayFirstName>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
-                                                            formControlName="firstNameCnr">
-                                                    </div>
-                                                </ng-template>
-                                                <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.firstNameCnr.errors"
-                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                        *ngIf="requestDetailFormControls.firstNameCnr.errors.required">First
-                                                        Name required</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">DOB</div>
-                                                <div class="input-group icon-active"
-                                                    *ngIf="requestDetailForm.value.patientId; else dispayBirthDate">
-                                                    <!-- <input type="date" class="form-control" id="dobadd" formControlName="birthDate" disabled> -->
-                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" class="form-control" 
-                                                        type="date" [max]="maxDate" formControlName="birthDate">
-                                                    </dx-date-box>
-                                                    <!-- <dx-date-box formControlName="birthDate" type="date"
-                                                        [showClearButton]="true" [useMaskBehavior]="true"
-                                                        displayFormat="MM-dd-yyyy"></dx-date-box> -->
-                                                </div>
-                                                <ng-template #dispayBirthDate>
-                                                    <div class="input-group">
-                                                        <!-- <input type="text" class="form-control" formControlName = "birthDateCnr" > -->
-                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="birthDateCnr" type="date"
-                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
-                                                    </div>
-                                                </ng-template>
-                                                <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.birthDate.errors"
-                                                    class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                        *ngIf="requestDetailFormControls.birthDate.errors.required">BirthDate
-                                                        required</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Company Name</div>
+                                            <ng-template #displayLastName>
                                                 <div class="input-group">
-                                                    <ng-select [items]="companyList" placeholder="Select"
-                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && CompanyIDModel.errors) }"
-                                                        bindLabel="CompanyName" [multiple]="false" [closeOnSelect]="true"
-                                                        bindValue="CompanyID" [(ngModel)]="selectedCompanyIDModel"
-                                                        [ngModelOptions]="{standalone: true}"
-                                                        (change)="getAllRepNameByCompanyId(selectedCompanyIDModel)"
-                                                        id="CompanyIDModel" #CompanyIDModel="ngModel" required>
-                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                                                <span class="ng-value-label"> {{item.CompanyName}}</span>
-                                                                <span class="ng-value-icon right" (click)="clear(item)"
-                                                                    aria-hidden="true">×</span>
-                                                            </div>
-                                                            <div class="ng-value" *ngIf="items.length > 3"> <span
-                                                                    class="ng-value-label">{{items.length - 3}}
-                                                                    more...</span>
-                                                            </div>
-                                                        </ng-template>
-                                                    </ng-select>
+                                                    <input type="text" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors) }"
+                                                        formControlName="lastNameCnr">
                                                 </div>
-                                                <div *ngIf="CompanyIDModel.errors  && isrequestDetailFormSubmitted">
-                                                    <small class="error text-danger pull-right"
-                                                        *ngIf="CompanyIDModel.errors?.required">Company Name
-                                                        required</small>
-                                                </div>
+                                            </ng-template>
+                                            <div *ngIf="(isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors)"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.lastNameCnr.errors.required">Last
+                                                    Name required</small>
                                             </div>
                                         </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Rep</div>
-                                                <div class="input-group">
-                                                    <ng-select [items]="repNameList" placeholder="Select"
-                                                        bindLabel="RepName" [multiple]="false" [closeOnSelect]="true"
-                                                        bindValue="RepID" [(ngModel)]="selectedRapIDModel"
-                                                        [ngModelOptions]="{standalone: true}">
-                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                                                <span class="ng-value-label"> {{item.RepName}}</span>
-                                                            </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1"> <span
-                                                                    class="ng-value-label">{{items.length - 1}}
-                                                                    more...</span>
-                                                            </div>
-                                                        </ng-template>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Status</div>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" formControlName="status"
-                                                        disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                       </div>
                                     </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Ref Number</div>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.refNum.errors) }"
-                                                            formControlName="refNum">
-                                                    </div>
-                                                    <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.refNum.errors"
-                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                            *ngIf="requestDetailFormControls.refNum.errors.required">Ref Number
-                                                            required</small>
-                                                    </div>
-                                                </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Ref Number</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.refNum.errors) }"
+                                                    formControlName="refNum">
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Secondary Ref Number</div>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.secondaryRefNum.errors) }"
-                                                            formControlName="secondaryRefNum">
-                                                    </div>
-                                                    <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.secondaryRefNum.errors"
-                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                            *ngIf="requestDetailFormControls.secondaryRefNum.errors.required">Secondary
-                                                            Ref Number required</small>
-                                                    </div>
-                                                </div>
+                                            <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.refNum.errors"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.refNum.errors.required">Ref Number
+                                                    required</small>
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList && requestAndProvidedTypeList.length">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Requested Type</div>
-                                                    <div class="input-group">
-                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
-                                                            bindLabel="Name" [multiple]="true" id="id124" (add)="a1=ValidateMultiSelectTextLength('id124',a1)" [closeOnSelect]="false"
-                                                            bindValue="Name" [(ngModel)]="selectedRequestedTypeList"
-                                                            [ngClass]="{ 'is-invalid': (RequestedTypeList.errors && ( isrequestDetailFormSubmitted)) }"
-                                                            [ngModelOptions]="{standalone: true}"
-                                                            #RequestedTypeList="ngModel" required>
-                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                                <div class="ng-value" *ngFor="let item of items | slice:0:a1">
-                                                                    <span class="ng-value-label"> {{item.Name}}</span>
-                                                                    <span class="ng-value-icon right" (click)="clear(item)"
-                                                                        aria-hidden="true">×</span>
-                                                                </div>
-                                                                <div class="ng-value" *ngIf="items.length > a1"> <span
-                                                                        class="ng-value-label">{{items.length - a1}}
-                                                                        more...</span>
-                                                                </div>
-                                                            </ng-template>
-                                                        </ng-select>
-                                                    </div>
-                                                    <div *ngIf="RequestedTypeList.errors && ( isrequestDetailFormSubmitted)">
-                                                        <small class="error text-danger pull-right"
-                                                            *ngIf="RequestedTypeList.errors?.required">Requested Type
-                                                            required</small>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">First Name</div>
+                                            <div class="input-group"
+                                                *ngIf="requestDetailForm.value.patientId; else dislayFirstName">
+                                                <input type="text" class="form-control" formControlName="firstNameCnr"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
+                                                    disabled>
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Provided Type</div>
-                                                    <div class="input-group">
-                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select" bindLabel="Name" [multiple]="true" id="id125" (add)="a2=ValidateMultiSelectTextLength('id125',a2)" [closeOnSelect]="false"
+                                            <ng-template #dislayFirstName>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.firstNameCnr.errors) }"
+                                                        formControlName="firstNameCnr">
+                                                </div>
+                                            </ng-template>
+                                            <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.firstNameCnr.errors"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.firstNameCnr.errors.required">First
+                                                    Name required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Secondary Ref Number</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.secondaryRefNum.errors) }"
+                                                    formControlName="secondaryRefNum">
+                                            </div>
+                                            <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.secondaryRefNum.errors"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.secondaryRefNum.errors.required">Secondary
+                                                    Ref Number required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">DOB</div>
+                                            <div class="input-group icon-active"
+                                                *ngIf="requestDetailForm.value.patientId; else dispayBirthDate">
+                                                <!-- <input type="date" class="form-control" id="dobadd" formControlName="birthDate" disabled> -->
+                                                <dx-date-box class="form-control" dateSerializationFormat="yyyy-MM-dd"
+                                                    type="date" [max]="maxDate" formControlName="birthDate">
+                                                </dx-date-box>
+                                                <!-- <dx-date-box formControlName="birthDate" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                                    displayFormat="MM-dd-yyyy"></dx-date-box> -->
+                                            </div>
+                                            <ng-template #dispayBirthDate>
+                                                <div class="input-group">
+                                                    <!-- <input type="text" class="form-control" formControlName = "birthDateCnr" > -->
+                                                    <dx-date-box formControlName="birthDateCnr" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="MM-dd-yyyy"></dx-date-box>
+                                                </div>
+                                            </ng-template>
+                                            <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.birthDate.errors"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.birthDate.errors.required">BirthDate
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
+                                        *ngIf="requestAndProvidedTypeList && requestAndProvidedTypeList.length>0">
+                                        <div class="form-group">
+                                            <div class="theme-label">Requested Type</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
+                                                    bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                    bindValue="Name" [(ngModel)]="selectedRequestedTypeList"
+                                                    [ngClass]="{ 'is-invalid': (RequestedTypeList.errors && ( isrequestDetailFormSubmitted)) }"
+                                                    [ngModelOptions]="{standalone: true}" id="RequestedTypeList"
+                                                    #RequestedTypeList="ngModel" required>
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.Name}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                            <div *ngIf="RequestedTypeList.errors && ( isrequestDetailFormSubmitted)">
+                                                <small class="error text-danger"
+                                                    *ngIf="RequestedTypeList.errors?.required">Requested Type
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Company Name</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="companyList" placeholder="Select"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && CompanyIDModel.errors) }"
+                                                    bindLabel="CompanyName" [multiple]="false" [closeOnSelect]="true"
+                                                    bindValue="CompanyID" [(ngModel)]="selectedCompanyIDModel"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (change)="getAllRepNameByCompanyId(selectedCompanyIDModel)"
+                                                    id="CompanyIDModel" #CompanyIDModel="ngModel" required>
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.CompanyName}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 3"> <span
+                                                                class="ng-value-label">{{items.length - 3}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+
+                                            <div *ngIf="CompanyIDModel.errors  && isrequestDetailFormSubmitted">
+                                                <small class="error text-danger"
+                                                    *ngIf="CompanyIDModel.errors?.required">Company Name
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
+                                        *ngIf="requestAndProvidedTypeList">
+                                        <div class="form-group">
+                                            <div class="theme-label">Provided Type</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
+                                                    bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
                                                     [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && ProvidedTypeList.errors) }"
                                                     bindValue="Name" [(ngModel)]="selectedProvidedTypeList"
                                                     [ngModelOptions]="{standalone: true}" id="ProvidedTypeList"
                                                     #ProvidedTypeList="ngModel" required>
-                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                                <div class="ng-value" *ngFor="let item of items | slice:0:a2">
-                                                                    <span class="ng-value-label"> {{item.Name}}</span>
-                                                                    <span class="ng-value-icon right" (click)="clear(item)"
-                                                                        aria-hidden="true">×</span>
-                                                                </div>
-                                                                <div class="ng-value" *ngIf="items.length > a2"> <span
-                                                                        class="ng-value-label">{{items.length - a2}}
-                                                                        more...</span>
-                                                                </div>
-                                                            </ng-template>
-                                                        </ng-select>
-                                                    </div>
-                                                    <div *ngIf="ProvidedTypeList.errors && ( isrequestDetailFormSubmitted)">
-                                                        <small class="error text-danger pull-right" *ngIf="ProvidedTypeList.errors?.required">Provided Type required</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Media</div>
-                                                    <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName"
-                                                        [multiple]="true" id="id126" (add)="a3=ValidateMultiSelectTextLength('id126',a3)" [closeOnSelect]="false" bindValue="mediaName"
-                                                        [(ngModel)]="selectedMediaList" formControlName="media">
-                                                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                            <div class="ng-value" *ngFor="let item of items | slice:0:a3"> <span class="ng-value-label"> {{item.mediaName}}</span>
-                                                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                                                            </div>
-                                                            <div class="ng-value" *ngIf="items.length > a3"> <span class="ng-value-label">{{items.length - a3}} more...</span>
-                                                            </div>
-                                                        </ng-template>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Date Requested</div>
-                                                    <div class="input-group icon-active">
-                                                        <!-- <input type="date" class="form-control" formControlName="dateRequested" disabled> -->
-                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateRequested" type="date"
-                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                           
-                                                        <!-- <dx-date-box formControlName="dateRequested" type="date" [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-mm-dd"></dx-date-box> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Date Entered</div>
-                                                    <div class="input-group">
-                                                        <!-- <input type="date" class="form-control" formControlName="dateEntered" disabled>  -->
-                                                        <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateEntered" type="date"
-                                                            [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                            
-                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Date Ready</div>
-                                                    <div class="input-group">
-                                                        <!-- <input type="date" class="form-control" formControlName="dateReady" disabled> -->
-                                                        <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="dateReady" type="date"
-                                                            [showClearButton]="true" [useMaskBehavior]="true"
-                                                          [disabled]="true"></dx-date-box>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="checkbox-input">
-                                                        <div class="checkbox-theme">
-                                                            <input id="mailed1" type="checkbox"
-                                                                (change)="setMailedateTime($event)"
-                                                                formControlName="isMailedChecked">
-                                                            <label for="mailed1" class="arrow-label">Mailed</label>
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.Name}}</span>
+                                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                                aria-hidden="true">×</span>
                                                         </div>
-                                                        <input type="text" class="form-control" formControlName="mailedDateTime"
-                                                            disabled
-                                                            *ngIf="this.requestDetailFormControls.isMailedChecked.value">
-                                                    </div>
-                                                </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                            <div *ngIf="ProvidedTypeList.errors && ( isrequestDetailFormSubmitted)">
+                                                <small class="error text-danger"
+                                                    *ngIf="ProvidedTypeList.errors?.required">Provided Type
+                                                    required</small>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Rep</div>
+                                            <div class="input-group">
+                                                <ng-select [items]="repNameList" placeholder="Select"
+                                                    bindLabel="RepName" [multiple]="false" [closeOnSelect]="true"
+                                                    bindValue="RepID" [(ngModel)]="selectedRapIDModel"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                            <span class="ng-value-label"> {{item.RepName}}</span>
 
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Pickup Amount Due</div>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" formControlName="pickupCost"
-                                                            [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.pickupCost.errors) }"
-                                                            appOnlyNumbers (change)="removeComma($event)"
-                                                            (blur)="removeComma($event)"
-                                                            (blur)="converNumberToDecimal2($event,'pickupCost')">
-                                                    </div>
-                                                    <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.pickupCost.errors"
-                                                        class="tooltiptext text-right"> <small class="error text-danger pull-right"
-                                                            *ngIf="requestDetailFormControls.pickupCost.errors.required">Pickup
-                                                            Amount required</small>
-                                                    </div>
-                                                </div>
+                                                        </div>
+                                                        <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                                class="ng-value-label">{{items.length - 1}}
+                                                                more...</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Date Picked Up</div>
-                                                    <div class="input-group icon-active">
-                                                        <!-- <input type="date" class="form-control" id="date-picked-up" formControlName="datePickedUp"> -->
-                                                        <dx-date-box formControlName="datePickedUp" type="date"
-                                                            [showClearButton]="true" [useMaskBehavior]="true">
-                                                        </dx-date-box>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Media</div>
+                                            <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName"
+                                                [multiple]="true" [closeOnSelect]="false" bindValue="mediaName"
+                                                [(ngModel)]="selectedMediaList" formControlName="media">
+                                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                    <div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
+                                                            class="ng-value-label"> {{item.mediaName}}</span>
+                                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                                            aria-hidden="true">×</span>
                                                     </div>
-                                                </div>
+                                                    <div class="ng-value" *ngIf="items.length > 1"> <span
+                                                            class="ng-value-label">{{items.length - 1}} more...</span>
+                                                    </div>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Status</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" formControlName="status"
+                                                    disabled>
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <div class="theme-label">Picked Up By</div>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" formControlName="pickedUpBy">
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Date Requested</div>
+                                            <div class="input-group icon-active">
+                                                <!-- <input type="date" class="form-control" formControlName="dateRequested" disabled> -->
+                                                <dx-date-box formControlName="dateRequested" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                                    displayFormat="MM-dd-yyyy"></dx-date-box>
+                                                <!-- <dx-date-box formControlName="dateRequested" type="date" [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-mm-dd"></dx-date-box> -->
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="">
-                                                    <div class="theme-label">Signature</div>
-                                                    <div class="input-group" *ngIf="imageSignature">
-                                                        <img [src]="imageSignature" height="100px" width="200px" alt="No Image">
-                                                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Date Entered</div>
+                                            <div class="input-group">
+                                                <!-- <input type="date" class="form-control" formControlName="dateEntered" disabled>  -->
+                                                <dx-date-box formControlName="dateEntered" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                                    displayFormat="MM-dd-yyyy">
+                                                </dx-date-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Date Ready</div>
+                                            <div class="input-group">
+                                                <!-- <input type="date" class="form-control" formControlName="dateReady" disabled> -->
+                                                <dx-date-box formControlName="dateReady" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                                    displayFormat="MM-dd-yyyy"></dx-date-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="checkbox-input">
+                                                <div class="checkbox-theme">
+                                                    <input id="mailed1" type="checkbox"
+                                                        (change)="setMailedateTime($event)"
+                                                        formControlName="isMailedChecked">
+                                                    <label for="mailed1" class="arrow-label">Mailed</label>
                                                 </div>
+                                                <input type="text" class="form-control" formControlName="mailedDateTime"
+                                                    disabled
+                                                    *ngIf="this.requestDetailFormControls.isMailedChecked.value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Pickup Amount Due</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" formControlName="pickupCost"
+                                                    [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.pickupCost.errors) }"
+                                                    appOnlyNumbers (change)="removeComma($event)"
+                                                    (blur)="removeComma($event)"
+                                                    (blur)="converNumberToDecimal2($event,'pickupCost')">
+                                            </div>
+                                            <div *ngIf="(isrequestDetailFormSubmitted) && requestDetailFormControls.pickupCost.errors"
+                                                class="tooltiptext text-right"> <small class="error text-danger"
+                                                    *ngIf="requestDetailFormControls.pickupCost.errors.required">Pickup
+                                                    Amount required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Date Picked Up</div>
+                                            <div class="input-group icon-active">
+                                                <!-- <input type="date" class="form-control" id="date-picked-up" formControlName="datePickedUp"> -->
+                                                <dx-date-box formControlName="datePickedUp" type="date"
+                                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                                    displayFormat="MM-dd-yyyy"></dx-date-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Picked Up By</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" formControlName="pickedUpBy">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                        <div class="">
+                                            <div class="theme-label">Signature</div>
+                                            <div class="input-group" *ngIf="imageSignature">
+                                                <img [src]="imageSignature" height="100px" width="200px" alt="No Image">
                                             </div>
                                         </div>
                                     </div>
@@ -558,7 +555,7 @@
                                                 <dxi-column dataField="Imagecount" caption="Images" [visible]="false">
                                                 </dxi-column>
                                                 <div *dxTemplate="let data of 'studyDateTimeCellTemplate'">
-                                                    {{data.value | date: dateTimeFormatCustom.Date}}</div>
+                                                    {{data.value | date: 'MM/dd/yyyy'}}</div>
                                             </dx-data-grid>
 
                                         </div>
@@ -601,7 +598,7 @@
                                                     </ng-template>
                                                 </div>
                                                 <div *dxTemplate="let data of 'studyDateTimeCellTemplate'">
-                                                    {{data.value | date:dateTimeFormatCustom.Date}}</div>
+                                                    {{data.value | date: 'MM/dd/yyyy'}}</div>
                                             </dx-data-grid>
 
                                         </div>
@@ -657,9 +654,9 @@
                                                 <td>
                                                     <!-- <input class="form-control" type="date" formControlName="check1Date"> -->
                                                     <dx-date-box formControlName="check1Date" type="date"
-                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
-                                                   
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="shortdate" dateSerializationFormat="MM-dd-yyyy">
+                                                    </dx-date-box>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -716,9 +713,9 @@
                                                 </td>
                                                 <td>
                                                     <!-- <input class="form-control" type="date" formControlName="check2Date"> -->
-                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"formControlName="check2Date" type="date"
+                                                    <dx-date-box formControlName="check2Date" type="date"
                                                         [showClearButton]="true" [useMaskBehavior]="true"
-                                                        displayFormat="shortdate" >
+                                                        displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                                                     </dx-date-box>
                                                 </td>
                                                 <td>
@@ -776,10 +773,10 @@
                                                 </td>
                                                 <td>
                                                     <!-- <input class="form-control" type="date" formControlName="check3Date"> -->
-                                                    <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="check3Date" type="date"
-                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                      
-                                                  
+                                                    <dx-date-box formControlName="check3Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
+                                                    </dx-date-box>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -836,10 +833,10 @@
                                                 </td>
                                                 <td>
                                                     <!-- <input class="form-control" type="date" formControlName="check4Date"> -->
-                                                    <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="check4Date" type="date"
-                                                        [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
-                                                   
+                                                    <dx-date-box formControlName="check4Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
+                                                    </dx-date-box>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -896,9 +893,9 @@
                                                 </td>
                                                 <td>
                                                     <!-- <input class="form-control" type="date" formControlName="check5Date"> -->
-                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="check5Date" type="date"
-                                                        [showClearButton]="true" [useMaskBehavior]="true">
-                                                      
+                                                    <dx-date-box formControlName="check5Date" type="date"
+                                                        [showClearButton]="true" [useMaskBehavior]="true"
+                                                        displayFormat="shortdate" dateSerializationFormat="yyyy-MM-dd">
                                                     </dx-date-box>
                                                 </td>
                                                 <td>
@@ -944,7 +941,8 @@
                                     </div> -->
                                     <ng-container *ngIf="notesListForNotesTab?.length > 0">
                                         <div class="note-list-inner" *ngFor="let note of notesListForNotesTab;">
-                                            <div class="name">{{note.Username}} {{note.Timestamp | date:dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                            <div class="name">{{note.Username}} {{note.Timestamp | date: 'MM/dd/yyyy
+                                                h:mm:ss a'}}</div>
                                             <p>{{note.SubsNote}}</p>
                                         </div>
                                     </ng-container>
@@ -997,7 +995,7 @@
                                     <dxi-column dataField="Accession" caption="Accession" [visible]="false">
                                     </dxi-column>
                                     <div *dxTemplate="let data of 'timeStampCellTemplate'">{{data.value | date:
-                                        dateTimeFormatCustom.DateTimeWithSec}}</div>
+                                        'MM/dd/yyyy h:mm:ss a'}}</div>
                                 </dx-data-grid>
                             </div>
                             <div class="pagination-theme">
@@ -1179,7 +1177,7 @@
                                 </div>
                                 <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressFirst.errors"
                                     class="tooltiptext text-right">
-                                    <small class="error text-danger pull-right"
+                                    <small class="error text-danger"
                                         *ngIf="emailCustodianFormControls.emailAddressFirst.errors.pattern">Invalid
                                         email address</small>
                                 </div>
@@ -1192,7 +1190,7 @@
                                 </div>
                                 <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressSec.errors"
                                     class="tooltiptext text-right">
-                                    <small class="error text-danger pull-right"
+                                    <small class="error text-danger"
                                         *ngIf="emailCustodianFormControls.emailAddressSec.errors.pattern">Invalid email
                                         address</small>
                                 </div>
@@ -1205,7 +1203,7 @@
                                 </div>
                                 <div *ngIf="isemailCustodianSubmitted && emailCustodianFormControls.emailAddressThird.errors"
                                     class="tooltiptext text-right">
-                                    <small class="error text-danger pull-right"
+                                    <small class="error text-danger"
                                         *ngIf="emailCustodianFormControls.emailAddressThird.errors.pattern">Invalid
                                         email address</small>
                                 </div>
@@ -1229,7 +1227,7 @@
                                     <textarea class="form-control" style="height: 261px;"
                                         formControlName="emailBody"></textarea>
                                 </div>
-                                <small class="error text-danger pull-right">*File will be attached to the email</small>
+                                <small class="error text-danger">*File will be attached to the email</small>
                             </div>
                         </div>
                     </div>

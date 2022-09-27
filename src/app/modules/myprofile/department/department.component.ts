@@ -18,8 +18,7 @@ export class DepartmentsComponent implements OnInit {
   pageNumber:number=1;
   pageSize:number=20;
   totalRecords:number;
-  departmentList: any = [];
-  search: string = '';
+  departmentList:any=[];
   constructor(private readonly myprofileService:MyprofileService
     ,private readonly notificationService:NotificationService,
     private readonly commonMethodService: CommonMethodService) { }
@@ -39,39 +38,18 @@ export class DepartmentsComponent implements OnInit {
     this.showHeaderFilter=false;
     this.getDepartments();
   }
-  applyFilter() {
-    this.pageNumber = 1
-    this.getDepartmentsNew();
-  }
   getDepartments()
   {
     this.myprofileService.getMasterDepartments(true,this.pageNumber,this.pageSize).subscribe((res)=>{
-      if (res.response != null  )
+      if(res.response!=null)
       {
         this.departmentList=res.response;
         this.totalRecords=res.totalRecords;
       }
-      else {
-        this.departmentList = [];
+      else{
      this.unSuccessNotification(res,'Record not found.')
       }
     },(err:any)=>{
-      this.errorNotification(err);
-    });
-  }
-
-  getDepartmentsNew() {
-    this.myprofileService.getMasterDepartmentsNew(true, this.pageNumber, this.pageSize,this.search).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) { 
-        this.departmentList = res.response;
-        this.totalRecords = res.totalRecords;
-      }
-      else {
-        this.totalRecords = 1
-        this.departmentList = [];
-        //this.unSuccessNotification(res, 'Record not found.')
-      }
-    }, (err: any) => {
       this.errorNotification(err);
     });
   }
@@ -96,9 +74,5 @@ export class DepartmentsComponent implements OnInit {
     this.pageNumber = event;
     this.getDepartments();
   }
-  clearFilters() {
-    this.pageNumber = 1
-    this.search = ''
-    this.getDepartmentsNew();
-  }
+
 }

@@ -8,27 +8,25 @@
     </div>
     <div class="inner-page-body">
             <div class="search-field search-field-theme collapse show">
-                <form>
-                    <div class="theme-form">
-                             <div class="form-group">
-                                <div class="theme-label">Search</div>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" [(ngModel)]="searchTextBoxModal" #searchBox>
-                                </div>
+                <div class="theme-form">
+                         <div class="form-group">
+                            <div class="theme-label">Search</div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" [(ngModel)]="searchTextBoxModal" #searchBox>
                             </div>
-                            <div class="form-action">
-                                <div class="input-group">                         
-                                    <!-- <button type="submit" class="btn btn-theme" [disabled]="(searchBox.value=='') ?true:false"
-                                    [ngStyle]="{'background-color': (searchBox.value=='') ? '#bfbfbf' : '#3b8beb'}"
-                                        (click)="searchFilter(searchBox.value)">Search</button> -->
-                                    <button type="submit" class="btn btn-theme"
-                                            (click)="searchFilter(searchBox.value)">Search</button>
-                                    <button type="button" class="btn btn-border"
-                                        (click)="clearFilters(searchBox)">Clear</button>
-                                </div>
+                        </div>
+                        <div class="form-action">
+                            <div class="input-group">                         
+                                <!-- <button type="submit" class="btn btn-theme" [disabled]="(searchBox.value=='') ?true:false"
+                                [ngStyle]="{'background-color': (searchBox.value=='') ? '#bfbfbf' : '#3b8beb'}"
+                                    (click)="searchFilter(searchBox.value)">Search</button> -->
+                                <button type="submit" class="btn btn-theme"
+                                        (click)="searchFilter(searchBox.value)">Search</button>
+                                <button type="button" class="btn btn-border"
+                                    (click)="clearFilters(searchBox)">Clear</button>
                             </div>
-                     </div>
-                </form>
+                        </div>
+                 </div>
             </div>
 
         <div class="tab-section">

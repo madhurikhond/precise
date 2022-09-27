@@ -9,10 +9,10 @@ import { QcCompletedStudiesComponent } from './qc-completed-studies.component';
 const routes: Routes = [
   {
     path: '', component: QcCompletedStudiesComponent, children:[      
-      { path: '', redirectTo: 'qc-pending-studies', pathMatch: 'full',canActivate:[RoleGuard]},
+      { path: '', redirectTo: 'qc-pending-studies', pathMatch: 'full'},
       { path: 'qc-pending-studies', component: QcPendingStudiesComponent, canActivate:[RoleGuard] },
-      { path: 'missing-asl', component: MissingAslComponent ,canActivate:[RoleGuard]},
-      { path: 'attorney-stats', component: AttorneyStatsComponent ,canActivate:[RoleGuard]}, 
+      { path: 'missing-asl', component: MissingAslComponent },
+      { path: 'attorney-stats', component: AttorneyStatsComponent }, 
     ]
   }
 ];

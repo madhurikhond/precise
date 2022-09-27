@@ -7,247 +7,199 @@
         </div>
     </div>
     <div class="inner-page-body">
-      <div class="upload-section">
-        <div class="fileupload" data-provides="fileupload">
-          <span class="btn btn-file drag-drop-box ">
-            <span class="fileupload-new"><i class="fa fa-upload"></i>&nbsp;DRAG & DROP FILES HERE OR BROWSE</span>
-            <input name="file" type="file" multiple (click)="myInputFile.value = null" value="" title=""
-                   (change)="onFileChange($event)" #myInputFile>
-            <span class="fileupload-preview"></span>
-          </span>
-        </div>
-        <div class="upload-section-btn">
-          <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left" (click)="useScanner()">Use Scanner</a>
-          <div class="checkbox-theme">
-            <input class="form-control" id = "files" [(ngModel)]="splitFiles" (change)="onChangeSplit($event)"
-                   type="checkbox">
-            <label for="files" (change)="chooseFile($event)" class="arrow-label">Do not Split Files</label>
-          </div>
-          <div class="checkbox-theme">
-            <input class="form-control" id = "barcodes" [(ngModel)]="barCodes" (change)="onChangebarCodes($event)"
-                   type="checkbox">
-            <label for="barcodes" class="arrow-label">Do not read Barcodes</label>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="this.patientList.length > 0" class="page-top-action">
-        <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-            <div *ngIf="isUploadShown">
-             
-              <button type="button" [disabled]="totalCheckCount === 0 ? true:false" (click)="saveAttachDoc()" class="btn btn-theme btn-sm pull-left">
-                <i class="fa fa-file-text-o"></i> Save
-                &amp; Attach Documents
-              </button><br>
+        <div class="upload-section">
+            <div class="fileupload" data-provides="fileupload">
+                <span class="btn btn-file drag-drop-box ">
+                    <span class="fileupload-new"><i class="fa fa-upload"></i>&nbsp;DRAG & DROP FILES HERE OR BROWSE</span>
+                    <input name="file" type="file" multiple (click)="myInputFile.value = null" value="" 
+                        (change)="onFileChange($event)" #myInputFile>
+                    <span class="fileupload-preview"></span>
+                </span>
             </div>
-          </div>
-          <div *ngIf="isAlertShown">
-            <a href="javascript:void(0)" (click)="updateAlert()" class="btn btn-theme btn-sm pull-left">
-              <i class="fa fa-file-text-o"></i> Update Alerts
-            </a>
-          </div>
-          <div *ngIf="isAlertShown">
-            <a href="javascript:void(0)" (click)="closeUpdateAlert()" class="btn btn-theme btn-sm pull-left">
-              <i class="fa fa-file-text-o"></i> Close & do NOT update Alerts
-            </a>
-          </div>
-
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-            <div class="precisemri-search">
-              <select class="form-search" #actionDropDown (change)="changeDDlAction($event)">
-                <option value=0 selected>Select an Action</option>
-                <option *ngFor="let item of actionList" value={{item.id}}>
-                  {{item.action}}
-                </option>
-              </select>
-              <button type="button" class="search" [disabled]="actionDropDown.value==='0'?true:false"
-                      [ngStyle]="{'background-color': (actionDropDown.value==='0') ? '#bfbfbf' : '#3b8beb'}"
-                      (click)="SelectAction()">
-                Go
-              </button>
-              <!-- <a href="javascript:void(0)" (click)="SelectAction()" class="search">Go</a> -->
+            <div class="upload-section-btn">
+                <a href="javascript:void(0)" class="btn btn-theme btn-sm pull-left">Use Scanner</a>
+                <div class="checkbox-theme">
+                    <input class="form-control" [(ngModel)]="splitFiles" (change)="onChangeSplit($event)"
+                        type="checkbox">
+                    <label for="files" (change)="chooseFile($event)" class="arrow-label">Do not Split Files</label>
+                </div>
+                <div class="checkbox-theme">
+                    <input class="form-control" [(ngModel)]="barCodes" (change)="onChangebarCodes($event)"
+                        type="checkbox">
+                    <label for="barcodes" class="arrow-label">Do not read Barcodes</label>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      
-      <div *ngIf="this.patientList.length > 0" class="table-responsive manual-table">
-        <table class="table table-theme" *ngIf="isUploadShown">
-          <thead>
-            <tr>
-              <th class="check-td" width="50">
-                <div class="checkbox-theme">
-                  <input class="form-control" [(ngModel)]="select_all"
-                         (ngModelChange)="onSelectAll($event,'patientList')" id="check1" class="styled"
-                         type="checkbox">
-                  <label for="check1" class="arrow-label">&nbsp;</label>
-                </div>
-              </th>
-              <th width="100">File</th>
-              <th width="100">File Name</th>
-              <th width="100">Document Type</th>
-              <th width="100">Patient ID (Manual or Decoded)</th>
-              <th width="100">Radiologist</th>
-              <th width="100">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-       
-            <tr *ngFor="let patient of this.patientList;let i= index;trackBy:trackBy">
-              <td class="check-td" width="50">
-                <div class="checkbox-theme">
-                  <input class="form-control" [id]="'check-'+i" class="styled" [(ngModel)]="patient.is_selected"
-                         (ngModelChange)="changed('patientList')" type="checkbox">
-                  <label [attr.for]="'check-'+i" class="arrow-label">&nbsp;</label>
-                </div>
-              </td>
-              <td>{{i+1}}</td>
-              <td>{{patient.name2}}</td>
-              <td>
-                <div class="form-group">
-                  <div class="input-group input-loader input-flex">
-                    <div>
-                    <select class="form-control radiologist-width" [(ngModel)]="Documentdata[i]"
-                            (change)="getDocType($event,i,'DocumentList')" 
-                            [ngClass]="{ 'is-invalid': (this.patientList[i].DocId == 0 && this.patientList[i].is_selected === true &&  this.Submitted === true)}">
-                      <option value=0 selected>Select Document File Type</option>
-                      <option *ngFor="let item of MasterDocumentList;" value={{item.DocID}}>
-                        {{item.DocType}}
-                      </option>
-                    </select>
+        <div  *ngIf="this.patientList.length > 0" class="page-top-action">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div *ngIf="isUploadShown">
+                        <a href="javascript:void(0)" (click)="saveAttachDoc()" class="btn btn-theme btn-sm pull-left"><i
+                                class="fa fa-file-text-o"></i> Save
+                            &amp; Attach Documents</a><br>
                     </div>
-                    <!-- <div *ngIf="this.Submitted && this.patientList[i].DocId == 0 " class="tooltiptext text-right">
-                      <small class="error text-danger" *ngIf="this.patientList[i].DocId == 0  && this.CHckFields === false">Document Type is
-                          required</small>
-                    </div> -->
-                    <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
-                    <a href="javascript:void(0)" *ngIf="i==0" (click)="copyDtype(2)" title="Copy">
-                      <img src="/assets/images/copy-icon.png"
-                           style="cursor: pointer;width: 17px; margin-top:5px" />
-                    </a>
-                  </div>
-    
                 </div>
-              </td>
-              <td>
-                <div class="panel"> 
-                  <div>
-                  <input type="text"
-                         [(ngModel)]="patient.ReferreId" 
-                         (keyup)="this.removeSpecialCharacters($event,i)"
-                         [ngClass]="{ 'is-invalid': (this.patientList[i].ReferreId == 0 && this.patientList[i].is_selected === true &&  this.Submitted === true)}">
-                         <a href="javascript:void(0)" *ngIf="i==0" (click)="copyDtype(3)" title="Copy">
-                          <img src="/assets/images/copy-icon.png"
-                               style="cursor: pointer;width: 17px; margin-top:5px" />
-                        </a>
+                <div *ngIf="isAlertShown">
+                    <a href="javascript:void(0)" (click)="updateAlert()" class="btn btn-theme btn-sm pull-left"><i
+                            class="fa fa-file-text-o"></i> Update Alerts</a>
+                </div>
+                <div *ngIf="isAlertShown">
+                    <a href="javascript:void(0)" (click)="closeUpdateAlert()" class="btn btn-theme btn-sm pull-left"><i
+                            class="fa fa-file-text-o"></i> Close & do NOT update Alerts</a>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="precisemri-search">
+                        <select class="form-search" #actionDropDown (change)="changeDDlAction($event)">
+                            <option value=0 selected>Select an Action</option>
+                            <option *ngFor="let item of actionList" value={{item.id}}>
+                                {{item.action}}
+                            </option>
+                        </select>
+                        <button type="button" class="search" [disabled]="actionDropDown.value===0?true:false"
+                            [ngStyle]="{'background-color': (actionDropDown.value===0) ? '#bfbfbf' : '#3b8beb'}"
+                            (click)="SelectAction()">Go</button>
+                        <!-- <a href="javascript:void(0)" (click)="SelectAction()" class="search">Go</a> -->
                     </div>
-                         <!-- <div *ngIf="this.Submitted && this.patientList[i].ReferreId == 0 " class="tooltiptext text-right">
-                          <small class="error text-danger" *ngIf="this.patientList[i].ReferreId == 0  && this.CHckFields === false">PatientID is
-                              required</small>
-                        </div> -->
                 </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <div class="input-group input-loader input-flex" *ngIf="selectedDocType[i] && Documentdata[i]!=0">
-                  <div>
-                   <select class="form-control radiologist-width" [(ngModel)]="Radiologistdata[i]"
-                            (change)="getRadiologist($event,i)"
-                            [ngClass]="{'is-invalid': (this.patientList[i].RadiologistId == 0 && this.patientList[i].is_selected === true &&  this.Submitted === true)}">
-                      <option value=0 selected>Select Radiologist</option>
-                      <option *ngFor="let item of RadiologistList" value={{item.RadiologistId}}>
-                        {{item.Radiologist}}
-                      </option>
-                    </select>
-                    </div>
-                    <!-- <div *ngIf="this.Submitted && this.patientList[i].RadiologistId == 0" class="tooltiptext text-right">
-                      <small class="error text-danger" *ngIf="this.patientList[i].RadiologistId == 0  && this.CHckFields === false">Radiologist is
-                          required</small>
-                    </div> -->
-                    <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
-                    <a href="javascript:void(0)" *ngIf="i==0" (click)="copyDtype(1)" title="Copy">
-                      <img src="/assets/images/copy-icon.png"
-                      style="cursor: pointer;width: 17px; margin-top:5px" />
-                    </a>
-                  </div>
-                  
-                </div>
-              </td>
-              <td>
-                <div class="table-actions">
-                  <a target="_blank" (click)="viewDetail(patient.viewUrl)"
-                     title="view" class="single-action fa fa-eye"></a>
-                  <a href="javascript:void(0)" (click)="setDeleteIndexNUmber(i)" title="Delete"
-                     class="single-action fa fa-trash"></a>
-
-                  
-
-                </div>
-              </td>
-
-            </tr>
-            
-          </tbody>
-        </table>
-        <div class="table-responsive manual-table">
-          <table class="table table-theme" *ngIf="isAlertShown">
-            <thead>
-              <tr>
-                <th class="check-td" width="50">
-                  <div class="checkbox-theme">
-                    <input class="form-control" id="checkAlert" class="styled" type="checkbox">
-                    <input class="form-control" [(ngModel)]="select_all"
-                           (ngModelChange)="onSelectAll($event,'alertList')" id="alertCheckAll"
-                           class="styled" type="checkbox">
-                    <label for="checkx" class="arrow-label">&nbsp;</label>
-                  </div>
-                </th>
-                <th style="font-weight: bold;font-size: 14px;" width="100">PatientID</th>
-                <th style="font-weight: bold;font-size: 14px;" width="100">Alert</th>
-                <th style="font-weight: bold;font-size: 14px;" width="100">Reason</th>
-                <th style="font-weight: bold;font-size: 14px;" width="100">Added by</th>
-                <th style="font-weight: bold;font-size: 14px;" width="100">Date Added</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let alert of this.updateAlertList;let i= index">
-                <td class="check-td" width="50">
-                  <div class="checkbox-theme">
-                    <input class="form-control" id="alertCheck" class="styled"
-                           [(ngModel)]="alert.is_alertSelected" (ngModelChange)="changed('alertList')"
-                           type="checkbox">
-                    <label for="check1" class="arrow-label">&nbsp;</label>
-                  </div>
-                </td>
-                <td>{{alert.PatientID}}</td>
-                <td>{{alert.LogType}}</td>
-                <td>
-
-                  <div class="form-group">
-                    <div class="input-group input-loader">
-                      <select class="form-control" (change)="getDocType($event,i,'reasonList')">
-                        <option *ngFor="let item of reasonList" value={{item.ID}}>
-                          {{item.Reason}}
-                        </option>
-                      </select>
-                      <i *ngIf="showDropdownLoader"
-                         class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="panel">
-                    {{alert.Addedby}}
-                  </div>
-                </td>
-                <td>
-                  {{alert.DateAdded}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            </div>
         </div>
-      </div>
+
+        <div  *ngIf="this.patientList.length > 0"  class="table-responsive manual-table">
+            <table class="table table-theme" *ngIf="isUploadShown">
+                <thead>
+                    <tr>
+                        <th class="check-td" width="50">
+                            <div class="checkbox-theme">
+                                <input class="form-control" [(ngModel)]="select_all"
+                                    (ngModelChange)="onSelectAll($event,'patientList')" id="check1" class="styled"
+                                    type="checkbox">
+                                <label for="check1" class="arrow-label">&nbsp;</label>
+                            </div>
+                        </th>
+                        <th width="100">File</th>
+                        <th width="100">File Name</th>
+                        <th width="100">Document Type</th>
+                        <th width="100">Patient ID (Manual or Decoded)</th>
+                        <th width="100">Radiologist</th>
+                        <th width="100">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let patient of this.patientList;let i= index;trackBy:trackBy">
+                        <td class="check-td" width="50">
+                            <div class="checkbox-theme">
+                                <input class="form-control" id="check1" class="styled" [(ngModel)]="patient.is_selected"
+                                    (ngModelChange)="changed('patientList')" type="checkbox">
+                                <label for="check1" class="arrow-label">&nbsp;</label>
+                            </div>
+                        </td>
+                        <td>{{i+1}}</td>
+                        <td>{{patient.name}}</td>
+                        <td>
+                            <div class="form-group">
+                                <div class="input-group input-loader">                                 
+                                    <select class="form-control" [(ngModel)]="Documentdata[i]"
+                                        (change)="getDocType($event,i,'DocumentList')">
+                                        <option value=0 selected>Select Document File Type</option>
+                                        <option *ngFor="let item of MasterDocumentList;"  value={{item.DocID}}>
+                                            {{item.DocType}}
+                                        </option>
+                                    </select>
+                                    <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="panel">
+                                <input type="text" (keyup)="this.removeSpecialCharacters($event,i)"
+                                    [(ngModel)]="patient.ReferreId">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">     
+                                <div class="input-group input-loader" *ngIf="selectedDocType[i] && Radiologistdata[i] !=0">
+                                    <select class="form-control" [(ngModel)]="Radiologistdata[i]"
+                                        (change)="getRadiologist($event,i)">
+                                        <option value=0 selected>Select Radiologist</option>
+                                        <option *ngFor="let item of RadiologistList" value={{item.RadiologistId}}>
+                                            {{item.Radiologist}}
+                                        </option>
+                                    </select>
+                                    <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="javascript:void(0)" target="_blank" (click)="viewDetail(patient.viewUrl)"
+                                    title="view" class="single-action fa fa-eye"></a>
+                                <a href="javascript:void(0)" (click)="setDeleteIndexNUmber(i)" title="Delete"
+                                    class="single-action fa fa-trash"></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="table-responsive manual-table">
+                <table class="table table-theme" *ngIf="isAlertShown">
+                    <thead>
+                        <tr>
+                            <th class="check-td" width="50">
+                                <div class="checkbox-theme">
+                                    <input class="form-control" id="checkAlert" class="styled" type="checkbox">
+                                    <input class="form-control" [(ngModel)]="select_all"
+                                        (ngModelChange)="onSelectAll($event,'alertList')" id="alertCheckAll"
+                                        class="styled" type="checkbox">
+                                    <label for="check1" class="arrow-label">&nbsp;</label>
+                                </div>
+                            </th>
+                            <th style="font-weight: bold;font-size: 14px;" width="100">PatientID</th>
+                            <th style="font-weight: bold;font-size: 14px;" width="100">Alert</th>
+                            <th style="font-weight: bold;font-size: 14px;" width="100">Reason</th>
+                            <th style="font-weight: bold;font-size: 14px;" width="100">Added by</th>
+                            <th style="font-weight: bold;font-size: 14px;" width="100">Date Added</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let alert of this.updateAlertList;let i= index">
+                            <td class="check-td" width="50">
+                                <div class="checkbox-theme">
+                                    <input class="form-control" id="alertCheck" class="styled"
+                                        [(ngModel)]="alert.is_alertSelected" (ngModelChange)="changed('alertList')"
+                                        type="checkbox">
+                                    <label for="check1" class="arrow-label">&nbsp;</label>
+                                </div>
+                            </td>
+                            <td>{{alert.PatientID}}</td>
+                            <td>{{alert.LogType}}</td>
+                            <td>
+
+                                <div class="form-group">
+                                    <div class="input-group input-loader">
+                                        <select class="form-control" (change)="getDocType($event,i,'reasonList')">
+                                            <option *ngFor="let item of reasonList" value={{item.ID}}>
+                                                {{item.Reason}}
+                                            </option>
+                                        </select>
+                                        <i *ngIf="showDropdownLoader"
+                                            class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="panel">
+                                    {{alert.Addedby}}
+                                </div>
+                            </td>
+                            <td>
+                                {{alert.DateAdded}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="modal fade modal-theme modal-small" id="deleteItemConfirmPopUp" data-backdrop="static"
         data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
@@ -258,7 +210,7 @@
                     <div class="close-dismiss" data-dismiss="modal" (click)="deleteFiles(false,indexNumber)"></div>
                 </div>
                 <div class="modal-body">
-                    <p>{{deleteMessage}} </p>
+                    <p>would you like to delete this item?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
@@ -270,52 +222,5 @@
             </div>
         </div>
     </div>
-
-    <div  class="modal fade modal-theme modal-small" id="copyItemConfirmPopUp" data-backdrop="static"
-        data-keyboard="false" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" aria-modal="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">No File Selected</h5>
-                    <div class="close-dismiss" data-dismiss="modal" (click)="deleteFiles(false,indexNumber)"></div>
-                </div>
-                <div class="modal-body">
-                    <p>Please select the documents you want to copy the doc type for. The first
-                        file SELECTED will be the master copy to the rest of the doc types. </p> 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</button>
-                </div>
-             
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade modal-theme modal-large" id="DynamsoftScannerPopUp" data-backdrop="static" data-keyboard="false"
-     role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"> Scanner </h5>
-        <div class="close-dismiss sureshDocx" data-dismiss="modal" (click)="toggleStartDemo()" ></div>
-      </div>
-      <div class="modal-body">
-       
-        <div *ngIf="show">
-          <app-docdwt [data]='data'  [events]="eventsSubject.asObservable()"></app-docdwt>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
-           (click)="toggleStartDemo()">Cancel</a>
-
-      </div>
-    </div>
-  </div>
-
 </div>
 <button #hiddenFileDeleteItem [hidden]="true" data-toggle="modal" data-target="#deleteItemConfirmPopUp"></button>
-<button #copyItemConfirmPopUp [hidden]="true" data-toggle="modal" data-target="#copyItemConfirmPopUp"></button>
-<button class="d-none" #hiddenDynamsoftScannerPopUp [hidden]="true" data-toggle="modal"
-        data-target="#DynamsoftScannerPopUp"></button>

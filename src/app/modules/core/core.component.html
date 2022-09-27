@@ -3,20 +3,5 @@
     <app-navbar></app-navbar>
     <div class="page-working-area" appInvalidTabHighlight>      
       <router-outlet></router-outlet>
-      <div class="release-note"  *ngIf="Release">Release Version <a href="javascript:void(0);" data-toggle="modal" data-target="#release-note">{{Release}}</a>({{ReleaseDate | date:dateTimeFormatCustom.Date }})</div>
     </div>
-</div>
-<!--  Modal popup  -->
-<div class="modal fade modal-theme modal-small show" id="release-note" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Release Notes for {{Release}} ({{ReleaseDate | date:dateTimeFormatCustom.Date }})</h5>
-              <div class="close-dismiss" data-dismiss="modal"></div>
-          </div>
-          <div class="modal-body">
-            <div [innerHtml]="ReleaseItems"></div>
-          </div>
-      </div>
-  </div>		
 </div>

@@ -12,8 +12,6 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import { MessageLength } from 'src/app/models/message-length';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
-import { BrokerService } from 'src/app/services/broker.service';
-import { ReferrersService } from 'src/app/services/referrers.service';
 
 declare const $: any;
 declare var require: any
@@ -52,14 +50,14 @@ export class OrderedSchedulerComponent implements OnInit {
   ctStudies: any = [];
   modality: string = '';
   countData: boolean = false;
-  totalOrder: number ;
-  newOrder: number;
-  totalVM: number;
-  leftVM: number;
-  totalCB: number ;
-  leftCB: number ;
-  ordered: number;
-  totalOrdered: number ;
+  totalOrder: string;
+  newOrder: string;
+  totalVM: string;
+  leftVM: string;
+  totalCB: string;
+  leftCB: string;
+  ordered: string;
+  totalOrdered: string;
   noShow: string;
   totalNoShow: string;
   rescheduled: string;
@@ -103,9 +101,7 @@ export class OrderedSchedulerComponent implements OnInit {
   readonly messageLength = MessageLength;
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly workflowService: WorkflowService, private readonly notificationService: NotificationService,
-    private readonly signalRService: SignalRService, private _storage: StorageService,
-    private readonly brokerService : BrokerService,
-    private readonly referrersService :  ReferrersService) {
+    private readonly signalRService: SignalRService, private _storage: StorageService) {
     this.onCellPrepared = this.onCellPrepared.bind(this);
   }
 
@@ -118,7 +114,7 @@ export class OrderedSchedulerComponent implements OnInit {
 
     this.commonMethodService.setTitle('Ordered Scheduler');
     this.getDropdown();
-    //this.getStatusCount();
+    this.getStatusCount();
     this.searchForm = this.fb.group({
       lastName: [''],
       firstName: [''],
@@ -162,13 +158,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
     }, 0);
   }
-  getBrokerDetailById(brokerName: string, brokerId: any) {
-    debugger
-    if (brokerId) {
-      let body = { 'brokerId': brokerId, 'brokerName': brokerName };
-      this.brokerService.sendDataToBrokerFromOrderedSchedularComponent(body);
-    }
-  }
+
   onPageSizeChange(e) {
     this.pageSize = e;
     this.pageNumber = 1;
@@ -179,13 +169,7 @@ export class OrderedSchedulerComponent implements OnInit {
     this.getOrderedSchedulerData();
     this.deleteOrderedSchedulerActivity();
   }
-  getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
-    debugger
-    if (referrerId) {
-      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
-      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
-    }
-  }
+
   prescreeningFormCreate() {
     this.preScreeningQuestionForm = null;
     this.preScreeningQuestionForm = this.fb.group({
@@ -299,9 +283,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  onRowPrepared(e) {
-    console.log(e);
-  }
+
   onRowExpanding(e) {
     if (e.key.length > 1) {
       if (this.viewerRecordsList && this.viewerRecordsList.length > 0 &&
@@ -391,22 +373,6 @@ export class OrderedSchedulerComponent implements OnInit {
     }
     if (e.rowType === 'data' && e.columnIndex) {
       e.cellElement.style.pointerEvents = 'none';
-      if ((e.data.CB + e.data.VM)  == 2) {
-        e.cellElement.style.backgroundColor= "yellow";
-      }
-      if ((e.data.CB + e.data.VM)  > 2) {
-        e.cellElement.style.backgroundColor= "indianred";
-      }
-      if(e.data.Type){
-        if (e.data.Type.toLowerCase() == 'coulnnot schedule patient') {
-          e.cellElement.style.backgroundColor= "red";
-        }
-      } 
-      if(e.data.Type){
-        if (e.data.Type.toLowerCase() == 'patient schedule') {
-          e.cellElement.style.backgroundColor= "green";
-        }
-      } 
     }
   }
 
@@ -572,11 +538,11 @@ export class OrderedSchedulerComponent implements OnInit {
   populatePreScreeningQuestionData(questionData) {
     questionData.forEach(data => {
       switch (data.Questions) {
-        case PreScreeningGeneralQuestion.Gender:
-          this.preScreeningQuestionForm.patchValue({
-            gender: data.Answers
-          });
-          break; // this line was Commented . Because of this Gender was not binding correctly . Mridula Uncommented it 
+        // case PreScreeningGeneralQuestion.Gender:
+        //   this.preScreeningQuestionForm.patchValue({
+        //     gender: data.Answers
+        //   });
+        //   break;
         case PreScreeningGeneralQuestion.Weight:
           this.preScreeningQuestionForm.patchValue({
             weight: data.Answers
@@ -1042,7 +1008,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  getOrderedSchedulerData() {  
+  getOrderedSchedulerData() {
     this.deleteOrderedSchedulerActivity();
     var data = {
       'patientId': this.sForm.patientId.value ? this.sForm.patientId.value : null,
@@ -1060,21 +1026,7 @@ export class OrderedSchedulerComponent implements OnInit {
         this.getAllOrderSchedulerActivity();
         var data: any = res;
         this.totalRecords = res.totalRecords > 0 ? res.totalRecords : 1;
-        this.totalOrder = data.response ? data.response[0].AllCount[0].TotalOrder : 0;
-        this.newOrder =  data.response ? data.response[0].AllCount[0].NewOrder : 0;
-        this.totalVM = data.response ? data.response[0].AllCount[0].TotalVM : 0;
-        this.leftVM = data.response? data.response[0].AllCount[0].LeftVM : 0;
-        this.totalCB = data.response ? data.response[0].AllCount[0].TotalCB : 0;
-        this.leftCB = data.response? data.response[0].AllCount[0].LeftCB :0;
-        this.ordered = data.response ? data.response[0].AllCount[0].Ordered:0;
-        this.totalOrdered = data.response ? data.response[0].AllCount[0].TotalOrdered :0;
-        this.noShow = data.response ? data.response[0].AllCount[0].NoShow :0;
-        this.totalNoShow = data.response? data.response[0].AllCount[0].TotalNoShow :0;
-        this.rescheduled = data.response ? data.response[0].AllCount[0].Rescheduled :0;
-        this.totalRescheduled = data.response ? data.response[0].AllCount[0].TotalRescheduled:0;
-        this.countData = true;
         this.dataList = data.response;
-        console.log(this.dataList)
         if (this.dataList != null) {
           this.dataList.forEach((element, index) => {
             element.myId = index;
@@ -1096,7 +1048,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  onSearchSubmit() { 
+  onSearchSubmit() {
     this.selectedRows = [];
     this.pageNumber = 1;
     this.getOrderedSchedulerData();
@@ -1122,12 +1074,6 @@ export class OrderedSchedulerComponent implements OnInit {
     this.workflowService.sendSMSOrderedScheduler(data).subscribe((res) => {
       if (res) {
         var data: any = res;
-        if (data?.response?.Status == 'Authenticate') {
-          data.responseCode = 200;
-        }
-        else {
-          data.responseCode = 500;
-        }
         this.notificationService.showNotification({
           alertHeader: null,
           alertMessage: data.responseCode == ResponseStatusCode.OK ? 'SMS sent successfully.' : 'Unable to send SMS.',
@@ -1620,7 +1566,7 @@ export class OrderedSchedulerComponent implements OnInit {
     let file = new Blob([ArrayBuff], { type: 'application/pdf' });
     fileData = URL.createObjectURL(file)
     // FileSaver.saveAs(fileData, fileName);
-    //window.open(fileData, '_blank');
+    window.open(fileData, '_blank');
   }
 
   createQuestionAnswerJsonObject(question, answer) {
@@ -1647,7 +1593,7 @@ export class OrderedSchedulerComponent implements OnInit {
   }
 
   SaveOrderedSchedulerLog(type: any) {
-    debugger
+
     if (!this.selectedRows || this.selectedRows.length == 0) {
       this.notificationService.showNotification({
         alertHeader: null,
@@ -1659,11 +1605,7 @@ export class OrderedSchedulerComponent implements OnInit {
       let filterData = this.dataList.filter((data) => this.selectedRows.includes(data.myId));
       const data = [];
       const that = this;
-      let isValid = true;
       filterData.forEach(function (e) {
-        if (e.Color !== 'Green') {
-          isValid = false;
-        }
         data.push({
           PatientId: e.PatientId,
           InternalStudyId: e.InternalStudyId,
@@ -1672,15 +1614,6 @@ export class OrderedSchedulerComponent implements OnInit {
           SortOrder: null
         });
       });
-
-      if (type === 'PATIENT SCHEDULED' && !isValid) {
-        that.notificationService.showNotification({
-          alertHeader: null,
-          alertMessage: 'Please complete the screening questions before confirming the patient is scheduled.',
-          alertType: ResponseStatusCode.BadRequest
-        });
-        return
-      }
       this.workflowService.SaveOrderedSchedulerLog(JSON.stringify(JSON.stringify(data)), true).subscribe((res) => {
         if (res) {
           const data: any = res;
@@ -1689,7 +1622,6 @@ export class OrderedSchedulerComponent implements OnInit {
             alertMessage: data.response[0].Message,
             alertType: ResponseStatusCode.OK
           });
-          this.selectedRows = [];
           this.getOrderedSchedulerData();
         }
       },

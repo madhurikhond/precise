@@ -467,7 +467,7 @@
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
 												 [(ngModel)]="parentPolicy"
-													[config]="CkeConfig" (paste)="onPaste($event)"
+													 (paste)="onPaste($event)"
 													(change)="onChange($event)">
 												</ckeditor>
                                     <!-- <ckeditor [editor]="Editor" [(ngModel)]="parentPolicy" debounce="500"

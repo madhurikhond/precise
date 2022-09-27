@@ -1,0 +1,93 @@
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiResponse } from 'src/app/models/response';
+import { HttpService } from '../common/http.service';
+import { StorageService } from 'src/app/services/common/storage.service';
+import { PageModules } from 'src/app/services/common/page-modules';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BlockLeaseSchedulerService {
+
+
+  sendDataToCalendarScheduler: EventEmitter<any> = new EventEmitter<any>();
+
+  sendDataToCalendarSchedulerWindow(body:any): void {
+    this.sendDataToCalendarScheduler.emit(body);
+  }
+  constructor(private readonly _httpService: HttpService, private readonly storageService: StorageService,) { }
+  getScheduleStatusList(showGlobalLoader: boolean = true) {
+    return this._httpService.get(`BlockLeaseScheduler/GetScheduleStatusList`, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
+  getBlockLeaseSchedulerFilterData(showGlobalLoader : boolean = true,filterBody:any,pageNumber:number,pageSize:number){
+    return this._httpService.post(`BlockLeaseScheduler/GetBlockLeaseSchedulerFilterData?pageNumber=${pageNumber}&pageSize=${pageSize}`,filterBody,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getBlockLeasePopupData(showGlobalLoader : boolean = true ,FacilityId: string){
+    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeasePopupData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getCalenderModalityResourceDropDownData(showGlobalLoader : boolean = true ,FacilityId: string){
+    return this._httpService.get(`BlockLeaseScheduler/GetCalenderModalityResourceDropDownData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  validateFacilityTimeAndClosedDays(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/validateFacilityTimeAndClosedDays`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getAlreadyBlockedLease(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/GetAlreadyBlockedLease`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  saveBlockLeaseData(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/SaveBlockLeaseData`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getBlockLeaseData(showGlobalLoader : boolean = true,FacilityId: string){
+    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  addUpdateBlockLeaseCreditReason(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/AddUpdateBlockLeaseCreditReason`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  } 
+  manageCredits(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/ManageCredits`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getLeaseById(showGlobalLoader : boolean = true,LeaseId:number){
+    return this._httpService.post(`BlockLeaseScheduler/GetLeaseById`,LeaseId,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
+  manageUserSettings(showGlobalLoader : boolean = true,frontendJsonInput:string){
+    return this._httpService.post(`BlockLeaseScheduler/ManageUserSettings`,frontendJsonInput,showGlobalLoader,true).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getTotalLeaseAndCreditHoursOnEdit(showGlobalLoader : boolean = true,inputRm:any){
+    return this._httpService.post(`BlockLeaseScheduler/GetTotalLeaseAndCreditHoursOnEdit`,inputRm,showGlobalLoader,true).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  deleteLeaseById(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/deleteLeaseById`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+}
+

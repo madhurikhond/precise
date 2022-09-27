@@ -7,8 +7,6 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 import { SettingsService } from 'src/app/services/settings.service';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { StorageService } from 'src/app/services/common/storage.service';
-import { Router } from '@angular/router';
 
 export type PickupFormValue = {
   'companyId': string,
@@ -44,39 +42,17 @@ export class SubpoenaPickupStatusComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,
     private readonly accountService: AccountService,
-    private readonly storageService: StorageService,
     private readonly settingService: SettingsService,
-    // private readonly notificationService: NotificationService) { }
-    private readonly notificationService: NotificationService, private router: Router) { }
-  ngOnInit(): void {
-    if (this.checkIsLoggedIn()) {
-      this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? ['dashboard'] : [this.storageService.LastPageURL]);
-    }
+    private readonly notificationService: NotificationService) { }
 
+  ngOnInit(): void {
     this.getCompanyList();
     this.pickupForm = this.fb.group({
       companyId: [null, [Validators.required]],
       referenceNumber: ['', [Validators.required]]
     });
     this.commonMethodService.setTitle('Subpoena pickup status');
-
-  }
-  checkIsLoggedIn() {
-    if (this.storageService.user != null) {
-      var tokenExpiry = new Date(this.storageService.user.exp * 1000);
-      var today = new Date();
-      if (tokenExpiry < today) {
-        this.router.navigate(['login']);
-        this.storageService.clearAll();
-        return false;
-      }
-      else {
-        return true;
-      }
-    }
-    else {
-      return false;
-    }
+    this.getPickupStatus();
   }
   //method to get company list
   getCompanyList() {
@@ -185,7 +161,7 @@ export class SubpoenaPickupStatusComponent implements OnInit {
     this.getSubDetailById(rowData.SubsID)
   }
   getSubDetailById(subId) {
-    // this.showDivLoader = true;
+   // this.showDivLoader = true;
     this.accountService.getSubDetailsById(subId, true).subscribe((res) => {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {

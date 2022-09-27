@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StorageService } from 'src/app/services/common/storage.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-ready-to-bill',
@@ -14,7 +13,6 @@ export class ReadyToBillComponent implements OnInit {
   @Input() filterData : any;
   @Input() message : any;
   @Input() condition : any;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   checkedPatientIdInternalStudyid:any=[];
   constructor(private activeModal: NgbActiveModal, private readonly storageService: StorageService, 
   private readonly patientService: PatientService, private readonly notificationService: NotificationService) { }

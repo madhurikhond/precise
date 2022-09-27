@@ -12,11 +12,6 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { NgSelectComponent } from '@ng-select/ng-select'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
-
 declare const $: any;
 
 @Component({
@@ -30,34 +25,11 @@ export class PatientComponent implements OnInit {
   @ViewChild('hiddenSavedSearchPopUpButton', { static: false }) hiddenSavedSearchPopUpButton: ElementRef;
   @ViewChild('hiddenShowopenLinkPopUp', { static: false }) hiddenShowopenLinkPopUp: ElementRef;
   @ViewChild('hiddenDisMessagePopUp', { static: false }) hiddenDisMessagePopUp: ElementRef;
-  @ViewChild('LogsPopup', { static: false }) LogsPopup: ElementRef;
-  @ViewChild('BillingPopup', { static: false }) BillingPopup: ElementRef;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent
   @ViewChildren('gridPatient') gridPatient: any;
-  items: any;
-  // billingEmail1: string = '';
-  // billingEmail2: string = '';
-  // billingEmail3: string = '';
-  // billingEmail4: string = '';
-  // billingEmail5: string = '';
-  // billingFax1: string = '';
-  // billingFax2: string = '';
-  // billingFax3: string = '';
-  // billingFax4: string = '';
-  // billingFax5: string = '';
-  maxDate = new Date();
-  a1: any = 20;
-  b: any = 20;
-  c: any = 20;
-  d: any = 20;
-  e: any = 20;
-  f: any = 20;
-  g: any = 20;
-  h: any = 20;
-  selectedRows: any = [];
-  Issubmitted: boolean = false;
+
   isColumnVisible: boolean = false;
   GenerateEsignLinkList: any = [];
   patientGridList: [] = [];
@@ -72,7 +44,7 @@ export class PatientComponent implements OnInit {
   priorityNamesList: [] = [];
   modalityList: [] = [];
   marketingUserList: [] = [];
-  selectedInternalPatientId: any;
+
   lastNameModel: string = '';
   firstNameModel: string = '';
   patientIdModel: string = '';
@@ -90,8 +62,6 @@ export class PatientComponent implements OnInit {
   parentFacilityModelList: any = [];
   fromDateModel: string = '';
   toDateModel: string = '';
-  fullLogList: any = [];
-  appLogList: any = [];
   dateRangeModel: string = '';
   statusNameModelList: any = [];
   priorityNamesModelList: any = [];
@@ -102,22 +72,11 @@ export class PatientComponent implements OnInit {
   checkAmountModel: string = '';
   pageNumber: number = 1;
   pageSize: number;
-  modalValue: string = 'modal';
-  pageSizeLogs: number = 20;
-  pageNumberAppointmentLogs: number = 1;
-  pageSizeAppointmentLogs: 20;
-  pageNumberFullLogs: number = 1;
   totalRecord: number = 1;
   IsPatientActionHide: Boolean = true;
   Generate_PI_TC_Message: string = "";
-  totalrecordsFullLog: number = 1;
-  totalRecordAppLog: number = 1;
-  pageNumberLogs: number = 1;
-  patientBillingDetailForm: FormGroup;
-  FormGroupName:FormGroup;
-  patientID: any;
-  BillingData: any;
-  logsPageTitle: any = '';
+
+
   // Grid Properties
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
@@ -128,50 +87,31 @@ export class PatientComponent implements OnInit {
   allMode: string;
   checkBoxesMode: string;
   ddlvalue = [];
-  billingHeaderTitle: any = '';
   ddlCurrentValue: string = '0';
   ddlCurrentText: string = 'Select an Action';
   filterValue: any = [];
   fileList: any = [];
-  LastSearchRecordList = [];
   checkedPatientIdInternalStudyid = [];
   checkedData: any = 0;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   savedSearchList: Array<Object> = [];
   filterBody: any;
   currentPageUrl: string;
-  BillingDetailPageTitle: any;
-  tabId: any = 1;
-  selectedTab = 'full-log'
-  NextSearchButtonDisabled: any;
-  Changevalue: any;
-  ArrayIndex: number = -1;
-  nextButtonDisable: boolean = true;
-  previouButtonDisable: boolean = false
   readonly pageSizeArray = PageSizeArray;
-  Phoneparam: any;
-  accessionnumberparam: any;
-  patientidparam: any;
-  readonly commonRegex = CommonRegex;
 
-  constructor(private fb: FormBuilder, private readonly patientService: PatientService, private readonly notificationService: NotificationService,
+  constructor(private readonly patientService: PatientService, private readonly notificationService: NotificationService,
     private readonly _commonMethodService: CommonMethodService//,public datepipe:DatePipe
     , private readonly storageService: StorageService,
     private commonService: CommonMethodService,
-    private datePipe: DatePipe, private route: ActivatedRoute
-  ) {
-    this.route.queryParamMap.subscribe((params: any) => {
-      this.Phoneparam = params.params.Phone;
-      this.accessionnumberparam = params.params.ACCESSIONNUMBER;
-      this.patientidparam = params.params.patientid;
-    });
-  }
+    private datePipe: DatePipe
+  ) { }
 
 
   ngOnInit() {
+    debugger
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.currentPageUrl = window.location.href;
-    this.commonService.setTitle('Patient');
+    this.commonService.setTitle('Patients');
     this.setGridSetting();
     this.getFinancialType();
     this.getInsuranceCompanies();
@@ -187,19 +127,6 @@ export class PatientComponent implements OnInit {
     this.ddlvalue = this.selectAnActionDdl();
     this.getAllSavedSearchList();
     this.PatientActionShowHide();
-    this.createPatientBillingDetailForm();
-    this.GetLastSearchRecord();
-    this.updateTabId(1, 'log')
-    if (this.Phoneparam || this.accessionnumberparam || this.patientidparam) {
-      this.phoneModel = this.Phoneparam ? this.Phoneparam : '';
-      this.patientIdModel = this.patientidparam ? this.patientidparam : '';
-      this.accessionModel = this.accessionnumberparam ? this.accessionnumberparam : '';
-      this.pageNumber = 1;
-      this.pageSize = 50;
-      this.applyFilter(true);
-    }
-    //this.getLogs();
-
   }
 
   defaultVisibleColumn() {
@@ -232,45 +159,6 @@ export class PatientComponent implements OnInit {
     this.dataGrid.instance.columnOption('PROCCODEDESC', 'visible', false);
   }
 
-  createPatientBillingDetailForm() {
-    this.patientBillingDetailForm = this.fb.group({
-      isSentPatAttorney: [false],
-      billingEmail1: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail2: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail3: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail4: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingEmail5: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      billingFax1: ['', [Validators.minLength(10)]],
-      billingFax2: ['', [Validators.minLength(10)]],
-      billingFax3: ['', [Validators.minLength(10)]],
-      billingFax4: ['', [Validators.minLength(10)]],
-      billingFax5: ['', [Validators.minLength(10)]],
-    });
-  }
-  setpatientBillingDetailFormData(data: any) {
-
-    // this.patientID = data.PATIENTID;
-    // this.BillingDetailPageTitle = data.PATIENTID + ', ' + data.FAMILYNAME + ' ' + data.GIVENNAME + ', ' + this.datePipe.transform(data.BIRTHDATE, this.dateTimeFormatCustom.Date) + ', ' + data.FINANCIALTYPENAME
-    this.patientBillingDetailForm.patchValue({
-
-      billingEmail1: data.BillingEmail1,
-      billingEmail2: data.BillingEmail2,
-      billingEmail3: data.BillingEmail3,
-      billingEmail4: data.BillingEmail4,
-      billingEmail5: data.BillingEmail5,
-      billingFax1: data.BillingFax1,
-      billingFax2: data.BillingFax2,
-      billingFax3: data.BillingFax3,
-      billingFax4: data.BillingFax4,
-      billingFax5: data.BillingFax5
-    });
-  }
-
-  close() {
-    this.Issubmitted = false;
-    this.patientBillingDetailForm.reset();
-  }
-
   PatientActionShowHide() {
     var data = this.storageService.UserRole;
     if (data) {
@@ -291,19 +179,6 @@ export class PatientComponent implements OnInit {
         this.IsPatientActionHide = JSON.parse(getData[0].IsPatientActionHide);
       }
     }
-  }
-
-  openLogsPopUp() {
-    this.updateTabId(1, 'log');
-    // $('#divlog').trigger('click')
-    this.LogsPopup.nativeElement.click();
-    this.getLogs();
-
-  }
-
-  openBillingPopUp() {
-    this.BillingPopup.nativeElement.click();
-    this.crudBillingPaymentDestination(4);
   }
 
   columnChooserClick(e: any): void {
@@ -399,25 +274,13 @@ export class PatientComponent implements OnInit {
     }, 100)
   }
 
-  getPatientDetailById(e: any) {
-    debugger
+  getPatientDetailById(row: any) {
     let body = {
-      'patientID': e.data.PATIENTID,
-      'internalPatientId': e.data.INTERNALPATIENTID,
-      'internalStudyId': e.data.Internalstudyid,
-      'hasAlert': e.data.HasAlert,
-      'click': true
+      'patientID': row.data.PATIENTID,
+      'internalPatientId': row.data.INTERNALPATIENTID,
+      'internalStudyId': row.data.Internalstudyid,
+      'hasAlert': row.data.HasAlert
     }
-
-    let dataGridalltrList: any = document.getElementsByTagName("tr");
-    for (var i = 0; i < dataGridalltrList.length; i++) {
-      dataGridalltrList[i].classList.remove("custom-patient-row-selection")
-    }
-
-    for (let index = 0; index < e.row.cells.length; index++) {
-      e.row.cells[index].cellElement.parentElement.classList.add("custom-patient-row-selection");
-    }
-
     this.patientService.sendDataToPatientDetailWindow(body);
   }
 
@@ -503,33 +366,23 @@ export class PatientComponent implements OnInit {
   }
 
   getStatusNames() {
-    //this.statusNameList = [];
+    this.statusNameList = [];
     this.patientService.getStatusNames(false).subscribe((res) => {
       var data: any = res;
-      this.statusNameList = [];
       if (data.response != null && data.response.length > 0) {
+
+        this.statusNameList = data.response;
         this.statusNameList.push({ status: 'DOI MISSING', statusorder: 'DOI MISSING' });
         this.statusNameList.push({ status: 'DOI ENTERED', statusorder: 'DOI ENTERED' });
         this.statusNameList.push({ status: 'AUTO BILL SENT', statusorder: 'AUTO BILL SENT' });
-        this.statusNameList.push({ status: 'AUTO BILL NOT SENT', statusorder: 'AUTO BILL NOT SENT' });
-        this.statusNameList.push({ status: 'READY TO BILL', statusorder: 'READY TO BILL' });
         this.statusNameList.push({ status: 'NOT READY TO BILL', statusorder: 'NOT READY TO BILL' });
-        this.statusNameList.push({ status: 'Tech PSL Signed', statusorder: 'Tech PSL Signed' });
-        this.statusNameList.push({ status: 'Tech PSL Not Signed', statusorder: 'Tech PSL Not Signed' });
-        this.statusNameList.push({ status: 'Tech ASL Signed', statusorder: 'Tech ASL Signed' });
-        this.statusNameList.push({ status: 'Tech ASL Not Signed', statusorder: 'Tech ASL Not Signed' });
-        this.statusNameList.push({ status: 'Rad PSL Signed', statusorder: 'Rad PSL Signed' });
-        this.statusNameList.push({ status: 'Rad PSL Not Signed', statusorder: 'Rad PSL Not Signed' });
-        this.statusNameList.push({ status: 'Rad ASL Signed', statusorder: 'Rad ASL Signed' });
-        this.statusNameList.push({ status: 'Rad ASL Not Signed', statusorder: 'Rad ASL Not Signed' });
-        this.statusNameList.push({ status: 'VIEW ALL COMPLETED STUDIES', statusorder: 'VIEW ALL COMPLETED STUDIES' });
+        this.statusNameList.push({ status: 'PATIENT SIGNED LIEN', statusorder: 'PATIENT SIGNED LIEN' });
+        this.statusNameList.push({ status: 'PATIENT LIEN NOT SIGNED', statusorder: 'PATIENT LIEN NOT SIGNED' });
+        this.statusNameList.push({ status: 'ATTORNEY SIGNED LIEN', statusorder: 'ATTORNEY SIGNED LIEN' });
+        this.statusNameList.push({ status: 'ATTORNEY LIEN NOT SIGNED', statusorder: 'ATTORNEY LIEN NOT SIGNED' });
         this.statusNameList.push({ status: 'HAS A NO SHOW', statusorder: 'HAS A NO SHOW' });
-
         this.statusNameList.push({ status: '--------------', statusorder: 'Dash', disabled: true });
-        for (let i = 0; i < data.response.length; i++) {
-          this.statusNameList.push({ status: data.response[i]['status'], statusorder: data.response[i]['statusorder'] });
-        }
-        this.statusNameList.push({ status: '--------------', statusorder: 'Dash' });
+        //this.statusNameList.push({status: '--------------', statusorder: 'Dash'});
         this.statusNameList.push({ status: 'Inside LA County', statusorder: 'Inside LA County' });
         this.statusNameList.push({ status: 'Outside LA County', statusorder: 'Outside LA County' });
         this.statusNameList.push({ status: '--------------', statusorder: '--------------', disabled: true });
@@ -550,7 +403,6 @@ export class PatientComponent implements OnInit {
         this.statusNameList.push({ status: 'Phone Number for Patient wrong/disconnected', statusorder: 'Phone Number for Patient wrong/disconnected' });
         this.statusNameList.push({ status: 'RX illegible', statusorder: 'RX illegible' });
         this.statusNameList.push({ status: 'RX missing signature', statusorder: 'RX missing signature' });
-
         this.statusNameList.push({ status: 'Study Clarification Needed', statusorder: 'Study Clarification Needed' });
       }
       else {
@@ -607,93 +459,6 @@ export class PatientComponent implements OnInit {
         this.error(err);
       });
   }
-  updateTabId(tabName: any, click: string) {
-    this.tabId = tabName;
-    if (click == 'tab') {
-      this.pageNumberAppointmentLogs = 1;
-      this.pageNumberFullLogs = 1;
-    }
-  }
-  changelanguage(event) {
-    this.patientBillingDetailForm.patchValue({
-      isSentPatAttorney: event.target.checked,
-
-    });
-
-  }
-  getLogs() {
-    this.pageNumberLogs = this.tabId == 1 ? this.pageNumberFullLogs : this.pageNumberAppointmentLogs
-    let body = {
-      'internalPatientID': this.selectedInternalPatientId,
-      'pageSize': this.pageSizeLogs,
-      'pageNumber': this.pageNumberLogs,
-    }
-    this.appLogList = [];
-    this.fullLogList = [];
-    this.totalrecordsFullLog = 1;
-    this.totalRecordAppLog = 1;
-    this.patientService.getLogs(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
-      var data: any = res;
-      if (res !== null) {
-        this.logsPageTitle = JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].PATIENTID + ', ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].FAMILYNAME + ' ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].GIVENNAME + ', ' + this.datePipe.transform(JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].BIRTHDATE, this.dateTimeFormatCustom.Date);
-        this.appLogList = JSON.parse(res.response[0].JsonPatientAppointmentLogForLogTab);
-        this.fullLogList = JSON.parse(res.response[0].JsonPatientFullLogForLogTab);
-        this.totalrecordsFullLog = JSON.parse(res.response[0].JsonPatientFullLogForLogTab)[0] ? JSON.parse(res.response[0].JsonPatientFullLogForLogTab)[0].Totalrecords : 1;
-        this.totalRecordAppLog = JSON.parse(res.response[0].JsonPatientAppointmentLogForLogTab)[0] ? JSON.parse(res.response[0].JsonPatientAppointmentLogForLogTab)[0].Totalrecords : 1;
-      }
-    });
-  }
-  crudBillingPaymentDestination(operation: number) {
-    this.modalValue = 'modal';
-    if (this.patientBillingDetailForm.invalid) {
-      this.modalValue = '';
-      this.Issubmitted = true;
-      return;
-    }
-    let body = {
-      //'internalPatientID': 'selectedInternalPatientId',
-      'internalPatientID': this.selectedInternalPatientId,
-      'Operation': operation,
-      'isSentPatAttorney': this.patientBillingDetailFormControls.isSentPatAttorney.value,
-      'billingEmail1': this.patientBillingDetailFormControls.billingEmail1.value,
-      'billingEmail2': this.patientBillingDetailFormControls.billingEmail2.value,
-      'billingEmail3': this.patientBillingDetailFormControls.billingEmail3.value,
-      'billingEmail4': this.patientBillingDetailFormControls.billingEmail4.value,
-      'billingEmail5': this.patientBillingDetailFormControls.billingEmail5.value,
-      'billingFax1': this.patientBillingDetailFormControls.billingFax1.value,
-      'billingFax2': this.patientBillingDetailFormControls.billingFax2.value,
-      'billingFax3': this.patientBillingDetailFormControls.billingFax3.value,
-      'billingFax4': this.patientBillingDetailFormControls.billingFax4.value,
-      'billingFax5': this.patientBillingDetailFormControls.billingFax5.value,
-
-    }
-    this.patientService.crudBillingPaymentDestination(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
-      if (operation === 2) {
-
-        if (res.response != null) {
-          this.notificationService.showNotification({
-            alertHeader: 'Success',
-            alertMessage: res.response.Message,
-            alertType: res.response.ResponseCode
-          });
-        } else {
-          this.notificationService.showNotification({
-            alertHeader: 'Error',
-            alertMessage: res.response.Message,
-            alertType: res.response.ResponseCode
-          });
-        }
-      }
-
-      if (res !== null && operation === 4) {
-        this.billingHeaderTitle = JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].PATIENTID + ', ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].FAMILYNAME + ' ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].GIVENNAME + ', ' + this.datePipe.transform(JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].BIRTHDATE, this.dateTimeFormatCustom.Date);
-        this.BillingData = res.response[0]
-        this.setpatientBillingDetailFormData(this.BillingData)
-        console.log(this.patientBillingDetailForm)
-      }
-    });
-  }
-
   getAttornerNames() {
     let body = {
       'brokerId': this.storageService.user.BrokerId,
@@ -760,11 +525,6 @@ export class PatientComponent implements OnInit {
   }
 
   applyFilter(isSearchBtn = false) {
-    if (isSearchBtn) {
-      this.InsertLastSearchRecord()
-    }
-
-    debugger
     let brokerId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.BrokerId : ''
     let facilityId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityID : '';
     let facilityParentId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityParentID : '';
@@ -780,24 +540,24 @@ export class PatientComponent implements OnInit {
       'birthDate': this.dobModel,
       'ssn': this.ssnModel,
       'phone': this.phoneModel,
-      'attorney': this.attorneyTypeModelList ? this.attorneyTypeModelList.toString() : '',
+      'attorney': this.attorneyTypeModelList.toString(),
       'doi': this.doiModel,
-      'financialType': this.financialTypeModelList ? this.financialTypeModelList.join("~") : '',
-      'insuranceCompany': this.insuranceCompanyModelList ? this.insuranceCompanyModelList.join("~") : '',
+      'financialType': '(' + JSON.stringify(this.financialTypeModelList) + ')'.toString().replace('[', '').replace(']', ''),
+      'insuranceCompany': this.insuranceCompanyModelList.toString(),
       'accession': this.accessionModel,
-      'refPhysician': this.referrerModelList ? this.referrerModelList.toString() : '',
-      'broker': this.brokerModelList ? this.brokerModelList.join("~") : '',
-      'facility': this.facilityModelList ? this.facilityModelList.join("~") : '',
-      'parentCompany': this.parentFacilityModelList ? this.parentFacilityModelList.join("~") : '',
+      'refPhysician': this.referrerModelList.toString(),
+      'broker': this.brokerModelList.toString(),
+      'facility': this.facilityModelList.toString(),
+      'parentCompany': this.parentFacilityModelList.toString(),
       'fromDate': this.fromDateModel,
       'toDate': this.toDateModel,
       'dateRage': this.dateRangeModel,
-      'status': this.statusNameModelList ? this.statusNameModelList.join("~") : '',
-      'priority': this.priorityNamesModelList ? this.priorityNamesModelList.join("~") : '',
-      'modality': this.modalityModelList ? this.modalityModelList.join("~") : '',
+      'status': this.statusNameModelList.toString(),
+      'priority': this.priorityNamesModelList.toString(),
+      'modality': this.modalityModelList.toString(),
       'cpt': this.cptModel,
       'userId': userId,
-      'marketingUser': this.marketingUserModelList ? this.marketingUserModelList.join("~") : '',
+      'marketingUser': this.marketingUserModelList.toString(),
       'checkNo': this.checkNumberModel,
       'checkAmount': this.checkAmountModel,
       'userType': this.storageService.user.UserType,
@@ -813,7 +573,6 @@ export class PatientComponent implements OnInit {
     this.patientService.getPatientData(true, body, this.pageNumber, this.pageSize).subscribe((res) => {
 
       if (res.response != null && res.response.length > 0) {
-        debugger
         this.patientGridList = res.response;
         this.totalRecord = res.totalRecords;
         this.dataGrid.instance.refresh();
@@ -828,16 +587,6 @@ export class PatientComponent implements OnInit {
       (err: any) => {
         this.error(err);
       });
-    this.GetLastSearchRecord()
-  }
-  onFullLogsPageNumberChange(pageNumber: any) {
-    this.pageNumberFullLogs = pageNumber;
-    this.getLogs();
-
-  }
-  onAppointmentLogsPageNumberChange(pageNumber: any) {
-    this.pageNumberAppointmentLogs = pageNumber;
-    this.getLogs();
   }
   onPageNumberChange(pageNumber: any) {
     this.pageNumber = pageNumber;
@@ -857,7 +606,6 @@ export class PatientComponent implements OnInit {
   }
 
   clearFilter(isClear: boolean = true) {
-
     if (isClear) {
       this.patientGridList = [];
     }
@@ -867,12 +615,12 @@ export class PatientComponent implements OnInit {
     this.dobModel = '';
     this.ssnModel = '';
     this.phoneModel = '';
-    this.attorneyTypeModelList = '';
+    this.attorneyTypeModelList = [];
     this.doiModel = '';
     this.financialTypeModelList = [];
     this.insuranceCompanyModelList = [];
     this.accessionModel = '';
-    this.referrerModelList = '';
+    this.referrerModelList = [];
     this.brokerModelList = [];
     this.facilityModelList = [];
     this.parentFacilityModelList = [];
@@ -958,15 +706,10 @@ export class PatientComponent implements OnInit {
   }
 
   selectionChanged(data: any) {
-    debugger
-    this.selectedRows = [];
-    this.checkedData = data.selectedRowsData;
-    this.selectedInternalPatientId = data.selectedRowKeys[0] ? data.selectedRowKeys[0].INTERNALPATIENTID : '';
 
-    // this.itemClick(data.selectedRows);
+    this.checkedData = data.selectedRowsData;
   }
   _base64ToArrayBuffer(base64: any) {
-    
     var binary_string = window.atob(base64);
     var len = binary_string.length;
     var bytes = new Uint8Array(len);
@@ -987,7 +730,7 @@ export class PatientComponent implements OnInit {
 
   goButtonClick() {
 
-    debugger
+
     if (this.ddlCurrentValue == '2')//'Save Grid'
     {
       let setting = { ...this.filterBody };
@@ -1018,6 +761,7 @@ export class PatientComponent implements OnInit {
     } else {
       if (this.ddlCurrentValue == '1')//' Export Outside Billing '
       {
+
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             '   ': '',
@@ -1027,7 +771,7 @@ export class PatientComponent implements OnInit {
             'PATIENTIDEXPORT': this.checkedData[i].PATIENTID,
             'ADDRESS': this.checkedData[i].FullAddress,
             'DOB': this.datePipe.transform(this.checkedData[i].DOB, this.dateTimeFormatCustom.Date), //.toLocaleDateString(),
-            'GENDER': this.checkedData[i].Gender,
+            'GENDER': this.checkedData[i].Sex,
             'BillSent': this.checkedData[i].BillSent,
             'INSURANCE COMPANY': this.checkedData[i].FINANCIALTYPENAME,
             'COVERAGE LEVEL': this.checkedData[i].COVERAGELEVEL,
@@ -1061,9 +805,7 @@ export class PatientComponent implements OnInit {
       }
       else if (this.ddlCurrentValue == '6') {
         // Gross Receipts 
-
         let body =
-
         {
           'firstName': this.firstNameModel,
           'lastName': this.lastNameModel,
@@ -1099,8 +841,7 @@ export class PatientComponent implements OnInit {
           });
       }
       else if (this.ddlCurrentValue == '7') {
-        //  Generate e-Sign Link    
-        debugger
+        //  Generate e-Sign Link        
         for (let i = 0; i < this.checkedData.length; i++) {
           console.log(this.checkedPatientIdInternalStudyid);
           const results = this.checkedPatientIdInternalStudyid.filter(pt => {
@@ -1139,7 +880,7 @@ export class PatientComponent implements OnInit {
         let data = {
           'parameter': JSON.stringify(this.checkedPatientIdInternalStudyid)
         }
-        this.patientService.getGeneratePI_TC_P_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+        this.patientService.getGeneratePI_TC_P_PI_Lien(true,JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.response != null) {
             // this.success(res);             
@@ -1152,7 +893,6 @@ export class PatientComponent implements OnInit {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
               // var newWin=
-            
               window.open(URL.createObjectURL(file), '_blank');
             }
           } else {
@@ -1175,7 +915,7 @@ export class PatientComponent implements OnInit {
         let data = {
           'parameter': JSON.stringify(this.checkedPatientIdInternalStudyid)
         }
-        this.patientService.getGeneratePI_TC_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+        this.patientService.getGeneratePI_TC_Lien(true,JSON.stringify(JSON.stringify(data))).subscribe((res) => {
 
           this.checkedPatientIdInternalStudyid = [];
           if (res.response != null) {
@@ -1184,9 +924,7 @@ export class PatientComponent implements OnInit {
             for (let result of this.fileList) {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
-              
               window.open(URL.createObjectURL(file), '_blank');
-            
               //  this.success(res);
             }
           } else {
@@ -1210,7 +948,7 @@ export class PatientComponent implements OnInit {
           'parameter': JSON.stringify(this.checkedPatientIdInternalStudyid)
         }
 
-        this.patientService.getGenerateP_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+        this.patientService.getGenerateP_PI_Lien(true,JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.responseCode == 200) {
             //console.log(res);            
@@ -1485,12 +1223,11 @@ export class PatientComponent implements OnInit {
           this.checkedPatientIdInternalStudyid = [];
           for (let i = 0; i < this.checkedData.length; i++) {
             this.checkedPatientIdInternalStudyid.push({
-
               patiendId: this.checkedData[i].PATIENTID,
               InternalStudyId: this.checkedData[i].Internalstudyid,
               financialType: this.checkedData[i].FINANCIALTYPENAME,
               studyStatus: this.checkedData[i].STATUS,
-              readingPhysician: this.checkedData[i].READINGPHYSICIAN,
+              readingPhysician: this.checkedData[i].ReadingPhysician,
               Rad_PSL: this.checkedData[i].RadPSL,
               Tech_PSL: this.checkedData[i].TechPSL,
             });
@@ -1533,7 +1270,7 @@ export class PatientComponent implements OnInit {
               'internalPatientIds': this.checkedData[i].PATIENTID,
               'financialType': this.checkedData[i].FINANCIALTYPENAME,
               'studyStatus': this.checkedData[i].STATUS,
-              'readingPhysician': this.checkedData[i].READINGPHYSICIAN
+              'readingPhysician': this.checkedData[i].ReadingPhysician
             }
           }
           this.patientService.CreateXRAYPregWaiver(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
@@ -1583,17 +1320,8 @@ export class PatientComponent implements OnInit {
 
     }
   }
-  showDocManager(e: any) {
-
-    let dataGridalltrList: any = document.getElementsByTagName("tr");
-    for (var i = 0; i < dataGridalltrList.length; i++) {
-      dataGridalltrList[i].classList.remove("custom-patient-row-selection")
-    }
-    for (let index = 0; index < e.row.cells.length; index++) {
-      e.row.cells[index].cellElement.parentElement.classList.add("custom-patient-row-selection");
-    }
-
-    this.commonService.sendDataToDocumentManager(e.data.PATIENTID);
+  showDocManager(patientId: any) {
+    this.commonService.sendDataToDocumentManager(patientId);
   }
   convertBase64ToBlobData(base64Data: string, contentType: string = 'application/pdf', sliceSize = 512) {
     const byteCharacters = atob(base64Data);
@@ -1626,43 +1354,6 @@ export class PatientComponent implements OnInit {
     XLSX.writeFile(wb, `${fileName}.xlsx`);
   }
 
-  lastSearchPatch(event) {
-    debugger
-    let stringInput = JSON.parse(event.PageSettings);
-    this.clearFilter(false);
-    let a = stringInput.patientID;
-    // console.log(stringInput);    
-    this.lastNameModel = stringInput.lastName;
-    this.firstNameModel = stringInput.firstName;
-    this.patientIdModel = stringInput.patientID;
-    this.dobModel = stringInput.birthDate;
-  }
-
-
-  ClearAttorney(e) {
-    let isValid = false;
-    this.attorneyList.forEach(function (players) {
-      if (players === e.target.value && !isValid) {
-        isValid = true;
-      }
-    });
-    if (!isValid) {
-      this.attorneyTypeModelList = ''
-    }
-  }
-
-  ClearReferrerPhysician(e: any) {
-    let isValid = false;
-    this.referrerList.forEach(function (players) {
-      if (players === e.target.value && !isValid) {
-        isValid = true;
-      }
-    });
-    if (!isValid) {
-      this.referrerModelList = ''
-    }
-  }
-
   exportOutSideBillingToExcel(arr: any[], sheetName: string, filename: string) {
     //let { sheetName, fileName } = getFileName(name);
     let fileName = filename;
@@ -1671,107 +1362,7 @@ export class PatientComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
     XLSX.writeFile(wb, `${fileName}.xlsx`);
   }
-
-  InsertLastSearchRecord() {
-    debugger
-    let body = {
-      'id': 0,
-      'isSelected': 0,
-      'firstName': this.firstNameModel,
-      'LastName': this.lastNameModel,
-      'patientID': this.patientIdModel,
-      'birthDate': this.dobModel,
-      'ssn': this.ssnModel,
-      'phone': this.phoneModel,
-      'attorney': this.attorneyTypeModelList ? this.attorneyTypeModelList.toString() : '',
-      'doi': this.doiModel,
-      'financialType': this.financialTypeModelList ? this.financialTypeModelList.join(",") : '',
-      'insuranceCompany': this.insuranceCompanyModelList ? this.insuranceCompanyModelList.join(",") : '',
-      'accession': this.accessionModel,
-      'refPhysician': this.referrerModelList ? this.referrerModelList.toString() : '',
-      'broker': this.brokerModelList ? this.brokerModelList.join(",") : '',
-      'facility': this.facilityModelList ? this.facilityModelList.join(",") : '',
-      'parentCompany': this.parentFacilityModelList ? this.parentFacilityModelList.join(",") : '',
-      'fromDate': this.fromDateModel,
-      'toDate': this.toDateModel,
-      'dateRage': this.dateRangeModel,
-      'status': this.statusNameModelList ? this.statusNameModelList.join(",") : '',
-      'priority': this.priorityNamesModelList ? this.priorityNamesModelList.join(",") : '',
-      'modality': this.modalityModelList ? this.modalityModelList.join(",") : '',
-      'cpt': this.cptModel,
-      'userId': this.storageService.user.UserId,
-      'marketingUser': this.marketingUserModelList ? this.marketingUserModelList.join(",") : '',
-      'checkNo': this.checkNumberModel,
-      'checkAmount': this.checkAmountModel
-    }
-    this.patientService.InsertLastSearchRecord(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
-      var data: any = res;
-      console.log(data);
-    }
-    )
-  }
-
-  GetLastSearchRecord() {
-    debugger
-    this.patientService.GetLastSearchRecord(true).subscribe((res) => {
-      this.LastSearchRecordList = res.response
-      if (this.LastSearchRecordList == null) {
-        this.previouButtonDisable = true;
-        this.nextButtonDisable = true;
-      }
-    })
-  }
-
-  recordChange(ArrayIndex: any, isDisable: any) {
-    if (!isDisable) {
-      if (ArrayIndex == 0) {
-        this.ArrayIndex = this.ArrayIndex + 1;
-        this.nextButtonDisable = false;
-
-      }
-      else if (ArrayIndex == 1) {
-        this.ArrayIndex = this.ArrayIndex - 1;
-        this.previouButtonDisable = false;
-      }
-      if (this.ArrayIndex >= this.LastSearchRecordList.length - 1) {
-        this.previouButtonDisable = true;
-      }
-      if (this.ArrayIndex == 0) {
-        this.nextButtonDisable = true;
-      }
-
-      let array: any = this.LastSearchRecordList;
-      this.lastNameModel = array[this.ArrayIndex].LastName;
-      this.firstNameModel = array[this.ArrayIndex].FirstName;
-      this.patientIdModel = array[this.ArrayIndex].PatientID;
-      this.dobModel = array[this.ArrayIndex].BirthDate != '1900-01-01' ? array[this.ArrayIndex].BirthDate : '';
-      this.ssnModel = array[this.ArrayIndex].Ssn;
-      this.phoneModel = array[this.ArrayIndex].Phone;
-      this.attorneyTypeModelList = array[this.ArrayIndex].Attorney;
-      this.doiModel = array[this.ArrayIndex].Doi != '1900-01-01' ? array[this.ArrayIndex].Doi : '';
-      this.financialTypeModelList = array[this.ArrayIndex].FinancialType ? array[this.ArrayIndex].FinancialType.split(',') : '';
-      this.insuranceCompanyModelList = array[this.ArrayIndex].InsuranceCompany ? array[this.ArrayIndex].InsuranceCompany.split(',') : '';
-      this.accessionModel = array[this.ArrayIndex].Accession;
-      this.referrerModelList = array[this.ArrayIndex].RefPhysician ? array[this.ArrayIndex].RefPhysician.split(',') : '';
-      this.facilityModelList = array[this.ArrayIndex].FacilityId ? array[this.ArrayIndex].FacilityId.split(',') : '';
-      this.facilityModelList = array[this.ArrayIndex].Facility ? array[this.ArrayIndex].Facility.split(',') : '';
-      this.parentFacilityModelList = array[this.ArrayIndex].ParentCompany ? array[this.ArrayIndex].ParentCompany.split(',').map(x => +x) : '';
-      this.fromDateModel = array[this.ArrayIndex].FromDate != '1900-01-01' ? array[this.ArrayIndex].FromDate : '';
-      this.toDateModel = array[this.ArrayIndex].ToDate != '1900-01-01' ? array[this.ArrayIndex].ToDate : '';
-      this.dateRangeModel = array[this.ArrayIndex].DateRage;
-      this.statusNameModelList = array[this.ArrayIndex].Status ? array[this.ArrayIndex].Status.split(',') : '';
-      this.priorityNamesModelList = array[this.ArrayIndex].Priority ? array[this.ArrayIndex].Priority.split(',') : '';
-      this.modalityModelList = array[this.ArrayIndex].Modality ? array[this.ArrayIndex].Modality.split(',') : '';
-      this.cptModel = array[this.ArrayIndex].Cpt;
-      this.marketingUserModelList = array[this.ArrayIndex].MarketingUser ? array[this.ArrayIndex].MarketingUser.split(',').map(x => +x) : '';
-      this.checkNumberModel = array[this.ArrayIndex].CheckNo;
-      this.checkAmountModel = array[this.ArrayIndex].CheckAmount;
-      this.applyFilter()
-    }
-  }
-
   onChangeSavedSearch(event) {
-    debugger
     //this.clearFilter();
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
@@ -1788,11 +1379,11 @@ export class PatientComponent implements OnInit {
     this.financialTypeModelList = stringInput.financialType ? stringInput.financialType.split(',') : this.financialTypeModelList;
     this.insuranceCompanyModelList = stringInput.insuranceCompany ? stringInput.insuranceCompany.split(',') : this.insuranceCompanyModelList;
     this.accessionModel = stringInput.accession;
-    //this.referrerModelList = stringInput.referrelId ? stringInput.referrelId.split(',') : this.referrerModelList;
+    this.referrerModelList = stringInput.referrelId ? stringInput.referrelId.split(',') : this.referrerModelList;
     //update by Maninder
     this.referrerModelList = stringInput.refPhysician ? stringInput.refPhysician.split(',') : this.referrerModelList;
     //
-    //this.brokerModelList = stringInput.brokerId ? stringInput.brokerId.split(',') : this.brokerModelList;
+    this.brokerModelList = stringInput.brokerId ? stringInput.brokerId.split(',') : this.brokerModelList;
     //update by Maninder
     this.brokerModelList = stringInput.broker ? stringInput.broker.split(',') : this.brokerModelList;
     //
@@ -1814,6 +1405,7 @@ export class PatientComponent implements OnInit {
   }
   getAllSavedSearchList() {
     this._commonMethodService.getSavedSearchList(true, this.storageService.user.UserId, 'patient').subscribe((res) => {
+
       if (res.response != null) {
         this.savedSearchList = res.response;
       }
@@ -1823,70 +1415,5 @@ export class PatientComponent implements OnInit {
     }, (err) => {
       this.error(err);
     });
-  }
-
-
-  get patientBillingDetailFormControls() { return this.patientBillingDetailForm.controls; }
-
-  onContextMenuPreparing(e) {
-
-    const that = this;
-    if (e?.row?.rowType === "data") {
-      if (!e.items) e.items = [];
-
-      e.items.push({
-        text: "BILLING",
-        items: [{
-          text: "Add bill/payment destination",
-          onItemClick: function () {
-            if (e.row.data.INTERNALPATIENTID) {
-              that.selectedInternalPatientId = e.row.data.INTERNALPATIENTID;
-            }
-            else {
-              that.selectedInternalPatientId = that.findByRecursion(e.row.data);
-            }
-            that.openBillingPopUp();
-          }
-        }]
-      },
-        {
-          text: "LOG",
-          onItemClick: function () {
-            if (e.row.data.INTERNALPATIENTID) {
-              that.selectedInternalPatientId = e.row.data.INTERNALPATIENTID;
-            }
-            else {
-              that.selectedInternalPatientId = that.findByRecursion(e.row.data);
-            }
-            that.openLogsPopUp();
-          }
-
-        }
-      );
-    }
-  }
-  findByRecursion(res: any) {
-    if (res.items && res.items.length && res.key != true) {
-      return this.findByRecursion(res.items[0])
-    } else {
-      return res && res.INTERNALPATIENTID ? res.INTERNALPATIENTID : 0;
-    }
-  }
- 
-ValidateMultiSelectTextLength(id, a)
-  {
-    a =this._commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
-  copyToClipboard(currentPageUrl) {
-    debugger
-     navigator.clipboard.writeText(currentPageUrl).catch(() => {
-      console.error("Unable to copy text");
-    });
-     this.notificationService.showToaster({
-       alertHeader: '',
-      alertMessage: currentPageUrl,
-       alertType: null
-     });
   }
 }

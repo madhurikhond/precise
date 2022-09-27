@@ -5,7 +5,7 @@ import { PatientComponent } from './patient.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../shared/shared.module';
 import { PatientService } from 'src/app/services/patient/patient.service';
-import { DxAutocompleteModule, DxButtonModule, DxContextMenuModule } from 'devextreme-angular';
+import { DxAutocompleteModule, DxButtonModule } from 'devextreme-angular';
 import { EsignrequestaComponent } from './esignrequesta/esignrequesta.component';
 import { EsignrequestComponent } from './esignrequest/esignrequest.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
@@ -24,7 +24,6 @@ import { EsignrequestasComponent } from './esignrequestas/esignrequestas.compone
     DxAutocompleteModule,
     PatientRoutingModule,
     SignaturePadModule,
-    DxContextMenuModule,
   
   ],
   providers:[PatientService ,FacilityService]

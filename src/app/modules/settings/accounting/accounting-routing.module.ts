@@ -12,11 +12,11 @@ const routes: Routes = [
   {
     path: '', component: AccountingComponent, children:[      
       { path: '', redirectTo: 'defaults', pathMatch: 'full'},
-      { path: 'defaults', loadChildren: () => import('../accounting/ar/ar-settings/defaults/defaults.module').then(m => m.DefaultsModule), canActivate: [AuthGuard,RoleGuard] },
-      { path: 'payment-type', component: PaymentTypeComponent, canActivate: [AuthGuard,RoleGuard] },
-      { path: 'payment-bank', component: PaymentBankComponent, canActivate: [AuthGuard,RoleGuard] },
-      { path: 'qb-account', component: QbAccountComponent, canActivate: [AuthGuard,RoleGuard] },
-      { path: 'payee', component: PayeeComponent, canActivate: [AuthGuard,RoleGuard] },
+      { path: 'defaults', loadChildren: () => import('../accounting/ar/ar-settings/defaults/defaults.module').then(m => m.DefaultsModule), canActivate: [AuthGuard] },
+      { path: 'payment-type', component: PaymentTypeComponent, canActivate: [AuthGuard] },
+      { path: 'payment-bank', component: PaymentBankComponent, canActivate: [AuthGuard] },
+      { path: 'qb-account', component: QbAccountComponent, canActivate: [AuthGuard] },
+      { path: 'payee', component: PayeeComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

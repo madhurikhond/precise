@@ -25,7 +25,6 @@ export class NotificationService {
   showNotification(notification : Notification){
     this._toastr.clear();
     if(notification.alertHeader){
-      debugger
       if(notification.alertHeader.toLowerCase() === 'unknown error'){
         notification.alertHeader = 'Error';
         notification.alertMessage = 'Network error';

@@ -4,8 +4,6 @@ import { AccountService } from 'src/app/services/account.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 export type ForgotPasswordFormValue = {
   'email': string
@@ -20,7 +18,7 @@ export type ForgotPasswordFormValue = {
 export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   submitted = false;
-  readonly commonRegex=CommonRegex;
+
   constructor(private fb: FormBuilder,
     private readonly accountService: AccountService,
     private readonly commonMethodService: CommonMethodService,
@@ -28,7 +26,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     ngOnInit(): void {
       this.forgotPasswordForm = this.fb.group({
-        email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]]});
+        email: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]]      });
         this.commonMethodService.setTitle('Forgot password');
     }
 

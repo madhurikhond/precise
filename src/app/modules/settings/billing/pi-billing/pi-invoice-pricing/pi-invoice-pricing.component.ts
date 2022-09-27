@@ -41,7 +41,7 @@ export class PiInvoicePricingComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('PI Invoice');
     this.getAllPiInvoices();
 
     this.editForm = this.fb.group({

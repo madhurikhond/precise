@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { AccoutingService } from 'src/app/services/accouting-service/accouting.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
@@ -37,7 +35,7 @@ export class CollectionmanagementComponent implements OnInit {
   isShowColumnWithNoData = true;
   readonly pageSizeArray = PageSizeArray;
   customMask: [string, any];
-  readonly commonRegex=CommonRegex;
+
 
   constructor(private fb: FormBuilder, private readonly notificationService: NotificationService,
     private readonly commonMethodService: CommonMethodService,
@@ -52,7 +50,7 @@ export class CollectionmanagementComponent implements OnInit {
       ContactName: [''],
       PhoneNumber: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       FaxNumber: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       Address: [''],
       City: [''],
       State: [''],
@@ -62,11 +60,11 @@ export class CollectionmanagementComponent implements OnInit {
       QBAccountName: [''],
       IsActive: [false],
       CommissionPercentage: ['', [Validators.min(0), Validators.max(100)]],
-      BillerEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      BillerEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      BillerEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      BillerEmail4: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      BillerEmail5: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      BillerEmail1: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail2: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail3: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail4: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail5: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       BulkBillingFinancialType: [''],
       DefaultBiller: [''],
       Type: [''],
@@ -352,7 +350,7 @@ export class CollectionmanagementComponent implements OnInit {
       ContactName: [''],
       PhoneNumber: [''],
       FaxNumber: [''],
-      Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       Address: [''],
       City: [''],
       State: [''],
@@ -362,11 +360,11 @@ export class CollectionmanagementComponent implements OnInit {
       QBAccountName: [''],
       IsActive: [false],
       CommissionPercentage: ['', [Validators.min(0), Validators.max(100)]],
-      BillerEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      BillerEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      BillerEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      BillerEmail4: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      BillerEmail5: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
+      BillerEmail1: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail2: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail3: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail4: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      BillerEmail5: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       BulkBillingFinancialType: [''],
       DefaultBiller: [''],
       Type: [''],

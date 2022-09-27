@@ -1,8 +1,7 @@
 <div class="patientDetail">
     <table class="table table-theme">
         <tbody>
-            <tr [class.alertTabYellow]="this.hasAlert"  class="collapse-active-data1">
-               
+            <tr [class.alertTabYellow]="this.hasAlert" class="collapse-active-data1">
                 <td class="table-sub-header ">
                     <i *ngIf="isSeen === 1" class="fa fa-eye text-success" style="font-size: 21px;"
                         aria-hidden="true"></i>
@@ -19,7 +18,7 @@
                     <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById()" data-toggle="modal"
                         data-target="#patient-Detail-Window">{{data.data.PATIENTID}}
                         <strong>{{patientId}}</strong></a> -
-                    <strong>{{name}}</strong> - {{dob}} - {{financialTypeName}} - <strong><a [href]="'tel:'+phone" target="blank">{{phone}}</a></strong> {{zipCode
+                    <strong>{{name}}</strong> - {{dob}} - {{financialTypeName}} - <strong>{{phone}}</strong> {{zipCode
                     != null ? 'ZIP: ' + zipCode : '' }} {{language}}
                     <span class="text-success"> {{fullName}}</span>
                 </td>

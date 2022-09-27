@@ -37,7 +37,6 @@
     "convert-array-to-csv": "^2.0.0",
     "devextreme": "^20.1.8",
     "devextreme-angular": "^20.1.8",
-    "dwt": "^17.3.0",
     "exceljs": "^4.2.1",
     "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
@@ -63,12 +62,14 @@
     "save": "^2.4.0",
     "tslib": "^2.0.0",
     "xlsx": "^0.17.1",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+    "dhtmlx-scheduler": "file:src/assets/scheduler/codebase"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.7",
-    "@angular/cli": "^10.0.8",
+    "@angular/cli": "^10.2.1",
     "@angular/compiler-cli": "~10.0.11",
+    "@nativescript/schematics": "^11.2.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",

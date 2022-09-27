@@ -21,7 +21,6 @@ export class PlayerTypeComponent implements OnInit {
     this.getPlayerTypes();
 
     this._clipboardService.copyResponse$.subscribe(re => {
-
       if (re.isSuccess) {
         this.notificationService.showToaster({
           alertHeader: null,

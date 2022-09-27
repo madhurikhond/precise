@@ -1,4 +1,4 @@
-<div class="modal fade modal-theme" #refferrer id="ReferrerDetailWindow" role="dialog" data-backdrop="static"
+<div class="modal fade modal-theme" id="ReferrerDetailWindow" role="dialog" data-backdrop="static"
 	data-keyboard="false" aria-labelledby="exampleModalLabel" aria-modal="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -9,32 +9,26 @@
 			<form [formGroup]="referrersForm" class="theme-form referrer-theme-form">
 				<div class="modal-body">
 					<div class="tab-section">
-						<ul class="nav nav-tabs" click ='onTabclick(false)'>
+						<ul class="nav nav-tabs">
 							<li class="nav-item">
 								<a class="nav-link active" #referrer_details data-toggle="tab"
-								[ngClass]="{'active': tabId === 'edit-referrer-details'}"
-									href="#edit-referrer-details" (click)="updateTabId('edit-referrer-details')">Referrer
+									href="#edit-referrer-details">Referrer
 									Details</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#edit-notes"  
-								[ngClass]="{'active': tabId === 'edit-notes'}" (click)="updateTabId('edit-notes')" >Notes</a>
+								<a class="nav-link" data-toggle="tab" href="#edit-notes">Notes</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#edit-policies"  
-								[ngClass]="{'active': tabId === 'edit-policies'}" (click)="updateTabId('edit-policies')">Policies</a>
+								<a class="nav-link" data-toggle="tab" href="#edit-policies">Policies</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#edit-contact-details"
-								[ngClass]="{'active': tabId === 'edit-contact-details'}"  (click)="updateTabId('edit-contact-details')" >Contact Details</a>
+								<a class="nav-link" data-toggle="tab" href="#edit-contact-details">Contact Details</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#edit-option" 
-								[ngClass]="{'active': tabId === 'edit-option'}" (click)="updateTabId('edit-option')" >Option</a>
+								<a class="nav-link" data-toggle="tab" href="#edit-option">Option</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" 
-								[ngClass]="{'active': tabId === 'edit-negotiated-settlements'}" href="#edit-negotiated-settlements"  (click)="updateTabId('edit-negotiated-settlements')">Negotiated
+								<a class="nav-link" data-toggle="tab" href="#edit-negotiated-settlements">Negotiated
 									Settlements</a>
 							</li>
 
@@ -48,7 +42,7 @@
 						</ul>
 
 						<div class="tab-content">
-							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-referrer-details'}"  id="edit-referrer-details">
+							<div class="tab-pane active show" id="edit-referrer-details">
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="form-group">
@@ -211,16 +205,11 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="form-group">
-											<div class="theme-label">Ramsoft Username</div>
+											<div class="theme-label">Radius Username</div>
 											<div class="input-group">
 												<input type="text" class="form-control" formControlName="username"
 													disabled>
 											</div>
-										</div>
-									</div>
-									<div *ngIf="getBILink" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-										<div class="form-group">
-											<a target="_blank" (click)="viewUrl()" class="btn btn-theme pull-left btn-sm" >BI / KPI Attorney Performance</a>
 										</div>
 									</div>
 								</div>
@@ -253,8 +242,8 @@
 													<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
 														[ngClass]="{ 'is-invalid': (submitted && refForm.exiledDate.errors) }"
 														formControlName="exiledDate" type="date"
-														[showClearButton]="true" [useMaskBehavior]="true">
-														
+														[showClearButton]="true" [useMaskBehavior]="true"
+														dateSerializationFormat="yyyy-MM-dd">
 													</dx-date-box>
 												</div>
 												<div *ngIf="submitted && refForm.exiledDate.errors"
@@ -282,7 +271,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-notes'}" id="edit-notes">
+							<div class="tab-pane fade" id="edit-notes">
 								<div class="note-list">
 									<div *ngIf="!referrerNoteList" class="nodata-display"> No note to display </div>
 									<div class="note-list-inner" *ngFor="let note of referrerNoteList;">
@@ -300,7 +289,7 @@
 										[disabled]="isNoteButtonDisable">Add Note</button>
 								</div>
 							</div>
-							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-policies'}" id="edit-policies">
+							<div class="tab-pane fade" id="edit-policies">
 								<form class="theme-form" [formGroup]="ReferrerPoliciesForm">
 									<div class="theme-form">
 										<div class="row">
@@ -323,7 +312,7 @@
 									</div>
 								</form>
 							</div>
-							<div class="tab-pane " [ngClass]="{'active': tabId === 'edit-contact-details'}" id="edit-contact-details">
+							<div class="tab-pane fade" id="edit-contact-details">
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="user-detail">
@@ -887,7 +876,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane"  [ngClass]="{'active': tabId === 'edit-option'}" id="edit-option">
+							<div class="tab-pane fade" id="edit-option">
 								<div class="row">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 										<div class="checkbox-theme">
@@ -1033,19 +1022,19 @@
 											<div class="theme-label">Grouping</div>
 											<div class="referrers-grouping">
 												<ng-select [items]="referrerList" bindLabel="username"
-													bindValue="username" [multiple]="true" id="id122" (add)="a1=ValidateMultiSelectTextLength('id122',a1)" groupBy="selectedAllGroup"
+													bindValue="username" [multiple]="true" groupBy="selectedAllGroup"
 													searchable="true" placeholder="Search Grouping Names"
-													[closeOnSelect]="false" 
+													[closeOnSelect]="false" [(ngModel)]="selectedReferrers"
 													(keyup)="onTagChange($event)">
 
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
 															<span class="ng-value-label"> {{item.username}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a1"> <span
-																class="ng-value-label">{{items.length - a1}}
+														<div class="ng-value" *ngIf="items.length > 1"> <span
+																class="ng-value-label">{{items.length - 1}}
 																more..</span>
 														</div>
 													</ng-template>
@@ -1087,16 +1076,16 @@
 											<div class="theme-label">Doc Types to Exculde 1</div>
 											<div class="doc-types-field">
 												<ng-select [items]="docTypeList" formControlName="docId"
-													bindLabel="docType" [multiple]="true" id="id123" (add)="a2=ValidateMultiSelectTextLength('id123',a2)" [closeOnSelect]="false"
+													bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
 													bindValue="docId" [(ngModel)]="selectedDocType">
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+														<div class="ng-value" *ngFor="let item of items | slice:0:1">
 															<span class="ng-value-label"> {{item.docType}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > a2">
-															<span class="ng-value-label">{{items.length - a2}}
+														<div class="ng-value" *ngIf="items.length > 1">
+															<span class="ng-value-label">{{items.length - 1}}
 																more...</span>
 														</div>
 													</ng-template>
@@ -1105,6 +1094,7 @@
 										</div>
 									</div>
 								</div>
+
 								<div class="row">
 									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 										<div class="checkbox-theme">
@@ -1116,7 +1106,6 @@
 									<ng-container *ngIf="refForm.isMarkettingCredit.value==true">
 										<div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
 											<div class="form-group">
-												<!-- <div class="theme-label">Marketing User</div> -->
 												<select formControlName="marketingUser" class="form-control">
 													<option></option>
 													<option *ngFor="let user of epicUserList" [ngValue]="user.USERID">
@@ -1130,8 +1119,8 @@
 												<div class="theme-label">From</div>
 												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
 													formControlName="marketingStartDate" type="date"
-													[showClearButton]="true" [useMaskBehavior]="true">
-													
+													[showClearButton]="true" [useMaskBehavior]="true"
+													dateSerializationFormat="yyyy-MM-dd">
 												</dx-date-box>
 											</div>
 										</div>
@@ -1141,8 +1130,8 @@
 												<!-- <input class="form-control" type="date" formControlName="marketingEnddate"> -->
 												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
 													formControlName="marketingEnddate" type="date"
-													[showClearButton]="true" [useMaskBehavior]="true">
-													
+													[showClearButton]="true" [useMaskBehavior]="true"
+													dateSerializationFormat="yyyy-MM-dd">
 												</dx-date-box>
 											</div>
 										</div>
@@ -1159,7 +1148,7 @@
 												<!-- <input class="form-control" type="date" formControlName="verifiedOn" disabled>  -->
 												<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
 													formControlName="verifiedOn" type="date" [showClearButton]="true"
-													[useMaskBehavior]="true" >
+													[useMaskBehavior]="true" dateSerializationFormat="yyyy-MM-dd">
 												</dx-date-box>
 											</div>
 										</div>
@@ -1206,7 +1195,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane" [ngClass]="{'active': tabId === 'edit-negotiated-settlements'}" id="edit-negotiated-settlements">
+							<div class="tab-pane fade" id="edit-negotiated-settlements">
 								<div class="row">
 									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="user-detail">
@@ -1445,6 +1434,5 @@
 		</div>
 	</div>
 </div>
-<button #hiddenButton2 [hidden]="true" data-toggle="modal" data-target="#ReferrerDetailWindow"></button>
 <app-document-referral-and-fundingco></app-document-referral-and-fundingco>
 <!-- <div class="modal-backdrop fade show" [ngStyle]="{'display':editAccount}"></div> -->

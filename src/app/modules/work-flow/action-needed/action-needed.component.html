@@ -55,15 +55,15 @@
                 <div class="form-group">
                     <div class="theme-label">FINANCIAL TYPE</div>
                     <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="FINANCIALTYPENAME"
-                        formControlName="financialType" [multiple]="true" id="id131" (add)="a1=ValidateMultiSelectTextLength('id131',a1)" [closeOnSelect]="false"
+                        formControlName="financialType" [multiple]="true" [closeOnSelect]="false"
                         [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.FINANCIALTYPENAME}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a1">
-                                <span class="ng-value-label">{{items.length - a1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -71,14 +71,14 @@
                 <div class="form-group">
                     <div class="theme-label">Funding Company</div>
                     <ng-select [items]="brokerList" placeholder="Select" bindLabel="BROKER" formControlName="broker"
-                        [multiple]="true" id="id132" (add)="a2=ValidateMultiSelectTextLength('id132',a2)" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="BROKER">
+                        [multiple]="true" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="BROKER">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a2">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.BROKER}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a2">
-                                <span class="ng-value-label">{{items.length - a2}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -86,15 +86,15 @@
                 <div class="form-group">
                     <div class="theme-label">Priority</div>
                     <ng-select [items]="priorityList" placeholder="Select" bindLabel="PRIORITYNAME"
-                        formControlName="priority" [multiple]="true"id="id133" (add)="a3=ValidateMultiSelectTextLength('id133',a3)" [closeOnSelect]="false"
+                        formControlName="priority" [multiple]="true" [closeOnSelect]="false"
                         [loading]="showDropdownLoader" bindValue="PRIORITYNAME">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a3">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.PRIORITYNAME}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a3">
-                                <span class="ng-value-label">{{items.length - a3}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -102,15 +102,15 @@
                 <div class="form-group">
                     <div class="theme-label">Modality</div>
                     <ng-select [items]="modalityList" placeholder="Select" bindLabel="MODALITYNAME"
-                        formControlName="modality" [multiple]="true" id="id134" (add)="a4=ValidateMultiSelectTextLength('id134',a4)" [closeOnSelect]="false"
+                        formControlName="modality" [multiple]="true" [closeOnSelect]="false"
                         [loading]="showDropdownLoader" bindValue="MODALITYNAME">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:a4">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                 <span class="ng-value-label"> {{item.MODALITYNAME}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > a4">
-                                <span class="ng-value-label">{{items.length - a4}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > 1">
+                                <span class="ng-value-label">{{items.length - 1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>

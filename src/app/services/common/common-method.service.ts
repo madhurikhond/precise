@@ -14,10 +14,8 @@ const commonTitle = 'Precise MRI';
 export class CommonMethodService {
   loginSession: Subject<boolean> = new BehaviorSubject<boolean>(null);
   title = new Subject<string>();
-  patientList: Array<{ name: string, viewUrl: string, is_selected: boolean, DocId: number, Dtype: string, Abbreviation: string, ReferreId: string, fileInfo: any, RadiologistId: number, Radiologist: string,name2:string }> = [];
-
   showTaskManagementWindowEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
-  toDoTaskCountForHeader: EventEmitter<number> = new EventEmitter<number>();
+   toDoTaskCountForHeader: EventEmitter<number> = new EventEmitter<number>();
   private savedSearchMessageSubject = new Subject<any>();
   savedSearchMessage = this.savedSearchMessageSubject.asObservable();
   private docManagerSubjectForDocComp = new Subject<any>();
@@ -36,34 +34,21 @@ export class CommonMethodService {
   private createAlertPopUpSubject = new Subject<any>();
   createAlertPopUpObservable = this.createAlertPopUpSubject.asObservable();
 
-  private requestSearchSubject = new Subject<any>();
-  requestSearchObservable = this.requestSearchSubject.asObservable();
-
-  private getListSubject = new Subject<any>();
-  getListObservable = this.getListSubject.asObservable();
-
   private preScreenPatientIDSubject = new BehaviorSubject('');
   preScreenPatientID = this.preScreenPatientIDSubject.asObservable();
-
+  
   private getCreateAlerts = new BehaviorSubject('');
   getCreateAlerts$ = this.getCreateAlerts.asObservable();
-
-  private getPatientDocList = new BehaviorSubject(this.patientList);
-  getPatientDocListObser = this.getPatientDocList.asObservable();
-
-  private observeFlag = new BehaviorSubject('');
-  getObserveFlag = this.observeFlag.asObservable();
 
   constructor(private _titleService: Title, private readonly _httpService: HttpService) {
     this.preScreeningUser.next(null)
     this.viewerRecords.next(null)
   }
-
   toggleSideNav(state: any) {
     this.sideNav.next(state);
   }
-
-  toggleReqSearchpopup(state: any) {
+  
+  toggleReqSearchpopup(state : any){
     this.reqSearch.next(state)
   }
 
@@ -172,11 +157,11 @@ export class CommonMethodService {
     );
   }
   getSavedSearchList(showGlobalLoader: boolean = true, userId: any, pageName: any) {
-
+   
     return this._httpService.get(`MasterValues/getSavedSearchList?userId=${userId}&pageName=${pageName}`, showGlobalLoader)
-      .pipe(
-        map((res: ApiResponse) => res)
-      );
+    .pipe(
+      map((res: ApiResponse) => res)
+    );
   }
   deleteSavedSearch(showGlobalLoader: boolean = true, id: any) {
     return this._httpService.delete(`MasterValues/DeleteSavedSearch?id=${id}`, showGlobalLoader).pipe(
@@ -185,11 +170,6 @@ export class CommonMethodService {
   }
   checkPatientExist(showGlobalLoader: boolean = true, patientId: string) {
     return this._httpService.get(`DocumentManager/CheckPatientExist?patientId=${patientId}`, showGlobalLoader).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-  getPowerBIUrl(showGlobalLoader: boolean = true) {
-    return this._httpService.get(`MasterValues/GetPowerBIUrl`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -208,49 +188,18 @@ export class CommonMethodService {
   setViewerRecords(details: any) {
     this.viewerRecords.next(details)
   }
-  sendDataToDocumentManagerForRefAndFundingCo(data: any) {
+  sendDataToDocumentManagerForRefAndFundingCo(data: any) {    
     this.docManagerSubjectForDocCompforRefAndFundingCo.next(data);
   }
-  sendDatatoCreateAlertPage(isOpen: boolean) {
+  sendDatatoCreateAlertPage(isOpen:boolean)
+  {
     this.createAlertPopUpSubject.next(isOpen);
-  }
-  sendDatatoRequestSearch(data: any) {
-    this.requestSearchSubject.next(data);
   }
   setPreScreenPatientID(PatientID: string) {
     this.preScreenPatientIDSubject.next(PatientID)
   }
   loadCreateAlertRecords(patientID: string) {
-
+  
     this.getCreateAlerts.next(patientID)
-  }
-  sendlist(data: any) {
-    this.getListSubject.next(data);
-  }
-
-  getdocList(data: any) {
-    this.getPatientDocList.next(data);
-  }
-
-  sendAutoRouteFlag(data: any) {
-    this.observeFlag.next(data);
-  }
-  ValidateMultiSelectTextLength(id, a) {
-    var endCellWidth: any = 0;
-    const ngSelectContainer = document.getElementById(id);
-    // const containerWidth = ngSelectContainer.offsetWidth;
-    const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
-    var percentage75:any=(containerWidth*75)/100;
-    const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
-    for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
-      endCellWidth = endCellWidth + insideCellWidth1;
-    }
-    if (endCellWidth > percentage75 && a==20) {
-      a =insideCellElement.length-1;
-    }
-    return a;
   }
 }

@@ -12,7 +12,6 @@ export class DocumentManagerModel {
     patientLastName:string;
     patientFirstName:string;
     docFromAttorney:boolean;
-    filePath
   }
 
   export class DocumentManagerAlert

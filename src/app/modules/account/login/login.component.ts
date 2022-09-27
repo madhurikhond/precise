@@ -11,10 +11,6 @@ import { Router } from '@angular/router';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PageModules } from 'src/app/services/common/page-modules';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
-
-
 declare const $: any;
 
 export type LoginFormValue = {
@@ -37,9 +33,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   loading: boolean = false;
-  freshLogin: string;
-  redirectLinkWithPermission : any;
-  readonly commonRegex=CommonRegex;
+  freshLogin: string
   constructor(private fb: FormBuilder,
     private readonly accountService: AccountService,
     private readonly storageService: StorageService,
@@ -55,16 +49,14 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.checkIsLoggedIn()) {
       //this.router.navigate(['dashboard']);
-      this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-      this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+      this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? ['dashboard'] : [this.storageService.LastPageURL]);
     }
     else {
       this.loginForm = this.fb.group({
-        email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]],
+        email: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
         password: ['', [Validators.required, noWhitespaceValidator]],
         keepSignIn: [false]
       });
-      
       this.commonMethodService.setTitle('Login');
     }
     // $(".modal-backdrop" ).remove();
@@ -107,8 +99,7 @@ export class LoginComponent implements OnInit {
         this.storageService.settCurrentUser(res.authentication.response);
         this.storageService.JWTToken = res.token;
         this.storageService.JWTTokenRoles = res.roles;
-        this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-        this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+        this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? ['dashboard'] : [this.storageService.LastPageURL]);
 
         this.accountService.getValidToken(true);
 
@@ -155,31 +146,5 @@ export class LoginComponent implements OnInit {
   onReset() {
     this.submitted = false;
     this.loginForm.reset();
-  }
-  redirectLinkPremission(data: any)
-  {
-    var valReturn: any;
-    let list: any = [];
-    let responseHierarchy = JSON.parse(data);
-        if (responseHierarchy && responseHierarchy.length) {
-          responseHierarchy.forEach((value) => {
-            if (value && value.hierarchy) {
-              value.hierarchy = JSON.parse(value.hierarchy);
-            }
-          });
-        }
-        for (let i = 0; i < responseHierarchy.length; i++) {
-          list.push(responseHierarchy[i].hierarchy);
-          console.log(list);
-          if(list[0].Url!=='')
-          {
-            valReturn=list[0].Url
-          }
-          else if(list[0].Url=='' && list[0].Children)
-          {
-            valReturn=list[0].Children[0].Url
-          }
-        }
-        return valReturn;
   }
 }

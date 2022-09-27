@@ -1465,11 +1465,11 @@ export class DwtComponent implements OnInit, OnDestroy {
 
               // this.b64Data = JSON.parse(result.responsString).Files
               if (this.isReadBarcode != true) {
-                this.patientList.push({ name: result.responsString[0].FileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].DocID, Dtype: result.responsString[0].DocType, Abbreviation: '', ReferreId: result.responsString[0].PatientID, fileInfo: '', RadiologistId: result.responsString[0].RadiologistId, Radiologist: result.responsString[0].Radiologist, name2: result.responsString[0].FileName })
+                this.patientList.push({ name: result.responsString[0].FileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].DocID, Dtype: result.responsString[0].DocType, Abbreviation: '', ReferreId: result.responsString[0].PatientID, fileInfo: result.responsString[0].Path, RadiologistId: result.responsString[0].RadiologistId, Radiologist: result.responsString[0].Radiologist, name2: result.responsString[0].FileName })
               }
               else {
                 
-                this.patientList.push({ name: result.responsString[0].fileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].docID, Dtype: result.responsString[0].docType, Abbreviation: '', ReferreId: result.responsString[0].patientID, fileInfo: '', RadiologistId: result.responsString[0].radiologistId, Radiologist: result.responsString[0].radiologist, name2: result.responsString[0].fileName})
+                this.patientList.push({ name: result.responsString[0].fileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].docID, Dtype: result.responsString[0].docType, Abbreviation: '', ReferreId: result.responsString[0].patientID, fileInfo: result.responsString[0].path, RadiologistId: result.responsString[0].radiologistId, Radiologist: result.responsString[0].radiologist, name2: result.responsString[0].fileName})
                
               }
               this.commonService.getdocList(this.patientList)
@@ -1502,11 +1502,11 @@ export class DwtComponent implements OnInit, OnDestroy {
 
                 // this.b64Data = result.responsString[0].fileBytes
                 if (this.isReadBarcode != true) {
-                  this.patientList.push({ name: result.responsString[0].FileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].DocID, Dtype: result.responsString[0].DocType, Abbreviation: '', ReferreId: result.responsString[0].PatientID, fileInfo: '', RadiologistId: result.responsString[0].RadiologistId, Radiologist: result.responsString[0].Radiologist, name2: result.responsString[0].FileName })
+                  this.patientList.push({ name: result.responsString[0].FileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].DocID, Dtype: result.responsString[0].DocType, Abbreviation: '', ReferreId: result.responsString[0].PatientID, fileInfo: result.responsString[0].Path, RadiologistId: result.responsString[0].RadiologistId, Radiologist: result.responsString[0].Radiologist, name2: result.responsString[0].FileName })
                 }
                 else {
 
-                  this.patientList.push({ name: result.responsString[0].fileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].docID, Dtype: result.responsString[0].docType, Abbreviation: '', ReferreId: result.responsString[0].patientID, fileInfo: '', RadiologistId: result.responsString[0].radiologistId, Radiologist: result.responsString[0].radiologist, name2: result.responsString[0].fileName})
+                  this.patientList.push({ name: result.responsString[0].fileName, viewUrl: this.blob(result.responsString[0].fileBytes), is_selected: false, DocId: result.responsString[0].docID, Dtype: result.responsString[0].docType, Abbreviation: '', ReferreId: result.responsString[0].patientID, fileInfo: result.responsString[0].path, RadiologistId: result.responsString[0].radiologistId, Radiologist: result.responsString[0].radiologist, name2: result.responsString[0].fileName})
 
                 }
 

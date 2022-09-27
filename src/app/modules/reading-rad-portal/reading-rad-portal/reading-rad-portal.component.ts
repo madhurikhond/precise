@@ -11,7 +11,6 @@ import CheckBox from 'devextreme/ui/check_box';
 import { Subscription } from 'rxjs';
 import { GenerateBillAndHoldLienComponent } from '../generate-bill-and-hold-lien/generate-bill-and-hold-lien.component';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 export interface tabModel {
   tabName: string;
@@ -44,7 +43,7 @@ export class ReadingRadPortalComponent implements OnInit {
   @ViewChild('ref3Dob', { static: true }) dob3FilterRef: ElementRef;
   @ViewChild('ref3DosFrom', { static: true }) dosFrom3FilterRef: ElementRef;
   @ViewChild('ref3DosTo', { static: true }) dosTo3FilterRef: ElementRef;
-  maxDate = new Date();
+
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   assignAndPendingToBeRead = [] as any;
@@ -85,7 +84,7 @@ export class ReadingRadPortalComponent implements OnInit {
   SignedAndPendingBillFilter = {} as any;
   BilledAndLiensSoldFilter = {} as any;
   BilledAndLiensHeldFilter = {} as any;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   tab0Model = {} as tabModel;
   tab1Model = {} as tabModel;
   tab2Model = {} as tabModel;
@@ -360,9 +359,9 @@ export class ReadingRadPortalComponent implements OnInit {
       });
   }
   applyFilterAssignedAndPendingToBeReadStudies() {
-    let filterDOB = this.datePipe.transform(this.filterDOB,this.dateTimeFormatCustom.Date);
-    let filterDOSFROM = this.datePipe.transform(this.filterDOSFROM, this.dateTimeFormatCustom.Date);
-    let filterDOSTO = this.datePipe.transform(this.filterDOSTO, this.dateTimeFormatCustom.Date);
+    let filterDOB = this.datePipe.transform(this.filterDOB, 'MM/dd/yyyy');
+    let filterDOSFROM = this.datePipe.transform(this.filterDOSFROM, 'MM/dd/yyyy');
+    let filterDOSTO = this.datePipe.transform(this.filterDOSTO, 'MM/dd/yyyy');
     let oModel = {} as any;
     oModel = this.AssignedAndPendingToBeReadFilter;
     oModel.BirthDate = filterDOB == null ? '' : filterDOB;
@@ -383,9 +382,9 @@ export class ReadingRadPortalComponent implements OnInit {
     });
   }
   applyFiltersignedAndPendingBillStudies() {
-    let filter1DOB = this.datePipe.transform(this.filter1DOB, this.dateTimeFormatCustom.Date);
-    let filter1DOSFROM = this.datePipe.transform(this.filter1DOSFROM, this.dateTimeFormatCustom.Date);
-    let filter1DOSTO = this.datePipe.transform(this.filter1DOSTO, this.dateTimeFormatCustom.Date);
+    let filter1DOB = this.datePipe.transform(this.filter1DOB, 'MM/dd/yyyy');
+    let filter1DOSFROM = this.datePipe.transform(this.filter1DOSFROM, 'MM/dd/yyyy');
+    let filter1DOSTO = this.datePipe.transform(this.filter1DOSTO, 'MM/dd/yyyy');
     let oModel = {} as any;
     oModel = this.SignedAndPendingBillFilter;
     oModel.BirthDate = filter1DOB == null ? '' : filter1DOB;
@@ -406,9 +405,9 @@ export class ReadingRadPortalComponent implements OnInit {
     });
   }
   applyFilterBilledAndLiensSoldStudies() {
-    let filter2DOB = this.datePipe.transform(this.filter2DOB, this.dateTimeFormatCustom.Date);
-    let filter2DOSFROM = this.datePipe.transform(this.filter2DOSFROM, this.dateTimeFormatCustom.Date);
-    let filter2DOSTO = this.datePipe.transform(this.filter2DOSTO, this.dateTimeFormatCustom.Date);
+    let filter2DOB = this.datePipe.transform(this.filter2DOB, 'MM/dd/yyyy');
+    let filter2DOSFROM = this.datePipe.transform(this.filter2DOSFROM, 'MM/dd/yyyy');
+    let filter2DOSTO = this.datePipe.transform(this.filter2DOSTO, 'MM/dd/yyyy');
     let oModel = {} as any;
     oModel = this.BilledAndLiensSoldFilter;
     oModel.BirthDate = filter2DOB == null ? '' : filter2DOB;
@@ -429,9 +428,9 @@ export class ReadingRadPortalComponent implements OnInit {
     });
   }
   applyFilterBilledAndLiensHeldStudies() {
-    let filter3DOB = this.datePipe.transform(this.filter3DOB, this.dateTimeFormatCustom.Date);
-    let filter3DOSFROM = this.datePipe.transform(this.filter3DOSFROM, this.dateTimeFormatCustom.Date);
-    let filter3DOSTO = this.datePipe.transform(this.filter3DOSTO, this.dateTimeFormatCustom.Date);
+    let filter3DOB = this.datePipe.transform(this.filter3DOB, 'MM/dd/yyyy');
+    let filter3DOSFROM = this.datePipe.transform(this.filter3DOSFROM, 'MM/dd/yyyy');
+    let filter3DOSTO = this.datePipe.transform(this.filter3DOSTO, 'MM/dd/yyyy');
     let oModel = {} as any;
     oModel = this.BilledAndLiensHeldFilter;
     oModel.BirthDate = filter3DOB == null ? '' : filter3DOB;

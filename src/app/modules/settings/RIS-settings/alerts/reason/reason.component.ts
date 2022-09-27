@@ -6,8 +6,6 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 @Component({
   selector: 'app-reason',
@@ -15,23 +13,11 @@ import { CommonRegex } from 'src/app/constants/commonregex';
   styleUrls: ['./reason.component.css']
 })
 export class ReasonComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
-  a6: any = 20;
-  a7: any = 20;
-  a8: any = 20;
-  a9: any = 20;
-  a10: any = 20;
-  a11: any = 20;
-
   IsSubmitted:boolean=false;
   isBtnVisible:boolean=true;
   modelValue:string;
   popUpTitle:string='Add';
-  rid:number;
+  rid:number
   reasonForm : FormGroup
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
@@ -79,12 +65,12 @@ export class ReasonComponent implements OnInit {
   ckConfig:any;
   mycontent: string;
   log: string = '';
-  readonly commonRegex=CommonRegex;
+
 
   constructor(private fb: FormBuilder,
     private settingsService:SettingsService,
     private notificationService:NotificationService,
-    private commonMethodService: CommonMethodService,private storageService:StorageService,) { 
+    private commonMethodService: CommonMethodService,private storageService:StorageService) { 
       this.showFilterRow = true;
       this.showHeaderFilter = false;
       this.applyFilterTypes = [{
@@ -101,7 +87,7 @@ export class ReasonComponent implements OnInit {
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
-    this.commonMethodService.setTitle('Reasons');
+    this.commonMethodService.setTitle('Alert');
     this.columnResizingMode = this.resizingModes[0];
     this.showFilterRow = true;
     this.currentFilter = this.applyFilterTypes[0].key;
@@ -120,7 +106,7 @@ export class ReasonComponent implements OnInit {
       isActive: [''],
       isCreatedAlertUserSendEmail: [''],
       isSendEmailToOthers: [''],
-      notifyEmails: ['' ,[Validators.pattern(this.commonRegex.EmailRegex)]],
+      notifyEmails: ['' ,[Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       currentUserID: [''],
       isReasonEdit: [''],
       docType: [''],
@@ -369,6 +355,7 @@ showError(err: any) {
   
   onSubmit()
   {
+ 
   this.IsSubmitted=true;
   this.modelValue='modal';
     if (this.reasonForm.invalid){
@@ -463,6 +450,7 @@ showError(err: any) {
           });
           this.getAllReasons();
         }
+        
       }, 
       (err : any) => {
         this.showError(err);
@@ -486,10 +474,4 @@ showError(err: any) {
 
 
   get getFromControls() { return this.reasonForm.controls; }
-
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

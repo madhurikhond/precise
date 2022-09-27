@@ -92,7 +92,8 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                         </ul>
                     </div>
                     <div class="task-header-single">
-                        <select class="form-control" (change)="onLabelDropDownChange($event.target.value)"  [(ngModel)]="labelValue" >
+                        <select class="form-control" (change)="onLabelDropDownChange($event.target.value)">
+                            <option selected value="">Select Label</option>
                             <option value="All">All</option>
                             <option *ngFor="let label of labelNameList" value={{label}}>
                                 {{label}}
@@ -102,7 +103,7 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                     <div class="task-header-single">
                         <div class="precisemri-search">
                             <input type="text" class="form-search" placeholder="Search" [(ngModel)]="filterSearch" 
-                            (ngModelChange)="searchData($event)"  (focusout)="saveSearchonFocusOut($event)" (change)="searchDataChange($event)">
+                            (ngModelChange)="searchData($event)">
                             <a href="javascript:void(0)" class="pe-icon pe-7s-search"></a>
                         </div>
                     </div>
@@ -229,9 +230,9 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                                 <div>
                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                     formControlName="dueDate"
-                                    [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                    
-                              
+                                    [showClearButton]="true" [useMaskBehavior]="true"
+                                    dateSerializationFormat="MM-dd-yyyy">
+                                </dx-date-box>
 								</div>	
 							   <div class="tooltiptext text-right invalid-feedback" *ngIf="(submitted && addTaskFormControl.dueDate.errors)  || (addTaskFormControl.dueDate.touched && addTaskFormControl.dueDate.errors)">
 									<small class="error text-danger" *ngIf="addTaskFormControl.dueDate.errors?.required  || addTaskFormControl.dueDate.touched">due date required</small>
@@ -304,10 +305,9 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                 <div class="modaltask-detail">
                     <div class="task-left-group">
                         <div class="single-details">Assigned to: <span>{{taskDetail.TaskAssignTo}}</span></div>
-                        <div class="single-details">Due Date: <span>{{taskDetail.DueDate | date: dateTimeFormatCustom.DateMMMddy}}</span></div>
                         <div class="single-details">Assigned by: <span>{{taskDetail.TaskAssignBy}}</span></div>
                         <div class="single-details">Status: <span>{{taskDetail.TaskStatus}}</span> <a href="javascript:void(0)" class="blue-btn">{{taskDetail.Tag}}</a></div>
-                        
+                        <div class="single-details">Due Date: <span>{{taskDetail.DueDate}}</span></div>
                     </div>
                     <div class="task-right-group">
                         <div class="single-details">

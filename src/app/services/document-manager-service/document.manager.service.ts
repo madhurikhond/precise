@@ -14,32 +14,16 @@ export class DocumentmanagerService {
       map((res: ApiResponse) => res)
     );
   }
-  getFilesByKey(showGlobalLoader: boolean = true,body){
-    debugger
-    return this._httpService.post(`DocumentManager/GetFileByKey`, body,showGlobalLoader,true).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-
-  getFilesByKeys(showGlobalLoader: boolean = true,files){
-    debugger
-    return this._httpService.post(`DocumentManager/GetFileByKeys`, files,showGlobalLoader,true).pipe(
-      map((res: ApiResponse) => res)
-    );
-  }
-
   deleteFile(showGlobalLoader: boolean = true, fileName: string, patientId: string, docId: number) {
     return this._httpService.delete(`DocumentManager/deleteFile?fileName=${fileName}&patientId=${patientId}&docId=${docId}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
-
   deleteAllFiles(showGlobalLoader : boolean = true, body:string) {
     return this._httpService.post(`DocumentManager/DeleteAllFiles`,body,showGlobalLoader,true).pipe(
       map((res:ApiResponse) => res)
     );
   }
-  
   getDocumentType(showGlobalLoader: boolean = true) {
     return this._httpService.get(`DocumentManager/GetDocumentType`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
@@ -95,16 +79,7 @@ export class DocumentmanagerService {
     return this._httpService.post(`DocumentManager/UpdateDocumentByDocId?docId=${docId}&docFromAttorneyStatus=${docFromAttorneyStatus}`, true,true,true).pipe(
       map((res: ApiResponse) => res)
     );
-
   }
-  UploadFileBarCode(showGlobalLoader: boolean = true, body: string) {
-    return this._httpService.post(`DocumentManager/UploadFileBarCode`, body, showGlobalLoader, true).pipe(
-      map((res: ApiResponse) => res)
-    );
-
-  }
-
-  
 }
 
 

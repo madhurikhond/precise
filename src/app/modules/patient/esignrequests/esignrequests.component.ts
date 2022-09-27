@@ -6,8 +6,6 @@ import { AnyNsRecord } from 'dns';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { SignaturePad } from 'angular2-signaturepad';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 
 declare const $: any;
@@ -23,7 +21,7 @@ export class EsignrequestsComponent implements OnInit {
   @ViewChild('hiddenSignDownloadModel', { static: false }) hiddenSignDownloadModel: ElementRef;
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('closeDownloadModelBtn') closeDownloadBtn: ElementRef;
-  @ViewChild('hiddenAlreadyExistsDriverNamePopUp') hiddenAlreadyExistsDriverNamePopUp: ElementRef;
+
   @Input() EsignAgreeCheck: boolean;
 
   @ViewChild('f', { static: true }) f: NgForm | any;
@@ -52,9 +50,9 @@ export class EsignrequestsComponent implements OnInit {
   currIEZoom: any = 100;
   Name: string = '';
   firstNamePattern = '^\\W*(?:\\w+\\b\\W*){2,}$';
-  isSignSuccessflyyMessage: boolean = false;isAlreadyExistsDriverName: boolean = false;
-  message: string = '';
-  readonly commonRegex=CommonRegex;
+
+
+
   constructor(private Activatedroute: ActivatedRoute,
     private readonly patientService: PatientService,
     private fb: FormBuilder,
@@ -67,7 +65,7 @@ export class EsignrequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.emailSendForm = this.fb.group({
-      emailTxt: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]]
+      emailTxt: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
     });
     this.patientid = this.Activatedroute.snapshot.queryParams['patientid'];
     this.token = this.Activatedroute.snapshot.queryParams['Token'];
@@ -103,7 +101,7 @@ export class EsignrequestsComponent implements OnInit {
             this.hiddenSignPopUp.nativeElement.click();
           }
         }
-        this.updateDriverName();
+        
         if (fromSign) {
           this.patientService.sendDataToEsignrequestKeeper.subscribe(res => {
             this.agreeCheck = res;
@@ -122,33 +120,7 @@ export class EsignrequestsComponent implements OnInit {
       this.error(err);
     });
   }
-  updateDriverName() {
-    if (this.allSignData.AttorneyDriverName && this.allSignData.DriverName){
-      this.model.driverFirstName = this.allSignData.DriverName;
-      this.isAlreadyExistsDriverName=true;
-    } 
-    else if (this.allSignData.AttorneyDriverName){
-      this.model.driverFirstName = this.allSignData.AttorneyDriverName;
-      this.isAlreadyExistsDriverName=true;
-    }  
-    else if (this.allSignData.DriverName){
-      this.model.driverFirstName = this.allSignData.DriverName;
-      this.isAlreadyExistsDriverName=true;
-    }
-  }
-  confirmDriverName(isTrue) {
-    if (isTrue) {
-      this.isAlreadyExistsDriverName = false;
-      this.model.driverFirstName = "";
-    } else {
-      this.updateDriverName();
-    }
-  }
-  checkdriverFirstName() {
-    if (this.model.driverFirstName && this.isAlreadyExistsDriverName) {
-      this.hiddenAlreadyExistsDriverNamePopUp.nativeElement.click();
-    }
-  }
+
   signConfirm(isConfirmSign: boolean) {
     //if(isConfirmSign){
     // this.hiddenSignPopUp.nativeElement.click();      
@@ -207,8 +179,7 @@ export class EsignrequestsComponent implements OnInit {
         if (res.response == true) {
           this.closeBtn.nativeElement.click();
           this.hiddenSignDownloadModel.nativeElement.click();
-          this.message=res.message;
-          //this.successNotification(res);
+          this.successNotification(res);
 
         } else {
           this.error(res);
@@ -298,7 +269,7 @@ export class EsignrequestsComponent implements OnInit {
       return;
     }
     if (isItemRename) {
-
+     
       let Email = this.refemailSendForm.emailTxt.value.trim();
       if (Email) {
         let data = {
@@ -309,8 +280,7 @@ export class EsignrequestsComponent implements OnInit {
         }
         this.patientService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           if (res.responseCode == 200) {
-            this.isSignSuccessflyyMessage = true;
-            //this.successNotification(res);
+            this.successNotification(res);
           } else {
             this.error(res);
           }
@@ -319,9 +289,6 @@ export class EsignrequestsComponent implements OnInit {
         });
       }
     }
-  }
-  onSuccessClose() {
-    this.isSignSuccessflyyMessage = true;
   }
   changelanguage(event) {
     if (event.target.checked == false) {
@@ -376,9 +343,7 @@ export class SignDataItem {
   AttorneyFullName: string = '';
   AttorneyAddress: string;
   AttorneyCityState: string;
-  AttorneyDriverName: string;
   Currentdate: string;
-  DriverName: string;
   BusinessPhoneNumber: string;
   AttorneyFaxNumber: string;
   InjuryDate: string;

@@ -11,15 +11,10 @@ export class ReferrersService {
   constructor(private _httpService: HttpService, private http: HttpClient) { }
 
   sendDataToReferrerDetail: EventEmitter<any> = new EventEmitter<any>();
-  sendDataToReferrerDetailToOrderedSchedular : EventEmitter<any> = new EventEmitter<any>();
   
 
    sendDataToReferrerDetailWindow(body:any): void {
     this.sendDataToReferrerDetail.emit(body);
-  }
-
-  sendDataToReferrerDetailWindowFromOrderedSchedular(body:any): void {
-    this.sendDataToReferrerDetailToOrderedSchedular.emit(body);
   }
 
   getAllReferrers(showGlobalLoader : boolean = true ,pageNumber: number, pageSize: number){
@@ -103,11 +98,6 @@ export class ReferrersService {
   }
   getPersistentGridSetting(showGlobalLoader : boolean = true ,userId:any,pageName:any){
     return this._httpService.get('MasterValues/GetPersistentGridSetting/'+userId+'/'+pageName,showGlobalLoader).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
-  getPreciseImagingEmployee(showGlobalLoader : boolean = true){
-    return this._httpService.get(`Automation/GetAllActivePreciseImagingEmployee`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

@@ -56,18 +56,18 @@
 										<div class="input-group">
 											<ng-select [items]="financialTypesList" placeholder="Select"
 												formControlName="bulkBillingPatientFinancialType"
-												bindLabel="financialtypename" [multiple]="true" id="id102" (add)="a1=ValidateMultiSelectTextLength('id102',a1)" [closeOnSelect]="false"
+												bindLabel="financialtypename" [multiple]="true" [closeOnSelect]="false"
 												bindValue="financialtypename" [(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillingPatientFinancialType.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template> 
 											</ng-select>
@@ -84,18 +84,18 @@
 										<div class="theme-label">Doc Type</div>
 										<div class="input-group">
 											<ng-select [items]="docTypesList" placeholder="Select"
-												formControlName="bulkBillerDocType" bindLabel="docType" [multiple]="true" id="id103" (add)="a2=ValidateMultiSelectTextLength('id103',a2)"
+												formControlName="bulkBillerDocType" bindLabel="docType" [multiple]="true"
 												[closeOnSelect]="false" bindValue="docType" [(ngModel)]="selectedDocList"
 												[ngClass]="{ 'is-invalid': (submitted &&  bbForm.bulkBillerDocType.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:2">
 														<span class="ng-value-label"> {{item.docType}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a2">
-														<span class="ng-value-label">{{items.length - a2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 2">
+														<span class="ng-value-label">{{items.length - 2}} more...</span>
 													</div>
 												</ng-template> 
 											</ng-select>

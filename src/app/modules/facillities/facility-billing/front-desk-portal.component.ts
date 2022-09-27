@@ -5,7 +5,6 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { Router } from '@angular/router';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-front-desk-portal',
@@ -25,7 +24,6 @@ export class FrontDeskPortalComponent implements OnInit {
   dropdownListModiality: any = [];
   dropdownListFacility: any = [];
   facilityDepartment: any = [];
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   isTodayAppointment: any = false;
   tabConstant: string;
   patientIdText: any = '';

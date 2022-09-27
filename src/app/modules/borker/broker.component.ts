@@ -11,10 +11,6 @@ import saveAs from 'file-saver';
 import { DatePipe } from '@angular/common';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
-import { CommonRegex } from 'src/app/constants/commonregex';
-import { HttpEvent, HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { LoadingService } from 'src/app/services/common/loading.service';
-import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-broker',
@@ -28,7 +24,6 @@ export class BrokerComponent implements OnInit {
   @ViewChild('hiddenDXbutton', { read: ElementRef }) hiddenDXbutton: ElementRef;
   @ViewChild('hiddenSendMailbutton', { read: ElementRef }) hiddenSendMailbutton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
-  a1: any = 20;
   defaultPopupTab: string = 'Funding Company Details';
   documentTabShow: boolean= true;
   brokerName: string = null;
@@ -42,7 +37,6 @@ export class BrokerComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number;
   submitted = false;
-  isLoading : any
   brokerId: number;
   brokerList: any = [];
   billingMethodList: any = [];
@@ -75,7 +69,6 @@ export class BrokerComponent implements OnInit {
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
-  readonly commonRegex=CommonRegex;
   modalitiesCopyName: string = '';
   //@Input() isShowGrid:boolean=true;
   pageSizeFacilityList: number = 20;
@@ -97,10 +90,10 @@ export class BrokerComponent implements OnInit {
   mycontent: string;
   log: string = '';
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private brokerService: BrokerService, private referrersService: ReferrersService,
-    private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService ,
-    private readonly loadingService :LoadingService) {
+    private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService) {
 
     brokerService.sendDataToBrokerFromPatientDetail.subscribe(res => {
+     
       if (res.brokerId) {
         this.isGridDisplay = false;
         this.brokerId = res.brokerId;
@@ -109,20 +102,9 @@ export class BrokerComponent implements OnInit {
         this.hiddenAddEditPopUpItem.nativeElement.click();
       }
     });;
-    brokerService.sendDataToBrokerFromOrderedSchedular.subscribe(res => {
-       if (res.brokerId) {
-         this.isGridDisplay = false;
-         this.brokerId = res.brokerId;
-         this.brokerName = res.brokerName;
-         this.edit(this.brokerId);
-         this.hiddenAddEditPopUpItem.nativeElement.click();
-       }
-     });
-    
   }
- 
+
   ngOnInit(): void {
-  
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
     this.showFilterRow = true;
@@ -147,7 +129,7 @@ export class BrokerComponent implements OnInit {
     // });
    
   }
- 
+
   onChange($event: any): void {
     console.log("onChange");
     //this.log += new Date() + "<br />";
@@ -179,24 +161,8 @@ export class BrokerComponent implements OnInit {
     this.defaultPopupTab = tabName;
   }
 
-  onPolicyTabClick(){
+  add() {
     
-    this.loadingService.showLoader()
-    setTimeout(() => { 
-      this.loadingService.showLoader()
-      this.brokerService.sendDataToLoaderFromBrokerComponent(false)
-      }, 2000)
-      this.brokerService.sendDataToLoaderFromBrokerComponent(true)
-    }
-  
-    // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    //   setTimeout(() => { this.loadingService.onStarted(req);
-    //   }, 2000)
-    //   return next
-    //   .handle(req)
-    // }
-
-  add() {  
     this.defaultPopupTab = 'Funding Company Details';
     this.documentTabShow = false;
     this.brokerId = 0;
@@ -209,13 +175,14 @@ export class BrokerComponent implements OnInit {
 
   sendMailForminitialize() {
     this.sendMailForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]],
+      email: ['', [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       subject: ['', [Validators.required]],
       Body: ['', [Validators.required]],
     })
   }
 
-  edit(brokerId) { 
+  edit(brokerId) {
+   
     this.documentTabShow = true;
     this.defaultPopupTab = 'Funding Company Details';
     this.brokerId = brokerId;
@@ -254,8 +221,7 @@ export class BrokerComponent implements OnInit {
           zip: data.response.Zip,
           billingMethod: data.response.BillingMethod ? data.response.BillingMethod : '',
           isAutoEmailReport: data.response.IsAutoEmailReport,
-          //autoEmailReport: data.response.AutoEmailReport,
-          autoEmailReport:  data.response.AutoEmailReport && data.response.AutoEmailReport.includes('@')  ? data.response.AutoEmailReport  : '' ,
+          autoEmailReport: data.response.AutoEmailReport,
           isActiveBroker: data.response.IsActiveBroker,
           doNotSendliability: data.response.DoNotSendliability,
           doNotSendliabilitySecondCriteria: data.response.DoNotSendliabilitySecondCriteria,
@@ -687,9 +653,9 @@ export class BrokerComponent implements OnInit {
     this.addEditForm = this.fb.group({
       broker: ['', [Validators.required]],
       mainContactName: [''],
-      mainContactPhone: [null, [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      mainFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      mainContactEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      mainContactPhone: [null, [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      mainFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      mainContactEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       website: [''],
       address: [''],
       city: [''],
@@ -708,33 +674,33 @@ export class BrokerComponent implements OnInit {
       doNotSendCouldntScheduleSMS: [false],
       doNotFaxReportToAttorney: [false],
       accountsPayable1Contact: [''],
-      accountsPayable1Email: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      accountsPayable1Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      accountsPayable1Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      accountsPayable1Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountsPayable1Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      accountsPayable1Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       accountsPayable2Contact: [''],
-      accountsPayable2Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      accountsPayable2Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      accountsPayable2Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      accountsPayable2Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountsPayable2Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      accountsPayable2Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       accountsPayable3Contact: [''],
-      accountsPayable3Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      accountsPayable3Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      accountsPayable3Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      otherContactEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      accountsPayable3Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      accountsPayable3Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      accountsPayable3Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      otherContactEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       billing1Contact: [''],
-      billing1Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      billing1Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      billing1Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      billing1Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billing1Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billing1Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       billing2Contact: [''],
-      billing2Email: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      billing2Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      billing2Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      billing2Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billing2Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billing2Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       billing3Contact: [''],
-      billing3Email: ['', [Validators.pattern(this.commonRegex.EmailRegex  )]],
-      billing3Phone: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      billing3Fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      billing3Email: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      billing3Phone: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+      billing3Fax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       reportName: [''],
-      reportEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
-      reportFax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      reportEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      reportFax: ['', [Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
       isNpi: [false],
       npiText: [''],
       isExamLocation: [false],
@@ -757,7 +723,7 @@ export class BrokerComponent implements OnInit {
       brokerReportName: [''],
       isReqUniqueLien: [false],
       brokerUniqueLien: [''],
-      missingLienEmail: ['', [Validators.pattern(this.commonRegex.EmailRegex )]],
+      missingLienEmail: ['', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       doNotSendEmail: [false],
       doNotSendFax: [false],
       doNotSendMail: [false],
@@ -781,7 +747,7 @@ export class BrokerComponent implements OnInit {
   changeAutoEmailReport() {
     const autoEmailReportControl = this.addEditForm.get('autoEmailReport');
     if (this.addEditForm.get('isAutoEmailReport').value) {
-      autoEmailReportControl.setValidators([Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]);
+      autoEmailReportControl.setValidators([Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
     }
     else {
       autoEmailReportControl.setValidators(null);
@@ -834,7 +800,7 @@ export class BrokerComponent implements OnInit {
     const missingLienEmailControl = this.addEditForm.get('missingLienEmail');
     if (this.addEditForm.get('isReqUniqueLien').value) {
       brokerUniqueLienControl.setValidators([Validators.required]);
-      missingLienEmailControl.setValidators([Validators.pattern(this.commonRegex.EmailRegex)]);
+      missingLienEmailControl.setValidators([Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
     }
     else {
       brokerUniqueLienControl.setValidators(null);
@@ -851,11 +817,11 @@ export class BrokerComponent implements OnInit {
     const brokerPSL4Control = this.addEditForm.get('brokerPSL4');
     const brokerPSL5Control = this.addEditForm.get('brokerPSL5');
     if (this.addEditForm.get('isSendBrokerPSL').value) {
-      brokerPSL1Control.setValidators([Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]);
-      brokerPSL2Control.setValidators([Validators.pattern(this.commonRegex.EmailRegex )]);
-      brokerPSL3Control.setValidators([Validators.pattern(this.commonRegex.EmailRegex )]);
-      brokerPSL4Control.setValidators([Validators.pattern(this.commonRegex.EmailRegex )]);
-      brokerPSL5Control.setValidators([Validators.pattern(this.commonRegex.EmailRegex )]);
+      brokerPSL1Control.setValidators([Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+      brokerPSL2Control.setValidators([Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+      brokerPSL3Control.setValidators([Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+      brokerPSL4Control.setValidators([Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+      brokerPSL5Control.setValidators([Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
     }
     else {
       brokerPSL1Control.setValidators(null);
@@ -1087,10 +1053,4 @@ export class BrokerComponent implements OnInit {
   get mailForm() { return this.sendMailForm.controls; }
   get searchBrForm() { return this.searchBrokerForm.controls; }
   get BrokerPoliciesFormControls() { return this.BrokerPoliciesForm.controls; }
-
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

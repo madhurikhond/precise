@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -23,7 +22,7 @@ export class DefaultMinPricingComponent implements OnInit {
   editForm: FormGroup
   submitted: boolean = false;
   submitted1: boolean = false;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   showFilterRow: boolean;
@@ -44,7 +43,7 @@ export class DefaultMinPricingComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Pi Billing');
+    this.commonMethodService.setTitle('Default Min Pricing');
     this.getAllProcGroups();
     this.getDefaultMinPricings();
     this.myForm = this.fb.group({
@@ -88,7 +87,6 @@ export class DefaultMinPricingComponent implements OnInit {
     this.getDefaultMinPricings();
   }
   getDefaultMinPricings(){
-   
     this.settingsService.getDefaultMinPricings(true, this.pageNumber, this.pageSize).subscribe((res) => {
       var data: any = res;   
       this.totalRecords=res.totalRecords;   

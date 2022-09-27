@@ -3,9 +3,6 @@
     color: red;
     width: 20% !important;
 }
-.cell-highlighted {
-  background-color: #d8acac !important;
-}
 .invalid-feedback
 {
   display: block !important;
@@ -17,13 +14,12 @@
 }
 .pointer-column
 {
-  color: red !important;
+  color: red;
 }
 .files-list {
     width: 95%;
     margin: 0px auto;
 }
-
     .single-file {
       display: flex;
       padding: 10px 15px;
@@ -61,6 +57,7 @@
       .info {
         width: 100%
       }
+    
 
 .fileover {
     animation: shake 1s;

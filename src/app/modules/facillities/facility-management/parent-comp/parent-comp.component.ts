@@ -7,8 +7,6 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import DataGrid from 'devextreme/ui/data_grid';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
-import { CommonRegex } from 'src/app/constants/commonregex';
-
 
 @Component({
   selector: 'app-parent-comp',
@@ -51,8 +49,6 @@ export class ParentCompComponent implements OnInit {
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   readonly pageSizeArray=PageSizeArray;
   readonly CkeConfig = ckeConfig;
-  readonly commonRegex=CommonRegex;
-
   name = 'ng2-ckeditor';
   documentTabHide :boolean = false;
   isPopUpInEditMode: boolean = false;
@@ -67,7 +63,7 @@ export class ParentCompComponent implements OnInit {
   }
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
-    this.commonMethodService.setTitle('Parent Comp.');
+    this.commonMethodService.setTitle('Facility');
     this.createParentCompanyDetailTabForm();
     this.createModalityServiceTabForm();
     this.createModalityMriTabForm();
@@ -196,19 +192,19 @@ export class ParentCompComponent implements OnInit {
       Website: [''],
       IsActive: [''],
       OwnerName: [''],
-      OwnerEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      OwnerEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       OwnerPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       OwnerFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       ManagerName: [''],
-      ManagerEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      ManagerEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       ManagerPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       ManagerFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       ITName: [''],
-      ITEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      ITEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       ITPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       ITFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       BillingName: [''],
-      BillingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      BillingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       BillingPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       BillingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
     });
@@ -424,7 +420,6 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityCurrentPricing() {
-    
     this.FacilityParentCurrentPricingList = [];
     this.facilityService.getFacilityParentPricing(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -436,7 +431,6 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityHistoryPricing() {
-   
     this.FacilityParentPricingHistoryList = [];
     this.facilityService.getFacilityParentPricingHistory(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -740,7 +734,6 @@ export class ParentCompComponent implements OnInit {
     });
   }
   saveChangesCurrentPricing() {
-   
     console.log(this.FacilityParentCurrentPricingList);
     this.facilityService.updateFacilityParentPricing(true, this.FacilityParentCurrentPricingList).subscribe((res) => {
       if (res.response != null) {

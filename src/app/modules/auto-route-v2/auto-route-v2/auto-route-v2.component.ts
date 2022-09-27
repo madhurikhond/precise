@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { AutoRouteV2Service } from 'src/app/services/AutoRouteV2/auto-route-v2.service';
@@ -9,36 +9,23 @@ import { find } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { letProto } from 'rxjs-compat/operator/let';
 import { map } from 'rxjs/operators';
-
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { DocumentmanagerService } from '../../../services/document-manager-service/document.manager.service';
-import { DocumentManagerComponent } from '../../shared/components/document-manager/document-manager.component';
-declare const $: any;
 
 
 @Component({
   selector: 'app-auto-route-v2',
   templateUrl: './auto-route-v2.component.html',
-  styleUrls: ['./auto-route-v2.component.css'],
-  providers: [DocumentmanagerService, DocumentManagerComponent]
+  styleUrls: ['./auto-route-v2.component.css']
 })
 export class AutoRouteV2Component implements OnInit, OnDestroy {
-  eventsSubject: Subject<void> = new Subject<void>();
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.eventsSubject.next(event);
-  }
   @ViewChild('hiddenFileDeleteItem', { static: false }) hiddenFileDeleteItem: ElementRef;
-  @ViewChild('copyItemConfirmPopUp', { static: false }) copyItemConfirmPopUp: ElementRef;
-  @ViewChild('hiddenDynamsoftScannerPopUp', { static: false }) hiddenDynamsoftScannerPopUp: ElementRef;
   actionList: any = [
     { id: '1', action: 'Delete All' },
-    { id: '2', action: 'Delete files with missing Patient Id' },
+    { id: '2', action: 'Delete files with missing PatientID' },
     { id: '3', action: 'Delete files with missing Doc Type' },
     { id: '4', action: 'Delete Selected Files' },
-    { id: '5', action: 'COPY PATIENT ID FROM FILE NAME' },
-    { id: '6', action: 'Merge PDFs' },
+    { id: '5', action: 'Copy filename to PatientID' },
+    { id: '6', action: 'Merg PDFs' },
   ]
   _selectedAction: number = 0;
   fileData: any = [];
@@ -50,7 +37,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   _matchExtension: boolean = false;
   images: string[] = [];
   name: string;
-  checkError=false;
   viewUrl: any;
   docId: number; RadiologistId: number;
   docType: string; Radiologist: string;
@@ -59,7 +45,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   PatientID: string;
   fileInfo: any;
   Abbreviation: string;
-  patientList: Array<{ name: string, viewUrl: string, is_selected: boolean, DocId: number, Dtype: string, Abbreviation: string, ReferreId: string, fileInfo: any, RadiologistId: number, Radiologist: string, name2: string}> = [];
+  patientList: Array<{ name: string, viewUrl: string, is_selected: boolean, DocId: number, Dtype: string, Abbreviation: string, ReferreId: string, fileInfo: any, RadiologistId: number, Radiologist: string }> = [];
   MasterDocumentList: any = [];
   RadiologistList: any = [];
   reasonList: any = [];
@@ -69,19 +55,12 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   totalCheckCount: number = 0;
   totalAlertCheckCount: number = 0;
   DisPlayCount: number = 0;
-  DisErrorPlayCount: number = 0;
   DisPlayAlertCount: number = 0;
-  Submitted: any = false;
-  CHckFields: any;
   updateAlertList: Array<{ is_alertSelected: boolean; PatientID: string, LogType: string, UserDetail: string, UserID: string, AlertID: string, Addedby: string, DateAdded: string }> = [];
   encript: string; Documentdata: any = []; Radiologistdata: any = []; selectedDocType: any = [];
   splitFiles: boolean = false; barCodes: boolean = false;
   indexNumber: number = null;
-  fileUrl;
-  startText = 'start Scanner';
-  show: boolean = false;
-  data: string = 'AutoRouteV2'
-  deleteMessage: string
+
   constructor(
     private readonly notificationService: NotificationService,
     private http: HttpClient,
@@ -96,26 +75,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     this.getRadiologistDropdown();
     this.EmptyFolder();
     this.GetUpdateDoNotSplitFilesReadBarCodes();
-
-    this.commonMethodService.getPatientDocListObser.subscribe((res) => {
-      debugger
-      this.isUploadShown = true;
-      this.patientList = [...this.patientList, ...res];
-      for (let i = 0; i < this.patientList.length; i++) {
-        this.Radiologistdata[i] = this.patientList[i].RadiologistId;
-        this.Documentdata[i] = this.patientList[i].DocId;
-      }
-
-
-
-      setTimeout(function () {
-      }, 1000);
-    });
   }
-  ngAfterViewInit() {
-
-  }
-
 
   getDropdown() {
     this.Documentsubscribe = this.autoRouteV2Service.getAutoRouteMasterDocumentType(false).subscribe((res) => {
@@ -138,7 +98,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       var data: any = res;
       if (data.response != null) {
         this.RadiologistList = data.response;
-        console.log(this.RadiologistList);
       }
     },
       (err: any) => {
@@ -149,7 +108,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
         });
       });
   }
-
 
 
   EmptyFolder = (function () {
@@ -167,10 +125,10 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
 
   onFileChange(event: any) {
-
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.select_all = false;
+
       var fileName = file['name'];
       var extension = fileName.split('.').pop().toLowerCase();
       var UserId = this.storageService.user.UserId;
@@ -196,8 +154,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
                       var url = window.URL.createObjectURL(blob);
                       this.name = event.target.files[i]['name'];
                       this.viewUrl = reader.result;
-                      this.patientList.push({ name: this.name, viewUrl: url, is_selected: false, DocId: 0, Dtype: 'Select Document File Type', Abbreviation: '', ReferreId: '', fileInfo: event.target.files[i], RadiologistId: 0, Radiologist: 'Select Document File Type', name2: this.name });
-                      this.updateDropDownArray();
+                      this.patientList.push({ name: this.name, viewUrl: url, is_selected: false, DocId: 0, Dtype: 'Select Document File Type', Abbreviation: '', ReferreId: '', fileInfo: event.target.files[i], RadiologistId: 0, Radiologist: 'Select Document File Type' });
                     }
                     reader.readAsDataURL(event.target.files[i]);
                   } else {
@@ -206,24 +163,13 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
                     formData.append('UserId', this.storageService.user.UserId);
                     formData.append('splitFiles', <string><any>this.splitFiles);
                     formData.append('barCodes', <string><any>this.barCodes);
-                    if (selectedFiles.length > 1) {
-                      setTimeout(() => {
-                        this.MultipleSelectionSplit(formData);
-                      }, 400);
-                    } else {
-                      setTimeout(() => {
-
-                        this.saveWithSplit_BarCodeAttachDoc(formData);
-
-                      }, 400);
-                    }
+                    if (selectedFiles.length > 1) { this.MultipleSelectionSplit(formData); } else { this.saveWithSplit_BarCodeAttachDoc(formData); }
                   }
 
                 }
               }
             }
           }
-          $('#myInputFile').val('')
         }
       }, (err: any) => {
         this.errorNotification(err);
@@ -245,7 +191,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(Dta.fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist, name2: Dta.FileName.replace(/_Mergerd.*.pdf/, '') });
+            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist });
           }
 
           this.updateDropDownArray();
@@ -259,7 +205,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
 
   async saveWithSplit_BarCodeAttachDoc(formData: any) {
-
     this.SplitBarCodessubscribe = await this.autoRouteV2Service.UploadFileSplitBarCodesRead(true, formData).subscribe(async (res) => {
       if (res.response != null) {
         if (res.response.length > 0) {
@@ -267,14 +212,10 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(res.response[i].fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist, name2: res.response[i].FileName.replace(/_Mergerd.*.pdf/, '') })
-
+            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist });
           }
           this.updateDropDownArray();
         }
-      }
-      else {
-        this.errorNotification(res)
       }
     },
       (err: any) => {
@@ -290,26 +231,17 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       alertType: err.status
     });
   }
-
-  errorAttachAndSaveNotification(err: any) {
-
-    this.notificationService.showNotification({
-      alertHeader: '',
-      alertMessage: err,
-      alertType: 400
-    });
-  }
   getDocType(event: any, index: number, type: string) {
     if (type === 'DocumentList') {
       let Abbindex: number = event.target['selectedIndex'] - 1;
       this.docId = event.target.value;
       this.docType = event.target.options[event.target.options.selectedIndex].text;
-      if (this.docId != 0)
-        this.Abbreviation = this.MasterDocumentList[Abbindex].Abbreviation;
+      this.Abbreviation = this.MasterDocumentList[Abbindex].Abbreviation;
       const item = this.patientList[index];
       item.DocId = this.docId;
       item.Dtype = this.docType;
       item.Abbreviation = this.Abbreviation;
+      console.log(item.Abbreviation);
       if (item.Abbreviation.toLowerCase() == 'p_psl' || item.Abbreviation.toLowerCase() == 'p_asl') {
         this.selectedDocType[index] = true;
       } else {
@@ -330,40 +262,28 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     const item = this.RadiologistList[index];
     item.RadiologistId = this.RadiologistId;
     item.Radiologist = this.Radiologist;
-    this.patientList[index].RadiologistId = this.RadiologistId;
   }
 
   changeDDlAction(event: any) {
-
     this._selectedAction = event.target.value;
   }
   deleteFiles(isItemDelete: boolean, indexNumber) {
-
     if (isItemDelete) {
       if (this._selectedAction == 1) {
         this.updateAlertList = [];
         this.patientList = [];
         this.successNotification('Files deleted Successfully.')
-        this.totalCheckCount = 0
-
       }
       else if (this._selectedAction == 2) {//Delete files with missing PatientID  
-        if (this.patientList.findIndex(e => e.ReferreId == '') > -1) {
-          while (this.patientList.findIndex(e => e.ReferreId == '') > -1)
-            this.patientList.splice(this.patientList.findIndex(f => f.ReferreId === ''), 1);
-          this.successNotification('Files deleted Successfully.');
-
-        }
-        this.totalCheckCount = this.patientList.filter(patient => patient.is_selected === true).length;
+        while (this.patientList.findIndex(e => e.ReferreId === '') >= 0)
+          this.patientList.splice(this.patientList.findIndex(f => f.ReferreId === ''), 1);
+        this.successNotification('Files deleted Successfully.');
       }
-      else if (this._selectedAction == 3) {//Delete files with missing Doc Type    
-        if (this.patientList.findIndex(e => e.DocId == 0) > -1) {
-          while (this.patientList.findIndex(e => e.DocId == 0) > -1)
-            this.patientList.splice(this.patientList.findIndex(f => f.DocId == 0), 1);
-          this.successNotification('Files deleted Successfully.');
-          this.patientList = this.patientList.slice();
-        }
-        this.totalCheckCount = this.patientList.filter(patient => patient.is_selected === true).length;
+      else if (this._selectedAction == 3) {//Delete files with missing Doc Type     
+        while (this.patientList.findIndex(e => e.DocId === 0) >= 0)
+          this.patientList.splice(this.patientList.findIndex(f => f.DocId === 0), 1);
+        this.successNotification('Files deleted Successfully.');
+        this.patientList = this.patientList.slice();
       }
       else if (this._selectedAction == 4) {//Delete Selected Files   
         let index = this.patientList.findIndex(patient => patient.is_selected === true);
@@ -372,7 +292,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
           index = this.patientList.findIndex(patient => patient.is_selected === true);
         }
         this.successNotification('Files deleted Successfully.');
-        this.totalCheckCount = 0;
       }
       if (indexNumber != null) {
         this.deleteDetail(indexNumber);
@@ -389,109 +308,80 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   }
 
   SelectAction() {
-
-    if (this._selectedAction == 1) {
-      this.deleteMessage = 'ARE YOU SURE YOU WOULD LIKE TO DELETE ALL FILES?';
-      this.hiddenFileDeleteItem.nativeElement.click();
-    }
-    else if (this._selectedAction == 2) {
-      this.deleteMessage = 'ARE YOU SURE YOU WOULD LIKE TO DELETE FILES WITH MISSING PATIENT ID?';
-      this.hiddenFileDeleteItem.nativeElement.click();
-    }
-    else if (this._selectedAction == 3) {
-      this.deleteMessage = 'ARE YOU SURE YOU WOULD LIKE TO DELETE FILES WITH MISSING DOC TYPE?';
-      this.hiddenFileDeleteItem.nativeElement.click();
-    }
-    else if (this._selectedAction == 4) {
-      if (this.patientList.findIndex(patient => patient.is_selected === true) === -1) {
-        this.CodeErrorNotification('Please select a file for delete.');
+    this.indexNumber = null;
+    if (this._selectedAction == 1 || this._selectedAction == 2 || this._selectedAction == 3 || this._selectedAction == 4) {
+      if (this._selectedAction == 4) {
+        let index = this.patientList.findIndex(patient => patient.is_selected === true);
+        if (index === -1) {
+          this.CodeErrorNotification('Please select a file for delete.');
+        } else { this.hiddenFileDeleteItem.nativeElement.click(); }
       } else {
-        this.deleteMessage = 'ARE YOU SURE YOU WOULD LIKE TO DELETE SELECTED FILE(S)?';
         this.hiddenFileDeleteItem.nativeElement.click();
       }
     }
-    else if (this.totalCheckCount != 0) {
-      this.indexNumber = null;
+    else if (this._selectedAction === 5) {//Copy filename to PatientID 
+      for (let i = 0; i < this.patientList.length; i++) {
+        if (this.patientList[i].is_selected === true) {
+          let fileNameForPtId = this.patientList[i].name;
+          fileNameForPtId = fileNameForPtId.substring(0, fileNameForPtId.lastIndexOf('.'));
+          let FileNameExp = /^[0-9 ]+$/;
+          if (FileNameExp.test(fileNameForPtId)) {
+            this.patientList[i].ReferreId = fileNameForPtId;
+          }
+        }
+      }
 
-      if (this._selectedAction == 5) {//Copy filename to PatientID
-        debugger;
+    }
+    else if (this._selectedAction === 6) {//Merg PDFs  
+      if (this.patientList) {
+        var formData = new FormData();
+        let JNum: number = 0;
         for (let i = 0; i < this.patientList.length; i++) {
           if (this.patientList[i].is_selected === true) {
-            let fileNameForPtId = this.patientList[i].name;
-            fileNameForPtId = fileNameForPtId.substring(0, fileNameForPtId.lastIndexOf('.'));
-            var regex = /\d+/g;
-            var matches = fileNameForPtId.match(regex);
-            // let FileNameExp = /^[0-9 ]+$/;
-            // if (FileNameExp.test(fileNameForPtId)) {
-            if (matches) {
-              this.patientList[i].ReferreId = matches[0];
-            }
+            formData.append('file', this.patientList[i].fileInfo);
+            formData.append('UserId', this.storageService.user.UserId);
+            formData.append('DocId', this.patientList[i].DocId.toString());
+            formData.append('Dtype', this.patientList[i].Dtype);
+            formData.append('ReferreId', this.patientList[i].ReferreId);
+            formData.append('FileName', this.patientList[i].name);
+            formData.append('Abbreviation', this.patientList[i].Abbreviation);
+            formData.append('splitFiles', <string><any>this.splitFiles);
+            formData.append('barCodes', <string><any>this.barCodes);
+            formData.append('RadiologistId', this.patientList[i].RadiologistId.toString());
+            formData.append('Radiologist', this.patientList[i].Radiologist);
+            JNum++;
 
-            // }
           }
         }
+        if (formData) {
+          formData.append('FileCount', (JNum).toString());
+          let MergPdfList: Array<{ name: string, viewUrl: string, is_selected: boolean, DocId: number, Dtype: string, Abbreviation: string, ReferreId: string, fileInfo: any }> = [];
+          this.MergsPdfsubscribe = this.autoRouteV2Service.MergsPdfFiles_AutoRoute(true, formData).subscribe((res) => {
+            if (res.response != null) {
+              let index = this.patientList.findIndex(patient => patient.is_selected === true);
+              let insert = index;
+              let ArrayBuff = this._base64ToArrayBuffer(res.response[0].fileBytes);
+              let file = new Blob([ArrayBuff], { type: 'application/pdf' });
+              var fileURL = URL.createObjectURL(file);
 
-      }
-      else if (this._selectedAction == 6) {//Merg PDFs  
+              if (this.patientList.length > 0) {
+                for (let i = 0; i < this.patientList.length; i++) {
+                  if (insert == i) {
 
-        if (this.patientList) {
-          var formData = new FormData();
-          let JNum: number = 0;
-          for (let i = 0; i < this.patientList.length; i++) {
-            if (this.patientList[i].is_selected === true) {
-              formData.append('file', this.patientList[i].fileInfo);
-
-              formData.append('UserId', this.storageService.user.UserId);
-              formData.append('DocId', this.patientList[i].DocId.toString());
-              formData.append('Dtype', this.patientList[i].Dtype);
-              formData.append('ReferreId', this.patientList[i].ReferreId);
-              formData.append('FileName', this.patientList[i].name);
-              formData.append('Abbreviation', this.patientList[i].Abbreviation);
-              formData.append('splitFiles', <string><any>this.splitFiles);
-              formData.append('barCodes', <string><any>this.barCodes);
-              formData.append('RadiologistId', this.patientList[i].RadiologistId.toString());
-              formData.append('Radiologist', this.patientList[i].Radiologist);
-              JNum++;
-
-            }
-          }
-          if (formData) {
-
-            formData.append('FileCount', (JNum).toString());
-            let MergPdfList: Array<{ name: string, viewUrl: string, is_selected: boolean, DocId: number, Dtype: string, Abbreviation: string, ReferreId: string, fileInfo: any }> = [];
-            this.MergsPdfsubscribe = this.autoRouteV2Service.MergsPdfFiles_AutoRoute(true, formData).subscribe((res) => {
-              if (res.response != null) {
-
-                let index = this.patientList.findIndex(patient => patient.is_selected === true);
-                let insert = index;
-                let ArrayBuff = this._base64ToArrayBuffer(res.response[0].fileBytes);
-                let file = new Blob([ArrayBuff], { type: 'application/pdf' });
-                var fileURL = URL.createObjectURL(file);
-
-                if (this.patientList.length > 0) {
-
-                  for (let i = 0; i < this.patientList.length; i++) {
-                    if (insert == i) {
-
-                        this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[0].RadiologistId, Radiologist: res.response[0].Radiologist, name2: res.response[0].FileName.replace(/_Mergerd.*.pdf/, '_Mergerd.pdf') });
-                    }
+                    this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist });
                   }
                 }
-                index = this.patientList.findIndex(patient => patient.is_selected === true);
-                while (index !== -1) {
-                  this.patientList.splice(index, 1);
-                  index = this.patientList.findIndex(patient => patient.is_selected === true);
-                }
-                this.select_all = false;
-                this.totalCheckCount = 0;
               }
-            });
-          }
+              index = this.patientList.findIndex(patient => patient.is_selected === true);
+              while (index !== -1) {
+                this.patientList.splice(index, 1);
+                index = this.patientList.findIndex(patient => patient.is_selected === true);
+              }
+            }
+          });
         }
+
       }
-    }
-    else {
-      this.CodeErrorNotification('Please select at least one file to attach.');
     }
   }
 
@@ -506,21 +396,20 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   }
 
 
-  saveAttachDoc() {
-    this.Submitted = true;
+
+  async saveAttachDoc() {
     if (this.totalCheckCount != 0) {
-      this.CHckFields = true;
+      let CHckFields = true;
       for (let i = 0; i < this.patientList.length; i++) {
         if (this.patientList[i].is_selected === true) {
-          if (this.patientList[i].DocId == 0 || this.patientList[i].ReferreId == '') {
-            this.CHckFields = false;
+          if (this.patientList[i].DocId === 0 || this.patientList[i].ReferreId === '') {
+            CHckFields = false;
           }
         }
       }
-      if (this.CHckFields === false) { this.CodeErrorNotification('Highlighted fields are required.'); }
+      if (CHckFields === false) { this.CodeErrorNotification('Fields cannot be empty.'); }
       else {
-        this.DisPlayCount = 0;
-         for (let i = 0; i < this.patientList.length; i++) {
+        for (let i = 0; i < this.patientList.length; i++) {
           if (this.patientList[i].is_selected === true) {
             let formData = new FormData();
             formData.append('file', this.patientList[i].fileInfo);
@@ -537,15 +426,14 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             if (this.patientList[i].name.toLowerCase().indexOf('mergerd.pdf') !== -1) {
               formData.append('MergedFile', 'true');
             } else { formData.append('MergedFile', 'false'); }
-            setTimeout(() => {
-              this.getData(formData, i, this.patientList[i].name ? this.patientList[i].name : '');
-            }, 500);
+            await this.getData(formData, i, this.patientList[i].name);
+
           }
         }
       }
 
     } else {
-      this.CodeErrorNotification('Please select at least one file to attach.');
+      this.CodeErrorNotification('Please select File');
     }
   }
   onChangeSplit(e) {
@@ -557,9 +445,8 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     this.GetUpdateDoNotSplitFilesReadBarCodes(true);
   }
   GetUpdateDoNotSplitFilesReadBarCodes(isChecked = false) {
-    this.Submitted = false;
-    let IsNotReadBarcode = this.barCodes ? this.barCodes : false;
-    let IsDoNotSplit = this.splitFiles ? this.splitFiles : false;
+    let IsNotReadBarcode = this.barCodes?this.barCodes:false;
+    let IsDoNotSplit = this.splitFiles?this.splitFiles:false;
     var data = { "IsNotReadBarcode": IsNotReadBarcode, "IsDoNotSplit": IsDoNotSplit, 'UserId': this.storageService.user.UserId, }
     if (isChecked) {
       this.autoRouteV2Service.UpdateDoNotSplitFilesReadBarCodes(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
@@ -570,6 +457,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     } else {
       this.autoRouteV2Service.GetDoNotSplitFilesReadBarCodes(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.response) {
+          console.log(res.response[0].IsNotReadBarcode);   console.log(res.response[0].IsDoNotSplit);
           this.barCodes = res.response[0].IsNotReadBarcode;
           this.splitFiles = res.response[0].IsDoNotSplit;
         }
@@ -580,83 +468,14 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     }
   }
 
-  copyDtype(copyType: any) {
-
-    let selectedDoc = this.patientList[0].DocId;
-    let selectedDtype = this.patientList[0].Dtype;
-    let selectedRadiologist = this.patientList[0].RadiologistId;
-    let abbreviation = this.patientList[0].Abbreviation;
-    let patientId = this.patientList[0].ReferreId
-    if (this.patientList.length < 2) {
-      this.CodeErrorNotification('To copy document type. should be at least two documents in the grid')
-      return;
-    }
-    if (copyType == 2) {
-      if (!selectedDoc || selectedDoc.toString() == '0') {
-        this.CodeErrorNotification('Please select document type of first document')
-        return;
-      }
-    }
-    else if (copyType == 3) {
-      if (!patientId) {
-        this.CodeErrorNotification('Please Enter Patient Id for first document')
-        return;
-      }
-    }
-    else if (copyType == 1) {
-      if (!selectedRadiologist || selectedRadiologist.toString() == '0') {
-        this.CodeErrorNotification('Please select radiologist for first document')
-        return;
-      }
-    }
-
-    let checkSelected = false;
-    for (let i = 0; i < this.patientList.length; i++) {
-      if (this.patientList[i].is_selected === true) {
-        if (i > 0)
-          checkSelected = true;
-        if (copyType == 2) {
-          this.patientList[i].DocId = selectedDoc;
-          this.patientList[i].Dtype = selectedDtype;
-          this.Documentdata[i] = selectedDoc;
-        }
-        else if (copyType == 3) {
-          this.patientList[i].ReferreId = patientId;
-        }
-        this.patientList[i].Abbreviation = abbreviation;
-
-
-        if (abbreviation && (abbreviation.toLowerCase() == 'p_asl' || abbreviation.toLowerCase() == 'p_psl')) {
-          if (copyType == 2) {
-            this.selectedDocType[i] = selectedDoc;
-          }
-          if (copyType == 1) {
-            this.Radiologistdata[i] = selectedRadiologist;
-          }
-          this.patientList[i].RadiologistId = selectedRadiologist;
-        } else {
-          this.selectedDocType[i] = false;
-        }
-      }
-    }
-    if (checkSelected == false) {
-      this.copyItemConfirmPopUp.nativeElement.click();
-      //this.CodeErrorNotification("Please select documents you want to copy the doc type for. The first file selected will be the master to copy to the rest of the doc types.");
-    }
-  }
-
 
   changed(type: string) {
-
     this.totalCheckCount = 0;
     if (type === 'patientList') {
       this.patientList.forEach(item => {
         if (item.is_selected) {
           this.totalCheckCount = this.totalCheckCount + 1
         }
-        // if (this.select_all) {
-        //   this.totalCheckCount = 0;
-        // }
       })
 
       if (this.totalCheckCount != 0 && this.totalCheckCount == this.patientList.length) {
@@ -670,47 +489,22 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       })
     }
   }
-  getData(formData: any, index: number, Filename: string) {
-     this.DisPlayCount++;
-        this.UploadFileSubscribe = this.autoRouteV2Service.UploadFileToAutoRoute(true, formData).subscribe((res) => {
-      if (res.responseCode == 400) {
-        this.checkError=true;
-       
-        if (this.DisPlayCount == this.totalCheckCount )  {
-          var Message = "Selected doc. type is not allowed when inputted patient ID doesn't exist"
-          this.errorAttachAndSaveNotification(Message);
-        }
-      }
-      else if (res.response != null) {
-
+  async getData(formData: any, index: number, Filename: string) {
+    this.UploadFileSubscribe = await this.autoRouteV2Service.UploadFileToAutoRoute(true, formData).subscribe((res) => {
+      if (res.response != null) {
+        this.DisPlayCount++;
         if (res.responseCode === 200) {
-
-          
-          if (this.DisPlayCount == this.totalCheckCount) {
-            if (this.checkError)  {
-              var Message = "Selected doc. type is not allowed when inputted patient ID doesn't exist"
-              this.errorAttachAndSaveNotification(Message);
-            }
-            else{
-              this.successNotification('All Files have been attached successfully');
-            }
-            if (this.patientList.length == 1) {
+          if (this.DisPlayCount === this.totalCheckCount) {
+            if (this.patientList.length === 1) {
               this.isUploadShown = false;
             }
-           
+            this.successNotification('All Files have been attached successfully');
             this.DisPlayCount = 0;
           }
           this.displayAlert(res.response);
-          //this.patientList.splice(index, 1);
-          this.patientList.splice(this.patientList.findIndex(f => f.name == Filename), 1);
-          this.totalCheckCount--;
+          this.patientList.splice(index, 1);
           this.updateDropDownArray();
-        } else {
-          this.errorNotification(res);
         }
-      }
-      else {
-        this.errorNotification(res);
       }
     },
       (err: any) => {
@@ -769,7 +563,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   }
 
   displayAlert(getRes: any) {
-
     if (getRes.patientAlertReason && getRes.patientAlert) {
       if (getRes.patientAlertReason.length > 0) {
         this.isAlertShown = true;
@@ -787,7 +580,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   }
   setDeleteIndexNUmber(index: number) {
     this.indexNumber = index;
-    this.deleteMessage = 'ARE YOU SURE YOU WOULD LIKE TO DELETE THIS FILE?';
     this.hiddenFileDeleteItem.nativeElement.click();
   }
   deleteDetail(index: number) {
@@ -805,7 +597,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   }
 
   onSelectAll(e: any, type: string): void {
-
     if (type === 'patientList') {
       for (let i = 0; i < this.patientList.length; i++) {
         const item = this.patientList[i];
@@ -819,9 +610,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
         item.is_alertSelected = e;
         this.totalAlertCheckCount = i + 1
       }
-    }
-    if (e == false) {
-      this.totalCheckCount = 0;
     }
   }
   removeSpecialCharacters(event: any, index: number) {
@@ -915,24 +703,4 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   trackBy(index: number, patientList: any) {
     return patientList.name;
   }
-  toggleStartDemo() {
-    if (this.startText === 'start Scanner') {
-      this.startText = 'Close Scanner'
-      this.show = true;
-    }
-    else {
-      this.startText = 'start Scanner'
-      this.show = false
-    }
-  }
-
-  useScanner() {
-    var obj = { mergePage: this.splitFiles, readbarcode: this.barCodes }
-
-    this.commonMethodService.sendAutoRouteFlag(JSON.stringify(obj))
-    this.hiddenDynamsoftScannerPopUp.nativeElement.click();
-    this.toggleStartDemo();
-  }
-
-
 }

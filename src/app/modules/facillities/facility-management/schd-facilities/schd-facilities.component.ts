@@ -8,9 +8,7 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import DataGrid from 'devextreme/ui/data_grid';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
-import { CommonRegex } from 'src/app/constants/commonregex';
-import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
-
+import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 
 @Component({
   selector: 'app-schd-facilities',
@@ -22,7 +20,6 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
   @Input() isGridDisplay: boolean = true
-  a1:any=20;
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
   modalityServiceForm: FormGroup;
@@ -33,7 +30,6 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityNotesForm: FormGroup;
   facilityPoliciesForm: FormGroup;
   facilityParentCompanyForm: FormGroup;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   facilityIntakeForm: FormGroup;
   facilityTagForm: FormGroup;
   schedulingPricing: any = [];
@@ -65,6 +61,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityTagList: any = [];
   TagList: any = [];
   EpicUserList: any = [];
+  ResourceNameList: any = [];
   selectedEpicUserList: any = [];
   noteBtnDisabled: boolean = true;
   tagBtnDisabled: boolean = true;
@@ -73,6 +70,7 @@ export class SchdFacilitiesComponent implements OnInit {
   parentDropDownModel: string = '';
   facilityPricingList: any = [];
   facilityPricingHistoryList: any = [];
+  updatedResourceName: any = [];
   submitted: boolean = false;
   modalValue: string = 'modal';
   isPopUpInEditMode: boolean = false;
@@ -98,8 +96,6 @@ export class SchdFacilitiesComponent implements OnInit {
   log: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
-  selectedRows: any = [];
-  readonly commonRegex=CommonRegex;
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -124,18 +120,19 @@ export class SchdFacilitiesComponent implements OnInit {
   //     format_tags: 'p;h1;h2;h3;pre;div'
   //  }
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
-    
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService) {
-    this.commonMethodService.setTitle('Sheduling-Facility');
-    facilityService.sendDataToschdFacilities.subscribe(res => {
-     
-      if (res.row) {
+    this.commonMethodService.setTitle('Scheduling Facility');
+    facilityService.sendDataToschdFacilities.subscribe(res => {     
+      if (res.FacilityID) {     
         this.isGridDisplay = false;
-        this.getFacilityDetail(res.row);
+        this.getFacilityDetail(res.FacilityID);
+        if(res.isShowSchedulingTab){
+          this.defaultPopupTab = 'Scheduling Details';
+        }
         this.hiddenAddEditPopUpItem.nativeElement.click();
       }
-    });;
+    });
   }
 
   ngOnInit(): void {
@@ -249,6 +246,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   getAllTagList() {
 
+    //Id:0, facilityId:11, recorceId, modality, modalityType:
     this.facilityService.getAllTagList(true).subscribe((TagRes) => {
       if (TagRes.response !== null) {
         this.TagList = TagRes.response;
@@ -311,6 +309,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: [''],
       isActive: [''],
       doNotScheduleFacility: [''],
+      useBlockLease: [''],
       facilityMile: [''],
       priceWeight: [''],
       latitude: [''],
@@ -324,42 +323,42 @@ export class SchdFacilitiesComponent implements OnInit {
   createFacilityDetailTabForm() {
     this.facilityContactDetailForm = this.fb.group({
       itsupportContact: [''],
-      itsupportEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      itsupportEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       itsupportOfficePhone: ['', [Validators.minLength(10)]],
       itsupportCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       itsupportHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       itsupportFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       reportsContact: [''],
-      reportsEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      reportsEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       reportsOfficePhone: ['', [Validators.minLength(10)]],
       reportsCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       reportsHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       reportsFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       statusCheckContact: [''],
-      statusCheckEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      statusCheckEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       statusCheckOfficePhone: ['', [Validators.minLength(10)]],
       statusCheckCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       statusCheckHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       statusCheckFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       schedulingContact: [''],
-      schedulingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      schedulingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       schedulingOfficePhone: ['', [Validators.minLength(10)]],
       schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       imagesContact: [''],
-      imagesEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      imagesEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       imagesOfficePhone: ['', [Validators.minLength(10)]],
       imagesCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       imagesHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       imagesFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       billingContact: [''],
-      billingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      billingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       billingOfficePhone: ['', [Validators.minLength(10)]],
       billingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       billingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
@@ -411,6 +410,9 @@ export class SchdFacilitiesComponent implements OnInit {
       mriwFlexandEXT: [''],
       mrI2WFlexandEXT: [''],
       mrI3WFlexandEXT: [''],
+      mri1ResourceName: [null],
+      mri2ResourceName: [null],
+      mri3ResourceName: [null],
     });
   }
   createModalityCtTabForm() {
@@ -436,6 +438,10 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3sedation: [''],
       ct3breast: [''],
       ctnotes: [''],
+
+      ct1ResourceName: [null],
+      ct2ResourceName: [null],
+      ct3ResourceName: [null]
     });
   }
   createModalityExceptionsTabForm() {
@@ -522,6 +528,13 @@ export class SchdFacilitiesComponent implements OnInit {
       shedulingSatOpenTo: [''],
       shedulingSatOpenFrom2: [''],
       shedulingSatOpenTo2: [''],
+      sundayschedulingIsClosed: [false],
+      mondayschedulingIsClosed: [false],
+      tuesdayschedulingIsClosed: [false],
+      wednesdayschedulingIsClosed: [false],
+      thursdayschedulingIsClosed: [false],
+      fridayschedulingIsClosed: [false],
+      saturdayschedulingIsClosed: [false],
 
       ///// MRI
       sunOpenFrom: [''],
@@ -552,6 +565,13 @@ export class SchdFacilitiesComponent implements OnInit {
       satOpenTo: [''],
       satOpenFrom2: [''],
       satOpenTo2: [''],
+      sundaymriIsClosed: [false],
+      mondaymriIsClosed: [false],
+      tuesdaymriIsClosed: [false],
+      wednesdaymriIsClosed: [false],
+      thursdaymriIsClosed: [false],
+      fridaymriIsClosed: [false],
+      saturdaymriIsClosed: [false],
 
       ///////// CT
       ctSunOpenFrom: [''],
@@ -582,6 +602,13 @@ export class SchdFacilitiesComponent implements OnInit {
       ctSatOpenTo: [''],
       ctSatOpenFrom2: [''],
       ctSatOpenTo2: [''],
+      sundayctIsClosed: [false],
+      mondayctIsClosed: [false],
+      tuesdayctIsClosed: [false],
+      wednesdayctIsClosed: [false],
+      thursdayctIsClosed: [false],
+      fridayctIsClosed: [false],
+      saturdayctIsClosed: [false],
 
       ///////// Xray
       sunXrayFrom: [''],
@@ -615,7 +642,13 @@ export class SchdFacilitiesComponent implements OnInit {
       parking: [''],
       preArrivalTime: [''],
       xrayWalkIn: [''],
-
+      sundayxrayIsClosed: [false],
+      mondayxrayIsClosed: [false],
+      tuesdayxrayIsClosed: [false],
+      wednesdayxrayIsClosed: [false],
+      thursdayxrayIsClosed: [false],
+      fridayxrayIsClosed: [false],
+      saturdayxrayIsClosed: [false]
     });
   }
   createNotesTabForm() {
@@ -669,11 +702,11 @@ export class SchdFacilitiesComponent implements OnInit {
       intakeFax4: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       intakeFax5: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       isEmailIntakePacket: [''],
-      intakeEmail1: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail2: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail3: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail4: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail5: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      intakeEmail1: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      intakeEmail2: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      intakeEmail3: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      intakeEmail4: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      intakeEmail5: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       isElectricIntake: [''],
       isElecScreenForm: [''],
       isRxnotification: [''],
@@ -712,7 +745,16 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = event;
     this.getSchedulingFacilities()
   }
-
+  AddUpdateIsClosedDays(Day: string, Modality: string, event: any) {
+    let body = { 'FacilityId': this.facilityId, 'Modality': Modality, 'Day': Day, 'IsClosed': event.target.checked }
+    this.facilityService.addUpdateFacilityClosedDays(true, body).subscribe((res) => {
+      if (res.response != null) {
+        this.showNotificationOnSucess(res);
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
   getSchedulingFacilities() {
 
     let body = { 'isActive': this.userType, 'pageSize': this.pageSize, 'pageNumber': this.pageNumber, 'searchText': this.searchText }
@@ -732,6 +774,18 @@ export class SchdFacilitiesComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
+
+  getFacilityResourceDropDownData() {
+    this.facilityService.getResourceDropDownData(true, this.facilityId).subscribe((res) => {
+      if (res.response != null) {
+        this.ResourceNameList = res.response;
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
+
   // common Error Method
   errorNotification(err: any) {
     this.notificationService.showNotification({
@@ -741,34 +795,31 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   showNotificationOnSucess(data: any) {
-   
-      this.notificationService.showNotification({
-        alertHeader: 'Success',
-        alertMessage: data.message,
-        alertType: data.responseCode
-      });
-    
-   
+    this.notificationService.showNotification({
+      alertHeader: 'Success',
+      alertMessage: data.message,
+      alertType: data.responseCode
+    });
   }
   showNotificationOnFailure(data: any) {
-  
-      this.notificationService.showNotification({
-        alertHeader: 'Fail',
-        alertMessage: data.message,
-        alertType: data.responseCode
-      });
-    
-   
+
+    this.notificationService.showNotification({
+      alertHeader: 'Fail',
+      alertMessage: data.message,
+      alertType: data.responseCode
+    });
   }
 
   selectionChanged(data: any) {
     this.selectedItemKeys = data.selectedRowKeys;
   }
-  getFacilityDetail(row: any) {
+  getFacilityDetail(facilityId: any) {
     this.resetFacilityForm();
-    this.facilityId = row.data.facilityId;
+    this.facilityId = facilityId;
     this.isPopUpInEditMode = true;
     this.getFacilityDetailById();
+    this.getFacilityResourceDropDownData();
+
   }
   getFacilityDetailById() {
 
@@ -781,10 +832,19 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityDetail = [];
     this.facilityPolicy = '';
     this.parentPolicy = '';
+    this.updatedResourceName = [];
 
     this.facilityService.getFacilityById(true, this.facilityId).subscribe((res) => {
       if (res.response[0] != null) {
         this.facilityDetail = res.response[0];
+        if (JSON.parse(res.response[0].facilitycloseddaysJSON)) {
+          this.updateFacilityCloseddays(JSON.parse(res.response[0].facilitycloseddaysJSON));
+        }
+        if (JSON.parse(res.response[0].facilityResourceJson)) {
+          setTimeout(() => {
+            this.updateFacilityResources(JSON.parse(res.response[0].facilityResourceJson));
+          }, 200);
+        }
         this.SetPolicyForm(this.facilityDetail);
         this.setGeneralInfoTabForm(this.facilityDetail);
         this.setFacilityContactDetailTabForm(this.facilityDetail);
@@ -805,13 +865,62 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   senddocManagerFacility() {
-      this.sendDataDocManager = {
+    this.sendDataDocManager = {
       facilityId: this.facilityId,
       facilityName: this.facilityDetail.facilityName,
       from: 'Facility'
     }
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
-  
+  }
+  updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
+    var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
+    if (data.length > 0)
+      data[0].ResourceId = ResourceId;
+    else
+      this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+  }
+  updateFacilityResources(arrayResources: any) {
+    let getOnlyModality = arrayResources.map(item => item.Modality).filter((value, index, self) => self.indexOf(value) === index);
+    if (getOnlyModality) {
+      getOnlyModality.forEach(Modality => {
+        let getModalitiyType = arrayResources.filter(arr => arr.Modality == Modality).map(arr => arr.ModalitiyType);
+        getModalitiyType.forEach(ModalitiyType => {
+          let getAllId = arrayResources.filter(data => data.Modality == Modality && data.ModalitiyType == ModalitiyType)[0];
+          let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
+          if (Modality.toLowerCase() == 'mri') {
+            this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'mri', ModalitiyType: ModalitiyType });
+            this.modalityMriForm.patchValue({
+              [controlName]: getAllId.ResourceId
+            });
+          } else if (Modality.toLowerCase() == 'ct') {
+            this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'ct', ModalitiyType: ModalitiyType });
+            this.modalityCtForm.patchValue({
+              [controlName]: getAllId.ResourceId
+            });
+          }
+        })
+      })
+    }
+  }
+
+
+  updateFacilityCloseddays(arrayUpdate: any) {
+
+    let getOnlyModality = arrayUpdate.map(item => item.Modality).filter((value, index, self) => self.indexOf(value) === index);
+    let getOnlyWeek = arrayUpdate.map(item => item.Day).filter((value, index, self) => self.indexOf(value) === index);
+    if (getOnlyModality && getOnlyWeek) {
+      getOnlyModality.forEach(Modality => {
+
+        let getOnlyWeekN = arrayUpdate.filter(arr => arr.Modality == Modality).map(arr => arr.Day);
+        getOnlyWeekN.forEach(Day => {
+          let isClosed = arrayUpdate.filter(data => data.Modality == Modality && data.Day == Day)[0].IsClosed;
+          let controlName = `${Day}${Modality}IsClosed`;
+          this.facilitySchedulingDetailForm.patchValue({
+            [controlName]: isClosed
+          });
+        });
+      });
+    }
   }
 
 
@@ -846,7 +955,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getTagListByFacilityId(true, facilityId).subscribe((tagRes) => {
       if (tagRes.response != null) {
         this.facilityTagList = tagRes.response;
-        console.log(this.facilityTagList);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -868,6 +976,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: data.overridePrice,
       isActive: data.isActive,
       doNotScheduleFacility: data.doNotScheduleFacility,
+      useBlockLease: data.useBlockLease,
       facilityMile: data.facilityMile,
       priceWeight: data.priceWeight,
       latitude: data.latitude,
@@ -1246,7 +1355,7 @@ export class SchdFacilitiesComponent implements OnInit {
         'facilityId': this.facilityId,
         'note': this.facilityNotesFormControls.Note.value,
         'username': this.storageService.user.FullName,
-        'timestamp': this.datePipe.transform(new Date(),this.dateTimeFormatCustom.DateTime)
+        'timestamp': this.datePipe.transform(new Date(), 'MM/dd/yyyy h:mm a')
       }
       this.facilityNotesFormControls.Note.setValue('');
       this.facilityService.addFacilityNote(true, body).subscribe((res) => {
@@ -1386,6 +1495,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
       doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -1733,11 +1843,12 @@ export class SchdFacilitiesComponent implements OnInit {
       // facilityPolicy:this.facilityPolicy!=null?this.facilityPolicy.toString():'',
       // parentPolicy:this.parentPolicy!=null?this.parentPolicy.toString():''
       facilityPolicy: this.facilityPolicyFormControls.facilityPolicy.value,
-      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value
+      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value,
       /// For Tag Tab we are using Different API
+      FacilityResourceJson: JSON.stringify(this.updatedResourceName)
 
     }
-
+    console.log(body);
     this.facilityService.updateFacility(true, body).subscribe((res) => {
       debugger
       if (res.response != null) {
@@ -1784,6 +1895,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
       doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -2310,7 +2422,6 @@ export class SchdFacilitiesComponent implements OnInit {
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
   }
-
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({
       alertHeader: msg,
@@ -2319,36 +2430,9 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
 
-  onCellUpdating(currentRowData) {
-    let Body = {
-      'FID': currentRowData.key.facilityId,
-      'Type': currentRowData.key.modType,
-      'IsReadOnly': currentRowData.key.isReadOnly,
-      'CurrentGlobal': currentRowData.key.currentGlobal ?? 0,
-      'CurrentTech': currentRowData.key.currentTech ?? 0,
-      'PricingCutOff': currentRowData.key.pricingCutOff,
-      'NewGlobal': currentRowData.key.newGlobal ?? 0,
-      'NewTech': currentRowData.key.newTech ?? 0,
-      'PriceTier': currentRowData.key.priceTier,
-      'IsCopyPrice': !currentRowData.key.isCopyPrice
-    }
-    this.facilityService.AddCopyPrice(true, Body).subscribe((res) => {
-      if (res.response != null && res.responseCode === 200) {
-        this.showNotificationOnSucess(res);
-        this.reLoadAllFacility();
-      }
-      else {
-        this.showNotificationOnFailure(res);
-      }
-    }, (err) => {
-      // this.errorNotification(err);
-    });
-  }
-
   customizeText(cellInfo) {
     return cellInfo.valueText.replace("USD", "$");
   }
-
 
 
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
@@ -2364,11 +2448,5 @@ export class SchdFacilitiesComponent implements OnInit {
   get facilityTagFormControls() { return this.facilityTagForm.controls; }
   get facilityPolicyFormControls() { return this.facilityPoliciesForm.controls; }
 
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
-  
 }
 

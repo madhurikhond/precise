@@ -34,18 +34,18 @@
 										<div class="theme-label">Study must equal</div>
 										<div class="input-group md-input-focused">
 											<ng-select [items]="statusNamesList" placeholder="Select"
-												formControlName="twilioStatus" bindLabel="status" [multiple]="true" id="id88" (add)="a1=ValidateMultiSelectTextLength('id88',a1)"
+												formControlName="twilioStatus" bindLabel="status" [multiple]="true"
 												[closeOnSelect]="false" bindValue="status" [(ngModel)]="selectedStatusList"
 												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioStatus.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1">
-														<span class="ng-value-label">{{items.length - a1}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>
 											</ng-select>
@@ -61,18 +61,18 @@
 										<div class="input-group md-input-focused">
 											<ng-select [items]="financialTypesList" placeholder="Select"
 												formControlName="twilioFinancialType" bindLabel="financialtypename"
-												[multiple]="true" id="id89" (add)="a2=ValidateMultiSelectTextLength('id89',a2)" [closeOnSelect]="false" bindValue="financialtypename"
+												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
 												[(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioFinancialType.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a2">
-														<span class="ng-value-label">{{items.length - a2}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>
 											</ng-select>
@@ -93,8 +93,8 @@
 											<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
 												formControlName="twilioNotRunAt" type="date" [showClearButton]="true"
 												[useMaskBehavior]="true"
-												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioNotRunAt.errors)}">
-												
+												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioNotRunAt.errors)}"
+												dateSerializationFormat="yyyy-MM-dd">
 											</dx-date-box>
 										</div>
 										<div *ngIf="submitted && gsForm.twilioNotRunAt.errors"
@@ -109,18 +109,18 @@
 										<div class="input-group md-input-focused">
 											<ng-select [items]="weekDays" placeholder="Select"
 												formControlName="twilioDaysOfWeekRun" 
-												[multiple]="true" id="id90" (add)="a3=ValidateMultiSelectTextLength('id90',a3)" [closeOnSelect]="false"
+												[multiple]="true" [closeOnSelect]="false"
 												[(ngModel)]="selectedweekDays"
 												[ngClass]="{ 'is-invalid': (submitted && gsForm.twilioDaysOfWeekRun.errors)}"
 												(change)="onChange($event)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a3">
-														<span class="ng-value-label">{{items.length - a3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > 3">
+														<span class="ng-value-label">{{items.length - 3}} more...</span>
 													</div>
 												</ng-template>
 											</ng-select>

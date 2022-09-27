@@ -25,12 +25,6 @@ export class SettlementsComponent implements OnInit {
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @ViewChild('btnCancel') myDiv: ElementRef<HTMLElement>;
   @ViewChildren('gridContainer') gridContainer: any;
-  maxDate = new Date();
-  a1: any = 20;
-  a2: any = 20;
-  a3: any = 20;
-  a4: any = 20;
-  a5: any = 20;
 
   allMode: string;
   checkBoxesMode: string;
@@ -395,7 +389,7 @@ export class SettlementsComponent implements OnInit {
           if (res) {
             this.studyDetail = res.response.response;
             this.editPopupTitle = `${this.studyDetail.PATIENTID} - ${this.studyDetail.FAMILYNAME}, ${this.studyDetail.GIVENNAME} - 
-                                   DOB: ${datePipe.transform(this.studyDetail.BIRTHDATE,this.dateTimeFormatCustom.Date)}${this.studyDetail.InjuryDate ? ', DOI: ' + datePipe.transform(this.studyDetail.InjuryDate, this.dateTimeFormatCustom.Date) : ''}
+                                   DOB: ${datePipe.transform(this.studyDetail.BIRTHDATE, 'MM-dd-yyyy')}${this.studyDetail.InjuryDate ? ', DOI: ' + datePipe.transform(this.studyDetail.InjuryDate, 'MM-dd-yyyy') : ''}
                                    ${this.studyDetail.FINANCIALTYPENAME ? ' - ' + this.studyDetail.FINANCIALTYPENAME : ''}`;
             this.filePath = this.studyDetail.FileName ? res.origin + this.studyDetail.FileName : null;
             this.editSettleForm1.patchValue({
@@ -565,7 +559,7 @@ export class SettlementsComponent implements OnInit {
       if (res.response) {
         this.studyDetail = res.response.response;
         this.editPopupTitle = `${this.studyDetail.PATIENTID} - ${this.studyDetail.FAMILYNAME}, ${this.studyDetail.GIVENNAME} - 
-                              DOB: ${datePipe.transform(this.studyDetail.BIRTHDATE, this.dateTimeFormatCustom.Date)}${this.studyDetail.InjuryDate ? ', DOI: ' + datePipe.transform(this.studyDetail.InjuryDate, this.dateTimeFormatCustom.Date) : ''}
+                              DOB: ${datePipe.transform(this.studyDetail.BIRTHDATE, 'MM-dd-yyyy')}${this.studyDetail.InjuryDate ? ', DOI: ' + datePipe.transform(this.studyDetail.InjuryDate, 'MM-dd-yyyy') : ''}
                               ${this.studyDetail.FINANCIALTYPENAME ? ' - ' + this.studyDetail.FINANCIALTYPENAME : ''}`;
         this.filePath = this.studyDetail.FileName ? res.origin + this.studyDetail.FileName : null;
         //var p = (moment(this.studyDetail.startDate)).format('DD-MMM-YYYY');
@@ -865,10 +859,4 @@ export class SettlementsComponent implements OnInit {
   get nForm() { return this.addNoteForm.controls; }
   get settleForm() { return this.editSettleForm.controls; }
   get settleForm1() { return this.editSettleForm1.controls; }
-
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

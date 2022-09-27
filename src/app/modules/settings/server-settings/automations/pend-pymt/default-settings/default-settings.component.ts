@@ -11,8 +11,6 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./default-settings.component.css']
 })
 export class DefaultSettingsComponent implements OnInit {
-  a1: any = 20;
-  a2: any = 20;
   defaultSettingForm:FormGroup
   id:number
   submitted=false
@@ -24,7 +22,6 @@ export class DefaultSettingsComponent implements OnInit {
   tempPaymentList:any =[]
 
   constructor(private fb: FormBuilder,
-    private readonly commonMethodService: CommonMethodService,
     private readonly settingsService: SettingsService,
     private readonly notificationService: NotificationService) { }
 
@@ -168,9 +165,4 @@ export class DefaultSettingsComponent implements OnInit {
   }
 
   get dsForm() { return this.defaultSettingForm.controls; }
-  ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
-  }
 }

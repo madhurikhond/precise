@@ -1,0 +1,33 @@
+.single-signature .label-input img {
+    height: 42px !important;
+}
+.theme-form .form-group signature-pad {
+    width: 100%;
+    float: left;
+	overflow-x: auto;
+	border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.theme-form .form-group.download-copy-section {
+    margin-bottom: 50px;
+}
+.theme-form .form-group.download-copy-section .theme-label{
+    padding: 0px;
+	left: 0px;
+}
+img[_ngcontent-iiy-c0] {
+    height: 100px;
+    display: block;
+}
+.dx-datagrid-rowsview .dx-datagrid-content tr td img {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    display: inherit;
+}
+#imgSign{
+    max-width: 250px;
+    max-height: 250px;
+    margin: 0 auto;
+    display: inherit; 
+}

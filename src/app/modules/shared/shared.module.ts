@@ -4,14 +4,14 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CKEditorModule } from 'ng2-ckeditor';
+ import { CKEditorModule } from 'ng2-ckeditor';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TwoDigitDecimaNumberDirective } from './directives/twodigitdecimalnumber.directive';
 import { PlayerTypePipe } from './pipes/player-type.pipe';
 import { BookmarkPipe } from './pipes/bookmark.pipe';
 import { SqlFieldPipe } from './pipes/bookmark.pipe';
-import { DxDataGridModule, DxDateBoxModule, DxSelectBoxModule,DxButtonModule, DxCheckBoxModule, DxTreeViewModule, DxListModule, DxContextMenuModule } from 'devextreme-angular';
+import { DxDataGridModule, DxDateBoxModule, DxSelectBoxModule,DxButtonModule } from 'devextreme-angular';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
 import { ReferrerDetailComponent } from './components/referrer-detail/referrer-detail.component';
@@ -49,15 +49,8 @@ import { BrokerComponent } from '../borker/broker.component';
 import { DxAutocompleteModule} from 'devextreme-angular';
 import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 import { OnlyNumbersWithoutCommaDirective } from './directives/only-numbers-without-comma-directive';
-import { DwtComponent } from './components/dwt/dwt.component';
-import { CallbackPipe } from './pipes/callback.pipe';
-import { SafeurlPipe } from './pipes/safeurl.pipe';
-import { DocdwtComponent } from './components/docdwt/docdwt.component';
 import { SchdFacilitiesComponent } from '../facillities/facility-management/schd-facilities/schd-facilities.component';
 import { DocumentManagerFacilityComponent } from '../facillities/facility-management/document-manager-facility/document-manager-facility.component';
-import { InputSpaceTrimDirective } from './directives/input-space-trim.directive';
-import { TrimWhiteSpaceDirective } from './directives/trim-white-space.directive';
-import { FormControlName } from '@angular/forms';
 //export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -69,11 +62,8 @@ const maskConfig: Partial<IConfig> = {
     TaskManagementComponent, SaveSearchComponent, DocumentManagerComponent, FileuploadDirective,
     ProgressComponent, SendDocumentComponent, CreateAlertComponent, NegativeSignRemovePipe,
     CurrencyInputDirective, DocumentReferralAndFundingcoComponent, InvalidTabHighlightDirective,
-    InvalidControlTabContainerDirective, FilterPipe,PrescreeningSmallWindowComponent,PrescreengridComponent,DocumentManagerFacilityComponent,
-    BrokerComponent, OnlyNumbersDirective, OnlyNumbersWithoutCommaDirective, DwtComponent  ,  CallbackPipe,SchdFacilitiesComponent,
-    SafeurlPipe,
-    DocdwtComponent,
-    InputSpaceTrimDirective,TrimWhiteSpaceDirective],
+    InvalidControlTabContainerDirective, FilterPipe,PrescreeningSmallWindowComponent,PrescreengridComponent,
+    BrokerComponent,OnlyNumbersDirective,OnlyNumbersWithoutCommaDirective, SchdFacilitiesComponent,DocumentManagerFacilityComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -93,12 +83,7 @@ const maskConfig: Partial<IConfig> = {
     NgxMaskModule.forRoot(maskConfig),
     NgxDaterangepickerMd.forRoot(),
     PrescreeningSmallWindowRoutingModule,
-    CKEditorModule,
-    DxCheckBoxModule,
-    DxFileManagerModule,
-    DxTreeViewModule,
-    DxListModule,
-    DxContextMenuModule,
+    CKEditorModule    
   ],
   exports: [
     LoaderComponent,
@@ -140,17 +125,10 @@ const maskConfig: Partial<IConfig> = {
     PrescreeningSmallWindowComponent,
     PrescreeningSmallWindowRoutingModule,
     SchdFacilitiesComponent,
-    DocumentManagerFacilityComponent,
-    DxFileManagerModule,
-    DxTreeViewModule,
-    DxListModule,
-    DxContextMenuModule,
-    PrescreeningSmallWindowRoutingModule,
-    DwtComponent,
-    DocdwtComponent,
-    InputSpaceTrimDirective,
+    DocumentManagerFacilityComponent
+
   ],
-  providers: [FormControlName,PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
+  providers: [PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<any> {

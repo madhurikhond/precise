@@ -71,6 +71,11 @@ getFacilityById(showGlobalLoader : boolean = true,facilityId:any){
     map((res:ApiResponse) => res)
   );
 }
+getResourceDropDownData(showGlobalLoader : boolean = true,FacilityId:any){
+  return this._httpService.get(`BlockLeaseScheduler/GetFacilityResourceDropDownData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+    map((res:ApiResponse) => res)
+  );
+}
 
 // searchFacilities(showGlobalLoader : boolean = true,body:any){
 //   return this._httpService.post('Facility/SearchFacility',body, showGlobalLoader).pipe(
@@ -353,6 +358,12 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
+  
+  addUpdateFacilityClosedDays(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post('Facility/AddUpdateFacilityClosedDays',body, showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 
   checkUserType(){
     let checkUser = 0;
@@ -386,9 +397,6 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
     return this._httpService.get(`Facility/GetActiveFacilityList`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
-  }
-  AddCopyPrice(showGlobalLoader: true, body: any) {
-    return this._httpService.post('Facility/AddCopyPrice', body, showGlobalLoader).pipe(map((res: ApiResponse) => res));
   }
 }
 

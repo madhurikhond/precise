@@ -1238,7 +1238,7 @@ button {
 	float: left;
 	background: #ffffff;
 	padding: 0px;
-	z-index: 99;
+	z-index: 4;
 	position: fixed;
 }
 .page-title-group .show-hide-menu {
@@ -1682,7 +1682,6 @@ button {
 	height: 100%;
 	width: 100%;
 	text-transform: uppercase;
-	overflow-x: hidden;
 }
 .page-area.full-menu-active .page-working-area {
 	width: calc(100% - 180px);
@@ -2702,7 +2701,7 @@ button {
 	text-align: left;
 	padding: 0px 5px;
 	white-space: nowrap;
-	z-index: 9;
+	z-index: 999;
 	top: -6px;
 	left: 10px;
 	line-height: 12px;
@@ -3845,14 +3844,10 @@ button {
 	width: auto;
 	height: auto;
 	padding: 0px 3px;
-	font-size: 12px;
+	font-size: 11px;
 	position: relative;
 	left: inherit;
 	top: inherit;
-}
-.search-field .theme-form.view-mode.payment-view-mode {
-	width: auto;
-	padding-top: 5px;
 }
 .search-field .theme-form.view-mode .form-group {
 	padding: 0;
@@ -3873,7 +3868,7 @@ button {
 	padding-top: 0px;
 	position: relative;
 	padding-left: 5px;
-	font-size: 12px;
+	font-size: 11px;
 	color: #000;
 	word-break: break-word;
 	white-space: nowrap;
@@ -5044,7 +5039,7 @@ textarea.form-control {
 	transition: all 0.2s ease-in-out;
 }
 .dashboard-task .dashboard-item .task-detail p {
-	width: 90%;
+	width: 100%;
 	float: left;
 	position: relative;
 	color: #6a6c6f;
@@ -5052,9 +5047,6 @@ textarea.form-control {
 	line-height: 22px;
 	padding: 0 10px 10px;
 	margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .dashboard-task .dashboard-item .single-todo.collapsed:before {
 	content: "\f107";
@@ -5236,7 +5228,7 @@ textarea.form-control {
 	float: left;
 }
 .input-lable-side .icon-active .form-control {
-	/* padding-right: 26px; */
+	padding-right: 26px;
 	margin-bottom: 5px;
 }
 .input-lable-side .icon-active .tooltiptext {
@@ -5339,20 +5331,6 @@ textarea.form-control {
 .search-field-theme .theme-form .form-group .input-group .form-control.form-control-modiality, .search-field-theme .theme-form .form-group .input-group .form-control.form-control-facility{
 	width: auto;
 }
-.search-field-theme .theme-form .form-group .patient-status-dropdown .ng-dropdown-panel{
-	width: 345px !important;
-}
-.search-field-theme .theme-form .form-group .patient-status-dropdown .ng-dropdown-panel .ng-dropdown-panel-items{
-	max-height: 362px !important;
-}
-
-#patient-Detail-Window .patient-subs-table tr:nth-last-child(-n+2) .ng-dropdown-panel-items {
-	max-height: 70px !important;
-    border: 1px solid #dedede;
-	bottom: 32px !important;;
-	position: absolute;
-  }
-  #patient-Detail-Window .patient-subs-table tr .ng-dropdown-panel-items {max-height: 70px !important;width: 100%;}
 .input-label-title {
 	width: 100%;
 	position: relative;
@@ -6777,10 +6755,10 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #add-reps-details .dx-datagrid-rowsview .dx-datagrid-content tr:nth-child(odd) td .table-responsive.copy-service-popup .table-theme {
     background: #fff;
 }
-#patient-Detail-Window, #create-alert, #alertDetailModal, #susbErrorMsgPopUp, #add-edit-record{
+#patient-Detail-Window, #create-alert, #alertDetailModal, #ReferrerDetailWindow, #susbErrorMsgPopUp, #add-edit-record{
     z-index: 1051;
 }
-#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #ReferrerDetailWindow, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
+#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
 	z-index: 1052;
 }
 #viewFileFundingCo, #uploadFilePopUpFundingCo, #send-documents, #deleteItemConfirmPopUpFundingCo, #RenamePopUpFundingCo{
@@ -6930,236 +6908,75 @@ tree-node:last-child > .tree-node > .tree-children::after {
     display: table;
 	float: none;
 }
-.custom-patient-row-selection td{
-	background-color: #f7bb9b  !important;
+
+/* Block Scheduler Page */
+
+.block-scheduler-page .search-field .theme-form{
+	width: auto;
 }
-.release-note{
-	display: block;
-    clear: both;
-    background: #fff;
-    padding: 10px;
-    text-align: right;
+.block-scheduler-page .search-field .action-menu{
+	width: auto;
+	float: right;
 }
-#release-note .modal-dialog{
-	height: calc(100% - 60px);
+.block-scheduler-page .cash-price-table .table-theme tr td{
+	text-align: left;
 }
-#DynamsoftScannerPopUp{
-	z-index: 1053;
-}
-#DynamsoftScannerPopUp .controlPanel button{
-	margin: 0px 12px 0px 0px;
-	border-color: #3b8beb;
-}
-#DynamsoftScannerPopUp .controlPanel button:last-child{
-	margin: 0px;
-}
-#DynamsoftScannerPopUp .controlPanel button:hover{
-	background-color: #3b8beb;
-}
-#DynamsoftScannerPopUp .modal-body #dwtcontrolContainer{
-	height: 400px;
-	margin-top: 8px;
-	height: calc(100vh - 276px);
-}
-#DynamsoftScannerPopUp .modal-body #dwtcontrolContainer{
-	height: 400px;
-	margin-top: 8px;
-	height: calc(100vh - 276px);
-}
-#DynamsoftScannerPopUp .modal-body .custom-input{
-	border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    display: inline-block;
-    width: 100%;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    vertical-align: middle;
-	border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    position: relative;
-    -ms-flex: 1 1 0%;
-    flex: 1 1 0%;
-    min-width: 0;
-    margin-bottom: 0;
-}
-#DynamsoftScannerPopUp .modal-body .modal-footer{
-	padding: 10px;
-}
-ngb-modal-window.modal{
-	z-index: 1054;
-	background-color: rgb(0 0 0 / 50%);
-}
-.DynamsoftScannerCommonPopup{
-	position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    outline: 0;
-	display: block;
-}
-.DynamsoftScannerCommonPopup .modal-dialog .modal-content{
-	border-radius: 0px;
-    border: none;
-    width: 100%;
-    height: 100%;
-    float: left;
-    box-shadow: none;
-}
-.DynamsoftScannerCommonPopup .modal-header{
-	background: #3b8beb;
-    padding: 0px;
-    width: 100%;
-    float: left;
-    border: none;
-    border-radius: 0px;
-}
-.DynamsoftScannerCommonPopup .modal-header .modal-title{
-	color: #fff;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 40px;
-    text-transform: uppercase;
-    padding: 0px 15px;
+.cash-price-table .table-theme tr td .td-list span ul{
+	list-style: none;
     margin: 0;
-}
-.DynamsoftScannerCommonPopup .modal-header button.close{
-	position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-	margin: 0;
     padding: 0;
-    opacity: 1;
 }
-.DynamsoftScannerCommonPopup .modal-header button.close span{
-	content: "";
-    background-image: url(../images/theme-plus-icon.png);
-    background-size: 16px;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    margin: 12px;
-    -ms-transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+.cash-price-table .table-theme tr td .td-list span li{
+	display: inline-block;
+	margin-right: 20px;
+	position: relative;
 }
-.DynamsoftScannerCommonPopup .modal-body .list-group{
-	list-style: none;
-}
-.DynamsoftScannerCommonPopup .modal-body .list-group-item{
-	padding: 0px 0px 15px 0px;
-}
-.DynamsoftScannerCommonPopup .modal-body .list-group-item:last-child{
-	padding: 0px;
-}
-.DynamsoftScannerCommonPopup .modal-body .barcodeReaderOptions label{
-	margin-bottom: 10px;
-    margin-left: 0;
-	width: calc(100% - 10px);
-}
-.DynamsoftScannerCommonPopup .modal-body .input-group .form-control{
-	font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
-    border: 1px solid #ced4da !important;
-}
-.DynamsoftScannerCommonPopup .modal-body .custom-select:focus{
-	box-shadow: none;
-	border-color: #ced4da;
-}
-.DynamsoftScannerCommonPopup .modal-body ul.message{
-	list-style: none;
-	padding: 0px;
-}
-#DynamsoftScannerPopUp .modal-body .dvs-showImageArea .dvs-middle .dvs-container{
-	border-color: #cccccc;
-}
-.dynamsoft-dwt-dialogProgress{
-	box-shadow: rgb(0 0 0 / 10%) 0px 0px 15px 15px !important;
-	width: 198px !important;
-	padding: 12px;
-}
-.dynamsoft-dwt-dialogProgress .ds-dwt-progressWrap{
-	padding: 0px;
-}
-.dynamsoft-dwt-dialogProgress .ds-dwt-progressWrap:before{
-	content: "";
-    display: block;
-    background-image: url(../images/loader.gif);
-    width: 37px;
-    background-position: center center;
-    height: 37px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin: 0px auto;
-}
-.dynamsoft-dwt-dialogProgress .ds-dwt-progressWrap:after{
-	content: "LOADING...";
-    display: block;
-    color: #000;
-    text-align: center;
-	margin-top: 5px;
-}
-.dynamsoft-dwt-dialogProgress .dynamsoft-finalMessage{
-    display: none;
-}
-.dynamsoft-dwt-dialogProgress .dynamsoft-desc{
-	display: none;
-}
-.dynamsoft-dwt-dialogProgress .dynamsoft-status{
-	display: none;
-}
-.dynamsoft-dwt-dialogProgress .dynamsoft-progressBar{
-	display: none;
-}
-.dynamsoft-dwt-dialogProgress br{
-	display: none;
-}
-
-.patient-table-responsive .dx-datagrid-header-panel .dx-toolbar{
-	overflow-x: auto;
-    overflow-y: hidden;
-}
-.patient-table-responsive .dx-toolbar .dx-toolbar-items-container{
-	margin-bottom: 10px;
-}
-#openLinkModal .table-theme tbody tr td{
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 4px 30px 4px 10px;
-}
-#openLinkModal .table-theme tbody tr td a i{
+.cash-price-table .table-theme tr td .td-list span li strong{
 	position: absolute;
-	top: 5px;
-	right: 5px;
-
-
-.hideBreadCrumps .dx-filemanager .dx-filemanager-breadcrumbs {
-    display: none;
+	top: 0px;
+	right: -9px;
+	background-color: #e61610;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 6px;
+    line-height: normal;
 }
-
-.hideBreadCrumps .dx-filemanager .dx-filemanager-toolbar {
-    display: none;
-
+.cash-price-table .table-theme tr td .td-list span li:last-child{
+	padding-right: 0px;
+}
+.cash-price-list{
+	float: left;
+	width: 100%;
+	margin-top: 30px;
+}
+.cash-price-list ul{
+	margin: 0px 30px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+.cash-price-list li{
+	display: flex;
+	margin-bottom: 15px;
+}
+.cash-price-list li img{
+	display: inline-block;
+	width: 18px;
+	height: 20px;
+	margin-right: 15px;
+}
+.cash-price-list li span{
+	display: inline-block;
+	font-size: 13px;
+}
+.block-scheduler-popup .block-scheduler-theme-label-title{
+	color: #14a010;
+}
+.block-scheduler-popup .theme-label-subtitle a{
+	text-decoration: underline !important;
+}
+.block-scheduler-popup .alert{
+	width: 100%;
+	padding: 10px;
+	text-align: center;
 }

@@ -25,8 +25,6 @@ export class PatientDetailGroupComponent implements OnInit, OnChanges {
   activityData: any;
   returnData: any;
   fullName: any;
-  CB:Number;
-  VM:Number;
 
   constructor(private readonly patientService: PatientService, private _common: CommonMethodService, private _storage: StorageService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,7 +32,6 @@ export class PatientDetailGroupComponent implements OnInit, OnChanges {
       this.activityData = changes.viewingData['currentValue'].response;
       this.isSeen = this.setUserPreScreeningShowingState(this.data.key)
     }
-    console.log(this.data);
   }
 
   ngOnInit(): void {
@@ -75,10 +72,8 @@ export class PatientDetailGroupComponent implements OnInit, OnChanges {
 
 
   ngAfterViewInit(): void {
-  
     this.patientId = this.data.key[1];
-    this.name = this.data.data.items ? this.data.data.items[0].FamilyName  + ', ' +  this.data.data.items[0].GivenName : this.data.data.collapsedItems[0].FamilyName + ', ' + this.data.data.collapsedItems[0].GivenName ;
-   // this.name = this.data.data.items ? this.data.data.items[0].GivenName1.split(" ",2) : this.data.data.collapsedItems[0].GivenName1.split(" ",2);
+    this.name = this.data.data.items ? this.data.data.items[0].GivenName1.split(" ",2) : this.data.data.collapsedItems[0].GivenName1.split(" ",2);
     this.financialTypeName = this.data.data.items ? this.data.data.items[0].FinancialTypeName : this.data.data.collapsedItems[0].FinancialTypeName;
     this.dob = this.data.data.items ? this.data.data.items[0].DOB : this.data.data.collapsedItems[0].DOB;
     this.phone = this.data.data.items ? this.phoneMask(this.data.data.items[0].CELLPHONE) : this.phoneMask(this.data.data.collapsedItems[0].CELLPHONE);
@@ -87,9 +82,7 @@ export class PatientDetailGroupComponent implements OnInit, OnChanges {
     var items = this.data.data.items ? this.data.data.items : this.data.data.collapsedItems;
     this.hasAlert = (items.filter(a => a.HasAlert == '1')).length > 0;
     this.reason = this.data.data.items ? this.data.data.items[0].Reason : this.data.data.collapsedItems[0].Reason;
-    this.isSeen = this.setUserPreScreeningShowingState(this.data.key);
-    this.CB  = this.data.data.items ? this.data.data.items[0].CB : this.data.data.collapsedItems[0].CB;
-    this.VM  = this.data.data.items ? this.data.data.items[0].VM : this.data.data.collapsedItems[0].VM;
+    this.isSeen = this.setUserPreScreeningShowingState(this.data.key)
   }
 
   phoneMask(a) {
