@@ -1,0 +1,10 @@
+
+.dhx_scheduler_month{
+    overflow-y: scroll;
+ }
+ 
+ .dhx_scheduler_month .dhx_cal_data {
+   overflow: visible;
+ }
+
+ 

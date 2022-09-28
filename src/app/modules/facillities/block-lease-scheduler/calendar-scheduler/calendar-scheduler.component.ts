@@ -10,8 +10,6 @@ import {
 } from 'devextreme-angular';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { PastDateConfirmModalComponent } from './past-date-confirm-modal/past-date-confirm-modal.component';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 
 declare let scheduler: any;
 
@@ -46,81 +44,11 @@ export class CalendarSchedulerComponent implements OnInit {
         });
 
     }
-
-    // testData: any[] = [
-    //     {
-    //         id: 1,
-    //         start_date: '2022-08-10 09:00',
-    //         end_date: '2022-08-10 12:00',
-    //         text: 'Front-end meeting',
-    //         //sections: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         start_date: '2022-09-05 10:00',
-    //         end_date: '2022-09-06 16:00',
-    //         text: 'Feed ducks and city walking',
-    //         // sections: 2
-    //     },
-    //     {
-    //         id: 3,
-    //         start_date: '2022-09-07 10:00',
-    //         end_date: '2022-09-07 14:00',
-    //         text: 'Lunch with Ann & Alex',
-    //         //sections: 4
-    //     },
-    //     {
-    //         id: 4,
-    //         start_date: '2022-07-20 16:00',
-    //         end_date: '2022-07-20 17:00',
-    //         text: 'World Darts Championship (morning session)',
-    //         //sections: 5
-    //     },
-    //     {
-    //         id: 5,
-    //         start_date: '2020-07-22 12:00',
-    //         end_date: '2020-07-22 20:00',
-    //         text: 'Design workshop',
-    //         //sections: 6
-    //     },
-    //     {
-    //         id: 6,
-    //         start_date: '2022-08-04 14:30',
-    //         end_date: '2022-08-04 16:00',
-    //         text: 'World Darts Championship (evening session)',
-    //         //sections: 7
-    //     }
-    // ];
-
-    elements = [ // original hierarhical array to display
-        {
-            key: 10, label: "Web Testing Dep.", open: true, children: [
-                { key: 20, label: "Elizabeth Taylor" },
-                {
-                    key: 30, label: "Managers", children: [
-                        { key: 40, label: "John Williams" },
-                        { key: 50, label: "David Miller" }
-                    ]
-                },
-                { key: 60, label: "Linda Brown" },
-                { key: 70, label: "George Lucas" }
-            ]
-        },
-        {
-            key: 110, label: "Human Dep.", open: true, children: [
-                { key: 80, label: "Kate Moss" },
-                { key: 90, label: "Dian Fossey" }
-            ]
-        }
-    ];
     selectedEvents: any;
     spanID: number = 0;
 
     ngOnInit(): void {
-
         // this.schedulerLoad();
-
-
     }
     schedulerLoad() {
         scheduler.skin = 'material';
@@ -142,16 +70,10 @@ export class CalendarSchedulerComponent implements OnInit {
             year_view: true,
             agenda_view: true,
         });
-        //scheduler.load("../common/events.json")
-        //console.log(JSON.stringify(this.testData));
-        //scheduler.load(JSON.stringify(this.testData));
-        // scheduler.locale.labels.timeline_tab ="Timeline";
         scheduler.date.timeline_start = scheduler.date.week_start;
         scheduler.plugins({
             multisection: true,
             timeline: true,
-            // treetimeline: true,
-            // daytimeline: true,
             multiselect: true,
         });
         scheduler.config.multisection = true;
@@ -161,24 +83,6 @@ export class CalendarSchedulerComponent implements OnInit {
                 css += "section_" + event.ModalityType;
             return css; // default return
         };
-
-
-
-        var sections: any[] = [{
-            "resourceId": 62, "label": "CT With Contrast",
-            "children": [{ "key": "46", "label": "CT With Contrast" }]
-        }, {
-            "resourceId": 61, "label": "MRI With Contrast",
-            "children": [{ "key": "45", "label": "MRI With Contrast" }]
-        }];
-        // var sections: any[] =[
-        //     {key: 1, label: "James Smith"},
-        //     {key: 2, label: "John Williams"},
-        //     {key: 3, label: "David Miller"},
-        //     {key: 4, label: "Linda Brown"}
-        // ]
-        console.log(this.forTimelineList);
-        console.log(sections);
         scheduler.createTimelineView({
             name: "timeline",
             x_unit: "hour",
@@ -200,34 +104,6 @@ export class CalendarSchedulerComponent implements OnInit {
 
         // and store initial dates of all moved events, so we could revert drag and drop if it's canceled from "onBeforeEventChange" 
         var initialDates = {};
-
-        // scheduler.attachEvent("onBeforeDrag", function (id, mode, e) {
-        //     // store all initial dates
-        //     if (mode == "move") {
-        //         dragStartDate = new Date(scheduler.getEvent(id).start_date);
-        //         var selectedEvents = this.getSelectedIds();
-        //         if (Array.isArray(selectedEvents)) {
-        //             selectedEvents.forEach(function (id) {
-        //                 var event = scheduler.getEvent(id);
-        //                 alert('in');
-        //                 initialDates[id] = {
-        //                     start_date: new Date(event.start_date),
-        //                     end_date: new Date(event.end_date)
-        //                 };
-        //             });
-        //         }
-        //     }
-        //     return true;
-        // });
-
-        // scheduler.templates.event_class = function (start, end, event) {
-        //     console.log("section_" + event.ModalityType);
-        //     var original = scheduler.getEvent(event.id);
-        //     if (!scheduler.isMultisectionEvent(original))
-        //         return "";
-        //     return "multisection section_" + event.ModalityType;
-        // };
-
         scheduler.attachEvent("onEventDrag", function (id, mode, e) {
             if (mode == "move") {
                 // calculate the date change so far
@@ -251,52 +127,17 @@ export class CalendarSchedulerComponent implements OnInit {
         });
 
         scheduler._click.buttons.delete = (id: number) => {
+            //lease signed 
             this.openConfirm(id);
         };
-        // scheduler.attachEvent("onDragEnd", function (id, mode, e) {
-        //     if (mode == "move") {
-        //         var selectedEvents = this.getSelectedIds();
-
-        //         if (scheduler.getEvent(id).start_date.valueOf() == dragStartDate.valueOf()) {
-        //             // if the main event position hasn't changed after drag and drop,
-        //             // it may mean that dnd was canceled and we must revert changes to the selected events
-        //             var selectedEvents = this.getSelectedIds();
-        //             selectedEvents.forEach(function (selectedId) {
-        //                 if (selectedId == id) {
-        //                     return;
-        //                 }
-        //                 var event = scheduler.getEvent(selectedId);
-        //                 alert('in');
-        //                 event.start_date = new Date(initialDates[selectedId].start_date);
-        //                 event.end_date = new Date(initialDates[selectedId].end_date);
-        //                 scheduler.updateEvent(selectedId);
-        //             });
-        //         } else {
-        //             // changes were applied, trigger data save for all dragged events
-        //             selectedEvents.forEach(function (selectedId) {
-        //                 if (selectedId == id) {
-        //                     return;
-        //                 }
-        //                 scheduler.addEvent(scheduler.getEvent(id));
-        //             });
-        //         }
-        //     }
-        //     return true;
-        // });
-
-        scheduler.date.timeline_start = scheduler.date.day_start;
-        scheduler.createUnitsView({
-            name: "unit",
-            property: "section_id",
-            list: this.elements
-        });
+        scheduler.date.timeline_start = scheduler.date.day_start;       
         scheduler.showLightbox = (id: any) => {
             const event = scheduler.getEvent(id);
-            var currentDate = new Date();   
-            console.log(event.LeaseId);
+            var currentDate = new Date();
+            console.log(event.LeaseBlockId);
             const current_Date = new Date(currentDate.toLocaleDateString());
-            const startDate = new Date(event.start_date.toLocaleDateString());        
-            if ((startDate < current_Date) && event.LeaseId==undefined ) {
+            const startDate = new Date(event.start_date.toLocaleDateString());
+            if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.result.then().catch((reason: ModalResult | any) => {
                     if (reason == 5) {
@@ -314,13 +155,20 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
     }
     openConfirm(id: number) {
-        const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-        modalRef.componentInstance.deleted.subscribe(() => this.delete(id));
-        modalRef.result.then().catch((reason: ModalResult | any) => {
-            // if (this.isError(reason)) {
-            //   console.error(reason);
-            // }
-        });
+        const event = scheduler.getEvent(id);
+        if (event.LeaseBlockId != undefined) {
+            const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+            modalRef.componentInstance.LeaseBlockId = event.LeaseBlockId;
+            modalRef.result
+                .then()
+                .catch((reason: ModalResult | any) => {
+                    if ((reason == 6)) {
+                        scheduler.deleteEvent(event.id);
+                    }
+                    this.backToCalendar();
+                })
+        }
+
     }
     delete(id: number) {
         scheduler.deleteEvent(id);
@@ -341,28 +189,30 @@ export class CalendarSchedulerComponent implements OnInit {
         modalRef.componentInstance.mode = scheduler.getState().mode;
         modalRef.componentInstance.event = event;
         modalRef.componentInstance.data = this.bodyRes;
-        modalRef.componentInstance.deleted.subscribe(() => this.openConfirm(event.id));
+        // modalRef.componentInstance.deleted.subscribe(() => this.openConfirm(event.id));
         modalRef.result
             .then()
             .catch((reason: ModalResult | any) => {
                 if ((reason == 5)) {
                     this.reasonId = 5;
                     this.GetBlockLeaseData();
+                    this.backToCalendar();
                 }
                 if ((reason == 4)) {
-                    scheduler.endLightbox(false, null)
+                    scheduler.endLightbox(false, null);
+                    this.backToCalendar();
                 }
                 else if ((reason == 3 || reason == 6)) {
                     scheduler.deleteEvent(event.id);
+                    this.backToCalendar();
                 }
-                this.backToCalendar();
             })
-        //.finally(() => scheduler.endLightbox(false, null));
+
     }
     backToCalendar() {
         const elm = document.querySelector<HTMLElement>('.dhx_cal_cover')!;
         elm.style.display = 'none';
-        scheduler.lightbox.close();
+        //scheduler.lightbox.close();
     }
     show_minical() {
         if (scheduler.isCalendarVisible()) {
@@ -382,8 +232,10 @@ export class CalendarSchedulerComponent implements OnInit {
     GetBlockLeaseData() {
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID).subscribe((res) => {
-            this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
-            var forTimelineView = res.response[0].ModalityResources;
+            if (res.response[0].BlockLeases)
+                this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
+            if (res.response[0].ModalityResources)
+                var forTimelineView = res.response[0].ModalityResources;
             if (forTimelineView) {
                 if (forTimelineView.length > 0) {
                     for (let i = 0; i < forTimelineView.length; i++) {
@@ -393,8 +245,10 @@ export class CalendarSchedulerComponent implements OnInit {
                         } else {
                             this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' without contrast' });
                         }
-                        for (let j = 0; j < forTimelineView[i].BlockLeases.length; j++) {
-                            this.SchedulerDayWeekMonth.filter(a => a.LeaseId == forTimelineView[i].BlockLeases[j].LeaseId)[0].key = i + 1;
+                        if (forTimelineView[i].BlockLeases) {
+                            for (let j = 0; j < forTimelineView[i].BlockLeases.length; j++) {
+                                this.SchedulerDayWeekMonth.filter(a => a.LeaseBlockId == forTimelineView[i].BlockLeases[j].LeaseBlockId)[0].key = i + 1;
+                            }
                         }
                     }
                 }
@@ -408,6 +262,9 @@ export class CalendarSchedulerComponent implements OnInit {
         }, (err: any) => {
             this.errorNotification(err);
         });
+    }
+    confirmBlockToLease() {
+
     }
     errorNotification(err: any) {
         this.notificationService.showNotification({

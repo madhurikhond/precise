@@ -11,20 +11,7 @@
                     <div class="theme-label-subtitle"><a class="link-btn" (click)="senddatatoschd_facilities()">Facility
                             Details</a></div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Lease Title</div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group icon-active">
-                            <input type="text" class="form-control" [attr.disabled]="isLeaseSigned ? 'disabled' : null"
-                                formControlName="LeaseTitle">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>          
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Modality/Resource</div>
@@ -78,7 +65,8 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date" type="date"
+                                (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date"
+                                type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_date.errors) }">
                             </dx-date-box>
                         </div>
@@ -120,7 +108,8 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                (onValueChanged)="handleValueChange($event,'end_date')" formControlName="end_date" type="date"
+                                (onValueChanged)="handleValueChange($event,'end_date')" formControlName="end_date"
+                                type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
                             </dx-date-box>
                         </div>
@@ -161,6 +150,24 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
                 </div>
+                <div *ngIf="CreditDetailsList">                   
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="table-responsive">
+                                <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
+                                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                    [showBorders]="true">
+                                    <dxo-state-storing [enabled]="true"></dxo-state-storing>
+                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                    <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+                                    <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
+                                    <dxi-column dataField="CreditReasonText" caption="Credit Reason description"></dxi-column>
+                                    <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
+                                </dx-data-grid>
+                            </div>
+                    </div>
+                    
+                </div>
+
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Credit Reason</div>
                 </div>
@@ -192,9 +199,9 @@
                         <div class="input-group">
                             <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditHours.errors) }"
                                 formControlName="creditHours" class="form-control">
-                                <option>Select Hour</option>
+                                <option value="">Select Hour</option>
                                 <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
-                                    {{hours}}
+                                    {{hours}} hour
                                 </option>
                             </select>
                         </div>
@@ -209,7 +216,7 @@
                         <div class="input-group">
                             <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditMinutes.errors) }"
                                 formControlName="creditMinutes" class="form-control">
-                                <option>Select Minute</option>
+                                <option value="">Select Minute</option>
                                 <option *ngFor="let min of minutesList" value={{min}}>
                                     {{min}}
                                 </option>
@@ -237,7 +244,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" *ngIf="!isLeaseSigned && LeaseId!=0" (click)="confirmDelete()"
+        <button type="button" *ngIf="!isLeaseSigned && LeaseBlockId!=0" (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
         <button type="button" (click)="saveBlockLeaseData()" class="btn btn-theme btn-sm pull-right">Save</button>
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
@@ -274,9 +281,10 @@
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <div class="modal-body">
-                <p>YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                <p *ngIf="AlreadyBlockedLeaseList;else isDateValid">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
                     ALREADY LEASE
                     BLOCKED :</p>
+                    <ng-template #isDateValid>{{dateTimeValidationMsg}}</ng-template>
                 <table>
                     <tbody>
                         <tr *ngFor="let template of AlreadyBlockedLeaseList">
@@ -292,26 +300,6 @@
     </div>
 </div>
 
-<div class="modal fade modal-theme modal-small" id="deleteLease" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure to delete?</p>
-            </div>
-            <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                    data-dismiss="modal">Cancel</a>
-                <a (click)="DeleteLease()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-                    data-dismiss="modal">Ok</a>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal fade modal-theme modal-small" id="pastDateConfirm" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -324,7 +312,8 @@
                 <p>You have selected past date. do you want to continue</p>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" (click)="confirmPastDate(false)" data-dismiss="modal">No</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    (click)="confirmPastDate(false)" data-dismiss="modal">No</a>
                 <a (click)="confirmPastDate(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
                     data-dismiss="modal">Yes</a>
             </div>
@@ -336,5 +325,5 @@
     data-target="#checkFacilityPopup"></button>
 <button class="d-none" #hiddencheckAlreadyBlockedLeasePopup [hidden]="true" data-toggle="modal"
     data-target="#checkAlreadyBlockedLeasePopup"></button>
-<button class="d-none" #hiddenDeleteLease [hidden]="true" data-toggle="modal" data-target="#deleteLease"></button>
-<button class="d-none" #hiddenpastDateConfirm [hidden]="true" data-toggle="modal" data-target="#pastDateConfirm"></button>
+<button class="d-none" #hiddenpastDateConfirm [hidden]="true" data-toggle="modal"
+    data-target="#pastDateConfirm"></button>
