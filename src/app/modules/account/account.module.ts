@@ -12,10 +12,11 @@ import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxMaskModule } from 'ngx-mask';
 import { UnauthorizeAccessComponent } from './unauthorize-access/unauthorize-access.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
-    LoginComponent, AccountComponent, LoginRequestComponent, SubpoenaPickupStatusComponent, ContactUsComponent, ForgotPasswordComponent, UnauthorizeAccessComponent
+    LoginComponent, AccountComponent, LoginRequestComponent, SubpoenaPickupStatusComponent, ContactUsComponent, ForgotPasswordComponent, UnauthorizeAccessComponent, ResetPasswordComponent
   ],
   imports: [
     CommonModule,

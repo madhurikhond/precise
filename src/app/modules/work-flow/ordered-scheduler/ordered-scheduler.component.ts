@@ -66,8 +66,9 @@ export class OrderedSchedulerComponent implements OnInit {
   totalRescheduled: string;
   isPrescreeningQuestion: boolean = false;
 
-  internalStudyId: string
-  patientId: string
+  internalStudyId: string;
+  unselectedInternalStudyId:string;
+  patientId: string;
 
 
   isMR: boolean = false;
@@ -410,17 +411,20 @@ export class OrderedSchedulerComponent implements OnInit {
     }
   }
 
-  preScreeningQuestionClick(id) {
+  preScreeningQuestionClick(id,internalStudyId,color) {
     this.isMR = false;
     this.isMRWC = false;
     this.isCT = false;
     this.isUS = false;
+  let isColor = color;
     this.preScreeningQuestionAnswerData = [];
     this.prescreeningFormCreate();
-    if (!this.selectedRows.includes(id)) {
+    debugger
+    if (!this.selectedRows.includes(parseInt(internalStudyId)) ) {
       setTimeout(() => {
-        this.selectedRows = this.selectedRows.filter(item => item !== id);
+        this.selectedRows = this.selectedRows.filter(item => item !== internalStudyId);
         if (this.selectedRows.length > 0) {
+          this.internalStudyId= internalStudyId;
           this.isPrescreeningQuestion = true;
           this.getPrescreeningQuestionData();
         }
@@ -433,22 +437,23 @@ export class OrderedSchedulerComponent implements OnInit {
         }
       }, 50);
     }
-    else {
-      setTimeout(() => {
-        this.selectedRows.push(id);
-        if (this.selectedRows.length > 0) {
-          this.isPrescreeningQuestion = true;
-          this.getPrescreeningQuestionData();
-        }
-        else {
-          this.notificationService.showNotification({
-            alertHeader: null,
-            alertMessage: 'Please select at least one record from the below table.',
-            alertType: ResponseStatusCode.BadRequest
-          });
-        }
-      }, 50);
-    }
+    // else {
+    //   setTimeout(() => {
+    //     this.selectedRows.push(id);
+    //     if (this.selectedRows.length > 0 && parseInt(internalStudyId)>0) {
+    //       this.internalStudyId= internalStudyId;
+    //       this.isPrescreeningQuestion = true;
+    //       this.getPrescreeningQuestionData();
+    //     }
+    //     else {
+    //       this.notificationService.showNotification({
+    //         alertHeader: null,
+    //         alertMessage: 'Please select at least one record from the below table.',
+    //         alertType: ResponseStatusCode.BadRequest
+    //       });
+    //     }
+    //   }, 50);
+    // }
   }
 
   getPrescreeningQuestionData() {

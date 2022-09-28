@@ -70,8 +70,16 @@ export class EsignrequestComponent implements OnInit {
       this.getEsignData();
 
     }
-
+    this.preventBack() 
   }
+
+
+  preventBack() {
+    history.pushState(null, '', location.href);
+    window.onpopstate = function () {
+       history.go(1);
+    };
+}
   getEsignData(fromSign = true) {
     this.patientService.getEsignData(this.patientid, this.token).subscribe((res) => {
       if (res.responseCode === 200) {

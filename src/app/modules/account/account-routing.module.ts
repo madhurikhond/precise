@@ -8,7 +8,7 @@ import { SubpoenaPickupStatusComponent } from './subpoena-pickup-status/subpoena
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { UnauthorizeAccessComponent } from './unauthorize-access/unauthorize-access.component';
-
+import { ResetPasswordComponent} from './reset-password/reset-password.component';
 const routes: Routes = [
   {
     path: '', component: AccountComponent,
@@ -20,8 +20,8 @@ const routes: Routes = [
       { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'unauthorize-access', component: UnauthorizeAccessComponent },
-      //{ path: 'reset-password/:id/:code', component: ResetPasswordComponent },
-      //{ path: 'activate-account/:uid/:code', component: ActivateAccountComponent }
+      { path: 'reset-password/:uid', component: ResetPasswordComponent }
+     // { path: 'activate-account/:uid/:code', component: ActivateAccountComponent }
         
     ]
   },
