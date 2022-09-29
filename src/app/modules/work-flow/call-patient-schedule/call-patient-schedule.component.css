@@ -2,3 +2,7 @@
 {
     margin-bottom: auto!important;
 }
+.dx-header-row .dx-editor-cell .dx-select-checkbox{
+    display: none !important;
+
+}

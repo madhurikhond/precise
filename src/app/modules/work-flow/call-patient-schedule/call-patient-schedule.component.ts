@@ -153,7 +153,7 @@ export class CallPatientScheduleComponent implements OnInit {
   }
 
   onSearchSubmit() {
-    this.selectedRows=null;
+    this.selectedRows = null;
     this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
       this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
       this.pageNumber, this.pageSize).subscribe((res) => {
@@ -190,7 +190,7 @@ export class CallPatientScheduleComponent implements OnInit {
           this.dataList = [];
         }
         setTimeout(() => {
-          $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+          $('.dx-state-invisible').remove()
         }, 100);
       },
         (err: any) => {
