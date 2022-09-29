@@ -12,16 +12,16 @@ export class WorkflowService {
   @Output() clearClickedEvent = new EventEmitter<string>();
   private searchTextBox = new Subject<string>();
   constructor(private readonly _httpService: HttpService) { }
-  getFacilityText(searchText:any){
-    this.filterResult.emit({searchText});
+  getFacilityText(searchText: any) {
+    this.filterResult.emit({ searchText });
   }
   public setTextFilter(): Observable<string> {
     return this.searchTextBox.asObservable();
   }
-  clearFilters(msg:string) {
+  clearFilters(msg: string) {
     this.clearClickedEvent.emit(msg);
- }
-  
+  }
+
 
   //  #region Accouting-> Collections Management
   //Get
@@ -70,7 +70,7 @@ export class WorkflowService {
       map((res: ApiResponse) => res)
     );
   }
-  getSearchDataCommFailure(flag: number,SearchText:string, pageNumber: number, pageSize: number, showGlobalLoader: boolean = true) {
+  getSearchDataCommFailure(flag: number, SearchText: string, pageNumber: number, pageSize: number, showGlobalLoader: boolean = true) {
     return this._httpService.get(`CommFailure/GetCopyServiceSearchData?flag=${flag}&SearchText=${SearchText}&pageNumber=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
@@ -92,8 +92,8 @@ export class WorkflowService {
       map((res: ApiResponse) => res)
     );
   }
-  saveCallPatientConfirmationLog(type: string, internalStudyIds: string, note:string,showGlobalLoader: boolean = true) {
-    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog/${type}/${internalStudyIds}/${note}`, null, showGlobalLoader).pipe(
+  saveCallPatientConfirmationLog(type: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog`, type, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -255,12 +255,12 @@ export class WorkflowService {
     );
   }
   SaveOrderedSchedulerLog(data: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post(`OrderedScheduler/SaveOrderedSchedulerLog`, data, showGlobalLoader,true).pipe(
+    return this._httpService.post(`OrderedScheduler/SaveOrderedSchedulerLog`, data, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }
   UpdateStudyResolve(data: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post(`CollectionsManagement/UpdateStudyResolve`, data, showGlobalLoader,true).pipe(
+    return this._httpService.post(`CollectionsManagement/UpdateStudyResolve`, data, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }

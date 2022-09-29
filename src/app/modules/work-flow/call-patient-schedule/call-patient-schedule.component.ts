@@ -108,8 +108,15 @@ export class CallPatientScheduleComponent implements OnInit {
 
   saveCallPatientConfirmationMethod(type: string, Note: string) {
     const internalStudies = this.dataList.filter(name => this.selectedRows.includes(name.myId)).map(x => x.internalstudyid).toString()
-    this.workflowService.saveCallPatientConfirmationLog(type, internalStudies, Note, true).subscribe((res) => {
-      if (res.responseCode == 200) {
+    let body = {
+           Type: type,
+          InternalStudyId: internalStudies,
+          Note: Note
+         }
+      
+         this.workflowService.saveCallPatientConfirmationLog(JSON.stringify(JSON.stringify(body)), true).subscribe((res) => {
+             if (res.responseCode == 200) {
+             this.onSearchSubmit()
         this.notificationService.showNotification({
           alertHeader: 'Success',
           alertMessage: res.message,
