@@ -149,20 +149,18 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     this.submitted = false;
 
     this.commonService.getListObservable.subscribe((patientId) => {
-      this.headerTitle = '';
+      this.headerTitle = null;
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
-      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
     });
 
     this.commonService.docManagerSubjectObservableForDocComp.subscribe((patientId) => {
-      this.headerTitle = '';
+      this.headerTitle = null;
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
-      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
@@ -325,7 +323,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     else if (e.itemData.text == 'Download Selected') {
 
-if (this.selectedFileKeys.length == 1) {
+      if (this.selectedFileKeys.length == 1) {
         //this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
         this.getFilesByKey('', this.selectedFileDeletePath, e.itemData.text)
         this.clearSelectedFields();
@@ -530,6 +528,7 @@ if (this.selectedFileKeys.length == 1) {
   }
 
   displayFile(fileName: string, fileData: any) {
+  
     if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
       fileData = 'data:image/png;base64,' + fileData;
     }
@@ -971,7 +970,7 @@ if (this.selectedFileKeys.length == 1) {
   closeScannerPopup($event) {
     if ($event && this.startText=='Close Scanner') {
       this.toggleStartDemo();
-    }
+}
   }
 
 }

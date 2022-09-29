@@ -18,7 +18,7 @@ export class CopyservicemanagementComponent implements OnInit {
   copyServiceManagementForm: FormGroup;
   copyServiceForm: FormGroup;
   repsForm: FormGroup;
-  popUpTittle: string = 'Add New Record';
+  popUpTittle: string = '';
   modelValue: string;
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
@@ -267,6 +267,7 @@ export class CopyservicemanagementComponent implements OnInit {
   }
 
   resetCopyServiceForm() {
+    this.companyID = 0 ;
     this.activeTab = 'Company_Details';
     this.popUpTittle = 'Add New Record';
     this.isCopyServiceFormSubmitted = false;
