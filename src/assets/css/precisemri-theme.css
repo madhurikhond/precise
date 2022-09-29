@@ -7153,7 +7153,7 @@ ngb-modal-window.modal{
 	position: absolute;
 	top: 5px;
 	right: 5px;
-
+}
 
 .hideBreadCrumps .dx-filemanager .dx-filemanager-breadcrumbs {
     display: none;
@@ -7162,4 +7162,7 @@ ngb-modal-window.modal{
 .hideBreadCrumps .dx-filemanager .dx-filemanager-toolbar {
     display: none;
 
+}
+.theme-form .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
+    display: block;
 }
