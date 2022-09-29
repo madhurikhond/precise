@@ -85,6 +85,7 @@ export class HeaderComponent implements OnInit {
     this._router.navigate(['login']);
     localStorage.removeItem('_cr_u_infor');
     localStorage.removeItem('storage');
+    localStorage.removeItem('isPermissionChanged');
   }
 
   deleteOrderedSchedulerActivity() {

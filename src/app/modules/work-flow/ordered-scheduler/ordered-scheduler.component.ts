@@ -139,9 +139,10 @@ export class OrderedSchedulerComponent implements OnInit {
     }
 
     this.signalRSub = this.signalRService.information.subscribe(response => {
-      this.viewingData = response;
-
-      this.removeIdleStudy();
+      if (response !== null && response.message != '2' && response.response !== null) {
+        this.viewingData = response;
+        this.removeIdleStudy();
+      }
     });
 
     this.commonMethodService.viewerRecords.subscribe(res => {
