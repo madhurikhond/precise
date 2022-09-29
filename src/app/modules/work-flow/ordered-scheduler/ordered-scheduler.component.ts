@@ -1159,6 +1159,7 @@ export class OrderedSchedulerComponent implements OnInit {
     // }
     this.preScreeningQuestionData.patientStudyData.forEach(element => console.log(element));
     this.savePreScreeningQuestionData(false);
+    this.getOrderedSchedulerData();
   }
 
   saveAndSubmit() {
@@ -1172,6 +1173,7 @@ export class OrderedSchedulerComponent implements OnInit {
     }
 
     this.savePreScreeningQuestionData(true);
+    this.getOrderedSchedulerData();
     //alert('Form valid');
   }
 

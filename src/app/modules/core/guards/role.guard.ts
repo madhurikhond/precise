@@ -32,6 +32,7 @@ export class RoleGuard implements CanActivate {
     if (data) {
       try {
         let list: any = [];
+        var leftList: any=[];
         let responseHierarchy = JSON.parse(data);
         if (responseHierarchy && responseHierarchy.length) {
           responseHierarchy.forEach((value) => {
@@ -54,10 +55,16 @@ export class RoleGuard implements CanActivate {
         } else {
           if (this.matches)
             if (isFreshLogin) {
-              if (list[0].Url !== '') {
-                this.redirectLinkWithPermission= list[0].Url;
-              } else if (list[0].Url == '' && list[0].Children) {
-                this.redirectLinkWithPermission = list[0].Children[0].Url;
+              list.forEach((i) => {
+                if (i.Type) {
+                  if (i.Type == 1) {
+                    leftList.push(i);
+                  }
+                }});
+              if (leftList[0].Url !== '') {
+                this.redirectLinkWithPermission= leftList[0].Url;
+              } else if (leftList[0].Url == '' && leftList[0].Children) {
+                this.redirectLinkWithPermission = leftList[0].Children[0].Url;
               }
               this.router.navigate([this.redirectLinkWithPermission]);
               this.storageService.setFreshLogin = 'false';

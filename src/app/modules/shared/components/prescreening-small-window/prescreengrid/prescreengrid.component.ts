@@ -1355,6 +1355,7 @@ export class PrescreengridComponent implements OnInit {
     this.savePreScreeningQuestionData(true);
     //this.showDocManager(this.preScreeningQuestionData.patientData.PatientId)
     //alert('Form valid');
+    this.getPreScreenGrid();
   }
 
   saveAndDoNotSubmit() {
@@ -1366,6 +1367,7 @@ export class PrescreengridComponent implements OnInit {
     // }
     this.preScreeningQuestionData.patientStudyData.forEach(element => console.log(element));
     this.savePreScreeningQuestionData(false);
+    this.getPreScreenGrid();
   }
 
 
