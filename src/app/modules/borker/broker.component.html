@@ -129,7 +129,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{brokerId !==0 && brokerName ? brokerName : 'Add New Record'}}</h5>
+                <h5 class="modal-title">{{brokerId !==0 ? brokerName : 'Add New Record'}}</h5>
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <form [formGroup]="addEditForm" class="theme-form">

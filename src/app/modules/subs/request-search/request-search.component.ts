@@ -191,7 +191,7 @@ export class RequestSearchComponent implements OnInit {
   }
   getSubsDetail(row: any) {
     if (row.data.SubsID) {
-      let body: any = { 'subsId': row.data.SubsID, 'patientId': row.data.PATIENTID }
+      let body: any = { 'subsId': row.data.SubsID, 'patientId': row.data.PATIENTID}
       this.subsService.sendDataToRequestSearchDetailPage(body);
     }
   }
@@ -298,8 +298,10 @@ export class RequestSearchComponent implements OnInit {
 
   }
   resetDetailPageForm() {
-
-    this.childComponent.resetDetailPageForm();
+    debugger
+      let body: any = {'popUpTitle': 'Create New Sub' }
+      this.subsService.sendDataToRequestSearchDetailPageSubsID(body);
+      this.childComponent.resetDetailPageForm();
   }
   // common Notification Method
   recordNotFoundMessage(data: any) {

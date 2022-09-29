@@ -98,6 +98,7 @@ export class UsersComponent implements OnInit {
   selectedUserTypeList: any = [];
   selectedFacilityDeptroleList: any = [];
   userServiceManagementList: any = [];
+  popUpTitle : string ;
   fullName: string;
   userType: string;
   searchText: string;
@@ -119,6 +120,8 @@ export class UsersComponent implements OnInit {
   topSearchText: any = '';
   search_isactive: any = '';
   isShowColumnWithNoData = true;
+  firstName :string;
+  lastName :string;
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
@@ -439,6 +442,7 @@ export class UsersComponent implements OnInit {
   }
 
   edit(userId) {
+    this.popUpTitle = null ;
     this.editUserForm.reset();
     this.modelValue = '';
     this.submitted = false;
@@ -446,8 +450,11 @@ export class UsersComponent implements OnInit {
     this.settingService.getUserById(true, userId).subscribe((res) => {
       var data: any = res;
       if (data.response != null) {
-        this.fullName = data.response.FIRSTNAME + ' ' + data.response.LASTNAME;
+        this.firstName = data.response.FIRSTNAME ? data.response.FIRSTNAME : '' 
+        this.lastName = data.response.LASTNAME ?  data.response.LASTNAME : '' 
+        this.fullName = this.firstName + ' ' + this.lastName;
         this.userType = data.response.USERTYPE;
+        this.popUpTitle = this.fullName + ' ' + this.userType
         this.selectedReferrerList = (data.response.Referrers != null) ? data.response.Referrers.map(function (a) { return a.ReferrerID; }) : null;
         this.selectedBrokerList = (data.response.Brokers != null) ? data.response.Brokers.map(function (a) { return a.BrokerID; }) : null;
         this.selectedFacilityList = (data.response.Facilities != null) ? data.response.Facilities.map(function (a) { return a.FacilityID; }) : null;

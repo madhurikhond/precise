@@ -12,11 +12,17 @@ export class SubsService {
 
 
   sendAndRecieveDataForRequestSearchDetailPage: EventEmitter<any> = new EventEmitter<any>();
+  sendAndRecieveDataToRequestSearchDetailPageSubsID: EventEmitter<any> = new EventEmitter<any>();
   constructor(private readonly _httpService:HttpService) { }
   
   sendDataToRequestSearchDetailPage(data:any)
   {
     this.sendAndRecieveDataForRequestSearchDetailPage.emit(data);
+  }
+
+  sendDataToRequestSearchDetailPageSubsID(data:any)
+  {
+    this.sendAndRecieveDataToRequestSearchDetailPageSubsID.emit(data);
   }
   getAllCopyServiceManagement(showGlobalLoader : boolean = true ,pageNumber: number, pageSize: number){
     return this._httpService.get(`CopyService/GetAllCopyServiceManagement?pageNumber=${pageNumber}&pageSize=${pageSize}`,showGlobalLoader).pipe(

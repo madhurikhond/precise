@@ -167,6 +167,7 @@ export class PatientDetailComponent implements OnInit {
     private readonly workflowService: WorkflowService,
     private brokerService: BrokerService, private decimalPipe: DecimalPipe) {
     patientService.sendDataToPatientDetail.subscribe(res => {
+      this.patientDetailPageTitle = null ;
       this.patientID = res.PatientId;
       this.studySummaryClick = res.click ;
       this.totalRecordsCreateAlerts = 1;
@@ -364,7 +365,6 @@ export class PatientDetailComponent implements OnInit {
   }
 
   setPatientDetailFormForPatientDetailTab(data: any) {
-    
     this.patientID = data.PATIENTID;
     this.patientDetailPageTitle = data.PATIENTID + ', ' + data.FAMILYNAME + ' ' + data.GIVENNAME + ', ' + this.datePipe.transform(data.BIRTHDATE, this.dateTimeFormatCustom.Date) + ', ' + data.FINANCIALTYPENAME
     this.patientDetailForm.patchValue({
