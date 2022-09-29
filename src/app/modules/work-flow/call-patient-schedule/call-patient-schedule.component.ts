@@ -36,7 +36,7 @@ export class CallPatientScheduleComponent implements OnInit {
   showHeaderFilter: boolean;
   readonly pageSizeArray = PageSizeArray;
   constructor(private readonly fb: FormBuilder, private readonly notificationService: NotificationService,
-    private readonly commonMethodService: CommonMethodService,private facilityService : FacilityService,
+    private readonly commonMethodService: CommonMethodService, private facilityService: FacilityService,
     private readonly workflowService: WorkflowService) { }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class CallPatientScheduleComponent implements OnInit {
       RescheduleNote: ['', Validators.required]
     });
     this.getCallConfirmationData();
-   
+
   }
 
 
@@ -110,8 +110,15 @@ export class CallPatientScheduleComponent implements OnInit {
   saveCallPatientConfirmationMethod(type: string, Note: string) {
     debugger
     const internalStudies = this.dataList.filter(name => this.selectedRows.includes(name.myId)).map(x => x.internalstudyid).toString()
-    this.workflowService.saveCallPatientConfirmationLog(type, internalStudies, Note, true).subscribe((res) => {
+    let body = {
+      Type: type,
+      InternalStudyId: internalStudies,
+      Note: Note
+    }
+
+    this.workflowService.saveCallPatientConfirmationLog(JSON.stringify(JSON.stringify(body)), true).subscribe((res) => {
       if (res.responseCode == 200) {
+        this.onSearchSubmit()
         this.notificationService.showNotification({
           alertHeader: 'Success',
           alertMessage: res.message,
@@ -146,27 +153,27 @@ export class CallPatientScheduleComponent implements OnInit {
     this.searchForm.reset();
     this.getCallConfirmationData()
   }
-  getCallConfirmationData(){
+  getCallConfirmationData() {
     this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
-    this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
-    this.pageNumber, this.pageSize).subscribe((res) => {
-      var data: any = res;
-      this.totalRecords = res.totalRecords
-      this.dataList = data.response;
-      console.log(this.dataList);
-      if (this.dataList != null) {
-        this.dataList.forEach((element, index) => {
-          element.myId = index;
-          // if (element.Facilitydetail)
-          //   var address = element.Facilitydetail.trim();
-          // if (address)
-          //   var stateZip = address.split(',')[1].trim();
-          // if (stateZip) {
-          //   var state = stateZip.split(' ')[0];
-          //   var zip = stateZip.split(' ')[1];
-          // }
-          // if (address) {
-          //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
+      this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
+      this.pageNumber, this.pageSize).subscribe((res) => {
+        var data: any = res;
+        this.totalRecords = res.totalRecords
+        this.dataList = data.response;
+        console.log(this.dataList);
+        if (this.dataList != null) {
+          this.dataList.forEach((element, index) => {
+            element.myId = index;
+            // if (element.Facilitydetail)
+            //   var address = element.Facilitydetail.trim();
+            // if (address)
+            //   var stateZip = address.split(',')[1].trim();
+            // if (stateZip) {
+            //   var state = stateZip.split(' ')[0];
+            //   var zip = stateZip.split(' ')[1];
+            // }
+            // if (address) {
+            //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
             // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
             // element.Address = address;
             // if (state) {
@@ -176,27 +183,26 @@ export class CallPatientScheduleComponent implements OnInit {
             //   element.Address = element.Address + '/' + zip;
             // }
           }
-        // }
-       );
-      }
-      else {
-        this.totalRecords = 1;
-        this.dataList = [];
-      }
-      setTimeout(() => {
-        $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
-      }, 100);
-    },
-      (err: any) => {
-        this.notificationService.showNotification({
-          alertHeader: err.statusText,
-          alertMessage: err.message,
-          alertType: err.status
+            // }
+          );
+        }
+        else {
+          this.totalRecords = 1;
+          this.dataList = [];
+        }
+        setTimeout(() => {
+          $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+        }, 100);
+      },
+        (err: any) => {
+          this.notificationService.showNotification({
+            alertHeader: err.statusText,
+            alertMessage: err.message,
+            alertType: err.status
+          });
         });
-      });
   }
   onSearchSubmit() {
-    debugger
     this.pageNumber = 1;
     this.getCallConfirmationData();
     // this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
@@ -259,8 +265,7 @@ export class CallPatientScheduleComponent implements OnInit {
   }
   get sForm() { return this.searchForm.controls; }
   get addForm() { return this.RescheduleNoteForm.controls; }
-  senddatatoschd_facilities(row:any)
-  {
+  senddatatoschd_facilities(row: any) {
     if (row) {
       let body = row;
       this.facilityService.sendDataToschdFacilitiesWin(body);
