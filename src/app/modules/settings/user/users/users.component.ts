@@ -51,7 +51,8 @@ export type EditUserFormValue = {
   'userTermination': string,
   'hours': string,
   'userSlackID': string,
-  'officeLocation':string
+  'officeLocation':string,
+  'isActiveTime':boolean
 };
 
 @Component({
@@ -173,7 +174,8 @@ export class UsersComponent implements OnInit {
       assignFacilityID: [''],
       assignReferrerID: [''],
       assignFacilityDId: [''],
-      officeLocation:['']
+      officeLocation:[''],
+      isActiveTime:['']
     });
     this.userServiceForm = this.fb.group({
       topSearchText: [''],
@@ -197,7 +199,7 @@ export class UsersComponent implements OnInit {
 
     const { userId, email, firstName, lastName, companyName, dba, npi, licenceNumber, cell, address, city, state, zip, phone, workEmail, fax,
       isActive, birthday, eContactName1, eContactPhone1, eContactName2, eContactPhone2, groupName, userType, userPosition, userHire, departmentId, extension,
-      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties, officeLocation } = this.editUserForm.value as (EditUserFormValue);
+      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties, officeLocation ,isActiveTime} = this.editUserForm.value as (EditUserFormValue);
     (this.settingService.updateUser(true, {
       userId: this.userId,
       firstName: firstName,
@@ -222,6 +224,7 @@ export class UsersComponent implements OnInit {
       eContactPhone1: eContactPhone1,
       eContactPhone2: eContactPhone2,
       officeLocation:officeLocation,
+      isActiveTime:isActiveTime,
       hours: hours,
       extension: extension,
       lunchTime: lunchTime,
@@ -486,6 +489,7 @@ export class UsersComponent implements OnInit {
           userSlackID: data.response.UserSlackID,
           userDuties: data.response.UserDuties,
           officeLocation:data.response. OfficeLocation,
+          isActiveTime:data.response.IsActiveTime
         });
       }
     },

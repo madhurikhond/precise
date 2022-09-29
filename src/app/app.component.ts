@@ -26,10 +26,10 @@ export class AppComponent implements OnInit {
   constructor(private readonly commonService: CommonMethodService,
     private notificationService: NotificationService,
     private readonly _accountService: AccountService,
-    private readonly _storageService: StorageService,
+    private readonly storageService: StorageService,
     private readonly workflowService: WorkflowService,
-    private readonly storageService: StorageService, private readonly _router: Router,
-    private readonly _commonMethodService: CommonMethodService, private modalService: NgbModal,
+    private readonly _storageService: StorageService, private readonly _router: Router,
+    private readonly _commonMethodService: CommonMethodService, private _modalService: NgbModal,
     private signalRService: SignalRService) {
 
   }
@@ -44,6 +44,7 @@ export class AppComponent implements OnInit {
             if (this.userList.GroupName == response.response[0].GroupName) {
             this.storageService.setItem('isPermissionChanged', true)
               this.hiddenDocManager.nativeElement.click();
+
             }
           }
           (err: any) => {

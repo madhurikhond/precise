@@ -1,20 +1,27 @@
 <router-outlet></router-outlet>
 <app-loader></app-loader>
 <ng-container *ngIf="isValidToken">
-    <app-task-management></app-task-management>
-    <app-document-manager></app-document-manager>
-    <app-create-alert></app-create-alert>
+  <app-task-management></app-task-management>
+  <app-document-manager></app-document-manager>
+  <app-create-alert></app-create-alert>
 </ng-container>
 
-<button #hiddenDocManager [hidden]="true" data-toggle="modal" data-target="#docManager"></button>
+<button #hiddenDocManager [hidden]="true" data-toggle="modal" data-target="#RolePermissionChanged"></button>
 
-<div class="modal fade modal-theme modal-large" id="test" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme modal-small" id="RolePermissionChanged" data-backdrop="static" data-keyboard="false"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Scanner</h5>
+        <h5 class="modal-title">info</h5>
+           </div>
+      <div class="modal-body">your permission has been changed. Please logout and login again.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+          (click)="logoutLogin()">Ok</button>
       </div>
-      <div class="modal-body">Test</div>
     </div>
   </div>
 </div>
+<button #hiddenDocManager id="divRolePermissionChanged" [hidden]="true" data-toggle="modal"
+  data-target="#RolePermissionChanged"></button>

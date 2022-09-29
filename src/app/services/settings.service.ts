@@ -1276,4 +1276,10 @@ export class SettingsService {
       map((res: ApiResponse) => res)
     )
   }
+  deleteRoleGroupName(showGlobalLoader: boolean = true, groupName) {
+    debugger
+    return this._httpService.delete(`Automation/DeleteRoleGroupName?groupName=${groupName}`, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
 }
