@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // baseUrl: `http://localhost:64465/api`,
-  onlyDomain: `http://localhost:64465/api/`,
+  onlyDomain: `http://localhost:64465/`,
   // onlyDomain: `https://radlogix.radflow360.com/`,
   // baseUrl: `http://192.168.1.23:81/api`,
   //baseUrl: `https://staging-precise.radflow360.com/API/api`,
