@@ -8,8 +8,8 @@ export const environment = {
   onlyDomain: `http://localhost:64465/api/`,
   // onlyDomain: `https://radlogix.radflow360.com/`,
   // baseUrl: `http://192.168.1.23:81/api`,
-  baseUrl: `https://staging-precise.radflow360.com/API/api`,
-  //baseUrl: `http://localhost:64465/api`,
+  //baseUrl: `https://staging-precise.radflow360.com/API/api`,
+  baseUrl: `http://localhost:64465/api`,
   //baseUrl: `http://localhost:64465/api`,
   currentVersion: `1`,
   Dynamsoft: {
