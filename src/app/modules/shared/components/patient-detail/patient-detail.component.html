@@ -1579,7 +1579,7 @@
                                         <div class="pagination-theme">
                                             <div class="pagination-theme">
                                                 <div
-                                                    *ngFor="let item of fullLog | paginate: { id: 'pagination111' , itemsPerPage: pageSizeLog, currentPage: pageNumberLog, totalItems:totalrecordsFullLog}">
+                                                    *ngFor="let item of fullLog | paginate: { id: 'pagination111' , itemsPerPage: pageSizeLog, currentPage: pageNumberLog, totalItems:totalRecordLog}">
                                                 </div>
                                                 <pagination-controls id="pagination111"
                                                     (pageChange)="onPageNumberChangeLog($event)">
@@ -1625,7 +1625,7 @@
                                                 </div>
                                             </dx-data-grid>
                                         </div>
-                                        <!-- <div class="pagination-theme">
+                                        <div class="pagination-theme">
                                             <div class="pagination-theme">
                                                 <div
                                                     *ngFor="let item of appointmentLog | paginate: { id: 'pagination112' , itemsPerPage: pageSizeAppLog, currentPage: pageNumberAppLog, totalItems:totalRecordAppLog}">
@@ -1633,7 +1633,7 @@
                                                 <pagination-controls id="pagination112" (pageChange)="onPageNumberChangeAppLog($event)">
                                                 </pagination-controls>
                                             </div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>

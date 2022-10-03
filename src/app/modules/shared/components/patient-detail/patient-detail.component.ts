@@ -80,7 +80,7 @@ export class PatientDetailComponent implements OnInit {
   pageSize: number = 20;
   totalRecords: number;
   totalRecordsCreateAlerts: number = 1;
-  totalrecordsFullLog: number = 1;
+  totalrecordsFullLog: number = 2;
   filterBody: any = {};
   isShowColumnWithNoData = true;
   status: any;
@@ -163,7 +163,7 @@ export class PatientDetailComponent implements OnInit {
       this.patientID = res.PatientId;
       this.studySummaryClick = res.click ;
       this.totalRecordsCreateAlerts = 1;
-      this.totalrecordsFullLog = 1;
+      this.totalrecordsFullLog = 2;
       this.resetPateintDetailFormAndFields();
       this.isHasAlert = res.hasAlert == true ? true : false;
       this.isHasAlertSelectedTab = res.isHasAlertSelectedTab == 1 ? true : false;
@@ -437,7 +437,7 @@ export class PatientDetailComponent implements OnInit {
     this.status = 0;
     this.selectedInternalPatientId = internalPatientId;
     this.selectedInternalstudyId = internalStudyId;
-    this.patientService.getPatientDetail(true, this.selectedInternalPatientId, this.selectedInternalstudyId, operation).subscribe((res) => {
+    this.patientService.getPatientDetail(true, this.selectedInternalPatientId, this.selectedInternalstudyId, operation,this.pageNumber,this.pageSize).subscribe((res) => {
       this.getAllCopyServiceCompany();
       if (res.response != null) {
         this.patientDetailNotes = null;
@@ -496,7 +496,7 @@ export class PatientDetailComponent implements OnInit {
         if (res.response[12][0]['Appointment Log'].length > 0 && JSON.stringify(res.response[12][0]['Appointment Log'][0]) != '{}') {
           this.appointmentLogList = res.response[12][0]['Appointment Log'];
           this.appointmentLog = this.appointmentLogList.slice(0, this.pageSizeAppLog);
-          this.totalRecordAppLog = this.appointmentLogList.length;
+          this.totalRecordAppLog = this.appointmentLogList.length> 0 ? res.response[12][0]['Appointment Log'][0].Totalrecords : 1;
         }
         if (res.response[13][0]['Subs Grid Study'].length > 0 && JSON.stringify(res.response[13][0]['Subs Grid Study'][0]) != '{}') {
           this.subsGridList = res.response[13][0]['Subs Grid Study'];
@@ -762,7 +762,7 @@ export class PatientDetailComponent implements OnInit {
     this.isStudySummaryRowClicked = true;
     this.selectedInternalstudyId = this.studySummaryrowData.INTERNALSTUDYID;
     let operation = 2;
-    this.patientService.getPatientDetail(this.isStudySummaryRowClicked, this.selectedInternalPatientId, this.selectedInternalstudyId, operation).subscribe((res) => {
+    this.patientService.getPatientDetail(this.isStudySummaryRowClicked, this.selectedInternalPatientId, this.selectedInternalstudyId, operation,this.pageNumber,this.pageSize).subscribe((res) => {
       if (res.response != null) {
         this.alertList = res.response[10][0]['All Alerts'];
         this.studyDetail = res.response[4][0]['Study Details'][0];
