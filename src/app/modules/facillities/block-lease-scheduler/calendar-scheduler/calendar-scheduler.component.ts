@@ -22,11 +22,13 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("scheduler_here", { static: true }) schedulerContainer: ElementRef;
     FacilityName: string = '';
     FacilityID: string = '';
+    TotalLeaseHours: string;
     modalityResourcesList: any[] = [];
     selectedModalityResources: any = [];
     forTimelineList: Array<{ key: number, label: string }> = [];
     bodyRes: any = [];
     SchedulerDayWeekMonth: any = [];
+    allClosedDays: any = [];
     reasonId: number = 0;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal
@@ -83,6 +85,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 css += "section_" + event.ModalityType;
             return css; // default return
         };
+        scheduler.serverList("sections", this.forTimelineList);
         scheduler.createTimelineView({
             name: "timeline",
             x_unit: "hour",
@@ -92,7 +95,8 @@ export class CalendarSchedulerComponent implements OnInit {
             x_length: 33,
             event_dy: 60,
             resize_events: false,
-            y_unit: this.forTimelineList,
+            // y_unit: this.forTimelineList,
+            y_unit: scheduler.serverList("sections"),
             y_property: "key",
             render: "bar",
             second_scale: {
@@ -113,8 +117,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     if (selectedId == id) {
                         return;
                     }
-                    // and move all selected events by the same value
-                    alert('in');
+                    // and move all selected events by the same value                   
                     var event = scheduler.getEvent(selectedId);
                     console.log(initialDates[selectedId]);
                     event.start_date = new Date(initialDates[selectedId].start_date.valueOf() + shift);
@@ -130,11 +133,11 @@ export class CalendarSchedulerComponent implements OnInit {
             //lease signed 
             this.openConfirm(id);
         };
-        scheduler.date.timeline_start = scheduler.date.day_start;       
+        scheduler.date.timeline_start = scheduler.date.day_start;
+
         scheduler.showLightbox = (id: any) => {
             const event = scheduler.getEvent(id);
             var currentDate = new Date();
-            console.log(event.LeaseBlockId);
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
@@ -153,7 +156,20 @@ export class CalendarSchedulerComponent implements OnInit {
         };
         scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
+        let displayClosedDays = [];
+        if (this.allClosedDays) {
+            this.allClosedDays.forEach(element => {
+                displayClosedDays.push(WeekDay[element.Day]);
+            });
+            scheduler.addMarkedTimespan({
+                days: displayClosedDays,
+                zones: "fullday",
+                css: "addMarked"
+            });
+            scheduler.updateView();
+        }
     }
+
     openConfirm(id: number) {
         const event = scheduler.getEvent(id);
         if (event.LeaseBlockId != undefined) {
@@ -204,6 +220,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 }
                 else if ((reason == 3 || reason == 6)) {
                     scheduler.deleteEvent(event.id);
+                    this.GetBlockLeaseData();
                     this.backToCalendar();
                 }
             })
@@ -230,20 +247,28 @@ export class CalendarSchedulerComponent implements OnInit {
         }
     }
     GetBlockLeaseData() {
-        this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID).subscribe((res) => {
             if (res.response[0].BlockLeases)
                 this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
+            if (res.response[0].AllClosedDays)
+                this.allClosedDays = res.response[0].AllClosedDays;
             if (res.response[0].ModalityResources)
                 var forTimelineView = res.response[0].ModalityResources;
-            if (forTimelineView) {
+            if (res.response[0].TotalLeasedHours) {
+                this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
+                if (this.TotalLeaseHours == '00:') {
+                    this.TotalLeaseHours = '';
+                }
+            }
+            if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
                     for (let i = 0; i < forTimelineView.length; i++) {
                         if (forTimelineView[i].Contrast.toLocaleLowerCase() == 'w') {
-                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' with contrast' });
+                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' w/ contrast- ' + forTimelineView[i].RESOURCENAME });
 
                         } else {
-                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' without contrast' });
+                            this.forTimelineList.push({ key: i + 1, label: forTimelineView[i].ModalityType + ' w/o Contrast- ' + forTimelineView[i].RESOURCENAME });
                         }
                         if (forTimelineView[i].BlockLeases) {
                             for (let j = 0; j < forTimelineView[i].BlockLeases.length; j++) {
@@ -256,14 +281,26 @@ export class CalendarSchedulerComponent implements OnInit {
             scheduler.clearAll();
             if (this.reasonId == 5) {
                 scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth), "json");
+                scheduler.updateCollection("sections", this.forTimelineList);
+
             } else {
                 this.schedulerLoad();
             }
         }, (err: any) => {
             this.errorNotification(err);
         });
+
     }
     confirmBlockToLease() {
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
+        let body = {
+            FacilityID: this.FacilityID
+        }
+        this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
+            console.log(res);
+        }, (err: any) => {
+            this.errorNotification(err);
+        });
 
     }
     errorNotification(err: any) {
@@ -273,5 +310,15 @@ export class CalendarSchedulerComponent implements OnInit {
             alertType: err.status
         });
     }
+}
+
+export enum WeekDay {
+    sunday = 0,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday
 }
 

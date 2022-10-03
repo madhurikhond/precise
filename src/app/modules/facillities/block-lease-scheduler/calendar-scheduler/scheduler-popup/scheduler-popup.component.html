@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                (onValueChanged)="handleValueChange($event,'start_time')" formControlName="start_time"
+                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="disableIt(event)" formControlName="start_time"
                                 class="form-control"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
@@ -92,10 +92,10 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="TotalHoursLeased" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div *ngIf="TotalBlockHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
-                            Hours leased: {{TotalHoursLeased}}
+                            Current blocked Hours :<br> {{TotalBlockHours}}
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                (onValueChanged)="handleValueChange($event,'end_date')" formControlName="end_date"
+                                (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="disableIt(event)" formControlName="end_date"
                                 type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
                             </dx-date-box>
@@ -149,6 +149,13 @@
             <div class="row" *ngIf="isLeaseSigned">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
+                </div>
+                <div *ngIf="TotalCreditHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            Total Credit Hours :<br> {{TotalCreditHours}}
+                        </div>
+                    </div>
                 </div>
                 <div *ngIf="CreditDetailsList">                   
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
