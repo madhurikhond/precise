@@ -15,22 +15,17 @@
                         <div class="dhx_cal_next_button">&nbsp;</div>
                         <div class="dhx_cal_today_button"></div>
                         <div class="dhx_cal_date"></div>
-                        <!-- <div style='position:absolute; top:2px; left:400px'>My button</div> -->
-
-
                         <div class="dhx_cal_tab" name="timeline_tab"></div>
-
                         <div class="dhx_cal_tab" name="day_tab"></div>
                         <div class="dhx_cal_tab" name="week_tab"></div>
                         <div class="dhx_cal_tab" name="month_tab"></div>
-                        <div style='position:absolute; top:17px; left:811px'>
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#approveLeasePopup" class="btn btn-theme pull-left btn-sm">Approve and send lease
-                                agreement to facility</a>
+                        <div *ngIf="TotalLeaseHours" style='position:absolute; top:17px; left:811px'>
+                            Total Lease Hours :<br> {{TotalLeaseHours}}
                         </div>
                         <!--- HERE -->
 
-                        <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
-                            (click)="show_minical()">&nbsp;</div>
+                        <!-- <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
+                            (click)="show_minical()">&nbsp;</div> -->
 
                         <!--- end HERE -->
 
@@ -42,6 +37,8 @@
 
             </div>
             <div class="modal-footer">
+                <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal" class="btn btn-theme">Approve and send lease
+                    agreement to facility</a>
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
                     data-dismiss="modal">Close</a>
             </div>

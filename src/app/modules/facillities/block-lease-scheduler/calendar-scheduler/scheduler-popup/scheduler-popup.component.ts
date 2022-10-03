@@ -46,7 +46,7 @@ export class SchedulerPopupComponent implements OnInit {
   isValidTimeAndClosedDays: boolean = true;
   isLeaseSigned: boolean = false;
   TotalCreditAvailable: string = '0';
-  TotalHoursLeased: string;
+  TotalBlockHours: string; TotalCreditHours: string;
   facilityClosedDaysJSON: any = [];
   FacilityTimesJSON: any = [];
   creditReasonList: any = [];
@@ -70,7 +70,7 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.isLeaseSigned = true;
+    this.isLeaseSigned = true;
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -82,12 +82,9 @@ export class SchedulerPopupComponent implements OnInit {
       if (this.event) {
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
-          setTimeout(() => {
-            this.getLeaseData();
-          }, 300);
-        } else {
-          this.getTotalLeaseAndCreditHours();
+          this.getLeaseData();
         }
+
       }
     }
   }
@@ -105,14 +102,24 @@ export class SchedulerPopupComponent implements OnInit {
       creditMinutes: [''],
       CreditReasonText: [''],
     });
+    if (this.mode == 'month') {
+      this.leaseForm.patchValue({
+        start_time: null,
+        end_time: null
+      })
+    }
     this.setValidatorForleaseForm();
+  }
+  disableIt(event) {
+    var which = event.which
+    if (which === 13 || which === 9) {
+      event.target.disabled = true
+    }
   }
   getLeaseData() {
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
       if (res.response != null) {
-        console.log(res.response)
         if (res.response.CreditDetails != null) {
-          console.log(res.response.CreditDetails);
           this.CreditDetailsList = res.response.CreditDetails;
           // if (this.CreditDetailsList) {
           //   this.CreditId = this.CreditDetailsList['ID'];
@@ -128,11 +135,7 @@ export class SchedulerPopupComponent implements OnInit {
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
         if (this.LeaseDetails != null) {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
-
-          if (this.LeaseDetails['TotalHoursLeased']) {
-            this.TotalHoursLeased = this.LeaseDetails['TotalHoursLeased'].split(':')[0] + ' hours ' + this.LeaseDetails['TotalHoursLeased'].split(':')[1] + ' Minutes';
-          }
-          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
+          // this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.selectedModality = this.LeaseDetails['ModalityType'];
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
@@ -141,7 +144,7 @@ export class SchedulerPopupComponent implements OnInit {
             contrastType: this.LeaseDetails['Contrast'].toLocaleLowerCase(),
           });
           $("optgroup#" + this.LeaseDetails['ModalityType'] + " > option[value='" + this.selectedresourceId + "']").attr("selected", "selected");
-
+          this.getTotalLeaseAndCreditHours();
         }
       }
     }, (err: any) => {
@@ -224,21 +227,20 @@ export class SchedulerPopupComponent implements OnInit {
       'resourceId': this.selectedresourceId
     }
     this.blockLeaseSchedulerService.getAlreadyBlockedLease(true, body).subscribe((res) => {
-      if (res.response != null) {       
+      if (res.response != null) {
         this.AlreadyBlockedLeaseList = res.response;
-        this.isValidAlreadyBlockedLease=false;
+        this.isValidAlreadyBlockedLease = true;
         if (this.LeaseBlockId) {
           if (this.AlreadyBlockedLeaseList.filter(a => a.LeaseBlockId != this.LeaseBlockId).length > 0) {
-            this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();   
+            this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+            this.isValidAlreadyBlockedLease = false;
           }
-          else
-            this.isValidAlreadyBlockedLease = true;
         } else {
           this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
         }
-        
+
       } else {
-        
+
         this.validateFacilityTimeAndClosedDays(body);
       }
     }, (err: any) => {
@@ -252,11 +254,16 @@ export class SchedulerPopupComponent implements OnInit {
       'startDate': this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd'),
       'endDate': this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd'),
       'startTime': this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-      'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))
+      'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+      'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-      if (res) {
-        this.TotalHoursLeased = JSON.parse(res.response).LeaseHoursDetail;
+      if (res.response) {
+        if (res.response[0].BlockHours)
+          this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
+        if (res.response[0].TotalCreditHours)
+          this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;        
+        console.log(JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours);
       }
     },
       (err: any) => {
@@ -367,6 +374,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   }
   handleValueChange(e: any, from: string) {
+    this.TotalBlockHours = '';
     this.eventLeaseTime = e;
     var currentDate = new Date(); this.pastDate_start_date = '';
     this.pastDate_end_date = '';
@@ -378,27 +386,16 @@ export class SchedulerPopupComponent implements OnInit {
     var start_date = new Date(this.editFormControls.start_date.value);
     var end_date = new Date(this.editFormControls.end_date.value);
     if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
-      if (from == 'start_date') {
-        this.leaseForm.patchValue({
-          start_date: previousValue
-        });
-      } else {
-        this.leaseForm.patchValue({
-          end_date: previousValue
-        });
-      }
+      this.leaseForm.patchValue({
+        end_date: null,
+        end_time: null
+      });
       this.dateTimeValidationMsg = "End date should be greater than Start date";
       this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-    } else if ((Date.parse(end_date.toDateString()) == Date.parse(start_date.toDateString())) && ((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) < this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
-      if (from == 'start_time') {
-        this.leaseForm.patchValue({
-          start_time: previousValue
-        });
-      } else {
-        this.leaseForm.patchValue({
-          end_time: previousValue
-        });
-      }
+    } else if (((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+      this.leaseForm.patchValue({
+        end_time: null
+      });
       this.dateTimeValidationMsg = "End time should be greater than Start time";
       this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
     } else {

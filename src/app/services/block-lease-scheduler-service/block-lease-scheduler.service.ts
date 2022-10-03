@@ -84,5 +84,10 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  approveAndSendLeaseToFacility(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post(`BlockLeaseScheduler/ApproveAndSendLeaseToFacility`,body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 
