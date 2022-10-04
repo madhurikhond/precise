@@ -15,7 +15,7 @@
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Facility Parent</div>
                             <div class="input-group">
-                                <ng-select [items]="facilityParentList" placeholder="Select"
+                                <ng-select [items]="facilityParentList" placeholder="Select" [ngModelOptions]="{standalone: true}"
                                     bindLabel="facilityParentName" [multiple]="false" [closeOnSelect]="false"
                                     bindValue="facilityParentName" [(ngModel)]="selectedParentFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -35,7 +35,7 @@
                             <div class="theme-label">Facility</div>
                             <div class="input-group">
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="facilityName"
-                                    [multiple]="false" [closeOnSelect]="false" bindValue="facilityName"
+                                    [multiple]="false" [closeOnSelect]="false" bindValue="facilityName" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
@@ -54,7 +54,7 @@
                             <div class="theme-label">Modality</div>
                             <div class="input-group">
                                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
-                                    [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName"
+                                    [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedModality">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
@@ -73,7 +73,7 @@
                             <div class="theme-label">Schedule Status</div>
                             <div class="input-group">
                                 <ng-select [items]="scheduleStatusList" placeholder="Select" bindLabel="STATUS"
-                                    [multiple]="true" [closeOnSelect]="false" bindValue="STATUS"
+                                    [multiple]="true" [closeOnSelect]="false" bindValue="STATUS" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedscheduleStatus">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
@@ -91,7 +91,7 @@
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Lease Status</div>
                             <div class="input-group">
-                                <select class="form-control" [(ngModel)]="SelectedsLeaseStatus">
+                                <select class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="SelectedsLeaseStatus">
                                     <option value="0">Select</option>
                                     <option value="1">Both parties not signed</option>
                                     <option value="1">Facility not signed</option>

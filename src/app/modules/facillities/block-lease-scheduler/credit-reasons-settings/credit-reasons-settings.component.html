@@ -163,7 +163,7 @@
                                 <div class="form-group">
                                     <div class="theme-label">Name</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" disabled name="firstName"
+                                        <input type="text" ngDefaultControl class="form-control" disabled name="firstName"
                                             [(ngModel)]="model.name" #firstName="ngModel"
                                             [ngModelOptions]="{ standalone : true }">
                                     </div>
@@ -174,7 +174,7 @@
                                     <div
                                         [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
                                         <signature-pad id="signature-pad" [options]="signaturePadOptions"
-                                            [(ngModel)]="model.signature" [ngModelOptions]="{ standalone : true }"
+                                            [(ngModel)]="model.signature" ngDefaultControl [ngModelOptions]="{ standalone : true }"
                                             [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
                                             #signature="ngModel" (onEndEvent)="drawComplete()">
                                         </signature-pad>

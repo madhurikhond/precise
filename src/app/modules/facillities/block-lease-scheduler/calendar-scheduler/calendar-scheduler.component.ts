@@ -10,6 +10,9 @@ import {
 } from 'devextreme-angular';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { PastDateConfirmModalComponent } from './past-date-confirm-modal/past-date-confirm-modal.component';
+import { SignaturePad } from 'angular2-signaturepad';
+import { NgForm } from '@angular/forms';
+import { StorageService } from 'src/app/services/common/storage.service';
 
 declare let scheduler: any;
 
@@ -20,6 +23,16 @@ declare let scheduler: any;
 })
 export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("scheduler_here", { static: true }) schedulerContainer: ElementRef;
+    @ViewChild('f', { static: true }) f: NgForm | any;
+    model: any = { signature: '' };
+    @ViewChild(SignaturePad) signaturePad: SignaturePad;
+    signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
+        'minWidth': 2,
+        pecColor: 'rgb(66,133,244)',
+        backgroundcolor: 'rgb(255,255,255)',
+        canvasWidth: 750,
+        canvasHeight: 200
+    };
     FacilityName: string = '';
     FacilityID: string = '';
     TotalLeaseHours: string;
@@ -31,7 +44,8 @@ export class CalendarSchedulerComponent implements OnInit {
     allClosedDays: any = [];
     reasonId: number = 0;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
-        private notificationService: NotificationService, private modalService: NgbModal
+        private notificationService: NotificationService, private modalService: NgbModal,
+        private readonly storageService: StorageService
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
             if (res) {
@@ -291,17 +305,53 @@ export class CalendarSchedulerComponent implements OnInit {
         });
 
     }
-    confirmBlockToLease() {
+    clearSign(): void {
+        this.signaturePad.clear();
+        this.model.signature = '';
+    }
+    drawComplete() {
+        this.model.signature = this.signaturePad.toDataURL();
+    }
+    signConfirm(isConfirmSign: boolean) {
+        this.f.resetForm();
+        this.signaturePad.clear();
+        this.model.signature = '';
+    }
+    confirmBlockToLease(defaultSign: boolean, body: any = '') {
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
-        let body = {
-            FacilityID: this.FacilityID
+        if (defaultSign) {
+            body = {
+                FacilityID: this.FacilityID
+            }
         }
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
-            console.log(res);
+            if (res.response) {
+                if (res.responseCode == 200) {
+                    this.notificationService.showNotification({
+                        alertHeader: 'Success',
+                        alertMessage: res.response.message,
+                        alertType: res.response.ResponseCode
+                    })
+                }
+            }           
         }, (err: any) => {
             this.errorNotification(err);
         });
 
+    }
+    submitSign(isItemSign: boolean) {
+        if (this.model.signature == '') {
+            return;
+        }
+        if (this.f.valid) {
+            let data = {
+                'FacilityID': this.FacilityID,
+                'UserId': this.storageService.user.UserId,
+                'DefaultSign': this.model.signature
+            }
+            this.confirmBlockToLease(false, data)
+            this.f.submitted = false;
+        }
     }
     errorNotification(err: any) {
         this.notificationService.showNotification({

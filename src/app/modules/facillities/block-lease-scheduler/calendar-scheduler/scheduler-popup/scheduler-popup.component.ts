@@ -76,15 +76,12 @@ export class SchedulerPopupComponent implements OnInit {
     if (this.data) {
       this.FacilityName = this.data.FacilityName;
       this.FacilityID = this.data.FacilityID;
-      //this.getfacilityClosedDaysSchdDetails();
       this.getModalityResourcesList();
-      console.log(this.event);
       if (this.event) {
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
           this.getLeaseData();
         }
-
       }
     }
   }
@@ -262,8 +259,7 @@ export class SchedulerPopupComponent implements OnInit {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours)
-          this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;        
-        console.log(JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours);
+          this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
       }
     },
       (err: any) => {
