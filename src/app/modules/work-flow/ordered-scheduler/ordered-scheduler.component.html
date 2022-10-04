@@ -294,11 +294,11 @@
                 </div>
 
                 <div *dxTemplate="let data of 'firstTemplate'">
-                    <i *ngIf="data.data.Color === 'RED'" (click)="preScreeningQuestionClick(data.data.myId)"
+                    <i *ngIf="data.data.Color == 'RED'" (click)="preScreeningQuestionClick(data.data.myId)"
                         class="fa fa-list-ul my-border1 text-danger" style="pointer-events : all;"></i>
-                    <i *ngIf="data.data.Color === 'Green'" (click)="preScreeningQuestionClick(data.data.myId)"
+                    <i *ngIf="data.data.Color == 'Green'" (click)="preScreeningQuestionClick(data.data.myId)"
                         style="pointer-events : all;" class="fa fa-list-ul my-border1 text-success"></i>
-                    <i *ngIf="data.data.Color === 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId)"
+                    <i *ngIf="data.data.Color == 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId)"
                         class="fa fa-list-ul my-border1 text-warning" style="pointer-events : all;"></i>
                     {{data.data.INSERTIONDATETIME | date : dateTimeFormatCustom.Date }}
                 </div>
