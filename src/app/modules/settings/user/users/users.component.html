@@ -655,7 +655,7 @@
                                             <div class="input-group">
                                                 <ng-select [items]="facilityList" placeholder="Select"
                                                     bindLabel="FacilityName" formControlName="assignFacilityID"
-                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)"
+                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)" 
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -704,8 +704,8 @@
                                                     [virtualScroll]="shouldEnableVirtualScroll(referrerList, 10)"
                                                     bindLabel="Username" formControlName="assignReferrerID"
                                                     [(ngModel)]="selectedReferrerList" [multiple]="true" id="id115" (add)="a4=ValidateMultiSelectTextLength('id115',a4)"
-                                                    [closeOnSelect]="false" [loading]="showDropdownLoader"
-                                                    bindValue="ReferrerID" appendTo="body"
+                                                    [closeOnSelect]="false" groupBy="selectedAllGroup" [loading]="showDropdownLoader"
+                                                    bindValue="ReferrerID"
                                                     class="assign-referrers-select">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                                         <div class="ng-value" *ngFor="let item of items | slice:0:a4">

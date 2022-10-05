@@ -235,17 +235,17 @@ export class CommonMethodService {
   sendAutoRouteFlag(data: any) {
     this.observeFlag.next(data);
   }
-  ValidateMultiSelectTextLength(id, a) {
+  ValidateMultiSelectTextLength(id, a) {    
     var endCellWidth: any = 0;
     const ngSelectContainer = document.getElementById(id);
     // const containerWidth = ngSelectContainer.offsetWidth;
     const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
+    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth !== undefined ? containerWidthWithItemsSelected[0].offsetWidth: '';  //141
     var percentage75:any=(containerWidth*75)/100;
     const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
+    var insideCellWidth: any = insideCellElement[0].offsetWidth !== undefined ? containerWidthWithItemsSelected[0].offsetWidth: '';
     for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
+      var insideCellWidth1: any = insideCellElement[i].offsetWidth!== undefined ? containerWidthWithItemsSelected[0].offsetWidth: '';
       endCellWidth = endCellWidth + insideCellWidth1;
     }
     if (endCellWidth > percentage75 && a==20) {
