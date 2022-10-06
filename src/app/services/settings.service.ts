@@ -1282,4 +1282,10 @@ export class SettingsService {
       map((res: ApiResponse) => res)
     );
   }
+  updateRoleGroupName(showGlobalLoader:boolean = true,  groupName,oldGroupName) {
+    debugger
+    return this._httpService.get(`Automation/UpdateRoleGroupName?groupName=${groupName}&oldGroupName=${oldGroupName}`,showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    ) 
+  }
 }

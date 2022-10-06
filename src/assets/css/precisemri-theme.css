@@ -6887,8 +6887,12 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	z-index: 9999;
 }
 .referrers-grouping .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
-    display: block;
+    display: block !important;
 }
+/* #edit-user .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
+	display: block !important;
+
+} */
 .timePickerSlack{
 	position: relative;
 }
@@ -7135,11 +7139,10 @@ ngb-modal-window.modal{
 .dynamsoft-dwt-dialogProgress br{
 	display: none;
 }
-
-.patient-table-responsive .dx-datagrid-header-panel .dx-toolbar{
-	overflow-x: auto;
-    overflow-y: hidden;
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
+	display: block !important;
 }
+
 .patient-table-responsive .dx-toolbar .dx-toolbar-items-container{
 	margin-bottom: 10px;
 }
@@ -7167,3 +7170,7 @@ ngb-modal-window.modal{
 .patient-status .ng-option-disabled{
 	font-weight: bold;
 }
+.theme-form .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
+    display: block;
+}
+

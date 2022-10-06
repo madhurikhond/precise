@@ -249,7 +249,7 @@
                 <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                 <dxo-load-panel [enabled]="true"></dxo-load-panel>
                 <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-                <dxo-selection mode="multiple" ></dxo-selection>
+                <dxo-selection mode="multiple"></dxo-selection>
 
                 <dxi-column dataField="INSERTIONDATETIME" caption="Entered" cellTemplate="firstTemplate"></dxi-column>
                 <dxi-column dataField="SoftCheck" caption="Soft Check"></dxi-column>
@@ -294,15 +294,12 @@
                 </div>
 
                 <div *dxTemplate="let data of 'firstTemplate'">
-                    <!-- <a href="javascript:void(0)" class=" link-btn" (click)="preScreeningQuestionClick(data.data.myId,data.data.InternalStudyId,data.data.Color)">
-                        <span> {{data.data.INSERTIONDATETIME | date : dateTimeFormatCustom.Date }}</span>
-                    </a> -->
-                    <a href="javascript:void(0)" *ngIf="data.data.Color === 'RED'" (click)="preScreeningQuestionClick(data.data.myId,data.data.InternalStudyId,data.data.Color)"
-                        class="fa fa-list-ul my-border1 text-danger" style="pointer-events : all;"></a>
-                    <a  href="javascript:void(0)" *ngIf="data.data.Color === 'Green'" (click)="preScreeningQuestionClick(data.data.myId,data.data.InternalStudyId,data.data.Color)"
-                        style="pointer-events : all;" class="fa fa-list-ul my-border1 text-success"></a>
-                    <a  href="javascript:void(0)" *ngIf="data.data.Color === 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId,data.data.InternalStudyId,data.data.Color)"
-                        class="fa fa-list-ul my-border1 text-warning" style="pointer-events : all;"></a>
+                    <i *ngIf="data.data.Color === 'RED'" (click)="preScreeningQuestionClick(data.data.myId)"
+                        class="fa fa-list-ul my-border1 text-danger" style="pointer-events : all;"></i>
+                    <i *ngIf="data.data.Color === 'Green'" (click)="preScreeningQuestionClick(data.data.myId)"
+                        style="pointer-events : all;" class="fa fa-list-ul my-border1 text-success"></i>
+                    <i *ngIf="data.data.Color === 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId)"
+                        class="fa fa-list-ul my-border1 text-warning" style="pointer-events : all;"></i>
                     {{data.data.INSERTIONDATETIME | date : dateTimeFormatCustom.Date }}
                 </div>
                 <div *dxTemplate="let data of 'dosTemplate'">

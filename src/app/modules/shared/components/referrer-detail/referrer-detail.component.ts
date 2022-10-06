@@ -78,14 +78,13 @@ export class ReferrerDetailComponent implements OnInit {
   constructor(private fb: FormBuilder, private referrersService: ReferrersService, private notificationService: NotificationService,
     private commonMethodService: CommonMethodService, private renderer: Renderer2, private readonly storageService: StorageService) {
     referrersService.sendDataToReferrerDetail.subscribe(res => {
- 
- 
+      debugger
       this.getCurrentReferrerDetail(res.title, res.referrerId)
       //this.isPopUpDisplay=true;
       //this.isModalShow=true;
     });
     referrersService.sendDataToReferrerDetailToOrderedSchedular.subscribe(res => {
-    
+      debugger
       if(!this.isPoliciesTab){   
         this.updateTabId('edit-referrer-details')
       }else{
@@ -319,7 +318,6 @@ export class ReferrerDetailComponent implements OnInit {
 
   getreferrerById() { 
     debugger 
-    this.title = null ;
     this.onTabclick(true)
     this.referrersService.getReferrerById(true, this.id).subscribe((res) => { 
       this.title = res.response.FullName

@@ -255,7 +255,7 @@
                     <strong>Patient Id: </strong>
                     <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data.data.items[0])"
                         data-toggle="modal" data-target="#patient-Detail-Window">
-                        {{data.key[1]}} - </a> {{data.data.items[0].LastName}},  {{data.data.items[0].FirstName}} - {{data.data.items[0].financialtypename}}
+                        {{data.key[1]}} - </a>{{data.data.items[0].FirstName}},  {{data.data.items[0].LastName}} - {{data.data.items[0].financialtypename}}
                 </div>
             <div *dxTemplate="let data of 'cell1Template'">
                 {{ data.data.birthdate | date:dateTimeFormatCustom.Date }}

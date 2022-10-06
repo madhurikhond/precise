@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderedSchedulerComponent } from 'src/app/modules/work-flow/ordered-scheduler/ordered-scheduler.component';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
-declare const $: any;
+
 @Component({
   selector: 'app-prescreening-small-window',
   templateUrl: './prescreening-small-window.component.html',
@@ -13,12 +13,7 @@ declare const $: any;
 })
 export class PrescreeningSmallWindowComponent implements OnInit {
   @ViewChild('hiddenModalclose', { static: false }) hiddenModalclose: ElementRef;
-  @HostListener('keydown', ['$event']) onKeyDown(e) {
-    if (e.code === 'Escape')  {
-     $('.modal.fade.modal-theme.show').find('.close-dismiss').click();
-    }
-    
-  }
+
   patientIdModel: string = "";
   preScreeningForm: FormGroup;
   IsSubmitted: boolean = false;

@@ -67,7 +67,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   alertInfo: AlertInfoPayload;
   selectedHasAlertId: number;
   currentPatientId: string = '';
-  selectedFileDeletePath:any;
   tabId: string = 'All'
   downloadAllBasePath: any;
   commonPopUpMessage: string = ''
@@ -86,7 +85,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   headerTitle: string = '';
   selectedFileData: any;
   billArray: any;
-  latestRow: any;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
   @HostListener('document:click', ['$event'])
@@ -149,18 +147,20 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     this.submitted = false;
 
     this.commonService.getListObservable.subscribe((patientId) => {
-      this.headerTitle = null;
+      this.headerTitle = '';
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
+      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
     });
 
     this.commonService.docManagerSubjectObservableForDocComp.subscribe((patientId) => {
-      this.headerTitle = null;
+      this.headerTitle = '';
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
+      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
@@ -324,8 +324,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     else if (e.itemData.text == 'Download Selected') {
 
       if (this.selectedFileKeys.length == 1) {
-        //this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-        this.getFilesByKey('', this.selectedFileDeletePath, e.itemData.text)
+        this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
+        this.getFilesByKey('', this.path, e.itemData.text)
         this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
@@ -462,7 +462,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
           this.fileManager.instance.refresh();
         }
         this.successNotification(res);
-        this.getPatientDocument(this.currentPatientId, 'All');
         this.setFileManagerRowColor();
       }
       else {
@@ -492,8 +491,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
 
     if (e.selectedItems.length == 1) {
-      this.selectedFileDeletePath =  e.selectedItems[0].dataItem.filePath
-
       //this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
       // let fileExtension = this.selectedFileNames.split('.').pop();
       //   this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems.map(f => f.dataItem).map(m => m.filePath)[0])).subscribe((res) => { 
@@ -528,7 +525,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   }
 
   displayFile(fileName: string, fileData: any) {
-  
     if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
       fileData = 'data:image/png;base64,' + fileData;
     }
@@ -773,7 +769,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     });
   }
   deleteOrCancelItem(isItemDelete: boolean) {
-    debugger
     if (isItemDelete) {
       if (this.selectedDeletedDoc.length > 0) {
         this.documentmanagerService.deleteAllFiles(true, this.selectedDeletedDoc).subscribe((res) => {
@@ -786,7 +781,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
               }
             });
             this.successNotification(res);
-            this.getPatientDocument(this.currentPatientId, 'All');
             this.setFileManagerRowColor();
           }
           else {
@@ -940,8 +934,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   getBillDataInArray() {
     this.billArray = [];
     this.billArray = this.fileItems.filter(a => a.docType == "Bill");
-      this.latestRow = this.billArray.filter(x => x.latestBill==1).length ? this.billArray.filter(x => x.latestBill==1)[0].uploadedOnWithSeconds :  ''  
-    console.log(this.latestRow)
     this.billArray = this.billArray.sort(function (a, b) {
       var dateA = new Date(a.uploadedOn).getTime();
       var dateB = new Date(b.uploadedOn).getTime();
@@ -949,7 +941,9 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
   }
   IsLatestBill(uploadedDate: any) {
-    let uplDate = new Date(this.latestRow).getTime();
+    console.log(this.billArray);
+    // let uploadedDate_New 
+    let uplDate = new Date(this.billArray[0].uploadedOn).getTime();
     let uploadedDate_New = new Date(uploadedDate).getTime();
     return uplDate == uploadedDate_New;
   }
@@ -970,7 +964,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   closeScannerPopup($event) {
     if ($event && this.startText=='Close Scanner') {
       this.toggleStartDemo();
-}
+    }
   }
 
 }
+
+
+
+

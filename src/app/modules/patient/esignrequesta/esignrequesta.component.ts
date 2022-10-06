@@ -71,15 +71,8 @@ export class EsignrequestaComponent implements OnInit {
       this.getEsignData();
       //this.previewAndSave(2);
     }
-this.preventBack()
-  }
 
-  preventBack() {
-    history.pushState(null, '', location.href);
-    window.onpopstate = function () {
-       history.go(1);
-    };
-}
+  }
   changelanguage(event) {
     this.router.navigate(['patient/esignrequestas'], { queryParams: { patientid: this.patientid, Token: this.token } });
     this.patientService.sendDataToEsignrequestWindow(this.AgreeEsignData);

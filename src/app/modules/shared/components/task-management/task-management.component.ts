@@ -1,5 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { TaskManagementApplyFilter, TaskManagementArray } from 'src/app/models/taskManagementSlackGlobalSettings';
@@ -10,7 +9,6 @@ import { PatientService } from 'src/app/services/patient/patient.service';
 import { TaskManagementService } from 'src/app/services/task-management/task-management.service';
 import { ViewChild, ElementRef } from '@angular/core';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
-declare const $: any;
 
 @Component({
   selector: 'app-task-management',
@@ -18,12 +16,6 @@ declare const $: any;
   styleUrls: ['./task-management.component.css'],
 })
 export class TaskManagementComponent implements OnInit {
-  @HostListener('keydown', ['$event']) onKeyDown(e) {
-    if (e.code === 'Escape')  {
-     $('.modal.fade.modal-theme.show').find('.close-dismiss').click();
-    }
-    
-  }
   @ViewChild('modalClose', { static: false }) modalClose: ElementRef;
   check: boolean = false;
   labelNameList: Array<string> = [];
@@ -65,7 +57,6 @@ export class TaskManagementComponent implements OnInit {
   constructor(private readonly commonMethodService: CommonMethodService, private fb: FormBuilder,
     private readonly taskManagementService: TaskManagementService, private readonly facilityService: FacilityService,
     private readonly notificationService: NotificationService, private readonly storageService: StorageService,
-    private datePipe: DatePipe,
     private patientService: PatientService
   ) {
     this.isTaskManagementPopShow = false;
@@ -246,14 +237,11 @@ export class TaskManagementComponent implements OnInit {
       this.modalValue = '';
       return;
     }
-    var fullDateTime=this.addTaskFormControl['dueDate'].value;
-    var formattedDate=this.datePipe.transform(fullDateTime,'yyyy/MMM/dd');
-
     let body =
     {
       'taskAssignTo': this.addTaskFormControl['taskAssignTo'].value,
       'patientId': this.addTaskFormControl['patientId'].value,
-      'dueDate': formattedDate,
+      'dueDate': this.addTaskFormControl['dueDate'].value,
       'tag': this.addTaskFormControl['tag'].value,
       'taskTitle': this.addTaskFormControl['taskTitle'].value,
       'taskSpecifics': this.addTaskFormControl['taskSpecifics'].value,

@@ -125,10 +125,6 @@ export class RequestSearchDetailComponent implements OnInit {
     this.getAllCopyServiceCompany();
     //this.resetSubsFormAndProperties();
     this.emailCustodianRecordsFormInit();
-    this.subsService.sendAndRecieveDataToRequestSearchDetailPageSubsID.subscribe((res:any)=>{
-      debugger
-        this.popUpTitle = res.popUpTitle ;
-    })
     this.subsService.sendAndRecieveDataForRequestSearchDetailPage.subscribe((res: any) => {
       this.updateTabId('1');
       if (res != null) {
@@ -137,8 +133,8 @@ export class RequestSearchDetailComponent implements OnInit {
         this.getSubsDetailById(res);
       }
     });
-  }
 
+  }
   resetSubsFormAndProperties() {
     this.updateTabId('1');
     this.isShowDocTab = false;
@@ -157,7 +153,7 @@ export class RequestSearchDetailComponent implements OnInit {
     this.selectedCompanyIDCheck4 = null;
     this.selectedCompanyIDCheck5 = null;
     this.subsId = null;
-    //this.popUpTitle = '';
+    this.popUpTitle = 'Create New Sub';
     this.isSubsPageInEditMode = false;
     this.editRestCheckBox();
   }
@@ -1045,7 +1041,7 @@ export class RequestSearchDetailComponent implements OnInit {
     });
   }
   createNewSubs(body: any) {
-    this.popUpTitle = 'Add'
+
     this.subsService.createNewSubs(true, body).subscribe((res) => {
       if (res.response != null) {
         this.messageChildToParent.emit(true);

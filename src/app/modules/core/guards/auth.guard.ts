@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
-
+declare const $: any
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
 
   currentUrl: string = '';
   isSessionLoged: boolean = false;
+  isPermissionChanged: boolean;
   constructor(private readonly storageService: StorageService,
     private readonly router: Router,
     private commonMethod: CommonMethodService
@@ -21,6 +22,12 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if (this.storageService.user) {
+      this.isPermissionChanged = this.storageService.getItem("isPermissionChanged");
+      if (this.isPermissionChanged) {
+
+        $('#divRolePermissionChanged').click()
+        return true;
+      }
       this.router.events.subscribe((res) => {
         this.currentUrl = this.router.url;
       })

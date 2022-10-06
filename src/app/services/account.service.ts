@@ -35,12 +35,7 @@ export class AccountService {
   forgotPassword(forgotPasswordModel: any, showGlobalLoader: boolean = true) {
     return this._httpService.post('Account/ForgotPassword', forgotPasswordModel, showGlobalLoader);
   }
-  checkResetPasswordTokenValidation(resetPasswordModel: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post('Account/CheckResetPasswordTokenValidation', resetPasswordModel, showGlobalLoader);
-  }
-  resetPassword(resetPasswordModel: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post('Account/ResetPassword', resetPasswordModel, showGlobalLoader);
-  }
+
   getServiceCompanies(showGlobalLoader: boolean = true) {
     return this._httpService.get('Account/GetServiceCompanyList', showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
