@@ -160,7 +160,7 @@
 								Scheduling Details</a>
 						</li>
 						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
-								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements'}"
+								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit'}"
 								data-toggle="tab" href="#edit-gscheduling-details">
 								Leases</a>
 						</li>
@@ -3634,7 +3634,7 @@
 
 						</div>
 						<div class="tab-pane"
-							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' ? 'active show' : 'fade'"
+							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit' ? 'active show' : 'fade'"
 							id="editLeases">
 							<div class="tab-section">
 								<ul class="nav nav-tabs">
@@ -3645,6 +3645,10 @@
 									<li class="nav-item"> <a class="nav-link" (click)="tabClick('LeaseAgreements')"
 											[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements'}"
 											data-toggle="tab" href="#LeaseAgreements">Lease agreements</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" (click)="tabClick('Credit/Debit')"
+											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}"
+											data-toggle="tab" href="#CreditandDebit">Credit/Debit</a>
 									</li>
 								</ul>
 								<div class="tab-content">
@@ -3676,6 +3680,42 @@
 										[ngClass]="defaultPopupTab == 'LeaseAgreements' ? 'active show' : 'fade'"
 										id="historical">
 										<div class="table-responsive">
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
+										id="CreditandDebit">
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
+											[columnAutoWidth]="true" [allowColumnReordering]="false"
+												[dataSource]="CreditDebitList" [showBorders]="true">
+												<dxo-sorting mode="multiple"></dxo-sorting>
+												<dxo-paging [enabled]="false"></dxo-paging>
+												<dxo-load-panel [enabled]="true"></dxo-load-panel>
+												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+												<dxi-column dataField="Credit time" caption="Credit Time" ></dxi-column>
+												<dxi-column dataField="LeaseTime" caption="Original Leased Time" ></dxi-column>
+												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
+												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
+												<dxi-column dataField="CreditId" caption="Credit #"></dxi-column>
+												<dxi-column dataField="Pending" caption="Applied to Lease #"></dxi-column>
+												<dxi-column caption="Credit Applied By" cellTemplate="creditApliedTemplate"></dxi-column>
+												<div *dxTemplate="let data of 'creditApliedTemplate'">
+													{{data.data.FIRSTNAME +" "+data.data.LASTNAME}}
+												</div>
+												<div *dxTemplate="let data of 'StatusTemplate'">
+													  <div *ngIf="!data.data.IsUseCredit">Not used</div> 
+													  <div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
+												</div>
+											</dx-data-grid>
+										</div>
+										<div class="pagination-theme">
+											<div class="pagination-theme">
+												<div
+													*ngFor="let item of CreditDebitList | paginate: { id: 'pagination1108' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecordBlockLeaseCredits}">
+												</div>
+												<pagination-controls id="pagination1108" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+											</div>
 										</div>
 									</div>
 								</div>
