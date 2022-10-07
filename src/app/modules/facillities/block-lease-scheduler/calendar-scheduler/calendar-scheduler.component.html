@@ -37,6 +37,8 @@
 
             </div>
             <div class="modal-footer">
+                <a href="javascript:void(0)" *ngIf="approveGoToNext" class="btn btn-theme" (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{'{ ' + FACILITY_NAME  + ' }'}}</a>
+                <a href="javascript:void(0)" *ngIf="approveAllCheckForButton" class="btn btn-theme">APPROVE ALL PARENT_CO. FACILITIES & SEND LEASE AGREEMENT</a>
                 <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal" class="btn btn-theme">Approve and send lease
                     agreement to facility</a>
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
