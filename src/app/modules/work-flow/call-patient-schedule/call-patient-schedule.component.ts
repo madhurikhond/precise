@@ -56,7 +56,7 @@ export class CallPatientScheduleComponent implements OnInit {
     this.RescheduleNoteForm = this.fb.group({
       RescheduleNote: ['', Validators.required]
     });
-    this.getCallConfirmationData();
+    this.onSearchSubmit();
 
   }
 
@@ -88,7 +88,6 @@ export class CallPatientScheduleComponent implements OnInit {
       });
   }
   saveCallPatientConfirmationLog(type) {
-    debugger
     if (!this.selectedRows || this.selectedRows.length == 0) {
       this.notificationService.showNotification({
         alertHeader: null,
@@ -108,7 +107,6 @@ export class CallPatientScheduleComponent implements OnInit {
 
 
   saveCallPatientConfirmationMethod(type: string, Note: string) {
-    debugger
     const internalStudies = this.dataList.filter(name => this.selectedRows.includes(name.myId)).map(x => x.internalstudyid).toString()
     let body = {
       Type: type,
@@ -144,23 +142,24 @@ export class CallPatientScheduleComponent implements OnInit {
   }
 
   RescheduleSelectedStudies(type: any) {
-    debugger
     this.modelValue = 'modal';
     this.saveCallPatientConfirmationMethod(type, this.addForm.RescheduleNote.value);
   }
 
   onReset() {
     this.searchForm.reset();
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
+
   }
-  getCallConfirmationData() {
+
+  onSearchSubmit() {
+    this.selectedRows = null;
     this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
       this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
       this.pageNumber, this.pageSize).subscribe((res) => {
         var data: any = res;
         this.totalRecords = res.totalRecords
         this.dataList = data.response;
-        console.log(this.dataList);
         if (this.dataList != null) {
           this.dataList.forEach((element, index) => {
             element.myId = index;
@@ -191,7 +190,7 @@ export class CallPatientScheduleComponent implements OnInit {
           this.dataList = [];
         }
         setTimeout(() => {
-          $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+          $('.dx-state-invisible').remove()
         }, 100);
       },
         (err: any) => {
@@ -202,66 +201,15 @@ export class CallPatientScheduleComponent implements OnInit {
           });
         });
   }
-  onSearchSubmit() {
-    this.pageNumber = 1;
-    this.getCallConfirmationData();
-    // this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
-    //   this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
-    //   this.pageNumber, this.pageSize).subscribe((res) => {
-    //     var data: any = res;
-    //     this.totalRecords = res.totalRecords
-    //     this.dataList = data.response;
-    //     console.log(this.dataList);
-    //     if (this.dataList != null) {
-    //       this.dataList.forEach((element, index) => {
-    //         element.myId = index;
-    //         // if (element.Facilitydetail)
-    //         //   var address = element.Facilitydetail.trim();
-    //         // if (address)
-    //         //   var stateZip = address.split(',')[1].trim();
-    //         // if (stateZip) {
-    //         //   var state = stateZip.split(' ')[0];
-    //         //   var zip = stateZip.split(' ')[1];
-    //         // }
-    //         // if (address) {
-    //         //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
-    //           // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
-    //           // element.Address = address;
-    //           // if (state) {
-    //           //   element.Address = element.Address + '/' + state;
-    //           // }
-    //           // if (zip) {
-    //           //   element.Address = element.Address + '/' + zip;
-    //           // }
-    //         }
-    //       // }
-    //      );
-    //     }
-    //     else {
-    //       this.totalRecords = 1;
-    //       this.dataList = [];
-    //     }
-    //     setTimeout(() => {
-    //       $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
-    //     }, 100);
-    //   },
-    //     (err: any) => {
-    //       this.notificationService.showNotification({
-    //         alertHeader: err.statusText,
-    //         alertMessage: err.message,
-    //         alertType: err.status
-    //       });
-    //     });
-  }
 
   pageChanged(event) {
     this.pageNumber = event;
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
   }
   onPageSizeChange(event) {
     this.pageSize = event;
     this.pageNumber = 1;
-    this.getCallConfirmationData()
+    this.onSearchSubmit()
   }
   get sForm() { return this.searchForm.controls; }
   get addForm() { return this.RescheduleNoteForm.controls; }
