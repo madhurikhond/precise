@@ -72,6 +72,7 @@ export class SchdFacilitiesComponent implements OnInit {
   parentDropDownModel: string = '';
   facilityPricingList: any = [];
   blockLeasePricingList: any = [];
+  CreditDebitList:any=[];
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -85,6 +86,7 @@ export class SchdFacilitiesComponent implements OnInit {
   deleteTagId: number;
   tagNameList = [];
   totalRecords: number = 1;
+  totalRecordBlockLeaseCredits: number =1;
   pageNumber: number = 1;
   pageSize: number;
   submiited: boolean = false;
@@ -864,6 +866,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
         this.getBlockLeasePricing(this.facilityId);
+        this.getAllBlockLeaseCredits();
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -978,6 +981,27 @@ export class SchdFacilitiesComponent implements OnInit {
         this.blockLeasePricingList = res.response;
       }
     });
+  }
+  getAllBlockLeaseCredits()
+  {
+    this.CreditDebitList=[];
+    this.pageSize=20;
+    this.facilityService.getAllBlockLeaseCredits(true,this.pageNumber,this.pageSize).subscribe((res) => {
+      if (res.response != null && res.response.length > 0)  {
+        this.CreditDebitList=res.response;
+        this.totalRecordBlockLeaseCredits = res.response[0].TotalRecords;
+      }
+      else{
+        this.totalRecords = 1;
+        this.CreditDebitList = [];
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
+  onPageNumberChange(pageNumber: any) {
+    this.pageNumber = pageNumber;
+    this.getAllBlockLeaseCredits();
   }
   onRowUpdated(e) {
     this.eventBlockLeasePricingData = e;
