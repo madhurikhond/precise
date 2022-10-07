@@ -16,14 +16,16 @@
                         <div class="dhx_cal_today_button"></div>
                         <div class="dhx_cal_date"></div>
                         <div class="dhx_cal_tab" name="timeline_tab"></div>
-
                         <div class="dhx_cal_tab" name="day_tab"></div>
                         <div class="dhx_cal_tab" name="week_tab"></div>
                         <div class="dhx_cal_tab" name="month_tab"></div>
+                        <div *ngIf="TotalLeaseHours" style='position:absolute; top:17px; left:811px'>
+                            Total Lease Hours :<br> {{TotalLeaseHours}}
+                        </div>
                         <!--- HERE -->
 
-                        <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
-                            (click)="show_minical()">&nbsp;</div>
+                        <!-- <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
+                            (click)="show_minical()">&nbsp;</div> -->
 
                         <!--- end HERE -->
 
@@ -35,15 +37,33 @@
 
             </div>
             <div class="modal-footer">
+                <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal" class="btn btn-theme">Approve and send lease
+                    agreement to facility</a>
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
                     data-dismiss="modal">Close</a>
-
             </div>
         </div>
     </div>
 </div>
 
-
-
-
-   
+<div class="modal fade modal-theme in modal-small" id="approveLeasePopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>DO YOU WANT TO LEASE BLOCK?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="confirmBlockToLease()" hrefTo="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-schd-facilities [isGridDisplay]="false"></app-schd-facilities>

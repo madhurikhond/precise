@@ -112,7 +112,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     }
   }
   getAllBlockLeaseFacility(filterBody: any) {
-
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
       this.blockLeaseGridList = [];
       if (res.response != null) {

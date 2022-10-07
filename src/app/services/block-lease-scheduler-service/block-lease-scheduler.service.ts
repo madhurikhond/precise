@@ -28,11 +28,6 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
-  getBlockLeasePopupData(showGlobalLoader : boolean = true ,FacilityId: string){
-    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeasePopupData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
-      map((res:ApiResponse) => res)
-    );
-  }
   getCalenderModalityResourceDropDownData(showGlobalLoader : boolean = true ,FacilityId: string){
     return this._httpService.get(`BlockLeaseScheduler/GetCalenderModalityResourceDropDownData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
@@ -68,8 +63,8 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
-  getLeaseById(showGlobalLoader : boolean = true,LeaseId:number){
-    return this._httpService.post(`BlockLeaseScheduler/GetLeaseById`,LeaseId,showGlobalLoader).pipe(
+  getBlockLeaseById(showGlobalLoader : boolean = true,LeaseBlockId:number){
+    return this._httpService.post(`BlockLeaseScheduler/GetBlockLeaseById`,LeaseBlockId,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }
@@ -84,8 +79,13 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
-  deleteLeaseById(showGlobalLoader : boolean = true,Body:any){
-    return this._httpService.post(`BlockLeaseScheduler/deleteLeaseById`,Body,showGlobalLoader).pipe(
+  deleteBlockLeaseById(showGlobalLoader : boolean = true,LeaseBlockId:any){
+    return this._httpService.post(`BlockLeaseScheduler/DeleteBlockLeaseById`,LeaseBlockId,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  approveAndSendLeaseToFacility(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post(`BlockLeaseScheduler/ApproveAndSendLeaseToFacility`,body,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

@@ -6980,3 +6980,17 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	padding: 10px;
 	text-align: center;
 }
+.section_CT{
+    background-color: #684f8c !important;
+}
+.section_MRI{
+    background-color: #0FC4A7 !important;
+}
+.addMarked{
+	background-color: #6c758cc2;
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+  }
+  .dhx_scheduler_month .dhx_marked_timespan { 
+    display: block;
+  }

@@ -364,7 +364,16 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
-
+  getBlockLeasePricing(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post('BlockLeaseScheduler/ManageLeaseFacilityPricing/',body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getAllBlockLeaseCredits(showGlobalLoader : boolean = true ,pageNumber:any,pageSize:any){
+    return this._httpService.get(`BlockLeaseScheduler/GetAllBlockLeaseCredits?PageNo=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
   checkUserType(){
     let checkUser = 0;
     var usertype = JSON.parse(localStorage.getItem('_cr_u_infor')).usertype;      

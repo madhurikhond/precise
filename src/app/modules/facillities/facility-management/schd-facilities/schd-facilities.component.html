@@ -4,7 +4,7 @@
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> <a href="javascript:void(0)"
 					class="btn btn-theme btn-sm pull-left" data-toggle="modal" data-target="#add-Edit-facility"
 					(click)="resetFacilityForm()"><i class="fa fa-plus"></i> Add New
-					Facility  {{isGridDisplay}}</a>
+					Facility {{isGridDisplay}}</a>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 				<div class="precisemri-search page-select">
@@ -159,6 +159,11 @@
 								href="#edit-gscheduling-details">
 								Scheduling Details</a>
 						</li>
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
+								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit'}"
+								data-toggle="tab" href="#edit-gscheduling-details">
+								Leases</a>
+						</li>
 						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link" (click)="tabClick('Notes')"
 								[ngClass]="{'active': defaultPopupTab === 'Notes'}" data-toggle="tab"
 								href="#edit-notes-tab">Notes</a>
@@ -294,7 +299,7 @@
 											<label for="editinfo2" class="arrow-label">Override Facility Prices</label>
 										</div>
 										<div class="checkbox-theme">
-											<input class="form-control" formControlName="isActive" type="checkbox">
+											<input class="form-control" (change)="checkForLease($event,'isActive')" formControlName="isActive" type="checkbox">
 											<label for="editinfo4" class="arrow-label">Active</label>
 										</div>
 										<div class="checkbox-theme">
@@ -304,7 +309,7 @@
 												facility</label>
 										</div>
 										<div class="checkbox-theme">
-											<input class="form-control" formControlName="useBlockLease" type="checkbox">
+											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"  formControlName="useBlockLease" type="checkbox">
 											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
 										<div class="form-group">
@@ -3628,6 +3633,94 @@
 							</div>
 
 						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit' ? 'active show' : 'fade'"
+							id="editLeases">
+							<div class="tab-section">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('BlockLeaseRate')"
+											[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' }"
+											data-toggle="tab" href="#BlockLeaseRate">Block Lease Rate</a>
+									</li>
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('LeaseAgreements')"
+											[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements'}"
+											data-toggle="tab" href="#LeaseAgreements">Lease agreements</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" (click)="tabClick('Credit/Debit')"
+											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}"
+											data-toggle="tab" href="#CreditandDebit">Credit/Debit</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'Leases'  ? 'active show' : 'fade'"
+										id="current">
+										<div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
+												(click)="saveBlockLeasePricing()">Save Changes</a>
+										</div>
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerBlockLeasePricing"
+												[dataSource]="blockLeasePricingList"
+												(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+												<dxo-editing mode="cell" [allowUpdating]="true">
+												</dxo-editing>
+												<dxi-column dataField="facilityId" caption="facilityId"
+													[visible]="false"></dxi-column>
+												<dxi-column dataField="Modality" caption="TYPE" [allowEditing]="false">
+												</dxi-column>
+												<dxi-column dataField="LeaseRatePerHour" caption="Lease Rate/ hr">
+												</dxi-column>
+												<dxi-column dataField="ContrastCostPerUnit"
+													caption="Contrast Cost per Unit">
+												</dxi-column>
+											</dx-data-grid>
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'LeaseAgreements' ? 'active show' : 'fade'"
+										id="historical">
+										<div class="table-responsive">
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
+										id="CreditandDebit">
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
+											[columnAutoWidth]="true" [allowColumnReordering]="false"
+												[dataSource]="CreditDebitList" [showBorders]="true">
+												<dxo-sorting mode="multiple"></dxo-sorting>
+												<dxo-paging [enabled]="false"></dxo-paging>
+												<dxo-load-panel [enabled]="true"></dxo-load-panel>
+												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+												<dxi-column dataField="Credit time" caption="Credit Time" ></dxi-column>
+												<dxi-column dataField="LeaseTime" caption="Original Leased Time" ></dxi-column>
+												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
+												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
+												<dxi-column dataField="CreditId" caption="Credit #"></dxi-column>
+												<dxi-column dataField="Pending" caption="Applied to Lease #"></dxi-column>
+												<dxi-column caption="Credit Applied By" cellTemplate="creditApliedTemplate"></dxi-column>
+												<div *dxTemplate="let data of 'creditApliedTemplate'">
+													{{data.data.FIRSTNAME +" "+data.data.LASTNAME}}
+												</div>
+												<div *dxTemplate="let data of 'StatusTemplate'">
+													  <div *ngIf="!data.data.IsUseCredit">Not used</div> 
+													  <div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
+												</div>
+											</dx-data-grid>
+										</div>
+										<div class="pagination-theme">
+											<div class="pagination-theme">
+												<div
+													*ngFor="let item of CreditDebitList | paginate: { id: 'pagination1108' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecordBlockLeaseCredits}">
+												</div>
+												<pagination-controls id="pagination1108" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -3665,8 +3758,32 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Alert</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ANY UNSIGNED LEASES CREATED WITH THIS FACILITY WILL BE REMOVED, ARE YOU SURE YOU WANT TO PROCEED?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" (click)="confirmationLease(false)"
+					class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+				<a (click)="confirmationLease(true)" href="javascript:void(0)"
+					class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
 	data-target="#deleteLink"></button>
+<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
+	data-target="#confirmationLease"></button>
 <button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
 	data-target="#add-Edit-facility"></button>
 <app-document-manager-facility></app-document-manager-facility>
