@@ -123,7 +123,7 @@
             </div> -->
         </div>
         <div class="table-responsive page-table callPatient">
-            <dx-data-grid  id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
+            <dx-data-grid #targetDataGrid  id="gridContainer" [dataSource]="dataList" [allowColumnResizing]="true"
                 [columnAutoWidth]="true" [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
                 [columnMinWidth]="30" keyExpr="myId" [(selectedRowKeys)]="selectedRows" [showBorders]="true" >
                 <dxo-paging [enabled]="false"></dxo-paging>

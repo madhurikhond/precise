@@ -181,7 +181,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
           for (let i = 0; i < selectedFiles.length; i++) {
             this._fileExtension = res.response[0].FileExtension;
             if (this._fileExtension != null) {
-              this._matchExtension = !!event.target.files[i].name.match(this._fileExtension);
+              this._matchExtension = !!event.target.files[i].name.toLocaleLowerCase().match(this._fileExtension);
               if (!this._matchExtension) {
                 this.CodeErrorNotification('File type not allowed');
                 return;

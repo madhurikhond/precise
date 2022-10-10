@@ -93,7 +93,7 @@ export class WorkflowService {
     );
   }
   saveCallPatientConfirmationLog(type: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog`, type, showGlobalLoader,true).pipe(
+    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog`, type, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }
