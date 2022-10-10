@@ -160,7 +160,6 @@ export class LoginComponent implements OnInit {
   {
     var valReturn: any;
     let list: any = [];
-    var leftList: any = [];
     let responseHierarchy = JSON.parse(data);
         if (responseHierarchy && responseHierarchy.length) {
           responseHierarchy.forEach((value) => {
@@ -170,22 +169,17 @@ export class LoginComponent implements OnInit {
           });
         }
         for (let i = 0; i < responseHierarchy.length; i++) {
-          list.push(responseHierarchy[i].hierarchy);  
+          list.push(responseHierarchy[i].hierarchy);
+          console.log(list);
+          if(list[0].Url!=='')
+          {
+            valReturn=list[0].Url
+          }
+          else if(list[0].Url=='' && list[0].Children)
+          {
+            valReturn=list[0].Children[0].Url
+          }
         }
-        list.forEach((i) => {
-          if (i.Type) {
-            if (i.Type == 1) {
-              leftList.push(i);
-            }
-          }});
-        if(leftList[0].Url!=='')
-          {
-            valReturn=leftList[0].Url
-          }
-          else if(leftList[0].Url=='' && leftList[0].Children)
-          {
-            valReturn=leftList[0].Children[0].Url
-          }
         return valReturn;
   }
 }

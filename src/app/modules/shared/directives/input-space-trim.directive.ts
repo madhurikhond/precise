@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2 } 
 import { FormControlName } from '@angular/forms';
 
 @Directive({
-  selector: '[appInputSpaceTrim],input[type="text"]'
+  selector: '[appInputSpaceTrim],[ngModel],([formControlName], [formControl]),input'
 })
 export class InputSpaceTrimDirective {
   @Output() ngModelChange = new EventEmitter();

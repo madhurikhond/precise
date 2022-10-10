@@ -51,8 +51,7 @@ export type EditUserFormValue = {
   'userTermination': string,
   'hours': string,
   'userSlackID': string,
-  'officeLocation':string,
-  'isActiveTime':boolean
+  'officeLocation':string
 };
 
 @Component({
@@ -98,7 +97,6 @@ export class UsersComponent implements OnInit {
   selectedUserTypeList: any = [];
   selectedFacilityDeptroleList: any = [];
   userServiceManagementList: any = [];
-  popUpTitle : string ;
   fullName: string;
   userType: string;
   searchText: string;
@@ -120,8 +118,6 @@ export class UsersComponent implements OnInit {
   topSearchText: any = '';
   search_isactive: any = '';
   isShowColumnWithNoData = true;
-  firstName :string;
-  lastName :string;
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
@@ -177,8 +173,7 @@ export class UsersComponent implements OnInit {
       assignFacilityID: [''],
       assignReferrerID: [''],
       assignFacilityDId: [''],
-      officeLocation:[''],
-      isActiveTime:['']
+      officeLocation:['']
     });
     this.userServiceForm = this.fb.group({
       topSearchText: [''],
@@ -202,7 +197,7 @@ export class UsersComponent implements OnInit {
 
     const { userId, email, firstName, lastName, companyName, dba, npi, licenceNumber, cell, address, city, state, zip, phone, workEmail, fax,
       isActive, birthday, eContactName1, eContactPhone1, eContactName2, eContactPhone2, groupName, userType, userPosition, userHire, departmentId, extension,
-      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties, officeLocation ,isActiveTime} = this.editUserForm.value as (EditUserFormValue);
+      assignBrokerID, lunchTime, assignFacilityParentID, assignFacilityID, assignReferrerID, assignFacilityDId, userTermination, hours, userSlackID, userDuties, officeLocation } = this.editUserForm.value as (EditUserFormValue);
     (this.settingService.updateUser(true, {
       userId: this.userId,
       firstName: firstName,
@@ -227,7 +222,6 @@ export class UsersComponent implements OnInit {
       eContactPhone1: eContactPhone1,
       eContactPhone2: eContactPhone2,
       officeLocation:officeLocation,
-      isActiveTime:isActiveTime,
       hours: hours,
       extension: extension,
       lunchTime: lunchTime,
@@ -442,7 +436,6 @@ export class UsersComponent implements OnInit {
   }
 
   edit(userId) {
-    this.popUpTitle = null ;
     this.editUserForm.reset();
     this.modelValue = '';
     this.submitted = false;
@@ -450,11 +443,8 @@ export class UsersComponent implements OnInit {
     this.settingService.getUserById(true, userId).subscribe((res) => {
       var data: any = res;
       if (data.response != null) {
-        this.firstName = data.response.FIRSTNAME ? data.response.FIRSTNAME : '' 
-        this.lastName = data.response.LASTNAME ?  data.response.LASTNAME : '' 
-        this.fullName = this.firstName + ' ' + this.lastName;
+        this.fullName = data.response.FIRSTNAME + ' ' + data.response.LASTNAME;
         this.userType = data.response.USERTYPE;
-        this.popUpTitle = this.fullName + ' ' + this.userType
         this.selectedReferrerList = (data.response.Referrers != null) ? data.response.Referrers.map(function (a) { return a.ReferrerID; }) : null;
         this.selectedBrokerList = (data.response.Brokers != null) ? data.response.Brokers.map(function (a) { return a.BrokerID; }) : null;
         this.selectedFacilityList = (data.response.Facilities != null) ? data.response.Facilities.map(function (a) { return a.FacilityID; }) : null;
@@ -496,7 +486,6 @@ export class UsersComponent implements OnInit {
           userSlackID: data.response.UserSlackID,
           userDuties: data.response.UserDuties,
           officeLocation:data.response. OfficeLocation,
-          isActiveTime:data.response.IsActiveTime
         });
       }
     },

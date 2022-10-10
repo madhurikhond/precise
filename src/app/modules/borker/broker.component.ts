@@ -40,7 +40,7 @@ export class BrokerComponent implements OnInit {
   mailmodelValue: string = 'modal';
   totalRecords: number;
   pageNumber: number = 1;
-  pageSize: number ;
+  pageSize: number;
   submitted = false;
   isLoading : any
   brokerId: number;
@@ -500,7 +500,6 @@ export class BrokerComponent implements OnInit {
   }
 
   getBrokerFacilityPricing() {
-   
     this.masterSelected = false;
     this.brokerService.getBrokerFacilityPricing(true, this.brokerId).subscribe((res) => {
       var data: any = res;
@@ -1019,7 +1018,9 @@ export class BrokerComponent implements OnInit {
     this.sendMailForm.reset();
   }
   searchBrokers() {
+    debugger
     this.pageNumber = 1;
+    this.pageSize = 20;
     this.isSearchBroker = true;
 
     // if (this.searchBrForm.searchText.value === '') {
@@ -1065,9 +1066,8 @@ export class BrokerComponent implements OnInit {
     });
   }
   clearBrokers() {
-    
     this.pageNumber = 1;
-    this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
+    this.pageSize = 20;
     this.isSearchBroker = false;
 
     if (this.searchBrForm.searchText.value === '') {

@@ -6,9 +6,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SignalRService {
   information = new EventEmitter<string>();
-  notification = new EventEmitter<string>();
   private hubConnection: HubConnection;
-
 
   constructor() {
     this.createConnection();
@@ -22,17 +20,17 @@ export class SignalRService {
       .withUrl(domain + 'inform')
       .configureLogging(LogLevel.Debug)
       .build();
-
   }
+
   private register(): void {
     this.hubConnection.on('HubCommunication', (param: string) => {
       this.information.emit(param);
     });
-    this.hubConnection.on('HubCommunication', (param: string) => {
-      this.notification.emit(param);
-    });
   }
+
   private startConnection(): void {
+
+
     this.hubConnection.stop().then(() => {
       console.log('Connection started.');
     })
@@ -45,16 +43,5 @@ export class SignalRService {
       .catch(err => {
         console.log('Connection fail !');
       });
-
-
-  }
-  public registerServerEvents(): void {
-    this.hubConnection.on('1', (data: any) => {
-      this.information.emit(data);
-    });
-
-    this.hubConnection.on('2', (data: any) => {
-      this.notification.emit(data);
-    });
   }
 }

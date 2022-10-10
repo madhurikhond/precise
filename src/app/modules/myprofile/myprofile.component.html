@@ -9,10 +9,10 @@
     <div class="inner-page-body">
         <div class="tab-section">
             <ul class="nav nav-tabs">
-                <li *ngFor=" let item of tabList " class="nav-item">
-                    <a class="nav-link " data-toggle="tab" [routerLink]="item.Url" routerLinkActive="active">{{item.PageTitle}}</a>
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" [routerLink]="'calender'" routerLinkActive="active">Calender</a>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" [routerLink]="'team-members'" routerLinkActive="active">Team Members</a>
                 </li>
                 <li class="nav-item">
@@ -35,10 +35,10 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" [routerLink]="'notification'" routerLinkActive="active">Notification</a>
-                </li> -->
+                </li>
             </ul>
                <div class="tab-content">
-                <router-outlet ></router-outlet>
+                <router-outlet (activate)="onRouterOutletActivate(this)"></router-outlet>
                 </div>
         </div>
     </div>

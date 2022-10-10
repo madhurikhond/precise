@@ -66,9 +66,8 @@ export class OrderedSchedulerComponent implements OnInit {
   totalRescheduled: string;
   isPrescreeningQuestion: boolean = false;
 
-  internalStudyId: string;
-  unselectedInternalStudyId:string;
-  patientId: string;
+  internalStudyId: string
+  patientId: string
 
 
   isMR: boolean = false;
@@ -140,9 +139,10 @@ export class OrderedSchedulerComponent implements OnInit {
     }
 
     this.signalRSub = this.signalRService.information.subscribe(response => {
-      this.viewingData = response;
-
-      this.removeIdleStudy();
+      if (response !== null && response.message != '2' && response.response !== null) {
+        this.viewingData = response;
+        this.removeIdleStudy();
+      }
     });
 
     this.commonMethodService.viewerRecords.subscribe(res => {
@@ -424,20 +424,17 @@ export class OrderedSchedulerComponent implements OnInit {
     }
   }
 
-  preScreeningQuestionClick(id,internalStudyId,color) {
+  preScreeningQuestionClick(id) {
     this.isMR = false;
     this.isMRWC = false;
     this.isCT = false;
     this.isUS = false;
-  let isColor = color;
     this.preScreeningQuestionAnswerData = [];
     this.prescreeningFormCreate();
-    debugger
-    if (!this.selectedRows.includes(parseInt(internalStudyId)) ) {
+    if (!this.selectedRows.includes(id)) {
       setTimeout(() => {
-        this.selectedRows = this.selectedRows.filter(item => item !== internalStudyId);
+        this.selectedRows = this.selectedRows.filter(item => item !== id);
         if (this.selectedRows.length > 0) {
-          this.internalStudyId= internalStudyId;
           this.isPrescreeningQuestion = true;
           this.getPrescreeningQuestionData();
         }
@@ -450,23 +447,22 @@ export class OrderedSchedulerComponent implements OnInit {
         }
       }, 50);
     }
-    // else {
-    //   setTimeout(() => {
-    //     this.selectedRows.push(id);
-    //     if (this.selectedRows.length > 0 && parseInt(internalStudyId)>0) {
-    //       this.internalStudyId= internalStudyId;
-    //       this.isPrescreeningQuestion = true;
-    //       this.getPrescreeningQuestionData();
-    //     }
-    //     else {
-    //       this.notificationService.showNotification({
-    //         alertHeader: null,
-    //         alertMessage: 'Please select at least one record from the below table.',
-    //         alertType: ResponseStatusCode.BadRequest
-    //       });
-    //     }
-    //   }, 50);
-    // }
+    else {
+      setTimeout(() => {
+        this.selectedRows.push(id);
+        if (this.selectedRows.length > 0) {
+          this.isPrescreeningQuestion = true;
+          this.getPrescreeningQuestionData();
+        }
+        else {
+          this.notificationService.showNotification({
+            alertHeader: null,
+            alertMessage: 'Please select at least one record from the below table.',
+            alertType: ResponseStatusCode.BadRequest
+          });
+        }
+      }, 50);
+    }
   }
 
   getPrescreeningQuestionData() {
@@ -1172,7 +1168,6 @@ export class OrderedSchedulerComponent implements OnInit {
     // }
     this.preScreeningQuestionData.patientStudyData.forEach(element => console.log(element));
     this.savePreScreeningQuestionData(false);
-    this.getOrderedSchedulerData();
   }
 
   saveAndSubmit() {
@@ -1186,7 +1181,6 @@ export class OrderedSchedulerComponent implements OnInit {
     }
 
     this.savePreScreeningQuestionData(true);
-    this.getOrderedSchedulerData();
     //alert('Form valid');
   }
 

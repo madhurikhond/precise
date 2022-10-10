@@ -35,13 +35,13 @@
                                 <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
                                     value={{item.value}}>{{item.value}}</option>
                             </select>
-                            <!-- <select formControlName="option" class="form-search">
+                            <select formControlName="option" class="form-search">
                                 <option value=null disabled>Select an Action</option>
                                 <option value="1">Default</option>
                                 <option value="2">Show all Companies</option>
-                            </select> -->
-                            <!-- <button (click)="onSearchSubmit()" [ngClass]="{'disabled': !searchForm.valid}"
-                                [disabled]="searchForm.invalid" class="search">Go</button> -->
+                            </select>
+                            <button (click)="onSearchSubmit()" [ngClass]="{'disabled': !searchForm.valid}"
+                                [disabled]="searchForm.invalid" class="search">Go</button>
                         </div>
                     </form>
                     <a href="javascript:void(0)" (click)="getAllBrokers()" class="right btn btn-theme"><i
@@ -129,7 +129,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{brokerId !==0 ? brokerName : 'Add New Record'}}</h5>
+                <h5 class="modal-title">{{brokerId !==0 && brokerName ? brokerName : 'Add New Record'}}</h5>
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <form [formGroup]="addEditForm" class="theme-form">
@@ -2216,7 +2216,7 @@
                     <a href="javascript:void(0)" (click)="onSubmit(true)" class="btn btn-theme btn-sm pull-left"
                         [attr.data-dismiss]="modelValue">Save & Close</a>
                     <a href="javascript:void(0)" (click)="onSubmit()" class="btn btn-border btn-sm pull-left"
-                        [attr.data-dismiss]="modelValue" *ngIf="brokerId !==0 && brokerName" >Apply Changes</a>
+                        [attr.data-dismiss]="modelValue">Apply Changes</a>
                     <!-- <a href="javascript:void(0)" (click)="onSubmit()" class="btn btn-theme btn-sm pull-left"
                         [attr.data-dismiss]="modelValue">{{brokerId ? 'Save Changes' : 'Insert'}}</a> -->
                 </div>
