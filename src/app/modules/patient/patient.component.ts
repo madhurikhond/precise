@@ -15,6 +15,8 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { ReferrersService } from 'src/app/services/referrers.service';
+import { BrokerService } from 'src/app/services/broker.service';
 
 
 declare const $: any;
@@ -158,7 +160,9 @@ export class PatientComponent implements OnInit {
     private readonly _commonMethodService: CommonMethodService//,public datepipe:DatePipe
     , private readonly storageService: StorageService,
     private commonService: CommonMethodService,
-    private datePipe: DatePipe, private route: ActivatedRoute
+    private datePipe: DatePipe, private route: ActivatedRoute,
+    private readonly referrersService :  ReferrersService,
+    private readonly brokerService : BrokerService,
   ) {
     this.route.queryParamMap.subscribe((params: any) => {
       this.Phoneparam = params.params.Phone;
@@ -1888,5 +1892,25 @@ ValidateMultiSelectTextLength(id, a)
       alertMessage: currentPageUrl,
        alertType: null
      });
+  }
+  getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
+    debugger
+      if (referrerId) {
+      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
+  }
+  getBrokerDetailById(brokerName: string, brokerId: any) {
+    if (brokerId) {
+      let body = { 'brokerId': brokerId, 'brokerName': brokerName };
+      this.brokerService.sendDataToBrokerFromOrderedSchedularComponent(body);
+    }
+  }
+  getReferringPhyDetailById(referringPhysician: string, ReferringPhyId: any) {
+    debugger
+    if (ReferringPhyId) {
+      let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
   }
 }

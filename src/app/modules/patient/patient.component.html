@@ -761,8 +761,8 @@
                 <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
                 <!-- <dxo-header-filter [visible]="false"></dxo-header-filter> -->
                 <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                <dxi-column  caption="View" [fixed]="true" [showInColumnChooser]="false"
-                    fixedPosition="left" cellTemplate="patientIdCellTemplate" [allowGrouping]="false" tabindex="1">
+                <dxi-column caption="View" [fixed]="true" [showInColumnChooser]="false" fixedPosition="left"
+                    cellTemplate="patientIdCellTemplate" [allowGrouping]="false" tabindex="1">
                 </dxi-column>
                 <dxi-column dataField="PATIENTID" caption="PATIENT ID" groupCellTemplate="groupCellTemplate"
                     [calculateGroupValue]="getReason" [groupIndex]="1" tabindex="1">
@@ -778,7 +778,8 @@
                 </dxi-column>
                 <dxi-column dataField="INSUREDID" caption="INSURED ID"></dxi-column>
                 <dxi-column dataField="FINANCIALTYPENAME" caption="FINANCIAL TYPE"></dxi-column>
-                <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
+                <dxi-column caption="ATTORNEY" cellTemplate="AttorneyCellTemplate" tabindex="2"></dxi-column>
+
                 <dxi-column dataField="BusinessPhoneNumber" caption="Business Phone Number"></dxi-column>
                 <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
                 <dxi-column dataField="STUDYDATETIME" caption="DOS" cellTemplate="dosCellTemplate"></dxi-column>
@@ -787,8 +788,9 @@
                 <dxi-column dataField="ACCESSIONNUMBER" caption="ACCESSION NUMBER"></dxi-column>
                 <dxi-column dataField="HOMEPHONEDISPLAY" caption="HOME PHONE"></dxi-column>
                 <dxi-column dataField="CELLPHONEDISPLAY" caption="CELL PHONE"></dxi-column>
-                <dxi-column dataField="BROKER" caption="Funding Co."></dxi-column>
-                <dxi-column dataField="REFERRINGPHYSICIAN" caption="REFERRING PHYSICIAN"></dxi-column>
+                <dxi-column caption="Funding Co." cellTemplate="FundingCoCellTemplate" tabindex="2"></dxi-column>
+                <dxi-column caption="REFERRING PHYSICIAN" cellTemplate="ReferringPhysicianCellTemplate" tabindex="2">
+                </dxi-column>
                 <dxi-column dataField="READINGPHYSICIAN" caption="READING PHYSICIAN"></dxi-column>
                 <dxi-column dataField="STATUS" caption="STATUS"></dxi-column>
                 <dxi-column dataField="PRIORITYNAME" caption="PRIORITY"></dxi-column>
@@ -905,6 +907,30 @@
                     <div data-toggle="modal" data-target="#docManager" (click)="showDocManager(data)"
                         class="cursor-pointer"><i class="fa fa-file-text-o"></i></div>
                 </div>
+
+                <div *dxTemplate="let data of 'AttorneyCellTemplate'">
+                    <a href="javascript:void(0)"
+                        (click)="getReferrerDetailById(data.data.ATTORNEY,data.data.AttorneyId,false)">
+                        <span> {{data.data.ATTORNEY}}</span>
+                    </a>
+                </div>
+                <div *dxTemplate="let data of 'FundingCoCellTemplate'">
+                    <a href="javascript:void(0)" (click)="getBrokerDetailById(data.data.BROKER,data.data.brokerID)">
+                        <span> {{data.data.BROKER}} </span>
+                    </a>
+                </div>
+
+                <div *dxTemplate="let data of 'ReferringPhysicianCellTemplate'">
+                    <a href="javascript:void(0)"
+                        (click)="getReferringPhyDetailById(data.data.REFERRINGPHYSICIAN,data.data.ReferringPhyId,false)">
+                        <span> {{data.data.REFERRINGPHYSICIAN}} {{data.data.ReferringPhyId}}</span>
+                    </a>
+                </div>
+                <!-- <div *dxTemplate="let data of 'ReferringPhysicianCellTemplate'">
+                    <a href="javascript:void(0);" class="link-btn" (click)="getReferringPhyDetailById(data)"
+                        data-toggle="modal" data-target="#patient-Detail-Window">{{data.data.REFERRINGPHYSICIAN}}</a>
+                </div> -->
+
             </dx-data-grid>
         </div>
         <div class="pagination-theme">
@@ -1284,14 +1310,14 @@
                                 </div>
                             </div>
                             <div class="switch-group">
-                            <label class="switch">
-                                <input type="checkbox" (change)="changelanguage($event)" name="sendBillToAttorney"
-                                    formControlName="isSentPatAttorney">
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="slider-label">Send Bill To Attorney</span>
-                        </div>
-                    </form>
+                                <label class="switch">
+                                    <input type="checkbox" (change)="changelanguage($event)" name="sendBillToAttorney"
+                                        formControlName="isSentPatAttorney">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="slider-label">Send Bill To Attorney</span>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
