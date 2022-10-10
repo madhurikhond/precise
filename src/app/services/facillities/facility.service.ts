@@ -365,12 +365,17 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
     );
   }
   getBlockLeasePricing(showGlobalLoader : boolean = true,body:any){
-    return this._httpService.post('BlockLeaseScheduler/ManageLeaseFacilityPricing/',body,showGlobalLoader).pipe(
+    return this._httpService.post('BlockLeaseScheduler/ManageLeaseFacilityPricing/',body,showGlobalLoader,true).pipe(
       map((res:ApiResponse) => res)
     );
   }
   getAllBlockLeaseCredits(showGlobalLoader : boolean = true ,pageNumber:any,pageSize:any){
     return this._httpService.get(`BlockLeaseScheduler/GetAllBlockLeaseCredits?PageNo=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getLeaseAgreementsByFacilityId(showGlobalLoader : boolean = true ,body:any){
+    return this._httpService.post('BlockLeaseScheduler/GetLeaseAgreementsByFacilityId/',body,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

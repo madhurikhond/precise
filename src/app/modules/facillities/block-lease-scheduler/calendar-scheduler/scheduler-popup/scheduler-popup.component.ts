@@ -56,7 +56,7 @@ export class SchedulerPopupComponent implements OnInit {
   pastDate_start_date: string;
   pastDate_end_date: string;
   eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true;
-  dateTimeValidationMsg: string;
+  dateTimeValidationMsg: string;LeaseId:string='';
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
 
   constructor(
@@ -69,8 +69,8 @@ export class SchedulerPopupComponent implements OnInit {
     private modalService: NgbModal
   ) { }
 
-  ngOnInit(): void {
-    this.isLeaseSigned = true;
+  ngOnInit(): void {  
+    //this.isLeaseSigned = true;  
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -82,6 +82,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.LeaseBlockId = this.event['LeaseBlockId'];
           this.getLeaseData();
         }
+
       }
     }
   }
@@ -130,9 +131,12 @@ export class SchedulerPopupComponent implements OnInit {
         }
 
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
+        console.log(this.LeaseDetails);
         if (this.LeaseDetails != null) {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
-          // this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
+          this.LeaseId = this.LeaseDetails['leaseId'];
+          
+          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.selectedModality = this.LeaseDetails['ModalityType'];
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
@@ -328,7 +332,8 @@ export class SchedulerPopupComponent implements OnInit {
   saveCreditInfo() {
     let body = {
       'facilityId': this.FacilityID,
-      'LeaseId': this.LeaseBlockId,
+      'LeaseBlockId': this.LeaseBlockId,
+      'LeaseId':this.LeaseId,
       'CreditReasonId': this.editFormControls.creditReasonID.value,
       'CreditReasonText': this.editFormControls.CreditReasonText.value,
       'CreditHours': this.editFormControls.creditHours.value,

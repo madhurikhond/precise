@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
+import { textChangeRangeIsUnchanged } from 'typescript';
 
 @Component({
   selector: 'app-block-lease-scheduler',
@@ -14,11 +15,12 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
 })
 export class BlockLeaseSchedulerComponent implements OnInit {
 
-  constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
-    private readonly commonMethodService: CommonMethodService, private readonly storageService: StorageService) {
+  constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService, private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
+    private readonly commonMethodService: CommonMethodService,
+    private readonly storageService: StorageService) {
   }
   facilityParentList: any[] = [];
-  selectedParentFacility: any;
+  selectedParentFacility: Number=0;
   facilityList: any[] = [];
   selectedFacility: any;
   scheduleStatusList: any[] = [];
@@ -28,14 +30,14 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 50;
   readonly pageSizeArray = PageSizeArray;
- 
+
   totalRecord: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
 
   ngOnInit(): void {
     this.getFacilityParentList();
-    this.getFacilityList();
+    //this.getFacilityList();
     this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
@@ -43,24 +45,36 @@ export class BlockLeaseSchedulerComponent implements OnInit {
 
   getFacilityParentList() {
     this.facilityParentList = [];
-    this.facilityService.getFacilityParentNames(true).subscribe((res) => {
-      if (res.response != null) {
-        this.facilityParentList = res.response;
+    this.facilityList=[];
+    this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
+      console.log(res.response[0]);
+      if (res.response) {
+        this.facilityParentList = res.response[0].ParentFacilities;
+        if(this.selectedParentFacility){
+          this.facilityList = res.response[0].Facilities;
+        }
       }
     }, (err: any) => {
       this.errorNotification(err);
     });
+    // this.facilityService.getFacilityParentNames(true).subscribe((res) => {
+    //   if (res.response != null) {
+    //     this.facilityParentList = res.response;
+    //   }
+    // }, (err: any) => {
+    //   this.errorNotification(err);
+    // });
   }
-  getFacilityList() {
-    this.facilityList = [];
-    this.facilityService.getActiveFacilityList(true).subscribe((res) => {
-      if (res.response != null) {
-        this.facilityList = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
+  // getFacilityList() {
+  //   this.facilityList = [];
+  //   this.facilityService.getActiveFacilityList(true).subscribe((res) => {
+  //     if (res.response != null) {
+  //       this.facilityList = res.response;
+  //     }
+  //   }, (err: any) => {
+  //     this.errorNotification(err);
+  //   });
+  // }
   getScheduleStatusList() {
     this.scheduleStatusList = [];
     this.blockLeaseSchedulerService.getScheduleStatusList(true).subscribe((res) => {
@@ -76,7 +90,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
-      'FacilityName':row.data.FacilityName
+      'FacilityName': row.data.FacilityName
     }
     this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
   }
@@ -110,6 +124,11 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       'parentCompanyName': parentCompanyName,
       'modality': modality
     }
+  }
+  changed(FacilityParentID: any) {  
+    this.selectedParentFacility =  FacilityParentID.FacilityParentID;
+    this.getFacilityParentList();
+    alert(this.selectedParentFacility);
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {

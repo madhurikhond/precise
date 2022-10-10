@@ -15,12 +15,12 @@
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Facility Parent</div>
                             <div class="input-group">
-                                <ng-select [items]="facilityParentList" placeholder="Select" [ngModelOptions]="{standalone: true}"
-                                    bindLabel="facilityParentName" [multiple]="false" [closeOnSelect]="false"
-                                    bindValue="facilityParentName" [(ngModel)]="selectedParentFacility">
+                                <ng-select [items]="facilityParentList" #facilityParent (change)="changed($event)" placeholder="Select" [ngModelOptions]="{standalone: true}"
+                                    bindLabel="FacilityParentName" [multiple]="false" [closeOnSelect]="false"
+                                    bindValue="FacilityParentID" [(ngModel)]="selectedParentFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                            <span class="ng-value-label"> {{item.facilityParentName}}</span>
+                                            <span class="ng-value-label"> {{item.FacilityParentName}}</span>
                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                 aria-hidden="true">×</span>
                                         </div>
@@ -34,12 +34,12 @@
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Facility</div>
                             <div class="input-group">
-                                <ng-select [items]="facilityList" placeholder="Select" bindLabel="facilityName"
-                                    [multiple]="false" [closeOnSelect]="false" bindValue="facilityName" [ngModelOptions]="{standalone: true}"
+                                <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
+                                    [multiple]="false" [closeOnSelect]="false" bindValue="FacilityID" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                            <span class="ng-value-label"> {{item.facilityName}}</span>
+                                            <span class="ng-value-label"> {{item.FacilityName}}</span>
                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                 aria-hidden="true">×</span>
                                         </div>

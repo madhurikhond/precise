@@ -89,5 +89,10 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  getDashboardFacilityDropDownData(showGlobalLoader : boolean = true,FacilityParentId:any){
+    return this._httpService.post(`BlockLeaseScheduler/GetDashboardFacilityDropDownData`,FacilityParentId,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 

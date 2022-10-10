@@ -160,7 +160,7 @@
 								Scheduling Details</a>
 						</li>
 						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
-								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit'}"
+								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit'}"
 								data-toggle="tab" href="#edit-gscheduling-details">
 								Leases</a>
 						</li>
@@ -299,7 +299,8 @@
 											<label for="editinfo2" class="arrow-label">Override Facility Prices</label>
 										</div>
 										<div class="checkbox-theme">
-											<input class="form-control" (change)="checkForLease($event,'isActive')" formControlName="isActive" type="checkbox">
+											<input class="form-control" (change)="checkForLease($event,'isActive')"
+												formControlName="isActive" type="checkbox">
 											<label for="editinfo4" class="arrow-label">Active</label>
 										</div>
 										<div class="checkbox-theme">
@@ -309,7 +310,8 @@
 												facility</label>
 										</div>
 										<div class="checkbox-theme">
-											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"  formControlName="useBlockLease" type="checkbox">
+											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"
+												formControlName="useBlockLease" type="checkbox">
 											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
 										<div class="form-group">
@@ -3634,7 +3636,7 @@
 
 						</div>
 						<div class="tab-pane"
-							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'Credit/Debit' ? 'active show' : 'fade'"
+							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' ? 'active show' : 'fade'"
 							id="editLeases">
 							<div class="tab-section">
 								<ul class="nav nav-tabs">
@@ -3643,20 +3645,22 @@
 											data-toggle="tab" href="#BlockLeaseRate">Block Lease Rate</a>
 									</li>
 									<li class="nav-item"> <a class="nav-link" (click)="tabClick('LeaseAgreements')"
-											[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements'}"
+											[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI'}"
 											data-toggle="tab" href="#LeaseAgreements">Lease agreements</a>
 									</li>
 									<li class="nav-item"><a class="nav-link" (click)="tabClick('Credit/Debit')"
-											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}"
-											data-toggle="tab" href="#CreditandDebit">Credit/Debit</a>
+											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}" data-toggle="tab"
+											href="#CreditandDebit">Credit/Debit</a>
 									</li>
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'Leases'  ? 'active show' : 'fade'"
-										id="current">
+										id="BlockLeaseRate">
+
 										<div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
-												(click)="saveBlockLeasePricing()">Save Changes</a>
+												data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">Save
+												Changes</a>
 										</div>
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerBlockLeasePricing"
@@ -3677,9 +3681,96 @@
 										</div>
 									</div>
 									<div class="tab-pane"
-										[ngClass]="defaultPopupTab == 'LeaseAgreements' ? 'active show' : 'fade'"
-										id="historical">
-										<div class="table-responsive">
+										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
+										id="LeaseAgreements">
+										<div class="tab-section">
+											<ul class="nav nav-tabs">
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeaseAgreement_MRI')"
+														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' }"
+														data-toggle="tab" href="#LeaseAgreementMRI">MRI</a>
+												</li>
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeaseAgreement_CT')"
+														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreement_CT'}"
+														data-toggle="tab" href="#LeaseAgreementCT">CT</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane"
+													[ngClass]="defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreements'  ? 'active show' : 'fade'"
+													id="LeaseAgreementMRI">
+													<div class="table-responsive">
+														<dx-data-grid id="gridContainerLeaseAgreement_MRI"
+															[dataSource]="fullblockLeaseAgreementMRIList"
+															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+															<dxo-paging [enabled]="false"></dxo-paging>
+															<dxi-column dataField="LeaseId" caption="LeaseId"
+																[visible]="false"></dxi-column>
+															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
+																[allowEditing]="false">
+															</dxi-column>
+															<dxi-column dataField="TotalLeaseHours" caption="MRI Hours">
+															</dxi-column>
+															<dxi-column dataField="LeaseRatePerHour" cellTemplate="MriRateTemplate" caption="MRI Rate">
+															</dxi-column>
+															<dxi-column dataField="totalHour" cellTemplate="TotalHourTemplate" caption="Total">
+															</dxi-column>
+															<dxi-column caption="Aggrement">
+															</dxi-column>
+															<div *dxTemplate="let data of 'MriRateTemplate'">
+																{{"$"+data.data.LeaseRatePerHour}}
+															</div>
+															<div *dxTemplate="let data of 'TotalHourTemplate'">
+																{{"$"+data.data.totalHour}}
+															</div>
+														</dx-data-grid>
+													</div>
+													<div class="pagination-theme">
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of fullblockLeaseAgreementMRIList | paginate: { id: 'pagination_MRI' , itemsPerPage: MRIpageSize, currentPage: MRIPageNumber, totalItems:totalrecordsFull_MRI}">
+															</div>
+															<pagination-controls id="pagination_MRI"
+																(pageChange)="onPageNumberChangedLeaseAgreements($event,'MRI')">
+															</pagination-controls>
+														</div>
+													</div>
+												</div>
+												<div class="tab-pane"
+													[ngClass]="defaultPopupTab === 'LeaseAgreement_CT'  ? 'active show' : 'fade'"
+													id="LeaseAgreementCT">
+													<div class="table-responsive">
+														<dx-data-grid id="gridContainerLeaseAgreement_CT"
+															[dataSource]="fullblockLeaseAgreementCTList"
+															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+															<dxi-column dataField="LeaseId" caption="LeaseId"
+																[visible]="false"></dxi-column>
+															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
+																[allowEditing]="false">
+															</dxi-column>
+															<dxi-column dataField="TotalLeaseHours" caption="CT Hours">
+															</dxi-column>
+															<dxi-column dataField="LeaseRatePerHour" caption="CT Rate">
+															</dxi-column>
+															<dxi-column dataField="totalHour" caption="Total">
+															</dxi-column>
+															<dxi-column caption="Aggrement">
+															</dxi-column>
+														</dx-data-grid>
+													</div>
+													<div class="pagination-theme">
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of fullblockLeaseAgreementCTList | paginate: { id: 'pagination_CT' , itemsPerPage: MRIpageSize, currentPage: MRIPageNumber, totalItems:totalrecordsFull_CT}">
+															</div>
+															<pagination-controls id="pagination_CT"
+																(pageChange)="onPageNumberChangedLeaseAgreements($event,'CT')">
+															</pagination-controls>	
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="tab-pane"
@@ -3687,25 +3778,28 @@
 										id="CreditandDebit">
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
-											[columnAutoWidth]="true" [allowColumnReordering]="false"
+												[columnAutoWidth]="true" [allowColumnReordering]="false"
 												[dataSource]="CreditDebitList" [showBorders]="true">
 												<dxo-sorting mode="multiple"></dxo-sorting>
 												<dxo-paging [enabled]="false"></dxo-paging>
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-												<dxi-column dataField="Credit time" caption="Credit Time" ></dxi-column>
-												<dxi-column dataField="LeaseTime" caption="Original Leased Time" ></dxi-column>
+												<dxi-column dataField="Credit time" caption="Credit Time"></dxi-column>
+												<dxi-column dataField="LeaseTime" caption="Original Leased Time">
+												</dxi-column>
 												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
 												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
 												<dxi-column dataField="CreditId" caption="Credit #"></dxi-column>
-												<dxi-column dataField="Pending" caption="Applied to Lease #"></dxi-column>
-												<dxi-column caption="Credit Applied By" cellTemplate="creditApliedTemplate"></dxi-column>
+												<dxi-column dataField="Pending" caption="Applied to Lease #">
+												</dxi-column>
+												<dxi-column caption="Credit Applied By"
+													cellTemplate="creditApliedTemplate"></dxi-column>
 												<div *dxTemplate="let data of 'creditApliedTemplate'">
 													{{data.data.FIRSTNAME +" "+data.data.LASTNAME}}
 												</div>
 												<div *dxTemplate="let data of 'StatusTemplate'">
-													  <div *ngIf="!data.data.IsUseCredit">Not used</div> 
-													  <div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
+													<div *ngIf="!data.data.IsUseCredit">Not used</div>
+													<div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
 												</div>
 											</dx-data-grid>
 										</div>
@@ -3714,7 +3808,8 @@
 												<div
 													*ngFor="let item of CreditDebitList | paginate: { id: 'pagination1108' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecordBlockLeaseCredits}">
 												</div>
-												<pagination-controls id="pagination1108" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+												<pagination-controls id="pagination1108"
+													(pageChange)="onPageNumberChange($event)"></pagination-controls>
 											</div>
 										</div>
 									</div>
@@ -3768,13 +3863,33 @@
 				<div class="close-dismiss" data-dismiss="modal"></div>
 			</div>
 			<div class="modal-body">
-				<p>ANY UNSIGNED LEASES CREATED WITH THIS FACILITY WILL BE REMOVED, ARE YOU SURE YOU WANT TO PROCEED?</p>
+				<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE TO PROCEED?</p>
 			</div>
 			<div class="modal-footer">
 				<a href="javascript:void(0)" (click)="confirmationLease(false)"
 					class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
-				<a (click)="confirmationLease(true)" href="javascript:void(0)"
-					class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+				<a (click)="confirmationLease(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Yes</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Alert</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>	
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO UPDATE RATE. IT WILL AFFECT ONLY UNSIGNED LEASES?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="saveBlockLeasePricing()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
 			</div>
 		</div>
 	</div>

@@ -9,6 +9,7 @@ import DataGrid from 'devextreme/ui/data_grid';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+declare const $: any;
 
 @Component({
   selector: 'app-schd-facilities',
@@ -72,7 +73,10 @@ export class SchdFacilitiesComponent implements OnInit {
   parentDropDownModel: string = '';
   facilityPricingList: any = [];
   blockLeasePricingList: any = [];
-  CreditDebitList:any=[];
+  blockLeaseAgreementMRIList: any = [];
+  fullblockLeaseAgreementMRIList: any = [];
+  blockLeaseAgreementCTList: any = []; fullblockLeaseAgreementCTList: any = [];
+  CreditDebitList: any = [];
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -86,9 +90,13 @@ export class SchdFacilitiesComponent implements OnInit {
   deleteTagId: number;
   tagNameList = [];
   totalRecords: number = 1;
-  totalRecordBlockLeaseCredits: number =1;
+  totalRecordBlockLeaseCredits: number = 1;
   pageNumber: number = 1;
   pageSize: number;
+  MRIPageNumber: number = 1;
+  MRIpageSize: number = 20;
+  totalrecordsFull_MRI: number = 1;
+  totalrecordsFull_CT: number = 1;
   submiited: boolean = false;
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   sendDataDocManager: any;
@@ -161,6 +169,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
+
+
+
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -865,7 +876,6 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityPricingHistory(this.facilityId);
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
-        this.getBlockLeasePricing(this.facilityId);
         this.getAllBlockLeaseCredits();
       }
     }, (err: any) => {
@@ -969,29 +979,58 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
   }
+  getLeaseAgreementsByFacilityId(facilityId: number) {
+    this.blockLeaseAgreementMRIList = [];
+    let body: any;
+    if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
+      body = { FacilityID: facilityId, Modality: 'MRI' };
+    } else {
+      body = { FacilityID: facilityId, Modality: 'CT' };
+    }
+    this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
+      if (res.response != null) {
+        if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
+          this.blockLeaseAgreementMRIList = res.response;
+          this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
+          this.totalrecordsFull_MRI = res.response[0].TotalRecords;
+        }
+        else {
+          this.blockLeaseAgreementCTList = res.response;
+          this.totalrecordsFull_CT = res.response[0].TotalRecords;
+          this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(0, this.MRIpageSize);
+        }
+
+      }
+    });
+  }
+  onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
+    this.MRIPageNumber = pageNumber
+    if (type == 'MRI') {
+      this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice((this.MRIPageNumber - 1) * this.MRIpageSize, ((this.MRIPageNumber - 1) * this.MRIpageSize) + this.MRIpageSize)
+    } else {
+      this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice((this.MRIPageNumber - 1) * this.MRIpageSize, ((this.MRIPageNumber - 1) * this.MRIpageSize) + this.MRIpageSize)
+    }
+  }
   getBlockLeasePricing(facilityId: number) {
     this.blockLeasePricingList = [];
-    // let body = {
-    //   'FacilityID': facilityId,
-    //   'Operation': 5      
-    // }
     let body = [{ FacilityID: facilityId, Operation: 5 }];
     this.facilityService.getBlockLeasePricing(true, body).subscribe((res) => {
       if (res.response != null) {
+        console.log(this.getBlockLeasePricing);
         this.blockLeasePricingList = res.response;
       }
     });
   }
-  getAllBlockLeaseCredits()
-  {
-    this.CreditDebitList=[];
-    this.pageSize=20;
-    this.facilityService.getAllBlockLeaseCredits(true,this.pageNumber,this.pageSize).subscribe((res) => {
-      if (res.response != null && res.response.length > 0)  {
-        this.CreditDebitList=res.response;
+
+  getAllBlockLeaseCredits() {
+    this.CreditDebitList = [];
+    this.pageSize = 20;
+    this.facilityService.getAllBlockLeaseCredits(true, this.pageNumber, this.pageSize).subscribe((res) => {
+      if (res.response != null && res.response.length > 0) {
+        this.CreditDebitList = res.response;
         this.totalRecordBlockLeaseCredits = res.response[0].TotalRecords;
       }
-      else{
+      else {
         this.totalRecords = 1;
         this.CreditDebitList = [];
       }
@@ -1054,6 +1093,12 @@ export class SchdFacilitiesComponent implements OnInit {
   setGeneralInfoTabForm(data: any) {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
+    if (!data.useBlockLease) {
+      $('#BlockLeaseRate').not('.btn').attr("disabled", true).addClass('disabledClass');
+      $('#gridContainerLeaseAgreement_MRI').not('.btn').attr("disabled", true).addClass('disabledClass');
+      $('#gridContainerLeaseAgreement_CT').not('.btn').attr("disabled", true).addClass('disabledClass');
+      $('#CreditandDebit').not('.btn').attr("disabled", true).addClass('disabledClass');
+    }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
       facilityName: data.facilityName,
@@ -2512,6 +2557,13 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
+    if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' || this.defaultPopupTab == 'LeaseAgreement_CT') {
+      this.MRIPageNumber = 1; this.MRIpageSize = 20;
+      this.getLeaseAgreementsByFacilityId(this.facilityId);
+    }
+    if (this.defaultPopupTab == 'BlockLeaseRate' || this.defaultPopupTab == 'Leases') {
+      this.getBlockLeasePricing(this.facilityId);
+    }
   }
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({

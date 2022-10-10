@@ -34,8 +34,7 @@ export class CalendarSchedulerComponent implements OnInit {
         canvasHeight: 200
     };
     FacilityName: string = '';
-    FacilityID: string = '';
-    TotalLeaseHours: string;
+    FacilityID: string = '';   
     modalityResourcesList: any[] = [];
     selectedModalityResources: any = [];
     forTimelineList: Array<{ key: number, label: string }> = [];
@@ -269,12 +268,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.allClosedDays = res.response[0].AllClosedDays;
             if (res.response[0].ModalityResources)
                 var forTimelineView = res.response[0].ModalityResources;
-            if (res.response[0].TotalLeasedHours) {
-                this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
-                if (this.TotalLeaseHours == '00:') {
-                    this.TotalLeaseHours = '';
-                }
-            }
+           
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
                     for (let i = 0; i < forTimelineView.length; i++) {
