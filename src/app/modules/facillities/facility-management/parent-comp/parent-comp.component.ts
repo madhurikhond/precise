@@ -207,7 +207,6 @@ export class ParentCompComponent implements OnInit {
       BillingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       BillingPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       BillingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      BlockLeasingESignEmail:['',[Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       DefaultEmailAddress3P:['',[Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       EmailAddress13P:['',[Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       EmailAddress23P:['',[Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]]
@@ -351,7 +350,6 @@ export class ParentCompComponent implements OnInit {
       BillingEmail: res.response.BillingEmail,
       BillingPhone: res.response.BillingPhone,
       BillingFax: res.response.BillingFax,
-      BlockLeasingESignEmail:res.response.BlockLeasingESignEmail,
       DefaultEmailAddress3P:res.response.DefaultEmailAddress3P,
       EmailAddress13P:res.response.EmailAddress13P,
       EmailAddress23P:res.response.emailAddress23P
@@ -523,7 +521,6 @@ export class ParentCompComponent implements OnInit {
       'billingEmail': this.pcForm.BillingEmail.value,
       'billingPhone': this.pcForm.BillingPhone.value != null ? this.pcForm.BillingPhone.value.replace(/\D+/g, '') : '',
       'billingFax': this.pcForm.BillingFax.value != null ? this.pcForm.BillingFax.value.replace(/\D+/g, '') : '',
-      'blockLeasingESignEmail':this.pcForm.BlockLeasingESignEmail.value,
       'defaultEmailAddress3P':this.pcForm.DefaultEmailAddress3P.value,
       'emailAddress13P':this.pcForm.EmailAddress13P.value ,
       'emailAddress23P':this.pcForm.EmailAddress23P.value,
@@ -645,7 +642,6 @@ export class ParentCompComponent implements OnInit {
       'billingEmail': this.pcForm.BillingEmail.value,
       'billingPhone': this.pcForm.BillingPhone.value != null ? this.pcForm.BillingPhone.value.replace(/\D+/g, '') : '',
       'billingFax': this.pcForm.BillingFax.value != null ? this.pcForm.BillingFax.value.replace(/\D+/g, '') : '',
-      'blockLeasingESignEmail':this.pcForm.BlockLeasingESignEmail.value,
       'defaultEmailAddress3P':this.pcForm.DefaultEmailAddress3P.value,
       'emailAddress13P':this.pcForm.EmailAddress13P.value ,
       'emailAddress23P':this.pcForm.EmailAddress23P.value,
