@@ -160,7 +160,7 @@
 								Scheduling Details</a>
 						</li>
 						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
-								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit'}"
+								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid'}"
 								data-toggle="tab" href="#edit-gscheduling-details">
 								Leases</a>
 						</li>
@@ -3636,7 +3636,7 @@
 
 						</div>
 						<div class="tab-pane"
-							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' ? 'active show' : 'fade'"
+							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid'  || defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'"
 							id="editLeases">
 							<div class="tab-section">
 								<ul class="nav nav-tabs">
@@ -3651,6 +3651,10 @@
 									<li class="nav-item"><a class="nav-link" (click)="tabClick('Credit/Debit')"
 											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}" data-toggle="tab"
 											href="#CreditandDebit">Credit/Debit</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" (click)="tabClick('LeasePayments')"
+											[ngClass]="{'active': defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid'}"
+											data-toggle="tab" href="#leasePayments">Lease Payments</a>
 									</li>
 								</ul>
 								<div class="tab-content">
@@ -3712,9 +3716,11 @@
 															</dxi-column>
 															<dxi-column dataField="TotalLeaseHours" caption="MRI Hours">
 															</dxi-column>
-															<dxi-column dataField="LeaseRatePerHour" cellTemplate="MriRateTemplate" caption="MRI Rate">
+															<dxi-column dataField="LeaseRatePerHour"
+																cellTemplate="MriRateTemplate" caption="MRI Rate">
 															</dxi-column>
-															<dxi-column dataField="totalHour" cellTemplate="TotalHourTemplate" caption="Total">
+															<dxi-column dataField="totalHour"
+																cellTemplate="TotalHourTemplate" caption="Total">
 															</dxi-column>
 															<dxi-column caption="Aggrement">
 															</dxi-column>
@@ -3766,7 +3772,7 @@
 															</div>
 															<pagination-controls id="pagination_CT"
 																(pageChange)="onPageNumberChangedLeaseAgreements($event,'CT')">
-															</pagination-controls>	
+															</pagination-controls>
 														</div>
 													</div>
 												</div>
@@ -3813,92 +3819,125 @@
 											</div>
 										</div>
 									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'"
+										id="leasePayments">
+										<div class="tab-section">
+											<ul class="nav nav-tabs">
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeasePaymentsUnPaid')"
+														[ngClass]="{'active': defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' }"
+														data-toggle="tab" href="#LeasePaymentsUnPaid">Unpaid</a>
+												</li>
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeasePaymentsPaid')"
+														[ngClass]="{'active': defaultPopupTab === 'LeasePaymentsPaid'}"
+														data-toggle="tab" href="#LeasePaymentPaid">paid</a>
+												</li>
+											</ul>
+											<div class="tab-pane"
+												[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'"
+												id="LeasePaymentsUnPaid">
+												<div class="table-responsive">
+													<dx-data-grid></dx-data-grid>
+												</div>
+											</div>
+											<div class="tab-pane"
+												[ngClass]="defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'"
+												id="LeasePaymentPaid">
+												<div class="table-responsive">
+													<dx-data-grid></dx-data-grid>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-border-gray btn-sm pull-right"
+						data-dismiss="modal">Close</button>
+					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
+					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
+					<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
+						(click)="updateFacility(true)">Apply</button>
+				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
-				<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
-				<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
-				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
-					(click)="updateFacility(true)">Apply</button>
+		</div>
+
+
+	</div>
+	<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+						data-dismiss="modal">Cancel</a>
+					<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+						data-dismiss="modal">Ok</a>
+				</div>
 			</div>
 		</div>
 	</div>
 
-
-</div>
-<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Delete</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
-			</div>
-			<div class="modal-body">
-				<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-					data-dismiss="modal">Cancel</a>
-				<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-					data-dismiss="modal">Ok</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-modal="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Alert</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
-			</div>
-			<div class="modal-body">
-				<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE TO PROCEED?</p>
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" (click)="confirmationLease(false)"
-					class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
-				<a (click)="confirmationLease(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-					data-dismiss="modal">Yes</a>
+	<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Alert</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE TO
+						PROCEED?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" (click)="confirmationLease(false)"
+						class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+					<a (click)="confirmationLease(true)" href="javascript:void(0)"
+						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Alert</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
-			</div>	
-			<div class="modal-body">
-				<p>ARE YOU SURE YOU WANT TO UPDATE RATE. IT WILL AFFECT ONLY UNSIGNED LEASES?</p>
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-					data-dismiss="modal">Cancel</a>
-				<a (click)="saveBlockLeasePricing()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-					data-dismiss="modal">Ok</a>
+	<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Alert</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>ARE YOU SURE YOU WANT TO UPDATE RATE. IT WILL AFFECT ONLY UNSIGNED LEASES?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+						data-dismiss="modal">Cancel</a>
+					<a (click)="saveBlockLeasePricing()" href="javascript:void(0)"
+						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
-	data-target="#deleteLink"></button>
-<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
-	data-target="#confirmationLease"></button>
-<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
-	data-target="#add-Edit-facility"></button>
-<app-document-manager-facility></app-document-manager-facility>
+	<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
+		data-target="#deleteLink"></button>
+	<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
+		data-target="#confirmationLease"></button>
+	<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
+		data-target="#add-Edit-facility"></button>
+	<app-document-manager-facility></app-document-manager-facility>
