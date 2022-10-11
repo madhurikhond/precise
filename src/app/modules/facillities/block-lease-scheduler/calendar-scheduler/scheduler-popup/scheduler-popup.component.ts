@@ -40,6 +40,7 @@ export class SchedulerPopupComponent implements OnInit {
   minutesList: any = [];
   checkFacilityHours: boolean = false;
   leaseForm: FormGroup;
+  leaseBlockOffForm: FormGroup;
   now = new Date();
   form: FormGroup;
   validateMessage: string = '';
@@ -55,8 +56,8 @@ export class SchedulerPopupComponent implements OnInit {
   submitted: boolean = false;
   pastDate_start_date: string;
   pastDate_end_date: string;
-  eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true;
-  dateTimeValidationMsg: string;LeaseId:string='';
+  eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true; isBlockOffTime: boolean = true;
+  dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
 
   constructor(
@@ -69,7 +70,7 @@ export class SchedulerPopupComponent implements OnInit {
     private modalService: NgbModal
   ) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     //this.isLeaseSigned = true;  
     this.createForm();
     this.leaseFormInitialization();
@@ -100,11 +101,26 @@ export class SchedulerPopupComponent implements OnInit {
       creditMinutes: [''],
       CreditReasonText: [''],
     });
+    if (!this.event['LeaseBlockId']) {
+      this.leaseBlockOffForm = this.formBuilder.group({
+        modalityType: ['', Validators.required],
+        start_date: [this.event['start_date']],
+        start_time: [this.event['start_date']],
+        end_date: [this.event['end_date']],
+        end_time: [this.event['end_date']],
+      });
+    }
     if (this.mode == 'month') {
       this.leaseForm.patchValue({
         start_time: null,
         end_time: null
       })
+      if (!this.event['LeaseBlockId']) {
+        this.leaseBlockOffForm.patchValue({
+          start_time: null,
+          end_time: null
+        })
+      }
     }
     this.setValidatorForleaseForm();
   }
@@ -135,7 +151,7 @@ export class SchedulerPopupComponent implements OnInit {
         if (this.LeaseDetails != null) {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
-          
+
           this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.selectedModality = this.LeaseDetails['ModalityType'];
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
@@ -293,7 +309,15 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-    if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
+    if (!this.isBlockOffTime) {      
+      this.submitted = false;
+      this.BlockOffDaysSubmitted = true;
+      if (this.leaseBlockOffForm.invalid) {
+        return;
+      }
+    }
+    else if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
+      this.BlockOffDaysSubmitted = false;
       this.submitted = true;
       if (this.leaseForm.invalid) {
         return;
@@ -333,7 +357,7 @@ export class SchedulerPopupComponent implements OnInit {
     let body = {
       'facilityId': this.FacilityID,
       'LeaseBlockId': this.LeaseBlockId,
-      'LeaseId':this.LeaseId,
+      'LeaseId': this.LeaseId,
       'CreditReasonId': this.editFormControls.creditReasonID.value,
       'CreditReasonText': this.editFormControls.CreditReasonText.value,
       'CreditHours': this.editFormControls.creditHours.value,
@@ -373,6 +397,24 @@ export class SchedulerPopupComponent implements OnInit {
       this.handleValueChange(this.eventLeaseTime, '')
     }, 500);
 
+  }
+  handleBlockOffDaysChange(e: any, from: string) {
+    var start_date = new Date(this.editBlockOffFormControls.start_date.value);
+    var end_date = new Date(this.editBlockOffFormControls.end_date.value);
+    if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
+      this.leaseBlockOffForm.patchValue({
+        end_date: null,
+        end_time: null
+      });
+      this.dateTimeValidationMsg = "End date should be greater than Start date";
+      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+    } else if (((this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+      this.leaseBlockOffForm.patchValue({
+        end_time: null
+      });
+      this.dateTimeValidationMsg = "End time should be greater than Start time";
+      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+    }
   }
   handleValueChange(e: any, from: string) {
     this.TotalBlockHours = '';
@@ -486,7 +528,12 @@ export class SchedulerPopupComponent implements OnInit {
     else
       this.modal.dismiss(ModalResult.CLOSE);
   }
-
+  changeScheduleType(checked: any) {
+    if (checked == "true")
+      this.isBlockOffTime = true;
+    else
+      this.isBlockOffTime = false;
+  }
   cancel() {
     if (this.LeaseBlockId)
       this.modal.dismiss(ModalResult.ESC);
@@ -512,6 +559,7 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   get editFormControls() { return this.leaseForm.controls; }
+  get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
 }
 export enum ModalResult {
   BACKDROP_CLICK = 0,
