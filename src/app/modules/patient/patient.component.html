@@ -791,7 +791,7 @@
                 <dxi-column caption="Funding Co." cellTemplate="FundingCoCellTemplate" tabindex="2"></dxi-column>
                 <dxi-column caption="REFERRING PHYSICIAN" cellTemplate="ReferringPhysicianCellTemplate" tabindex="2">
                 </dxi-column>
-                <dxi-column dataField="READINGPHYSICIAN" caption="READING PHYSICIAN"></dxi-column>
+                <dxi-column dataField="READINGPHYSICIAN"caption="READING PHYSICIAN"cellTemplate="ReadingPhysicianCellTemplate" tabindex="2" ></dxi-column>
                 <dxi-column dataField="STATUS" caption="STATUS"></dxi-column>
                 <dxi-column dataField="PRIORITYNAME" caption="PRIORITY"></dxi-column>
                 <dxi-column dataField="SCHEDULEDMODALITY" caption="MODALITY"></dxi-column>
@@ -915,7 +915,7 @@
                     </a>
                 </div>
                 <div *dxTemplate="let data of 'FundingCoCellTemplate'">
-                    <a href="javascript:void(0)" (click)="getBrokerDetailById(data.data.BROKER,data.data.brokerID)">
+                    <a href="javascript:void(0)" (click)="getBrokerDetailById(data.data.BROKER,data.data.BrokerID)">
                         <span> {{data.data.BROKER}} </span>
                     </a>
                 </div>
@@ -926,10 +926,12 @@
                         <span> {{data.data.REFERRINGPHYSICIAN}} {{data.data.ReferringPhyId}}</span>
                     </a>
                 </div>
-                <!-- <div *dxTemplate="let data of 'ReferringPhysicianCellTemplate'">
-                    <a href="javascript:void(0);" class="link-btn" (click)="getReferringPhyDetailById(data)"
-                        data-toggle="modal" data-target="#patient-Detail-Window">{{data.data.REFERRINGPHYSICIAN}}</a>
-                </div> -->
+                <div *dxTemplate="let data of 'ReadingPhysicianCellTemplate'">
+                    <a href="javascript:void(0)"
+                        (click)="getReadingPhysicianById(data.data.READINGPHYSICIAN,data.data.RadlogistId,false)">
+                        <span> {{data.data.READINGPHYSICIAN}} {{data.data.RadlogistId}}</span>
+                    </a>
+                </div>
 
             </dx-data-grid>
         </div>

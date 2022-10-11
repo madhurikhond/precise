@@ -1913,4 +1913,11 @@ ValidateMultiSelectTextLength(id, a)
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
+  getReadingPhysicianById(readingPhysician: string, RadlogistId: any) {
+    debugger
+    if (RadlogistId) {
+      let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
+  }
 }
