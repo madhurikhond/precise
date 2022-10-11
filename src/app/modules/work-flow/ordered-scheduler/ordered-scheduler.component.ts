@@ -1593,7 +1593,9 @@ export class OrderedSchedulerComponent implements OnInit {
             alertHeader: res.responseCode == ResponseStatusCode.OK ? 'Success' : 'Error',
             alertMessage: res.message,
             alertType: res.responseCode
-          });
+          }); 
+          this.closePopup();
+          this.onSearchSubmit();
         }
       },
         (err: any) => {
