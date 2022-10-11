@@ -169,18 +169,13 @@ export class RolePermissionComponent implements OnInit {
       this.settingService.saveRolePermission(true, data).subscribe((res) => {
         if (res) {
           if (res.responseCode == ResponseStatusCode.OK && this.groupName!=this.oldGroupName)  {
-           
+            this.updateRoleGroupName();
           }
           this.notificationService.showNotification({
             alertHeader: (res.responseCode === ResponseStatusCode.OK) ? 'Success' : 'Error',
             alertMessage: res.message,
             alertType: res.responseCode
           })
-        }
-        if(res.responseCode === ResponseStatusCode.OK) 
-        {
-          this.updateRoleGroupName();
-          
         } 
         
       },
