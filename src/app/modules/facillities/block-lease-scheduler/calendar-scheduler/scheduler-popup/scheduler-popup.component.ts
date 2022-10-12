@@ -160,6 +160,7 @@ export class SchedulerPopupComponent implements OnInit {
             modalityType: this.selectedresourceId,
             contrastType: this.LeaseDetails['Contrast'].toLocaleLowerCase(),
           });
+          this.selectedresourceId = this.LeaseDetails['ResourceId'];
           $("optgroup#" + this.LeaseDetails['ModalityType'] + " > option[value='" + this.selectedresourceId + "']").attr("selected", "selected");
           this.getTotalLeaseAndCreditHours();
         }
@@ -213,6 +214,9 @@ export class SchedulerPopupComponent implements OnInit {
   }
   setRequired() {
     return [Validators.required];
+  }
+  changedOffDays(event: any){
+    this.selectedModality = event.target.options[event.target.selectedIndex].parentNode.getAttribute('label');
   }
   changed(event: any) {
     this.selectedresourceId = event.target.value;
@@ -309,12 +313,29 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-    if (!this.isBlockOffTime) {      
+    if (!this.isBlockOffTime) {
       this.submitted = false;
       this.BlockOffDaysSubmitted = true;
       if (this.leaseBlockOffForm.invalid) {
         return;
       }
+      let body = {
+        'facilityId': this.FacilityID,
+        'modality': this.selectedModality.toUpperCase(),
+        'startDate': this.datePipe.transform(this.editBlockOffFormControls.start_date.value, 'yyyy-MM-dd'),
+        'endDate': this.datePipe.transform(this.editBlockOffFormControls.end_date.value, 'yyyy-MM-dd'),
+        'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
+        'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
+        'resourceId': this.selectedresourceId
+      }
+      this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
+        if (res.responseCode == 200) {
+          this.showNotificationOnSucess(res);
+          this.modal.dismiss(ModalResult.SAVE);
+        }
+      }, (err: any) => {
+        this.errorNotification(err);
+      });
     }
     else if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
       this.BlockOffDaysSubmitted = false;

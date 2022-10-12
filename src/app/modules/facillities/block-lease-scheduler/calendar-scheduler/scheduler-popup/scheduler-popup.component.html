@@ -16,9 +16,9 @@
                     (change)="changeScheduleType($event.target.value)" value="false" type="radio">
                 <label for="BlockOff">Block off Days</label>
             </div>
-        </div>     
-        <form  *ngIf="!isBlockOffTime" [formGroup]="leaseBlockOffForm" class="theme-form" novalidate>
-          
+        </div>
+        <form *ngIf="!isBlockOffTime" [formGroup]="leaseBlockOffForm" class="theme-form" novalidate>
+
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Modality/Resource</div>
@@ -27,10 +27,10 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group">
-                                <select #modalityGetType id="modalityGetType" class="form-control"
-                                    [attr.disabled]="isLeaseSigned ? 'disabled' : null" formControlName="modalityType"
+                                <select #modalityGetOffDays id="modalityGetOffDays" class="form-control"
+                                    formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors) }"
-                                   >
+                                    (change)="changedOffDays($event)">
                                     <option value="" selected>Select Modality</option>
                                     <option value="0" selected>All</option>
                                     <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
@@ -41,12 +41,13 @@
                                 </select>
                             </div>
                         </div>
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)" class="invalid-feedback">
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                            class="invalid-feedback">
                             <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
                                 modality is required</div>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
@@ -55,13 +56,13 @@
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
-                            <dx-date-box 
-                                (onValueChanged)="handleBlockOffDaysChange($event,'start_date')" formControlName="start_date"
-                                type="date"
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_date')"
+                                formControlName="start_date" type="date"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors) }">
                             </dx-date-box>
                         </div>
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors)" class="invalid-feedback">
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors)"
+                            class="invalid-feedback">
                             <div *ngIf="editBlockOffFormControls.start_date.errors?.required">
                                 Start date is required</div>
                         </div>
@@ -70,19 +71,19 @@
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
-                            <dx-date-box
-                                (onValueChanged)="handleBlockOffDaysChange($event,'start_time')" onkeydown="disableIt(event)"
-                                formControlName="start_time" class="form-control"
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_time')"
+                                onkeydown="disableIt(event)" formControlName="start_time" class="form-control"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
                         </div>
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors)" class="invalid-feedback">
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors)"
+                            class="invalid-feedback">
                             <div *ngIf="editBlockOffFormControls.start_time.errors?.required">
                                 Start time is required</div>
                         </div>
                     </div>
-                </div>              
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
@@ -92,12 +93,12 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_date')"
-                                onkeydown="disableIt(event)"
-                                formControlName="end_date" type="date"
+                                onkeydown="disableIt(event)" formControlName="end_date" type="date"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors) }">
                             </dx-date-box>
                         </div>
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors)" class="invalid-feedback">
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors)"
+                            class="invalid-feedback">
                             <div *ngIf="editBlockOffFormControls.end_date.errors?.required">
                                 End date is required</div>
                         </div>
@@ -106,14 +107,14 @@
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
-                            <dx-date-box 
-                                (onValueChanged)="handleBlockOffDaysChange($event,'end_time')" formControlName="end_time"
-                                class="form-control"
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_time')"
+                                formControlName="end_time" class="form-control"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
                         </div>
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors)" class="invalid-feedback">
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors)"
+                            class="invalid-feedback">
                             <div *ngIf="editBlockOffFormControls.end_time.errors?.required">
                                 End time is required</div>
                         </div>
@@ -377,7 +378,8 @@
     <div class="modal-footer">
         <button type="button" *ngIf="!isLeaseSigned && LeaseBlockId!=0" (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
-        <button type="button" (click)="saveBlockLeaseData()" class="btn btn-theme btn-sm pull-right">{{isBlockOffTime?"Save":"Add Block"}}</button>
+        <button type="button" (click)="saveBlockLeaseData()"
+            class="btn btn-theme btn-sm pull-right">{{isBlockOffTime?"Save":"Add Block"}}</button>
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
     </div>
 </div>
