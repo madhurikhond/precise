@@ -1682,7 +1682,7 @@ button {
 	height: 100%;
 	width: 100%;
 	text-transform: uppercase;
-	overflow-x: hidden;
+	/* overflow-x: hidden; */
 }
 .page-area.full-menu-active .page-working-area {
 	width: calc(100% - 180px);
