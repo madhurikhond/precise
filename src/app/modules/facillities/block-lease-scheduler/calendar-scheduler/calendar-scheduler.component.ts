@@ -42,6 +42,10 @@ export class CalendarSchedulerComponent implements OnInit {
     SchedulerDayWeekMonth: any = [];
     allClosedDays: any = [];
     reasonId: number = 0;
+    FACILITY_NAME:string;
+    approveGoToNext:boolean=false;
+    approveAllCheckForButton:boolean=false;
+    otherFacilitiesParsed:any=[];
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService
@@ -54,6 +58,8 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
                 setTimeout(() => {
                     this.GetBlockLeaseData();
+                    this.approveAllCheckForButton=false;
+                    this.GetAllParentFacilitiesByFacilityId();
                 }, 200);
             }
         });
@@ -298,6 +304,49 @@ export class CalendarSchedulerComponent implements OnInit {
             this.errorNotification(err);
         });
 
+    }
+    GetAllParentFacilitiesByFacilityId()
+    {
+        var otherFacilities:any=[];
+        this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
+            if(res.response.OtherFacilities)
+            {
+               
+                this.otherFacilitiesParsed=JSON.parse(res.response.OtherFacilities);
+                if(this.otherFacilitiesParsed.length>0)
+                {
+                    this.approveGoToNext=true;
+                    var FACILITY_Data =this.otherFacilitiesParsed.find((x) => x.FacilityName == this.FacilityName);
+                    let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FacilityName);
+                    if(otherFacilitIndex!==0)
+                    {
+                        this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
+                    }
+                    else{
+                        this.FACILITY_NAME=this.otherFacilitiesParsed[1].FacilityName;
+                    }
+                    delete this.otherFacilitiesParsed[otherFacilitIndex];
+                }
+               
+            }
+        });
+    }
+    ApprovedGoNext()
+    { 
+        this.FacilityID=this.otherFacilitiesParsed[0].FacilityId;
+        this.FacilityName=this.otherFacilitiesParsed[0].FacilityName;
+        this.GetBlockLeaseData();
+        let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
+        delete this.otherFacilitiesParsed[otherFacilitIndex];
+        if(this.otherFacilitiesParsed[0]){
+            this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
+            this.approveGoToNext=true;
+        }
+        else
+        {
+            this.approveGoToNext=false;
+            this.approveAllCheckForButton=true;
+        }
     }
     clearSign(): void {
         this.signaturePad.clear();

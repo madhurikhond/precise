@@ -53,6 +53,12 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  getAllParentFacilitiesByFacilityId(showGlobalLoader : boolean = true,FacilityId: string)
+  {
+    return this._httpService.get(`BlockLeaseScheduler/GetAllParentFacilitiesByFacilityId?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
   addUpdateBlockLeaseCreditReason(showGlobalLoader : boolean = true,Body:any){
     return this._httpService.post(`BlockLeaseScheduler/AddUpdateBlockLeaseCreditReason`,Body,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
