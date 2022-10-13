@@ -3735,7 +3735,7 @@
 																
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.Id,'MRI')">
+																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI')">
 																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
 																</a>
 							
@@ -3784,7 +3784,7 @@
 																
 															</div>
 															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.Id,'CT')">
+																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'CT')">
 																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
 																</a>
 							
