@@ -250,7 +250,13 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-
+  get3pLeaseFacilityData(blockId:any,modalityName:string='')
+  {
+    debugger
+    alert('BlockId for  PDF generation: '+ blockId + ', Modalitiy name: ' + modalityName);
+   console.log(blockId);
+   
+  }
   getActiveEpicUsers() {
     this.EpicUserList = [];
     this.facilityService.getActiveEpicUsers(true).subscribe((userRes) => {

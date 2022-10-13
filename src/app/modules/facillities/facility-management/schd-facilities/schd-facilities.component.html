@@ -3722,13 +3722,23 @@
 															<dxi-column dataField="totalHour"
 																cellTemplate="TotalHourTemplate" caption="Total">
 															</dxi-column>
-															<dxi-column caption="Aggrement">
+															<dxi-column caption="Aggrement" cellTemplate="pdfMRILinkTemplate">
 															</dxi-column>
 															<div *dxTemplate="let data of 'MriRateTemplate'">
-																{{"$"+data.data.LeaseRatePerHour}}
+																<p *ngIf="data.data.LeaseRatePerHour">{{"$"+data.data.LeaseRatePerHour}}</p>
+																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+															
 															</div>
 															<div *dxTemplate="let data of 'TotalHourTemplate'">
-																{{"$"+data.data.totalHour}}
+																<p *ngIf="data.data.totalHour">{{"$"+data.data.totalHour}}</p>
+																<p *ngIf="!data.data.totalHour"></p>
+																
+															</div>
+															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
+																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.Id,'MRI')">
+																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
+																</a>
+							
 															</div>
 														</dx-data-grid>
 													</div>
@@ -3757,12 +3767,28 @@
 															</dxi-column>
 															<dxi-column dataField="TotalLeaseHours" caption="CT Hours">
 															</dxi-column>
-															<dxi-column dataField="LeaseRatePerHour" caption="CT Rate">
+															<dxi-column dataField="LeaseRatePerHour" caption="CT Rate" cellTemplate="CTRateTemplate">
 															</dxi-column>
-															<dxi-column dataField="totalHour" caption="Total">
+															<dxi-column dataField="totalHour" caption="Total" cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
-															<dxi-column caption="Aggrement">
+															<dxi-column caption="Aggrement" cellTemplate="pdfCTLinkTemplate">
 															</dxi-column>
+															<div *dxTemplate="let data of 'CTRateTemplate'">
+																<p *ngIf="data.data.LeaseRatePerHour">{{"$"+data.data.LeaseRatePerHour}}</p>
+																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+															
+															</div>
+															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
+																<p *ngIf="data.data.totalHour">{{"$"+data.data.totalHour}}</p>
+																<p *ngIf="!data.data.totalHour"></p>
+																
+															</div>
+															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
+																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.Id,'CT')">
+																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
+																</a>
+							
+															</div>
 														</dx-data-grid>
 													</div>
 													<div class="pagination-theme">
