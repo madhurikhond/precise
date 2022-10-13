@@ -79,6 +79,8 @@ export class SchdFacilitiesComponent implements OnInit {
   blockLeaseAgreementCTList: any = []; fullblockLeaseAgreementCTList: any = [];
   CreditDebitList: any = [];
   UnusedCreditsList:any =[];
+  pageSizeofunUsdCredits:number =20;
+  pageNumberofunUsedCredits:number=1;
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -2587,9 +2589,9 @@ export class SchdFacilitiesComponent implements OnInit {
     var data = {
       "FacilityId": this.facilityId,
       "pageNo": 1,
-      "pageSize": 20
+      "pageSize": this.pageSizeofunUsdCredits
     }
-    this.pageSize=20;
+
     this.blockleasescheduler.getFacilityCreditsUnUsed(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
       if (res.response != null && res.response.length > 0) {
         this.UnusedCreditsList = res.response;
@@ -2604,7 +2606,7 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   onPageNumberChangeunUsedcredits(pageNumber: any) {
-    this.pageNumber = pageNumber;
+    this.pageNumberofunUsedCredits = pageNumber;
     this.getFacilityCreditsUnUsed();
   }
 
