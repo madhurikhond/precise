@@ -9,6 +9,7 @@ import DataGrid from 'devextreme/ui/data_grid';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 declare const $: any;
 
 @Component({
@@ -77,6 +78,7 @@ export class SchdFacilitiesComponent implements OnInit {
   fullblockLeaseAgreementMRIList: any = [];
   blockLeaseAgreementCTList: any = []; fullblockLeaseAgreementCTList: any = [];
   CreditDebitList: any = [];
+  UnusedCreditsList:any =[];
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -91,6 +93,7 @@ export class SchdFacilitiesComponent implements OnInit {
   tagNameList = [];
   totalRecords: number = 1;
   totalRecordBlockLeaseCredits: number = 1;
+  totalRecordunUsedCredits: number = 1;
   pageNumber: number = 1;
   pageSize: number;
   MRIPageNumber: number = 1;
@@ -135,6 +138,7 @@ export class SchdFacilitiesComponent implements OnInit {
   //  }
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
+    private readonly blockleasescheduler: BlockLeaseSchedulerService,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
     facilityService.sendDataToschdFacilities.subscribe(res => {
@@ -877,6 +881,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
         this.getAllBlockLeaseCredits();
+        this.getFacilityCreditsUnUsed();
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -2577,6 +2582,31 @@ export class SchdFacilitiesComponent implements OnInit {
     return cellInfo.valueText.replace("USD", "$");
   }
 
+  getFacilityCreditsUnUsed()
+  {
+    var data = {
+      "FacilityId": this.facilityId,
+      "pageNo": 1,
+      "pageSize": 20
+    }
+    this.pageSize=20;
+    this.blockleasescheduler.getFacilityCreditsUnUsed(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if (res.response != null && res.response.length > 0) {
+        this.UnusedCreditsList = res.response;
+        this.totalRecordunUsedCredits = res.response[0].TotalRecords;
+      }
+      else {
+        this.totalRecords = 1;
+        this.UnusedCreditsList = [];
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
+  onPageNumberChangeunUsedcredits(pageNumber: any) {
+    this.pageNumber = pageNumber;
+    this.getFacilityCreditsUnUsed();
+  }
 
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }

@@ -162,7 +162,7 @@
 						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
 								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid'}"
 								data-toggle="tab" href="#edit-gscheduling-details">
-								Leases</a>
+								Block Lease</a>
 						</li>
 						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link" (click)="tabClick('Notes')"
 								[ngClass]="{'active': defaultPopupTab === 'Notes'}" data-toggle="tab"
@@ -3838,8 +3838,31 @@
 											<div class="tab-pane"
 												[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'"
 												id="LeasePaymentsUnPaid">
+												<div class="theme-label-title">Credits</div>
 												<div class="table-responsive">
-													<dx-data-grid></dx-data-grid>
+													<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
+														[columnAutoWidth]="true" [allowColumnReordering]="false"
+														[dataSource]="UnusedCreditsList" [showBorders]="true">
+														<dxo-sorting mode="multiple"></dxo-sorting>
+														<dxo-paging [enabled]="false"></dxo-paging>
+														<dxo-load-panel [enabled]="true"></dxo-load-panel>
+														<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+														<dxi-column dataField="LeaseId" caption="LEASE #"></dxi-column>
+														<dxi-column dataField="CreditId" caption="CREDIT #"></dxi-column>
+														<dxi-column dataField="CREDIT REASON" caption="CREDIT REASON"></dxi-column>
+														<dxi-column dataField="Credit time" caption="CREDIT TIME"></dxi-column>
+														<dxi-column dataField="ModalityType" caption="MODALITY"></dxi-column>
+														<dxi-column dataField="Credit Amount" caption="CREDIT AMOUNT"></dxi-column>
+													</dx-data-grid>
+												</div>
+												<div class="pagination-theme">
+													<div class="pagination-theme">
+														<div
+															*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1009' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecordunUsedCredits}">
+														</div>
+														<pagination-controls id="pagination1009"
+															(pageChange)="onPageNumberChangeunUsedcredits($event)"></pagination-controls>
+													</div>
 												</div>
 											</div>
 											<div class="tab-pane"
