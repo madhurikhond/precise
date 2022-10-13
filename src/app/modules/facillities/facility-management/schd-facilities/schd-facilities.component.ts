@@ -79,8 +79,11 @@ export class SchdFacilitiesComponent implements OnInit {
   blockLeaseAgreementCTList: any = []; fullblockLeaseAgreementCTList: any = [];
   CreditDebitList: any = [];
   UnusedCreditsList:any =[];
-  pageSizeofunUsdCredits:number =20;
-  pageNumberofunUsedCredits:number=1;
+  GetUnpaidLeasesList:any=[];
+  pageSizeOfUnusdCredits:number =20;
+  pageSizeOfUnpaidLeases:number=20;
+  pageNumberOfUnpaidLeases:number=1;
+  pageNumberOfUnusedCredits:number=1;
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -94,6 +97,7 @@ export class SchdFacilitiesComponent implements OnInit {
   deleteTagId: number;
   tagNameList = [];
   totalRecords: number = 1;
+  totalRecordUnpaidLeases:number=1;
   totalRecordBlockLeaseCredits: number = 1;
   totalRecordunUsedCredits: number = 1;
   pageNumber: number = 1;
@@ -884,6 +888,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getTagListByFacilityId(this.facilityId);
         this.getAllBlockLeaseCredits();
         this.getFacilityCreditsUnUsed();
+        this.getUnpaidLeases();
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -2588,8 +2593,8 @@ export class SchdFacilitiesComponent implements OnInit {
   {
     var data = {
       "FacilityId": this.facilityId,
-      "pageNo": 1,
-      "pageSize": this.pageSizeofunUsdCredits
+      "pageNo": this.pageNumberOfUnusedCredits,
+      "pageSize": this.pageSizeOfUnusdCredits
     }
 
     this.blockleasescheduler.getFacilityCreditsUnUsed(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
@@ -2598,7 +2603,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.totalRecordunUsedCredits = res.response[0].TotalRecords;
       }
       else {
-        this.totalRecords = 1;
+        this.totalRecordunUsedCredits = 1;
         this.UnusedCreditsList = [];
       }
     }, (err: any) => {
@@ -2606,10 +2611,33 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   onPageNumberChangeunUsedcredits(pageNumber: any) {
-    this.pageNumberofunUsedCredits = pageNumber;
+    this.pageNumberOfUnusedCredits = pageNumber;
     this.getFacilityCreditsUnUsed();
   }
-
+  getUnpaidLeases()
+  {
+    var data = {
+      "FacilityId": this.facilityId,
+      "PageNumber": this.pageNumberOfUnpaidLeases,
+      "PageSize": this.pageSizeOfUnpaidLeases
+    }
+    this.blockleasescheduler.getUnpaidLeases(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if (res.response != null && res.response.length > 0) {
+        this.GetUnpaidLeasesList = res.response;
+        this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
+      }
+      else {
+        this.totalRecordUnpaidLeases = 1;
+        this.GetUnpaidLeasesList = [];
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
+  onPageNumberChangeUnpaidLesaes(pageNumber: any) {
+    this.pageNumberOfUnpaidLeases = pageNumber;
+    this.getUnpaidLeases();
+  }
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
   get modalityServiceFormControls() { return this.modalityServiceForm.controls; }
