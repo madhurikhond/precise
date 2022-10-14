@@ -116,6 +116,9 @@ export class SchdFacilitiesComponent implements OnInit {
   ckConfig: any;
   mycontent: string;
   log: string = '';
+  btnActive:number=0;
+  leaseIdArray:any=[];
+  creditIdArray:any=[];
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
@@ -2637,6 +2640,48 @@ export class SchdFacilitiesComponent implements OnInit {
   onPageNumberChangeUnpaidLesaes(pageNumber: any) {
     this.pageNumberOfUnpaidLeases = pageNumber;
     this.getUnpaidLeases();
+  }
+  onSelectionChangedLease(el)
+  {
+    var leaseID:any=[];
+    if(el.selectedRowsData.length!==0)
+    {
+      this.btnActive=1;
+      el.selectedRowsData.forEach(i => {
+        leaseID.push(i.LeaseId)
+      });
+      this.leaseIdArray=leaseID;
+    }
+    else
+    {
+      this.btnActive=0;
+    }
+  }
+  onSelectionChangedCredit(ec)
+  {
+    var CreditID:any=[];
+    if(ec.selectedRowsData.length!==0)
+    {
+      ec.selectedRowsData.forEach(i => {
+        CreditID.push(i.CreditId)
+      });
+      this.creditIdArray=CreditID;
+    }
+  }
+  UnpaidButtonClick(e)
+  {
+    var leaseIdListTemp=this.leaseIdArray?this.leaseIdArray.join(","):'';
+    var creditIdListTemp=this.creditIdArray?this.creditIdArray.join(","):'';
+    var data={
+      "LeaseId": leaseIdListTemp,
+      "CreditId": creditIdListTemp
+    }
+    this.blockleasescheduler.getTotalAmountToPay(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if(res)
+      {
+        console.log(res.response[0].TotalAmount);
+      }
+    });
   }
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
