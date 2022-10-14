@@ -13,6 +13,7 @@ import { PastDateConfirmModalComponent } from './past-date-confirm-modal/past-da
 import { SignaturePad } from 'angular2-signaturepad';
 import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
+import { DatePipe } from '@angular/common';
 
 declare let scheduler: any;
 
@@ -34,21 +35,22 @@ export class CalendarSchedulerComponent implements OnInit {
         canvasHeight: 200
     };
     FacilityName: string = '';
-    FacilityID: string = '';   
+    FacilityID: string = '';
     modalityResourcesList: any[] = [];
     selectedModalityResources: any = [];
     forTimelineList: Array<{ key: number, label: string }> = [];
     bodyRes: any = [];
     SchedulerDayWeekMonth: any = [];
+    autoBlockOffDays: any = [];
     allClosedDays: any = [];
     reasonId: number = 0;
-    FACILITY_NAME:string;
-    approveGoToNext:boolean=false;
-    approveAllCheckForButton:boolean=false;
-    otherFacilitiesParsed:any=[];
+    FACILITY_NAME: string;
+    approveGoToNext: boolean = false;
+    approveAllCheckForButton: boolean = false;
+    otherFacilitiesParsed: any = [];
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
-        private readonly storageService: StorageService
+        private readonly storageService: StorageService, private datePipe: DatePipe,
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
             if (res) {
@@ -58,7 +60,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
                 setTimeout(() => {
                     this.GetBlockLeaseData();
-                    this.approveAllCheckForButton=false;
+                    this.approveAllCheckForButton = false;
                     this.GetAllParentFacilitiesByFacilityId();
                 }, 200);
             }
@@ -159,17 +161,26 @@ export class CalendarSchedulerComponent implements OnInit {
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
+
+            console.log(event.start_date);
+            console.log(event.end_date);
+
+
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                modalRef.componentInstance.isPastDateOrOffDays = false;
                 modalRef.result.then().catch((reason: ModalResult | any) => {
                     if (reason == 5) {
-                        scheduler.startLightbox(id, this.openForm(event));
+                        this.checkBlockedOffDays(event, id);
+                        //scheduler.startLightbox(id, this.openForm(event));
+
                     } else {
                         scheduler.deleteEvent(event.id);
                     }
                 });
             } else {
-                scheduler.startLightbox(id, this.openForm(event));
+                this.checkBlockedOffDays(event, id);
+                //scheduler.startLightbox(id, this.openForm(event));
             }
 
         };
@@ -187,6 +198,44 @@ export class CalendarSchedulerComponent implements OnInit {
             });
             scheduler.updateView();
         }
+        for (let i = 0; i < this.autoBlockOffDays.length; i++) {
+            scheduler.addMarkedTimespan({
+                start_date: new Date(this.autoBlockOffDays[i].startDate),
+                end_date: new Date(this.autoBlockOffDays[i].EndDate),
+                css: "addMarked"
+
+            });
+        }
+        scheduler.updateView();
+    }
+    checkBlockedOffDays(event: any, id: number) {
+        let body =
+        {
+            'facilityId': this.FacilityID,
+            'startDate': this.datePipe.transform(event.start_date, 'yyyy-MM-dd'),
+            'endDate': this.datePipe.transform(event.end_date, 'yyyy-MM-dd'),
+            'startTime': this.getTwentyFourHourTime(event.start_date.toLocaleTimeString('en-US')),
+            'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
+            'modality': null,
+            'resourceId': 0
+        }       
+        this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
+            if (res.response != null) {
+                const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                modalRef.componentInstance.isPastDateOrOffDays = true;
+                modalRef.result.then().catch((reason: ModalResult | any) => {
+                    if (reason == 5) {
+                        scheduler.startLightbox(id, this.openForm(event));
+                    } else {
+                        scheduler.deleteEvent(event.id);
+                    }
+                });
+            } else {
+                scheduler.startLightbox(id, this.openForm(event));
+            }
+        }, (err: any) => {
+            this.errorNotification(err);
+        });
     }
 
     openConfirm(id: number) {
@@ -274,7 +323,9 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.allClosedDays = res.response[0].AllClosedDays;
             if (res.response[0].ModalityResources)
                 var forTimelineView = res.response[0].ModalityResources;
-           
+            if (res.response[0].AutoBlockOffDays)
+                this.autoBlockOffDays = res.response[0].AutoBlockOffDays;
+
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
                     for (let i = 0; i < forTimelineView.length; i++) {
@@ -305,47 +356,41 @@ export class CalendarSchedulerComponent implements OnInit {
         });
 
     }
-    GetAllParentFacilitiesByFacilityId()
-    {
-        var otherFacilities:any=[];
+    GetAllParentFacilitiesByFacilityId() {
+        var otherFacilities: any = [];74
         this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
-            if(res.response.OtherFacilities)
-            {
-               
-                this.otherFacilitiesParsed=JSON.parse(res.response.OtherFacilities);
-                if(this.otherFacilitiesParsed.length>0)
-                {
-                    this.approveGoToNext=true;
-                    var FACILITY_Data =this.otherFacilitiesParsed.find((x) => x.FacilityName == this.FacilityName);
-                    let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FacilityName);
-                    if(otherFacilitIndex!==0)
-                    {
-                        this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
+            if (res.response.OtherFacilities) {
+
+                this.otherFacilitiesParsed = JSON.parse(res.response.OtherFacilities);
+                if (this.otherFacilitiesParsed.length > 0) {
+                    this.approveGoToNext = true;
+                    var FACILITY_Data = this.otherFacilitiesParsed.find((x) => x.FacilityName == this.FacilityName);
+                    let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FacilityName);
+                    if (otherFacilitIndex !== 0) {
+                        this.FACILITY_NAME = this.otherFacilitiesParsed[0].FacilityName;
                     }
-                    else{
-                        this.FACILITY_NAME=this.otherFacilitiesParsed[1].FacilityName;
+                    else {
+                        this.FACILITY_NAME = this.otherFacilitiesParsed[1].FacilityName;
                     }
                     delete this.otherFacilitiesParsed[otherFacilitIndex];
                 }
-               
+
             }
         });
     }
-    ApprovedGoNext()
-    { 
-        this.FacilityID=this.otherFacilitiesParsed[0].FacilityId;
-        this.FacilityName=this.otherFacilitiesParsed[0].FacilityName;
+    ApprovedGoNext() {
+        this.FacilityID = this.otherFacilitiesParsed[0].FacilityId;
+        this.FacilityName = this.otherFacilitiesParsed[0].FacilityName;
         this.GetBlockLeaseData();
-        let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
+        let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
         delete this.otherFacilitiesParsed[otherFacilitIndex];
-        if(this.otherFacilitiesParsed[0]){
-            this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
-            this.approveGoToNext=true;
+        if (this.otherFacilitiesParsed[0]) {
+            this.FACILITY_NAME = this.otherFacilitiesParsed[0].FacilityName;
+            this.approveGoToNext = true;
         }
-        else
-        {
-            this.approveGoToNext=false;
-            this.approveAllCheckForButton=true;
+        else {
+            this.approveGoToNext = false;
+            this.approveAllCheckForButton = true;
         }
     }
     clearSign(): void {
@@ -376,7 +421,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: res.response.ResponseCode
                     })
                 }
-            }           
+            }
         }, (err: any) => {
             this.errorNotification(err);
         });
@@ -402,6 +447,18 @@ export class CalendarSchedulerComponent implements OnInit {
             alertMessage: err.message,
             alertType: err.status
         });
+    }
+    getTwentyFourHourTime(time) {
+        let hours = Number(time.match(/^(\d+)/)[1]);
+        const minutes = Number(time.match(/:(\d+)/)[1]);
+        const AMPM = time.match(/\s(.*)$/)[1];
+        if (AMPM == "PM" && Number(hours) < 12) hours = hours + 12;
+        if (AMPM == "AM" && hours == 12) hours = hours - 12;
+        let sHours = hours.toString();
+        let sMinutes = minutes.toString();
+        if (hours < 10) sHours = "0" + sHours;
+        if (minutes < 10) sMinutes = "0" + sMinutes;
+        return `${sHours} : ${sMinutes}`;
     }
 }
 

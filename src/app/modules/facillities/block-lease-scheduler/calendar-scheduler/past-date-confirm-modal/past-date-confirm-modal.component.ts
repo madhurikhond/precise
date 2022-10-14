@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,8 +7,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PastDateConfirmModalComponent implements OnInit {
   ModalResult = ModalResult;
+  @Input() isPastDateOrOffDays: boolean;
   constructor(public modal: NgbActiveModal) {}
-  ngOnInit(): void {
+  ngOnInit(): void {   
   }
   close() {
     this.modal.dismiss(ModalResult.CANCEL);

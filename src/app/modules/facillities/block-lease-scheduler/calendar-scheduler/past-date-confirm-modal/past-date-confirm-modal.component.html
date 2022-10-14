@@ -6,7 +6,9 @@
         <div class="close-dismiss" (click)="close()"></div>
     </div>
     <div class="modal-body">  
-                <p>YOU HAVE SELECTED PAST DATE(S) IN THE LEASE BLOCK, ARE YOU SURE YOU WANT TO PROCEED?"</p>
+                <p *ngIf="isPastDateOrOffDays">ALERT
+                    FACILITY IS EITHER CLOSED OR HAVE LESS SCHEDULING HOURS ON SOME OF THE DAYS SELECTED IN BLOCK LEASE DURATION. DO YOU STILL WANT TO LEASE THIS BLOCK?"</p>
+                <p *ngIf="!isPastDateOrOffDays">YOU HAVE SELECTED PAST DATE(S) IN THE LEASE BLOCK, ARE YOU SURE YOU WANT TO PROCEED?"</p> 
     </div>
     <div class="modal-footer">      
         <button type="button" class="btn btn-theme btn-sm pull-right" (click)="confirm()">Yes</button>

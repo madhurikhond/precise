@@ -55,7 +55,7 @@ export class SchedulerPopupComponent implements OnInit {
   selectedCreditReason = '';
   submitted: boolean = false;
   pastDate_start_date: string;
-  pastDate_end_date: string;
+  pastDate_end_date: string; IsAllModality: boolean = false;
   eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true; isBlockOffTime: boolean = true;
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
@@ -215,13 +215,36 @@ export class SchedulerPopupComponent implements OnInit {
   setRequired() {
     return [Validators.required];
   }
-  changedOffDays(event: any){
-    this.selectedModality = event.target.options[event.target.selectedIndex].parentNode.getAttribute('label');
-  }
-  changed(event: any) {
+  changedOffDays(event: any) {
     this.selectedresourceId = event.target.value;
-    const selectedIndex = event.target.selectedIndex;
-    this.selectedModality = event.target.options[selectedIndex].parentNode.getAttribute('label');
+    this.selectedModality="";
+    this.IsAllModality = false;
+    if (this.selectedresourceId != '0') {
+      const selectedIndex = event.target.selectedIndex;
+      this.selectedModality = event.target.options[selectedIndex].parentNode.getAttribute('label');
+    } else {
+      this.IsAllModality = true;
+    }
+    this.validateAutoBlockOffDays();
+
+  }
+  validateAutoBlockOffDays() {
+    let body =
+    {
+      'facilityId': this.FacilityID,
+      'startDate': this.datePipe.transform(this.editBlockOffFormControls.start_date.value, 'yyyy-MM-dd'),
+      'endDate': this.datePipe.transform(this.editBlockOffFormControls.end_date.value, 'yyyy-MM-dd'),
+      'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
+      'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
+      'modality': this.selectedModality.toUpperCase(),
+      'resourceId': this.selectedresourceId,
+      'IsAllModality': this.IsAllModality
+    }
+    console.log(body);
+  }
+
+  changed(event: any) {
+    this.changedOffDays(event);
     if (this.selectedModality) {
       this.MatchFacilityHours();
     }
@@ -326,7 +349,8 @@ export class SchedulerPopupComponent implements OnInit {
         'endDate': this.datePipe.transform(this.editBlockOffFormControls.end_date.value, 'yyyy-MM-dd'),
         'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
         'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
-        'resourceId': this.selectedresourceId
+        'resourceId': this.selectedresourceId,
+        'IsAllModality': this.IsAllModality
       }
       this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
         if (res.responseCode == 200) {

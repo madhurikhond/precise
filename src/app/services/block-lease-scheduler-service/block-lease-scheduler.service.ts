@@ -105,5 +105,10 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  getAlreadyBlockedOffDays(showGlobalLoader : boolean = true,Body:any){
+    return this._httpService.post(`BlockLeaseScheduler/GetAlreadyBlockedOffDays`,Body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 
