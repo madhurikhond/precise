@@ -110,5 +110,10 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  getUnpaidLeases(showGlobalLoader : boolean= true,frontendJsonInput:string){
+    return this._httpService.post(`BlockLeaseScheduler/GetUnpaidLeases`,frontendJsonInput,showGlobalLoader,true).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 
