@@ -34,7 +34,7 @@ export class CalendarSchedulerComponent implements OnInit {
         canvasHeight: 200
     };
     FacilityName: string = '';
-    FacilityID: string = '';   
+    FacilityID: string = '';
     modalityResourcesList: any[] = [];
     selectedModalityResources: any = [];
     forTimelineList: Array<{ key: number, label: string }> = [];
@@ -42,15 +42,16 @@ export class CalendarSchedulerComponent implements OnInit {
     SchedulerDayWeekMonth: any = [];
     allClosedDays: any = [];
     reasonId: number = 0;
-    FACILITY_NAME:string;
-    approveGoToNext:boolean=false;
-    approveAllCheckForButton:boolean=false;
-    otherFacilitiesParsed:any=[];
+    FACILITY_NAME: string;
+    approveGoToNext: boolean = false;
+    approveAllCheckForButton: boolean = false;
+    otherFacilitiesParsed: any = [];
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
+            debugger
             if (res) {
                 this.bodyRes = res;
                 this.FacilityName = res.FacilityName;
@@ -58,7 +59,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
                 setTimeout(() => {
                     this.GetBlockLeaseData();
-                    this.approveAllCheckForButton=false;
+                    this.approveAllCheckForButton = false;
                     this.GetAllParentFacilitiesByFacilityId();
                 }, 200);
             }
@@ -274,7 +275,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.allClosedDays = res.response[0].AllClosedDays;
             if (res.response[0].ModalityResources)
                 var forTimelineView = res.response[0].ModalityResources;
-           
+
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
                     for (let i = 0; i < forTimelineView.length; i++) {
@@ -305,47 +306,41 @@ export class CalendarSchedulerComponent implements OnInit {
         });
 
     }
-    GetAllParentFacilitiesByFacilityId()
-    {
-        var otherFacilities:any=[];
+    GetAllParentFacilitiesByFacilityId() {
+        var otherFacilities: any = [];
         this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
-            if(res.response.OtherFacilities)
-            {
-               
-                this.otherFacilitiesParsed=JSON.parse(res.response.OtherFacilities);
-                if(this.otherFacilitiesParsed.length>0)
-                {
-                    this.approveGoToNext=true;
-                    var FACILITY_Data =this.otherFacilitiesParsed.find((x) => x.FacilityName == this.FacilityName);
-                    let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FacilityName);
-                    if(otherFacilitIndex!==0)
-                    {
-                        this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
+            if (res.response.OtherFacilities) {
+
+                this.otherFacilitiesParsed = JSON.parse(res.response.OtherFacilities);
+                if (this.otherFacilitiesParsed.length > 0) {
+                    this.approveGoToNext = true;
+                    var FACILITY_Data = this.otherFacilitiesParsed.find((x) => x.FacilityName == this.FacilityName);
+                    let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FacilityName);
+                    if (otherFacilitIndex !== 0) {
+                        this.FACILITY_NAME = this.otherFacilitiesParsed[0].FacilityName;
                     }
-                    else{
-                        this.FACILITY_NAME=this.otherFacilitiesParsed[1].FacilityName;
+                    else {
+                        this.FACILITY_NAME = this.otherFacilitiesParsed[1].FacilityName;
                     }
                     delete this.otherFacilitiesParsed[otherFacilitIndex];
                 }
-               
+
             }
         });
     }
-    ApprovedGoNext()
-    { 
-        this.FacilityID=this.otherFacilitiesParsed[0].FacilityId;
-        this.FacilityName=this.otherFacilitiesParsed[0].FacilityName;
+    ApprovedGoNext() {
+        this.FacilityID = this.otherFacilitiesParsed[0].FacilityId;
+        this.FacilityName = this.otherFacilitiesParsed[0].FacilityName;
         this.GetBlockLeaseData();
-        let otherFacilitIndex =this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
+        let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
         delete this.otherFacilitiesParsed[otherFacilitIndex];
-        if(this.otherFacilitiesParsed[0]){
-            this.FACILITY_NAME=this.otherFacilitiesParsed[0].FacilityName;
-            this.approveGoToNext=true;
+        if (this.otherFacilitiesParsed[0]) {
+            this.FACILITY_NAME = this.otherFacilitiesParsed[0].FacilityName;
+            this.approveGoToNext = true;
         }
-        else
-        {
-            this.approveGoToNext=false;
-            this.approveAllCheckForButton=true;
+        else {
+            this.approveGoToNext = false;
+            this.approveAllCheckForButton = true;
         }
     }
     clearSign(): void {
@@ -376,7 +371,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: res.response.ResponseCode
                     })
                 }
-            }           
+            }
         }, (err: any) => {
             this.errorNotification(err);
         });
@@ -392,16 +387,59 @@ export class CalendarSchedulerComponent implements OnInit {
                 'UserId': this.storageService.user.UserId,
                 'DefaultSign': this.model.signature
             }
+
             this.confirmBlockToLease(false, data)
             this.f.submitted = false;
         }
     }
+
+    ApproveSubmitSign(isItemSign: boolean) {
+        if (this.model.signature == '') {
+            return;
+        }
+        if (this.f.valid) {
+            let data = {
+                'FacilityID': this.FacilityID,
+                'UserId': this.storageService.user.UserId,
+                'DefaultSign': this.model.signature
+            }
+
+            this.approveAllParentToLease(false, data)
+            this.f.submitted = false;
+        }
+    }
+
     errorNotification(err: any) {
         this.notificationService.showNotification({
             alertHeader: err.statusText,
             alertMessage: err.message,
             alertType: err.status
         });
+    }
+    approveAllParentToLease(defaultSign: boolean, body: any = '') {
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
+        if (defaultSign) {
+            body = {
+                FacilityID: this.FacilityID
+            }
+        }
+        this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
+            if (res.response) {
+                if (res.responseCode === 200) {
+
+                    this.notificationService.showNotification({
+                        alertHeader: 'Success',
+                        alertMessage: res.response.message,
+                        alertType: res.response.ResponseCode
+                    })
+                }
+            }
+        }, (err: any) => {
+            this.errorNotification(err);
+        });
+
+
+
     }
 }
 
