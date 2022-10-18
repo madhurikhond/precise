@@ -136,7 +136,12 @@ export class CallPatientScheduleComponent implements OnInit {
     this.saveCallPatientConfirmationMethod(type, this.addForm.RescheduleNote.value);
   }
   onReset() {
+    this.pageNumber=1;
     this.searchForm.reset();
+    this.onSearchSubmit()
+  }
+  getOnSearchSubmit() {
+    this.pageNumber=1;    
     this.onSearchSubmit()
   }
   onSearchSubmit() {
