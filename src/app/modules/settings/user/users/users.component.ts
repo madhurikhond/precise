@@ -273,7 +273,8 @@ export class UsersComponent implements OnInit {
     });
   }
   searchUserMgt(pageNumber = 0) {
-    this.pageNumber = pageNumber > 0 ? pageNumber : this.pageNumber;
+    //this.pageNumber = pageNumber > 0 ? pageNumber : this.pageNumber;
+    this.pageNumber= 1;
     //this.pageSize = 20;
     this.isSearchReferrer = true;
     this.topSearchText = this.copyForm.topSearchText.value ?? '';
