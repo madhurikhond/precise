@@ -10,6 +10,7 @@ import {
   DxDateBoxModule
 } from 'devextreme-angular';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
+import { Console } from 'console';
 declare const $: any;
 
 @Component({
@@ -23,12 +24,14 @@ export class SchedulerPopupComponent implements OnInit {
   @ViewChild('hiddenCheckFacilityPopupBtn', { static: false }) hiddenCheckFacilityPopupBtn: ElementRef;
   @ViewChild('hiddencheckAlreadyBlockedLeasePopup', { static: false }) hiddencheckAlreadyBlockedLeasePopup: ElementRef;
   @ViewChild('hiddenpastDateConfirm', { static: false }) hiddenpastDateConfirm: ElementRef;
+  @ViewChild('hiddengreaterCreditTimePopUp', { static: false }) hiddengreaterCreditTimePopUp: ElementRef;
   @Input() isNew: boolean;
   @Input() event: Event;
   @Input() mode: any;
   @Input() data: any;
   @Output() saved: EventEmitter<Event> = new EventEmitter();
   @Output() deleted: EventEmitter<Event> = new EventEmitter();
+  popupMessage:string='';
   FacilityName: string = '';
   FacilityID: string = '';
   LeaseBlockId: number = 0;
@@ -71,7 +74,7 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.isLeaseSigned = true;  
+    this.isLeaseSigned = true;  
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -152,7 +155,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
-          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
+          // this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.selectedModality = this.LeaseDetails['ModalityType'];
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
@@ -392,6 +395,14 @@ export class SchedulerPopupComponent implements OnInit {
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
         this.modal.close(ModalResult.SAVE);
+      }
+      else if(res.responseCode === 404)
+      {
+        if(res.message)
+        {
+          this.popupMessage=res.message;
+          this.hiddengreaterCreditTimePopUp.nativeElement.click();
+        }
       }
     }, (err: any) => {
       this.errorNotification(err);
