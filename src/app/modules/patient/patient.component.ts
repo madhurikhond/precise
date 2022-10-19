@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
@@ -25,6 +25,7 @@ declare const $: any;
   selector: 'app-patient',
   templateUrl: './patient.component.html',
   styleUrls: ['./patient.component.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [DatePipe]
 })
 export class PatientComponent implements OnInit {
