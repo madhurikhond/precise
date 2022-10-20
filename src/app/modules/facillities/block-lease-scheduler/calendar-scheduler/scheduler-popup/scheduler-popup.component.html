@@ -454,7 +454,25 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade modal-theme modal-small" id="greaterCreditTimePopUp" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>{{popupMessage}}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="d-none" #hiddengreaterCreditTimePopUp [hidden]="true" data-toggle="modal"
+    data-target="#greaterCreditTimePopUp"></button>
 <button class="d-none" #hiddenCheckFacilityPopupBtn [hidden]="true" data-toggle="modal"
     data-target="#checkFacilityPopup"></button>
 <button class="d-none" #hiddencheckAlreadyBlockedLeasePopup [hidden]="true" data-toggle="modal"
