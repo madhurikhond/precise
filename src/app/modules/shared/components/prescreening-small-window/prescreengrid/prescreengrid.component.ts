@@ -1026,7 +1026,7 @@ export class PrescreengridComponent implements OnInit {
     let time = this.psqForm.pregnantTime.value
     if (!time)
       this.pregnantMessage = null;
-    else if (parseInt(time.replace('mo', '')) < 4)
+    else if (parseInt(time.replace(' Week', '')) < 16)
       this.pregnantMessage = 'In order to proceed with your procedure we need an authorization letter from your OB doctor giving Precise Imaging approval to proceed with the procedure.'
     else
       this.pregnantMessage = 'When you arrive you will need to sign a waiver form'

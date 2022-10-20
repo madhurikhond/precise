@@ -102,6 +102,11 @@ export class PatientPortalComponent implements OnInit {
   }
 
   menuToggle(){
+    this.showMedicalLien = false;
+
+    if (this.patient.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY
+      || this.patient.financialTypeName == PatientFinancialTypeName.BROKER)
+    this.showMedicalLien = true;
 
     if (this.patientPortalService.globalPageNumber === PatientPortalStatusCode.PATIENT_EMERGENCY_SCREEN) {
       if (this.patient.financialTypeName !== PatientFinancialTypeName.PERSONAL_INJURY
@@ -134,7 +139,6 @@ export class PatientPortalComponent implements OnInit {
     if(this.patientPortalService.isPregnancyWaiverDownloadable == true)
       this.showPregnantPdf = true;
     
-      
     this.expanded = !this.expanded;
   }
   gotoHome() {
