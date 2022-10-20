@@ -416,7 +416,7 @@
         </div>
       </div>
 
-      <div class="questionSec" [ngClass]="{'d-none':((this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'No' || this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === '') || (this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'Yes' && (this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes' ||this.examQuestionForMRIwithoutContrast.mriProcedure === '')))}">
+      <div class="questionSec" [ngClass]="{'d-none':((this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'No' || this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === '') || (this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'Yes' && (this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes' ||this.examQuestionForMRIwithoutContrast.mriProcedure === '' ||this.examQuestionForMRIwithoutContrast.mriProcedure === null)))}">
         <div class="questionContent">
           <h4>
             {{'EXAM_QUESTIONS.PO_MEET_YOU_AT_FACILITY' | translate}}?

@@ -110,7 +110,7 @@ width: 30px;
 /***********bottom css**************/
 .call-text-box {
   background: #3D8AF7;
-  margin-bottom: 0;
+  margin-bottom: 10px;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -118,10 +118,10 @@ width: 30px;
   justify-content: center;
   padding: 16px;
   height: 92px;
-  /* position: absolute;
-  width: 100%;
+  position: fixed;
   bottom: 0;
-  max-width: 400px; */
+  width: 100%;
+  max-width: 400px;
 }
 
 .callIcon {
@@ -154,10 +154,13 @@ color: white !important;
 }
 
 .appointment-body-content{
-  /* min-height: 79vh; */
-  position: relative;
+  height: 47vh;
+  overflow: auto;
 }
-
+.appointment-body-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
 
 /*****************schedule tab css**********************/
 .schedule-tab .rescheduletxt,
@@ -179,7 +182,9 @@ font-size: 14px;
 font-family: 'exo 2';
 line-height: 24px;
 font-style: italic;
+margin-bottom: 0;
 }
+
 .schedule-tab .call-text-info h2 {
 font-size: 19px;
 
@@ -212,9 +217,16 @@ font-size: 19px;
 .content-sec {
   max-width: 100%;
 }
+.appointmentSec {
+  margin-bottom: 86px;
+}
 .call-text-box {
   padding: 10px;
   height:66px;
+  bottom: 0;
+  right: 0;
+  max-width: initial;
+  margin-bottom: 0;
 }
 .callIcon {
     margin-right: 15px;
@@ -248,8 +260,8 @@ font-size: 19px;
   line-height: 18px;
 }
 .appointment-card {
-  min-height: 78px;
-  height: 78px;
+  min-height: 88px;
+  height: auto;
   margin-bottom: 13px;
 }
 .time {
@@ -292,6 +304,10 @@ font-size: 19px;
 }
 .noRecordFound .appointmentInfo i{
   font-size: 28px;
+}
+.appointment-body-content {
+  height: auto;
+  overflow: auto;
 }
 }
 

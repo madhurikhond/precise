@@ -55,7 +55,7 @@
               class="code-input"
               placeholder="Middle Name"
             />
-            <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.middlename.errors || contactInfoForm.controls.middlename.touched"></i>
+            <i class="fa fa-check-circle-o" *ngIf="contactInfoForm.controls['middlename'].value.length > 0 || (contactInfoForm.controls['middlename'].value.length > 0 && contactInfoForm.controls.middlename.dirty)"></i>
           </div>
 
             <ng-template #MiddleName>
