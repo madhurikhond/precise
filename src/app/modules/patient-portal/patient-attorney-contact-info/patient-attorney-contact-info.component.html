@@ -1,0 +1,141 @@
+
+<section class="content-sec attorney-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="patient-information-sec">
+    <h2 class="info-title">{{'PATIENT_ATTORNEY_CONTACT_INFO.TITLE' | translate}}</h2>
+  </div>
+
+  <div class="contact-form-sec attorney-form-sec">
+    <p class="description">{{'PATIENT_ATTORNEY_CONTACT_INFO.LAST_ONE' | translate}}!</p>
+    <dx-progress-bar
+      #progressBar
+      id="progress-bar-status"
+      width="100%"
+      [min]="0"
+      [max]="100"
+      [value]="100"
+    >
+    </dx-progress-bar>
+    <form
+      [formGroup]="AttorneyContactForm"
+      autocomplete="off"
+    >
+      <div class="form-group attorney-contact-information">
+        <div class="form-with-icon validation-tooltip">
+            <div class="formControl requiedInfo correctInfo" *ngIf="!showAttornyName;else AttorneyName">
+                <input
+                formControlName="attorneyname"
+                name="attorneyname"
+                class="code-input"
+                placeholder="Attorney Name"
+                />
+                <i class="fa fa-check-circle-o" *ngIf="AttorneyContactForm.controls['attorneyname'].value.length > 0 || (AttorneyContactForm.controls['attorneyname'].value.length > 0 && AttorneyContactForm.controls.attorneyname.dirty)"></i>
+            </div>
+
+            <ng-template #AttorneyName>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_ATTORNEY_CONTACT_INFO.ATTORNEY_NAME' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{this.patientContactInfo.attorneyName}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showAttornyName=!showAttornyName"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl dateOfInjury requiedInfo correctInfo" *ngIf="!showDOI;else DateofInjury">
+              <ion-datetime placeholder="Date of Injury (MM/DD/YYYY)" picker-format="MMMM DD YYYY" display-format="MM/DD/YYYY" value="{{event.date}}" (ionChange)="DOIChanged($event)"  class="code-input dateOfInjury"
+              ></ion-datetime>
+              <input
+                matInput
+                type="hidden"
+                formControlName="dateofinjury"
+                name="dateofinjury"
+                class="d-none"
+                placeholder="Date of Injury"
+                mask="00/00/0000"
+                [dropSpecialCharacters]="false"
+              />
+              <i class="fa fa-check-circle-o" *ngIf="AttorneyContactForm.controls['dateofinjury'].value.length > 0 || (AttorneyContactForm.controls['dateofinjury'].value.length > 0 && AttorneyContactForm.controls.dateofinjury.touched) "></i>
+            </div>
+
+            <ng-template #DateofInjury>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_ATTORNEY_CONTACT_INFO.DATE_OF_INJURY' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{this.patientContactInfo.dateOfInjury}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showDOI=!showDOI"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl requiedInfo" *ngIf="!showDriverName;else DriverName">
+                <input
+                formControlName="drivername"
+                name="drivername"
+                class="code-input"
+                placeholder="Driver's Name(if you were the passenger)"
+                />
+                <i class="fa fa-check-circle-o" *ngIf="AttorneyContactForm.controls['drivername'].value.length > 0 || (AttorneyContactForm.controls['drivername'].value.length > 0 && AttorneyContactForm.controls.drivername.dirty)"></i>
+            </div>
+
+            <ng-template #DriverName>
+              <div class="formControl requiedInfo editable">
+                <div class="labelName">              <label>{{'PATIENT_ATTORNEY_CONTACT_INFO.DRIVER_NAME' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{this.patientContactInfo.driverName}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showDriverName=!showDriverName"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl requiedInfo" *ngIf="!showCarrier;else CarrierName">
+                <input
+                formControlName="carrier"
+                name="carrier"
+                class="code-input"
+                placeholder="Auto Insurance Carrier"
+                />
+                <i class="fa fa-check-circle-o" *ngIf="AttorneyContactForm.controls['carrier'].value.length > 0 ||(AttorneyContactForm.controls['carrier'].value.length > 0 && AttorneyContactForm.controls.carrier.dirty)"></i>
+            </div>
+
+            <ng-template #CarrierName>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_ATTORNEY_CONTACT_INFO.INSURANCE_CARRIER_NAME' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{this.patientContactInfo.autoInsuranceCarrier}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showCarrier=!showCarrier"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl requiedInfo" *ngIf="!showClaimNo;else CarrierNumber">
+                <input
+                formControlName="claimno"
+                name="clainmno"
+                class="code-input"
+                placeholder="Auto Insurance Claim Number"
+                />
+                <i class="fa fa-check-circle-o" *ngIf="AttorneyContactForm.controls['claimno'].value.length > 0 || (AttorneyContactForm.controls['claimno'].value.length > 0 && AttorneyContactForm.controls.claimno.dirty)"></i>
+            </div>
+
+            <ng-template #CarrierNumber>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_ATTORNEY_CONTACT_INFO.INSURANCE_CARRIER_NUMBER' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{this.patientContactInfo.autoInsuranceClaimNumber}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showClaimNo=!showClaimNo"></i>
+              </div>
+            </ng-template>
+
+        </div>
+      </div>
+
+      <div class="buttonSection">
+        <button type="submit" class="btn-common btnSubmit" *ngIf="!clicked" (click)="onSubmit()">{{'PATIENT_ATTORNEY_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+        <button class="btn-common btnsuccess" [ngClass]="clicked ? 'btn-common btnsuccess ' : 'btn-common btnsuccess close '">{{'PATIENT_ATTORNEY_CONTACT_INFO.SUCCESS' | translate}}</button>
+        <button type="button" (click)="goBack()"  class="btn-common btnBack">{{'PATIENT_ATTORNEY_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>

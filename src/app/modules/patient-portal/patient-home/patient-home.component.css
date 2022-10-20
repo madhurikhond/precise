@@ -1,0 +1,260 @@
+/*********Middle content sec**************/
+.content-sec {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 400px;
+  margin-top: 46px;
+}
+.tab-section {
+width: auto !important;
+cursor: pointer;
+margin-bottom: 20px !important;
+}
+
+.tab-section .nav-tabs {
+float: right !important;
+border: 2px solid #3b8beb;
+border-radius: 6px;
+}
+
+.welcomeTitle {
+font-size: 28px;
+font-weight: 600;
+font-family: 'exo 2';
+margin-bottom: 24px;
+}
+.note{
+display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-family: 'exo 2';
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.note-icon{
+background: #3b8beb;
+border-radius: 50%;
+width: 34px;
+height: 34px;
+line-height: 34px;
+margin-left: auto;
+}
+
+.note-icon i {
+font-size: 22px;
+color: #ffffff;
+vertical-align: middle;
+}
+.welcome-body-content{
+padding-top: 26px;
+}
+.welcomeMenu-card {
+background: #F7F6F6;
+border-radius: 4px;
+width: 100%;
+display: grid;
+grid-template-columns: 20% 70% 10%;
+height: 94px;
+margin-bottom: 28px;
+cursor: pointer;
+}
+.menuIcon{
+background: #3D8AF7;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 4px;
+}
+.menuIcon img{
+width: 24px;
+}
+.menuIcon i {
+vertical-align: middle;
+font-size: 40px;
+color: #ffffff;
+}
+.cardBody {
+text-align: left;
+padding-left: 14px;
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+}
+.cardBody h2 {
+font-size: 22px;
+font-family: 'exo 2';
+font-weight: 600;
+color: #444444;
+margin-bottom: 0;
+}
+.pdfIocn {
+width: 100%;
+}
+.statusIcon {
+display: flex;
+align-items: flex-end;
+justify-content: flex-end;
+}
+.statusIcon i.fa {
+font-size: 30px;
+color: #3D8AF7;
+padding: 0 8px 8px 0;
+}
+.call-text-box {
+background: #3D8AF7;
+margin-bottom: 36px;
+color: #ffffff;
+display: flex;
+align-items: center;
+vertical-align: middle;
+height: 94px;
+}
+.call-text-box a{
+  color:white;
+}
+.call-text-info {
+text-align: center;
+padding: 0 44px;
+}
+.call-text-info h2 {
+font-size: 29px;
+font-family: 'exo 2';
+font-weight: 600;
+margin-bottom: 6px;
+}
+.es-lang .call-text-info h2 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.call-text-info p {
+font-size: 17px;
+font-family: 'exo 2';
+font-weight: 400;
+margin-bottom: 6px;
+color: #ffffff;
+}
+.callIcon i {
+font-size: 50px;
+}
+.textIcon {
+padding: 0 38px;
+}
+.textIcon i {
+font-size: 50px;
+}
+
+
+.tab-section .nav-tabs .nav-item .nav-link {
+
+font-size: 12px;
+font-weight: 600;
+padding: 7px 16px;
+margin: 0px;
+border-top: 0;
+text-transform: uppercase;
+border-radius: 0;
+border: none;
+}
+.nav-tabs .nav-item {
+margin: -1px;
+}
+.tab-section .nav-tabs .nav-item.show .nav-link, .tab-section .nav-tabs .nav-link.active {
+background: #3b8beb;
+color: #fdfdfd;
+border-radius: 0;
+border: none;
+}
+.pending-action {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border: 2px solid #3b8beb !important;
+    border-radius: 5px;
+    font-weight: bolder;
+    margin-right: 7px;
+    padding: 2px;
+}
+
+@media screen and (max-width:767px){
+.call-text-info{
+  padding: 0 31px;
+}
+.content-sec {
+max-width: 100%;
+}
+.note {
+font-size: 11px;
+padding-bottom: 12px;
+}
+.es-lang .call-text-info h2 {
+  font-size: 2.20vh;
+  line-height: 2.8vh;
+  }
+  .es-lang  .call-text-info{
+  padding: 0 2.18vh;
+  }
+.note-icon {
+width: 24px;
+height: 24px;
+line-height: 24px;
+}
+.welcomeMenu-card{
+min-height: 66px;
+margin-bottom: 16px;
+height: auto;
+}
+.menuIcon i{
+font-size: 26px;
+}
+.cardBody h2 {
+font-size: 17px;
+line-height: 24px;
+}
+.es-lang .cardBody h2 {
+font-size: 16px;
+line-height: 24px;
+}
+.pdfIocn img {
+width: 18px;
+}
+.statusIcon i.fa {
+font-size: 20px;
+}
+.textIcon i {
+font-size: 26px;
+}
+.callIcon i {
+font-size: 26px;
+}
+.textIcon {
+padding: 0 22px;
+}
+.call-text-info h2 {
+font-size: 22px;
+}
+.call-text-info p {
+font-size: 2.2vh;
+}
+.call-text-box {
+height: 74px;
+}
+.note-icon i {
+  font-size: 16px;
+}
+.menuIcon img {
+width: 16px;
+}
+.pending-action {
+
+  margin-right: 5px;
+  padding: 0px 2px;
+  font-size: 9px;
+}
+
+}
+@media screen and (max-width:320px){
+
+.cardBody h2{
+  font-size: 16px;
+}
+}

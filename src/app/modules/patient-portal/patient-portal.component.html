@@ -1,0 +1,54 @@
+<header class="patiner-header exo-font">
+  <div [ngClass]="expanded ? 'sidebarIcon close' : 'sidebarIcon '" (click)="menuToggle()">
+
+    <img class="openImg" src="../../../../assets/images/barOpen.png">
+    <img class="closeImg" src="../../../../assets/images/barClose.png">
+  </div>
+    <div class="logo-sec">
+      <img src="../../../assets/images/precise-imaging-logo.png" />
+      <div class="iconimg">
+        <p class="encryption-info">
+          <i class="fa fa-lock fa-2x"></i>
+          {{'PATIENT_LOGIN.ENCRYPTION_MESSAGE' | translate}}
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout exo-font">
+    <div class="leftMenu-sec"  *ngIf="expanded" @slideInAnimation>
+    <aside class="sidebar">
+      <ul>
+        <li class="c-pointer" (click)="gotoHome()"><i class="fa fa-home"></i>{{'PATIENT_HOME.HOME_PAGE' | translate}}</li>
+        <li class="c-pointer" (click)="downloadSignFile()"><i class="fa fa-newspaper-o"></i>{{'PATIENT_HOME.MEDICAL_LIEN' | translate}}</li>
+        <li class="c-pointer" (click)="gotoContact('patient-basic-contact-info')"><i class="fa fa-phone"></i>{{'PATIENT_HOME.CONTACT_INFO' | translate}}</li>
+        <li class="c-pointer" (click)="gotoScreening('pre-screening-question')"><i class="fa fa-list-ol"></i>{{'PATIENT_HOME.SCREENING_QUESTIONS' | translate}}</li>
+        <li class="c-pointer" (click)="gotoAppointment('my-appointment')"><i class="fa fa-calendar-o"></i>{{'PATIENT_HOME.MY_APPOINTMENTS' | translate}}</li>
+        <li class="c-pointer" [ngClass]="{'d-none':isPregnant == false}" (click)="downloadSignPregnancyFile()"><i class="fa fa-newspaper-o"></i>{{'PATIENT_HOME.PREGNANCY_WAIVER' | translate}}</li>
+        <!-- <li class="c-pointer" (click)="gotoLogout()"><i class="fa fa-sign-out"></i>Logout</li> -->
+      </ul>
+      <div class="call-text-box">
+        <div class="call-text-info">
+          <h2><a
+              href="tel:818-629-1169?sms:818-629-1169?&body=Hi,My PatientId is {{patient.patientId}}">{{'PATIENT_HOME.CALL_OR_TEXT'
+              | translate}}</a></h2>
+          <p>{{'PATIENT_HOME.CONTACT_TIME' | translate}}</p>
+        </div>
+        <div class="callIcon">
+          <a href="tel:818-629-1169">
+            <i class="fa fa-phone">
+            </i></a>
+        </div>
+        <div class="textIcon">
+          <a href="sms:818-629-1169">
+            <i class="fa fa-commenting"></i></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="main-content" [@slideInAnimation]="o.isActivated ? o.activatedRoute : ''">
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+
+</div>

@@ -1,0 +1,54 @@
+<div class="dislpaytable subpoena-login exo-font patient-login">
+  <div class="valign-content">
+      <div class="valign-content-inner">
+          <div class="center-login">
+              <div class="title-group">
+                  <div class="title"><img src="assets/images/precise-imaging-logo.png" alt="" /></div>
+              </div>
+              <div class="iconimg">
+                  <p class="encryption-info"><i class="fa fa-lock fa-2x"></i> {{'PATIENT_LOGIN.ENCRYPTION_MESSAGE' | translate}}</p>
+              </div>
+              <h1 class="code-verification-title">{{'PATIENT_VERIFICATION.TITLE' | translate}}</h1>
+              <div class="tab-section float-right">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                          <a class="nav-link" [ngClass]="{'active': setLanguage}" data-toggle="tab" (click)="languageChange('en')">English</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" [ngClass]="{'active': !setLanguage}" data-toggle="tab" (click)="languageChange('es')">Español</a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="code-info">
+                <p>
+                    {{'PATIENT_VERIFICATION.INFO1' | translate}} {{mobileNumber}}.<br/>{{'PATIENT_VERIFICATION.INFO2' | translate}}
+                </p>
+              </div>
+              <form [formGroup]="codeVerificationForm" autocomplete="off">
+                  <div class="form-group">
+                      <label class="float-left pt-3">{{'PATIENT_VERIFICATION.VERIFICATION_CODE' | translate}}:</label>
+                      <div class="form-with-icon validation-tooltip">
+                        <input matInput mask="0" type="text" formControlName='code1' id="one" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event)" autofocus/>
+                        <input matInput mask="0" type="text"  formControlName='code2' id="two" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event)"/>
+                        <input matInput mask="0" type="text" formControlName='code3' id="three" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event)"/>
+                        <input matInput mask="0" type="text" formControlName='code4' id="four" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event)"/>
+                        <input matInput mask="0" type="text" formControlName='code5' id="five" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event)"/>
+                        <input matInput mask="0" type="text" formControlName='code6' id="six" class='code-input'  maxlength="1" (keyup)="checkEmpty();keytab($event); "/>
+                      </div>
+                  </div>
+              </form>
+              <div  class="resend-code">
+                  <a class="verify-code-link" (click)="resendCode()">
+                    {{'PATIENT_VERIFICATION.RESEND_CODE' | translate}}
+                  </a>
+              </div>
+              <ul class="login-footer-buttons">
+                  <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
+                  <li><a routerLink="/login" class="footer-link">Login</a></li>
+                  <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>
+                  <li><a routerLink="/subpoena-pickup-status" class="footer-link">Subpoena Pickup Status</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>

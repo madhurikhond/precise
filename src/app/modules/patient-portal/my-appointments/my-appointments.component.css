@@ -1,0 +1,298 @@
+/*********Middle content sec**************/
+.content-sec{
+  margin: 0 auto;
+  text-align: center;
+}
+.appointmentSec {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 500px;
+  margin-top: 30px;
+}
+.title{
+font-size: 24px;
+font-weight: 600;
+font-family: 'exo 2';
+margin-bottom: 18px;
+}
+
+.appointment-card {
+background: #F7F6F6;
+border-radius: 4px;
+width: 100%;
+display: grid;
+grid-template-columns: 30% 60% 10%;
+min-height: 124px;
+margin-bottom: 28px;
+cursor: pointer;
+height:124px;
+}
+.appointmentInfo{
+background: #3D8AF7;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 4px;
+flex-wrap: wrap;
+padding: 5px 12px;
+}
+
+.time {
+font-size: 16px;
+font-family: 'exo 2';
+color: #ffffff;
+font-weight: 600;
+margin-bottom: 0;
+}
+.day {
+font-size: 18px;
+font-family: 'exo 2';
+color: #ffffff;
+font-weight: 400;
+line-height: 23px;
+margin-bottom: 0;
+}
+.date {
+  font-size: 18px;
+  font-family: 'exo 2';
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 21px;
+  margin-bottom: 5px;
+}
+
+.alertmsg {
+font-size: 18px;
+font-family: 'exo 2';
+font-weight: 500;
+color: #444444;
+margin-bottom: 0;
+}
+
+.cardBody {
+text-align: left;
+padding-left: 14px;
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+}
+.cardBody h2 {
+  font-size: 16px;
+  font-family: 'exo 2';
+  font-weight: 500;
+  color: #444444;
+  margin-bottom: 0;
+  line-height: 24px;
+}
+
+.address {
+font-family: 'exo 2';
+font-size: 13px;
+font-weight: 400;
+}
+
+.statusIcon {
+display: flex;
+align-items: flex-start;
+justify-content: flex-end;
+flex-wrap: wrap;
+align-content:space-between;
+}
+.CommonIcon {
+background: #3D8AF7;
+border-radius: 6px;
+padding: 5px;
+}
+.infoIcon img,.directionIcon img {
+width: 30px;
+}
+
+/***********bottom css**************/
+.call-text-box {
+  background: #3D8AF7;
+  margin-bottom: 0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
+  padding: 16px;
+  height: 92px;
+  /* position: absolute;
+  width: 100%;
+  bottom: 0;
+  max-width: 400px; */
+}
+
+.callIcon {
+margin-right: 22px;
+}
+.call-text-info {
+text-align: center;
+}
+.call-text-info h2 {
+font-size: 19px;
+font-family: 'exo 2';
+font-weight: 600;
+margin-bottom: 6px;
+}
+.call-text-info p {
+font-size: 17px;
+font-family: 'exo 2';
+font-weight: 400;
+margin-bottom: 0;
+color: #ffffff;
+padding-top: 2px;
+}
+.call-text-info p span {
+font-size: 15px;
+padding-left: 12px;
+}
+.callIcon i {
+font-size: 44px;
+color: white !important;
+}
+
+.appointment-body-content{
+  /* min-height: 79vh; */
+  position: relative;
+}
+
+
+/*****************schedule tab css**********************/
+.schedule-tab .rescheduletxt,
+.completed-tab .rescheduletxt {
+font-size: 20px;
+color: #ffffff;
+font-family: 'exo 2';
+line-height: 30px;
+}
+.schedule-tab .appointmentInfo.noshowstatus {
+background: #EE5F5B;
+}
+.schedule-tab .cardBody h2 {
+font-size: 17.9px;
+}
+.schedule-tab .rescheduleInfo,
+.completed-tab .rescheduleInfo {
+font-size: 14px;
+font-family: 'exo 2';
+line-height: 24px;
+font-style: italic;
+}
+.schedule-tab .call-text-info h2 {
+font-size: 19px;
+
+}
+.CompletedRecordFound{
+  font-family: 'exo 2';
+  font-size: 17px;
+  color: #3d8af7;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+.noRecordFound .appointmentInfo i {
+  font-size: 48px;
+  color: #fff;
+}
+.noRecordFound .cardBody h4 {
+  font-family: 'exo 2';
+  font-size: 16px;
+  line-height: 23px;
+  color: #000000;
+}
+.noRecordFound .cardBody p {
+  font-family: 'exo 2';
+  font-size: 16px;
+  line-height: 23px;
+  color: #000000;
+}
+
+@media screen and (max-width:767px){
+.content-sec {
+  max-width: 100%;
+}
+.call-text-box {
+  padding: 10px;
+  height:66px;
+}
+.callIcon {
+    margin-right: 15px;
+}
+.schedule-tab .call-text-info h2 {
+  font-size: 13px;
+  line-height: 16px;
+}
+.callIcon i {
+  font-size: 31px;
+}
+.call-text-info h2 {
+  font-size: 13px;
+  line-height: 16px;
+}
+.call-text-info p {
+  font-size: 13px;
+}
+.call-text-info p span {
+  font-size: 12px;
+}
+.schedule-tab .rescheduletxt, .completed-tab .rescheduletxt {
+  font-size: 14px;
+}
+.cardBody h2 {
+  font-size: 10px;
+  line-height: 19px;
+}
+.schedule-tab .rescheduleInfo, .completed-tab .rescheduleInfo {
+  font-size: 12px;
+  line-height: 18px;
+}
+.appointment-card {
+  min-height: 78px;
+  height: 78px;
+  margin-bottom: 13px;
+}
+.time {
+  font-size: 12px;
+  margin-bottom: 0;
+
+}
+.day {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.address {
+  font-size: 10px;
+  line-height: 15px;
+}
+.infoIcon img, .directionIcon img {
+  width: 16px;
+  height: 14px;
+  object-fit: contain;
+  margin-top: -5px;
+}
+.CommonIcon {
+  padding: 3px;
+  height: 24px;
+}
+.date{
+  font-size: 15px;
+  line-height: 19px;
+  margin-bottom: 0;
+}
+.noRecordFound .cardBody p {
+  font-size: 11px;
+  line-height: 12px;
+
+}
+.noRecordFound .cardBody h4 {
+  font-size: 12px;
+  line-height: 19px;
+}
+.noRecordFound .appointmentInfo i{
+  font-size: 28px;
+}
+}
+
+

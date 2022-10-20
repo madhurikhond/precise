@@ -1,0 +1,68 @@
+<div class="dislpaytable subpoena-login exo-font patient-login">
+  <div class="valign-content">
+    <div class="valign-content-inner">
+      <div class="center-login">
+        <div class="title-group">
+          <div class="title">
+            <img src="assets/images/precise-imaging-logo.png" alt="" />
+          </div>
+        </div>
+        <div class="iconimg">
+          <p class="encryption-info">
+            <i class="fa fa-lock fa-2x"></i>
+            {{ "PATIENT_LOGIN.ENCRYPTION_MESSAGE" | translate }}
+          </p>
+        </div>
+        <h1 class="multiple-record-title">{{ "MULTIPLE_RECORDS_FOUND.TITLE" | translate }}</h1>
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: setLanguage }"
+                data-toggle="tab"
+                (click)="languageChange('en')"
+                >English</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: !setLanguage }"
+                data-toggle="tab"
+                (click)="languageChange('es')"
+                >Español</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="code-info">
+          <p> {{ "MULTIPLE_RECORDS_FOUND.PHONE_INFORMATION" | translate }} {{mobileNumber}}.</p>
+        </div>
+        <form
+          [formGroup]="multipleRecordForm"
+          (ngSubmit)="onSubmit()"
+          autocomplete="off"
+        >
+          <p class="select-patient">
+            {{ "MULTIPLE_RECORDS_FOUND.SELECTION_TITLE" | translate }}
+          </p>
+          <div class="form-group">
+            <div (click)="getPatientByPatientId(patientRecord)" class="patient-info" *ngFor="let patientRecord of patientRecords">
+              <p>
+                Patient ID:<span class="id"> {{patientRecord.patientId}} </span><span>-  </span
+                ><span class="firstname">{{patientRecord.firstName}}, </span
+                ><span class="lastname">{{patientRecord.lastName}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="form-btn-bottom">
+            <div class="form-btn">
+              <button type="submit" class="form-main-btn btn-back" (click)="redirectToPrevious()"> {{ "MULTIPLE_RECORDS_FOUND.BACK_BUTTON" | translate }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

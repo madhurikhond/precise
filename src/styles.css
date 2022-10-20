@@ -1,4 +1,201 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@fontsource/exo-2";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.contact-form-sec .dx-progressbar-status {
+    display: none;
+  }
+  .contact-form-sec .dx-trackbar-container.dx-progressbar-container {
+    height: 3px;
+  }
+  .contact-form-sec .dx-progressbar-range {
+    border-color: #008ff7;
+    background: #008ff7;
+  }
+  .contact-form-sec .dx-progressbar-range:after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    background: #008ff7;
+    width: 9px;
+    height: 10px;
+    border-radius: 50%;
+  }.contact-form-sec .dx-progressbar-status {
+  display: none;
+}
+.contact-form-sec .dx-trackbar-container.dx-progressbar-container {
+  height: 3px;
+}
+.contact-form-sec .dx-progressbar-range {
+  border-color: #008ff7;
+  background: #008ff7;
+}
+.contact-form-sec .dx-progressbar-range:after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  background: #008ff7;
+  width: 9px;
+  height: 10px;
+  border-radius: 50%;
+}
+.contact-form-sec .dx-progressbar-wrapper {
+    margin-bottom: 24px;
+}
+.attorneyDatepicker .dx-dropdowneditor-button .dx-button-content .dx-dropdowneditor-icon {
+  color: #62c4f1 !important;
+}
+.attorneyDatepicker .dx-texteditor.dx-editor-outlined {
+  padding-left: 0;
+  border: 1px solid #03c8f1;
+}
+
+.attorneyDatepicker .dx-texteditor.dx-editor-outlined .dx-texteditor-input-container .dx-placeholder {
+  font-size: 15px;
+  color: #848181;
+  font-family: inherit;
+}
+
+
+.attorneyDatepicker .dx-texteditor.dx-editor-outlined .dx-texteditor-input-container .dx-placeholder {
+  font-size: 15px;
+  color: #8c8989;
+}
+.attorneyDatepicker .dx-texteditor.dx-editor-outlined .dx-texteditor-input-container .dx-texteditor-input {
+  padding: 9px 0;
+}
+
+.appointmentSec .nav.nav-pills .nav-item {
+background: #F7F6F6;
+}
+
+.appointmentSec .nav.nav-pills .nav-item:nth-child(3) {
+border-radius: 0 6px 6px 0;
+border: 1px solid #3D8AF7;
+border-left: none;
+}
+
+.appointmentSec .nav.nav-pills .nav-item a {
+border-right: 1px solid #3D8AF7;
+border-radius: 0;
+font-size: 15px;
+font-family: 'exo 2';
+font-weight: 500;
+padding: 8px 14px;
+}
+
+.appointmentSec .nav.nav-pills .nav-item:nth-child(3) a {
+border-right: 0;
+}
+
+.appointmentSec .nav.nav-pills .nav-item:nth-child(1) {
+border-radius: 6px 0 0 6px;
+
+border: 1px solid #3D8AF7;
+border-right: none;
+}
+.appointmentSec .nav.nav-pills .nav-item:nth-child(2) {
+  border: 1px solid #3D8AF7;
+  border-left: none;
+  border-right: none;
+}
+
+.appointmentSec .nav.nav-pills .nav-item:nth-child(1) .nav-link.active {
+border-radius: 6px 0 0 6px;
+}
+.appointmentSec .nav.nav-pills .nav-item:nth-child(3) .nav-link.active {
+border-radius: 0 6px 6px 0;
+}
+
+.appointmentSec .nav.nav-pills {
+margin-bottom: 26px;
+}
+.main-content canvas {
+  position: inherit;
+  bottom: 0;
+  left: 0;
+}
+
+
+@media screen and (max-width:767px) {
+  .login-page .login-right .valign-content-inner {
+    max-width: 100%;
+    padding: 130px 16px;
+    width: 100%;
+}
+
+.appointmentSec .nav.nav-pills .nav-item a {
+  font-size: 12px;
+  padding: 5px 9px;
+}
+.login-page .login-right .patient-login .center-login .title-group .title img {
+  width: 100%;
+}
+
+}
+@media screen and (width:375px) {
+.appointmentSec .nav.nav-pills .nav-item a {
+  font-size: 12px;
+  padding: 5px 13px;
+}
+
+}
+@media screen and (min-width:412px) and (max-width:414px) {
+.appointmentSec .nav.nav-pills .nav-item a {
+  font-size: 12px;
+  padding: 5px 19px;
+}
+}
+
+@media screen and (width:360px) {
+  .appointmentSec .nav.nav-pills .nav-item a {
+    padding: 5px 10px;
+}
+}
+@media screen and (width:390px) {
+  .appointmentSec .nav.nav-pills .nav-item a {
+    padding: 5px 15px;
+}
+}
+
+
+
+
+
+.custom-tooltip-inner {
+  background: #ffffff !important;
+  max-height: 200px;
+  overflow-y: auto;
+  max-width: 230px;
+  overflow-x: hidden;
+  pointer-events: auto;
+}
+.infoIcon .bs-tooltip-left .arrow::before {
+  border-left-color: #fff !important;
+}
+.infoIcon .tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 4px #737373;
+}
+.custom-tooltip-inner p {
+  font-family: 'exo 2';
+  font-weight: 400;
+  text-align: left;
+  margin-bottom: 0;
+}
+.custom-tooltip-inner img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+}
+.infoIcon .tooltip.show{
+  opacity: 1;
+}

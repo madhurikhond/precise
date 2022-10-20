@@ -16,6 +16,7 @@ import { BookmarkTaggingComponent } from './server-settings/bookmark-tagging/boo
 import { UseBookmarkComponent } from './server-settings/use-bookmark/use-bookmark.component';
 import { PlayerTypeComponent } from './server-settings/player-type/player-type.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { PatientModalityPrepComponent } from './server-settings/patient-modality-prep/patient-modality-prep.component';
 // import { BroadcastModule } from './broadcast/broadcast.module';
 
 
@@ -23,6 +24,7 @@ import { ClipboardModule } from 'ngx-clipboard';
   declarations: [SettingsComponent, 
     AutoRouteComponent, 
     TemplateComponent, 
+    PatientModalityPrepComponent,
     PiBillingComponent, 
     DocumentTaggingComponent, 
     SftpComponent, 

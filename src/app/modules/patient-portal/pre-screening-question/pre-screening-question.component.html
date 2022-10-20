@@ -1,0 +1,143 @@
+<section class="content-sec">
+  <div class="prescreening-section">
+      <h1 class="title">{{'PRE_SCREENING_QUESTIONS.TITLE' | translate}}</h1>
+      <form
+  [formGroup]="preQuestionForm"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+>
+      <div class="questionSec">
+          <div class="questionContent">
+              <h4>{{'PRE_SCREENING_QUESTIONS.GENDER' | translate}}?</h4>
+          </div>
+          <div class="answerContent formControl requiedInfo correctInfo" >
+              <div class="tab-section float-right">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                          <a class="nav-link"  [ngClass]="{'active': this.preScreeningQuestions.gender === 'M'}" (click)="changeCorrect('Male')" data-toggle="tab">Male</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" [ngClass]="{'active': this.preScreeningQuestions.gender === 'F'}" (click)="changeCorrect('Female')"  data-toggle="tab">Female</a>
+                      </li>
+                  </ul>
+              </div>
+              <i class="fa fa-check-circle-o" *ngIf="showCorrect && maleOrFemale"></i>
+          </div>
+      </div>
+      <div class="questionSec" *ngIf="showPregnentSection">
+          <div class="questionContent">
+              <h4>{{'PRE_SCREENING_QUESTIONS.IS_PREGNANT' | translate}}?</h4>
+          </div>
+          <div class="answerContent formControl requiedInfo correctInfo">
+              <div class="tab-section float-right">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                          <a class="nav-link" [ngClass]="{'active': this.preScreeningQuestions.isPregnant === 'Yes'}" (click)="CheckPregnant('Yes')" data-toggle="tab">Yes</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" [ngClass]="{'active': this.preScreeningQuestions.isPregnant === 'No'}" (click)="CheckPregnant('No')" data-toggle="tab">No</a>
+                      </li>
+                  </ul>
+              </div>
+              <i class="fa fa-check-circle-o" *ngIf="showCorrect1 && isPregnant"></i>
+          </div>
+      </div>
+      <div class="questionSec" *ngIf="showPeriodSection && showPregnentSection">
+          <div class="questionContent">
+              <h4>{{'PRE_SCREENING_QUESTIONS.PREGNANCY_TIMEPERIOD' | translate}}?</h4>
+          </div>
+          <div class="answerContent formControl requiedInfo "  [ngClass]="!preQuestionForm.controls.timeperiod.valid && preQuestionForm.controls.timeperiod.touched ? 'wrongInfo' : 'correctInfo'">
+              <select class="code-input" formControlName="timeperiod">
+                <option value="" selected>Select Week</option>
+                  
+                  <option value="0  Week">0 Week</option>
+                  <option value="1  Week">1 Week</option>
+                  <option value="2  Week">2 Weeks</option>
+                  <option value="3  Week">3 Weeks</option>
+                  <option value="4  Week">4 Weeks</option>
+                  <option value="5  Week">5 Weeks</option>
+                  <option value="6  Week">6 Weeks</option>
+                  <option value="7  Week">7 Weeks</option>
+                  <option value="8  Week">8 Weeks</option>
+                  <option value="9  Week">9 Weeks</option>
+                  <option value="10 Week">10 Weeks</option>
+                  <option value="11 Week">11 Weeks</option>
+                  <option value="12 Week">12 Weeks</option>
+                  <option value="13 Week">13 Weeks</option>
+                  <option value="14 Week">14 Weeks</option>
+                  <option value="15 Week">15 Weeks</option>
+                  <option value="16 Week">16 Weeks</option>
+                  <option value="17 Week">17 Weeks</option>
+                  <option value="18 Week">18 Weeks</option>
+                  <option value="19 Week">19 Weeks</option>
+                  <option value="20 Week">20 Weeks</option>
+                  <option value="21 Week">21 Weeks</option>
+                  <option value="22 Week">22 Weeks</option>
+                  <option value="23 Week">23 Weeks</option>
+                  <option value="24 Week">24 Weeks</option>
+                  <option value="25 Week">25 Weeks</option>
+                  <option value="26 Week">26 Weeks</option>
+                  <option value="27 Week">27 Weeks</option>
+                  <option value="28 Week">28 Weeks</option>
+                  <option value="29 Week">29 Weeks</option>
+                  <option value="30 Week">30 Weeks</option>
+                  <option value="31 Week">31 Weeks</option>
+                  <option value="32 Week">32 Weeks</option>
+                  <option value="33 Week">33 Weeks</option>
+                  <option value="34 Week">34 Weeks</option>
+                  <option value="35 Week">35 Weeks</option>
+                  <option value="36 Week">36 Weeks</option>
+                  <option value="37 Week">37 Weeks</option>
+                  <option value="38 Week">38 Weeks</option>
+                  <option value="39 Week">39 Weeks</option>
+                  <option value="40 Week">40 Weeks</option>
+              </select>
+              <i class="fa fa-check-circle-o" *ngIf="(!preQuestionForm.controls.timeperiod.errors || preQuestionForm.controls.timeperiod.touched) "></i>
+          </div>
+      </div>
+      <div class="questionSec">
+          <div class="questionContent">
+              <h4>{{'PRE_SCREENING_QUESTIONS.WEIGHT' | translate}}?</h4>
+          </div>
+          <div class="answerContent formControl requiedInfo" [ngClass]="!preQuestionForm.controls.weight.valid && preQuestionForm.controls.weight.touched ? 'wrongInfo' : 'correctInfo'">
+              <input
+              formControlName="weight"
+              name="weight"
+              class="code-input"
+              placeholder="Weight"
+              maxlength="3"
+              mask="000"
+              required
+            />
+            <i class="fa fa-check-circle-o"  *ngIf="!preQuestionForm.controls.weight.errors || preQuestionForm.controls.weight.touched "></i>
+          </div>
+      </div>
+      <div class="questionSec">
+          <div class="questionContent">
+              <h4>{{'PRE_SCREENING_QUESTIONS.HEIGHT' | translate}}?</h4>
+          </div>
+          <div class="feet-inches-dropdown">
+          <div class="answerContent formControl requiedInfo heightDropdown"  [ngClass]="!preQuestionForm.controls.feet.valid && preQuestionForm.controls.feet.touched ? 'wrongInfo' : 'correctInfo'">
+              <select class=" code-input" formControlName="feet" >
+                  <option value="" Selected>Feet</option>
+                  <option *ngFor="let item of [].constructor(9); let i = index" value="{{i}}">{{i}} ft</option>
+              </select>
+              <i class="fa fa-check-circle-o" *ngIf="!preQuestionForm.controls.feet.errors || preQuestionForm.controls.feet.touched "></i>
+          </div>
+          <div class="answerContent formControl requiedInfo heightDropdown"  [ngClass]="!preQuestionForm.controls.inches.valid && preQuestionForm.controls.inches.touched ? 'wrongInfo' : 'correctInfo'">
+              <select class="code-input" formControlName="inches" >
+                  <option value="" selected >Inches</option>
+                  <option *ngFor="let item of [].constructor(12); let i = index" value="{{i}}">{{i}} in</option>
+              </select>
+              <i class="fa fa-check-circle-o" *ngIf="!preQuestionForm.controls.inches.errors || preQuestionForm.controls.inches.touched "></i>
+          </div>
+      </div>
+      </div>
+      <div class="buttonSection">
+          <button type="submit" [disabled]="!preQuestionForm.valid || showCorrect1 == false" [ngClass]="!preQuestionForm.valid || showCorrect1 == false ? 'btnSubmit' : 'btn-common' ">{{'PRE_SCREENING_QUESTIONS.NEXT_BUTTON' | translate}}</button>
+          <button type="button" (click)="goBack()" class="btn-common btnBack">{{'PRE_SCREENING_QUESTIONS.GO_BACK_BUTTON' | translate}}</button>
+        </div>
+      </form>
+  </div>
+</section>
+

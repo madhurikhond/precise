@@ -1,0 +1,127 @@
+<section class="content-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="patient-information-sec">
+    <h2 class="info-title">{{'PATIENT_BASIC_CONTACT_INFO.TITLE' | translate}}</h2>
+  </div>
+  <p class="description">
+    {{'PATIENT_BASIC_CONTACT_INFO.INFO_1' | translate}}
+  </p>
+  <p class="description">
+    {{'PATIENT_BASIC_CONTACT_INFO.INFO_2' | translate}}
+  </p>
+  <div class="contact-form-sec">
+    <!-- <ngb-progressbar type="success" [value]="25"></ngb-progressbar> -->
+    <dx-progress-bar
+      #progressBar
+      id="progress-bar-status"
+      width="100%"
+      [min]="0"
+      [max]="100"
+      [value]="20"
+    >
+    </dx-progress-bar>
+    <form
+      [formGroup]="contactInfoForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+    >
+      <div class="form-group contact-information">
+        <div class="form-with-icon validation-tooltip">
+          <div class="formControl requiedInfo " [ngClass]="(contactInfoForm.controls.firstname.dirty || contactInfoForm.controls.firstname.touched) && contactInfoForm.controls.firstname.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showFirstName;else FirstName">
+            <input
+              formControlName="firstname"
+              name="firstname"
+              class="code-input"
+              placeholder="First Name (Required)"
+              required
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.firstname.errors || contactInfoForm.controls.firstname.touched "></i>
+          </div>
+
+          <ng-template #FirstName>
+            <div class="formControl requiedInfo editable" >
+              <div class="labelName">              <label>{{'PATIENT_BASIC_CONTACT_INFO.FIRST_NAME' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{patientInfo.firstName}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showFirstName=!showFirstName"></i>
+            </div>
+          </ng-template>
+
+          <div class="formControl requiedInfo" [ngClass]="(contactInfoForm.controls.middlename.dirty || contactInfoForm.controls.middlename.touched) && contactInfoForm.controls.middlename.invalid ? 'correctInfo' : 'correctInfo'" *ngIf="!showMiddleName;else MiddleName">
+            <input
+              formControlName="middlename"
+              name="middlename"
+              class="code-input"
+              placeholder="Middle Name"
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.middlename.errors || contactInfoForm.controls.middlename.touched"></i>
+          </div>
+
+            <ng-template #MiddleName>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_BASIC_CONTACT_INFO.MIDDLE_NAME' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientInfo.middleName}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showMiddleName=!showMiddleName"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl requiedInfo " [ngClass]="(contactInfoForm.controls.lastname.dirty || contactInfoForm.controls.lastname.touched) && contactInfoForm.controls.lastname.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showLastName;else LastName">
+              <input
+                formControlName="lastname"
+                name="lastname"
+                class="code-input"
+                placeholder="Last Name"
+                required
+              />
+              <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.lastname.errors || contactInfoForm.controls.lastname.touched"></i>
+            </div>
+
+            <ng-template #LastName>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_BASIC_CONTACT_INFO.LAST_NAME' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientInfo.lastName}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showLastName=!showLastName"></i>
+              </div>
+            </ng-template>
+
+            <div class="formControl dateofBirth requiedInfo" [ngClass]="event.date.length <= 0 ? 'wrongInfo' : 'correctInfo'" *ngIf="!showDOB;else DateOfBirth">
+              <ion-datetime placeholder="Date of Birth (MM/DD/YYYY) (Required)" picker-format="MMMM DD YYYY" display-format="MM/DD/YYYY" value="{{event.date}}" (ionChange)="dobChanged($event)"  class="code-input dateofBirth"
+              ></ion-datetime>
+              <input
+                type="hidden"
+                formControlName="dateofbirth"
+                name="dateofbirth"
+                class="d-none"
+                placeholder="Date of Birth (MM/DD/YYYY) (Required)"
+                [dropSpecialCharacters]="false"
+                required
+              />
+              <!--<ion-datetime trigger="dateofbirth" value="{{contactInfoForm.controls.dateofbirth | date: 'dd.MM.yyyy' }}" placeholder="MM/DD/YYYY" displayFormat="MM/DD/YYYY"></ion-datetime> -->
+              <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.dateofbirth.errors"></i>
+            </div>
+
+            <ng-template #DateOfBirth>
+              <div class="formControl requiedInfo editable" >
+                <div class="labelName">              <label>{{'PATIENT_BASIC_CONTACT_INFO.DATE_OF_BIRTH' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientInfo.dateOfBirth}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showDOB=!showDOB"></i>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+      <div class="buttonSection">
+        <button type="submit" [disabled]="!contactInfoForm.valid" [ngClass]="!contactInfoForm.valid ? 'btnSubmit' : 'btn-common' ">{{'PATIENT_BASIC_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+        <button type="button" (click)="goBack()" class="btn-common btnBack">{{'PATIENT_BASIC_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>
+
