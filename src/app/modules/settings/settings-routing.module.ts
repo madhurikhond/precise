@@ -7,6 +7,7 @@ import { CompleteStudyComponent } from './RIS-settings/complete-study/complete-s
 import { AutoRouteComponent } from './server-settings/auto-route/auto-route.component';
 import { BookmarkTaggingComponent } from './server-settings/bookmark-tagging/bookmark-tagging.component';
 import { DocumentTaggingComponent } from './server-settings/document-tagging/document-tagging.component';
+import { PatientModalityPrepComponent } from './server-settings/patient-modality-prep/patient-modality-prep.component';
 import { PlayerTypeComponent } from './server-settings/player-type/player-type.component';
 import { SftpComponent } from './server-settings/sftp/sftp.component';
 import { TemplateComponent } from './server-settings/template/template.component';
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'user',loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] },
   { path: 'server-settings/scheduling-facilities-settings',loadChildren: () => import('./server-settings/scheduling-facilities-settings/schedulingfacilitiessettings.module').then(m => m.SchedulingfacilitiessettingsModule), canActivate: [AuthGuard] },
   { path: 'server-settings/ui',loadChildren: () => import('./server-settings/ui/ui.module').then(m => m.UiModule), canActivate: [AuthGuard] },
+  { path: 'server-settings/patient-portal/patient-modality-prep',component: PatientModalityPrepComponent, canActivate: [AuthGuard]},
   { path: 'accounting/ar/ar-settings',loadChildren: () => import('./accounting/accounting.module').then(m => m.AccountingModule), canActivate: [AuthGuard] },
   // { path: 'broadcast',loadChildren: () => import('./broadcast/broadcast.module').then(m => m.BroadcastModule), canActivate: [AuthGuard] },
   { path: 'billing-settings/rad-portal-tab', loadChildren: () => import('../settings/rad-portal-tab/rad-portal-tab.module').then(m => m.RadPortalTabModule), canActivate: [AuthGuard] },

@@ -13,7 +13,8 @@ import { WorkflowService } from 'src/app/services/work-flow-service/workflow.ser
 import { DxDataGridComponent } from 'devextreme-angular';
 import { BrokerService } from 'src/app/services/broker.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
-
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { patientPortalResponseStatus } from 'src/app/models/patient-response';
 
 declare const $: any;
 @Component({
@@ -32,6 +33,7 @@ export class PatientDetailComponent implements OnInit {
   patientStudyDetailForm: FormGroup;
   patientPIDetailForm: FormGroup;
   patientDetail: any;
+  patientCompareDetail: any = {};
   patientDetailInsuranceCoverage: [] = [];
   patientDetailNotes: [] = [];
   patientStudySummary: [] = [];
@@ -86,6 +88,7 @@ export class PatientDetailComponent implements OnInit {
   status: any;
   studySummaryrowData :any ;
   subsTabClick: boolean = true;
+  isPatientDataFound:boolean = false;
   readonly commonRegex = CommonRegex;
   //// Subs tab fields
 
@@ -157,6 +160,7 @@ export class PatientDetailComponent implements OnInit {
     private readonly referrersService: ReferrersService, private subsService: SubsService,
     private datePipe: DatePipe, private commonMethodService: CommonMethodService,
     private readonly facilityService: FacilityService,
+    private readonly patientPortalService : PatientPortalService,
     private readonly workflowService: WorkflowService,
     private brokerService: BrokerService, private decimalPipe: DecimalPipe) {
     patientService.sendDataToPatientDetail.subscribe(res => {
@@ -508,6 +512,8 @@ export class PatientDetailComponent implements OnInit {
         this.setPatientDetailFormForPatientDetailTab(this.patientDetail);
         this.setPatientStudyDetailFormForStudyDetailTab(this.studyDetail);
         this.setPatientPIDetailFormForPITab(this.piDetails);
+        this.isPatientDataFound = false;
+        this.GetPatientDetailsCompare();
       } else {
         setTimeout(() => {
           this.closebtn.nativeElement.click();
@@ -1094,8 +1100,53 @@ export class PatientDetailComponent implements OnInit {
     }
   }
 
+  GetPatientDetailsCompare(){
+    var request ={
+     patientId : this.patientDetail.PATIENTID
+    }
+     this.patientPortalService.GetPatientDetailsCompare(request).subscribe(res=>{
+       if(res.responseStatus == patientPortalResponseStatus.Success)
+       {
+         if(res.result.isPatientPortalFound == true)
+         {
+           this.patientCompareDetail = res.result;
+           this.isPatientDataFound = true;
+         }
+       }
+     })
+   }
+ 
+   ApprovePatientDetail(key,status,patientValue){
+     if(!patientValue)
+       patientValue = '';
+     var request ={
+       patientId : this.patientDetail.PATIENTID,
+       key: key,
+       status: status,
+       value: patientValue,
+      }
+ 
+      this.patientPortalService.PatientStatusChecked(request).subscribe(res=>{
+       this.GetPatientDetailsCompare();
+     })
+   }
+ 
+   RejectPatientDetail(key,status,patientValue){
+     if(!patientValue)
+       patientValue = '';
+     var request ={
+       patientId : this.patientDetail.PATIENTID,
+       key: key,
+       status: status,
+       value: patientValue,
+      }
+ 
+      this.patientPortalService.PatientStatusChecked(request).subscribe(res=>{
+       this.GetPatientDetailsCompare();
+ 
+     })
+   }
 }
-
 
 function checkTopSubsRow(companyID: any, refNumber: any, requestDate: any, requestType: any, media: any): boolean {
   let isRowValid: boolean = false;

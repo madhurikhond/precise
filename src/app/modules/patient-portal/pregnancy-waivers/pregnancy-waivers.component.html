@@ -1,0 +1,93 @@
+<section class="content-sec">
+  <div class="examquestion-section">
+    <h1 class="title">Pregnancy Waiver</h1>
+    <div class="text-left">
+    <p><strong>X-RAY/CT PREGNANCY CONSENT FORM </strong></p>
+    <p><strong>Patient ID:</strong> {{pregnancyDetail.patientId}}</p>
+     <p> <strong>Name:</strong> {{pregnancyDetail.firstName}} {{pregnancyDetail.lastName}} </p>
+     <p><strong>Date of Birth:</strong> {{pregnancyDetail.birthDate}}</p>
+     <p>
+      PROCEDIMIENTO: Entiendo que el médico ordenó una radiografía y doy permiso para que se realicen los procedimientos. soy
+      la radiación consciente en el abdomen o la pelvis posiblemente puede causar lesiones al feto. Sin embargo, entiendo que la probabilidad de tal lesión es
+      leve, y el médico cree que la información que se obtiene de los exámenes de radiología puede ser importante para mi salud.
+    </p>
+    <p>
+      Estoy verificando que yo: {{pregnancyDetail.firstName}} {{pregnancyDetail.lastName}}
+      estoy embarazada, <strong *ngIf="pregnancyDetail.pregnancyWeeks === 0 || pregnancyDetail.pregnancyWeeks === 1">{{pregnancyDetail.pregnancyWeeks}} semana</strong>
+      <strong *ngIf="pregnancyDetail.pregnancyWeeks > 1">{{pregnancyDetail.pregnancyWeeks}} semanas</strong>
+    </p>
+    <p>
+      Al firmar a continuación, doy fe de que las declaraciones anteriores son verdaderas,
+    </p>
+    <p>
+
+      CONSENTIMIENTO INFORMADO: Por la presente libero a Precise Imaging de responsabilidad por cualquier efecto adverso que pueda surgir de someterse a
+      diagnóstico por imágenes en este momento. Si posteriormente se descubre que he estado embarazada. Asumo la responsabilidad de mi decisión de someterme
+      este procedimiento. Si existe la posibilidad de que esté embarazada, se lo haré saber e informaré al tecnólogo antes del examen.
+    </p>
+
+    <p>
+      <div class="single-signature">
+        <div class="label-input">
+          <img src="assets/images/newsign.png" data-toggle="modal" (click)="getEsignData(false)" class="animation-large" id="opensign" tabindex="-1" style="cursor: pointer;">
+        </div>
+        <div class="label-title">(Firma del paciente)  <strong>
+                 Fecha:</strong>{{currentDate | date: 'MM/dd/yyyy'}}</div>
+      </div>
+          <button #hiddenSignPopUp [hidden]="true" data-toggle="modal" data-target="#SignPopUp"></button>
+    </div>
+    <div class="buttonSection">
+
+      <button type="button" (click)="goBack()" class="btn-common btnBack mt-4">Regresa</button>
+    </div>
+  </div>
+  </section>
+
+
+  <div class="modal fade modal-theme modal-small" #SignPopUp id="SignPopUp" data-backdrop="static"
+      data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">PLEASE SIGN YOUR PREGNANCY WAIVER</h5>
+            <div class="close-dismiss" data-dismiss="modal"></div>
+          </div>
+          <form name="form"
+            (ngSubmit)="f.form.valid && (pregnancyDetail.patientSignature!='') && submitSign(true)"
+            #f="ngForm" class="theme-form">
+            <div class="modal-body">
+              <div class="modal-body-inner">
+                <div class="row">
+
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                      <div class="signature-custom"
+                        [ngClass]="{'signature-pad-group': pregnancyDetail.patientSignature =='', 'signature-pad-group remove':pregnancyDetail.patientSignature!=''}">
+                        <signature-pad [options]="signaturePadOptions" name="signature"
+                        ngDefaultControl
+                          [(ngModel)]="pregnancyDetail.patientSignature" [ngModelOptions]="{ standalone : true }"
+                          [ngClass]="{ 'is-invalid': f.submitted && pregnancyDetail.patientSignature=='' }"
+                          #signature="ngModel" (onEndEvent)="drawComplete()">
+                        </signature-pad>
+                      </div>
+                      <div *ngIf="f.submitted && pregnancyDetail.patientSignature==''"
+                        class="invalid-feedback">
+                        <div>signature is required</div>
+                      </div>
+                    </div>
+                    <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                      class="btn btn-theme btn-sm">Clear Signature</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" style="float: left;" [disabled]="(pregnancyDetail.patientSignature =='')?true:false" [ngStyle]="{'background-color': ((pregnancyDetail.patientSignature !='')) ? '#3b8beb' : '#bfbfbf'}" class="btn btn-theme btn-sm pull-left">Sign</button>
+              <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal" #closeBtn (click)="signConfirm(false)">Close</a>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+

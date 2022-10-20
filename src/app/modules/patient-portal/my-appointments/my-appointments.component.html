@@ -1,0 +1,138 @@
+
+<section class="content-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="appointmentSec">
+    <h1 class="title">{{'MY_APPOINTMENTS.TITLE' | translate}}</h1>
+    <ngb-tabset>
+      <ngb-tab [title]="'MY_APPOINTMENTS.UPCOMING' | translate">
+        <ng-template ngbTabContent>
+          <div class="appointment-body-content upcoming-tab">
+            <div class="appointment-card" *ngFor="let upcoming of appointmentDetails.upcomingAppointmentDetails">
+              <div class="appointmentInfo appointment-cursor-d" *ngIf="(upcoming.isWalkedIn === true);else NotWalkedIn">
+                <p class="time">{{'MY_APPOINTMENTS.WALK-IN' | translate}}</p>
+                <p class="day">{{'MY_APPOINTMENTS.NO_APPOINTMENT_NECESSARY' | translate}}</p>
+              </div>
+             <ng-template #NotWalkedIn>
+              <div class="appointmentInfo appointment-cursor-d">
+                <p class="date">{{upcoming.date}}</p>
+                <p class="time">{{upcoming.time}}</p>
+                <p class="day">{{upcoming.day}}</p>
+              </div>
+             </ng-template>
+              <div class="cardBody appointment-cursor-d">
+                <h2>{{upcoming.patientStudyDetail}}</h2>
+                <div class="address">
+                  {{upcoming.address}} <br>
+                  {{upcoming.city}}, {{upcoming.state}} {{upcoming.zipCode}}
+                </div>
+              </div>
+              <div class="statusIcon">
+                <div class="CommonIcon infoIcon appointment-cursor-p">
+                  <ng-template #htmlContent>
+                    <div class="custom-tooltip-inner" *ngIf="currentLanguage == 'en'" [innerHTML]="upcoming.englishBody"></div>
+                    <div class="custom-tooltip-inner" *ngIf="currentLanguage == 'es'" [innerHTML]="upcoming.spanishBody"></div>
+                  </ng-template>
+                <img src="../../../../assets/images/infoIcon.png"  placement="left" [ngbTooltip]="htmlContent" triggers="click:blur" *ngIf="currentLanguage == 'en';else SpanishBody"/>
+                <ng-template #SpanishBody>
+                  <img src="../../../../assets/images/infoIcon.png"  placement="left" [ngbTooltip]="htmlContent" triggers="click:blur"/>
+                </ng-template>
+                </div>
+                <div class="CommonIcon directionIcon appointment-cursor-p"><a href="{{upcoming.mapLink}}"><img src="../../../../assets/images/directionIcon.png" /></a></div>
+              </div>
+            </div>
+            <div class="appointment-card noRecordFound appointment-cursor-d" *ngIf="appointmentDetails.upcomingAppointmentDetails.length == 0">
+              <div class="appointmentInfo"><i class="fa fa-exclamation"></i></div>
+              <div class="cardBody">
+                <h4>{{'MY_APPOINTMENTS.NO_UPCOMING_APPOINTMENT' | translate}}.</h4>
+                <p>{{'MY_APPOINTMENTS.CHECK_BACK_LATER' | translate}}</p>
+              </div>
+            </div>
+            <div>
+              <a href="tel:818-629-1169">
+                <div class="call-text-box">
+                  <div class="callIcon">
+                      <i class="fa fa-phone">
+                      </i>
+                  </div>
+                  <div class="call-text-info">
+                    <h2>{{'MY_APPOINTMENTS.NEED_TO_RESCHEDULE' | translate}}?</h2>
+                    <p>{{'MY_APPOINTMENTS.CALL_US' | translate}}!<span>{{'MY_APPOINTMENTS.CONTACT_TIME' | translate}}</span></p>
+                  </div>
+                </div></a>
+              </div>
+          </div>
+
+        </ng-template>
+
+      </ngb-tab>
+      <ngb-tab [title]="'MY_APPOINTMENTS.NEED_TO_SCHEDULE' | translate">
+        <ng-template ngbTabContent>
+          <div class="appointment-body-content schedule-tab" >
+            <div class="appointment-card" *ngFor="let sheduledAppointment of appointmentDetails.scheduledAppointmentDetails">
+              <div class="appointmentInfo noshowstatus appointment-cursor-p" *ngIf="(sheduledAppointment.status === 'NO SHOW' || sheduledAppointment.status === 'NEED TO RESCHED');else Schedule">
+                <a href="tel:818-629-1169"><p class="rescheduletxt">{{'MY_APPOINTMENTS.CALL_TO_RESCHEDULE' | translate}}</p></a>
+              </div>
+              <ng-template #Schedule>
+                <div class="appointmentInfo appointment-cursor-p">
+                  <a href="tel:818-629-1169"><p class="rescheduletxt">{{'MY_APPOINTMENTS.CALL_TO_SCHEDULE' | translate}}</p></a>
+                </div>
+              </ng-template>
+              <div class="cardBody appointment-cursor-d">
+                <h2>{{sheduledAppointment.patientStudyDetail}}</h2>
+                <div class="rescheduleInfo">
+                  {{'MY_APPOINTMENTS.RESCHEDULE_MISSED_OR_CANCELLED_APPOINTMENT' | translate}}
+                </div>
+              </div>
+            </div>
+            <div class="appointment-card noRecordFound appointment-cursor-d" *ngIf="appointmentDetails.scheduledAppointmentDetails.length == 0">
+              <div class="appointmentInfo"><i class="fa fa-exclamation"></i></div>
+              <div class="cardBody">
+                <h4>{{'MY_APPOINTMENTS.NO_PENDING_APPOINTMENT' | translate}}.</h4>
+                <p>{{'MY_APPOINTMENTS.CHECK_BACK_LATER' | translate}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="callBox">
+            <a href="tel:818-629-1169">
+              <div class="call-text-box">
+                <div class="callIcon">
+                    <i class="fa fa-phone">
+                    </i>
+                </div>
+                <div class="call-text-info">
+                  <h2>{{'MY_APPOINTMENTS.SCHEDULE_APPOINTMENT_TODAY' | translate}}!</h2>
+                  <p>{{'MY_APPOINTMENTS.CALL_US' | translate}}!<span>{{'MY_APPOINTMENTS.CONTACT_TIME' | translate}}</span></p>
+                </div>
+              </div></a>
+          </div>
+        </ng-template>
+
+      </ngb-tab>
+      <ngb-tab [title]="'MY_APPOINTMENTS.COMPLETED' | translate">
+        <ng-template ngbTabContent>
+          <div class="appointment-body-content completed-tab">
+            <div class="appointment-card appointment-cursor-d"  *ngFor="let item of appointmentDetails.completedAppointmentDetails">
+              <div class="appointmentInfo noshowstatus">
+                <p class="rescheduletxt">{{'MY_APPOINTMENTS.COMPLETED' | translate}}</p>
+              </div>
+              <div class="cardBody">
+                <h2>{{item.patientStudyDetail}}</h2>
+                <div class="rescheduleInfo">
+                  {{'MY_APPOINTMENTS.EXAM_PERFORMED_ON' | translate}} {{item.date}} @ {{item.time}}
+                </div>
+              </div>
+            </div>
+            <div class="appointment-card noRecordFound" *ngIf="appointmentDetails.completedAppointmentDetails.length == 0">
+              <div class="appointmentInfo"><i class="fa fa-exclamation"></i></div>
+              <div class="cardBody">
+                <h4>{{'MY_APPOINTMENTS.NO_COMPLETED_EXAMS' | translate}}.</h4>
+                <p>{{'MY_APPOINTMENTS.CHECK_BACK_LATER' | translate}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+
+  </div>
+</section>

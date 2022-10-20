@@ -15,6 +15,7 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 
 
 declare const $: any;
@@ -29,6 +30,7 @@ export class PatientComponent implements OnInit {
 
   @ViewChild('hiddenSavedSearchPopUpButton', { static: false }) hiddenSavedSearchPopUpButton: ElementRef;
   @ViewChild('hiddenShowopenLinkPopUp', { static: false }) hiddenShowopenLinkPopUp: ElementRef;
+  @ViewChild('hiddenShowopenLinkPopUpPatient', { static: false }) hiddenShowopenLinkPopUpPatient: ElementRef;
   @ViewChild('hiddenDisMessagePopUp', { static: false }) hiddenDisMessagePopUp: ElementRef;
   @ViewChild('LogsPopup', { static: false }) LogsPopup: ElementRef;
   @ViewChild('BillingPopup', { static: false }) BillingPopup: ElementRef;
@@ -56,6 +58,8 @@ export class PatientComponent implements OnInit {
   g: any = 20;
   h: any = 20;
   selectedRows: any = [];
+  patientPortalLink:any;
+  DomainURL : string;
   Issubmitted: boolean = false;
   isColumnVisible: boolean = false;
   GenerateEsignLinkList: any = [];
@@ -155,6 +159,7 @@ export class PatientComponent implements OnInit {
   constructor(private fb: FormBuilder, private readonly patientService: PatientService, private readonly notificationService: NotificationService,
     private readonly _commonMethodService: CommonMethodService//,public datepipe:DatePipe
     , private readonly storageService: StorageService,
+    private readonly patientPortalService : PatientPortalService,
     private commonService: CommonMethodService,
     private datePipe: DatePipe, private route: ActivatedRoute
   ) {
@@ -169,6 +174,7 @@ export class PatientComponent implements OnInit {
   ngOnInit() {
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.currentPageUrl = window.location.href;
+    this.DomainURL = document.location.origin;
     this.commonService.setTitle('Patient');
     this.setGridSetting();
     this.getFinancialType();
@@ -357,7 +363,8 @@ export class PatientComponent implements OnInit {
       { value: '30', Text: 'Show Missing Patient' },
       { value: '31', Text: 'Charge A No Show Fee' },
       { value: '32', Text: 'Remove No Show Fee' },
-      { value: '33', Text: 'Do Not Send SMS' }
+      { value: '33', Text: 'Do Not Send SMS' },
+      { value: '34', Text: 'Generate Patient Portal Link'}
     ];
   }
 
@@ -1556,6 +1563,20 @@ export class PatientComponent implements OnInit {
             alertType: 400
           });
         }
+      }
+      else if (this.ddlCurrentValue == '34') {
+        var patientdata = {
+          'patientId': this.checkedData[0].PATIENTID,
+          'domainUrl': this.DomainURL
+        }
+        this.patientPortalService.getPatientPortalLink(patientdata).subscribe((res) => {
+        this.patientPortalLink = res.result;
+        this.hiddenShowopenLinkPopUpPatient.nativeElement.click();
+        },
+          (err: any) => {
+            this.error(err);
+          });
+
       }
       // else if (DropDownObject.value == '32') {
       //   let internalPatientIds = '';
