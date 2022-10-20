@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { LoaderComponent } from './components/loader/loader.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
  import { CKEditorModule } from 'ng2-ckeditor';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -51,6 +51,8 @@ import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 import { OnlyNumbersWithoutCommaDirective } from './directives/only-numbers-without-comma-directive';
 import { SchdFacilitiesComponent } from '../facillities/facility-management/schd-facilities/schd-facilities.component';
 import { DocumentManagerFacilityComponent } from '../facillities/facility-management/document-manager-facility/document-manager-facility.component';
+import { InputSpaceTrimDirective } from './directives/input-space-trim.directive';
+import { USDBasedCommaSeprationDirective } from './directives/usd-based-comma-sepration.directive';
 //export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -63,7 +65,7 @@ const maskConfig: Partial<IConfig> = {
     ProgressComponent, SendDocumentComponent, CreateAlertComponent, NegativeSignRemovePipe,
     CurrencyInputDirective, DocumentReferralAndFundingcoComponent, InvalidTabHighlightDirective,
     InvalidControlTabContainerDirective, FilterPipe,PrescreeningSmallWindowComponent,PrescreengridComponent,
-    BrokerComponent,OnlyNumbersDirective,OnlyNumbersWithoutCommaDirective, SchdFacilitiesComponent,DocumentManagerFacilityComponent],
+    BrokerComponent,OnlyNumbersDirective,OnlyNumbersWithoutCommaDirective, SchdFacilitiesComponent,DocumentManagerFacilityComponent,InputSpaceTrimDirective, USDBasedCommaSeprationDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -125,10 +127,13 @@ const maskConfig: Partial<IConfig> = {
     PrescreeningSmallWindowComponent,
     PrescreeningSmallWindowRoutingModule,
     SchdFacilitiesComponent,
-    DocumentManagerFacilityComponent
-
+    DocumentManagerFacilityComponent,
+    OnlyNumbersDirective,
+    OnlyNumbersWithoutCommaDirective,
+    InputSpaceTrimDirective,
+    USDBasedCommaSeprationDirective
   ],
-  providers: [PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
+  providers: [FormControlName,PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<any> {

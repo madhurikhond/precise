@@ -119,5 +119,10 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
+  getTotalAmountToPay(showGlobalLoader : boolean= true,frontendJsonInput:string){
+    return this._httpService.post(`BlockLeaseScheduler/GetTotalAmountToPay`,frontendJsonInput,showGlobalLoader,true).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 

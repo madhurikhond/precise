@@ -1,0 +1,41 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Invoice</h5>
+        <div class="close-dismiss"></div>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <div class="modal-body">       
+        <form class="theme-form" [formGroup]="payInvoiceForm">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="theme-label">Check #</div>
+                        <div class="input-group">
+                             <input type="text" class="form-control"
+                                formControlName="checkId" appInputSpaceTrim>
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <div class="theme-label">Check Date</div>
+                        <div class="input-group icon-active">
+                            <dx-date-box #dob type="date" dateSerializationFormat="MM/dd/yyyy" [showClearButton]="true"
+                                [useMaskBehavior]="true" [(ngModel)]="dobModel"  [(value)]="currentDate"  >
+                            </dx-date-box>
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <div class="theme-label">Check Amount</div>
+                        <div class="input-group">
+                             <input type="text" class="form-control"  appInputSpaceTrim appUSDBasedCommaSepration
+                                formControlName="checkAmount" >
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">    
+        <button type="button" class="btn btn-theme" [disabled]="!payInvoiceForm.valid" (click)="abc($event)" [ngStyle]="{'background-color':(!payInvoiceForm.valid)? '#bfbfbf' : '#3b8beb'}">Mark As Paid</button>  
+        <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="cancel()">Cancel</a>
+    </div>
+</div>

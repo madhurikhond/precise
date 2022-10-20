@@ -10,6 +10,8 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
 declare const $: any;
 
 @Component({
@@ -116,6 +118,9 @@ export class SchdFacilitiesComponent implements OnInit {
   ckConfig: any;
   mycontent: string;
   log: string = '';
+  btnActive:number=0;
+  leaseIdArray:any=[];
+  creditIdArray:any=[];
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
@@ -144,7 +149,7 @@ export class SchdFacilitiesComponent implements OnInit {
   //  }
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
-    private readonly blockleasescheduler: BlockLeaseSchedulerService,
+    private readonly blockleasescheduler: BlockLeaseSchedulerService, private modalService: NgbModal,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
     facilityService.sendDataToschdFacilities.subscribe(res => {
@@ -2637,6 +2642,50 @@ export class SchdFacilitiesComponent implements OnInit {
   onPageNumberChangeUnpaidLesaes(pageNumber: any) {
     this.pageNumberOfUnpaidLeases = pageNumber;
     this.getUnpaidLeases();
+  }
+  onSelectionChangedLease(el)
+  {
+    var leaseID:any=[];
+    if(el.selectedRowsData.length!==0)
+    {
+      this.btnActive=1;
+      el.selectedRowsData.forEach(i => {
+        leaseID.push(i.LeaseId)
+      });
+      this.leaseIdArray=leaseID;
+    }
+    else
+    {
+      this.btnActive=0;
+    }
+  }
+  onSelectionChangedCredit(ec)
+  {
+    var CreditID:any=[];
+    if(ec.selectedRowsData.length!==0)
+    {
+      ec.selectedRowsData.forEach(i => {
+        CreditID.push(i.CreditId)
+      });
+      this.creditIdArray=CreditID;
+    }
+  }
+  UnpaidButtonClick(e)
+  {
+    var leaseIdListTemp=this.leaseIdArray?this.leaseIdArray.join(","):'';
+    var creditIdListTemp=this.creditIdArray?this.creditIdArray.join(","):'';
+    var data={
+      "LeaseId": leaseIdListTemp,
+      "CreditId": creditIdListTemp
+    }
+    this.blockleasescheduler.getTotalAmountToPay(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if(res.response[0].TotalAmount)
+      {
+        const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+        modalRef.componentInstance.TotalAmount = res.response[0].TotalAmount;
+      }
+    });
+    
   }
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
