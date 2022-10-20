@@ -408,19 +408,7 @@ export class OrderedSchedulerComponent implements OnInit {
           e.cellElement.style.backgroundColor = "green";
         }
       }
-      if (e.data.Color) {
-        if (e.data.Color.toLowerCase() == 'green') {
-          e.cellElement.style.backgroundColor = "green";
-        }
-        else if (e.data.Color.toLowerCase() == 'yellow') {
-          e.cellElement.style.backgroundColor = "yellow";
-        }
-        else if (e.data.Color.toLowerCase() == 'red') {
-          e.cellElement.style.backgroundColor = "red";
-        }
-      }
-
-
+      
     }
   }
 
@@ -1606,7 +1594,9 @@ export class OrderedSchedulerComponent implements OnInit {
             alertHeader: res.responseCode == ResponseStatusCode.OK ? 'Success' : 'Error',
             alertMessage: res.message,
             alertType: res.responseCode
-          });
+          }); 
+          this.closePopup();
+          this.onSearchSubmit();
         }
       },
         (err: any) => {

@@ -18,6 +18,7 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PatientService } from '../../../../services/patient/patient.service';
 import { ConstantPool } from '@angular/compiler';
 import { Console } from 'console';
+import { environment } from '../../../../../environments/environment';
 declare const $: any;
 
 @Component({
@@ -31,6 +32,7 @@ declare const $: any;
 })
 export class DocumentManagerComponent implements OnInit, AfterViewInit {
   eventsSubject: Subject<void> = new Subject<void>();
+  apiUrl: string;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -136,6 +138,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       onItemClick: this.onItemClick.bind(this)
     };
     this.onItemClick = this.onItemClick.bind(this);
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
   }
 
@@ -294,23 +297,26 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
 
   }
-  getFilesByKey(name: any, path: any, text: any) {
+  getFilesByKey(name: any, path: any, text: any, e: any) {
     this.documentmanagerService.getFilesByKey(true, JSON.stringify(path)).subscribe((res) => {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
         if (text == 'Open') {
-          this.displayFile(name, this.path);
+          this.displayFile(name, e.file.dataItem.filePath);
         }
         else if (text == 'Download Selected') {
           this.downloadFile(this.selectedFileNames, this.path);
         }
+      }
+      if (text == 'Download Selected') {
+        this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
       }
     })
   }
   onItemClick(e) {
     if (e.itemData.text == 'Open') {
       if (this.selectedFileKeys.length == 1) {
-        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text)
+        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
         // this.displayFile(e.fileSystemItem.dataItem.name, this.path);
         // call the Api here. It takes 1 parameter the base64 string
       }
@@ -325,8 +331,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
       if (this.selectedFileKeys.length == 1) {
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-        this.getFilesByKey('', this.path, e.itemData.text)
-        this.clearSelectedFields();
+        //this.getFilesByKey(this.selectedFileNames, this.path, e.itemData.text, e)
+        //this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
         this.getFilesByKeys(e.itemData.text)
@@ -478,7 +484,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     if (this.selectedFileNames) {
       this.selectedFileKeys = e.selectedItemKeys;
       var fileExtension = this.selectedFileNames.split('.').pop();
-
+      this.documentmanagerService.getFilesByKey(true, JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => {
+        if (res.response != null) {
+          console.log()
+          this.path = JSON.parse(res.response).Base64;
+        }
+      })
       if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
         this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
       }
@@ -521,17 +532,28 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     link.click();
   }
   selectedFileDisplay(e) {
-    this.getFilesByKey(e.file.dataItem.name, e.file.dataItem.filePath, 'Open')
+    this.getFilesByKey(e.file.dataItem.name, e.file.dataItem.filePath, 'Open', e)
+  }
+  downloadFileFromUrl(fileName, fileData) {
+    this.fileName = fileName;
+    fileData = this.apiUrl + 'DocumentManager/Download?path=' + fileData;
+
+    const source = fileData;
+    const link = document.createElement('a');
+    link.href = source;
+    link.download = `${fileName}`
+    link.click();
   }
 
   displayFile(fileName: string, fileData: any) {
-    if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
-      fileData = 'data:image/png;base64,' + fileData;
-    }
-    else if (fileName.match(/.(pdf)$/i)) {
-      fileData = 'data:application/pdf;base64,' + fileData;
-    }
+    //if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
+    //  fileData = 'data:image/png;base64,' + fileData;
+    //}
+    //else if (fileName.match(/.(pdf)$/i)) {
+    //  fileData = 'data:application/pdf;base64,' + fileData;
+    //}
     this.fileName = fileName;
+    fileData = this.apiUrl + 'DocumentManager/Download?path=' + fileData;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
@@ -822,7 +844,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     else if (type == 'Download Selected') {
       paths = this.selectedFileItems.map(m => m.filePath);
-    } 
+    }
     paths.forEach(res => {
       IdString = paths + ","
     })
@@ -962,7 +984,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
   }
   closeScannerPopup($event) {
-    if ($event && this.startText=='Close Scanner') {
+    if ($event && this.startText == 'Close Scanner') {
       this.toggleStartDemo();
     }
   }

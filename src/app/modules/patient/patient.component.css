@@ -1,3 +1,7 @@
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #ccc !important;
+  font-weight: bold !important;
+}
 .link-btn 
 {
   color: #3b8beb;
