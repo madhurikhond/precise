@@ -20,7 +20,7 @@
     <aside class="sidebar">
       <ul>
         <li class="c-pointer" (click)="gotoHome()"><i class="fa fa-home"></i>{{'PATIENT_HOME.HOME_PAGE' | translate}}</li>
-        <li class="c-pointer" (click)="downloadSignFile()"><i class="fa fa-newspaper-o"></i>{{'PATIENT_HOME.MEDICAL_LIEN' | translate}}</li>
+        <li class="c-pointer" *ngIf="showMedicalLien" (click)="downloadSignFile()"><i class="fa fa-newspaper-o"></i>{{'PATIENT_HOME.MEDICAL_LIEN' | translate}}</li>
         <li class="c-pointer" (click)="gotoContact('patient-basic-contact-info')"><i class="fa fa-phone"></i>{{'PATIENT_HOME.CONTACT_INFO' | translate}}</li>
         <li class="c-pointer" (click)="gotoScreening('pre-screening-question')"><i class="fa fa-list-ol"></i>{{'PATIENT_HOME.SCREENING_QUESTIONS' | translate}}</li>
         <li class="c-pointer" (click)="gotoAppointment('my-appointment')"><i class="fa fa-calendar-o"></i>{{'PATIENT_HOME.MY_APPOINTMENTS' | translate}}</li>

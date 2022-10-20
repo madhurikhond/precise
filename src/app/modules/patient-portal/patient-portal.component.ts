@@ -24,6 +24,7 @@ export class PatientPortalComponent implements OnInit {
   currentLanguage: string;
   showPregnantPdf:boolean = false;
   isPregnant: boolean = false;
+  showMedicalLien: boolean = false;
 
   constructor(private readonly patientPortalService: PatientPortalService, private patientService: PatientService,
     public storageService: StorageService, public notificationService: NotificationService, public datePipe: DatePipe, public translate: TranslateService, private readonly router: Router) {
@@ -95,7 +96,9 @@ export class PatientPortalComponent implements OnInit {
     if(this.patientPortalService.isPregnancyWaiverDownloadable == true)
       this.showPregnantPdf = true;
 
-
+    if (this.patient.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY
+              || this.patient.financialTypeName == PatientFinancialTypeName.BROKER)
+      this.showMedicalLien = true;
   }
 
   menuToggle(){
