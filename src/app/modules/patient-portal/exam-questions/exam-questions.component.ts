@@ -646,9 +646,14 @@ export class ExamQuestionsComponent implements OnInit {
       if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === 'Yes') {
         if (this.examQuestionForMRIwithoutContrast.mriProcedure === '' || this.examQuestionForMRIwithoutContrast.mriProcedure === null)
           this.examQuestionForm.setErrors({ 'invalid': true });
+          if (this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes')
+            this.examQuestionForm.setErrors(null);
         if (this.examQuestionForMRIwithoutContrast.mriProcedure === 'No') {
           if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === null)
             this.examQuestionForm.setErrors({ 'invalid': true });
+        }
+        if((this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === 'Yes' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === 'No')&&(this.examQuestionForMRIwithoutContrast.mriProcedure != '' || this.examQuestionForMRIwithoutContrast.mriProcedure != null)){
+          this.examQuestionForm.setErrors(null);
         }
       } else {
         this.examQuestionForm.setErrors(null);

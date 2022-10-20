@@ -72,7 +72,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 background: #F7F6F6;
 }
 
-.appointmentSec .nav.nav-pills .nav-item:nth-child(3) {
+.appointmentSec .nav.nav-pills .nav-item:nth-child(3) a {
 border-radius: 0 6px 6px 0;
 border: 1px solid #3D8AF7;
 border-left: none;
@@ -84,23 +84,23 @@ border-radius: 0;
 font-size: 15px;
 font-family: 'exo 2';
 font-weight: 500;
-padding: 8px 14px;
+padding: 6px 4px;
 }
 
-.appointmentSec .nav.nav-pills .nav-item:nth-child(3) a {
+/* .appointmentSec .nav.nav-pills .nav-item:nth-child(3) a {
 border-right: 0;
-}
+} */
 
-.appointmentSec .nav.nav-pills .nav-item:nth-child(1) {
+.appointmentSec .nav.nav-pills .nav-item:nth-child(1) a{
 border-radius: 6px 0 0 6px;
 
 border: 1px solid #3D8AF7;
 border-right: none;
 }
-.appointmentSec .nav.nav-pills .nav-item:nth-child(2) {
+.appointmentSec .nav.nav-pills .nav-item:nth-child(2) a {
   border: 1px solid #3D8AF7;
-  border-left: none;
-  border-right: none;
+  /* border-left: none; */
+  /* border-right: none; */
 }
 
 .appointmentSec .nav.nav-pills .nav-item:nth-child(1) .nav-link.active {
@@ -112,6 +112,13 @@ border-radius: 0 6px 6px 0;
 
 .appointmentSec .nav.nav-pills {
 margin-bottom: 26px;
+width: 100%;
+display: grid;
+grid-template-columns: 33.333% 33.333% 33.333%;
+padding: 0;
+}
+.es-lang .appointmentSec .nav.nav-pills {
+  grid-template-columns: 24.333% 47.333% 27.333%;
 }
 .main-content canvas {
   position: inherit;
@@ -127,38 +134,23 @@ margin-bottom: 26px;
     width: 100%;
 }
 
-.appointmentSec .nav.nav-pills .nav-item a {
-  font-size: 12px;
-  padding: 5px 9px;
+.appointmentSec .nav.nav-pills {
+  grid-template-columns: 26.333% 43.333% 28.333%;
+}
+.es-lang .appointmentSec .nav.nav-pills {
+  grid-template-columns: 22.333% 54.333% 24.333%;
 }
 .login-page .login-right .patient-login .center-login .title-group .title img {
   width: 100%;
 }
-
+.login-page .login-right .patient-login .center-login .form-btn .form-main-btn
+{
+  font-size:10px !important;
 }
-@media screen and (width:375px) {
-.appointmentSec .nav.nav-pills .nav-item a {
+.appointmentSec .nav.nav-pills .nav-item a{
   font-size: 12px;
-  padding: 5px 13px;
 }
 
-}
-@media screen and (min-width:412px) and (max-width:414px) {
-.appointmentSec .nav.nav-pills .nav-item a {
-  font-size: 12px;
-  padding: 5px 19px;
-}
-}
-
-@media screen and (width:360px) {
-  .appointmentSec .nav.nav-pills .nav-item a {
-    padding: 5px 10px;
-}
-}
-@media screen and (width:390px) {
-  .appointmentSec .nav.nav-pills .nav-item a {
-    padding: 5px 15px;
-}
 }
 
 
