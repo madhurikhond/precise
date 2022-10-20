@@ -916,18 +916,23 @@ export class SchdFacilitiesComponent implements OnInit {
     else 
     {
       debugger
-
-    var test = this.modalityMriForm.controls["mri1ResourceName"].value;
-   
-   // alert('Test ' + test);
-    
-   
-        if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
-        {
-          this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
-        }
-        
-      
+      if(Modality='ct')
+      {
+        var test = this.modalityCtForm.controls["ct1ResourceName"].value;
+        // alert('CT Test ' + test);        
+             if(this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId)
+             {
+               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+             }
+      }
+      else{
+        var test = this.modalityMriForm.controls["mri1ResourceName"].value;
+        // alert('MRI Test ' + test);        
+             if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
+             {
+               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+             }
+      }
     
     }
   }
