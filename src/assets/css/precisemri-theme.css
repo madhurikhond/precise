@@ -7173,4 +7173,6 @@ ngb-modal-window.modal{
 .theme-form .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
     display: block;
 }
-
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled{
+	font-weight: bold;
+}
