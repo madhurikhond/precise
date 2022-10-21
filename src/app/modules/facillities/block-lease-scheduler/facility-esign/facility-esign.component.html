@@ -1,0 +1,119 @@
+<div [ngClass]="{'d-none':alreadySignedbodyDisabled}">
+    <div class="esign-request-body" id="facilityEsignbody" *ngIf="!alreadySignedbodyDisabled">
+        <div class="esign-request-main esign-request-main-group">
+            <div id="englishpatient" class="esign-request" style="display: block;">
+                <div class="esign-header">
+                    <div class="esign-header-left">
+                        <img src="assets/images/radflowsolutions-logo.png" class="logo">
+                    </div>
+                </div>
+                <div class="esign-header-title"> <span id="lblepftype" class="page-title">LEASE AGREEMENT</span>
+                </div>
+                <div class="paragraph-group">
+                    <p> <strong>This LEASE AGREEMENT .</strong></p>
+                    This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
+                    {{LeaseDetail.createdOn}} (the "Effective Date") by and between {{LeaseDetail.FacilityParentName }}
+                    (hereinafter referred to as
+                    the "Lessor") and Precise MRI Corp., dba Precise Imaging, a California Corporation (here in after
+                    referred
+                    to as the “Lessee").
+                </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">PLEASE SIGN YOUR LEASE AGREEMENT</h5>
+                        <div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
+                    </div>
+                    <form name="form"
+                        (ngSubmit)="f.form.valid && (lastName.valid && Title.valid && firstName.valid && model.signature!='') && submitSign(true)"
+                        #f="ngForm" class="theme-form" novalidate>
+                        <div class="modal-body">
+                            <div class="modal-body-inner">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Title</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="Title"
+                                                    [(ngModel)]="model.Title" #Title="ngModel"
+                                                    [ngModelOptions]="{ standalone : true }"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && Title.invalid }"
+                                                    required />
+                                            </div>
+                                            <div *ngIf="f.submitted && Title.invalid" class="invalid-feedback">
+                                                <div *ngIf="Title.errors.required">Title is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">First Name</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="firstName"
+                                                    [(ngModel)]="model.firstName" #firstName="ngModel"
+                                                    [ngModelOptions]="{ standalone : true }"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }"
+                                                    required />
+                                            </div>
+                                            <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+                                                <div *ngIf="firstName.errors.required">First Name is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div class="theme-label">Last Name</div>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="lastName"
+                                                    [(ngModel)]="model.lastName" #lastName="ngModel"
+                                                    [ngModelOptions]="{ standalone : true }"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }"
+                                                    required />
+                                            </div>
+                                            <div *ngIf="f.submitted && lastName.invalid" class="invalid-feedback">
+                                                <div *ngIf="lastName.errors.required">Last Name is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <div
+                                                [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                                                <signature-pad [options]="signaturePadOptions"
+                                                    [(ngModel)]="model.signature"
+                                                    [ngModelOptions]="{ standalone : true }"
+                                                    [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
+                                                    #signature="ngModel" (onEndEvent)="drawComplete()">
+                                                </signature-pad>
+                                            </div>
+                                            <div *ngIf="f.submitted && model.signature==''" class="invalid-feedback">
+                                                <div>signature is required</div>
+                                            </div>
+                                        </div>
+                                        <a href="javascript:void(0)" (click)="clearSign();"
+                                            style="background-color: gray;" class="btn btn-theme btn-sm">Clear
+                                            Signature</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" style="float: left;"
+                                [disabled]="(firstName.invalid || Title.invalid || lastName.invalid || model.signature =='') ? true:false"
+                                [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                                class="btn btn-theme btn-sm pull-left">Sign</button>
+                            <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
+                                data-dismiss="modal" #closeBtn (click)="signConfirm(false)">Clear</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="esign-successful" *ngIf="alreadySignedbodyDisabled">
+    <img src="assets/images/award.png">
+    <p>We have received your eSigned, thank you.</p>
+</div>

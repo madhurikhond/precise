@@ -124,5 +124,15 @@ export class BlockLeaseSchedulerService {
       map((res:ApiResponse) => res)
     );
   }
+  validateEmailLinkAndSaveFacilitySign(showGlobalLoader: boolean = true, body: any) {
+    return this._httpService.post(`BlockLeaseScheduler/ValidateEmailLinkAndSaveFacilitySign`, body, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
+  getLeaseDetail(showGlobalLoader: boolean = true, key: string) {
+    return this._httpService.post(`BlockLeaseScheduler/GetLeaseDetail`, key, showGlobalLoader,true).pipe(
+      map((res: ApiResponse) => res)
+    );   
+  }
 }
 

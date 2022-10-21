@@ -31,7 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
         url.indexOf('/forgot-password') < 0 &&
         url.indexOf('/unauthorize-access') < 0 &&
         url.indexOf('/prescreengrid') < 0 &&
-        url.indexOf('/patient/esignrequest') < 0) {
+        url.indexOf('/patient/esignrequest') < 0 &&
+        url.indexOf('/facilities/3p-block-lease-scheduler/facility-esign') < 0) {
         this._storageService.LastPageURL = this._router.url;
       }
       this.makeActiveTAB();

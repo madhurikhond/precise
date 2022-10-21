@@ -218,9 +218,10 @@ export class CalendarSchedulerComponent implements OnInit {
             'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
             'modality': null,
             'resourceId': 0
-        }       
+        } 
+           
         this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
-            if (res.response != null) {
+            if (res.response) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = true;
                 modalRef.result.then().catch((reason: ModalResult | any) => {
@@ -415,7 +416,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
             if (res.response) {
                 if (res.responseCode == 200) {
-                    this.notificationService.showNotification({
+                    this.notificationService.showNotification({ 
                         alertHeader: 'Success',
                         alertMessage: res.response.message,
                         alertType: res.response.ResponseCode
