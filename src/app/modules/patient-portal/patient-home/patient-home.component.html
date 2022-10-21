@@ -20,24 +20,22 @@
           <div class="menuIcon"><i class="fa fa-newspaper-o"></i></div>
           <div class="cardBody">
             <h2>{{'PATIENT_HOME.MEDICAL_LIEN' | translate}}</h2>
-            <div class="pdfIocn" (click)="downloadSignFile()" style="cursor: pointer !important;">
-              <img src="../../../../assets/images/pdfIcon.png" />
+            <div class="pdfIocn" >
+              <img src="../../../../assets/images/pdfIcon.png" (click)="downloadSignFile()" style="cursor: pointer !important;"/>
             </div>
           </div>
           <div class="statusIcon"><i class="fa fa-check-circle-o"></i></div>
         </div>
-      
+
       <a (click)="gotoContact('patient-basic-contact-info')">
         <div class="welcomeMenu-card">
           <div class="menuIcon"><i class="fa fa-phone"></i></div>
           <div class="cardBody">
             <h2>{{'PATIENT_HOME.CONTACT_INFO' | translate}}</h2>
           </div>
-          <div class="statusIcon">
-            <i class="fa"
-              [ngClass]="{'fa-check-circle-o': contactInfoIcon}"></i>
-              <p *ngIf="!contactInfoIcon" class="pending-action">{{'PATIENT_HOME.PENDING' | translate}}</p>
-          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': contactInfoIcon,'fa-hourglass-half': !contactInfoIcon}"></i>
+        </div>
         </div>
       </a>
       <a (click)="gotoScreening('pre-screening-question')">
@@ -46,11 +44,9 @@
           <div class="cardBody">
             <h2>{{'PATIENT_HOME.SCREENING_QUESTIONS' | translate}}</h2>
           </div>
-          <div class="statusIcon">
-            <i class="fa"
-            [ngClass]="{'fa-check-circle-o': screningInfoIcon}"></i>
-            <p *ngIf="!screningInfoIcon" class="pending-action">{{'PATIENT_HOME.PENDING' | translate}}</p>
-          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': screningInfoIcon,'fa-hourglass-half': !screningInfoIcon}"></i>
+        </div>
         </div>
       </a>
       <a (click)="gotoAppointment('my-appointment')">
@@ -67,15 +63,13 @@
           <div class="menuIcon"><img src="../../../../assets/images/pregnentIcon.png" /></div>
           <div class="cardBody">
             <h2>{{'PATIENT_HOME.PREGNANCY_WAIVER' | translate}}</h2>
-            <div class="pdfIocn" (click)="downloadSignPregnancyFile()" style="cursor: pointer !important;">
-              <img src="../../../../assets/images/pdfIcon.png" />
+            <div class="pdfIocn">
+              <img src="../../../../assets/images/pdfIcon.png" (click)="downloadSignPregnancyFile()" style="cursor: pointer !important;"/>
             </div>
           </div>
-          <div class="statusIcon">
-            <i class="fa"
-            [ngClass]="{'fa-check-circle-o': showPregnantPdf}"></i>
-            <p *ngIf="!showPregnantPdf" class="pending-action">{{'PATIENT_HOME.PENDING' | translate}}</p>
-          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': showPregnantPdf,'fa-hourglass-half': !showPregnantPdf}"></i>
+        </div>
         </div>
       </a>
       <div class="call-text-box">

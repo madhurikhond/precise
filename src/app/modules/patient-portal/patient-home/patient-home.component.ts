@@ -71,7 +71,7 @@ export class PatientHomeComponent implements OnInit {
               this.setLanguage = false;
 
             this.translate.use(this.currentLanguage);
-          
+
             if (this.patientPortalService.isPregnancyWaiverEnable == true)
             {
                   this.isPregnant = true;
@@ -80,7 +80,8 @@ export class PatientHomeComponent implements OnInit {
               this.showPregnantPdf = true;
             if (this.patientPortalService.remainingStudyCount > 0)
               this.screningInfoIcon = false;
-
+            else
+            this.screningInfoIcon = true;
             if (this.patient.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY
               || this.patient.financialTypeName == PatientFinancialTypeName.BROKER)
                 this.showMedicalLien = true;
@@ -89,9 +90,9 @@ export class PatientHomeComponent implements OnInit {
 
 
   setPatientRecords() {
-    
+
     this.storageService.removePatientPreScreening();
- 
+
     this.storageService.removePatientPregnancy();
     var data = {
       mobileNumber: this.patient.cellPhone == null ? this.patient.homePhone : this.patient.cellPhone
@@ -100,7 +101,7 @@ export class PatientHomeComponent implements OnInit {
     {
       this.patientPortalService.patientScreeningQuestion = JSON.parse(this.storageService.PatientStudy);
     }
-    
+
     this.patientPortalService.GetPatientsByNumber(data, true).subscribe((res: any) => {
       if (res) {
         if (res.responseStatus == patientPortalResponseStatus.Success && res.result.length > 0) {
@@ -137,7 +138,7 @@ export class PatientHomeComponent implements OnInit {
 
             if (this.patientPortalService.remainingStudyCount == 0 || this.storageService.PatientStudy)
               this.screningInfoIcon = true;
-            
+
             if(this.storageService.PatientPreScreening)
             {
               if(this.storageService.PatientPreScreening == 'true')
@@ -162,7 +163,7 @@ export class PatientHomeComponent implements OnInit {
               this.showPregnantPdf = true;
             if (this.patientPortalService.remainingStudyCount > 0)
               this.screningInfoIcon = false;
-            
+
             if (this.patient.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY
               || this.patient.financialTypeName == PatientFinancialTypeName.BROKER)
                 this.showMedicalLien = true;
@@ -205,9 +206,9 @@ export class PatientHomeComponent implements OnInit {
   }
 
   gotoScreening(navigate: string) {
-    if (this.contactInfoIcon) {    
+    if (this.contactInfoIcon) {
       if(this.storageService.PatientStudy)
-        this.router.navigate([navigate]);  
+        this.router.navigate([navigate]);
       else
       {
       if (this.patientPortalService.totalStudyCount > 0 || this.patientPortalService.remainingStudyCount > 0){
