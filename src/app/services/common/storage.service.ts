@@ -12,6 +12,7 @@ const PATIENT_LANGUAGE = 'lang';
 const PATIENT_STUDY = 'p_study';
 const PATIENT_PREGNANCY = 'p_pregnancy';
 const PATIENT_PRESCREENING = 'p_prescreening';
+const PATIENT_TIMEOUT = 'p_timeout';
 const LAST_PAGE_URL = 'last_page_url';
 //const User_Role = 'user_permission';
 const EXPAND_ROWS = 'expand_rows';
@@ -52,6 +53,14 @@ export class StorageService {
 
   public set JWTToken(token: string) {
     localStorage.setItem(JWT_TOKEN, JSON.stringify(token));
+  }
+
+  public set PTimeout(date: string) {
+    localStorage.setItem(PATIENT_TIMEOUT, date);
+  }
+
+  public get PTimeout():string {
+    return localStorage.getItem(PATIENT_TIMEOUT);
   }
 
   public set PartnerId(partnerId: string) {
@@ -221,4 +230,9 @@ export class StorageService {
     }else
       return false;
   }  
+
+  addHours(numOfHours, date = new Date()) {
+    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+    return date;
+  }
 }

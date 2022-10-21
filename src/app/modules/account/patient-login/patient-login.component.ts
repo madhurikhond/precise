@@ -71,6 +71,7 @@ export class PatientLoginComponent implements OnInit {
     this.storageService.removePatientPreScreening();
     this.storageService.removePatientPregnancy();
     localStorage.removeItem("p_detail");
+    localStorage.removeItem("p_timeout");
   }
   languageChange(lang: any) {
     this.storageService.setPatientLanguage(lang);

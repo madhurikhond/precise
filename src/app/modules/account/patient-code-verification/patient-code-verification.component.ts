@@ -115,34 +115,36 @@ export class PatientCodeVerificationComponent implements OnInit {
     this.patientPortalService.VerifyVerificationCode(data, true).subscribe((res: any) => {
       if (res) {
         if (res.responseStatus == patientPortalResponseStatus.Success && res.result.isVerificationCodeVerified) {
-          if (this.patientPortalService.patientRecords.length > 1) {
-            this.router.navigate([PatientPortalURL.MULTIPLE_RECORD_FOUND]);
-          }
-          else {
-            var patient = this.patientPortalService.patientRecords[0];
-            this.patientPortalService.patientDetail.pageCompleted = patient.pageCompleted;
-            this.patientPortalService.uniqueId = patient.uniqueId;
-            this.patientPortalService.remainingStudyCount = patient.remainingStudyCount;
-            this.patientPortalService.totalStudyCount = patient.totalStudyCount;
-            this.patientPortalService.isPregnancyWaiverEnable = patient.isPregnancyWaiverEnable;
-            this.patientPortalService.isPregnancyWaiverDownloadable = patient.isPregnancyWaiverDownloadable;
-            this.patientPortalService.globalPageNumber = patient.pageCompleted;
-            this.storageService.setItem("p_detail", this.patientPortalService.patientDetail);
-
-            if (patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0) {
-              if (this.currentLanguage == "es")
-                this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], {
-                  queryParams:
-                    { patientid: patient.patientId, Token: patient.uniqueId }
-                });
-              else
-                this.router.navigate([PatientPortalURL.ESIGN_REQUEST], {
-                  queryParams:
-                    { patientid: patient.patientId, Token: patient.uniqueId }
-                });
-            }
-            else
-              this.router.navigate([PatientPortalURL.PATIENT_HOME]);
+            var expirydate = this.storageService.addHours(24);
+            this.storageService.PTimeout = expirydate.toJSON();      
+            if (this.patientPortalService.patientRecords.length > 1) {
+                  this.router.navigate([PatientPortalURL.MULTIPLE_RECORD_FOUND]);
+              }
+              else {
+                var patient = this.patientPortalService.patientRecords[0];
+                this.patientPortalService.patientDetail.pageCompleted = patient.pageCompleted;
+                this.patientPortalService.uniqueId = patient.uniqueId;
+                this.patientPortalService.remainingStudyCount = patient.remainingStudyCount;
+                this.patientPortalService.totalStudyCount = patient.totalStudyCount;
+                this.patientPortalService.isPregnancyWaiverEnable = patient.isPregnancyWaiverEnable;
+                this.patientPortalService.isPregnancyWaiverDownloadable = patient.isPregnancyWaiverDownloadable;
+                this.patientPortalService.globalPageNumber = patient.pageCompleted;
+                this.storageService.setItem("p_detail", this.patientPortalService.patientDetail);
+              
+                if (patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0) {
+                  if (this.currentLanguage == "es")
+                    this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], {
+                      queryParams:
+                        { patientid: patient.patientId, Token: patient.uniqueId }
+                    });
+                  else
+                    this.router.navigate([PatientPortalURL.ESIGN_REQUEST], {
+                      queryParams:
+                        { patientid: patient.patientId, Token: patient.uniqueId }
+                    });
+                }
+                else
+                  this.router.navigate([PatientPortalURL.PATIENT_HOME]);
          }
         }
         else {
