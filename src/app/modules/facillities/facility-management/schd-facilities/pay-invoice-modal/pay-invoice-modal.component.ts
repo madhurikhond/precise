@@ -46,6 +46,17 @@ export class PayInvoiceModalComponent implements OnInit {
     var x = this.payInvoiceFormControls.checkAmount.value.replace(/[^\w ]/g, '');
       console.log(x)
   }
+  keyPressAlphaNumeric(event) {
+
+    var inp = String.fromCharCode(event.keyCode);
+
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
   // delete() {
   //   this.modal.dismiss(ModalResult.DELETE);
   // }
