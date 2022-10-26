@@ -2615,6 +2615,38 @@ export class SchdFacilitiesComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+  deleteUnusedCredit(e)
+  {
+    var unUsedCreditId:string='';
+    if(e.data.CreditId)
+    {
+      unUsedCreditId=e.data.CreditId;
+      let body=
+      {
+        "unUsedCreditId": unUsedCreditId
+      }
+      this.blockleasescheduler.deleteUnusedCreditByCreditId(true,JSON.stringify(JSON.stringify(body)).toString()).subscribe((res)=>{
+        if(res)
+        {
+          if(res.response.ResponseCode==200)
+          {
+            this.showNotificationOnCreditDeleted(res.response);
+            this.getFacilityCreditsUnUsed();
+          }
+          else{
+            this.showNotificationOnCreditDeleted(res.response);
+          }
+        }
+      });
+    }
+  }
+  showNotificationOnCreditDeleted(data: any) {
+    this.notificationService.showNotification({
+      alertHeader: data.Message,
+      alertMessage: '',
+      alertType: data.ResponseCode
+    });
+  }
   onPageNumberChangeunUsedcredits(pageNumber: any) {
     this.pageNumberOfUnusedCredits = pageNumber;
     this.getFacilityCreditsUnUsed();

@@ -134,5 +134,10 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );   
   }
+  deleteUnusedCreditByCreditId(showGlobalLoader: boolean = true, frontendJsonInput: string) {
+    return this._httpService.post(`BlockLeaseScheduler/DeleteUnusedCreditById`, frontendJsonInput, showGlobalLoader,true).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
 }
 
