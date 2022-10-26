@@ -358,7 +358,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
     }
     GetAllParentFacilitiesByFacilityId() {
-        var otherFacilities: any = [];74
+        var otherFacilities: any = [];
         this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
             if (res.response.OtherFacilities) {
 
