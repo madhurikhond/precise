@@ -185,6 +185,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
         };
         scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
+        console.log(this.SchedulerDayWeekMonth);
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
         let displayClosedDays = [];
         if (this.allClosedDays) {
@@ -218,8 +219,8 @@ export class CalendarSchedulerComponent implements OnInit {
             'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
             'modality': null,
             'resourceId': 0
-        } 
-           
+        }
+
         this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
             if (res.response) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
@@ -287,7 +288,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     scheduler.endLightbox(false, null);
                     this.backToCalendar();
                 }
-                else if ((reason == 3 || reason == 6)) {
+                else if ((reason == 3 || reason == 6 || reason == 2 )) {
                     scheduler.deleteEvent(event.id);
                     this.GetBlockLeaseData();
                     this.backToCalendar();
@@ -316,7 +317,7 @@ export class CalendarSchedulerComponent implements OnInit {
         }
     }
     GetBlockLeaseData() {
-        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = []; this.autoBlockOffDays = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID).subscribe((res) => {
             if (res.response[0].BlockLeases)
                 this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
@@ -326,6 +327,8 @@ export class CalendarSchedulerComponent implements OnInit {
                 var forTimelineView = res.response[0].ModalityResources;
             if (res.response[0].AutoBlockOffDays)
                 this.autoBlockOffDays = res.response[0].AutoBlockOffDays;
+
+            console.log(this.autoBlockOffDays);
 
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
@@ -416,7 +419,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
             if (res.response) {
                 if (res.responseCode == 200) {
-                    this.notificationService.showNotification({ 
+                    this.notificationService.showNotification({
                         alertHeader: 'Success',
                         alertMessage: res.response.message,
                         alertType: res.response.ResponseCode

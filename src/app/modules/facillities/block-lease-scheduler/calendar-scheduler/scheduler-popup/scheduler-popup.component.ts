@@ -355,7 +355,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
         if (res.responseCode == 200) {
           this.showNotificationOnSucess(res);
-          this.modal.dismiss(ModalResult.SAVE);
+          this.modal.dismiss(ModalResult.OTHER);
         }
       }, (err: any) => {
         this.errorNotification(err);
@@ -612,5 +612,6 @@ export enum ModalResult {
   CLOSE = 3,
   CANCEL = 4,
   SAVE = 5,
-  DELETE = 6
+  DELETE = 6,
+  OTHER=2
 }
