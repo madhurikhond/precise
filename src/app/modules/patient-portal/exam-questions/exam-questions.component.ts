@@ -607,6 +607,7 @@ export class ExamQuestionsComponent implements OnInit {
         }
       }else if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'No'){
         this.examQuestionForm.setErrors(null);
+        this.checkField();
       }
     }else{
       this.examQuestionForm.setErrors({'invalid': true});
@@ -663,6 +664,7 @@ export class ExamQuestionsComponent implements OnInit {
         }
         if(this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes'){
             this.examQuestionForm.setErrors(null);
+            this.checkField();
         }
         else if(this.examQuestionForMRIwithoutContrast.mriProcedure === 'No'){
           this.examQuestionForm.setErrors({'invalid': true})
@@ -680,6 +682,7 @@ export class ExamQuestionsComponent implements OnInit {
       }
       if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === 'No'){
         this.examQuestionForm.setErrors(null);
+        this.checkField();
       }
     }
     if (this.isWithContrast) {
@@ -758,8 +761,23 @@ export class ExamQuestionsComponent implements OnInit {
     if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === null){
       this.examQuestionForm.setErrors({'invalid': true});
     }
+    if (this.isWithContrast) {
+      if (this.examQuestionForMRIwithContrast.isDiabetesHistory === '' || this.examQuestionForMRIwithContrast.isDiabetesHistory === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isCancerHistory === '' || this.examQuestionForMRIwithContrast.isCancerHistory === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isHighBloodPressure === '' || this.examQuestionForMRIwithContrast.isHighBloodPressure === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.mriAllergiesMedications === '' || this.examQuestionForMRIwithContrast.mriAllergiesMedications === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isKidneyProblem === '' || this.examQuestionForMRIwithContrast.isKidneyProblem === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+    }
   }
-
-
 }
 

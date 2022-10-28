@@ -103,6 +103,9 @@ export class ExamQuestionsForCtCrComponent implements OnInit {
       this.patientPortalService.patientScreeningQuestion.examQuestionForCtOrCr.studyId = examQuestionForCtOrCrOption[0].internalStudyId;
       this.patientPortalService.patientScreeningQuestion.examQuestionForCtOrCr.studyDescription = examQuestionForCtOrCrOption[0].studyDescription;
       this.patientPortalService.patientScreeningQuestion.examQuestionForCtOrCr.modalityName = examQuestionForCtOrCrOption[0].modality;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.modalityName = examQuestionForCtOrCrOption[0].modality;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.studyDescription = examQuestionForCtOrCrOption[0].studyDescription;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.studyId = examQuestionForCtOrCrOption[0].internalStudyId;
     }
     else{
       this.patientPortalService.patientScreeningQuestion.examQuestionForCtOrCr.studyId = this.patientPortalService.internalStudyIdDetails[0].internalStudyId;
