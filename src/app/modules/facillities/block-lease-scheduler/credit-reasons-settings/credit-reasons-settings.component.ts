@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/services/common/storage.service';
 })
 export class CreditReasonsSettingComponent implements OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('hiddenSignPopUp', { static: false }) hiddenSignPopUp: ElementRef;
   tabId: string = 'Reasons'
   columnResizingMode: string;
   resizingModes: string[] = ['widget', 'nextColumn'];
@@ -23,7 +24,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   reasonId: number = 0;
   esignId: number = 0;
   @ViewChild('f', { static: true }) f: NgForm | any;
-  model: any = { name: '', signature: '' };
+  model: any = { firstName: '', lastName: '', Title: '', signature: '' };
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
@@ -104,6 +105,9 @@ export class CreditReasonsSettingComponent implements OnInit {
     this.f.resetForm();
     this.signaturePad.clear();
     this.model.signature = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.Title = '';
   }
   ngAfterViewInit() {
     if (this.signaturePad) {
@@ -129,6 +133,9 @@ export class CreditReasonsSettingComponent implements OnInit {
           'ID': this.esignId,
           'UserId': this.storageService.user.UserId,
           'DefaultSign': this.model.signature,
+          'Title': this.model.Title,
+          'FirstName': this.model.firstName,
+          'LastName': this.model.lastName,
           'Operation': '1'
         }
       } else {
@@ -136,10 +143,12 @@ export class CreditReasonsSettingComponent implements OnInit {
           'ID': this.esignId,
           'UserId': this.storageService.user.UserId,
           'DefaultSign': this.model.signature,
+          'Title': this.model.Title,
+          'FirstName': this.model.firstName,
+          'LastName': this.model.lastName,
           'Operation': '2'
         }
       }
-
       this.blockLeaseSchedulerService.manageUserSettings(true, JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
         if (res) {
           this.closeBtn.nativeElement.click();
@@ -189,21 +198,32 @@ export class CreditReasonsSettingComponent implements OnInit {
       this.getReasonById(reasonId);
     }, 200);
   }
-  editEsign(esignId) {
+  editEsignNw(esignId) {
     this.submitted = false;
     this.esignId = esignId;
     if (this.esignList) {
       setTimeout(() => {
-        var wrapper = document.getElementById("signature-pad"),
+        this.hiddenSignPopUp.nativeElement.click();
+        this.model.firstName = this.esignList[0].FirstName;
+        this.model.lastName = this.esignList[0].LastName;
+        this.model.Title = this.esignList[0].Title;
+        var wrapper = document.getElementById("SettingSignaturePad"),
           canvas = wrapper.querySelector("canvas")
         var ctx = canvas.getContext("2d");
-        var image = new Image();
-        image.src = this.esignList[0].DefaultSign;
-        image.onload = function () {
-          ctx.drawImage(image, 0, 0);
+        console.log(ctx);
+        var img = new Image();
+        img.src = this.esignList[0].DefaultSign;
+        img.onload = function () {
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
         };
-      }, 200);
-      this.model.name = this.storageService.user.FullName;
+        this.model.signature = img.src;
+      }, 1200);
     }
   }
   getReasonById(reasonId) {

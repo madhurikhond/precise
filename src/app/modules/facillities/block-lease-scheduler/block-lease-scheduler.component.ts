@@ -30,7 +30,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 50;
   readonly pageSizeArray = PageSizeArray;
-
+  setUserEsignSetting:boolean=true;
   totalRecord: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
@@ -116,6 +116,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality));
+  }
+  setUserSetting(){
+
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
     modality: any): any {

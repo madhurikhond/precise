@@ -57,7 +57,7 @@
                                 <div *ngIf="esignList.length==0" class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
                                     <a href="javascript:void(0)" (click)="addEsign()"
                                         class="btn btn-theme btn-sm pull-left" data-toggle="modal"
-                                        data-target="#addEsign"><i class="fa fa-plus"></i> Add
+                                        data-target="#SignPopUp"><i class="fa fa-plus"></i> Add
                                         New Record</a>
                                 </div>
                             </div>
@@ -83,9 +83,8 @@
                                         <img id="imgSign" [src]="data.value" />
                                     </div>
                                     <div *dxTemplate="let data of 'editCellTemplate'">
-                                        <a href="javascript:void(0)" (click)="editEsign(data.data.ID)"
-                                            class="single-action fa fa-pencil-square-o" data-toggle="modal"
-                                            data-target="#addEsign"></a>
+                                        <a href="javascript:void(0)" (click)="editEsignNw(data.data.ID)"
+                                            class="single-action fa fa-pencil-square-o"></a>
                                     </div>
                                 </dx-data-grid>
                             </div>
@@ -146,7 +145,7 @@
 
 
 
-<div class="modal fade modal-theme modal-small" #SignPopUp id="addEsign" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modal-theme modal-small" #SignPopUp id="SignPopUp" data-backdrop="static" data-keyboard="false"
     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -154,18 +153,51 @@
                 <h5 class="modal-title">{{esignId==0?'Add':'Edit'}}</h5>
                 <div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
             </div>
-            <form name="form" (ngSubmit)="f.form.valid && (model.signature!='') && submitSign(true)" #f="ngForm"
-                class="theme-form" novalidate>
+            <form name="form"
+                (ngSubmit)="f.form.valid && (lastName.valid && Title.valid && firstName.valid && model.signature!='') && submitSign(true)"
+                #f="ngForm" class="theme-form" novalidate>
                 <div class="modal-body">
                     <div class="modal-body-inner">
-                        <div class="row">
+                        <div class="row">                          
+                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Title</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Title" [(ngModel)]="model.Title"
+                                            #Title="ngModel" [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': f.submitted && Title.invalid }" required />
+                                    </div>
+                                    <div *ngIf="f.submitted && Title.invalid" class="invalid-feedback">
+                                        <div *ngIf="Title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <div class="theme-label">Name</div>
+                                    <div class="theme-label">First Name</div>
                                     <div class="input-group">
-                                        <input type="text" ngDefaultControl class="form-control" disabled name="firstName"
-                                            [(ngModel)]="model.name" #firstName="ngModel"
-                                            [ngModelOptions]="{ standalone : true }">
+                                        <input type="text" class="form-control" name="firstName"
+                                            [(ngModel)]="model.firstName" #firstName="ngModel"
+                                            [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required />
+                                    </div>
+                                    <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+                                        <div *ngIf="firstName.errors.required">First Name is required</div>
+                                    </div>
+                                </div>
+                            </div> <br>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Last Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="lastName"
+                                            [(ngModel)]="model.lastName" #lastName="ngModel"
+                                            [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }" required />
+                                    </div>
+                                    <div *ngIf="f.submitted && lastName.invalid" class="invalid-feedback">
+                                        <div *ngIf="lastName.errors.required">Last Name is required</div>
                                     </div>
                                 </div>
                             </div>
@@ -173,8 +205,9 @@
                                 <div class="form-group">
                                     <div
                                         [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
-                                        <signature-pad id="signature-pad" [options]="signaturePadOptions"
-                                            [(ngModel)]="model.signature" ngDefaultControl [ngModelOptions]="{ standalone : true }"
+                                        <signature-pad id="SettingSignaturePad" [options]="signaturePadOptions"
+                                            [(ngModel)]="model.signature" ngDefaultControl
+                                            [ngModelOptions]="{ standalone : true }"
                                             [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
                                             #signature="ngModel" (onEndEvent)="drawComplete()">
                                         </signature-pad>
@@ -190,13 +223,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
-                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
-                        class="btn btn-theme btn-sm pull-left">{{esignId==0?'Save':'Update'}}</button>
+                    <button type="submit" style="float: left;"
+                        [disabled]="(firstName.invalid || Title.invalid || lastName.invalid || model.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">Sign</button>
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-                        #closeBtn (click)="signConfirm(false)">Close</a>
+                        #closeBtn (click)="signConfirm(false)">Clear</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<button class="d-none" #hiddenSignPopUp [hidden]="true" data-toggle="modal" data-target="#SignPopUp"></button>
