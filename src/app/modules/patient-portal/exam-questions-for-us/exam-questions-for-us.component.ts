@@ -54,7 +54,6 @@ export class ExamQuestionsForUsComponent implements OnInit {
             this.examQuestionUsForm.controls['usAllergyDescription'].clearValidators();
         }
         if(this.examQuestionForUS.usAllergyDescription){
-
           this.examQuestionUsForm.controls['usAllergyDescription'].setValue(this.examQuestionForUS.usAllergyDescription);
         }else{
           this.examQuestionUsForm.controls['usAllergyDescription'].setValue('');
@@ -72,6 +71,9 @@ export class ExamQuestionsForUsComponent implements OnInit {
       this.patientPortalService.patientScreeningQuestion.examQuestionForUs.studyId = examQuestionForUsOption[0].internalStudyId;
       this.patientPortalService.patientScreeningQuestion.examQuestionForUs.studyDescription = examQuestionForUsOption[0].modality;
       this.patientPortalService.patientScreeningQuestion.examQuestionForUs.modalityName = examQuestionForUsOption[0].studyDescription;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.studyId = examQuestionForUsOption[0].internalStudyId;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.modalityName = examQuestionForUsOption[0].modality;
+      this.patientPortalService.patientScreeningQuestion.preScreeningQuestion.studyDescription = examQuestionForUsOption[0].studyDescription;
     }
     else{
       this.patientPortalService.patientScreeningQuestion.examQuestionForUs.studyId = this.patientPortalService.internalStudyIdDetails[0].internalStudyId;
@@ -93,7 +95,6 @@ export class ExamQuestionsForUsComponent implements OnInit {
   }
 
   goBack() {
-
     if(this.patientPortalService.questionScreenTypes.indexOf(PatientPortalScreeningStatusCode.MRI_WITHOUT_CONTRAST) > -1 ||
     this.patientPortalService.questionScreenTypes.indexOf(PatientPortalScreeningStatusCode.MRI_WITH_CONTRAST) > -1)
       this.router.navigate(['exam-question']);
@@ -122,5 +123,4 @@ export class ExamQuestionsForUsComponent implements OnInit {
       }
     }
   }
-
 }

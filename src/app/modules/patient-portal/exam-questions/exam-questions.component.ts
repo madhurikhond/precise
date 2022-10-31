@@ -597,11 +597,127 @@ export class ExamQuestionsComponent implements OnInit {
   }
 
   CheckAllFieldsNotEmpty() {
-    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != null) {
-      if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'Yes') {
-        if (this.examQuestionForMRIwithoutContrast.mriProblem === '' || this.examQuestionForMRIwithoutContrast.mriProblem === null)
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === null){
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != null){
+      if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'Yes'){
+        if (this.examQuestionForMRIwithoutContrast.mriProblem === '' || this.examQuestionForMRIwithoutContrast.mriProblem === null){
+          this.examQuestionForm.setErrors({ 'invalid': true });
+        }
+      }else if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'No'){
+        this.examQuestionForm.setErrors(null);
+        this.checkField();
+      }
+    }else{
+      this.examQuestionForm.setErrors({'invalid': true});
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriClaustrophobic === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriClaustrophobic === null) {
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriMedicalCondition === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriMedicalCondition === null) {
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriHobbyJob != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriHobbyJob != null) {
+      if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriHobbyJob === 'Yes') {
+        if (this.examQuestionForMRIwithoutContrast.authorizationXray === '' || this.examQuestionForMRIwithoutContrast.authorizationXray === null)
+          this.examQuestionForm.setErrors({ 'invalid': true });
+        if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.authorizationXray === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.authorizationXray === null)
           this.examQuestionForm.setErrors({ 'invalid': true });
       }
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.eyesInjuries === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.eyesInjuries === null) {
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPhysicalLimition != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPhysicalLimition != null) {
+      if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPhysicalLimition === 'Yes') {
+        if (this.examQuestionForMRIwithoutContrast.mriTransfer === '' || this.examQuestionForMRIwithoutContrast.mriTransfer === null)
+          this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriMedicaldevices === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriMedicaldevices === null) {
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriForeignMetalObj === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriForeignMetalObj === null)
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriWig === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriWig === null)
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriRemovableMetal === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriRemovableMetal === null)
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.isRecentTattoo === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.isRecentTattoo === null)
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.isRecentTattoo === 'No')
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === null) {
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === null){
+      this.examQuestionForm.setErrors({'invalid': true});
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice != null){
+      if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === 'Yes'){
+        if(this.examQuestionForMRIwithoutContrast.mriProcedure === '' || this.examQuestionForMRIwithoutContrast.mriProcedure === null){
+          this.examQuestionForm.setErrors({'invalid': true})
+          if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === null){
+            this.examQuestionForm.setErrors({'invalid': true})
+          }
+        }
+        if(this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes'){
+            this.examQuestionForm.setErrors(null);
+            this.checkField();
+        }
+        else if(this.examQuestionForMRIwithoutContrast.mriProcedure === 'No'){
+          this.examQuestionForm.setErrors({'invalid': true})
+          if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === null){
+            this.examQuestionForm.setErrors({'invalid': true})
+          }
+          else{
+            this.examQuestionForm.setErrors(null);
+            this.checkField();
+          }
+        }
+        else{
+          this.examQuestionForm.setErrors({'invalid': true});
+        }
+      }
+      if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === 'No'){
+        this.examQuestionForm.setErrors(null);
+        this.checkField();
+      }
+    }
+    if (this.isWithContrast) {
+      if (this.examQuestionForMRIwithContrast.isDiabetesHistory === '' || this.examQuestionForMRIwithContrast.isDiabetesHistory === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isCancerHistory === '' || this.examQuestionForMRIwithContrast.isCancerHistory === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isHighBloodPressure === '' || this.examQuestionForMRIwithContrast.isHighBloodPressure === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.mriAllergiesMedications === '' || this.examQuestionForMRIwithContrast.mriAllergiesMedications === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+      if (this.examQuestionForMRIwithContrast.isKidneyProblem === '' || this.examQuestionForMRIwithContrast.isKidneyProblem === null) {
+        this.examQuestionForm.setErrors({ 'invalid': true });
+      }
+    }
+  }
+
+  checkField(){
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === null){
+      this.examQuestionForm.setErrors({ 'invalid': true });
+    }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore != null){
+      if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'Yes'){
+        if (this.examQuestionForMRIwithoutContrast.mriProblem === '' || this.examQuestionForMRIwithoutContrast.mriProblem === null){
+          this.examQuestionForm.setErrors({ 'invalid': true });
+        }
+      }else if(this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriBefore === 'No'){
+        this.examQuestionForm.setErrors(null);
+      }
+    }else{
+      this.examQuestionForm.setErrors({'invalid': true});
     }
     if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriClaustrophobic === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriClaustrophobic === null) {
       this.examQuestionForm.setErrors({ 'invalid': true });
@@ -642,22 +758,8 @@ export class ExamQuestionsComponent implements OnInit {
     if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === null) {
       this.examQuestionForm.setErrors({ 'invalid': true });
     }
-    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice != '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice != null) {
-      if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === 'Yes') {
-        if (this.examQuestionForMRIwithoutContrast.mriProcedure === '' || this.examQuestionForMRIwithoutContrast.mriProcedure === null)
-          this.examQuestionForm.setErrors({ 'invalid': true });
-          if (this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes')
-            this.examQuestionForm.setErrors(null);
-        if (this.examQuestionForMRIwithoutContrast.mriProcedure === 'No') {
-          if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === null)
-            this.examQuestionForm.setErrors({ 'invalid': true });
-        }
-        if((this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === 'Yes' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriPoMeetFacility === 'No')&&(this.examQuestionForMRIwithoutContrast.mriProcedure != '' || this.examQuestionForMRIwithoutContrast.mriProcedure != null)){
-          this.examQuestionForm.setErrors(null);
-        }
-      } else {
-        this.examQuestionForm.setErrors(null);
-      }
+    if (this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === '' || this.patientPortalService.patientScreeningQuestion.examQuestionForMriWithoutContrast.mriAnkleMonitorDevice === null){
+      this.examQuestionForm.setErrors({'invalid': true});
     }
     if (this.isWithContrast) {
       if (this.examQuestionForMRIwithContrast.isDiabetesHistory === '' || this.examQuestionForMRIwithContrast.isDiabetesHistory === null) {
@@ -678,3 +780,4 @@ export class ExamQuestionsComponent implements OnInit {
     }
   }
 }
+
