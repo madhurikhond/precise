@@ -1,0 +1,62 @@
+<div class="dislpaytable subpoena-login exo-font patient-login">
+    <div class="valign-content">
+        <div class="valign-content-inner">
+            <div class="center-login ">
+                <div class="title-group">
+                    <div class="title"><img src="assets/images/precise-imaging-logo.png" alt="" /></div>
+                </div>
+                <div class="iconimg">
+                    <p class="encryption-info"><i class="fa fa-lock fa-2x"></i> {{'PATIENT_LOGIN.ENCRYPTION_MESSAGE' |
+                        translate}}</p>
+                </div>
+                <h1 class="patient-portal-title">{{'PATIENT_LOGIN.TITLE' | translate}}</h1>
+                <div class="tab-section float-right">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" [ngClass]="{'active': setLanguage}" data-toggle="tab"
+                                (click)="languageChange('en')">English</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" [ngClass]="{'active': !setLanguage}" data-toggle="tab"
+                                (click)="languageChange('es')">Español</a>
+                        </li>
+                    </ul>
+                </div>
+                <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" autocomplete="off">
+                    <div class="form-group">
+                        <label class="float-left">{{'PATIENT_LOGIN.PHONE_NUMBER' | translate}} :</label>
+                        <div class="form-with-icon validation-tooltip">
+                            <input matInput type="text" class="form-control phn-input" mask="(000) 000-0000"
+                                placeholder="Ex. (555) 666-1212" formControlName="phone" [readonly]="IsShowPatient"
+                                [ngClass]="{ 'is-invalid': submitted && patientForm.invalid}">
+                            <div *ngIf="submitted && patientForm.invalid" class="tooltiptext text-right">
+                                <small class="error text-danger"
+                                    *ngIf="lgform.phone.errors.required">{{'PATIENT_LOGIN.VALIDATIONS.PHONE_REQUIRED' |
+                                    translate}}</small>
+                                <small class="error text-danger"
+                                    *ngIf="lgform.phone.errors.pattern">{{'PATIENT_LOGIN.VALIDATIONS.PHONE_INVALID' |
+                                    translate}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-btn-bottom">
+                        <div class="form-btn">
+                            <button type="submit"
+                                class="form-main-btn btn-verification">{{'PATIENT_LOGIN.VERIFICATION_CODE_BUTTON' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="IsShowPatient" class="phone-information">
+                    <p>{{'PATIENT_LOGIN.PHONE_INFORMATION' | translate}}</p>
+                </div>
+                <ul class="login-footer-buttons">
+                    <li><a routerLink="/contact-us" class="footer-link">Contact Us</a></li>
+                    <li><a routerLink="/login" class="footer-link">Login</a></li>
+                    <li><a routerLink="/login-request" class="footer-link">Request a Login</a></li>
+                    <li><a routerLink="/subpoena-pickup-status" class="footer-link">Subpoena Pickup Status</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

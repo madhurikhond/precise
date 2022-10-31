@@ -1,0 +1,98 @@
+
+<section class="content-sec emergency-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="patient-information-sec">
+    <h2 class="info-title">{{'PATIENT_EMERGENCY_CONTACT_INFO.TITLE' | translate}}</h2>
+  </div>
+
+  <div class="contact-form-sec emergency-form-sec">
+    <p class="description" *ngIf="IsPI">{{'PATIENT_EMERGENCY_CONTACT_INFO.ALMOST_DONE' | translate}}!</p>
+    <dx-progress-bar
+      #progressBar
+      id="progress-bar-status"
+      width="100%"
+      [min]="0"
+      [max]="100"
+      [value]="90"
+      *ngIf="IsPI"
+    >
+    </dx-progress-bar>
+
+    <p class="description" *ngIf="!IsPI">{{'PATIENT_EMERGENCY_CONTACT_INFO.LAST_ONE' | translate}}!</p>
+    <dx-progress-bar
+      #progressBar
+      id="progress-bar-status"
+      width="100%"
+      [min]="0"
+      [max]="100"
+      [value]="100"
+      *ngIf="!IsPI"
+    >
+    </dx-progress-bar>
+
+    <form
+      [formGroup]="EmergencyContactForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+    >
+      <div class="form-group emergency-contact-information">
+        <div class="form-with-icon validation-tooltip">
+          <div class="formControl requiedInfo" [ngClass]="(EmergencyContactForm.controls.emergencycntname.dirty || EmergencyContactForm.controls.emergencycntname.touched) && EmergencyContactForm.controls.emergencycntname.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showEmergencyContactName;else EmergencyCtName">
+            <input
+              formControlName="emergencycntname"
+              name="contactname"
+              class="code-input"
+              placeholder="Emergency Contact Name (Required)"
+              required
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!EmergencyContactForm.controls.emergencycntname.errors || EmergencyContactForm.controls.emergencycntname.touched "></i>
+          </div>
+
+          <ng-template #EmergencyCtName>
+            <div class="formControl requiedInfo editable">
+              <div class="labelName">              <label>{{'PATIENT_EMERGENCY_CONTACT_INFO.EMERGENCY_CONTACT_NAME' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{patientContactInfo.emergencyContactName}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showEmergencyContactName=!showEmergencyContactName"></i>
+            </div>
+          </ng-template>
+
+          <div class="formControl requiedInfo" [ngClass]="(EmergencyContactForm.controls.emergencycntphone.dirty || EmergencyContactForm.controls.emergencycntphone.touched) && EmergencyContactForm.controls.emergencycntphone.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showEmergencyContactNumber;else EmergencyCtNumber">
+            <input
+              formControlName="emergencycntphone"
+              name="contactphone"
+              class="code-input"
+              placeholder="Emergency Contact Phone (Required)"
+              mask="(000) 000-0000"
+              required
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!EmergencyContactForm.controls.emergencycntphone.errors || EmergencyContactForm.controls.emergencycntphone.touched || lgform.emergencycntphone.errors.pattern"></i>
+          </div>
+
+          <ng-template #EmergencyCtNumber>
+            <div class="formControl requiedInfo editable">
+              <div class="labelName">              <label>{{'PATIENT_EMERGENCY_CONTACT_INFO.EMERGENCY_CONTACT_NUMBER' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{patientContactInfo.emergencyContactPhone}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showEmergencyContactNumber=!showEmergencyContactNumber"></i>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+
+      <div class="buttonSection" *ngIf="IsPI">
+        <button type="submit"  [disabled]="!EmergencyContactForm.valid" [ngClass]="!EmergencyContactForm.valid ? 'btnSubmit' : 'btn-common' ">{{'PATIENT_EMERGENCY_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+        <button type="button" (click)="goBack()"  class="btn-common btnBack">{{'PATIENT_EMERGENCY_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+      <div class="buttonSection" *ngIf="!IsPI">
+        <button type="submit" [disabled]="!EmergencyContactForm.valid" [ngClass]="!EmergencyContactForm.valid ? 'btnSubmit' : 'btn-common' " *ngIf="!clicked">{{'PATIENT_EMERGENCY_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+        <button [ngClass]="clicked ? 'btn-common btnsuccess ' : 'btn-common btnsuccess close '">{{'PATIENT_EMERGENCY_CONTACT_INFO.SUCCESS' | translate}}</button>
+        <button type="button" (click)="goBack()"  class="btn-common btnBack">{{'PATIENT_EMERGENCY_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>
+

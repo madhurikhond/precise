@@ -56,3 +56,92 @@ export const GridRowState = {
   Expand: "expanded",
   Collapse: "collapsed"
 };
+
+export class PatientScreeningQuestion {
+  patientId: string = '';
+  isFinalSubmit: boolean = false;
+  preScreeningQuestion:PatientPreScreeningQuestion;
+  examQuestionForMriWithContrast: PatientExamQuestionForMriWithContrast;
+  examQuestionForMriWithoutContrast: PatientExamQuestionForMriWithoutContrast;
+  examQuestionForCtOrCr: PatientExamQuestionForCtOrCr;
+  examQuestionForUs: PatintExamQuestionForUs ;
+  loggedPartnerId: number = 0;
+  jwtToken: string = '';
+  patientPreferredLanguage:string;
+  pageCompleted: number;
+  constructor(){
+    this.preScreeningQuestion = new PatientPreScreeningQuestion();
+    this.examQuestionForMriWithContrast = new PatientExamQuestionForMriWithContrast();
+    this.examQuestionForMriWithoutContrast = new PatientExamQuestionForMriWithoutContrast();
+    this.examQuestionForCtOrCr = new PatientExamQuestionForCtOrCr();
+    this.examQuestionForUs = new PatintExamQuestionForUs();
+  }
+}
+
+export class PatientPreScreeningQuestion {
+  studyId: string = '';
+  modalityName: string = '';
+  studyDescription: string = '';
+  weight: string = '';
+  height: string = '';
+  gender: string = '';
+  isPregnant: string = '';
+  pregnancyInWeek: string = '';
+}
+
+export class PatientExamQuestionForMriWithContrast {
+  isDiabetesHistory: string = '';
+  isCancerHistory: string = '';
+  isHighBloodPressure: string = '';
+  mriAllergiesMedications: string = '';
+  allergyReactionQuestion: string = '';
+  isKidneyProblem: string = '';
+}
+
+export class PatientExamQuestionForMriWithoutContrast {
+  studyId: string = '';
+  modalityName: string = '';
+  studyDescription: string = '';
+  mriBefore: string = '';
+  mriProblem: string = '';
+  textMriProblem: string = '';
+  mriClaustrophobic: string = '';
+  mriMedicalCondition: string = '';
+  whatMriCondition: string = '';
+  mriHobbyJob: string = '';
+  authorizationXray: string = '';
+  eyesInjuries: string = '';
+  eyesInjuriesReason: string = '';
+  mriPhysicalLimition: string = '';
+  mriTransfer: string = '';
+  mriMedicaldevices: string = '';
+  mriManufacturerCard: string = '';
+  mriForeignMetalObj: string = '';
+  mriObjLocated: string = '';
+  mriWig: string = '';
+  mriRemovableMetal: string = '';
+  isRecentTattoo: string = '';
+  mriTattooSize: string = '';
+  mriAnkleMonitorDevice: string = '';
+  mriProcedure: string = '';
+  mriPoMeetFacility: string = '';
+  priorSurgeryQuestion :string;
+}
+
+export class PatientExamQuestionForCtOrCr {
+  studyId: string = '';
+  modalityName: string = '';
+  studyDescription: string = '';
+  recentXrayCt: string = '';
+  recentXrayCtDescription: string = '';
+  cancerHistory: string = '';
+  recentRadiation: string = '';
+}
+
+export class PatintExamQuestionForUs {
+  modalityName: string = '';
+  studyDescription: string = '';
+  studyId: string = '';
+  usAllergy: string = '';
+  usAllergyDescription: string = '';
+}

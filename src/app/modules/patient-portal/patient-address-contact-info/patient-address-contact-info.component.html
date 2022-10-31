@@ -1,0 +1,138 @@
+<section class="content-sec address-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+    <div class="patient-information-sec">
+      <h2 class="info-title">{{'PATIENT_ADDRESS_CONTACT_INFO.TITLE' | translate}}</h2>
+    </div>
+    <p class="description">
+      {{'PATIENT_ADDRESS_CONTACT_INFO.INFO_1' | translate}}
+    </p>
+    <p class="description">
+      {{'PATIENT_ADDRESS_CONTACT_INFO.INFO_2' | translate}}
+    </p>
+    <div class="contact-form-sec address-form-sec">
+      <p class="description">{{'PATIENT_ADDRESS_CONTACT_INFO.INFO_3' | translate}}</p>
+      <!-- <ngb-progressbar type="success" [value]="25"></ngb-progressbar> -->
+      <dx-progress-bar
+        #progressBar
+        id="progress-bar-status"
+        width="100%"
+        [min]="0"
+        [max]="100"
+        [value]="40"
+      >
+      </dx-progress-bar>
+      <form
+        [formGroup]="addressInfoForm"
+        (ngSubmit)="onSubmit()"
+        autocomplete="off"
+      >
+        <div class="form-group address-information">
+          <div class="form-with-icon validation-tooltip">
+            <div class="formControl requiedInfo " [ngClass]="(addressInfoForm.controls.stressadd.dirty || addressInfoForm.controls.stressadd.touched) && addressInfoForm.controls.stressadd.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showStreetAdd;else StreetAdd">
+              <input
+                formControlName="stressadd"
+                name="stressadd"
+                class="code-input"
+                placeholder="Stress Address (Required)"
+                required
+              />
+              <i class="fa fa-check-circle-o" *ngIf="!addressInfoForm.controls.stressadd.errors || addressInfoForm.controls.stressadd.touched "></i>
+            </div>
+
+            <ng-template #StreetAdd>
+              <div class="formControl requiedInfo editable street-address">
+                <div class="labelName">              <label>{{'PATIENT_ADDRESS_CONTACT_INFO.STREET_ADDRESS' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientAddressDetails.streetAddress}}</p>
+                </div>
+                <i class="fa fa-check-circle-o" (click)="showStreetAdd=!showStreetAdd"></i>
+              </div>
+            </ng-template>
+
+            <div class="row editableFormInfo">
+              <div class="col-md-5">
+                <div class="formControl requiedInfo" [ngClass]="(addressInfoForm.controls.city.dirty || addressInfoForm.controls.city.touched) && addressInfoForm.controls.city.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showCity;else City">
+                  <input
+                    formControlName="city"
+                    name="city"
+                    class="code-input"
+                    placeholder="City"
+                    maxlength="15"
+                    required
+                  />
+                  <i class="fa fa-check-circle-o" *ngIf="!addressInfoForm.controls.city.errors || addressInfoForm.controls.city.touched "></i>
+                </div>
+              </div>
+
+              <ng-template #City>
+                <div class="formControl requiedInfo editable">
+                  <div class="labelName">              <label>{{'PATIENT_ADDRESS_CONTACT_INFO.CITY' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientAddressDetails.city}}</p>
+                </div>
+                  <i class="fa fa-check-circle-o" (click)="showCity=!showCity"></i>
+                </div>
+              </ng-template>
+
+              <div class="col-md-4">
+                <div class="formControl requiedInfo selectState" [ngClass]="!addressInfoForm.controls.state.valid && addressInfoForm.controls.state.touched && addressInfoForm.controls.state.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showState;else State">
+                  <select
+                    formControlName="state"
+                    name="state"
+                    class="code-input"
+                    placeholder="State"
+                    required
+                  >
+                    <option value="" selected>{{'PATIENT_ADDRESS_CONTACT_INFO.STATE' | translate}}</option>
+                    <option *ngFor="let state of stateList" [value]="state.stateCode">{{state.stateName}}</option>
+                  </select>
+                  <i class="fa fa-check-circle-o" *ngIf="!addressInfoForm.controls.state.errors || addressInfoForm.controls.state.touched "></i>
+                </div>
+              </div>
+
+              <ng-template #State>
+                <div class="formControl requiedInfo editable">
+                  <div class="labelName">              <label>{{'PATIENT_ADDRESS_CONTACT_INFO.STATE' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientAddressDetails.state}}</p>
+                </div>
+                  <i class="fa fa-check-circle-o" (click)="showState=!showState"></i>
+                </div>
+              </ng-template>
+
+              <div class="col-md-3">
+                <div class="formControl requiedInfo zip" [ngClass]="(addressInfoForm.controls.zip.dirty || addressInfoForm.controls.zip.touched) && addressInfoForm.controls.zip.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showZip;else Zip">
+                  <input
+                    formControlName="zip"
+                    name="zip"
+                    class="code-input"
+                    placeholder="Zip"
+                    maxlength="5"
+                    mask="00000"
+                    required
+                  />
+                  <i class="fa fa-check-circle-o" *ngIf="!addressInfoForm.controls.zip.errors || addressInfoForm.controls.zip.touched || lgform.zip.errors.pattern"></i>
+                </div>
+              </div>
+
+              <ng-template #Zip>
+                <div class="formControl requiedInfo editable">
+                  <div class="labelName">              <label>{{'PATIENT_ADDRESS_CONTACT_INFO.ZIP' | translate}} :</label></div>
+                <div class="labelVal">
+                  <p>{{patientAddressDetails.zipcode}}</p>
+                </div>
+                  <i class="fa fa-check-circle-o" (click)="showZip=!showZip"></i>
+                </div>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="buttonSection">
+          <button type="submit" class="btn-common" [disabled]="!addressInfoForm.valid" [ngClass]="!addressInfoForm.valid ? 'btnSubmit' : 'btn-common' ">{{'PATIENT_ADDRESS_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+          <button type="button" (click)="goBack()"  class="btn-common btnBack">{{'PATIENT_ADDRESS_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+        </div>
+      </form>
+    </div>
+</section>

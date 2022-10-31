@@ -998,6 +998,44 @@
     </div>
 </div>
 
+<!-- Generate Patient Portal Link -->
+<div class="modal fade modal-theme " id="openLinkModal1"  role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Patient Portal Link</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <form class="theme-form">
+                    <div class="row">
+                        <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <thead>
+                                    <tr>
+                                        <th width="100"> Patient Portal Link </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-transform: initial">{{patientPortalLink}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade modal-theme in modal-small" id="DisMessage" *ngIf="Generate_PI_TC_Message" tabindex="-1"
     role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1341,6 +1379,7 @@
 
 <button #hiddenSavedSearchPopUpButton [hidden]="true" data-toggle="modal" data-target="#saved-searches"></button>
 <button #hiddenShowopenLinkPopUp [hidden]="true" data-toggle="modal" data-target="#openLinkModal"></button>
+<button #hiddenShowopenLinkPopUpPatient [hidden]="true" data-toggle="modal" data-target="#openLinkModal1"></button>
 <button #hiddenDisMessagePopUp [hidden]="true" data-toggle="modal" data-target="#DisMessage"></button>
 <button #LogsPopup [hidden]="true" data-toggle="modal" data-target="#Logs"></button>
 <button #BillingPopup [hidden]="true" data-toggle="modal" data-target="#billingPopup"></button>

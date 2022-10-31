@@ -1,0 +1,156 @@
+/*********Middle content sec**************/
+.content-sec {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 400px;
+  margin-top: 46px;
+}
+.info-title {
+font-size: 26px;
+font-weight: 600;
+color: #444444;
+font-family: Roboto, "Helvetica Neue", sans-serif;
+margin-bottom: 20px;
+}
+.content-sec .description{
+color: #6e6e6e;
+font-size: 14px;
+margin-bottom: 4px;
+text-align: right;
+}
+.code-input {
+border: 1px solid #3D8AF7;
+border-radius: 4px;
+width: 100%;
+padding: 8px;
+font-size: 14px;
+color: #444444;
+}
+
+.formControl {
+position: relative;
+margin-bottom: 16px;
+}
+.formControl.requiedInfo i.fa {
+margin-left: 6px;
+font-size: 20px;
+color: #3D8AF7;
+text-align: center;
+font-weight: 400;
+line-height: 22px;
+position: absolute;
+top: 7px;
+}
+input:focus-visible,select:focus-visible {
+outline: none;
+}
+.formControl.requiedInfo.editable i.fa:before {
+content: "\f040";
+color: #FF8F00;
+}
+.formControl.requiedInfo.editable .labelName  {
+margin-bottom: 0;
+text-align: left;
+min-width: 236px;
+}
+.formControl.requiedInfo.editable   {
+display: flex;
+align-items: flex-start;
+}
+.formControl.editable i.fa{
+top: -1px;
+right: -23px;
+}
+.editable .labelVal {
+margin-left: auto;
+}
+.editable .labelVal p{
+  word-break: break-all;
+  text-align: left;
+}
+.formControl.requiedInfo.wrongInfo i.fa:before {
+content: "\f00d";
+color: #ffffff;
+font-size: 13px;
+vertical-align: bottom;
+}
+.formControl.wrongInfo input{
+border:1px solid #FF0F00;
+}
+.formControl.requiedInfo.wrongInfo i.fa{
+background-color: #FF0F00;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+line-height: 18px;
+}
+.btn-common {
+width: 100%;
+background: #008CF7;
+border: 1px solid #008CF7;
+color: #ffffff;
+text-transform: capitalize;
+font-size: 14px;
+font-weight: 500;
+margin-bottom: 20px;
+padding: 9px 12px;
+border-radius: 4px;
+}
+/* .btnSubmit:hover{
+background-color: transparent;
+color:#008CF7;
+} */
+.btnBack {
+border:1px solid #707070;
+background-color: transparent;
+color:#707070;
+}
+.btnBack:hover{
+background-color: #707070;
+color:#ffffff;
+}
+.form-group.address-information{
+  margin-bottom: 0;
+}
+.btnsuccess.close {
+display: none;
+}
+.btnsuccess.close{
+opacity: 1;
+}
+.selectState {
+  margin-left: 16px;
+}
+.btnSubmit{
+background-color: #707070;
+color: white;
+width: 100%;
+text-transform: capitalize;
+font-size: 14px;
+font-weight: 500;
+margin-bottom: 20px;
+padding: 9px 12px;
+border-radius: 4px;
+}
+@media screen and (max-width:767px){
+.content-sec {
+  max-width: 100%;
+}
+.formControl.requiedInfo.editable .labelName  {
+  margin-bottom: 0;
+  max-width: initial !important;
+  text-align: left;
+  width: auto;
+}
+.formControl.requiedInfo.editable .labelName label {
+  width: 185px;
+  display: block;
+}
+.formControl.requiedInfo.editable .labelVal p {
+  margin-bottom: 0;
+  text-align: left;
+  display: block;
+  min-width: initial !important;
+  line-break: anywhere;
+}
+}

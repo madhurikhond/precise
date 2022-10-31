@@ -1,0 +1,94 @@
+<section class="content-sec contact-sec"
+  [ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="welcome-screen">
+    <h1 class="welcomeTitle">{{'PATIENT_HOME.WELCOME_MESSAGE' | translate}}!</h1>
+    <div class="tab-section float-right">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': setLanguage}" data-toggle="tab"
+            (click)="languageChange('en')">English</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': !setLanguage}" data-toggle="tab"
+            (click)="languageChange('es')">Español</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="welcome-body-content">
+        <div class="welcomeMenu-card" style="cursor: default;" *ngIf="showMedicalLien">
+          <div class="menuIcon"><i class="fa fa-newspaper-o"></i></div>
+          <div class="cardBody">
+            <h2>{{'PATIENT_HOME.MEDICAL_LIEN' | translate}}</h2>
+            <div class="pdfIocn" >
+              <img src="../../../../assets/images/pdfIcon.png" (click)="downloadSignFile()" style="cursor: pointer !important;"/>
+            </div>
+          </div>
+          <div class="statusIcon"><i class="fa fa-check-circle-o"></i></div>
+        </div>
+
+      <a (click)="gotoContact('patient-basic-contact-info')">
+        <div class="welcomeMenu-card">
+          <div class="menuIcon"><i class="fa fa-phone"></i></div>
+          <div class="cardBody">
+            <h2>{{'PATIENT_HOME.CONTACT_INFO' | translate}}</h2>
+          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': contactInfoIcon,'fa-hourglass-half': !contactInfoIcon}"></i>
+        </div>
+        </div>
+      </a>
+      <a (click)="gotoScreening('pre-screening-question')">
+        <div class="welcomeMenu-card">
+          <div class="menuIcon"><i class="fa fa-list-ol"></i></div>
+          <div class="cardBody">
+            <h2>{{'PATIENT_HOME.SCREENING_QUESTIONS' | translate}}</h2>
+          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': screningInfoIcon,'fa-hourglass-half': !screningInfoIcon}"></i>
+        </div>
+        </div>
+      </a>
+      <a (click)="gotoAppointment('my-appointment')">
+        <div class="welcomeMenu-card">
+          <div class="menuIcon"><i class="fa fa-calendar-o"></i></div>
+          <div class="cardBody">
+            <h2>{{'PATIENT_HOME.MY_APPOINTMENTS' | translate}}</h2>
+          </div>
+
+        </div>
+      </a>
+      <a [ngClass]="{'d-none':isPregnant == false}">
+        <div class="welcomeMenu-card" style="cursor: default;">
+          <div class="menuIcon"><img src="../../../../assets/images/pregnentIcon.png" /></div>
+          <div class="cardBody">
+            <h2>{{'PATIENT_HOME.PREGNANCY_WAIVER' | translate}}</h2>
+            <div class="pdfIocn">
+              <img src="../../../../assets/images/pdfIcon.png" (click)="downloadSignPregnancyFile()" style="cursor: pointer !important;"/>
+            </div>
+          </div>
+          <div class="statusIcon"><i class="fa"
+            [ngClass]="{'fa-check-circle-o': showPregnantPdf,'fa-hourglass-half': !showPregnantPdf}"></i>
+        </div>
+        </div>
+      </a>
+      <div class="call-text-box">
+        <div class="call-text-info">
+          <h2><a
+              href="tel:818-629-1169?sms:818-629-1169?&body=Hi,My PatientId is {{patient.patientId}}">{{'PATIENT_HOME.CALL_OR_TEXT'
+              | translate}}</a></h2>
+          <p>{{'PATIENT_HOME.CONTACT_TIME' | translate}}</p>
+        </div>
+        <div class="callIcon">
+          <a href="tel:818-629-1169">
+            <i class="fa fa-phone">
+            </i></a>
+        </div>
+        <div class="textIcon">
+          <a href="sms:818-629-1169">
+            <i class="fa fa-commenting"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

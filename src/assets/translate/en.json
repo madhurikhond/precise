@@ -1,0 +1,164 @@
+{
+  "PATIENT_LOGIN": {
+    "TITLE": "PATIENT PORTAL",
+    "PHONE_NUMBER": "Phone Number",
+    "ENCRYPTION_MESSAGE": "All information is 256-bit encrypted and confidential",
+    "VERIFICATION_CODE_BUTTON": "Get Verification Code to Login",
+    "PHONE_INFORMATION": "If this phone number is not correct please call our scheduling department M-F 8 am to 5 pm at 818-629-1169",
+    "VALIDATIONS": {
+      "PHONE_REQUIRED": "Phone number is required",
+      "PHONE_INVALID": "Invalid phone number"
+    }
+  },
+  "PATIENT_VERIFICATION": {
+    "TITLE": "Verify Your Phone",
+    "INFO1": "We have sent a verification code to ",
+    "INFO2": "Please enter the code below.",
+    "VERIFICATION_CODE": "Verification Code",
+    "CONTINUE": "CONTINUE",
+    "RESEND_CODE": "RESEND CODE"
+  },
+  "MULTIPLE_RECORDS_FOUND": {
+    "TITLE": "MULTIPLE RECORDS FOUND",
+    "PHONE_INFORMATION": "We have found multiple records for phone number ",
+    "SELECTION_TITLE": "Please select the correct patient to contiune.",
+    "BACK_BUTTON": "BACK"
+  },
+  "PATIENT_BASIC_CONTACT_INFO": {
+    "TITLE": "Patient Contact Information",
+    "INFO_1": "If you want to edit anything we already have, please click the pencil icon.",
+    "INFO_2": "Please enter any missing information. If everything looks good please press submit.",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back",
+    "FIRST_NAME": "First Name",
+    "MIDDLE_NAME": "Middle Name",
+    "LAST_NAME": "Last Name",
+    "DATE_OF_BIRTH": "Date Of Birth"
+  },
+  "PATIENT_ADDRESS_CONTACT_INFO": {
+    "TITLE": "Patient Contact Information",
+    "INFO_1": "If you want to edit anything we already have, please click the pencil icon.",
+    "INFO_2": "Please enter any missing information.",
+    "INFO_3": "If everything looks good please press submit.",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back",
+    "STREET_ADDRESS": "Street Address",
+    "CITY": "City",
+    "STATE": "State",
+    "ZIP": "Zip"
+  },
+  "PATIENT_CONTACT_INFO": {
+    "TITLE": "Patient Contact Information",
+    "GETTING_THERE": "Getting there",
+    "HOME_PHONE": "Home Phone",
+    "CELL_PHONE": "Cell Phone",
+    "EMAIL": "Email",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "PATIENT_EMERGENCY_CONTACT_INFO": {
+    "TITLE": "Patient Contact Information",
+    "ALMOST_DONE": "Almost done",
+    "LAST_ONE": "Last One",
+    "EMERGENCY_CONTACT_NAME": "Emergency Contact Name",
+    "EMERGENCY_CONTACT_NUMBER": "Emergency Contact Number",
+    "SUBMIT_BUTTON": "Submit",
+    "SUCCESS":"Sucess",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "PATIENT_ATTORNEY_CONTACT_INFO": {
+    "TITLE": "Patient Contact Information",
+    "LAST_ONE": "Last One",
+    "ATTORNEY_NAME": "Attorney Name",
+    "DATE_OF_INJURY": "Date of Injury",
+    "DRIVER_NAME": "Driver Name",
+    "INSURANCE_CARRIER_NAME": "Insurance Carrier Name",
+    "INSURANCE_CARRIER_NUMBER": "Insurance Carrier Number",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back",
+    "SUCCESS":"Success"
+  },
+  "PATIENT_HOME":{
+    "WELCOME_MESSAGE":"Welcome",
+    "MEDICAL_LIEN":"Medical Lien",
+    "HOME_PAGE":"Home Page",
+    "CONTACT_INFO":"Contact Info",
+    "SCREENING_QUESTIONS":"Screening Questions",
+    "MY_APPOINTMENTS":"My Appointments",
+    "PREGNANCY_WAIVER":"Pregnancy Waiver",
+    "CALL_OR_TEXT":"Call or Text",
+    "CONTACT_TIME":"M-F 8am-5pm",
+    "PENDING":"Pending"
+  },
+  "PRE_SCREENING_QUESTIONS":{
+    "TITLE":"Pre-Screening Questions",
+    "GENDER":"What is your sex at birth",
+    "IS_PREGNANT":"Are you pregnant",
+    "PREGNANCY_TIMEPERIOD":"How far along",
+    "WEIGHT":"What is your weight",
+    "HEIGHT":"What is your height",
+    "SUBMIT_BUTTON": "Submit",
+    "NEXT_BUTTON":"Next",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "EXAM_QUESTIONS":{
+    "TITLE":"Exam Questions",
+    "MRI_HISTORY":"Have you ever had an MRI before",
+    "PROBLEM_DURING_MRI":"Did you experience any problems during the MRI",
+    "IS_CLAUSTROPHOBIC":"Are you claustrophobic",
+    "ANY_MEDICAL_CONDITION":"Do you currently have any medical conditions that prevent you from staying completely still during the exam",
+    "HOBBY_OR_JOB":"Have you EVER worked With metal In your entire life As a hobby Or job",
+    "CLEARANCE_AUTHORIZATION_REPORT":"Have you had an MRI performed before And have a clearance authorization/XRAY report",
+    "INJURIES_IN_EYES":"Have you ever had any injuries to your eyes",
+    "PHYSICAL_LIMITATION":"Any physical limitation such as  a cane, walker or wheelchair",
+    "TRANSFER_ONTO_MRI_TABLE":"Are you able to transfer yourself onto the MRI table",
+    "MEDICAL_DEVICES_ON_BODY":"Do you have ANY medical devices implanted in your body",
+    "FOREIGN_METAL_OBJECT_ON_BODY":"Do you have any foreign metal objects such as a bullet, a BB/Pellet or shrapnel in your body",
+    "WEAR_WIG_OR_NOT":"Do you wear a wig or hair implants",
+    "REMOVABLE_METAL_IN_MOUTH":"Do you have removable metal in your mouth or braces",
+    "RECENT_TATTOO":"Do you have any recent tattoos that are less than 6 weeks old",
+    "ANCKLE_MONITOR_DEVICE":"Do you have an ankle monitor device",
+    "ABLE_TO_REMOVE_DEVICE_BEFORE_PROCEDURE":"Are you able to remove the device before the procedure",
+    "PO_MEET_YOU_AT_FACILITY":"Can your PO meet you at the facility to remove it while you are scanned",
+    "DIABITIC_HISTORY":"Do you have diabetes or a history of diabetes",
+    "CANCER_HISTORY":"Do you have cancer or a history of cancer",
+    "HAVE_BLOOD_PRESSURE":"Do you have high blood pressure",
+    "ALLERGIES_OR_ADVERSE_REACTION_TO_MEDICINE":"Do you have allergies or adverse reactions to medications",
+    "KIDNEY_PROBLEM":"Do you have kidney problems or issues",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "EXAM_QUESTIONS_FOR_CT_OR_CR":{
+    "TITLE":"Exam Questions",
+    "RECENT_XRAY_PERFORMED":"Have you had a recent X-ray or CT performed",
+    "CANCER_HISTORY":"Do you have cancer or any history of cancer",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "EXAM_QUESTIONS_FOR_US":{
+    "TITLE":"Exam Questions",
+    "ANY_ALLERGIES":"Do you have allergies",
+    "SUBMIT_BUTTON": "Submit",
+    "GO_BACK_BUTTON": "Go Back"
+  },
+  "MY_APPOINTMENTS":{
+    "TITLE":"My Appointments",
+    "UPCOMING":"Upcoming",
+    "NEED_TO_SCHEDULE":" Need to Schedule",
+    "COMPLETED":"Completed",
+    "WALK-IN":"WALK-IN",
+    "NO_APPOINTMENT_NECESSARY":"No Appointment Necessary",
+    "NO_UPCOMING_APPOINTMENT":"You have no upcoming appointments scheduled",
+    "CHECK_BACK_LATER":"Please check back later",
+    "NEED_TO_RESCHEDULE":"Need to Reschedule" ,
+    "CALL_TO_RESCHEDULE":"Call to Reschedule",
+    "CALL_TO_SCHEDULE":"Call to Schedule",
+    "RESCHEDULE_MISSED_OR_CANCELLED_APPOINTMENT":"Reschedule a previous missed or cancelled appointment",
+    "NO_PENDING_APPOINTMENT":"You have no pending  appointments to schedule",
+    "SCHEDULE_APPOINTMENT_TODAY":"Schedule Your Appointment Today",
+    "EXAM_PERFORMED_ON":"Exam performed on",
+    "NO_COMPLETED_EXAMS":"You have no completed exams yet",
+    "CALL_US":"Call Us",
+    "CONTACT_TIME":"M-F 8am-5pm"
+  }
+}

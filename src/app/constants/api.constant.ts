@@ -1,5 +1,6 @@
 import { environment } from "../../environments/environment";
 export const rootPath = environment.baseUrl;
+export const patientrootPath = environment.basePatientUrl;
 
 
 export const loginURL = `${rootPath}/Login`;

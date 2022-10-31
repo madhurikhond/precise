@@ -1,0 +1,164 @@
+{
+    "PATIENT_LOGIN": {
+        "TITLE":"PORTAL DEL PACIENTE",
+        "PHONE_NUMBER": "Número de teléfono",
+        "ENCRYPTION_MESSAGE":"Toda la información está cifrada en 256 bits y es confidencial",
+        "VERIFICATION_CODE_BUTTON":"Obtener código de verificación para iniciar sesión",
+        "PHONE_INFORMATION": "Si este número de teléfono no es correcto, llame a nuestro departamento de programación de lunes a viernes de 8 am a 5 pm al 818-629-1169",
+        "VALIDATIONS": {
+            "PHONE_REQUIRED":"el numero de telefono es requerido",
+            "PHONE_INVALID":"Teléfono inválido número"
+        }
+    },
+    "PATIENT_VERIFICATION": {
+        "TITLE":"Verifica tu teléfono",
+        "INFO1":"Hemos enviado un código de verificación a ",
+        "INFO2":"Por favor, introduzca el código de abajo.",
+        "VERIFICATION_CODE":"Código de verificación",
+        "CONTINUE":"SEGUIR",
+        "RESEND_CODE":"Reenviar codigo"
+    },
+    "MULTIPLE_RECORDS_FOUND":{
+      "TITLE":"MÚLTIPLES REGISTROS ENCONTRADOS",
+      "PHONE_INFORMATION":"Hemos encontrado múltiples registros para el número de teléfono ",
+      "SELECTION_TITLE":"Por favor seleccione el paciente correcto para contiune.",
+      "BACK_BUTTON":"ESPALDA"
+    },
+    "PATIENT_BASIC_CONTACT_INFO":{
+      "TITLE":"Información de contacto del paciente",
+      "INFO_1":"Si desea editar algo que ya tenemos, haga clic en el icono del lápiz.",
+      "INFO_2":"Por favor, introduzca cualquier información que falte. Si todo se ve bien, presione enviar.",
+      "SUBMIT_BUTTON":"Enviar",
+      "GO_BACK_BUTTON":"Regresa",
+      "FIRST_NAME":"Primer nombre",
+      "MIDDLE_NAME":"Segundo nombre",
+      "LAST_NAME":"Apellido",
+      "DATE_OF_BIRTH":"Fecha de nacimiento"
+    },
+    "PATIENT_ADDRESS_CONTACT_INFO":{
+      "TITLE":"Información de contacto del paciente",
+      "INFO_1":"Si desea editar algo que ya tenemos, haga clic en el icono del lápiz.",
+      "INFO_2":"Por favor, introduzca cualquier información que falte.",
+      "INFO_3":"Si todo se ve bien, presione enviar.",
+      "SUBMIT_BUTTON":"Enviar",
+      "GO_BACK_BUTTON":"Regresa",
+      "STREET_ADDRESS":"Dirección",
+      "CITY":"Ciudad",
+      "STATE":"Estado",
+      "ZIP":"postal"
+    },
+    "PATIENT_CONTACT_INFO":{
+      "TITLE":"Información de contacto del paciente",
+      "GETTING_THERE":"Llegar allí",
+      "HOME_PHONE":"Teléfono de casa",
+      "CELL_PHONE":"Teléfono móvil",
+      "EMAIL":"Correo electrónico",
+      "SUBMIT_BUTTON":"Enviar",
+       "GO_BACK_BUTTON":"Regresa"
+     },
+     "PATIENT_EMERGENCY_CONTACT_INFO":{
+      "TITLE":"Información de contacto del paciente",
+      "ALMOST_DONE":"Casi termino",
+      "LAST_ONE":"El último",
+      "EMERGENCY_CONTACT_NAME":"Número de contacto de emergencia",
+      "EMERGENCY_CONTACT_NUMBER":"Número de contacto de emergencia",
+      "SUBMIT_BUTTON":"Enviar",
+      "SUCCESS":"éxito",
+      "GO_BACK_BUTTON":"Regresa"
+    },
+    "PATIENT_ATTORNEY_CONTACT_INFO": {
+      "TITLE": "Información de contacto del paciente",
+      "LAST_ONE": "El último",
+      "ATTORNEY_NAME": "Nombre del abogado",
+      "DATE_OF_INJURY": "Fecha de la lesion",
+      "DRIVER_NAME": "Nombre del conductor",
+      "INSURANCE_CARRIER_NAME": "nombre del contacto de emergencia",
+      "INSURANCE_CARRIER_NUMBER": "Número de contacto de emergencia",
+      "SUBMIT_BUTTON":"Enviar",
+      "GO_BACK_BUTTON":"Regresa",
+      "SUCCESS":"Éxito"
+    },
+    "PATIENT_HOME":{
+      "WELCOME_MESSAGE":"Bienvenidos",
+      "MEDICAL_LIEN":"Gravamen médico",
+      "HOME_PAGE":"Página de inicio",
+      "CONTACT_INFO":"Datos de contacto",
+      "SCREENING_QUESTIONS":"Preguntas de detección",
+      "MY_APPOINTMENTS":"Mis citas",
+      "PREGNANCY_WAIVER":"Exención de Embarazo",
+      "CALL_OR_TEXT":"Llama o envía un mensaje de texto",
+      "CONTACT_TIME":"L-V 8am-5pm",
+      "PENDING":"Pendiente"
+    },
+    "PRE_SCREENING_QUESTIONS":{
+      "TITLE":"Preguntas de preselección",
+      "GENDER":"Cual es tu sexo al nacer",
+      "IS_PREGNANT":"Estás embarazada",
+      "PREGNANCY_TIMEPERIOD":"qué tan lejos",
+      "WEIGHT":"Cuál es tu peso",
+      "HEIGHT":"Cuál es su altura",
+      "SUBMIT_BUTTON": "Enviar",
+      "NEXT_BUTTON":"Próximo",
+      "GO_BACK_BUTTON": "Regresa"
+    },
+    "EXAM_QUESTIONS":{
+      "TITLE":"Preguntas del examen",
+      "MRI_HISTORY":"Alguna vez te has hecho una resonancia magnética",
+      "PROBLEM_DURING_MRI":"Experimentó algún problema durante la resonancia magnética",
+      "IS_CLAUSTROPHOBIC":"Eres claustrofóbico",
+      "ANY_MEDICAL_CONDITION":"Actualmente tiene alguna condición médica que le impida permanecer completamente quieto durante el examen",
+      "HOBBY_OR_JOB":"Alguna vez ha trabajado con metal en toda su vida como pasatiempo o trabajo",
+      "CLEARANCE_AUTHORIZATION_REPORT":"Se ha realizado una resonancia magnética antes y tiene una autorización de autorización/informe de rayos X",
+      "INJURIES_IN_EYES":"Alguna vez ha tenido lesiones en los ojos",
+      "PHYSICAL_LIMITATION":"Cualquier limitación física como bastón, andador o silla de ruedas",
+      "TRANSFER_ONTO_MRI_TABLE":"Eres capaz de transferir a la mesa de resonancia magnética",
+      "MEDICAL_DEVICES_ON_BODY":"Tiene ALGÚN dispositivo médico implantado en su cuerpo",
+      "FOREIGN_METAL_OBJECT_ON_BODY":"Tiene algún objeto de metal extraño, como una bala, un BB / Pellet o metralla en su cuerpo",
+      "WEAR_WIG_OR_NOT":"Usas peluca o implantes capilares",
+      "REMOVABLE_METAL_IN_MOUTH":"Tiene metal removible en la boca o aparatos ortopédicos",
+      "RECENT_TATTOO":"Tiene algún tatuaje reciente que tenga menos de 6 semanas",
+      "ANCKLE_MONITOR_DEVICE":"Tienes un dispositivo de monitor de tobillo",
+      "ABLE_TO_REMOVE_DEVICE_BEFORE_PROCEDURE":"Puede retirar el dispositivo antes del procedimiento",
+      "PO_MEET_YOU_AT_FACILITY":"Puede su PO reunirse con usted en las instalaciones para eliminarlo mientras lo escanean",
+      "DIABITIC_HISTORY":"Tiene diabetes o antecedentes de diabetes",
+      "CANCER_HISTORY":"Tiene cáncer o antecedentes de cáncer",
+      "HAVE_BLOOD_PRESSURE":"Tiene la presión arterial alta",
+      "ALLERGIES_OR_ADVERSE_REACTION_TO_MEDICINE":"Tiene alergias o reacciones adversas a los medicamentos",
+      "KIDNEY_PROBLEM":"Tiene problemas renales o problemas",
+      "SUBMIT_BUTTON": "Enviar",
+      "GO_BACK_BUTTON": "Regresa"
+    },
+    "EXAM_QUESTIONS_FOR_CT_OR_CR":{
+      "TITLE":"Preguntas del examen",
+      "RECENT_XRAY_PERFORMED":"Se ha realizado recientemente una radiografía o una tomografía computarizada",
+      "CANCER_HISTORY":"Tiene cáncer o antecedentes de cáncer",
+      "SUBMIT_BUTTON": "Enviar",
+      "GO_BACK_BUTTON": "Regresa"
+    },
+    "EXAM_QUESTIONS_FOR_US":{
+      "TITLE":"Preguntas del examen",
+      "ANY_ALLERGIES":"Tienes alergias",
+      "SUBMIT_BUTTON": "Enviar",
+      "GO_BACK_BUTTON": "Regresa"
+    },
+    "MY_APPOINTMENTS":{
+      "TITLE":"mis citas",
+      "UPCOMING":"Próximos",
+      "NEED_TO_SCHEDULE":" Necesidad de programar",
+      "COMPLETED":"Terminado",
+      "WALK-IN":"ENTRAR",
+      "NO_APPOINTMENT_NECESSARY":"No se necesita cita",
+      "NO_UPCOMING_APPOINTMENT":"No tiene próximas citas programadas",
+      "CHECK_BACK_LATER":"Por favor, vuelva más tarde",
+      "NEED_TO_RESCHEDULE":"Necesidad de reprogramar" ,
+      "CALL_TO_RESCHEDULE":"Llamar para reprogramar",
+      "CALL_TO_SCHEDULE":"Llamar para programar",
+      "RESCHEDULE_MISSED_OR_CANCELLED_APPOINTMENT":"Reprogramar una cita anterior perdida o cancelada",
+      "NO_PENDING_APPOINTMENT":"No tienes citas pendientes para agendar",
+      "SCHEDULE_APPOINTMENT_TODAY":"Programe su cita hoy",
+      "EXAM_PERFORMED_ON":"Examen realizado el",
+      "NO_COMPLETED_EXAMS":"Aún no has completado los exámenes",
+      "CALL_US":"Llámenos",
+      "CONTACT_TIME":"L-V 8am-5pm"
+    }
+}
