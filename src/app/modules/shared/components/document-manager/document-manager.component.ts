@@ -316,8 +316,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   onItemClick(e) {
     if (e.itemData.text == 'Open') {
       if (this.selectedFileKeys.length == 1) {
-        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
-        // this.displayFile(e.fileSystemItem.dataItem.name, this.path);
+       // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
+         this.displayFile(e.fileSystemItem.dataItem.name, this.path);
         // call the Api here. It takes 1 parameter the base64 string
       }
       else if (this.selectedFileKeys.length > 1) {
