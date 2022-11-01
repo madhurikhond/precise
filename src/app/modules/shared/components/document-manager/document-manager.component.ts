@@ -558,7 +558,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     //  fileData = 'data:application/pdf;base64,' + fileData;
     //}
     this.fileName = fileName;
-    fileData = this.apiUrl + 'DocumentManager/Download?path=' + this.fileName;
+    fileData = this.apiUrl + 'DocumentManager/Download?path=' + fileData;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
