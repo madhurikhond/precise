@@ -23,7 +23,7 @@
             [allowColumnReordering]="true"
             [columnResizingMode]="columnResizingMode"
             [columnMinWidth]="30"
-            keyExpr="Id"  
+            keyExpr="Id"
             [showBorders]="true">
 
             <dxo-sorting mode="multiple"></dxo-sorting>
@@ -31,7 +31,7 @@
             <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
 				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            
+
             <dxi-column dataField="Id" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
             <dxi-column dataField="FinancialType" caption="Financial Type"></dxi-column>
             <dxi-column dataField="PaymentType" caption="Payment Type"></dxi-column>
@@ -51,8 +51,8 @@
     </div>
     <!-- <div class="table-responsive">
         <table class="table table-theme">
-            <thead>			 	 			
-                <tr>		
+            <thead>
+                <tr>
                     <th width="50">&nbsp;</th>
                     <th width="100">Financial Type</th>
                     <th width="100">Payment Type</th>
@@ -60,10 +60,10 @@
                     <th width="100">Payee</th>
                     <th width="100">QB Account</th>
                     <th width="50">&nbsp;</th>
-                </tr>				
+                </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of paymentBasedFinancialTypeList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords } ; let i= index">	
+                <tr *ngFor="let item of paymentBasedFinancialTypeList | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords } ; let i= index">
                     <td>
                         <div class="table-actions">
                             <a href="javascript:void(0)" (click)="edit(item.Id)" class="single-action fa fa-pencil-square-o" data-toggle="modal" data-target="#edit-brokers-record"></a>
@@ -79,7 +79,7 @@
                             <a href="javascript:void(0)" (click)="delete(item.Id)"  class="single-action fa fa-trash" data-toggle="modal" data-target="#delete-record"></a>
                         </div>
                     </td>
-                </tr>										
+                </tr>
             </tbody>
         </table>
     </div> -->
@@ -99,70 +99,70 @@
                                 <div class="form-group">
                                     <div class="theme-label">Financial Type</div>
                                     <div class="input-group">
-                                        <select formControlName="financialTypeId" class="form-control">
+                                        <select formControlName="financialTypeId" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.financialTypeId.errors}">
                                             <option value=null disabled>Select Financial Type</option>
                                             <option *ngFor="let item of financialTypeList" value={{item.FinancialTypeId}}>
                                                 {{item.FinancialType}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted && aForm.financialTypeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.financialTypeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.financialTypeId.invalid">Financial type is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">PAYMENT TYPE</div>
                                     <div class="input-group">
-                                        <select formControlName="paymentTypeId" class="form-control">
+                                        <select formControlName="paymentTypeId" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.paymentTypeId.errors}">
                                             <option value=null disabled>Select Payment Type</option>
                                             <option *ngFor="let item of paymentTypeList" value={{item.PaymentTypeId}}>
                                                 {{item.PaymentType}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted && aForm.paymentTypeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.paymentTypeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.paymentTypeId.invalid">Payment type is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">PAYMENT BANK</div>
                                     <div class="input-group">
-                                        <select formControlName="paymentBankId" class="form-control">
+                                        <select formControlName="paymentBankId" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.paymentBankId.errors}">
                                             <option value=null disabled>Select Payment Bank</option>
                                             <option *ngFor="let item of paymentBankList" value={{item.PaymentBankId}}>
                                                 {{item.PaymentBank}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted && aForm.paymentBankId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.paymentBankId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.paymentBankId.invalid">Payment bank is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">PAYEE</div>
                                     <div class="input-group">
-                                        <select formControlName="payeeId" class="form-control">
+                                        <select formControlName="payeeId" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.payeeId.errors}">
                                             <option value=null disabled>Select Payee</option>
                                             <option *ngFor="let item of payeeList" value={{item.PayeeId}}>
                                                 {{item.Payee}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted && aForm.payeeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.payeeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.payeeId.invalid">Payee is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">QB ACCOUNT</div>
                                     <div class="input-group">
-                                        <select formControlName="qbAccountId" class="form-control">
+                                        <select formControlName="qbAccountId" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.qbAccountId.errors}">
                                             <option value=null disabled>Select QB Account</option>
                                             <option *ngFor="let item of qbAccountList" value={{item.QBAccountId}}>
                                                 {{item.QBAccount}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted && aForm.qbAccountId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.qbAccountId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.qbAccountId.invalid">QB Account is required</small>
                                     </div>
                                 </div>
@@ -198,10 +198,10 @@
                                             <option value=null disabled>Select Financial Type</option>
                                             <option *ngFor="let item of financialTypeList" value={{item.FinancialTypeId}}>
                                                 {{item.FinancialType}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.financialTypeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.financialTypeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.financialTypeId.invalid">Financial type is required</small>
                                     </div>
                                 </div>
@@ -212,10 +212,10 @@
                                             <option value=null disabled>Select Payment Type</option>
                                             <option *ngFor="let item of paymentTypeList" value={{item.PaymentTypeId}}>
                                                 {{item.PaymentType}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.paymentTypeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.paymentTypeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.paymentTypeId.invalid">Payment type is required</small>
                                     </div>
                                 </div>
@@ -226,10 +226,10 @@
                                             <option value=null disabled>Select Payment Bank</option>
                                             <option *ngFor="let item of paymentBankList" value={{item.PaymentBankId}}>
                                                 {{item.PaymentBank}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.paymentBankId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.paymentBankId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.paymentBankId.invalid">Payment bank is required</small>
                                     </div>
                                 </div>
@@ -240,10 +240,10 @@
                                             <option value=null disabled>Select Payee</option>
                                             <option *ngFor="let item of payeeList" value={{item.PayeeId}}>
                                                 {{item.Payee}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.payeeId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.payeeId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.payeeId.invalid">Payee is required</small>
                                     </div>
                                 </div>
@@ -254,10 +254,10 @@
                                             <option value=null disabled>Select QB Account</option>
                                             <option *ngFor="let item of qbAccountList" value={{item.QBAccountId}}>
                                                 {{item.QBAccount}}
-                                            </option>                                              
+                                            </option>
                                         </select>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.qbAccountId" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.qbAccountId" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.qbAccountId.invalid">QB Account is required</small>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
 				 <div class="modal-footer">
 					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
 					<button type="submit" (click)="onUpdateSubmit()" [attr.data-dismiss]="modelValue1" class="btn btn-theme btn-sm pull-left">Save Changes</button>
-				</div> 
+				</div>
 			</form>
         </div>
     </div>

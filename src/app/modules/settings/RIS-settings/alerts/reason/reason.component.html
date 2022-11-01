@@ -91,7 +91,7 @@
 										<div class="form-group">
 											<div class="theme-label">Reason name</div>
 											<div class="input-group">
-												<input type="text" class="form-control" formControlName="reason">
+												<input type="text" class="form-control" formControlName="reason" [ngClass]="{ 'is-invalid': IsSubmitted &&getFromControls.reason.errors }">
 											</div>
 											<div *ngIf="IsSubmitted &&  getFromControls.reason.errors"
 												class="tooltiptext text-right">
@@ -105,7 +105,7 @@
 											<div class="input-group">
 												<select [value]="selectedAlertType"
 													(change)="onChangeTypeDropDown($event.target.value)"
-													formControlName="alerttype" id="alertType" class="form-control">
+													formControlName="alerttype" id="alertType" class="form-control" [ngClass]="{ 'is-invalid': IsSubmitted &&getFromControls.alerttype.errors }">
 													<option value=null disabled>Select Type</option>
 													<option *ngFor="let Obj of alertTypeList" [value]="Obj.Alerttype">
 														{{Obj.Alerttype}}</option>
@@ -174,7 +174,7 @@
 											<div class="theme-label">Default Body</div>
 											<!-- <textarea class="form-control" id="default-editor" cols="30" rows="10" required></textarea> -->
 											<ckeditor #myckeditor
-											 formControlName="defaultBody"  
+											 formControlName="defaultBody"
 											   [config]="CkeConfig" (paste)="onPaste($event)"
 											   (change)="onChange($event)">
 											</ckeditor>
@@ -184,7 +184,7 @@
 											<div class="theme-label">Default Sms</div>
 											<!-- <textarea class="form-control" id="sms-editor" cols="30" rows="10" required></textarea> -->
 											<ckeditor #myckeditor
-											formControlName="defaultSms"  
+											formControlName="defaultSms"
 											   [config]="CkeConfig" (paste)="onPaste($event)"
 											   (change)="onChange($event)">
 											</ckeditor>
@@ -477,12 +477,12 @@
 														<div class="theme-label">Default Sms</div>
 														<!-- <textarea class="form-control" id="resend-editor" cols="30" rows="10" required></textarea> -->
 														<ckeditor #myckeditor
-														formControlName="patientSendText"  
+														formControlName="patientSendText"
 														[config]="CkeConfig" (paste)="onPaste($event)"
 														(change)="onChange($event)">
 														</ckeditor>
 														<!-- <ckeditor [editor]="Editor" formControlName="patientSendText"> -->
-														
+
 													</div>
 												</div>
 											</div>
