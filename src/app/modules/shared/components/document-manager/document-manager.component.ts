@@ -302,6 +302,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
         if (text == 'Open') {
+          
           this.displayFile(name, e.file.dataItem.filePath);
         }
         else if (text == 'Download Selected') {
@@ -314,10 +315,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
   }
   onItemClick(e) {
+   
     if (e.itemData.text == 'Open') {
+     
       if (this.selectedFileKeys.length == 1) {
        // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
-         this.displayFile(e.fileSystemItem.dataItem.name, this.path);
+         this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath);
         // call the Api here. It takes 1 parameter the base64 string
       }
       else if (this.selectedFileKeys.length > 1) {
@@ -413,6 +416,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Rename') {
+    
       if (this.selectedFileKeys.length == 1) {
         this.hiddenFileRenamePopUpItem.nativeElement.click();
         this.currentRenameItemRecord = null;
@@ -546,6 +550,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   }
 
   displayFile(fileName: string, fileData: any) {
+
     //if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
     //  fileData = 'data:image/png;base64,' + fileData;
     //}
@@ -791,6 +796,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     });
   }
   deleteOrCancelItem(isItemDelete: boolean) {
+
     if (isItemDelete) {
       if (this.selectedDeletedDoc.length > 0) {
         this.documentmanagerService.deleteAllFiles(true, this.selectedDeletedDoc).subscribe((res) => {
@@ -820,6 +826,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
   }
   renameOrCancelItem(isItemRename: boolean) {
+
     this.submitted = true;
     this.modelValue = 'modal';
     if (this.renameForm.invalid) {
