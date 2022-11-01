@@ -99,6 +99,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group autocomplete form-group1">
+                            <div class="theme-label">Paid Status</div>
+                            <div class="input-group">
+                                <select class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedPaid">
+                                    <option value="ALL" selected>ALL</option>
+                                    <option value="PAID">PAID</option>
+                                    <option value="UNPAID">UNPAID</option>
+                                  
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-action">
                             <a href="javascript:void(0)" class="btn btn-theme" (click)="applyFilter()">SEARCH</a>
                             <a href="javascript:void(0)" class="btn btn-border" (click)="clearApplyFilter()">CLEAR</a>
@@ -294,6 +305,17 @@
                     <img src="/assets/images/sign-parties.png" />
                     <span>Lease not signed by both parties</span>
                 </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="/assets/images/paid.png" style="width:11px;" />
+                    <span>Paid</span>
+                </li>
+                <li>
+                    <img src="/assets/images/unpaid.png" style="width:11px;" />
+                    <span>Unpaid</span>
+                </li>
+              
             </ul>
         </div>
     </div>

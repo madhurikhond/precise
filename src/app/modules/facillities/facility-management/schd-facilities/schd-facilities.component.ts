@@ -387,6 +387,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      defaultEmailAddress3P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      emailAddress13P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      emailAddress23P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
 
       imagesContact: [''],
       imagesEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
@@ -1204,6 +1207,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: data.schedulingCellPhone,
       schedulingHomePhone: data.schedulingHomePhone,
       schedulingFax: data.schedulingFax,
+      defaultEmailAddress3P: data.defaultEmailAddress3P,
+      emailAddress13P: data.emailAddress13P,
+      emailAddress23P: data.emailAddress23P,
 
       imagesContact: data.imagesContact,
       imagesEmail: data.imagesEmail,
@@ -1717,6 +1723,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
       schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
       schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
+      defaultEmailAddress3P: this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P: this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P: this.facilityContactDetailFormControls.emailAddress23P.value,
 
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
@@ -2117,6 +2126,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
       schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
       schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
+      defaultEmailAddress3P: this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P: this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P: this.facilityContactDetailFormControls.emailAddress23P.value,
 
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
