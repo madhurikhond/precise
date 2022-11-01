@@ -34,7 +34,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   totalRecord: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
-
+  selectedPaid: any='ALL';
   ngOnInit(): void {
     this.getFacilityParentList();
     //this.getFacilityList();
@@ -108,24 +108,26 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.selectedParentFacility = null;
     this.selectedFacility = null;
     this.selectedModality = null;
-    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', ''));
+    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', ''));
   }
   applyFilter() {
-    debugger;
+ 
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality));
+    let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, paidStatus));
   }
   setUserSetting(){
 
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any): any {
+    modality: any, paidStatus:any): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
-      'modality': modality
+      'modality': modality,
+      'paidStatus' : paidStatus
     }
   }
   changed(FacilityParentID: any) {  

@@ -695,6 +695,50 @@
 														fax number must be 10 numbers</div>
 												</div>
 											</div>
+
+											<div class="form-group">
+												<div class="theme-label">Default Email Address 3P</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="defaultEmailAddress3P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.defaultEmailAddress3P.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors">
+														Default Email must be a valid email address</div>
+												</div>
+											</div>
+										
+											<div class="form-group">
+												<div class="theme-label">Email Address1 3P</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="emailAddress13P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.emailAddress13P.errors">
+														Email Address1 must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">Email Address2 3P</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="emailAddress23P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress23P.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.emailAddress23P.errors">
+														Email Address2 must be a valid email address</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
@@ -3947,17 +3991,18 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-border-gray btn-sm pull-right"
-						data-dismiss="modal">Close</button>
-					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
-						[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
-					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
-						[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
-					<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
-						(click)="updateFacility(true)">Apply</button>
-				</div>
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-border-gray btn-sm pull-right"
+					data-dismiss="modal">Close</button>
+				<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+					[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
+				<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+					[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
+				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
+					(click)="updateFacility(true)">Apply</button>
+			</div>
+			
 		</div>
 
 
