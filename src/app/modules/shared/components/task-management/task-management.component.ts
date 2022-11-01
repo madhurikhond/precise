@@ -9,6 +9,7 @@ import { PatientService } from 'src/app/services/patient/patient.service';
 import { TaskManagementService } from 'src/app/services/task-management/task-management.service';
 import { ViewChild, ElementRef } from '@angular/core';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-task-management',
@@ -241,7 +242,7 @@ export class TaskManagementComponent implements OnInit {
     {
       'taskAssignTo': this.addTaskFormControl['taskAssignTo'].value,
       'patientId': this.addTaskFormControl['patientId'].value,
-      'dueDate': this.addTaskFormControl['dueDate'].value,
+      'dueDate': moment(this.addTaskFormControl['dueDate'].value).format('MM/DD/YYYY') ,
       'tag': this.addTaskFormControl['tag'].value,
       'taskTitle': this.addTaskFormControl['taskTitle'].value,
       'taskSpecifics': this.addTaskFormControl['taskSpecifics'].value,
