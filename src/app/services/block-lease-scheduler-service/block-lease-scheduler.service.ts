@@ -17,6 +17,7 @@ export class BlockLeaseSchedulerService {
   sendDataToCalendarSchedulerWindow(body: any): void {
     this.sendDataToCalendarScheduler.emit(body);
   }
+  
   constructor(private readonly _httpService: HttpService, private readonly storageService: StorageService,) { }
   getScheduleStatusList(showGlobalLoader: boolean = true) {
     return this._httpService.get(`BlockLeaseScheduler/GetScheduleStatusList`, showGlobalLoader).pipe(

@@ -24,8 +24,8 @@ declare let scheduler: any;
 })
 export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("scheduler_here", { static: true }) schedulerContainer: ElementRef;
-    @ViewChild('f', { static: true }) f: NgForm | any;
-    model: any = { signature: '' };
+    @ViewChild('frmCal', { static: true }) f: NgForm | any;
+    model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
@@ -288,7 +288,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     scheduler.endLightbox(false, null);
                     this.backToCalendar();
                 }
-                else if ((reason == 3 || reason == 6 || reason == 2 )) {
+                else if ((reason == 3 || reason == 6 || reason == 2)) {
                     scheduler.deleteEvent(event.id);
                     this.GetBlockLeaseData();
                     this.backToCalendar();
@@ -408,6 +408,9 @@ export class CalendarSchedulerComponent implements OnInit {
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
+        this.model.firstName = '';
+        this.model.lastName = '';
+        this.model.Title = '';
     }
     confirmBlockToLease(defaultSign: boolean, body: any = '') {
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
@@ -424,6 +427,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertMessage: res.response.message,
                         alertType: res.response.ResponseCode
                     })
+                    this.signConfirm(false);
                 }
             }
         }, (err: any) => {
@@ -439,7 +443,10 @@ export class CalendarSchedulerComponent implements OnInit {
             let data = {
                 'FacilityID': this.FacilityID,
                 'UserId': this.storageService.user.UserId,
-                'DefaultSign': this.model.signature
+                'PreciseSignature': this.model.signature,
+                'PreciseUserTitle': this.model.Title,
+                'PreciseUserFirstName': this.model.firstName,
+                'PreciseUserLastName': this.model.lastName,
             }
             this.confirmBlockToLease(false, data)
             this.f.submitted = false;
