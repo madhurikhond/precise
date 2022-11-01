@@ -265,7 +265,13 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-
+  get3pLeaseFacilityData(blockId:any,modalityName:string='')
+  {
+    debugger
+    alert('BlockId for  PDF generation: '+ blockId + ', Modalitiy name: ' + modalityName);
+   console.log(blockId);
+   
+  }
   getActiveEpicUsers() {
     this.EpicUserList = [];
     this.facilityService.getActiveEpicUsers(true).subscribe((userRes) => {
@@ -908,11 +914,32 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
   }
   updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
+  
     var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
     if (data.length > 0)
       data[0].ResourceId = ResourceId;
-    else
-      this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+    else 
+    {
+      debugger
+      if(Modality='ct')
+      {
+        var test = this.modalityCtForm.controls["ct1ResourceName"].value;
+        // alert('CT Test ' + test);        
+             if(this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId)
+             {
+               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+             }
+      }
+      else{
+        var test = this.modalityMriForm.controls["mri1ResourceName"].value;
+        // alert('MRI Test ' + test);        
+             if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
+             {
+               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
+             }
+      }
+    
+    }
   }
   updateFacilityResources(arrayResources: any) {
     let getOnlyModality = arrayResources.map(item => item.Modality).filter((value, index, self) => self.indexOf(value) === index);
@@ -924,9 +951,12 @@ export class SchdFacilitiesComponent implements OnInit {
           let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
           if (Modality.toLowerCase() == 'mri') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'mri', ModalitiyType: ModalitiyType });
-            this.modalityMriForm.patchValue({
-              [controlName]: getAllId.ResourceId
-            });
+            
+              this.modalityMriForm.patchValue({
+                [controlName]: getAllId.ResourceId
+              });
+            
+           
           } else if (Modality.toLowerCase() == 'ct') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'ct', ModalitiyType: ModalitiyType });
             this.modalityCtForm.patchValue({
