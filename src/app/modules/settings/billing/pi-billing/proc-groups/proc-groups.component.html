@@ -22,8 +22,8 @@
             [allowColumnReordering]="true"
             [columnResizingMode]="columnResizingMode"
             [columnMinWidth]="30"
-            keyExpr="ProcGroupId" 
-            (onRowUpdated)="onRowUpdated($event)"           
+            keyExpr="ProcGroupId"
+            (onRowUpdated)="onRowUpdated($event)"
             [showBorders]="true">
             <dxo-paging [enabled]="false"></dxo-paging>
             <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
@@ -32,18 +32,18 @@
             <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
 				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            
+
             <dxi-column dataField="ProcGroupId" [allowEditing]="false" [width]="100" caption="Action" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
             <dxi-column dataField="ProcGroupId" [allowEditing]="false" caption="Group Id"></dxi-column>
-            <dxi-column dataField="ProcGroupName" [allowEditing]="false" caption="Proc Group Name"></dxi-column>   
+            <dxi-column dataField="ProcGroupName" [allowEditing]="false" caption="Proc Group Name"></dxi-column>
             <!-- <dxi-column  dataField="ModalityName" caption="Facility Pricing Mapping" [allowEditing]="false"  cellTemplate="tagEditCellTemplate" editCellTemplate="tagEditCellTemplate"  [width]="400"></dxi-column>  -->
             <dxi-column dataField="MasterModalityID" caption="Facility Pricing Mapping">
-                <dxo-lookup [dataSource]="masterModalityList" displayExpr="ModalityName" placeholder="select Modality" valueExpr="masterModalityID"> 
-                </dxo-lookup>           
+                <dxo-lookup [dataSource]="masterModalityList" displayExpr="ModalityName" placeholder="select Modality" valueExpr="masterModalityID">
+                </dxo-lookup>
             </dxi-column>
 
 
-         
+
 
           <dxi-column dataField="ProcNoShowFee" caption="NO SHOW FEE" [allowEditing]="false" ></dxi-column>
 
@@ -52,22 +52,22 @@
                 <a href="javascript:void(0)" (click)="delete(data.data.ProcGroupId)" class="single-action fa fa-trash" data-toggle="modal" data-target="#delete-record"></a>
             </div>
         <!-- <div *dxTemplate="let cell of 'tagEditCellTemplate'">
-                <div class="chart-cell">                
+                <div class="chart-cell">
                     <dx-tag-box
                     [dataSource]="masterModalityList"
                     displayExpr="ModalityName"
-                    valueExpr="MasterModalityID"      
-                    [value]="cell.data.MasterModalityID"            
+                    valueExpr="MasterModalityID"
+                    [value]="cell.data.MasterModalityID"
                     [showSelectionControls]="false"
                     [maxDisplayedTags]="2"
                     [showMultiTagOnly]="false"
                     itemTemplate="item"
                     (onValueChanged)="onRoleValueChanged($event,cell)">
-                    <div *dxTemplate="let data of 'item'">                    
-                      <div>{{data.ModalityName}}</div>                     
-                    </div>  
+                    <div *dxTemplate="let data of 'item'">
+                      <div>{{data.ModalityName}}</div>
+                    </div>
             </dx-tag-box>
-               
+
                 </div>
               </div>           -->
         </dx-data-grid>
@@ -94,40 +94,40 @@
                                 <div class="form-group">
                                     <div class="theme-label">Proc Group Name</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="procGroupName" required>                                     
+                                        <input type="text" class="form-control" formControlName="procGroupName" [ngClass]="{ 'is-invalid': submitted && aForm.procGroupName.errors}" required>
                                     </div>
-                                    <div *ngIf="submitted && aForm.procGroupName" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.procGroupName" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.procGroupName.invalid">Proc Group Name is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">No Show Fee</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="procNoShowFee" appTwoDigitDecimaNumber required>                                        
+                                        <input type="text" class="form-control" formControlName="procNoShowFee" appTwoDigitDecimaNumber [ngClass]="{ 'is-invalid': submitted && aForm.procNoShowFee.errors}" required>
                                     </div>
-                                    <div *ngIf="submitted && aForm.procNoShowFee" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.procNoShowFee" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.procNoShowFee.invalid">No Show Fee is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="theme-label">Modality</div>   
+                                    <div class="theme-label">Modality</div>
                                     <div class="input-group">
 										<select formControlName="masterModality" class="form-control">
 											<option value="0">Select Proc Group</option>
 											<option *ngFor="let group of masterModalityList" value={{group.masterModalityID}}>
 												{{group.ModalityName}}
-											</option>                                              
+											</option>
 										</select>
-									</div>                                 
+									</div>
                                 </div>
                             </div>
-                        </div>                    
+                        </div>
                     </div>
 				</div>
 				<div class="modal-footer">
 					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"  data-dismiss="modal">Cancel</a>
 					<button type="submit" (click)="onInsertSubmit()" [attr.data-dismiss]="modelValue" class="btn btn-border pull-left btn-sm">Insert</button>
-				</div>  
+				</div>
 			</form>
         </div>
     </div>
@@ -148,43 +148,43 @@
                                 <div class="form-group">
                                     <div class="theme-label">Proc Group Name</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="procGroupName" required>                                        
+                                        <input type="text" class="form-control" formControlName="procGroupName" [ngClass]="{ 'is-invalid': submitted1 && eForm.procGroupName.errors}" required>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.procGroupName" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.procGroupName" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.procGroupName.invalid">Proc Group Name is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">No Show Fee</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="procNoShowFee" appTwoDigitDecimaNumber required>                                        
+                                        <input type="text" class="form-control" formControlName="procNoShowFee" appTwoDigitDecimaNumber [ngClass]="{ 'is-invalid': submitted1 && eForm.procNoShowFee.errors}" required>
                                     </div>
-                                    <div *ngIf="submitted1 && eForm.procNoShowFee" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted1 && eForm.procNoShowFee" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="eForm.procNoShowFee.invalid">No Show Fee is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">Modality</div>
                                     <div class="form-group">
-                                        <div class="theme-label">Edit Modality</div> 
+                                        <div class="theme-label">Edit Modality</div>
                                         <div class="input-group">
                                             <select formControlName="masterModality" class="form-control">
                                                 <option value="0">Select Proc Group</option>
                                                 <option *ngFor="let group of masterModalityList" value={{group.masterModalityID}}>
                                                     {{group.ModalityName}}
-                                                </option>                                              
+                                                </option>
                                             </select>
-                                        </div>                                      
+                                        </div>
                                         <!-- <div class="input-group">
-                                            <ng-select 
+                                            <ng-select
                                             [items]="masterModalityList"
-                                            placeholder="Select"                                            
-                                            bindLabel="ModalityName"    
+                                            placeholder="Select"
+                                            bindLabel="ModalityName"
                                             [multiple]="true"
                                             [closeOnSelect]="true"
-                                            bindValue="MasterModalityID" 
+                                            bindValue="MasterModalityID"
                                             formControlName="masterModalityID"
-                                            >                                       
+                                            >
                                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                                     <span class="ng-value-label"> {{item.ModalityName}}</span>
@@ -194,14 +194,14 @@
                                                 <div class="ng-value" *ngIf="items.length > 1">
                                                     <span class="ng-value-label">{{items.length - 1}} more...</span>
                                                 </div>
-                                            </ng-template>                               
+                                            </ng-template>
                                       </ng-select>
                                         </div>                                  -->
                                     </div>
                                 </div>
                             </div>
                         </div>
-						
+
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -231,5 +231,5 @@
     </div>
 </div>
 
-  
+
 

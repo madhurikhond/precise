@@ -22,7 +22,7 @@
             [allowColumnReordering]="true"
             [columnResizingMode]="columnResizingMode"
             [columnMinWidth]="30"
-            keyExpr="PayeeId"  
+            keyExpr="PayeeId"
             [showBorders]="true">
 
             <dxo-sorting mode="multiple"></dxo-sorting>
@@ -30,7 +30,7 @@
             <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
 				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            
+
             <dxi-column dataField="PayeeId" [width]="100" caption="Action"  [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true"></dxi-column>
             <dxi-column dataField="Payee" caption="Payee"></dxi-column>
             <dxi-column dataField="PayeeAddress" caption="Payee Address"></dxi-column>
@@ -66,18 +66,18 @@
                                 <div class="form-group">
                                     <div class="theme-label">Payee</div>
                                     <div class="input-group">
-                                        <input formControlName="payee" type="text" class="form-control">
+                                        <input formControlName="payee" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.payee.errors}">
                                     </div>
-                                    <div *ngIf="submitted && aForm.payee" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.payee" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.payee.invalid">Payee is required</small>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="theme-label">Payee Address</div>
                                     <div class="input-group">
-                                        <input formControlName="payeeAddress" type="text" class="form-control">
+                                        <input formControlName="payeeAddress" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && aForm.payeeAddress.errors}">
                                     </div>
-                                    <div *ngIf="submitted && aForm.payeeAddress" class="tooltiptext text-right">                            
+                                    <div *ngIf="submitted && aForm.payeeAddress" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="aForm.payeeAddress.invalid">Payee address is required</small>
                                     </div>
                                 </div>
@@ -112,18 +112,18 @@
 								<div class="form-group">
 									<div class="theme-label">Payee</div>
 									<div class="input-group">
-										<input formControlName="payee" type="text" class="form-control">
+										<input formControlName="payee" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted1 && eForm.payee.errors}">
 									</div>
-									<div *ngIf="submitted1 && eForm.payee" class="tooltiptext text-right">                            
+									<div *ngIf="submitted1 && eForm.payee" class="tooltiptext text-right">
 										<small class="error text-danger" *ngIf="eForm.payee.invalid">Payee is required</small>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="theme-label">Payee Address</div>
 									<div class="input-group">
-										<input formControlName="payeeAddress" type="text" class="form-control">
+										<input formControlName="payeeAddress" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted1 && eForm.payeeAddress.errors}">
 									</div>
-									<div *ngIf="submitted1 && eForm.payeeAddress" class="tooltiptext text-right">                            
+									<div *ngIf="submitted1 && eForm.payeeAddress" class="tooltiptext text-right">
 										<small class="error text-danger" *ngIf="eForm.payeeAddress.invalid">Payee address is required</small>
 									</div>
 								</div>
