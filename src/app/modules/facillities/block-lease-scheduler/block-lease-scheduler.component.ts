@@ -133,7 +133,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   changed(FacilityParentID: any) {  
     this.selectedParentFacility =  FacilityParentID.FacilityParentID;
     this.getFacilityParentList();
-    alert(this.selectedParentFacility);
+    // alert(this.selectedParentFacility);
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
