@@ -331,7 +331,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Download Selected') {
-
       if (this.selectedFileKeys.length == 1) {
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
        this.getFilesByKey(this.selectedFileNames, this.path, e.itemData.text, e)
@@ -348,7 +347,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     else if (e.itemData.text == 'Download All Files') {
       this.getFilesByKeys(e.itemData.text)
-      this.downloadAllFilesAsZipFile(this.fileItems);
+      //this.downloadAllFilesAsZipFile(this.fileItems);
     }
     else if (e.itemData.text == 'Upload') {
       this.docTypeModelChange = false;
