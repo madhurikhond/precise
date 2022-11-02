@@ -953,8 +953,8 @@
                                             <td>{{patientCompareDetail.firstNameP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('FirstName','Accepted',patientCompareDetail.firstNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                              <i (click)="RejectPatientDetail('FirstName','Rejected',patientCompareDetail.firstNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('FirstName','Accepted',patientCompareDetail.firstNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                              <i (click)="RejectPatientDetail('FirstName','Rejected',patientCompareDetail.firstNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Matched'">
                                               {{patientCompareDetail.firstNameStatus}}
@@ -974,8 +974,8 @@
                                               <td>{{patientCompareDetail.middleNameR}}</td>
                                               <td>{{patientCompareDetail.middleNameP}}</td>
                                               <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('MiddleName','Accepted',patientCompareDetail.middleNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('MiddleName','Rejected',patientCompareDetail.middleNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('MiddleName','Accepted',patientCompareDetail.middleNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('MiddleName','Rejected',patientCompareDetail.middleNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                               <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus  == 'Matched'">{{patientCompareDetail.middleNameStatus}}</td>
                                               <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus == 'Accepted'">
@@ -994,8 +994,8 @@
                                             <td>{{patientCompareDetail.lastNameP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('LastName','Accepted',patientCompareDetail.lastNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('LastName','Rejected',patientCompareDetail.lastNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('LastName','Accepted',patientCompareDetail.lastNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('LastName','Rejected',patientCompareDetail.lastNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus  == 'Matched'">
                                               {{patientCompareDetail.lastNameStatus}}
@@ -1016,8 +1016,8 @@
                                             <td>{{patientCompareDetail.dateOfBirthP | date:'MM/dd/yyyy'}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('DateOfBirth','Accepted',patientCompareDetail.dateOfBirthP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('DateOfBirth','Rejected',patientCompareDetail.dateOfBirthP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('DateOfBirth','Accepted',patientCompareDetail.dateOfBirthP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DateOfBirth','Rejected',patientCompareDetail.dateOfBirthP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus  == 'Matched'">
                                               {{patientCompareDetail.dateOfBirthStatus}}
@@ -1038,8 +1038,8 @@
                                               <td>{{patientCompareDetail.streetAddressP}}</td>
   
                                               <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('StreetAddress','Accepted',patientCompareDetail.streetAddressP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('StreetAddress','Rejected',patientCompareDetail.streetAddressP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('StreetAddress','Accepted',patientCompareDetail.streetAddressP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('StreetAddress','Rejected',patientCompareDetail.streetAddressP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus  == 'Matched'">
                                                   {{patientCompareDetail.streetAddressStatus}}
@@ -1060,8 +1060,8 @@
                                             <td>{{patientCompareDetail.cityP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.cityStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('City','Accepted',patientCompareDetail.cityP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('City','Rejected',patientCompareDetail.cityP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('City','Accepted',patientCompareDetail.cityP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('City','Rejected',patientCompareDetail.cityP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.cityStatus  == 'Matched'">
                                               {{patientCompareDetail.cityStatus}}
@@ -1082,8 +1082,8 @@
                                             <td>{{patientCompareDetail.stateP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.stateStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('State','Accepted',patientCompareDetail.stateP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('State','Rejected',patientCompareDetail.stateP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('State','Accepted',patientCompareDetail.stateP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('State','Rejected',patientCompareDetail.stateP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.stateStatus  == 'Matched'">
                                               {{patientCompareDetail.stateStatus}}
@@ -1104,8 +1104,8 @@
                                             <td>{{patientCompareDetail.zipcodeP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('ZipCode','Accepted',patientCompareDetail.zipcodeP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('ZipCode','Rejected',patientCompareDetail.zipcodeP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('ZipCode','Accepted',patientCompareDetail.zipcodeP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('ZipCode','Rejected',patientCompareDetail.zipcodeP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Matched'">
                                               {{patientCompareDetail.zipCodeStatus}}
@@ -1126,8 +1126,8 @@
                                             <td>{{patientCompareDetail.homePhoneP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('HomePhone','Accepted',patientCompareDetail.homePhoneP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('HomePhone','Rejected',patientCompareDetail.homePhoneP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('HomePhone','Accepted',patientCompareDetail.homePhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('HomePhone','Rejected',patientCompareDetail.homePhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Matched'">
                                               {{patientCompareDetail.homePhoneStatus}}
@@ -1148,8 +1148,8 @@
                                               <td>{{patientCompareDetail.cellPhoneP}}</td>
   
                                               <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('CellPhone','Accepted',patientCompareDetail.cellPhoneP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('CellPhone','Rejected',patientCompareDetail.cellPhoneP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('CellPhone','Accepted',patientCompareDetail.cellPhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('CellPhone','Rejected',patientCompareDetail.cellPhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Matched'">
                                                   {{patientCompareDetail.cellPhoneStatus}}
@@ -1170,8 +1170,8 @@
                                               <td>{{patientCompareDetail.emailP}}</td>
   
                                               <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('Email','Accepted',patientCompareDetail.emailP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('Email','Rejected',patientCompareDetail.emailP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('Email','Accepted',patientCompareDetail.emailP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('Email','Rejected',patientCompareDetail.emailP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Matched'">
                                                   {{patientCompareDetail.emailStatus}}
@@ -1192,8 +1192,8 @@
                                               <td>{{patientCompareDetail.emergencyContactNameP}}</td>
   
                                               <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('EmergencyContactName','Accepted',patientCompareDetail.emergencyContactNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('EmergencyContactName','Rejected',patientCompareDetail.emergencyContactNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('EmergencyContactName','Accepted',patientCompareDetail.emergencyContactNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('EmergencyContactName','Rejected',patientCompareDetail.emergencyContactNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Matched'">
                                                   {{patientCompareDetail.emergencyContactNameStatus}}
@@ -1214,8 +1214,8 @@
                                             <td>{{patientCompareDetail.emergencyContactPhoneP}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('EmergencyContactPhone','Accepted',patientCompareDetail.emergencyContactPhoneP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('EmergencyContactPhone','Rejected',patientCompareDetail.emergencyContactPhoneP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('EmergencyContactPhone','Accepted',patientCompareDetail.emergencyContactPhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('EmergencyContactPhone','Rejected',patientCompareDetail.emergencyContactPhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Matched'">
                                               {{patientCompareDetail.emergencyContactPhoneStatus}}
@@ -1236,8 +1236,8 @@
                                               <td>{{patientCompareDetail.attorneyNameP}}</td>
   
                                               <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('AttorneyName','Accepted',patientCompareDetail.attorneyNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('AttorneyName','Rejected',patientCompareDetail.attorneyNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('AttorneyName','Accepted',patientCompareDetail.attorneyNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('AttorneyName','Rejected',patientCompareDetail.attorneyNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Matched'">
                                                   {{patientCompareDetail.attorneyNameStatus}}
@@ -1258,8 +1258,8 @@
                                             <td>{{patientCompareDetail.dateOfInjuryP | date:'MM/dd/yyyy'}}</td>
   
                                             <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Unmatched'">
-                                              <i (click)="ApprovePatientDetail('DateOfInjury','Accepted',patientCompareDetail.dateOfInjuryP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('DateOfInjury','Rejected',patientCompareDetail.dateOfInjuryP)"class="fa fa-times-circle-o fa-2x"></i>
+                                              <i (click)="ApprovePatientDetail('DateOfInjury','Accepted',patientCompareDetail.dateOfInjuryP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DateOfInjury','Rejected',patientCompareDetail.dateOfInjuryP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                             </td>
                                             <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Matched'">
                                               {{patientCompareDetail.dateOfInjuryStatus}}
@@ -1279,8 +1279,8 @@
                                               <td>{{patientCompareDetail.driverNameR}}</td>
                                               <td>{{patientCompareDetail.driverNameP}}</td>
                                               <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Unmatched'">
-                                                  <i (click)="ApprovePatientDetail('DriverName','Accepted',patientCompareDetail.driverNameP)" class="fa fa-check-circle-o fa-2x mr-4"></i>
-                                                  <i (click)="RejectPatientDetail('DriverName','Rejected',patientCompareDetail.driverNameP)"class="fa fa-times-circle-o fa-2x"></i>
+                                                  <i (click)="ApprovePatientDetail('DriverName','Accepted',patientCompareDetail.driverNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DriverName','Rejected',patientCompareDetail.driverNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
                                                 </td>
                                                 <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Matched'">
                                                   {{patientCompareDetail.driverNameStatus}}
