@@ -529,7 +529,13 @@ export class SchedulerPopupComponent implements OnInit {
     this.modalityResourcesList = [];
     this.blockLeaseSchedulerService.getCalenderModalityResourceDropDownData(true, this.FacilityID).subscribe((res) => {
       if (res.response != null) {
-        this.modalityResourcesList = res.response;
+        if(res.response.length > 0)
+        {
+          this.IsAllModality = true;
+          this.modalityResourcesList = res.response;
+        }
+        else
+          this.IsAllModality = false;
       }
     }, (err: any) => {
       this.errorNotification(err);
