@@ -12,6 +12,8 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
+import { environment } from '../../../../../environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare const $: any;
 
 @Component({
@@ -24,6 +26,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
   @ViewChild('hiddenConfirmationLeaseBtn', { static: false }) hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @Input() isGridDisplay: boolean = true
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
@@ -109,6 +112,7 @@ export class SchdFacilitiesComponent implements OnInit {
   totalrecordsFull_MRI: number = 1;
   totalrecordsFull_CT: number = 1;
   submiited: boolean = false;
+  fileData: SafeResourceUrl;
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   sendDataDocManager: any;
   allowUpdatingPrice: boolean = false;
@@ -121,9 +125,12 @@ export class SchdFacilitiesComponent implements OnInit {
   btnActive:number=0;
   leaseIdArray:any=[];
   creditIdArray:any=[];
+  apiUrl:any ; 
+
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
+  
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -150,6 +157,7 @@ export class SchdFacilitiesComponent implements OnInit {
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
     private readonly blockleasescheduler: BlockLeaseSchedulerService, private modalService: NgbModal,
+    private sanitizer: DomSanitizer,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
     facilityService.sendDataToschdFacilities.subscribe(res => {
@@ -184,7 +192,15 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
-
+    this.fullblockLeaseAgreementMRIList = [
+      {
+        'TimeFrame' : 'Time Frame here',
+        'TotalLeaseHours' : 'TotalLeaseHours here',
+        'LeaseRatePerHour':'LeaseRatePerHour here',
+        'totalHour':'totalHour here',
+        'Aggrement': ''
+      }
+    ]
 
 
 
@@ -259,17 +275,21 @@ export class SchdFacilitiesComponent implements OnInit {
   onPaste($event: any): void {
     console.log("onPaste");
     //this.log += new Date() + "<br />";
+
   }
   onPageSizeChange(event) {
     this.pageSize = event;
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-  get3pLeaseFacilityData(blockId:any,modalityName:string='')
+  get3pLeaseFacilityData(blockId:any,modalityName:string='',fileData:any)
   {
     debugger
-    alert('BlockId for  PDF generation: '+ blockId + ', Modalitiy name: ' + modalityName);
-   console.log(blockId);
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
+    var path = 'D:/Mridula%20Malhotra/PRECISEMRI_API/PreciseMRI.API/Reports/LeaseAggreements/' + 'lse-100000.pdf'
+    fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
+    this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
+    this.hiddenViewFile.nativeElement.click();
    
   }
   getActiveEpicUsers() {
@@ -1041,7 +1061,7 @@ export class SchdFacilitiesComponent implements OnInit {
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
           this.blockLeaseAgreementMRIList = res.response;
-          this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
+          //this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
           this.totalrecordsFull_MRI = res.response[0].TotalRecords;
         }
         else {
