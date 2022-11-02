@@ -270,7 +270,7 @@ export class SchdFacilitiesComponent implements OnInit {
     debugger
     alert('BlockId for  PDF generation: '+ blockId + ', Modalitiy name: ' + modalityName);
    console.log(blockId);
-   
+
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
@@ -867,7 +867,7 @@ export class SchdFacilitiesComponent implements OnInit {
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
-    //this.isFacilityAnalyticsTabVisible=true; 
+    //this.isFacilityAnalyticsTabVisible=true;
     this.isApplyAndOkBtnVisisble = true;
     this.isInsertBtnVisisble = false;
     this.facilityDetail = [];
@@ -917,17 +917,17 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
   }
   updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
-  
+
     var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
     if (data.length > 0)
       data[0].ResourceId = ResourceId;
-    else 
+    else
     {
-      debugger
+      //debugger
       if(Modality='ct')
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
-        // alert('CT Test ' + test);        
+        // alert('CT Test ' + test);
              if(this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId)
              {
                this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
@@ -935,13 +935,13 @@ export class SchdFacilitiesComponent implements OnInit {
       }
       else{
         var test = this.modalityMriForm.controls["mri1ResourceName"].value;
-        // alert('MRI Test ' + test);        
+        // alert('MRI Test ' + test);
              if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
              {
                this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
              }
       }
-    
+
     }
   }
   updateFacilityResources(arrayResources: any) {
@@ -954,12 +954,12 @@ export class SchdFacilitiesComponent implements OnInit {
           let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
           if (Modality.toLowerCase() == 'mri') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'mri', ModalitiyType: ModalitiyType });
-            
+
               this.modalityMriForm.patchValue({
                 [controlName]: getAllId.ResourceId
               });
-            
-           
+
+
           } else if (Modality.toLowerCase() == 'ct') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'ct', ModalitiyType: ModalitiyType });
             this.modalityCtForm.patchValue({
@@ -2759,8 +2759,109 @@ export class SchdFacilitiesComponent implements OnInit {
         modalRef.componentInstance.TotalAmount = res.response[0].TotalAmount;
       }
     });
-    
+
   }
+
+  CheckSameCombinationMRI(type:string ){
+    const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
+    const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value ? this.modalityMriForm.controls['mri1ResourceName'].value : '';
+    const Mri2Type = this.modalityMriForm.controls['mri2type'].value;
+    const Mri2ResourceName = this.modalityMriForm.controls['mri2ResourceName'].value ? this.modalityMriForm.controls['mri2ResourceName'].value : '';
+    const Mri3Type = this.modalityMriForm.controls['mri3type'].value;
+    const Mri3ResourceName = this.modalityMriForm.controls['mri3ResourceName'].value ? this.modalityMriForm.controls['mri3ResourceName'].value : '';
+    var Dictionary = {
+      Type1: Mri1Type + " " +Mri1ResourceName,
+      Type2: Mri2Type + " " +Mri2ResourceName,
+      Type3: Mri3Type + " " +Mri3ResourceName
+    }
+    if(type=='Type1' || type == 'Resource1'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type2' || type == 'Resource2'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type3' || type == 'Resource3'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+  }
+
+  CheckSameCombinationCT(type:string){
+    const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
+    const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName'].value ? this.modalityCtForm.controls['ct1ResourceName'].value : '';
+    const Ct2Type = this.modalityCtForm.controls['ct2make'].value;
+    const Ct2ResourceName = this.modalityCtForm.controls['ct2ResourceName'].value ? this.modalityCtForm.controls['ct2ResourceName'].value : '';
+    const Ct3Type = this.modalityCtForm.controls['ct3make'].value;
+    const Ct3ResourceName = this.modalityCtForm.controls['ct3ResourceName'].value ? this.modalityCtForm.controls['ct3ResourceName'].value : '';
+    var Dictionary = {
+      Type1: Ct1Type + " " +Ct1ResourceName,
+      Type2: Ct2Type + " " +Ct2ResourceName,
+      Type3: Ct3Type + " " +Ct3ResourceName
+    }
+    if(type=='Type1' || type == 'Resource1'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type2' || type == 'Resource2'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type3' || type == 'Resource3'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+  }
+
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
   get modalityServiceFormControls() { return this.modalityServiceForm.controls; }
