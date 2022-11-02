@@ -28,7 +28,6 @@ export class BrokerService {
     this.sendDataToBrokerFromOrderedSchedular.emit(body);
   }
   sendDataToLoaderFromBrokerComponent(body:any): void {
-    debugger
     this.sendDataToLoaderComponentFromBrokerComponent.emit(body);
   }
   addBroker(showGlobalLoader : boolean = true, body:any){
@@ -69,6 +68,12 @@ export class BrokerService {
 
   getBrokerPricingExportData(showGlobalLoader : boolean = true, BrokerId: number){
     return this._httpService.get(`Broker/GetBrokerPricingExportData/${BrokerId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
+  getPricingData(showGlobalLoader : boolean = true, brokerId: number){
+    return this._httpService.get(`Broker/GetBrokerPricingData/${brokerId}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

@@ -51,6 +51,7 @@ export class BrokerComponent implements OnInit {
   brokerFacilityPricingList: any = [];
   brokerExcludeFacilityList: any = [];
   brokerExportDataList: any = [];
+  brokerPricingDataList : any = [];
 
   masterSelected: boolean;
   SftpList: any = [];
@@ -141,6 +142,7 @@ export class BrokerComponent implements OnInit {
       this.getAllDocumentTypes();
       this.isShown = false;
       this.fileName = '';
+      
     }
     // ClassicEditor.inline( 'editable', {
     //   extraPlugins: 'sourcedialog'
@@ -205,6 +207,7 @@ export class BrokerComponent implements OnInit {
     this.BrokerPoliciesForm.reset();
     this.getBrokerFacilityPricing();
     this.GetExportData();
+    this.GetBrokerPricingDatas();
   }
 
   sendMailForminitialize() {
@@ -225,6 +228,7 @@ export class BrokerComponent implements OnInit {
     this.getBrokerFacilityPricing();
     this.getBrokerById();
     this.GetExportData();
+    this.GetBrokerPricingDatas();
   }
 
   getBrokerById() {
@@ -973,10 +977,17 @@ export class BrokerComponent implements OnInit {
             });
           });
           e.cancel = true;
-        }, 100);
+        },100);
       }
-    });
+    }); 
   }
+  GetBrokerPricingDatas(){
+  this.brokerService.getPricingData(true,this.brokerId).subscribe((res)=>{
+    if (res.response) {
+      this.brokerPricingDataList = res.response;
+    }
+  });
+}
   sendmailToservice() {
     if (this.file) {
       var formData = new FormData();
