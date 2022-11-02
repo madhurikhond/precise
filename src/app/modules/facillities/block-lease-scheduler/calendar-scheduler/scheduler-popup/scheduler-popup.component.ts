@@ -107,10 +107,10 @@ export class SchedulerPopupComponent implements OnInit {
     if (!this.event['LeaseBlockId']) {
       this.leaseBlockOffForm = this.formBuilder.group({
         modalityType: ['', Validators.required],
-        start_date: [this.event['start_date']],
-        start_time: [this.event['start_date']],
-        end_date: [this.event['end_date']],
-        end_time: [this.event['end_date']],
+        start_date: [this.event['start_date'], Validators.required],
+        start_time: [this.event['start_date'], Validators.required],
+        end_date: [this.event['end_date'], Validators.required],
+        end_time: [this.event['end_date'], Validators.required],
       });
     }
     if (this.mode == 'month') {
@@ -218,6 +218,7 @@ export class SchedulerPopupComponent implements OnInit {
   setRequired() {
     return [Validators.required];
   }
+
   changedOffDays(event: any) {
     this.selectedresourceId = event.target.value;
     this.selectedModality="";
