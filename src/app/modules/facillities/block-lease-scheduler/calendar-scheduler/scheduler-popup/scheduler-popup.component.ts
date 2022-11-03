@@ -83,10 +83,9 @@ export class SchedulerPopupComponent implements OnInit {
       this.getModalityResourcesList();
       if (this.event) {
         if (this.event['LeaseBlockId']) {
-          this.LeaseBlockId = this.event['LeaseBlockId'];
-          this.getLeaseData();
+          this.LeaseBlockId = this.event['LeaseBlockId'];  
         }
-
+        this.getLeaseData();
       }
     }
   }
