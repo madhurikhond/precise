@@ -183,6 +183,31 @@ export class BrokerComponent implements OnInit {
 
   onPolicyTabClick(){
     
+    this.brokerService.getBrokerFacilityPricing(true, this.brokerId).subscribe((res) => {
+      var data: any = res;
+      if (data.response != null) {
+        this.brokerFacilityPricingList = data.response.brokerFacilityPricingList;
+        this.brokerExcludeFacilityList = data.response.brokerExcludeFacilityList;
+        this.FacilityList = this.brokerExcludeFacilityList.slice(0, this.pageSizeFacilityList);
+        this.totalRecordFacilityList = this.brokerExcludeFacilityList.length;
+        this.isAllSelected();
+        this.selectedRows = this.brokerExcludeFacilityList.filter(Br => Br.IsExcluded == true);
+      }
+      else {
+        this.notificationService.showNotification({
+          alertHeader: data.statusText,
+          alertMessage: data.message,
+          alertType: data.responseCode
+        });
+      }
+    },
+      (err: any) => {
+        this.notificationService.showNotification({
+          alertHeader: err.statusText,
+          alertMessage: err.message,
+          alertType: err.status
+        });
+      });
     this.loadingService.showLoader()
     setTimeout(() => { 
       this.loadingService.showLoader()
@@ -205,9 +230,9 @@ export class BrokerComponent implements OnInit {
     this.submitted = false;
     this.addEditForm.reset();
     this.BrokerPoliciesForm.reset();
-    this.getBrokerFacilityPricing();
+    // this.getBrokerFacilityPricing();
     this.GetExportData();
-    this.GetBrokerPricingDatas();
+    // this.GetBrokerPricingDatas();
   }
 
   sendMailForminitialize() {
@@ -225,10 +250,10 @@ export class BrokerComponent implements OnInit {
     this.submitted = false;
     this.addEditForm.reset();
     this.BrokerPoliciesForm.reset();
-    this.getBrokerFacilityPricing();
+    // this.getBrokerFacilityPricing();
     this.getBrokerById();
     this.GetExportData();
-    this.GetBrokerPricingDatas();
+    // this.GetBrokerPricingDatas();
   }
 
   getBrokerById() {
@@ -503,34 +528,34 @@ export class BrokerComponent implements OnInit {
       });
   }
 
-  getBrokerFacilityPricing() {
-    this.masterSelected = false;
-    this.brokerService.getBrokerFacilityPricing(true, this.brokerId).subscribe((res) => {
-      var data: any = res;
-      if (data.response != null) {
-        this.brokerFacilityPricingList = data.response.brokerFacilityPricingList;
-        this.brokerExcludeFacilityList = data.response.brokerExcludeFacilityList;
-        this.FacilityList = this.brokerExcludeFacilityList.slice(0, this.pageSizeFacilityList);
-        this.totalRecordFacilityList = this.brokerExcludeFacilityList.length;
-        this.isAllSelected();
-        this.selectedRows = this.brokerExcludeFacilityList.filter(Br => Br.IsExcluded == true);
-      }
-      else {
-        this.notificationService.showNotification({
-          alertHeader: data.statusText,
-          alertMessage: data.message,
-          alertType: data.responseCode
-        });
-      }
-    },
-      (err: any) => {
-        this.notificationService.showNotification({
-          alertHeader: err.statusText,
-          alertMessage: err.message,
-          alertType: err.status
-        });
-      });
-  }
+  // getBrokerFacilityPricing() {
+  //   this.masterSelected = false;
+  //   this.brokerService.getBrokerFacilityPricing(true, this.brokerId).subscribe((res) => {
+  //     var data: any = res;
+  //     if (data.response != null) {
+  //       this.brokerFacilityPricingList = data.response.brokerFacilityPricingList;
+  //       this.brokerExcludeFacilityList = data.response.brokerExcludeFacilityList;
+  //       this.FacilityList = this.brokerExcludeFacilityList.slice(0, this.pageSizeFacilityList);
+  //       this.totalRecordFacilityList = this.brokerExcludeFacilityList.length;
+  //       this.isAllSelected();
+  //       this.selectedRows = this.brokerExcludeFacilityList.filter(Br => Br.IsExcluded == true);
+  //     }
+  //     else {
+  //       this.notificationService.showNotification({
+  //         alertHeader: data.statusText,
+  //         alertMessage: data.message,
+  //         alertType: data.responseCode
+  //       });
+  //     }
+  //   },
+  //     (err: any) => {
+  //       this.notificationService.showNotification({
+  //         alertHeader: err.statusText,
+  //         alertMessage: err.message,
+  //         alertType: err.status
+  //       });
+  //     });
+  // }
 
   saveBroker() {
     this.brokerExcludeFacilityList.map(u => u.IsExcluded = false);
@@ -981,13 +1006,13 @@ export class BrokerComponent implements OnInit {
       }
     }); 
   }
-  GetBrokerPricingDatas(){
-  this.brokerService.getPricingData(true,this.brokerId).subscribe((res)=>{
-    if (res.response) {
-      this.brokerPricingDataList = res.response;
-    }
-  });
-}
+//   GetBrokerPricingDatas(){
+//   this.brokerService.getPricingData(true,this.brokerId).subscribe((res)=>{
+//     if (res.response) {
+//       this.brokerPricingDataList = res.response;
+//     }
+//   });
+// }
   sendmailToservice() {
     if (this.file) {
       var formData = new FormData();
