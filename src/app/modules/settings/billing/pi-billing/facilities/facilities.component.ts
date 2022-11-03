@@ -42,7 +42,7 @@ export class FacilitiesComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Facilities');
+    this.commonMethodService.setTitle('Pi Billing');
     this.getAllFacilityGroups();
     this.getModalityNames();
     this.editForm = this.fb.group({

@@ -92,8 +92,8 @@ export class WorkflowService {
       map((res: ApiResponse) => res)
     );
   }
-  saveCallPatientConfirmationLog(type: string, internalStudyIds: string, note:string,showGlobalLoader: boolean = true) {
-    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog/${type}/${internalStudyIds}/${note}`, null, showGlobalLoader).pipe(
+  saveCallPatientConfirmationLog(type: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post(`Scheduler/SaveCallPatientConfirmationLog`, type, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }

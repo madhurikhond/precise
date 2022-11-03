@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   assignedToFilter: string = '';
 
   DueDateFilter: string = '';
+  SavedSearchFilter: string='';
   LabelFilter: string = '';
   stausFilter: string = '';
   currentTaskId: any = null;
@@ -59,13 +60,14 @@ export class DashboardComponent implements OnInit {
     this.columnResizingMode = this.resizingModes[0];
     this.getEpicUser();
     this.commonMethodService.setTitle('Dashboard');
-    this.applyFilter('', 'Self', '', '', 'ToDo');
+    this.applyFilter('', 'Self', '', '','', 'ToDo');
     this.getTeamMembers();
     this.taskAssignToOtherUserModel = this.storageService.user.UserId;
     this.assignedByFilter = '';
     this.assignedToFilter = '';
     this.DueDateFilter = '';
     this.LabelFilter = '';
+    this.SavedSearchFilter='';
     this.stausFilter = '';
     // this.ckConfig = {
     //   allowedContent: false,
@@ -121,9 +123,9 @@ export class DashboardComponent implements OnInit {
     this.pageNumber = event;
     this.getTeamMembers();
   }
-  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, status: string) {
+  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, savedSearch:string, status: string) {
 
-    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, status, this.storageService.user.UserId);
+    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, savedSearch, status, this.storageService.user.UserId);
     debugger
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
       this.allTaskArray = [];
@@ -214,7 +216,7 @@ export class DashboardComponent implements OnInit {
       if (res.response.length > 0) {
         this.successNotification(res);
         this.modalClose.nativeElement.click();
-        this.applyFilter('', '', '', '', 'ToDo');
+        this.applyFilter('', '', '', '','', 'ToDo');
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -245,7 +247,7 @@ export class DashboardComponent implements OnInit {
 
         if (res.response.length > 0) {
           this.successNotification(res);
-          this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.stausFilter);
+          this.applyFilter(this.assignedByFilter, this.assignedToFilter, this.DueDateFilter, this.LabelFilter, this.SavedSearchFilter,this.stausFilter);
         }
       }, (err: any) => {
         this.errorNotification(err);
@@ -259,7 +261,7 @@ export class DashboardComponent implements OnInit {
       if (res.response.length > 0) {
         this.successNotification(res);
         this.modalClose.nativeElement.click();
-        this.applyFilter('', '', '', '', 'ToDo');
+        this.applyFilter('', '', '', '','', 'ToDo');
       }
     }, (err: any) => {
       this.errorNotification(err);

@@ -1,0 +1,83 @@
+<section class="content-sec">
+  <div class="examquestion-section">
+    <h1 class="title">{{'EXAM_QUESTIONS_FOR_CT_OR_CR.TITLE' | translate}} (CT or CR)</h1>
+    <form
+      [formGroup]="examQuestionCtCrForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+    >
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS_FOR_CT_OR_CR.RECENT_XRAY_PERFORMED' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionsForCtOrCr.recentXrayCt === 'Yes'}" (click)="CheckYesOrNo('Yes','recentXrayCt')"  data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionsForCtOrCr.recentXrayCt === 'No'}" (click)="CheckYesOrNo('No','recentXrayCt')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionsForCtOrCr.recentXrayCt"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionsForCtOrCr.recentXrayCt === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            formControlName="recentXrayCtDescription"
+            placeholder="When was this performed and of what body part?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionCtCrForm.controls['recentXrayCtDescription'].value.length > 0 ||(examQuestionCtCrForm.controls['recentXrayCtDescription'].value.length > 0 && examQuestionCtCrForm.controls.recentXrayCtDescription.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS_FOR_CT_OR_CR.CANCER_HISTORY' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionsForCtOrCr.cancerHistory === 'Yes'}" (click)="CheckYesOrNo('Yes','cancerHistory')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionsForCtOrCr.cancerHistory === 'No'}" (click)="CheckYesOrNo('No','cancerHistory')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionsForCtOrCr.cancerHistory"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionsForCtOrCr.cancerHistory === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            formControlName="recentRadiation"
+            placeholder="Did you have any recent radiation done?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionCtCrForm.controls['recentRadiation'].value.length > 0 ||(examQuestionCtCrForm.controls['recentRadiation'].value.length > 0 && examQuestionCtCrForm.controls.recentRadiation.dirty)"></i>
+        </div>
+      </div>
+
+
+      <div class="buttonSection">
+        <button type="submit"  [disabled]="!examQuestionCtCrForm.valid" [ngClass]="{'d-none':btnText == true,'btnSubmit':!examQuestionCtCrForm.valid,'btn-common':examQuestionCtCrForm.valid}">{{'EXAM_QUESTIONS.SUBMIT_BUTTON' | translate}}</button>
+        <button type="submit" [disabled]="!examQuestionCtCrForm.valid" [ngClass]="{'d-none':btnText == false,'btnSubmit':!examQuestionCtCrForm.valid,'btn-common':examQuestionCtCrForm.valid}">{{'PRE_SCREENING_QUESTIONS.NEXT_BUTTON' | translate}}</button>
+        <button type="button" (click)="goBack()" class="btn-common btnBack">{{'EXAM_QUESTIONS_FOR_CT_OR_CR.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>

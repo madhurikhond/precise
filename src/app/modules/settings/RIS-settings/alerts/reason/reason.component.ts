@@ -15,11 +15,23 @@ import { CommonRegex } from 'src/app/constants/commonregex';
   styleUrls: ['./reason.component.css']
 })
 export class ReasonComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
+  a6: any = 20;
+  a7: any = 20;
+  a8: any = 20;
+  a9: any = 20;
+  a10: any = 20;
+  a11: any = 20;
+
   IsSubmitted:boolean=false;
   isBtnVisible:boolean=true;
   modelValue:string;
   popUpTitle:string='Add';
-  rid:number
+  rid:number;
   reasonForm : FormGroup
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
@@ -72,7 +84,7 @@ export class ReasonComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private settingsService:SettingsService,
     private notificationService:NotificationService,
-    private commonMethodService: CommonMethodService,private storageService:StorageService) { 
+    private commonMethodService: CommonMethodService,private storageService:StorageService,) { 
       this.showFilterRow = true;
       this.showHeaderFilter = false;
       this.applyFilterTypes = [{
@@ -89,7 +101,7 @@ export class ReasonComponent implements OnInit {
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
-    this.commonMethodService.setTitle('Alert');
+    this.commonMethodService.setTitle('Reasons');
     this.columnResizingMode = this.resizingModes[0];
     this.showFilterRow = true;
     this.currentFilter = this.applyFilterTypes[0].key;
@@ -357,7 +369,6 @@ showError(err: any) {
   
   onSubmit()
   {
- 
   this.IsSubmitted=true;
   this.modelValue='modal';
     if (this.reasonForm.invalid){
@@ -452,7 +463,6 @@ showError(err: any) {
           });
           this.getAllReasons();
         }
-        
       }, 
       (err : any) => {
         this.showError(err);
@@ -476,4 +486,10 @@ showError(err: any) {
 
 
   get getFromControls() { return this.reasonForm.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

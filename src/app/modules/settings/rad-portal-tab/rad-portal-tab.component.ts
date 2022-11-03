@@ -5,6 +5,7 @@ import { RadPortalService } from 'src/app/services/rad-portal-service/rad-portal
 import { SettingsService } from 'src/app/services/settings.service';
 import { WorkflowService } from 'src/app/services/work-flow-service/workflow.service';
 import { tabModel } from '../../reading-rad-portal/reading-rad-portal/reading-rad-portal.component';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 
 @Component({
   selector: 'app-rad-portal-tab',
@@ -30,13 +31,15 @@ export class RadPortalTabComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly _radPortalService: RadPortalService,
     private readonly workFlowService: WorkflowService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef ,
+    private readonly commonMethodService : CommonMethodService 
   ) { }
 
   ngOnInit(): void {
     this.getFinancialType();
     this.getDropdown();
     this.getRadPortalTabs();
+    this.commonMethodService.setTitle('Rad Portal Settings');
   }
   ngAfterViewInit() {
     this.cdr.detectChanges();

@@ -1,0 +1,60 @@
+.encryption-info {
+    font-weight: 600;
+    color: #89af6c;
+    font-size: 12px !important;
+}
+
+.patient-portal-title {
+    font-weight: 600;
+}
+
+.exo-font{
+  font-family: "Exo 2" ;
+}
+.phone-information {
+    margin-top: 300px !important;
+}
+
+.tab-section {
+    width: auto !important;
+    cursor: pointer;
+    margin-bottom: 70px !important;
+}
+
+.tab-section .nav-tabs {
+    float: right !important;
+    border: 2px solid #3b8beb;
+    border-radius: 6px;
+  }
+
+.is-invalid {
+    border-color: red !important;
+}
+
+.phn-input {
+    border-radius: 5px !important;
+}
+.btn-verification{
+    font-size: 14px !important;
+}
+.tab-section .nav-tabs .nav-item .nav-link {
+
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    margin: 0px;
+    border-top: 0;
+    text-transform: uppercase;
+    border-radius: 0;
+    border: none;
+}
+.nav-tabs .nav-item {
+    margin: -1px;
+}
+.tab-section .nav-tabs .nav-item.show .nav-link, .tab-section .nav-tabs .nav-link.active {
+    background: #3b8beb;
+    color: #fdfdfd;
+    border-radius: 0;
+    border: none;
+}
+

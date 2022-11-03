@@ -23,6 +23,7 @@ export class LoginRequestComponent implements OnInit {
   stateList: any = [];
   isNextClicked = false;
   submitted = false;
+  redirectLinkWithPermission:any;
   //isWorkEmailRequired:boolean=false;
   isPasswordRequired:Boolean=false;
   showDropdownLoader = true;
@@ -30,7 +31,6 @@ export class LoginRequestComponent implements OnInit {
   dbaText = ''
   maxDate = new Date();
   myclose = false;
-  redirectLinkWithPermission: any
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly accountService: AccountService,
     private readonly storageService: StorageService,
@@ -38,6 +38,7 @@ export class LoginRequestComponent implements OnInit {
     readonly commonRegex = CommonRegex;
 
   ngOnInit(): void {
+
     if (this.checkIsLoggedIn()) {
       this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
       this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
@@ -98,10 +99,12 @@ export class LoginRequestComponent implements OnInit {
     }, {
       Name: 'Facility',
       Value: 'Facility'
-    }, {
-      Name: 'Patient',
-      Value: 'Patient'
-    }, {
+    }, 
+    // {
+    //   Name: 'Patient',
+    //   Value: 'Patient'
+    // }, 
+    {
       Name: 'Precise Imaging Employee',
       Value: 'Precise Imaging Employee'
     }, {
@@ -195,6 +198,7 @@ export class LoginRequestComponent implements OnInit {
           alertHeader: data.statusText,
           alertMessage: data.message,
           alertType: data.responseCode
+          
         });
       }
       this.showDropdownLoader = false;
@@ -208,7 +212,32 @@ export class LoginRequestComponent implements OnInit {
         this.showDropdownLoader = false;
       });
   }
-
+  redirectLinkPremission(data: any)
+  {
+    var valReturn: any;
+    let list: any = [];
+    let responseHierarchy = JSON.parse(data);
+        if (responseHierarchy && responseHierarchy.length) {
+          responseHierarchy.forEach((value) => {
+            if (value && value.hierarchy) {
+              value.hierarchy = JSON.parse(value.hierarchy);
+            }
+          });
+        }
+        for (let i = 0; i < responseHierarchy.length; i++) {
+          list.push(responseHierarchy[i].hierarchy);
+          console.log(list);
+          if(list[0].Url!=='')
+          {
+            valReturn=list[0].Url
+          }
+          else if(list[0].Url=='' && list[0].Children)
+          {
+            valReturn=list[0].Children[0].Url
+          }
+        }
+        return valReturn;
+  }
   //Method To change user type
   onChangeUserType(event): any {
     let valuex = event.target.value;
@@ -261,9 +290,10 @@ export class LoginRequestComponent implements OnInit {
       this.requestLoginForm.controls.EmergencyContactPhone1.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactName2.setValidators(null);
       this.requestLoginForm.controls.EmergencyContactPhone2.setValidators(null);
+      this.requestLoginForm.controls.DateOfBirth.setValidators(null);
 
       this.requestLoginForm.controls.CompanyName.setValidators(this.setRequired());
-      this.requestLoginForm.controls.DateOfBirth.setValidators(this.setRequired());
+      //this.requestLoginForm.controls.DateOfBirth.setValidators(this.setRequired());
     }
     else if (valuex === 'Facility') {
       this.requestLoginForm.controls.LicenseNumber.setValidators(null);
@@ -393,33 +423,6 @@ export class LoginRequestComponent implements OnInit {
       return valid ? null : error;
     };
   }
-  
-  redirectLinkPremission(data: any)
-  {
-    var valReturn: any;
-    let list: any = [];
-    let responseHierarchy = JSON.parse(data);
-        if (responseHierarchy && responseHierarchy.length) {
-          responseHierarchy.forEach((value) => {
-            if (value && value.hierarchy) {
-              value.hierarchy = JSON.parse(value.hierarchy);
-            }
-          });
-        }
-        for (let i = 0; i < responseHierarchy.length; i++) {
-          list.push(responseHierarchy[i].hierarchy);
-          console.log(list);
-          if(list[0].Url!=='')
-          {
-            valReturn=list[0].Url
-          }
-          else if(list[0].Url=='' && list[0].Children)
-          {
-            valReturn=list[0].Children[0].Url
-          }
-        }
-        return valReturn;
-  }
 }
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -438,7 +441,6 @@ export function MustMatch(controlName: string, matchingControlName: string) {
       matchingControl.setErrors(null);
     }
   }
-  
 }
 
 export class DontMatch {

@@ -1,0 +1,99 @@
+.encryption-info {
+  font-weight: 600;
+  color: #89af6c;
+  font-size: 12px !important;
+}
+
+.code-verification-title {
+  font-weight: 600;
+}
+.exo-font{
+  font-family: "Exo 2" ;
+}
+.resend-code {
+  padding-top: 175px !important;
+}
+.verify-code-link{
+  cursor: pointer;
+}
+
+.tab-section {
+  width: auto !important;
+  cursor: pointer;
+  margin-bottom: 20px !important;
+}
+
+.tab-section .nav-tabs {
+  float: right !important;
+  border: 2px solid #3b8beb;
+  border-radius: 6px;
+}
+
+.is-invalid {
+  border-color: red !important;
+}
+
+.btn-continue{
+  font-size: 11px !important;
+}
+.code-info{
+  padding-top: 62px !important;
+  text-align: left;
+}
+.code-input {
+  font-size: 1.5em;
+  width: 50px;
+  text-align: center;
+  margin-left: 13px;
+  height: 50px;
+  color: gray;
+  float: left;
+  box-shadow: 0px 2px 0px 0px #c0c0c0, 0 3px 6px #c0c0c0;
+  border-radius: 5px;
+  border: 1pt solid lightgray;
+  box-shadow: 0px 5px 5px -1px #c0c0c0;
+  /* font-size: 1.5em;
+  width: 50px;
+  text-align: center;
+  margin-left: 13px;
+  float: left; */
+}
+.code-input:focus-visible{
+  outline:2px solid #3b8beb !important;
+}
+.tab-section .nav-tabs .nav-item .nav-link {
+
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    margin: 0px;
+    border-top: 0;
+    text-transform: uppercase;
+    border-radius: 0;
+    border: none;
+}
+.nav-tabs .nav-item {
+    margin: -1px;
+}
+.tab-section .nav-tabs .nav-item.show .nav-link, .tab-section .nav-tabs .nav-link.active {
+    background: #3b8beb;
+    color: #fdfdfd;
+    border-radius: 0;
+    border: none;
+}
+
+@media screen and (max-width:767px){
+  .code-input {
+    width: 40px;
+    height: 40px;
+    color: gray;
+
+}
+}
+@media screen and (width:320px){
+  .code-input {
+    width: 38px;
+    height: 38px;
+    margin-left: 8px;
+}
+}

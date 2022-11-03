@@ -26,7 +26,7 @@ id="gridContainer"
 [columnResizingMode]="columnResizingMode"
 [columnMinWidth]="30"
 
-keyExpr="cid"  
+keyExpr="cid"
 [showBorders]="true">
 
 <dxo-sorting mode="multiple"></dxo-sorting>
@@ -40,7 +40,7 @@ keyExpr="cid"
 <!-- </dxo-header-filter>  -->
 				<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
 <dxo-paging [enabled]="false"></dxo-paging>
-    
+
 <dxo-load-panel [enabled]="true">
 </dxo-load-panel>
 <dxi-column dataField="cid" [width]="100" caption="Action"  [allowFiltering]="false"
@@ -54,7 +54,7 @@ keyExpr="cid"
 </div>
 </dx-data-grid>
     </div>
-    
+
     <div>
         <div>
             <div
@@ -88,12 +88,12 @@ keyExpr="cid"
                                 <div class="form-group">
                                     <div class="theme-label">Type</div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" formControlName="alerttype">
+                                        <input type="text" class="form-control" formControlName="alerttype" [ngClass]="{ 'is-invalid': IsSubmitted && getFromControls.alerttype.errors}">
                                     </div>
-                                    <div *ngIf="IsSubmitted &&  getFromControls.alerttype.errors" class="tooltiptext text-right">                            
+                                    <div *ngIf="IsSubmitted &&  getFromControls.alerttype.errors" class="tooltiptext text-right">
                                         <small class="error text-danger" *ngIf="getFromControls.alerttype.errors.required">Alert Type is required</small>
                                     </div>
-                                </div>                                
+                                </div>
                                 <div class="checkbox-theme">
                                     <input class="form-control" id="alert-isactive" type="checkbox" formControlName="isActive">
                                     <label for="alert-isactive" class="arrow-label">Active</label>

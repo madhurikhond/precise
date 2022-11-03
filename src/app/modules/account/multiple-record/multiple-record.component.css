@@ -1,0 +1,92 @@
+.encryption-info {
+    font-weight: 600;
+    color: #89af6c;
+    font-size: 12px !important;
+  }
+
+  .multiple-record-title {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .exo-font{
+    font-family: "Exo 2" ;
+  }
+
+  .tab-section {
+    width: auto !important;
+    cursor: pointer;
+    margin-bottom: 20px !important;
+  }
+
+  .tab-section .nav-tabs {
+    float: right !important;
+    border: 2px solid #3b8beb;
+    border-radius: 6px;
+  }
+  .is-invalid {
+    border-color: red !important;
+  }
+
+  .code-info{
+    padding-top: 60px !important;
+    text-align: left;
+  }
+  .code-info p{
+    margin-bottom: 40px;
+  }
+  .select-patient{
+    color: #000000;
+    text-align: left;
+    font-size: 15px;
+  }
+  .patient-info{
+    padding: 12px;
+    border: 1px solid #03c8f1;
+    border-radius: 4px;
+    margin-bottom: 22px;
+    cursor: pointer;
+  }
+  .patient-info:hover {
+    background: #03c8f1;
+
+}
+.patient-info:hover p{
+    color: #ffffff;
+}
+  .patient-info p {
+    margin-bottom: 0;
+    text-align: left;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .form-btn-bottom .form-btn .btn-back{
+  background: transparent;
+  color: #707070;
+  font-weight: 400;
+  border-radius: 4px;
+  border: 1px solid #707070;
+}
+
+.tab-section .nav-tabs .nav-item .nav-link {
+  
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+  margin: 0px;
+  border-top: 0;
+  text-transform: uppercase;
+  border-radius: 0;
+  border: none;
+}
+.nav-tabs .nav-item {
+  margin: -1px;
+}
+.tab-section .nav-tabs .nav-item.show .nav-link, .tab-section .nav-tabs .nav-link.active {
+  background: #3b8beb;
+  color: #fdfdfd;
+  border-radius: 0;
+  border: none;
+}

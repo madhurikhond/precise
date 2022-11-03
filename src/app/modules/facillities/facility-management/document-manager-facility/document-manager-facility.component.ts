@@ -623,8 +623,8 @@ export class DocumentManagerFacilityComponent implements OnInit {
       if (res.response) {
         this.folderTree = JSON.parse(JSON.stringify(res.response));
         setTimeout(() => {
-          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
-          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
+          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
+          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
           if (this.selectedTreeItem) {
             this.treeView.instance.expandItem(this.selectedTreeItem.id);
             this.treeView.instance.selectItem(this.selectedTreeItem.id);
@@ -656,10 +656,8 @@ export class DocumentManagerFacilityComponent implements OnInit {
       if (res != null) {
         this.allFile = res.response;
         setTimeout(() => {
-          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
-          this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
-
-
+          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-toolbar'), 'display', 'none');
+          //this.renderer.setStyle(this.elRef.nativeElement.querySelector('.dx-filemanager-breadcrumbs'), 'display', 'none');
         }, 25);
       }
       else {

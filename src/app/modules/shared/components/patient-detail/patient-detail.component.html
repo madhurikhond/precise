@@ -38,6 +38,10 @@
                             <!-- <a class="nav-link" data-toggle="tab" href="#documents-tab">Documents</a> -->
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#10" (click)="updateTabId('10')"
+                                [ngClass]="{'active': tabId === '10'}">Patient Portal</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#5" (click)="updateTabId('5')"
                                 [ngClass]="{'active': tabId === '5'}">Notes</a>
                         </li>
@@ -315,10 +319,15 @@
                                     <div class="table-responsive">
 
                                         <dx-data-grid id="studySummaryGridContainer"
-                                            [dataSource]="patientStudySummaryList" [allowColumnResizing]="true"
-                                            [columnAutoWidth]="true" [allowColumnReordering]="true"
-                                            [columnResizingMode]="columnResizingMode" [focusedRowEnabled]="true"
-                                            keyExpr="INTERNALSTUDYID" [hoverStateEnabled]="true" [showBorders]="true"
+                                            [dataSource]="patientStudySummaryList" 
+                                            [allowColumnResizing]="true"
+                                            [columnAutoWidth]="true" 
+                                            [allowColumnReordering]="true"
+                                            [columnResizingMode]="columnResizingMode" 
+                                            [focusedRowEnabled]="true"
+                                            keyExpr="INTERNALSTUDYID" 
+                                            [hoverStateEnabled]="true" 
+                                            [showBorders]="true"
                                             (onFocusedRowChanged)="onFocusedRowChanged($event)">
                                             <!-- <dxo-selection mode="single"></dxo-selection> -->
                                             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
@@ -916,6 +925,382 @@
                                 Coming Soon
                             </div>
                         </div>
+
+                        <div class="tab-pane" [ngClass]="{'active': tabId === '10'}" id="10">
+                            <div class="user-detail">
+                              <div class="row">
+                                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                      <div class="theme-label-title" *ngIf="isPatientDataFound == true"> Information the patient added or modified</div>
+                                      <div class="theme-label-title" *ngIf="isPatientDataFound == false">
+                                          No details found for the patient to compare.
+                                      </div>
+                                  </div>
+                                  <div class="table-responsive table-patient-height" [ngClass]="{'d-none':isPatientDataFound == false}">
+                                    <table class="patient-table" border="1" width="100%">
+                                      <thead class="patient-table-header">
+                                          <th>Info field</th>
+                                          <th>Precise Entered</th>
+                                          <th>Patient Entered</th>
+                                          <th class="text-center">Accept or Reject</th>
+                                      </thead>
+                                      <tbody>
+                                          <tr [ngClass]="{'row-matched-updated':patientCompareDetail.firstNameStatus == 'Matched'
+                                          || patientCompareDetail.firstNameStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.firstNameStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.firstNameStatus == 'Rejected'}">
+                                            <td>First Name</td>
+                                            <td>{{patientCompareDetail.firstNameR}}</td>
+                                            <td>{{patientCompareDetail.firstNameP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('FirstName','Accepted',patientCompareDetail.firstNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                              <i (click)="RejectPatientDetail('FirstName','Rejected',patientCompareDetail.firstNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Matched'">
+                                              {{patientCompareDetail.firstNameStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.firstNameStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                          </tr>
+                                          <tr [ngClass]="{'row-matched-updated':patientCompareDetail.middleNameStatus == 'Matched'
+                                          || patientCompareDetail.middleNameStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.middleNameStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.middleNameStatus == 'Rejected'}">
+                                              <td>Middle Name</td>
+                                              <td>{{patientCompareDetail.middleNameR}}</td>
+                                              <td>{{patientCompareDetail.middleNameP}}</td>
+                                              <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('MiddleName','Accepted',patientCompareDetail.middleNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('MiddleName','Rejected',patientCompareDetail.middleNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                              <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus  == 'Matched'">{{patientCompareDetail.middleNameStatus}}</td>
+                                              <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.middleNameStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                          </tr>
+                                          <tr [ngClass]="{'row-matched-updated':patientCompareDetail.lastNameStatus == 'Matched'
+                                          || patientCompareDetail.lastNameStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.lastNameStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.lastNameStatus == 'Rejected'}">
+                                              <td>Last Name</td>
+                                              <td>{{patientCompareDetail.lastNameR}}</td>
+                                            <td>{{patientCompareDetail.lastNameP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('LastName','Accepted',patientCompareDetail.lastNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('LastName','Rejected',patientCompareDetail.lastNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus  == 'Matched'">
+                                              {{patientCompareDetail.lastNameStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.lastNameStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.dateOfBirthStatus == 'Matched'
+                                          || patientCompareDetail.dateOfBirthStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.dateOfBirthStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.dateOfBirthStatus == 'Rejected'}">
+                                              <td>Date of Birth</td>
+                                              <td>{{patientCompareDetail.dateOfBirthR | date:'MM/dd/yyyy'}}</td>
+                                            <td>{{patientCompareDetail.dateOfBirthP | date:'MM/dd/yyyy'}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('DateOfBirth','Accepted',patientCompareDetail.dateOfBirthP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DateOfBirth','Rejected',patientCompareDetail.dateOfBirthP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus  == 'Matched'">
+                                              {{patientCompareDetail.dateOfBirthStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfBirthStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.streetAddressStatus == 'Matched'
+                                          || patientCompareDetail.streetAddressStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.streetAddressStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.streetAddressStatus == 'Rejected'}">
+                                              <td>Street Address</td>
+                                              <td>{{patientCompareDetail.streetAddressR}}</td>
+                                              <td>{{patientCompareDetail.streetAddressP}}</td>
+  
+                                              <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('StreetAddress','Accepted',patientCompareDetail.streetAddressP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('StreetAddress','Rejected',patientCompareDetail.streetAddressP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus  == 'Matched'">
+                                                  {{patientCompareDetail.streetAddressStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.streetAddressStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.cityStatus == 'Matched'
+                                            || patientCompareDetail.cityStatus == 'Accepted',
+                                            'row-unmatched':patientCompareDetail.cityStatus == 'Unmatched',
+                                            'row-change-rejected':patientCompareDetail.cityStatus == 'Rejected'}">
+                                              <td>City</td>
+                                              <td>{{patientCompareDetail.cityR}}</td>
+                                            <td>{{patientCompareDetail.cityP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.cityStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('City','Accepted',patientCompareDetail.cityP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('City','Rejected',patientCompareDetail.cityP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.cityStatus  == 'Matched'">
+                                              {{patientCompareDetail.cityStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.cityStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.cityStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.stateStatus == 'Matched'
+                                            || patientCompareDetail.stateStatus == 'Accepted',
+                                            'row-unmatched':patientCompareDetail.stateStatus == 'Unmatched',
+                                            'row-change-rejected':patientCompareDetail.stateStatus == 'Rejected'}">
+                                              <td>State</td>
+                                              <td>{{patientCompareDetail.stateR}}</td>
+                                            <td>{{patientCompareDetail.stateP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.stateStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('State','Accepted',patientCompareDetail.stateP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('State','Rejected',patientCompareDetail.stateP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.stateStatus  == 'Matched'">
+                                              {{patientCompareDetail.stateStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.stateStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.stateStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.zipCodeStatus == 'Matched'
+                                          || patientCompareDetail.zipCodeStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.zipCodeStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.zipCodeStatus == 'Rejected'}">
+                                              <td>Zipcode</td>
+                                              <td>{{patientCompareDetail.zipCodeR}}</td>
+                                            <td>{{patientCompareDetail.zipcodeP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('ZipCode','Accepted',patientCompareDetail.zipcodeP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('ZipCode','Rejected',patientCompareDetail.zipcodeP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Matched'">
+                                              {{patientCompareDetail.zipCodeStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.zipCodeStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.homePhoneStatus == 'Matched'
+                                            || patientCompareDetail.homePhoneStatus == 'Accepted',
+                                            'row-unmatched':patientCompareDetail.homePhoneStatus == 'Unmatched',
+                                            'row-change-rejected':patientCompareDetail.homePhoneStatus == 'Rejected'}">
+                                              <td>Home Phone</td>
+                                              <td>{{patientCompareDetail.homePhoneR}}</td>
+                                            <td>{{patientCompareDetail.homePhoneP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('HomePhone','Accepted',patientCompareDetail.homePhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('HomePhone','Rejected',patientCompareDetail.homePhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Matched'">
+                                              {{patientCompareDetail.homePhoneStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.homePhoneStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.cellPhoneStatus == 'Matched'
+                                            || patientCompareDetail.cellPhoneStatus == 'Accepted',
+                                            'row-unmatched':patientCompareDetail.cellPhoneStatus == 'Unmatched',
+                                            'row-change-rejected':patientCompareDetail.cellPhoneStatus == 'Rejected'}">
+                                              <td>Cell Phone</td>
+                                              <td>{{patientCompareDetail.cellPhoneR}}</td>
+                                              <td>{{patientCompareDetail.cellPhoneP}}</td>
+  
+                                              <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('CellPhone','Accepted',patientCompareDetail.cellPhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('CellPhone','Rejected',patientCompareDetail.cellPhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Matched'">
+                                                  {{patientCompareDetail.cellPhoneStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.cellPhoneStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.emailStatus == 'Matched'
+                                          || patientCompareDetail.emailStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.emailStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.emailStatus == 'Rejected'}">
+                                              <td>Email</td>
+                                              <td>{{patientCompareDetail.emailR}}</td>
+                                              <td>{{patientCompareDetail.emailP}}</td>
+  
+                                              <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('Email','Accepted',patientCompareDetail.emailP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('Email','Rejected',patientCompareDetail.emailP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Matched'">
+                                                  {{patientCompareDetail.emailStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emailStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                            <!-- <tr [ngClass]="{'row-matched-updated':patientCompareDetail.emergencyContactNameStatus == 'Matched'
+                                          || patientCompareDetail.emergencyContactNameStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.emergencyContactNameStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.emergencyContactNameStatus == 'Rejected'}">
+                                              <td>Emergency Contact Name</td>
+                                              <td>{{patientCompareDetail.emergencyContactNameR}}</td>
+                                              <td>{{patientCompareDetail.emergencyContactNameP}}</td>
+  
+                                              <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('EmergencyContactName','Accepted',patientCompareDetail.emergencyContactNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('EmergencyContactName','Rejected',patientCompareDetail.emergencyContactNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Matched'">
+                                                  {{patientCompareDetail.emergencyContactNameStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.emergencyContactNameStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.emergencyContactPhoneStatus == 'Matched'
+                                          || patientCompareDetail.emergencyContactPhoneStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.emergencyContactPhoneStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.emergencyContactPhoneStatus == 'Rejected'}">
+                                              <td>Emergency Contact Phone</td>
+                                              <td>{{patientCompareDetail.emergencyContactPhoneR}}</td>
+                                            <td>{{patientCompareDetail.emergencyContactPhoneP}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('EmergencyContactPhone','Accepted',patientCompareDetail.emergencyContactPhoneP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('EmergencyContactPhone','Rejected',patientCompareDetail.emergencyContactPhoneP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Matched'">
+                                              {{patientCompareDetail.emergencyContactPhoneStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.emergencyContactPhoneStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr> -->
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.attorneyNameStatus == 'Matched'
+                                            || patientCompareDetail.attorneyNameStatus == 'Accepted',
+                                            'row-unmatched':patientCompareDetail.attorneyNameStatus == 'Unmatched',
+                                            'row-change-rejected':patientCompareDetail.attorneyNameStatus == 'Rejected'}">
+                                              <td>Attorney Name</td>
+                                              <td>{{patientCompareDetail.attorneyNameR}}</td>
+                                              <td>{{patientCompareDetail.attorneyNameP}}</td>
+  
+                                              <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('AttorneyName','Accepted',patientCompareDetail.attorneyNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('AttorneyName','Rejected',patientCompareDetail.attorneyNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Matched'">
+                                                  {{patientCompareDetail.attorneyNameStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.attorneyNameStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.dateOfInjuryStatus == 'Matched'
+                                          || patientCompareDetail.dateOfInjuryStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.dateOfInjuryStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.dateOfInjuryStatus == 'Rejected'}">
+                                              <td>Date Of Injury</td>
+                                              <td>{{patientCompareDetail.dateOfInjuryR | date:'MM/dd/yyyy'}}</td>
+                                            <td>{{patientCompareDetail.dateOfInjuryP | date:'MM/dd/yyyy'}}</td>
+  
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Unmatched'">
+                                              <i (click)="ApprovePatientDetail('DateOfInjury','Accepted',patientCompareDetail.dateOfInjuryP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DateOfInjury','Rejected',patientCompareDetail.dateOfInjuryP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Matched'">
+                                              {{patientCompareDetail.dateOfInjuryStatus}}
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Accepted'">
+                                              Updated in RAMSOFT
+                                            </td>
+                                            <td class="text-center" *ngIf="patientCompareDetail.dateOfInjuryStatus == 'Rejected'">
+                                              Change Rejected
+                                            </td>
+                                            </tr>
+                                            <tr [ngClass]="{'row-matched-updated':patientCompareDetail.driverNameStatus == 'Matched'
+                                          || patientCompareDetail.driverNameStatus == 'Accepted',
+                                          'row-unmatched':patientCompareDetail.driverNameStatus == 'Unmatched',
+                                          'row-change-rejected':patientCompareDetail.driverNameStatus == 'Rejected'}">
+                                              <td>Driver Name</td>
+                                              <td>{{patientCompareDetail.driverNameR}}</td>
+                                              <td>{{patientCompareDetail.driverNameP}}</td>
+                                              <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Unmatched'">
+                                                  <i (click)="ApprovePatientDetail('DriverName','Accepted',patientCompareDetail.driverNameP)" class="patient-tab-action fa fa-check-circle-o fa-2x mr-4"></i>
+                                                  <i (click)="RejectPatientDetail('DriverName','Rejected',patientCompareDetail.driverNameP)"class="patient-tab-action fa fa-times-circle-o fa-2x"></i>
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Matched'">
+                                                  {{patientCompareDetail.driverNameStatus}}
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Accepted'">
+                                                  Updated in RAMSOFT
+                                                </td>
+                                                <td class="text-center" *ngIf="patientCompareDetail.driverNameStatus == 'Rejected'">
+                                                  Change Rejected
+                                                </td>
+                                            </tr>
+                                      </tbody>
+  
+                                    </table>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+  
+
                         <div class="tab-pane" [ngClass]="{'active': tabId === '5'}" id="5">
                             <div class="note-list">
                                 <ng-container *ngIf="allNotes!=null && allNotes?.length>0">
@@ -1046,18 +1431,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id116" (add)="a1=ValidateMultiSelectTextLength('id116',a1)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList1">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a1">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a1">
+                                                                <span class="ng-value-label">{{items.length - a1}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1065,18 +1450,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id117" (add)="a2=ValidateMultiSelectTextLength('id117',a2)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList1">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a2">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a2">
+                                                                <span class="ng-value-label">{{items.length - a2}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1172,18 +1557,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id118" (add)="a3=ValidateMultiSelectTextLength('id118',a3)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList2">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a3">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a3">
+                                                                <span class="ng-value-label">{{items.length - a3}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1191,18 +1576,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id119" (add)="a4=ValidateMultiSelectTextLength('id119',a4)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList2">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a4">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a4">
+                                                                <span class="ng-value-label">{{items.length - a4}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1299,18 +1684,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="requestTypeList" placeholder="Select"
-                                                        bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="Name" [multiple]="true" id="id120" (add)="a5=ValidateMultiSelectTextLength('id120',a5)" [closeOnSelect]="false"
                                                         bindValue="Name" formControlName="selectedRequestedTypeList3">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a5">
                                                                 <span class="ng-value-label"> {{item.Name}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a5">
+                                                                <span class="ng-value-label">{{items.length - a5}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1318,18 +1703,18 @@
                                                 </td>
                                                 <td>
                                                     <ng-select [items]="mediaList" placeholder="Select"
-                                                        bindLabel="mediaName" [multiple]="true" [closeOnSelect]="false"
+                                                        bindLabel="mediaName" [multiple]="true" id="id121" (add)="a6=ValidateMultiSelectTextLength('id121',a6)" [closeOnSelect]="false"
                                                         bindValue="mediaName" formControlName="selectedMediaList3">
                                                         <ng-template ng-multi-label-tmp let-items="items"
                                                             let-clear="clear">
                                                             <div class="ng-value"
-                                                                *ngFor="let item of items | slice:0:1">
+                                                                *ngFor="let item of items | slice:0:a6">
                                                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)"
                                                                     aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1">
-                                                                <span class="ng-value-label">{{items.length - 1}}
+                                                            <div class="ng-value" *ngIf="items.length > a6">
+                                                                <span class="ng-value-label">{{items.length - a6}}
                                                                     more...</span>
                                                             </div>
                                                         </ng-template>
@@ -1579,7 +1964,7 @@
                                         <div class="pagination-theme">
                                             <div class="pagination-theme">
                                                 <div
-                                                    *ngFor="let item of fullLog | paginate: { id: 'pagination111' , itemsPerPage: pageSizeLog, currentPage: pageNumberLog, totalItems:totalrecordsFullLog}">
+                                                    *ngFor="let item of fullLog | paginate: { id: 'pagination111' , itemsPerPage: pageSizeLog, currentPage: pageNumberLog, totalItems:totalRecordLog}">
                                                 </div>
                                                 <pagination-controls id="pagination111"
                                                     (pageChange)="onPageNumberChangeLog($event)">
@@ -1625,7 +2010,7 @@
                                                 </div>
                                             </dx-data-grid>
                                         </div>
-                                        <!-- <div class="pagination-theme">
+                                        <div class="pagination-theme">
                                             <div class="pagination-theme">
                                                 <div
                                                     *ngFor="let item of appointmentLog | paginate: { id: 'pagination112' , itemsPerPage: pageSizeAppLog, currentPage: pageNumberAppLog, totalItems:totalRecordAppLog}">
@@ -1633,7 +2018,7 @@
                                                 <pagination-controls id="pagination112" (pageChange)="onPageNumberChangeAppLog($event)">
                                                 </pagination-controls>
                                             </div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>

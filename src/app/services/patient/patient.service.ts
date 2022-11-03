@@ -26,8 +26,8 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
   GetReportPath(showGlobalLoader:boolean=true){
     return this._httpService.get('Patient/GetReportPath', showGlobalLoader).pipe(map((res)=>res));
   }
-  getPatientDetail(showGlobalLoader : boolean = true ,internalPatientId: string , internalStudyId: string,operation:number){
-    return this._httpService.get(`Patient/GetPatientDetail?internalPatientId=${internalPatientId}&internalStudyId=${internalStudyId}&operation=${operation}`,showGlobalLoader).pipe(
+  getPatientDetail(showGlobalLoader : boolean = true ,internalPatientId: string , internalStudyId: string,operation:number,pageNumber:number,pageSize:number){
+    return this._httpService.get(`Patient/GetPatientDetail?internalPatientId=${internalPatientId}&internalStudyId=${internalStudyId}&operation=${operation}&pageNumber=${pageNumber}&pageSize=${pageSize}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

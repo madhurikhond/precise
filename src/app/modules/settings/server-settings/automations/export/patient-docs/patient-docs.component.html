@@ -22,6 +22,7 @@
                                 </small>
                             </div>
                         </div>
+                       
                         <div class="form-group autocomplete">
                             <div class="theme-label">Exclude these file types:</div>
                             <div>
@@ -29,15 +30,15 @@
                                     bindLabel="docType" [multiple]="true" [closeOnSelect]="false" bindValue="docType"
                                     [(ngModel)]="selectedDocList"
                                     [ngClass]="{ 'is-invalid': (submitted &&  pdForm.sftpDocType.errors)}"
-                                    (change)="onChange($event)">
+                                    (change)="onChange($event)" id="id40"  (add)="a1=ValidateMultiSelectTextLength('id40',a1)" required>
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                        <div class="ng-value" *ngFor="let item of items | slice:0:3">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                             <span class="ng-value-label"> {{item.docType}}</span>
                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                 aria-hidden="true">×</span>
                                         </div>
-                                        <div class="ng-value" *ngIf="items.length > 3">
-                                            <span class="ng-value-label">{{items.length - 3}} more...</span>
+                                        <div class="ng-value" *ngIf="items.length > a1">
+                                            <span class="ng-value-label">{{items.length - a1}} more...</span>
                                         </div>
                                     </ng-template>    
                                 </ng-select>

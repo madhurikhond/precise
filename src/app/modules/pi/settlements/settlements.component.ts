@@ -25,6 +25,12 @@ export class SettlementsComponent implements OnInit {
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @ViewChild('btnCancel') myDiv: ElementRef<HTMLElement>;
   @ViewChildren('gridContainer') gridContainer: any;
+  maxDate = new Date();
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
 
   allMode: string;
   checkBoxesMode: string;
@@ -859,4 +865,10 @@ export class SettlementsComponent implements OnInit {
   get nForm() { return this.addNoteForm.controls; }
   get settleForm() { return this.editSettleForm.controls; }
   get settleForm1() { return this.editSettleForm1.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

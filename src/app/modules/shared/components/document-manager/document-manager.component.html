@@ -383,7 +383,7 @@
 
 <!-- Send Document Pop Up End-->
 
-<div class="modal fade modal-theme modal-large" id="DynamsoftScannerPopUp" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modal-theme modal-large DynamsoftScannerPopUp" id="DynamsoftScannerPopUp" data-backdrop="static" data-keyboard="false"
     role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -393,7 +393,8 @@
             </div>
             <div class="modal-body">
                 <div *ngIf="show">
-                    <app-docdwt [data]='currentPatientId' [events]="eventsSubject.asObservable()"></app-docdwt>
+                    <app-docdwt [data]='currentPatientId' [events]="eventsSubject.asObservable()" 
+                    ></app-docdwt>
                 </div>
             </div>
             <div class="modal-footer">

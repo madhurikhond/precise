@@ -11,6 +11,8 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./daily-summary.component.css']
 })
 export class DailySummaryComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   financialTypesList:any=[]
   statusNamesList:any=[]
   dailySummaryForm : FormGroup
@@ -23,7 +25,8 @@ export class DailySummaryComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService) { }
+    private readonly notificationService: NotificationService,
+    private readonly commonMethodService: CommonMethodService) { }
 
   ngOnInit(): void {
     this.dailySummaryForm = this.fb.group({
@@ -161,4 +164,9 @@ export class DailySummaryComponent implements OnInit {
   }
 
   get dsForm() { return this.dailySummaryForm.controls; }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

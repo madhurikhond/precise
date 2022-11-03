@@ -11,6 +11,7 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./missing-rx.component.css']
 })
 export class MissingRxComponent implements OnInit {
+  a1: any = 20;
   missingRxForm:FormGroup
   submitted=false;
   id:number
@@ -112,4 +113,9 @@ export class MissingRxComponent implements OnInit {
 
   get mrxForm() { return this.missingRxForm.controls; }
 
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

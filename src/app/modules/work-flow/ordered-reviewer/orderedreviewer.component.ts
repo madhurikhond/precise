@@ -20,6 +20,8 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 })
 
 export class OrderedreviewerComponent implements OnInit {
+  a1: any = 20;
+  maxDate = new Date();
   @ViewChild('refPatientId', { static: true }) patientIdFilterRef: ElementRef;
   @ViewChild('refLastName', { static: true }) lastNameFilterRef: ElementRef;
   @ViewChild('refFirstName', { static: true }) firstNameFilterRef: ElementRef;
@@ -458,5 +460,10 @@ export class OrderedreviewerComponent implements OnInit {
     }
     this.patientService.sendDataToPatientDetailWindow(body);
   }
-
+ 
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

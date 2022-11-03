@@ -27,7 +27,6 @@ export class CallPatientScheduleComponent implements OnInit {
   selectedRows: any = [];
   RescheduleNoteForm: FormGroup;
   modelValue: string = 'modal';
-
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   showFilterRow: boolean;
@@ -36,16 +35,14 @@ export class CallPatientScheduleComponent implements OnInit {
   showHeaderFilter: boolean;
   readonly pageSizeArray = PageSizeArray;
   constructor(private readonly fb: FormBuilder, private readonly notificationService: NotificationService,
-    private readonly commonMethodService: CommonMethodService,private facilityService : FacilityService,
+    private readonly commonMethodService: CommonMethodService, private facilityService: FacilityService,
     private readonly workflowService: WorkflowService) { }
-
   ngOnInit(): void {
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.columnResizingMode = this.resizingModes[0];
     this.showFilterRow = true;
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter = false;
-
     this.commonMethodService.setTitle('Call Patient Confirmation');
     this.getCallPatientConfirmationCount();
     this.searchForm = this.fb.group({
@@ -57,10 +54,7 @@ export class CallPatientScheduleComponent implements OnInit {
       RescheduleNote: ['', Validators.required]
     });
     this.onSearchSubmit();
-   
   }
-
-
   getCallPatientConfirmationCount() {
     this.workflowService.getCallPatientConfirmationCount(false).subscribe((res) => {
       var data: any = res;
@@ -104,12 +98,16 @@ export class CallPatientScheduleComponent implements OnInit {
       }
     }
   }
-
-
   saveCallPatientConfirmationMethod(type: string, Note: string) {
     const internalStudies = this.dataList.filter(name => this.selectedRows.includes(name.myId)).map(x => x.internalstudyid).toString()
-    this.workflowService.saveCallPatientConfirmationLog(type, internalStudies, Note, true).subscribe((res) => {
+     let body = {
+      Type: type,
+      InternalStudyId: internalStudies,
+      Note: Note
+    }
+    this.workflowService.saveCallPatientConfirmationLog(JSON.stringify(JSON.stringify(body)), true).subscribe((res) => {
       if (res.responseCode == 200) {
+        this.onSearchSubmit()
         this.notificationService.showNotification({
           alertHeader: 'Success',
           alertMessage: res.message,
@@ -133,19 +131,21 @@ export class CallPatientScheduleComponent implements OnInit {
         });
       });
   }
-
   RescheduleSelectedStudies(type: any) {
     this.modelValue = 'modal';
     this.saveCallPatientConfirmationMethod(type, this.addForm.RescheduleNote.value);
   }
-
   onReset() {
+    this.pageNumber=1;
     this.searchForm.reset();
     this.onSearchSubmit()
-
   }
-
+  getOnSearchSubmit() {
+    this.pageNumber=1;    
+    this.onSearchSubmit()
+  }
   onSearchSubmit() {
+    this.selectedRows = null;
     this.workflowService.getCallPatientConfirmation(true, this.sForm.patientId.value ? this.sForm.patientId.value : '',
       this.sForm.lastName.value ? this.sForm.lastName.value : '', this.sForm.firstName.value ? this.sForm.firstName.value : '',
       this.pageNumber, this.pageSize).subscribe((res) => {
@@ -165,18 +165,18 @@ export class CallPatientScheduleComponent implements OnInit {
             //   var zip = stateZip.split(' ')[1];
             // }
             // if (address) {
-            //   element.Address = address.split(' ')[5] + '/' + state + '/' + zip;
-              // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
-              // element.Address = address;
-              // if (state) {
-              //   element.Address = element.Address + '/' + state;
-              // }
-              // if (zip) {
-              //   element.Address = element.Address + '/' + zip;
-              // }
-            }
-          // }
-         );
+              
+            // element.Address = address.split(',')[0] + '/' + state + '/' + zip;
+            // element.Address = address;
+            // if (state) {
+            //   element.Address = element.Address + '/' + state;
+            // }
+            // if (zip) {
+            //   element.Address = element.Address + '/' + zip;
+            // }
+          }
+            // }
+          );
         }
         else {
           this.totalRecords = 1;
@@ -184,6 +184,7 @@ export class CallPatientScheduleComponent implements OnInit {
         }
         setTimeout(() => {
           $('.callPatient').find('.dx-datagrid-table-fixed .dx-select-checkbox').remove()
+          $('.dx-state-invisible').remove()
         }, 100);
       },
         (err: any) => {
@@ -194,7 +195,6 @@ export class CallPatientScheduleComponent implements OnInit {
           });
         });
   }
-
   pageChanged(event) {
     this.pageNumber = event;
     this.onSearchSubmit()
@@ -206,8 +206,8 @@ export class CallPatientScheduleComponent implements OnInit {
   }
   get sForm() { return this.searchForm.controls; }
   get addForm() { return this.RescheduleNoteForm.controls; }
-  senddatatoschd_facilities(row:any)
-  {
+ 
+  senddatatoschd_facilities(row: any) {
     if (row) {
       let body = row;
       this.facilityService.sendDataToschdFacilitiesWin(body);

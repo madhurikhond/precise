@@ -1,0 +1,102 @@
+
+<section class="content-sec contact-sec"
+[ngClass]="{'es-lang':currentLanguage === 'es','en-lang':currentLanguage === 'en'}">
+  <div class="patient-information-sec">
+    <h2 class="info-title">{{'PATIENT_CONTACT_INFO.TITLE' | translate}}</h2>
+  </div>
+
+  <div class="contact-form-sec contact-form-sec">
+    <p class="description">{{'PATIENT_CONTACT_INFO.GETTING_THERE' | translate}}!</p>
+    <!-- <ngb-progressbar type="success" [value]="25"></ngb-progressbar> -->
+    <dx-progress-bar
+      #progressBar
+      id="progress-bar-status"
+      width="100%"
+      [min]="0"
+      [max]="100"
+      [value]="60"
+    >
+    </dx-progress-bar>
+    <form
+      [formGroup]="contactInfoForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+    >
+      <div class="form-group contact-information">
+        <div class="form-with-icon validation-tooltip">
+          <div class="formControl requiedInfo" *ngIf="!showHomePhone;else HomePhone">
+            <input
+              formControlName="homephone"
+              name="homephone"
+              class="code-input"
+              placeholder="Home Phone"
+              mask="(000) 000-0000"
+
+            />
+            <i class="fa fa-check-circle-o" *ngIf="contactInfoForm.controls.homephone.dirty || contactInfoForm.controls.homephone.touched "></i>
+          </div>
+
+          <ng-template #HomePhone>
+            <div class="formControl requiedInfo editable">
+              <div class="labelName">              <label>{{'PATIENT_CONTACT_INFO.HOME_PHONE' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{this.patientContactInfo.homePhone}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showHomePhone=!showHomePhone"></i>
+            </div>
+          </ng-template>
+
+          <div class="formControl requiedInfo" [ngClass]="(contactInfoForm.controls.cellphone.dirty || contactInfoForm.controls.cellphone.touched) && contactInfoForm.controls.cellphone.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showCellPhone;else CellPhone">
+            <input
+              formControlName="cellphone"
+              name="cellphone"
+              class="code-input"
+              placeholder="Cell Phone (Required)"
+              mask="(000) 000-0000"
+              required
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.cellphone.errors || contactInfoForm.controls.cellphone.touched || lgform.cellphone.errors.pattern"></i>
+          </div>
+
+          <ng-template #CellPhone>
+            <div class="formControl requiedInfo editable">
+              <div class="labelName">              <label>{{'PATIENT_CONTACT_INFO.CELL_PHONE' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{this.patientContactInfo.cellPhone}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showCellPhone=!showCellPhone"></i>
+            </div>
+          </ng-template>
+
+          <div class="formControl requiedInfo" [ngClass]="(contactInfoForm.controls.email.dirty || contactInfoForm.controls.email.touched) && contactInfoForm.controls.email.invalid ? 'wrongInfo' : 'correctInfo'" *ngIf="!showEmail;else Email">
+            <input
+              formControlName="email"
+              name="email"
+              class="code-input"
+              placeholder="Email (Required)"
+              required
+            />
+            <i class="fa fa-check-circle-o" *ngIf="!contactInfoForm.controls.email.errors || contactInfoForm.controls.email.touched || lgform.email.errors.pattern"></i>
+          </div>
+
+          <ng-template #Email>
+            <div class="formControl requiedInfo editable">
+              <div class="labelName">              <label>{{'PATIENT_CONTACT_INFO.EMAIL' | translate}} :</label></div>
+              <div class="labelVal">
+                <p>{{this.patientContactInfo.email}}</p>
+              </div>
+              <i class="fa fa-check-circle-o" (click)="showEmail=!showEmail"></i>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+
+      <div class="buttonSection">
+        <button type="submit"  [disabled]="!contactInfoForm.valid" [ngClass]="!contactInfoForm.valid ? 'btnSubmit' : 'btn-common' ">{{'PATIENT_CONTACT_INFO.SUBMIT_BUTTON' | translate}}</button>
+        <button type="button" (click)="goBack()"  class="btn-common btnBack">{{'PATIENT_CONTACT_INFO.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>
+

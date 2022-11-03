@@ -3209,15 +3209,15 @@
 											<ng-select [items]="EpicUserList" placeholder="Select"
 												formControlName="userList" bindLabel="UserName" [multiple]="true"
 												[closeOnSelect]="false" bindValue="UserName"
-												[(ngModel)]="selectedEpicUserList">
+												[(ngModel)]="selectedEpicUserList" id="id19"  (add)="a1=ValidateMultiSelectTextLength('id19',a1)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
+													<div class="ng-value" *ngFor="let item of items | slice:0:a1"> <span
 															class="ng-value-label"> {{item.UserName}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 1"> <span
-															class="ng-value-label">{{items.length - 1}} more..</span>
+													<div class="ng-value" *ngIf="items.length > a1"> <span
+															class="ng-value-label">{{items.length - a1}} more..</span>
 													</div>
 												</ng-template>
 											</ng-select>

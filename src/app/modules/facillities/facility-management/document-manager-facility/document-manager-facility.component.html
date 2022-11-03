@@ -19,7 +19,6 @@
         </div>
         <div class="row" id="facilityDocRow" #facilityDocRow *ngIf="facilityId">
           <div class="col-md-2">
-
             <dx-tree-view #treeview id="treeview" [dataSource]="folderTree" keyExpr="id" displayExpr="folderName"
               (onItemClick)="selectItem($event)" (onItemContextMenu)="treeViewItemContextMenu($event)"
               selectionMode="single" selectByClick=true keyExpr="id" [selectByClick]="true" itemsExpr="items">
@@ -29,7 +28,7 @@
             </dx-context-menu>
           </div>
 
-          <div class="col-md-9">
+          <div class="col-md-9 hideBreadCrumps">
             <dx-file-manager id="fileManager" #fileManager [fileSystemProvider]="allFile"
               (onContextMenuItemClick)="onItemClick($event)"
               (onSelectionChanged)="fileManager_onSelectionChanged($event)" height="450">
@@ -214,7 +213,7 @@
   </div>
 
 </div>
-<div class="modal fade modal-theme modal-small" id="RenamePopUp" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modal-theme modal-small" id="FacilityrenamePopUp" data-backdrop="static" data-keyboard="false"
   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -375,7 +374,7 @@
 </div>
 
 
-<div class="modal fade modal-theme modal-small" id="deleteItemConfirmPopUp" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modal-theme modal-small" id="facilitydeleteItemConfirmPopUp" data-backdrop="static" data-keyboard="false"
   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -409,10 +408,10 @@
     </div>
   </div>
 </div>
-<button #hiddenFileDeleteItem [hidden]="true" data-toggle="modal" data-target="#deleteItemConfirmPopUp"></button>
+<button #hiddenFileDeleteItem [hidden]="true" data-toggle="modal" data-target="#facilitydeleteItemConfirmPopUp"></button>
 <button #hiddenFileNewFolderPopUpItem [hidden]="true" data-toggle="modal" data-target="#NewFolderPopUp"></button>
 <button #hiddenUploadFilePopUp [hidden]="true" data-toggle="modal" data-target="#uploadFileManagerPopUp"></button>
 <button #hiddenSendFaxPopUp [hidden]="true" data-toggle="modal" data-target="#SendFaxPopUp"></button>
 <button #hiddenSendEmailPopUp [hidden]="true" data-toggle="modal" data-target="#SendEmailPopUp"></button>
-<button #hiddenFileRenamePopUpItem [hidden]="true" data-toggle="modal" data-target="#RenamePopUp"></button>
+<button #hiddenFileRenamePopUpItem [hidden]="true" data-toggle="modal" data-target="#FacilityrenamePopUp"></button>
 <button #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile"></button>

@@ -11,6 +11,9 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./psl-reminder.component.css']
 })
 export class PslReminderComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
   id:number;
   pslreminderForm:FormGroup
   submitted = false
@@ -218,4 +221,10 @@ export class PslReminderComponent implements OnInit {
   }
 
   get pslForm() { return this.pslreminderForm.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

@@ -17,6 +17,10 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
   styleUrls: ['./action-needed.component.css']
 })
 export class ActionNeededComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   modelValue: string = 'modal';
   searchForm: FormGroup;
@@ -281,7 +285,6 @@ export class ActionNeededComponent implements OnInit {
             InternalStudyId: e.InternalStudyId,
           });
         });
-        debugger
         this.workflowService.UpdateStudyResolve(JSON.stringify(JSON.stringify(data)), true).subscribe((res) => {
           if (res) {
             const data: any = res;
@@ -317,5 +320,9 @@ export class ActionNeededComponent implements OnInit {
       });
     }
   }
-
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

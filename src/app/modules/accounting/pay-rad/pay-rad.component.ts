@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 @Component({
   selector: 'app-pay-rad',
   templateUrl: './pay-rad.component.html',
@@ -17,9 +17,10 @@ export class PayRadComponent implements OnInit {
     {dropDownName: 'See Notes'}
    ]; 
    
-  constructor() { }
+  constructor(private readonly commonMethodService : CommonMethodService) { }
 
   ngOnInit(): void {
+    this.commonMethodService.setTitle('Pay Rad');
   }
   filterDropDownOnChange()
   {

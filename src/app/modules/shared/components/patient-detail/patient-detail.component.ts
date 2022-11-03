@@ -13,7 +13,8 @@ import { WorkflowService } from 'src/app/services/work-flow-service/workflow.ser
 import { DxDataGridComponent } from 'devextreme-angular';
 import { BrokerService } from 'src/app/services/broker.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
-
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { patientPortalResponseStatus } from 'src/app/models/patient-response';
 
 declare const $: any;
 @Component({
@@ -23,15 +24,23 @@ declare const $: any;
   providers: [DatePipe]
 })
 export class PatientDetailComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
+  a6: any = 20;
   @ViewChild('hiddenButton1', { static: false }) hiddenButton1: ElementRef;
   @ViewChild('hiddenBtnWarningMsg', { static: false }) hiddenBtnWarningMsg: ElementRef;
   @ViewChild('closebtn', { static: false }) closebtn: ElementRef;
   @ViewChild('notes') inputNotes;
 
+
   patientDetailForm: FormGroup;
   patientStudyDetailForm: FormGroup;
   patientPIDetailForm: FormGroup;
   patientDetail: any;
+  patientCompareDetail: any = {};
   patientDetailInsuranceCoverage: [] = [];
   patientDetailNotes: [] = [];
   patientStudySummary: [] = [];
@@ -86,6 +95,7 @@ export class PatientDetailComponent implements OnInit {
   status: any;
   studySummaryrowData :any ;
   subsTabClick: boolean = true;
+  isPatientDataFound:boolean = false;
   readonly commonRegex = CommonRegex;
   //// Subs tab fields
 
@@ -157,6 +167,7 @@ export class PatientDetailComponent implements OnInit {
     private readonly referrersService: ReferrersService, private subsService: SubsService,
     private datePipe: DatePipe, private commonMethodService: CommonMethodService,
     private readonly facilityService: FacilityService,
+    private readonly patientPortalService : PatientPortalService,
     private readonly workflowService: WorkflowService,
     private brokerService: BrokerService, private decimalPipe: DecimalPipe) {
     patientService.sendDataToPatientDetail.subscribe(res => {
@@ -437,7 +448,7 @@ export class PatientDetailComponent implements OnInit {
     this.status = 0;
     this.selectedInternalPatientId = internalPatientId;
     this.selectedInternalstudyId = internalStudyId;
-    this.patientService.getPatientDetail(true, this.selectedInternalPatientId, this.selectedInternalstudyId, operation).subscribe((res) => {
+    this.patientService.getPatientDetail(true, this.selectedInternalPatientId, this.selectedInternalstudyId, operation,this.pageNumber,this.pageSize).subscribe((res) => {
       this.getAllCopyServiceCompany();
       if (res.response != null) {
         this.patientDetailNotes = null;
@@ -496,7 +507,7 @@ export class PatientDetailComponent implements OnInit {
         if (res.response[12][0]['Appointment Log'].length > 0 && JSON.stringify(res.response[12][0]['Appointment Log'][0]) != '{}') {
           this.appointmentLogList = res.response[12][0]['Appointment Log'];
           this.appointmentLog = this.appointmentLogList.slice(0, this.pageSizeAppLog);
-          this.totalRecordAppLog = this.appointmentLogList.length;
+          this.totalRecordAppLog = this.appointmentLogList.length> 0 ? res.response[12][0]['Appointment Log'][0].Totalrecords : 1;
         }
         if (res.response[13][0]['Subs Grid Study'].length > 0 && JSON.stringify(res.response[13][0]['Subs Grid Study'][0]) != '{}') {
           this.subsGridList = res.response[13][0]['Subs Grid Study'];
@@ -508,6 +519,8 @@ export class PatientDetailComponent implements OnInit {
         this.setPatientDetailFormForPatientDetailTab(this.patientDetail);
         this.setPatientStudyDetailFormForStudyDetailTab(this.studyDetail);
         this.setPatientPIDetailFormForPITab(this.piDetails);
+        this.isPatientDataFound = false;
+        this.GetPatientDetailsCompare();
       } else {
         setTimeout(() => {
           this.closebtn.nativeElement.click();
@@ -753,6 +766,7 @@ export class PatientDetailComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
   onFocusedRowChanged(e: any) {
     
     this.studySummaryrowData = e.row && e.row.data;
@@ -762,7 +776,7 @@ export class PatientDetailComponent implements OnInit {
     this.isStudySummaryRowClicked = true;
     this.selectedInternalstudyId = this.studySummaryrowData.INTERNALSTUDYID;
     let operation = 2;
-    this.patientService.getPatientDetail(this.isStudySummaryRowClicked, this.selectedInternalPatientId, this.selectedInternalstudyId, operation).subscribe((res) => {
+    this.patientService.getPatientDetail(this.isStudySummaryRowClicked, this.selectedInternalPatientId, this.selectedInternalstudyId, operation,this.pageNumber,this.pageSize).subscribe((res) => {
       if (res.response != null) {
         this.alertList = res.response[10][0]['All Alerts'];
         this.studyDetail = res.response[4][0]['Study Details'][0];
@@ -1093,9 +1107,58 @@ export class PatientDetailComponent implements OnInit {
       this.repNameList3 = this.repNameList2;
     }
   }
-
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
+  GetPatientDetailsCompare(){
+    var request ={
+     patientId : this.patientDetail.PATIENTID
+    }
+     this.patientPortalService.GetPatientDetailsCompare(request).subscribe(res=>{
+       if(res.responseStatus == patientPortalResponseStatus.Success)
+       {
+         if(res.result.isPatientPortalFound == true)
+         {
+           this.patientCompareDetail = res.result;
+           this.isPatientDataFound = true;
+         }
+       }
+     })
+   }
+ 
+   ApprovePatientDetail(key,status,patientValue){
+     if(!patientValue)
+       patientValue = '';
+     var request ={
+       patientId : this.patientDetail.PATIENTID,
+       key: key,
+       status: status,
+       value: patientValue,
+      }
+ 
+      this.patientPortalService.PatientStatusChecked(request).subscribe(res=>{
+       this.GetPatientDetailsCompare();
+     })
+   }
+ 
+   RejectPatientDetail(key,status,patientValue){
+     if(!patientValue)
+       patientValue = '';
+     var request ={
+       patientId : this.patientDetail.PATIENTID,
+       key: key,
+       status: status,
+       value: patientValue,
+      }
+ 
+      this.patientPortalService.PatientStatusChecked(request).subscribe(res=>{
+       this.GetPatientDetailsCompare();
+ 
+     })
+   }
 }
-
 
 function checkTopSubsRow(companyID: any, refNumber: any, requestDate: any, requestType: any, media: any): boolean {
   let isRowValid: boolean = false;

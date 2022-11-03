@@ -28,6 +28,7 @@ export class BrokerComponent implements OnInit {
   @ViewChild('hiddenDXbutton', { read: ElementRef }) hiddenDXbutton: ElementRef;
   @ViewChild('hiddenSendMailbutton', { read: ElementRef }) hiddenSendMailbutton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
+  a1: any = 20;
   defaultPopupTab: string = 'Funding Company Details';
   documentTabShow: boolean= true;
   brokerName: string = null;
@@ -1086,4 +1087,10 @@ export class BrokerComponent implements OnInit {
   get mailForm() { return this.sendMailForm.controls; }
   get searchBrForm() { return this.searchBrokerForm.controls; }
   get BrokerPoliciesFormControls() { return this.BrokerPoliciesForm.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

@@ -45,7 +45,7 @@ export class ProcCodesComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
 
-    this.commonMethodService.setTitle('Proc. Codes');
+    this.commonMethodService.setTitle('Pi Billing');
     this.getAllProcGroups();
     this.getAllProcCodes();
 

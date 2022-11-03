@@ -1,0 +1,584 @@
+<section class="content-sec">
+  <div class="examquestion-section">
+    <h1 class="title">{{'EXAM_QUESTIONS.TITLE' | translate}} (MRI)</h1>
+    <form
+      [formGroup]="examQuestionForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+    >
+      <!-- Exam Questions Without MRI Contrast -->
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>{{'EXAM_QUESTIONS.MRI_HISTORY' | translate}}?</h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriBefore === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriBefore')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriBefore === 'No'}" (click)="CheckForMriWithoutContrast('No','MriBefore')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriBefore"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" [ngClass]="{'d-none':this.examQuestionForMRIwithoutContrast.mriBefore === 'No' ||this.examQuestionForMRIwithoutContrast.mriBefore === ''}">
+        <div class="questionContent">
+          <h4>{{'EXAM_QUESTIONS.PROBLEM_DURING_MRI' | translate}}</h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriProblem === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriProblem')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriProblem === 'No'}" (click)="CheckForMriWithoutContrast('No','MriProblem')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriProblem "></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.mriProblem === 'Yes' && this.examQuestionForMRIwithoutContrast.mriBefore === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="textMriProblem"
+            placeholder="What problem(s) did you have during your MRI exam?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['textMriProblem'].value.length > 0 ||(examQuestionForm.controls['textMriProblem'].value.length > 0 && examQuestionForm.controls.textMriProblem.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>{{'EXAM_QUESTIONS.IS_CLAUSTROPHOBIC' | translate}}?</h4>
+        </div>
+        <div class="answerContent formControl requiedInfo clustrophobic">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriClaustrophobic === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriClaustrophobic')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriClaustrophobic === 'No'}" (click)="CheckForMriWithoutContrast('No','MriClaustrophobic')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriClaustrophobic"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.ANY_MEDICAL_CONDITION' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriMedicalCondition === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriMedicalCondition')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriMedicalCondition === 'No'}" (click)="CheckForMriWithoutContrast('No','MriMedicalCondition')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriMedicalCondition"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.mriMedicalCondition === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            formControlName="whatMriCondition"
+            placeholder="What condition do you have?"
+            class="mriexam"
+            (input)="CheckAllFieldsNotEmpty()"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['whatMriCondition'].value.length > 0 ||(examQuestionForm.controls['whatMriCondition'].value.length > 0 && examQuestionForm.controls.whatMriCondition.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.HOBBY_OR_JOB' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriHobbyJob === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriHobbyJob')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriHobbyJob === 'No'}" (click)="CheckForMriWithoutContrast('No','MriHobbyJob')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriHobbyJob"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" [ngClass]="{'d-none':this.examQuestionForMRIwithoutContrast.mriHobbyJob === 'No' || this.examQuestionForMRIwithoutContrast.mriHobbyJob === ''}">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.CLEARANCE_AUTHORIZATION_REPORT' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.authorizationXray === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','AuthorizationXray')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.authorizationXray === 'No'}" (click)="CheckForMriWithoutContrast('No','AuthorizationXray')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.authorizationXray"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.INJURIES_IN_EYES' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.eyesInjuries === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','EyesInjuries')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.eyesInjuries === 'No'}" (click)="CheckForMriWithoutContrast('No','EyesInjuries')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.eyesInjuries"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.eyesInjuries === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="injuryeyesanswer"
+            placeholder="Please describe the injury"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['injuryeyesanswer'].value.length > 0 ||(examQuestionForm.controls['injuryeyesanswer'].value.length > 0 && examQuestionForm.controls.injuryeyesanswer.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.PHYSICAL_LIMITATION' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriPhysicalLimition === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriPhysicalLimition')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriPhysicalLimition === 'No'}" (click)="CheckForMriWithoutContrast('No','MriPhysicalLimition')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriPhysicalLimition"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" [ngClass]="{'d-none':this.examQuestionForMRIwithoutContrast.mriPhysicalLimition === 'No' || this.examQuestionForMRIwithoutContrast.mriPhysicalLimition === ''}">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.TRANSFER_ONTO_MRI_TABLE' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriTransfer === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriTransfer')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriTransfer === 'No'}" (click)="CheckForMriWithoutContrast('No','MriTransfer')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriTransfer"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.MEDICAL_DEVICES_ON_BODY' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriMedicaldevices === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriMedicaldevices')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriMedicaldevices === 'No'}" (click)="CheckForMriWithoutContrast('No','MriMedicaldevices')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriMedicaldevices"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.mriMedicaldevices === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="mriManufacturerCard"
+            placeholder="Do you have the manufacturer's card stating that the device is MRI safe or do you know the model number for verification?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['mriManufacturerCard'].value.length > 0 ||(examQuestionForm.controls['mriManufacturerCard'].value.length > 0 && examQuestionForm.controls.mriManufacturerCard.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.FOREIGN_METAL_OBJECT_ON_BODY' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriForeignMetalObj === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriForeignMetalObj')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriForeignMetalObj === 'No'}" (click)="CheckForMriWithoutContrast('No','MriForeignMetalObj')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriForeignMetalObj"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.mriForeignMetalObj === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="mriObjLocated"
+            placeholder="Where is the object located?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['mriObjLocated'].value.length > 0 ||(examQuestionForm.controls['mriObjLocated'].value.length > 0 && examQuestionForm.controls.mriObjLocated.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.WEAR_WIG_OR_NOT' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriWig === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriWig')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriWig === 'No'}" (click)="CheckForMriWithoutContrast('No','MriWig')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriWig"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.REMOVABLE_METAL_IN_MOUTH' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriRemovableMetal === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriRemovableMetal')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriRemovableMetal === 'No'}" (click)="CheckForMriWithoutContrast('No','MriRemovableMetal')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriRemovableMetal "></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.RECENT_TATTOO' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.isRecentTattoo === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','IsRecentTattoo')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.isRecentTattoo === 'No'}" (click)="CheckForMriWithoutContrast('No','IsRecentTattoo')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.isRecentTattoo"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" *ngIf="this.examQuestionForMRIwithoutContrast.isRecentTattoo === 'Yes'">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="mritattoosize"
+            placeholder="What is the approximate size and location of the tattoo?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['mritattoosize'].value.length > 0 ||(examQuestionForm.controls['mritattoosize'].value.length > 0 && examQuestionForm.controls.mritattoosize.dirty)"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.ANCKLE_MONITOR_DEVICE' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriAnkleMonitorDevice')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'No'}" (click)="CheckForMriWithoutContrast('No','MriAnkleMonitorDevice')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" [ngClass]="{'d-none':this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'No' || this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === ''}">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.ABLE_TO_REMOVE_DEVICE_BEFORE_PROCEDURE' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriProcedure')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriProcedure === 'No'}" (click)="CheckForMriWithoutContrast('No','MriProcedure')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriProcedure"></i>
+        </div>
+      </div>
+
+      <div class="questionSec" [ngClass]="{'d-none':((this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'No' || this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === '') || (this.examQuestionForMRIwithoutContrast.mriAnkleMonitorDevice === 'Yes' && (this.examQuestionForMRIwithoutContrast.mriProcedure === 'Yes' ||this.examQuestionForMRIwithoutContrast.mriProcedure === '' ||this.examQuestionForMRIwithoutContrast.mriProcedure === null)))}">
+        <div class="questionContent">
+          <h4>
+            {{'EXAM_QUESTIONS.PO_MEET_YOU_AT_FACILITY' | translate}}?
+          </h4>
+        </div>
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <div class="tab-section float-right">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriPoMeetFacility === 'Yes'}" (click)="CheckForMriWithoutContrast('Yes','MriPoMeetFacility')" data-toggle="tab">Yes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithoutContrast.mriPoMeetFacility === 'No'}" (click)="CheckForMriWithoutContrast('No','MriPoMeetFacility')" data-toggle="tab">No</a>
+              </li>
+            </ul>
+          </div>
+          <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithoutContrast.mriPoMeetFacility"></i>
+        </div>
+      </div>
+
+      <div class="questionSec">
+        <div class="answerContent formControl requiedInfo correctInfo">
+          <textarea
+            rows="5"
+            (input)="CheckAllFieldsNotEmpty()"
+            formControlName="priorSurgeryQuestion"
+            placeholder="Any prior surgeries?"
+            class="mriexam"
+          ></textarea>
+          <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['priorSurgeryQuestion'].value.length > 0 ||(examQuestionForm.controls['priorSurgeryQuestion'].value.length > 0 && examQuestionForm.controls.priorSurgeryQuestion.dirty)"></i>
+        </div>
+      </div>
+
+      <!-- Exam Questions Without MRI Contrast -->
+
+      <!-- Exam Questions With MRI Contrast -->
+
+    <div class="questionSec" *ngIf="isWithContrast">
+      <div class="questionContent">
+        <h4>
+          {{'EXAM_QUESTIONS.DIABITIC_HISTORY' | translate}}?
+        </h4>
+      </div>
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isDiabetesHistory === 'Yes'}" (click)="CheckYesOrNo('Yes','Diabitic')" data-toggle="tab">Yes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isDiabetesHistory === 'No'}" (click)="CheckYesOrNo('No','Diabitic')" data-toggle="tab">No</a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithContrast.isDiabetesHistory"></i>
+      </div>
+    </div>
+
+    <div class="questionSec" *ngIf="isWithContrast">
+      <div class="questionContent">
+        <h4>
+          {{'EXAM_QUESTIONS.CANCER_HISTORY' | translate}}?
+        </h4>
+      </div>
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isCancerHistory === 'Yes'}" (click)="CheckYesOrNo('Yes','Cancer')" data-toggle="tab">Yes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isCancerHistory === 'No'}" (click)="CheckYesOrNo('No','Cancer')" data-toggle="tab">No</a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithContrast.isCancerHistory"></i>
+      </div>
+    </div>
+
+    <div class="questionSec" *ngIf="isWithContrast">
+      <div class="questionContent">
+        <h4>
+          {{'EXAM_QUESTIONS.HAVE_BLOOD_PRESSURE' | translate}}?
+        </h4>
+      </div>
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isHighBloodPressure === 'Yes'}" (click)="CheckYesOrNo('Yes','BloodPressure')" data-toggle="tab">Yes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isHighBloodPressure === 'No'}" (click)="CheckYesOrNo('No','BloodPressure')" data-toggle="tab">No</a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithContrast.isHighBloodPressure"></i>
+      </div>
+    </div>
+
+    <div class="questionSec" *ngIf="isWithContrast">
+      <div class="questionContent">
+        <h4>
+          {{'EXAM_QUESTIONS.ALLERGIES_OR_ADVERSE_REACTION_TO_MEDICINE' | translate}}?
+        </h4>
+      </div>
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.mriAllergiesMedications === 'Yes'}" (click)="CheckYesOrNo('Yes','IsAllergic')" data-toggle="tab">Yes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.mriAllergiesMedications === 'No'}" (click)="CheckYesOrNo('No','IsAllergic')" data-toggle="tab">No</a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithContrast.mriAllergiesMedications"></i>
+      </div>
+    </div>
+
+    <div class="questionSec" *ngIf="isWithContrast && this.examQuestionForMRIwithContrast.mriAllergiesMedications === 'Yes'">
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <textarea
+          rows="5"
+          formControlName="allergydescriptionwithmricontrast"
+          placeholder="Allergies or adverse reactions Description"
+          class="mriexam"
+          (input)="CheckAllFieldsNotEmpty()"
+        ></textarea>
+        <i class="fa fa-check-circle-o"  *ngIf="examQuestionForm.controls['allergydescriptionwithmricontrast'].value.length > 0 ||(examQuestionForm.controls['allergydescriptionwithmricontrast'].value.length > 0 && examQuestionForm.controls.allergydescriptionwithmricontrast.dirty)"></i>
+      </div>
+    </div>
+
+    <div class="questionSec" *ngIf="isWithContrast">
+      <div class="questionContent">
+        <h4>
+          {{'EXAM_QUESTIONS.KIDNEY_PROBLEM' | translate}}?
+        </h4>
+      </div>
+      <div class="answerContent formControl requiedInfo correctInfo">
+        <div class="tab-section float-right">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isKidneyProblem === 'Yes'}" (click)="CheckYesOrNo('Yes','IsKidneyProblem')" data-toggle="tab">Yes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': this.examQuestionForMRIwithContrast.isKidneyProblem === 'No'}" (click)="CheckYesOrNo('No','IsKidneyProblem')" data-toggle="tab">No</a>
+            </li>
+          </ul>
+        </div>
+        <i class="fa fa-check-circle-o" *ngIf="this.examQuestionForMRIwithContrast.isKidneyProblem"></i>
+      </div>
+    </div>
+      <!-- Exam Questions With MRI Contrast -->
+
+
+      <div class="buttonSection">
+        <button type="submit"  [disabled]="!examQuestionForm.valid" [ngClass]="{'d-none':btnText == true,'btnSubmit':!examQuestionForm.valid,'btn-common':examQuestionForm.valid}">{{'EXAM_QUESTIONS.SUBMIT_BUTTON' | translate}}</button>
+        <button type="submit" [disabled]="!examQuestionForm.valid" [ngClass]="{'d-none':btnText == false,'btnSubmit':!examQuestionForm.valid,'btn-common':examQuestionForm.valid}">{{'PRE_SCREENING_QUESTIONS.NEXT_BUTTON' | translate}}</button>
+        <button type="button" (click)="goBack()" class="btn-common btnBack">{{'EXAM_QUESTIONS.GO_BACK_BUTTON' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</section>

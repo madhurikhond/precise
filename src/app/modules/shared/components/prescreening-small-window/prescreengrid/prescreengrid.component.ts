@@ -71,7 +71,7 @@ export class PrescreengridComponent implements OnInit {
   isPrescreeningQuestion: boolean = false;
   internalStudyId: string
   patientId: string
-  patientIdExist : boolean = false;
+  patientIdExist: boolean = false;
 
   isMR: boolean = false;
   isMRWC: boolean = false;
@@ -378,7 +378,7 @@ export class PrescreengridComponent implements OnInit {
       "internalStudyId": uniqueInternalStudyIds.toString(),
     }
     this.workflowService.getPrescreeningQuestionData(data).subscribe((res) => {
-      
+
       var data: any = res;
       if (data.response != null) {
         this.preScreeningQuestionData = data.response;
@@ -543,7 +543,7 @@ export class PrescreengridComponent implements OnInit {
         case "CT":
         case "RG":
         case "PT":
-          case "CR":
+        case "CR":
           this.isCT = true;
           this.ctStudies.push({
             'Study': study.STUDYDESCRIPTION,
@@ -1026,7 +1026,7 @@ export class PrescreengridComponent implements OnInit {
     let time = this.psqForm.pregnantTime.value
     if (!time)
       this.pregnantMessage = null;
-    else if (parseInt(time.replace('mo', '')) < 4)
+    else if (parseInt(time.replace(' Week', '')) < 16)
       this.pregnantMessage = 'In order to proceed with your procedure we need an authorization letter from your OB doctor giving Precise Imaging approval to proceed with the procedure.'
     else
       this.pregnantMessage = 'When you arrive you will need to sign a waiver form'
@@ -1308,6 +1308,8 @@ export class PrescreengridComponent implements OnInit {
             alertType: res.responseCode
           });
         }
+        this.closePopup();
+        this.onSearchSubmit();
       },
         (err: any) => {
           this.notificationService.showNotification({
@@ -1324,7 +1326,8 @@ export class PrescreengridComponent implements OnInit {
     this.pageNumber = 1;
   }
 
-  downloadFile(fileData, fileName) {;
+  downloadFile(fileData, fileName) {
+    ;
     let ArrayBuff = this._base64ToArrayBuffer(fileData);
     let file = new Blob([ArrayBuff], { type: 'application/pdf' });
     fileData = URL.createObjectURL(file)
@@ -1383,15 +1386,15 @@ export class PrescreengridComponent implements OnInit {
 
     this.isPrescreeningQuestion = false;
     this.preScreeningQuestionSubmitted = false;
-    if(!this.patientIdExist){
+    if (!this.patientIdExist) {
       this.clearNoPatient();
     }
   }
   closePopupPrescrenning() {
     this.isPrescreeningQuestion = false;
-    this.preScreeningQuestionSubmitted = false; 
+    this.preScreeningQuestionSubmitted = false;
   }
-     
+
 
   get psqForm() { return this.preScreeningQuestionForm.controls; }
   get noExistForm() { return this.noExistPatientForm.controls; }

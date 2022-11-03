@@ -29,7 +29,7 @@ export class ElecAgreeComponent implements OnInit {
     private readonly notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    this.commonMethodService.setTitle('Elec.Agree');
+    this.commonMethodService.setTitle('Elec. Agree');
     this.elecSignForm = this.fb.group({
       body:['',[Validators.required]]
     });

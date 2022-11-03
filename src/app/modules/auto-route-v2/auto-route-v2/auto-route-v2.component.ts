@@ -181,7 +181,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
           for (let i = 0; i < selectedFiles.length; i++) {
             this._fileExtension = res.response[0].FileExtension;
             if (this._fileExtension != null) {
-              this._matchExtension = !!event.target.files[i].name.match(this._fileExtension);
+              this._matchExtension = !!event.target.files[i].name.toLocaleLowerCase().match(this._fileExtension);
               if (!this._matchExtension) {
                 this.CodeErrorNotification('File type not allowed');
                 return;
@@ -189,7 +189,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
               else {
                 this.isUploadShown = true;
                 if (event.target.files && event.target.files[i]) {
-                  if (this.splitFiles === true && this.barCodes === true && 1!=1) {
+                  if (this.splitFiles === true && this.barCodes === true) {
                     var reader = new FileReader();
                     reader.onload = (e: any) => {
                       var blob = new Blob(event.target.files, { type: event.target.files[i].type });
@@ -230,7 +230,10 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       });
     }
 
-  } 
+  }
+
+
+
   async MultipleSelectionSplit(formData: any) {
     await this.autoRouteV2Service.MultipleFileSplitBarCodesRead(true, formData).then(async (res) => {
       var result = JSON.stringify(res);

@@ -1,98 +1,98 @@
 <div class="table-responsive  page-table ">
-    <dx-data-grid id="gridContainer" [dataSource]="preScreenGridList" [allowColumnResizing]="true"
-                  [columnAutoWidth]="true" [allowColumnReordering]="true" [columnMinWidth]="30"
-                  [columnResizingMode]="columnResizingMode" [(selectedRowKeys)]="selectedRows" keyExpr="myId" [showBorders]="true"
-                  (onCellPrepared)="onCellPrepared($event)">
-  
-      <dxo-sorting mode="multiple"></dxo-sorting>
-      <dxo-paging [enabled]="false"></dxo-paging>
-      <dxo-load-panel [enabled]="true"></dxo-load-panel>
-      <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
-      <dxo-selection mode="multiple"></dxo-selection>
+  <dx-data-grid id="gridContainer" [dataSource]="preScreenGridList" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [allowColumnReordering]="true" [columnMinWidth]="30"
+                [columnResizingMode]="columnResizingMode" [(selectedRowKeys)]="selectedRows" keyExpr="myId" [showBorders]="true"
+                (onCellPrepared)="onCellPrepared($event)">
+
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-paging [enabled]="false"></dxo-paging>
+    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+    <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+    <dxo-selection mode="multiple"></dxo-selection>
     <dxi-column dataField="STUDYDATETIME" caption="STUDY DATE & TIME" cellTemplate="firstTemplate"></dxi-column>
-      <dxi-column dataField="FullName" caption="FULLNAME"></dxi-column>
-      <dxi-column dataField="SEX" caption="SEX"></dxi-column>
-      <dxi-column dataField="DOB" cellTemplate="dobTemplate" caption="DOB"></dxi-column>
-      <dxi-column dataField="status" caption="STATUS"></dxi-column>
-      <!--<dxi-column dataField="QBAct" caption="STUDY DESCRIPTION"></dxi-column>-->
-      <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
-      <dxi-column dataField="ACCESSIONNUMBER" caption="ACCESSION NUMBER"></dxi-column>
-      <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
-      <dxi-column dataField="INSTITUTIONNAME" caption="FACILITY"></dxi-column>
-      <dxi-column dataField="MODALITY" caption="MODALITY"></dxi-column>
-  
-      <div *dxTemplate="let data of 'dobTemplate'">
-        {{data.data.DOB | date : dateTimeFormatCustom.Date }}
-      </div>
-      <div *dxTemplate="let data of 'firstTemplate'">
-        <i *ngIf="data.data.Color === 'RED'" (click)="preScreeningQuestionClick(data.data.myId)"
-           class="fa fa-list-ul my-border1 text-danger" style="pointer-events :  all;"></i>
-        <i *ngIf="data.data.Color === 'Green'" (click)="preScreeningQuestionClick(data.data.myId)"
-           style="pointer-events :  all;" class="fa fa-list-ul my-border1 text-success"></i>
-        <i *ngIf="data.data.Color === 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId)"
-           class="fa fa-list-ul my-border1 text-warning" style="pointer-events :  all;"></i>
-        {{data.data.STUDYDATETIME | date : dateTimeFormatCustom.Date }}
-      </div>
-    </dx-data-grid>
-  </div>
-  
-  <div class="modal fade modal-theme" id="pre-screening-questions" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-modal="true"
-      [ngStyle]="{'display' :  isPrescreeningQuestion ? 'block'  :  'none'}"
-      [ngClass]="(isPrescreeningQuestion)?'show' : ''">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">PRE-SCREENING QUESTIONS</h5>
+    <dxi-column dataField="FullName" caption="FULLNAME"></dxi-column>
+    <dxi-column dataField="SEX" caption="SEX"></dxi-column>
+    <dxi-column dataField="DOB" cellTemplate="dobTemplate" caption="DOB"></dxi-column>
+    <dxi-column dataField="status" caption="STATUS"></dxi-column>
+    <!--<dxi-column dataField="QBAct" caption="STUDY DESCRIPTION"></dxi-column>-->
+    <dxi-column dataField="STUDYDESCRIPTION" caption="STUDY DESCRIPTION"></dxi-column>
+    <dxi-column dataField="ACCESSIONNUMBER" caption="ACCESSION NUMBER"></dxi-column>
+    <dxi-column dataField="ATTORNEY" caption="ATTORNEY"></dxi-column>
+    <dxi-column dataField="INSTITUTIONNAME" caption="FACILITY"></dxi-column>
+    <dxi-column dataField="MODALITY" caption="MODALITY"></dxi-column>
+
+    <div *dxTemplate="let data of 'dobTemplate'">
+      {{data.data.DOB | date : dateTimeFormatCustom.Date }}
+    </div>
+    <div *dxTemplate="let data of 'firstTemplate'">
+      <i *ngIf="data.data.Color === 'RED'" (click)="preScreeningQuestionClick(data.data.myId)"
+         class="fa fa-list-ul my-border1 text-danger" style="pointer-events :  all;"></i>
+      <i *ngIf="data.data.Color === 'Green'" (click)="preScreeningQuestionClick(data.data.myId)"
+         style="pointer-events :  all;" class="fa fa-list-ul my-border1 text-success"></i>
+      <i *ngIf="data.data.Color === 'Yellow'" (click)="preScreeningQuestionClick(data.data.myId)"
+         class="fa fa-list-ul my-border1 text-warning" style="pointer-events :  all;"></i>
+      {{data.data.STUDYDATETIME | date : dateTimeFormatCustom.Date }}
+    </div>
+  </dx-data-grid>
+</div>
+
+<div class="modal fade modal-theme" id="pre-screening-questions" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true"
+    [ngStyle]="{'display' :  isPrescreeningQuestion ? 'block'  :  'none'}"
+    [ngClass]="(isPrescreeningQuestion)?'show' : ''">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PRE-SCREENING QUESTIONS</h5>
                 <div (click)="closePopupPrescrenning()" class="close-dismiss" data-dismiss="modal"></div>
-              </div>
-              <div class="modal-body"> 
-                  <form [formGroup]="preScreeningQuestionForm">
-                      <div class="modal-body-inner">
-                          <div class="user-detail">
-                              <div class="theme-form view-mode">
-                                  <div class="row">
-                                      <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-  
-                                          <div class="form-group">
-                                              <div class="theme-label">Patient's Last Name</div>
-                                              <div class="input-group">
-                                                  <div class="view-mode-data">{{this.preScreeningQuestionData ?
-                                                      this.preScreeningQuestionData.patientData.LastName :
-                                                      this.noExistForm.lastName.value}}
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                          <div class="form-group">
-                                              <div class="theme-label">Patient's First Name</div>
-                                              <div class="input-group">
-                                                  <div class="view-mode-data">{{this.preScreeningQuestionData ?
-                                                      this.preScreeningQuestionData.patientData.FirstName :
-                                                      this.noExistForm.firstName.value}}
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-  
-                                      <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                          <div class="form-group">
-                                              <div class="theme-label">Patient ID</div>
-                                              <div class="input-group">
-                                                  <div class="view-mode-data">{{this.preScreeningQuestionData ?
-                                                      this.preScreeningQuestionData.patientData.PatientId :
-                                                      this.noExistForm.patientID.value}}
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                          <div class="form-group">
-                                              <div class="theme-label">Patient DOB</div>
-                                              <div class="input-group">
-                                                  <div class="view-mode-data">{{this.preScreeningQuestionData ?
-                                                      (this.preScreeningQuestionData.patientData.DOB | date :
+            </div>
+            <div class="modal-body"> 
+                <form [formGroup]="preScreeningQuestionForm">
+                    <div class="modal-body-inner">
+                        <div class="user-detail">
+                            <div class="theme-form view-mode">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+
+                                        <div class="form-group">
+                                            <div class="theme-label">Patient's Last Name</div>
+                                            <div class="input-group">
+                                                <div class="view-mode-data">{{this.preScreeningQuestionData ?
+                                                    this.preScreeningQuestionData.patientData.LastName :
+                                                    this.noExistForm.lastName.value}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <div class="form-group">
+                                            <div class="theme-label">Patient's First Name</div>
+                                            <div class="input-group">
+                                                <div class="view-mode-data">{{this.preScreeningQuestionData ?
+                                                    this.preScreeningQuestionData.patientData.FirstName :
+                                                    this.noExistForm.firstName.value}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <div class="form-group">
+                                            <div class="theme-label">Patient ID</div>
+                                            <div class="input-group">
+                                                <div class="view-mode-data">{{this.preScreeningQuestionData ?
+                                                    this.preScreeningQuestionData.patientData.PatientId :
+                                                    this.noExistForm.patientID.value}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <div class="form-group">
+                                            <div class="theme-label">Patient DOB</div>
+                                            <div class="input-group">
+                                                <div class="view-mode-data">{{this.preScreeningQuestionData ?
+                                                    (this.preScreeningQuestionData.patientData.DOB | date :
                                                     dateTimeFormatCustom.Date) : (this.noExistForm.patientDOB.value | date :
                                                     dateTimeFormatCustom.Date)}}</div>
                                               </div>
@@ -270,16 +270,47 @@
                                                       [ngClass]="{ 'is-invalid' :  (preScreeningQuestionSubmitted && psqForm.pregnantTime.errors)}"
                                                       (change)="onChangePregnantTime()">
                                                       <option value="">SELECT</option>
-                                                      <option value="0mo">0 month</option>
-                                                      <option value="1mo">1 month</option>
-                                                      <option value="2mo">2 months</option>
-                                                      <option value="3mo">3 months</option>
-                                                      <option value="4mo">4 months</option>
-                                                      <option value="5mo">5 months</option>
-                                                      <option value="6mo">6 months</option>
-                                                      <option value="7mo">7 months</option>
-                                                      <option value="8mo">8 months</option>
-                                                      <option value="9mo">9 months</option>
+                                                      <option value="0  Week">0 Week</option>
+                                                    <option value="1  Week">1 Week</option>
+                                                    <option value="2  Week">2 Weeks</option>
+                                                    <option value="3  Week">3 Weeks</option>
+                                                    <option value="4  Week">4 Weeks</option>
+                                                    <option value="5  Week">5 Weeks</option>
+                                                    <option value="6  Week">6 Weeks</option>
+                                                    <option value="7  Week">7 Weeks</option>
+                                                    <option value="8  Week">8 Weeks</option>
+                                                    <option value="9  Week">9 Weeks</option>
+                                                    <option value="10 Week">10 Weeks</option>
+                                                    <option value="11 Week">11 Weeks</option>
+                                                    <option value="12 Week">12 Weeks</option>
+                                                    <option value="13 Week">13 Weeks</option>
+                                                    <option value="14 Week">14 Weeks</option>
+                                                    <option value="15 Week">15 Weeks</option>
+                                                    <option value="16 Week">16 Weeks</option>
+                                                    <option value="17 Week">17 Weeks</option>
+                                                    <option value="18 Week">18 Weeks</option>
+                                                    <option value="19 Week">19 Weeks</option>
+                                                    <option value="20 Week">20 Weeks</option>
+                                                    <option value="21 Week">21 Weeks</option>
+                                                    <option value="22 Week">22 Weeks</option>
+                                                    <option value="23 Week">23 Weeks</option>
+                                                    <option value="24 Week">24 Weeks</option>
+                                                    <option value="25 Week">25 Weeks</option>
+                                                    <option value="26 Week">26 Weeks</option>
+                                                    <option value="27 Week">27 Weeks</option>
+                                                    <option value="28 Week">28 Weeks</option>
+                                                    <option value="29 Week">29 Weeks</option>
+                                                    <option value="30 Week">30 Weeks</option>
+                                                    <option value="31 Week">31 Weeks</option>
+                                                    <option value="32 Week">32 Weeks</option>
+                                                    <option value="33 Week">33 Weeks</option>
+                                                    <option value="34 Week">34 Weeks</option>
+                                                    <option value="35 Week">35 Weeks</option>
+                                                    <option value="36 Week">36 Weeks</option>
+                                                    <option value="37 Week">37 Weeks</option>
+                                                    <option value="38 Week">38 Weeks</option>
+                                                    <option value="39 Week">39 Weeks</option>
+                                                    <option value="40 Week">40 Weeks</option>
                                                   </select>
                                                   <div *ngIf="preScreeningQuestionSubmitted && psqForm.pregnantTime"
                                                       class="tooltiptext text-right">
@@ -1351,72 +1382,71 @@
                                           [useMaskBehavior]="true" [max]="today"
                                         [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}">
                                        
-                                      </dx-date-box>
-                                      <!-- <input type="date" formControlName="patientDOB"
-                                         [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}"
-                                         class="form-control"> -->
-                                  </div>
-                                  <div *ngIf="submitted && noExistForm.patientDOB.errors" class="tooltiptext text-right">
-                                      <small class="error text-danger"
-                                          *ngIf="noExistForm.patientDOB.errors.required">Required</small>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <div class="theme-label">Patient ID</div>
-                                  <div class="input-group">
-                                      <input type="text" formControlName="patientID"
-                                          [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientID.errors)}"
-                                          class="form-control" disabled>
-                                  </div>
-                                  <div *ngIf="submitted && noExistForm.patientID.errors" class="tooltiptext text-right">
-                                      <small class="error text-danger"
-                                          *ngIf="noExistForm.patientID.errors.required">Required</small>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                      <a href="javascript:void(0)" (click)="clearNoPatient()"
-                          class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
-                      <button type="button" (click)="onNoExistSubmit()"
-                          class="btn btn-theme pull-left btn-sm">Next</button>
-                      <a #hiddenModalclose href="javascript:void(0)" [hidden]="true" data-dismiss="modal"></a>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
-  
-  <div class="modal fade modal-theme in modal-small" id="modality-grid" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Modalities</h5>
-                  <div class="close-dismiss" (click)="clearNoPatient()" data-dismiss="modal"></div>
-              </div>
-              <form class="theme-form">
-                  <dx-data-grid id="modalitiesGrid" [dataSource]="modalitiesGridList" [columnAutoWidth]="true"
-                      [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
-                      [(selectedRowKeys)]="selectedModalities" keyExpr="Modality" [showBorders]="true">
-                      <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                      <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
-                      <dxo-selection mode="multiple"></dxo-selection>
-                      <dxi-column dataField="Modality" caption="ModalityName"></dxi-column>
-                  </dx-data-grid>
-                  <div class="modal-footer">
-                      <a href="javascript : void(0)" (click)="clearNoPatient()"
-                          class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
-                      <button type="button" (click)="onModalitySubmit()" [attr.data-dismiss]="modelValue"
-                          class="btn btn-theme pull-left btn-sm">Next</button>
-                  </div>
-              </form>
-  
-          </div>
-      </div>
-  </div>
-  
-  <button class="d-none" #hiddenNoExist [hidden]="true" data-toggle="modal" data-target="#add-notExist-patient"></button>
-  <button class="d-none" #hiddenModality [hidden]="true" data-toggle="modal" data-target="#modality-grid"></button>
-  
+                                    </dx-date-box>
+                                    <!-- <input type="date" formControlName="patientDOB"
+                                       [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientDOB.errors)}"
+                                       class="form-control"> -->
+                                </div>
+                                <div *ngIf="submitted && noExistForm.patientDOB.errors" class="tooltiptext text-right">
+                                    <small class="error text-danger"
+                                        *ngIf="noExistForm.patientDOB.errors.required">Required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="theme-label">Patient ID</div>
+                                <div class="input-group">
+                                    <input type="text" formControlName="patientID"
+                                        [ngClass]="{ 'is-invalid' :  (submitted && noExistForm.patientID.errors)}"
+                                        class="form-control" disabled>
+                                </div>
+                                <div *ngIf="submitted && noExistForm.patientID.errors" class="tooltiptext text-right">
+                                    <small class="error text-danger"
+                                        *ngIf="noExistForm.patientID.errors.required">Required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" (click)="clearNoPatient()"
+                        class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+                    <button type="button" (click)="onNoExistSubmit()"
+                        class="btn btn-theme pull-left btn-sm">Next</button>
+                    <a #hiddenModalclose href="javascript:void(0)" [hidden]="true" data-dismiss="modal"></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="modality-grid" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modalities</h5>
+                <div class="close-dismiss" (click)="clearNoPatient()" data-dismiss="modal"></div>
+            </div>
+            <form class="theme-form">
+                <dx-data-grid id="modalitiesGrid" [dataSource]="modalitiesGridList" [columnAutoWidth]="true"
+                    [allowColumnReordering]="true" [columnResizingMode]="columnResizingMode"
+                    [(selectedRowKeys)]="selectedModalities" keyExpr="Modality" [showBorders]="true">
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxi-column dataField="Modality" caption="ModalityName"></dxi-column>
+                </dx-data-grid>
+                <div class="modal-footer">
+                    <a href="javascript : void(0)" (click)="clearNoPatient()"
+                        class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Cancel</a>
+                    <button type="button" (click)="onModalitySubmit()" [attr.data-dismiss]="modelValue"
+                        class="btn btn-theme pull-left btn-sm">Next</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<button class="d-none" #hiddenNoExist [hidden]="true" data-toggle="modal" data-target="#add-notExist-patient"></button>
+<button class="d-none" #hiddenModality [hidden]="true" data-toggle="modal" data-target="#modality-grid"></button>

@@ -17,15 +17,15 @@
 										<div class="input-group">
 											<ng-select [items]="statusList" placeholder="Select" formControlName="status"
 												bindLabel="status" [multiple]="true" [closeOnSelect]="false"
-												bindValue="status" [(ngModel)]="selectedStatusList">
+												bindValue="status" [(ngModel)]="selectedStatusList" id="id49"  (add)="a1=ValidateMultiSelectTextLength('id49',a1)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 														<span class="ng-value-label"> {{item.status}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a1">
+														<span class="ng-value-label">{{items.length - a1}} more...</span>
 													</div>
 												</ng-template>
 											</ng-select>
@@ -38,15 +38,15 @@
 											<ng-select [items]="financialTypeList" placeholder="Select"
 												formControlName="financialType" bindLabel="financialtypename"
 												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
-												[(ngModel)]="selectedFinancialTypeList">
+												[(ngModel)]="selectedFinancialTypeList" id="id50"  (add)="a2=ValidateMultiSelectTextLength('id50',a2)">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:3">
+													<div class="ng-value" *ngFor="let item of items | slice:0:a2">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a2">
+														<span class="ng-value-label">{{items.length - a2}} more...</span>
 													</div>
 												</ng-template>
 											</ng-select>
@@ -57,7 +57,7 @@
 										<div class="input-group">
 											<input type="text" class="form-control" mask="(000)-000-0000"
 												[ngClass]="{ 'is-invalid': submitted && getFromControls.phone.errors }"
-												formControlName="phone" (keypress)="allowNumberOnly($event)">
+												formControlName="phone" (keypress)="allowNumberOnly($event)" required>
 										</div>
 
 										<div *ngIf="submitted && getFromControls.phone.errors"

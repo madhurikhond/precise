@@ -7,7 +7,11 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { SignaturePad } from 'angular2-signaturepad';
 import { CommonRegex } from 'src/app/constants/commonregex';
-
+import { PatientPortalStatusCode } from 'src/app/constants/patient-portal-status-code.enum';
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { patientPortalResponseStatus, PatientPortalStatusMessage, PatientPortalURL } from 'src/app/models/patient-response';
+import { StorageService } from 'src/app/services/common/storage.service';
 
 
 declare const $: any;
@@ -57,6 +61,8 @@ export class EsignrequestsComponent implements OnInit {
   readonly commonRegex=CommonRegex;
   constructor(private Activatedroute: ActivatedRoute,
     private readonly patientService: PatientService,
+    private readonly patientPortalService: PatientPortalService,
+    private readonly storageService: StorageService,
     private fb: FormBuilder,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
@@ -309,7 +315,8 @@ export class EsignrequestsComponent implements OnInit {
         }
         this.patientService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           if (res.responseCode == 200) {
-            this.isSignSuccessflyyMessage = true;
+           
+            this.onSuccessRedirect();
             //this.successNotification(res);
           } else {
             this.error(res);
@@ -321,8 +328,34 @@ export class EsignrequestsComponent implements OnInit {
     }
   }
   onSuccessClose() {
-    this.isSignSuccessflyyMessage = true;
+    this.onSuccessRedirect();
   }
+
+  onSuccessRedirect() {
+    if (localStorage.getItem("p_detail") !== null && localStorage.getItem("p_detail") != undefined) {
+      var data = {
+        patientId: this.patientid,
+        pageCompleted: PatientPortalStatusCode.LIEN_SIGNED,
+        loggedPartnerId: this.storageService.PartnerId,
+        jwtToken: this.storageService.PartnerJWTToken,
+        patientPreferredLanguage: "english"
+      }
+      this.patientPortalService.UpdatePatientPageCompleted(data, true).subscribe((res: any) => {
+        if (res) {
+          if (res.responseStatus == patientPortalResponseStatus.Success)
+            this.router.navigate([PatientPortalURL.PATIENT_HOME]);
+        }
+      },
+        (err: any) => {
+          this.patientPortalService.errorNotification(PatientPortalStatusMessage.COMMON_ERROR);
+        }
+      );
+    }
+    else {
+      this.isSignSuccessflyyMessage = true;
+    }
+  }
+  
   changelanguage(event) {
     if (event.target.checked == false) {
       this.router.navigate(['patient/esignrequest'], { queryParams: { patientid: this.patientid, Token: this.token } });

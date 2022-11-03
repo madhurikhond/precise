@@ -12,7 +12,7 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PageModules } from 'src/app/services/common/page-modules';
 import { CommonRegex } from 'src/app/constants/commonregex';
-
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 
 
 declare const $: any;
@@ -37,23 +37,24 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   loading: boolean = false;
-  freshLogin: string
+  freshLogin: string;
+  redirectLinkWithPermission : any;
   readonly commonRegex=CommonRegex;
-  redirectLinkWithPermission: any;
   constructor(private fb: FormBuilder,
     private readonly accountService: AccountService,
     private readonly storageService: StorageService,
+    private readonly patientPortalService: PatientPortalService,
     private readonly commonMethodService: CommonMethodService,
     private readonly router: Router,
     private readonly notificationService: NotificationService) {
     this.loggedInUser = new BehaviorSubject<any>('');
     this.currentUser = this.loggedInUser.asObservable();
+    this.patientPortalService.refreshToken();
   }
   public get currentUserValue(): any {
     return this.loggedInUser.value;
   }
   ngOnInit(): void {
-   
     if (this.checkIsLoggedIn()) {
       //this.router.navigate(['dashboard']);
       this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
@@ -183,5 +184,4 @@ export class LoginComponent implements OnInit {
         }
         return valReturn;
   }
-  
 }

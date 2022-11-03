@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, filter, tap } from 'rxjs/operators';
-import { rootPath } from '../../../constants/api.constant';
+import { catchError, filter, mergeMap, tap } from 'rxjs/operators';
+import { patientrootPath, rootPath } from '../../../constants/api.constant';
 import { AUTH_HEADER } from '../../../constants/route.constant';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { PatientPortalURLName } from 'src/app/models/patient-response';
+import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 
 declare const $: any;
 
@@ -16,6 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
   matches = [];
   constructor(private readonly _accountService: AccountService,
     private readonly storageService: StorageService,
+    private readonly patientPortalService: PatientPortalService,
     private readonly _storageService: StorageService,
     private readonly _router: Router, private route: ActivatedRoute,
    ) {
@@ -32,11 +35,37 @@ export class AuthInterceptor implements HttpInterceptor {
         url.indexOf('/unauthorize-access') < 0 &&
         url.indexOf('/prescreengrid') < 0 &&
         url.indexOf('/patient/esignrequest') < 0 &&
-        url.indexOf('/bi') < 0) {
+        url.indexOf('/bi') < 0 &&
+        url.indexOf('/reset-password') < 0 &&
+        url.indexOf(PatientPortalURLName.PATIENT_PORTAL) < 0) {
         this._storageService.LastPageURL = this._router.url;
       }
-      this.makeActiveTAB();
-      this.makeActive();
+      
+      if ( url.indexOf(PatientPortalURLName.ESIGN_REQUEST) > -1 || 
+      url === PatientPortalURLName.PATIENT_PORTAL || 
+      url === PatientPortalURLName.PATIENT_BASIC_CONTACT_INFO || 
+      url === PatientPortalURLName.PATIENT_CODE_VERIFICATION || 
+      url === PatientPortalURLName.MULTIPLE_RECORD_FOUND || 
+      url === PatientPortalURLName.PATIENT_ADDRESS_CONTACT_INFO || 
+      url === PatientPortalURLName.PATIENT_CONTACT_INFO || 
+      url === PatientPortalURLName.PATIENT_EMERGENCY_CONTACT_INFO || 
+      url === PatientPortalURLName.PATIENT_ATTORNEY_CONTACT_INFO || 
+      url === PatientPortalURLName.PRE_SCREENING_QUESTION || 
+      url === PatientPortalURLName.PATIENT_HOME || 
+      url === PatientPortalURLName.MY_APPOINTMENT || 
+      url === PatientPortalURLName.PATIENT_DASHBOARD || 
+      url === PatientPortalURLName.EXAM_QUESTION || 
+      url === PatientPortalURLName.EXAM_QUESTION_FOR_US || 
+      url === PatientPortalURLName.EXAM_QUESTION_FOR_CT_CR ||
+      url === PatientPortalURLName.PREGNANCY_WAIVER ||
+      url === PatientPortalURLName.PREGNANCY_WAIVERS) {
+        this._storageService.LastPageURL = null;
+        this.makeActive();
+      }
+      else{
+        this.makeActiveTAB();
+        this.makeActive();
+      }
     });
   }
 
@@ -121,6 +150,38 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let req = request;
 
+    if(req.url.includes(patientrootPath))
+    {
+      if(!this.storageService.pJWTValid)
+      {
+
+        return this.patientPortalService.GetPartnerToken()
+              .pipe(
+                mergeMap(configData => {
+                  this._storageService.PartnerJWTToken = configData.result.jwtToken;
+                  this._storageService.PartnerId = configData.result.partnerId;
+                  req.body.jwtToken = this.storageService.PartnerJWTToken;
+                  req.body.loggedPartnerId = this.storageService.PartnerId;
+                  req = req.clone({
+                    setHeaders: {
+                      [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+                    }
+                  });
+                  return next.handle(req);
+              })
+              );
+      }
+      else{
+        
+        req = req.clone({
+          setHeaders: {
+            [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+          }
+        });
+        return next.handle(req);
+      }
+    }
+    else{
     if (this._accountService.isTokenValid) {
       req = req.clone({
         setHeaders: {
@@ -147,5 +208,5 @@ export class AuthInterceptor implements HttpInterceptor {
       })
     );
   }
-
+  }
 }

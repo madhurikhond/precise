@@ -5,27 +5,28 @@ import { TemplateMappingComponent } from './template-mapping/template-mapping.co
 import { PatientScheduleSettingComponent } from './patient-schedule-setting/patient-schedule-setting.component';
 import { DailySummaryComponent } from './daily-summary/daily-summary.component';
 import { MissingRxComponent } from './missing-rx/missing-rx.component';
+import { RoleGuard } from 'src/app/modules/core/guards/role.guard';
 //DailySummaryComponent, MissingRxComponent, PatientScheduleSettingComponent, TemplateMappingComponent
 const routes: Routes = [
   
   {
     path: '', component: IntakeComponent, children: [
       {
-        path: '', redirectTo: 'templatemapping', pathMatch: 'full'
+        path: '', redirectTo: 'templatemapping', pathMatch: 'full',canActivate:[RoleGuard]
       },
       {
-        path:'templatemapping',component:TemplateMappingComponent
+        path:'templatemapping',component:TemplateMappingComponent,canActivate:[RoleGuard]
       },
      
       {
-        path:'patientschedulesetting',component:PatientScheduleSettingComponent
+        path:'patientschedulesetting',component:PatientScheduleSettingComponent,canActivate:[RoleGuard]
       },
       {
-        path:'dailysummary',component:DailySummaryComponent
+        path:'dailysummary',component:DailySummaryComponent,canActivate:[RoleGuard]
       }
       ,
       {
-        path:'missingrx',component:MissingRxComponent
+        path:'missingrx',component:MissingRxComponent,canActivate:[RoleGuard]
       }
       
     ]

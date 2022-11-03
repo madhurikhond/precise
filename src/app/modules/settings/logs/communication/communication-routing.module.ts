@@ -15,10 +15,10 @@ const routes: Routes = [
       { path: '', redirectTo: 'outbound', pathMatch: 'full'},
       { path: 'outbound', component: OutboundComponent, canActivate: [RoleGuard]},
       {
-        path: 'atty-bill-log', component: AttyBillLogComponent
+        path: 'atty-bill-log', component: AttyBillLogComponent,canActivate: [RoleGuard]
       },
       {
-        path: 'failure', component: FailureComponent
+        path: 'failure', component: FailureComponent,canActivate: [RoleGuard]
       }
     ]
   }

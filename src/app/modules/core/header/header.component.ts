@@ -27,6 +27,15 @@ export class HeaderComponent implements OnInit {
   isDocManagerShow: boolean = false;
   data: any = '';
   username: any = '';
+  responseHierarchy: any = [];
+  list:any= [];
+  headerPopupList:any=[];
+  rightNavList:any=[];
+  docManager:any;
+  taskManager:any;
+  createAlert:any;
+  preScreenQuestions:any;
+  autoRouteV2:any;
   constructor(private readonly _storageService: StorageService, private readonly _router: Router, 
     private readonly _commonMethodService: CommonMethodService, private _modalService: NgbModal,
     private taskManagementService: TaskManagementService, private readonly notificationService: NotificationService, private readonly workflowService: WorkflowService) {
@@ -41,13 +50,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.applyFilter('', '', '', '', 'ToDo');
+    this.applyFilter('', '', '', '', '', 'ToDo');
     this.getUser();
+    this.getPermission();
   }
   
-  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, status: string) {
+  applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string,savedSearch:string, status: string) {
 
-    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, status, this._storageService.user.UserId);
+    this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label,savedSearch, status, this._storageService.user.UserId);
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
       if (res.response != null && res.response?.length > 0) {
         this.toDoTaskCount = res.toDoRecords;
@@ -75,6 +85,7 @@ export class HeaderComponent implements OnInit {
     this._router.navigate(['login']);
     localStorage.removeItem('_cr_u_infor');
     localStorage.removeItem('storage');
+    localStorage.removeItem('isPermissionChanged');
   }
 
   deleteOrderedSchedulerActivity() {
@@ -142,6 +153,49 @@ export class HeaderComponent implements OnInit {
   beforeUnloadHandler(event) {
     this.deleteOrderedSchedulerActivity();
   }
-
+  getPermission(){
+    var pagetitleList:any=[];
+    var data = this._storageService.UserRole;
+      this.responseHierarchy = JSON.parse(data); 
+      if (this.responseHierarchy && this.responseHierarchy.length) {
+        this.responseHierarchy.forEach(value => {
+          if (value && value.hierarchy) {
+            value.hierarchy = JSON.parse(value.hierarchy);
+          }
+        })
+      }
+      for (let i = 0; i < this.responseHierarchy.length; i++) {      
+        this.list.push(this.responseHierarchy[i].hierarchy);
+     }
+     this.splitListAccToType(this.list);
+      let docManagertemp=this.headerPopupList.find(x=>x.PageTitle=='DOCUMENT MANAGER');
+      this.docManager=docManagertemp&&docManagertemp.PageTitle?docManagertemp.PageTitle:"";
+      let taskManagertemp=this.headerPopupList.find(x=>x.PageTitle=='TASK MANAGER');
+      this.taskManager=taskManagertemp&&taskManagertemp.PageTitle?taskManagertemp.PageTitle:"";
+      let creteAlerttemp=this.headerPopupList.find(x=>x.PageTitle=='CREATEALERT');
+      this.createAlert=creteAlerttemp&&creteAlerttemp.PageTitle?creteAlerttemp.PageTitle:"";
+      let preScreentemp=this.headerPopupList.find(x=>x.PageTitle=='PRE-SCREENING QUESTIONS');
+      this.preScreenQuestions=preScreentemp&&preScreentemp.PageTitle?preScreentemp.PageTitle:"";
+      let autoRoutetemp=this.headerPopupList.find(x=>x.PageTitle=='AUTOROUTEV2');
+      this.autoRouteV2=autoRoutetemp&&autoRoutetemp.PageTitle?autoRoutetemp.PageTitle:"";
+      console.log(this.rightNavList);
+   }
+   splitListAccToType(list1: any)
+    {
+      list1.forEach((i) => {
+        if(i.Type)
+        {
+          if(i.Type==2)
+          {
+            this.headerPopupList.push(i);
+          }
+          if(i.Type==3)
+          {
+            this.rightNavList.push(i);  
+          }
+        }
+      });
+    }
+  
 }
 

@@ -18,3 +18,28 @@
 .disable {
   pointer-events: none;
 }
+.patient-table{
+  border-spacing: 0 0em;
+}
+.patient-table-header{
+background-color: #e1f0ff;
+height: 45px;
+}
+.table-patient-height{
+max-height: 760px !important;
+}
+.row-matched-updated{
+background-color: #caf7ad !important;
+height: 40px;
+}
+.row-unmatched{
+background-color: #f4ad9c !important;
+height: 40px;
+}
+.row-change-rejected{
+background-color: #ffffc3 !important;
+height: 40px;
+}
+.patient-tab-action{
+  cursor:pointer !important;
+}

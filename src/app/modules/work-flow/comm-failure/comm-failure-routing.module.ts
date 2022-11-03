@@ -8,7 +8,7 @@ import { ResolvedComponent } from './resolved/resolved.component';
 const routes: Routes = [
   {
     path: '', component: CommFailureComponent, children:[      
-      { path: '', redirectTo: 'need-to-resolve', pathMatch: 'full'},
+      { path: '', redirectTo: 'need-to-resolve', pathMatch: 'full',canActivate:[RoleGuard]},
       { path: 'need-to-resolve', component: NeedToResolveComponent,canActivate:[RoleGuard] },
       { path: 'resolved', component: ResolvedComponent }
     ]

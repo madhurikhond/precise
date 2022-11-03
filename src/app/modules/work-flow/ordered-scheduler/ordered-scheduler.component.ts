@@ -52,14 +52,14 @@ export class OrderedSchedulerComponent implements OnInit {
   ctStudies: any = [];
   modality: string = '';
   countData: boolean = false;
-  totalOrder: number ;
+  totalOrder: number;
   newOrder: number;
   totalVM: number;
   leftVM: number;
-  totalCB: number ;
-  leftCB: number ;
+  totalCB: number;
+  leftCB: number;
   ordered: number;
-  totalOrdered: number ;
+  totalOrdered: number;
   noShow: string;
   totalNoShow: string;
   rescheduled: string;
@@ -104,8 +104,8 @@ export class OrderedSchedulerComponent implements OnInit {
   constructor(private fb: FormBuilder, private readonly commonMethodService: CommonMethodService,
     private readonly workflowService: WorkflowService, private readonly notificationService: NotificationService,
     private readonly signalRService: SignalRService, private _storage: StorageService,
-    private readonly brokerService : BrokerService,
-    private readonly referrersService :  ReferrersService) {
+    private readonly brokerService: BrokerService,
+    private readonly referrersService: ReferrersService) {
     this.onCellPrepared = this.onCellPrepared.bind(this);
   }
 
@@ -139,9 +139,10 @@ export class OrderedSchedulerComponent implements OnInit {
     }
 
     this.signalRSub = this.signalRService.information.subscribe(response => {
-      this.viewingData = response;
-
-      this.removeIdleStudy();
+      if (response !== null && response.message != '2' && response.response !== null) {
+        this.viewingData = response;
+        this.removeIdleStudy();
+      }
     });
 
     this.commonMethodService.viewerRecords.subscribe(res => {
@@ -179,10 +180,10 @@ export class OrderedSchedulerComponent implements OnInit {
     this.getOrderedSchedulerData();
     this.deleteOrderedSchedulerActivity();
   }
-  getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
+  getReferrerDetailById(referrerName: any, referrerId: any, isPoliciesTab: any) {
     debugger
     if (referrerId) {
-      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
+      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab': true };
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
@@ -391,22 +392,23 @@ export class OrderedSchedulerComponent implements OnInit {
     }
     if (e.rowType === 'data' && e.columnIndex) {
       e.cellElement.style.pointerEvents = 'none';
-      if ((e.data.CB + e.data.VM)  == 2) {
-        e.cellElement.style.backgroundColor= "yellow";
+      if ((e.data.CB + e.data.VM) == 2) {
+        e.cellElement.style.backgroundColor = "yellow";
       }
-      if ((e.data.CB + e.data.VM)  > 2) {
-        e.cellElement.style.backgroundColor= "indianred";
+      if ((e.data.CB + e.data.VM) > 2) {
+        e.cellElement.style.backgroundColor = "indianred";
       }
-      if(e.data.Type){
+      if (e.data.Type) {
         if (e.data.Type.toLowerCase() == 'coulnnot schedule patient') {
-          e.cellElement.style.backgroundColor= "red";
+          e.cellElement.style.backgroundColor = "red";
         }
-      } 
-      if(e.data.Type){
+      }
+      if (e.data.Type) {
         if (e.data.Type.toLowerCase() == 'patient schedule') {
-          e.cellElement.style.backgroundColor= "green";
+          e.cellElement.style.backgroundColor = "green";
         }
-      } 
+      }
+      
     }
   }
 
@@ -1042,7 +1044,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  getOrderedSchedulerData() {
+  getOrderedSchedulerData() {  
     this.deleteOrderedSchedulerActivity();
     var data = {
       'patientId': this.sForm.patientId.value ? this.sForm.patientId.value : null,
@@ -1061,17 +1063,17 @@ export class OrderedSchedulerComponent implements OnInit {
         var data: any = res;
         this.totalRecords = res.totalRecords > 0 ? res.totalRecords : 1;
         this.totalOrder = data.response ? data.response[0].AllCount[0].TotalOrder : 0;
-        this.newOrder =  data.response ? data.response[0].AllCount[0].NewOrder : 0;
+        this.newOrder = data.response ? data.response[0].AllCount[0].NewOrder : 0;
         this.totalVM = data.response ? data.response[0].AllCount[0].TotalVM : 0;
-        this.leftVM = data.response? data.response[0].AllCount[0].LeftVM : 0;
+        this.leftVM = data.response ? data.response[0].AllCount[0].LeftVM : 0;
         this.totalCB = data.response ? data.response[0].AllCount[0].TotalCB : 0;
-        this.leftCB = data.response? data.response[0].AllCount[0].LeftCB :0;
-        this.ordered = data.response ? data.response[0].AllCount[0].Ordered:0;
-        this.totalOrdered = data.response ? data.response[0].AllCount[0].TotalOrdered :0;
-        this.noShow = data.response ? data.response[0].AllCount[0].NoShow :0;
-        this.totalNoShow = data.response? data.response[0].AllCount[0].TotalNoShow :0;
-        this.rescheduled = data.response ? data.response[0].AllCount[0].Rescheduled :0;
-        this.totalRescheduled = data.response ? data.response[0].AllCount[0].TotalRescheduled:0;
+        this.leftCB = data.response ? data.response[0].AllCount[0].LeftCB : 0;
+        this.ordered = data.response ? data.response[0].AllCount[0].Ordered : 0;
+        this.totalOrdered = data.response ? data.response[0].AllCount[0].TotalOrdered : 0;
+        this.noShow = data.response ? data.response[0].AllCount[0].NoShow : 0;
+        this.totalNoShow = data.response ? data.response[0].AllCount[0].TotalNoShow : 0;
+        this.rescheduled = data.response ? data.response[0].AllCount[0].Rescheduled : 0;
+        this.totalRescheduled = data.response ? data.response[0].AllCount[0].TotalRescheduled : 0;
         this.countData = true;
         this.dataList = data.response;
         console.log(this.dataList)
@@ -1096,7 +1098,7 @@ export class OrderedSchedulerComponent implements OnInit {
       });
   }
 
-  onSearchSubmit() {
+  onSearchSubmit() { 
     this.selectedRows = [];
     this.pageNumber = 1;
     this.getOrderedSchedulerData();
@@ -1592,7 +1594,9 @@ export class OrderedSchedulerComponent implements OnInit {
             alertHeader: res.responseCode == ResponseStatusCode.OK ? 'Success' : 'Error',
             alertMessage: res.message,
             alertType: res.responseCode
-          });
+          }); 
+          this.closePopup();
+          this.onSearchSubmit();
         }
       },
         (err: any) => {

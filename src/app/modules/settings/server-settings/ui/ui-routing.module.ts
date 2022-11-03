@@ -6,9 +6,9 @@ import { TaskManagementSettingComponent } from './task-management-setting/task-m
 import { UiComponent } from './ui.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'subs', pathMatch: 'full' },
-  { path: 'subs', loadChildren: () => import('./subs/subs.module').then(m => m.SubsModule), canActivate: [AuthGuard] },
-  { path: 'e-sign', loadChildren: () => import('./e-sign/e-sign.module').then(m => m.ESignModule), canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'subs', pathMatch: 'full',canActivate:[RoleGuard] },
+  { path: 'subs', loadChildren: () => import('./subs/subs.module').then(m => m.SubsModule), canActivate: [AuthGuard,RoleGuard] },
+  { path: 'e-sign', loadChildren: () => import('./e-sign/e-sign.module').then(m => m.ESignModule), canActivate: [AuthGuard,RoleGuard] },
   { path: 'task-management-setting', component:TaskManagementSettingComponent , canActivate: [AuthGuard, RoleGuard] },
 ];
 

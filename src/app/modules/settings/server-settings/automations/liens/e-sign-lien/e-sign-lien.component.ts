@@ -12,6 +12,8 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./e-sign-lien.component.css']
 })
 export class ESignLienComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   eSignLienSettingForm: FormGroup;
   statusList: any = [];
   financialTypeList: any = [];
@@ -163,5 +165,10 @@ export class ESignLienComponent implements OnInit {
         }
       );
     }
+  }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

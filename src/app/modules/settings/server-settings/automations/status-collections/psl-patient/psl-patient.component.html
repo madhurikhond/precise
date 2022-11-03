@@ -11,18 +11,18 @@
 										<div class="input-group">
 											<ng-select [items]="financialTypesList" placeholder="Select"
 												formControlName="pslPatientFinancialType" bindLabel="financialtypename"
-												[multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+												[multiple]="true" id="id109" (add)="a1=ValidateMultiSelectTextLength('id109',a1)" [closeOnSelect]="false" bindValue="financialtypename"
 												[(ngModel)]="selectedFinancialList"
 												[ngClass]="{ 'is-invalid': (submitted && ppForm.pslPatientFinancialType.errors)}"
-												(change)="onChange($event)">
+												(change)="onChange($event)" required>
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
 													<div class="ng-value" *ngFor="let item of items | slice:0:3">
 														<span class="ng-value-label"> {{item.financialtypename}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > 3">
-														<span class="ng-value-label">{{items.length - 3}} more...</span>
+													<div class="ng-value" *ngIf="items.length > a1">
+														<span class="ng-value-label">{{items.length - a1}} more...</span>
 													</div>
 												</ng-template> 
 											</ng-select>
