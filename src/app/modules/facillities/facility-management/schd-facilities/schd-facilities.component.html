@@ -710,7 +710,7 @@
 														Default Email must be a valid email address</div>
 												</div>
 											</div>
-										
+
 											<div class="form-group">
 												<div class="theme-label">Email Address1 3P</div>
 												<div class="input-group">
@@ -1073,7 +1073,7 @@
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="mri1type">
+																<select class="form-control" formControlName="mri1type" (change)="CheckSameCombinationMRI('Type1')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1154,7 +1154,7 @@
 															</td>
 															<td>
 																<select #mri1ResourceName
-																	(change)="updateResourceName(mri1ResourceName.value,'mri',1)"
+																	(change)="updateResourceName(mri1ResourceName.value,'mri',1);CheckSameCombinationMRI('Resource1')"
 																	formControlName="mri1ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -1169,7 +1169,7 @@
 														<tr>
 															<td>2</td>
 															<td>
-																<select class="form-control" formControlName="mri2type">
+																<select class="form-control" formControlName="mri2type" (change)="CheckSameCombinationMRI('Type2')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1250,7 +1250,7 @@
 															</td>
 															<td>
 																<select #mri2ResourceName
-																	(change)="updateResourceName(mri2ResourceName.value,'mri',2)"
+																	(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
 																	formControlName="mri2ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -1265,7 +1265,7 @@
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="mri3type">
+																<select class="form-control" formControlName="mri3type" (change)="CheckSameCombinationMRI('Type3')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1288,8 +1288,8 @@
 															<td>
 																<select class="form-control" formControlName="mri3make">
 																	<option></option>
-																	<option value="GE">GE</option>
-																	<option value="Fonar">Fonar</option>
+																	<option value="GE">GE</>
+																	<option value="Fonar">Fooptionnar</option>
 																	<option value="Hitachi">Hitachi</option>
 																	<option value="Phillips">Phillips</option>
 																	<option value="Siemens">Siemens</option>
@@ -1346,7 +1346,7 @@
 															</td>
 															<td>
 																<select #mri3ResourceName
-																	(change)="updateResourceName(mri3ResourceName.value,'mri',3)"
+																	(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
 																	formControlName="mri3ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -1388,7 +1388,7 @@
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="ct1make">
+																<select class="form-control" formControlName="ct1make" (change)="CheckSameCombinationCT('Type1')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1454,7 +1454,7 @@
 															</td>
 															<td>
 																<select #ct1ResourceName
-																	(change)="updateResourceName(ct1ResourceName.value,'ct',1)"
+																	(change)="updateResourceName(ct1ResourceName.value,'ct',1);CheckSameCombinationCT('Resource1')"
 																	formControlName="ct1ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -1469,7 +1469,7 @@
 														<tr>
 															<td>2</td>
 															<td>
-																<select class="form-control" formControlName="ct2make">
+																<select class="form-control" formControlName="ct2make" (change)="CheckSameCombinationCT('Type2')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1535,7 +1535,7 @@
 															</td>
 															<td>
 																<select #ct2ResourceName
-																	(change)="updateResourceName(ct2ResourceName.value,'ct',2)"
+																	(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
 																	formControlName="ct2ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -1550,7 +1550,7 @@
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="ct3make">
+																<select class="form-control" formControlName="ct3make" (change)="CheckSameCombinationCT('Type3')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1616,7 +1616,7 @@
 															</td>
 															<td>
 																<select #ct3ResourceName
-																	(change)="updateResourceName(ct3ResourceName.value,'ct',3)"
+																	(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
 																	formControlName="ct3ResourceName"
 																	class="form-control">
 																	<option value=null>Select Resource Name
@@ -3293,7 +3293,7 @@
 												<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
 												<dxo-header-filter [visible]="true" [allowSearch]="true">
 												</dxo-header-filter>
-												<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."> 
+												<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search..">
 												</dxo-search-panel> -->
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
@@ -3771,19 +3771,18 @@
 															<div *dxTemplate="let data of 'MriRateTemplate'">
 																<p *ngIf="data.data.LeaseRatePerHour">{{"$"+data.data.LeaseRatePerHour}}</p>
 																<p *ngIf="!data.data.LeaseRatePerHour"></p>
-															
+
 															</div>
 															<div *dxTemplate="let data of 'TotalHourTemplate'">
 																<p *ngIf="data.data.totalHour">{{"$"+data.data.totalHour}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
-																
+
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn" data-target = #viewFile_Doc (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI','')">
 																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red;pointer-events: all;"></i>
 																</a>
 
-							
 															</div>
 														</dx-data-grid>
 													</div>
@@ -3821,18 +3820,18 @@
 															<div *dxTemplate="let data of 'CTRateTemplate'">
 																<p *ngIf="data.data.LeaseRatePerHour">{{"$"+data.data.LeaseRatePerHour}}</p>
 																<p *ngIf="!data.data.LeaseRatePerHour"></p>
-															
+
 															</div>
 															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
 																<p *ngIf="data.data.totalHour">{{"$"+data.data.totalHour}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
-																
+
 															</div>
 															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'CT')">
 																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
 																</a>
-							
+
 															</div>
 														</dx-data-grid>
 													</div>
@@ -4023,7 +4022,7 @@
 				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
 					(click)="updateFacility(true)">Apply</button>
 			</div>
-			
+
 		</div>
 
 
