@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 import { StorageService } from 'src/app/services/common/storage.service';
-import { LanguageOption, PageTitleOption, patientPortalResponseStatus, PatientPortalStatusMessage, PatientPortalURL } from 'src/app/models/patient-response';
+import { LanguageOption, PageTitleOption, PatientFinancialTypeName, patientPortalResponseStatus, PatientPortalStatusMessage, PatientPortalURL } from 'src/app/models/patient-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class MultipleRecordComponent implements OnInit {
     this.currentLanguage = this.storageService.getPatientLanguage();
     if(this.currentLanguage == LanguageOption.ES)
       this.setLanguage = false;
-      
+
     this.translate.use(this.currentLanguage);
     this.multipleRecordForm = this.fb.group({
       code1: ['', [Validators.required]],
@@ -78,12 +78,13 @@ export class MultipleRecordComponent implements OnInit {
           this.patientPortalService.isPregnancyWaiverEnable = patient.isPregnancyWaiverEnable;
           this.patientPortalService.isPregnancyWaiverDownloadable = patient.isPregnancyWaiverDownloadable;
           this.storageService.setItem("p_detail",this.patientPortalService.patientDetail);
-          if( patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0)
+          if( patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0 &&
+          (this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY || this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.BROKER))
           {
             if(this.currentLanguage == "es")
               this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], { queryParams:
               { patientid: patient.patientId,Token: patient.uniqueId} });
-            else 
+            else
               this.router.navigate([PatientPortalURL.ESIGN_REQUEST], { queryParams:
                 { patientid: patient.patientId,Token: patient.uniqueId} });
           }
