@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { PatientPortalStatusCode } from "src/app/constants/patient-portal-status-code.enum";
 import { ResponseStatusCode } from "src/app/constants/response-status-code.enum";
-import { LanguageOption, PageTitleOption, patientPortalResponseStatus, PatientPortalStatusMessage, PatientPortalURL } from "src/app/models/patient-response";
+import { LanguageOption, PageTitleOption, PatientFinancialTypeName, patientPortalResponseStatus, PatientPortalStatusMessage, PatientPortalURL } from "src/app/models/patient-response";
 import { CommonMethodService } from "src/app/services/common/common-method.service";
 import { NotificationService } from "src/app/services/common/notification.service";
 import { StorageService } from "src/app/services/common/storage.service";
@@ -116,7 +116,7 @@ export class PatientCodeVerificationComponent implements OnInit {
       if (res) {
         if (res.responseStatus == patientPortalResponseStatus.Success && res.result.isVerificationCodeVerified) {
             var expirydate = this.storageService.addHours(24);
-            this.storageService.PTimeout = expirydate.toJSON();      
+            this.storageService.PTimeout = expirydate.toJSON();
             if (this.patientPortalService.patientRecords.length > 1) {
                   this.router.navigate([PatientPortalURL.MULTIPLE_RECORD_FOUND]);
               }
@@ -130,8 +130,9 @@ export class PatientCodeVerificationComponent implements OnInit {
                 this.patientPortalService.isPregnancyWaiverDownloadable = patient.isPregnancyWaiverDownloadable;
                 this.patientPortalService.globalPageNumber = patient.pageCompleted;
                 this.storageService.setItem("p_detail", this.patientPortalService.patientDetail);
-              
-                if (patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0) {
+
+                if (patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0 &&
+                 (this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY || this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.BROKER)) {
                   if (this.currentLanguage == "es")
                     this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], {
                       queryParams:
