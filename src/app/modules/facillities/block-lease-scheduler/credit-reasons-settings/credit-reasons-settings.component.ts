@@ -40,9 +40,9 @@ export class CreditReasonsSettingComponent implements OnInit {
   ngOnInit(): void {
     this.tabId = 'Reasons';
     this.columnResizingMode = this.resizingModes[0];
-    this.getDocumentsTypes();
-    this.getEsignData();
-    this.creditReasonFormInitialize();
+     this.getDocumentsTypes();
+     this.getEsignData();
+     this.creditReasonFormInitialize();
   }
   creditReasonFormInitialize() {
     this.addCreditReasonForm = this.fb.group({
@@ -83,14 +83,6 @@ export class CreditReasonsSettingComponent implements OnInit {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {
         this.esignList = data.response;
-
-      }
-      else {
-        this.notificationService.showNotification({
-          alertHeader: data.statusText,
-          alertMessage: data.message,
-          alertType: data.responseCode
-        });
       }
     },
       (err: any) => {
