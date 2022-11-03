@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+import { BlockLeaseSchedulerService } from '../../../../../services/block-lease-scheduler-service/block-lease-scheduler.service';
+import { NotificationService } from '../../../../../services/common/notification.service';
+import { StorageService } from '../../../../../services/common/storage.service';
 
 @Component({
   selector: 'app-pay-invoice-modal',
@@ -8,12 +12,18 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./pay-invoice-modal.component.css']
 })
 export class PayInvoiceModalComponent implements OnInit {
-  @Input() TotalAmount: any;
+  @Input() AmountDetails: any;
+  @Input() selectedleases: any;
+  @Input() selectedCreditIds: any;
+  @Input() facilityId: any;
   ModalResult = ModalResult;
   payInvoiceForm:FormGroup;
   dobModel: string = '';
   currentDate = new Date();
-  constructor( private fb: FormBuilder,public modal: NgbActiveModal) { }
+  constructor(private fb: FormBuilder, public modal: NgbActiveModal,
+    private readonly blockleasescheduler: BlockLeaseSchedulerService,
+    private readonly storageService: StorageService,
+    private readonly notificationService: NotificationService  ) { }
 
   ngOnInit(): void {
     this.createPayInvoiceForm();
@@ -37,14 +47,30 @@ export class PayInvoiceModalComponent implements OnInit {
   setPayInvoiceForm()
   {
     this.payInvoiceForm.patchValue({
-      checkAmount: '$'+ new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.TotalAmount)
+      checkAmount: '$' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
     });
   }
-  abc(e)
-  {
-    
-    var x = this.payInvoiceFormControls.checkAmount.value.replace(/[^\w ]/g, '');
-      console.log(x)
+  MakePayment(e)
+  {   
+    var grossAmount = this.payInvoiceFormControls.checkAmount.value.replace(/[^\w ]/g, '');
+    var data = {
+      "FacilityId": this.facilityId,
+      "Credits": this.selectedCreditIds,
+      "GrossAmount": this.AmountDetails.TotalAmount,
+      "Leases": this.selectedleases,
+      "CheckNumber": this.payInvoiceForm.value.checkId,
+      "CheckAmount": grossAmount,
+      "TotalCreditsAmount": this.AmountDetails.TotalCreditsAmount,
+      "TotalLeasesAmount": this.AmountDetails.TotalLeasesAmount,
+      "UserId": this.storageService.user.UserId,
+      "CheckDate": moment(this.currentDate).format('MM/DD/YYYY hh:mm:ss')
+    }
+    this.blockleasescheduler.CreatePayments(false, data).subscribe((res) => {
+      if (res && res.responseCode == 200) {
+        this.successNotification(res);
+        this.modal.dismiss(ModalResult.SAVE);
+      }
+    });
   }
   keyPressAlphaNumeric(event) {
 
@@ -56,6 +82,13 @@ export class PayInvoiceModalComponent implements OnInit {
       event.preventDefault();
       return false;
     }
+  }
+  successNotification(data: any) {
+    this.notificationService.showNotification({
+      alertHeader: 'Success',
+      alertMessage: data.message,
+      alertType: data.responseCode
+    });
   }
   // delete() {
   //   this.modal.dismiss(ModalResult.DELETE);

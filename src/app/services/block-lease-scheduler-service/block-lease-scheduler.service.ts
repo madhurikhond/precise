@@ -140,5 +140,10 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
+  CreatePayments(showGlobalLoader: boolean = true, body: any) {
+    return this._httpService.post(`BlockLeaseScheduler/CreatePayments`, body, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
 }
 

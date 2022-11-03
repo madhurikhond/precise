@@ -124,6 +124,7 @@ export class SchdFacilitiesComponent implements OnInit {
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
+  selectedleaseArray: any = [];
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -2725,6 +2726,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.btnActive=1;
       el.selectedRowsData.forEach(i => {
         leaseID.push(i.LeaseId)
+        this.selectedleaseArray.push(i);
       });
       this.leaseIdArray=leaseID;
     }
@@ -2753,10 +2755,26 @@ export class SchdFacilitiesComponent implements OnInit {
       "CreditId": creditIdListTemp
     }
     this.blockleasescheduler.getTotalAmountToPay(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
-      if(res.response[0].TotalAmount)
+      if(res.response[0].TotalAmount >= 0)
       {
         const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-        modalRef.componentInstance.TotalAmount = res.response[0].TotalAmount;
+        modalRef.componentInstance.AmountDetails = res.response[0];
+        modalRef.componentInstance.selectedleases = this.selectedleaseArray;
+        modalRef.componentInstance.selectedCreditIds = creditIdListTemp;
+        modalRef.componentInstance.facilityId = this.facilityId;
+        modalRef.result.then(
+          (result) => {
+            modalRef.close();
+          },
+          (reason) => {
+            if (reason == 5) {
+              modalRef.close();
+            }
+            else {
+              this.unSuccessNotification(reason);
+            }
+          }
+        );
       }
     });
     
