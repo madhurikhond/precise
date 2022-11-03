@@ -124,6 +124,11 @@ export class SchdFacilitiesComponent implements OnInit {
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
+  blockLeasePaymentList: [] = [];
+  blockLeasePaymentMappingList:any;
+  blockLeaseCreditList:[]=[];
+  paymentMapping: any = [];
+  
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -903,6 +908,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getAllBlockLeaseCredits();
         this.getFacilityCreditsUnUsed();
         this.getUnpaidLeases();
+        this.getblockLeasePaymentByFacilityId(this.facilityId);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -1140,6 +1146,36 @@ export class SchdFacilitiesComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
+  getblockLeasePaymentByFacilityId(facilityId: number) {
+    this.blockLeasePaymentList = [];
+    this.pageNumber = 1;
+    this.facilityService.GetblockLeasePaymentByFacilityId(true, facilityId.toString(),this.pageNumber, this.pageSize).subscribe((res) => {
+      if (res.response != null) {
+        console.log(res.response)
+        this.blockLeasePaymentList = res.response;
+      }
+    });
+  }
+
+  getLeasePaymentMappingByFacilityId(paymentMapping : any) {
+    this.facilityService.GetLeasePaymentMappingByFacilityId(true, paymentMapping.data.PaymentId).subscribe((res) => {      
+      if (res.response != null) {
+        this.blockLeasePaymentMappingList = res.response;
+        this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
+      }
+    });
+  }
+
+  getBlockLeaseCreditsByFacilityId(leaseId: string) {
+    this.blockLeaseCreditList = [];
+    this.facilityService.GetBlockLeaseCreditsByFacilityId(true, leaseId.toString()).subscribe((res) => {
+      if (res.response != null) {
+        this.blockLeaseCreditList = res.response;
+      }
+    });
+  }
+
   setGeneralInfoTabForm(data: any) {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
@@ -2482,6 +2518,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentPolicy = '';
     this.isPopUpInEditMode = false;
     this.facilityPoliciesForm.reset();
+    this.blockLeasePaymentList=[];
+    this.blockLeasePaymentMappingList=[];
+    this.blockLeaseCreditList=[];
   }
   reLoadAllFacility() {
     this.getSchedulingFacilities();

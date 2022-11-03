@@ -130,6 +130,8 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
+
+
   addTagList(showGlobalLoader : boolean = true,body:any){
     return this._httpService.post('Facility/AddTagList', body,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
@@ -379,6 +381,24 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
+
+  GetblockLeasePaymentByFacilityId(showGlobalLoader : boolean = true,facilityId:string, pageNumber:number,pageSize:number){
+    return this._httpService.get(`BlockLeasePayment/GetBlockLeasepayment?facilityId=${facilityId}&pageNumber=${pageNumber}&pageSize=${pageSize}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  GetLeasePaymentMappingByFacilityId(showGlobalLoader : boolean = true,paymentId:string){
+    return this._httpService.get(`BlockLeasePayment/GetLeasePaymentMapping?paymentId=${paymentId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
+  GetBlockLeaseCreditsByFacilityId(showGlobalLoader : boolean = true,leaseId:string){
+    return this._httpService.get(`BlockLeasePayment/GetBlockLeaseCredits?leaseId=${leaseId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
   checkUserType(){
     let checkUser = 0;
     var usertype = JSON.parse(localStorage.getItem('_cr_u_infor')).usertype;      
