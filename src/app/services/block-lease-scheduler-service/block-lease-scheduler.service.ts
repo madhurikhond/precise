@@ -48,8 +48,8 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string) {
-    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}`, showGlobalLoader).pipe(
+  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string, UserId : any) {
+    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}&UserId=${UserId}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
