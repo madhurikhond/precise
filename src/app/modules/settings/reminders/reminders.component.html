@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <ul class="reminder-body">
                         <li>Remind Reading Rad after</li>
-                        <li><input type="text" class="form-control" formControlName="RemindReadingAfter" mask="000">
+                        <li><input type="text" class="form-control" formControlName="RemindReadingAfter" mask="000" [ngClass]="{ 'is-invalid': IsSubmitted && getFromControls.RemindReadingAfter.errors}">
                             <div *ngIf="IsSubmitted &&  getFromControls.RemindReadingAfter.errors"
                                 class="tooltiptext text-right">
                                 <small class="error text-danger"
@@ -22,7 +22,7 @@
                             </div>
                         </li>
                         <li>days every</li>
-                        <li><input type="text" class="form-control" formControlName="RemindIfNotSignedEvery" mask="000">
+                        <li><input type="text" class="form-control" formControlName="RemindIfNotSignedEvery" mask="000" [ngClass]="{ 'is-invalid': IsSubmitted && getFromControls.RemindIfNotSignedEvery.errors}">
                             <div *ngIf="IsSubmitted &&  getFromControls.RemindIfNotSignedEvery.errors"
                                 class="tooltiptext text-right">
                                 <small class="error text-danger"

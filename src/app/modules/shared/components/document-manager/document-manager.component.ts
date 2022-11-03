@@ -18,6 +18,7 @@ import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { PatientService } from '../../../../services/patient/patient.service';
 import { ConstantPool } from '@angular/compiler';
 import { Console } from 'console';
+import { environment } from '../../../../../environments/environment';
 declare const $: any;
 
 @Component({
@@ -31,6 +32,7 @@ declare const $: any;
 })
 export class DocumentManagerComponent implements OnInit, AfterViewInit {
   eventsSubject: Subject<void> = new Subject<void>();
+  apiUrl: string;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -47,7 +49,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   @ViewChild('hiddenViewFile', { static: false }) hiddenViewFile: ElementRef;
   @ViewChild('fileUpload', { static: false }) fileUploadElement: ElementRef;
   @ViewChild('hiddenDynamsoftScannerPopUp', { static: false }) hiddenDynamsoftScannerPopUp: ElementRef;
-  path:any
+  path: any
   fileData: SafeResourceUrl;
   fileName: string;
   popupVisible = false;
@@ -68,7 +70,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   selectedHasAlertId: number;
   currentPatientId: string = '';
   tabId: string = 'All'
-  downloadAllBasePath : any ;
+  downloadAllBasePath: any;
   commonPopUpMessage: string = ''
   docTypeModelChange: boolean = false;
   currentDeleteItemRecord: any = {};
@@ -81,12 +83,13 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   modelValue: string = 'modal';
   GetRenameFileExtension: string = '';
   isfileSizeOk: boolean = false;
-  patientName: string = '' ;
-  headerTitle: string = '' ;
+  patientName: string = '';
+  headerTitle: string = '';
   selectedFileData: any;
   billArray: any;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
+  fileLocation :any ;
   @HostListener('document:click', ['$event'])
   onClickEvent(event: MouseEvent) {
     let docManagerHeadertd = <HTMLElement>event.target;
@@ -136,6 +139,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       onItemClick: this.onItemClick.bind(this)
     };
     this.onItemClick = this.onItemClick.bind(this);
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
   }
 
@@ -155,12 +159,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       this.getDocumentType();
 
     });
- 
+
     this.commonService.docManagerSubjectObservableForDocComp.subscribe((patientId) => {
       this.headerTitle = '';
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
-      console.log('m '+this.currentPatientId)
+      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
@@ -168,7 +172,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     this.renameForm = this.fb.group({
       renameTxt: ['', [Validators.required]]
     });
-   
+
   }
 
   getPageName(): string {
@@ -294,26 +298,40 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
 
   }
-  getFilesByKey(name: any, path:any,text:any){
-    
-    this.documentmanagerService.getFilesByKey(true,JSON.stringify(path)).subscribe((res) => { 
+  getFilesByKey(name: any, path: any, text: any, e: any) {
+    console.log(e)
+    this.documentmanagerService.getFilesByKey(true, JSON.stringify(path)).subscribe((res) => {
       if (res.response != null) {
-        this.path = JSON.parse(res.response).Base64 ;  
-        if(text == 'Open'){
-          this.displayFile(name, this.path);
+        this.path = JSON.parse(res.response).Base64;
+        if (text == 'Open') {
+          
+          this.displayFile(name, e.file.dataItem.filePath);
         }
-        else if (text == 'Download Selected'){
-          this.downloadFile(this.selectedFileNames, this.path);
-        } 
+        // else if (text == 'Download Selected') {
+
+        //   this.downloadFile(this.selectedFileNames, this.path);
+        // }
       }
-    }) 
+      if (text == 'Download Selected') {
+        let fileExtension = this.selectedFileNames.split('.').pop();
+        if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
+                  this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+                }
+                else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+                  this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+                }
+        this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
+      }
+    })
   }
   onItemClick(e) {
+   
     if (e.itemData.text == 'Open') {
+     
       if (this.selectedFileKeys.length == 1) {
-        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text)
-       // this.displayFile(e.fileSystemItem.dataItem.name, this.path);
-      // call the Api here. It takes 1 parameter the base64 string
+       // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
+         this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath);
+        // call the Api here. It takes 1 parameter the base64 string
       }
       else if (this.selectedFileKeys.length > 1) {
         this.CodeErrorNotification('Only single file can display.');
@@ -323,21 +341,24 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Download Selected') {
- 
       if (this.selectedFileKeys.length == 1) {
-       this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-        this.getFilesByKey('',this.path, e.itemData.text)
-        this.clearSelectedFields();
+        this.getFilesByKey(this.selectedFileNames, this.fileLocation, e.itemData.text, e)
+        //this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
+       
+        //this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
-        this.downloadAllFilesAsZipFile(this.selectedFileItems);
+       
+        this.getFilesByKeys(e.itemData.text)
+        //this.downloadAllFilesAsZipFile(this.selectedFileItems);
       }
       else {
         this.CodeErrorNotification('Please select file to download.');
       }
     }
     else if (e.itemData.text == 'Download All Files') {
-      this.downloadAllFilesAsZipFile(this.fileItems);
+      this.getFilesByKeys(e.itemData.text)
+      //this.downloadAllFilesAsZipFile(this.fileItems);
     }
     else if (e.itemData.text == 'Upload') {
       this.docTypeModelChange = false;
@@ -354,7 +375,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       this.toggleStartDemo();
       this.hiddenDynamsoftScannerPopUp.nativeElement.click();
 
-      }
+    }
     else if (e.itemData.text == 'Send Document') {
       if (this.selectedFileKeys.length == 1) {
         this.selectedFileForSendDocument = this.selectedFileKeys[0];
@@ -406,6 +427,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Rename') {
+    
       if (this.selectedFileKeys.length == 1) {
         this.hiddenFileRenamePopUpItem.nativeElement.click();
         this.currentRenameItemRecord = null;
@@ -471,52 +493,55 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     });
   }
   fileManager_onSelectionChanged(e) {
-    
-     this.setFileManagerRowColor();
-      this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
-      if(this.selectedFileNames){
-        this.selectedFileKeys = e.selectedItemKeys;
-        var fileExtension = this.selectedFileNames.split('.').pop();
 
-        this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => { 
-          if (res.response != null) {
-            console.log()
-            this.path = JSON.parse(res.response).Base64 ;  
-            if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
-              this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
-            }
-            else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-              this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
-            }
-          }
-      }) 
-     }
-     
-      
-     if (e.selectedItems.length == 1) {
-       //this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
-       // let fileExtension = this.selectedFileNames.split('.').pop();
-       //   this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems.map(f => f.dataItem).map(m => m.filePath)[0])).subscribe((res) => { 
-       //     if (res.response != null) {
-       //       this.path = JSON.parse(res.response).Base64 ;  
-       //       e.selectedItems.map(f => f.dataItem).map(m => m.fileBase64)[0]=this.path ;
-       //       if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
-       //         this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
-       //       }
-       //       else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-       //         this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
-       //       }
-       //     }
-       // }) 
- 
- 
-     }
-     // else {
-     //   this.selectedFileItems = e.selectedItems.map(m => m.dataItem) as DocumentManagerModel[];
-     // }
-     this.selectedFileItems = e.selectedItems.map(m => m.dataItem) as DocumentManagerModel[];
-   }
+    this.setFileManagerRowColor();
+    this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
+    if (this.selectedFileNames) {
+      this.selectedFileKeys = e.selectedItemKeys;
+      var fileExtension = this.selectedFileNames.split('.').pop();
+      // this.documentmanagerService.getFilesByKey(true, JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => {
+      //   if (res.response != null) {
+      //     console.log()
+      //     this.path = JSON.parse(res.response).Base64;
+      //   }
+      // })
+      // if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
+      //   this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+      // }
+      // else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+      //   this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+      // }
+
+
+    }
+
+
+    if (e.selectedItems.length == 1) {
+      this.fileLocation = e.selectedItems[0].dataItem.filePath
+      //this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
+      // let fileExtension = this.selectedFileNames.split('.').pop();
+      //   this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems.map(f => f.dataItem).map(m => m.filePath)[0])).subscribe((res) => { 
+      //     if (res.response != null) {
+      //       this.path = JSON.parse(res.response).Base64 ;  
+      //       e.selectedItems.map(f => f.dataItem).map(m => m.fileBase64)[0]=this.path ;
+      //       if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
+      //         this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+      //       }
+      //       else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+      //         this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+      //       }
+      //     }
+      // }) 
+
+
+    }
+    // else {
+    //   this.selectedFileItems = e.selectedItems.map(m => m.dataItem) as DocumentManagerModel[];
+    // }
+    this.selectedFileItems = e.selectedItems.map(m => m.dataItem) as DocumentManagerModel[];
+  }
   downloadFile(fileName, fileData) {
+
     const source = fileData;
     const link = document.createElement('a');
     link.href = source;
@@ -524,25 +549,38 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     link.click();
   }
   selectedFileDisplay(e) {
-    this.getFilesByKey( e.file.dataItem.name, e.file.dataItem.filePath,'Open')
+    //this.getFilesByKey(e.file.dataItem.name, e.file.dataItem.filePath, 'Open', e)
+    this.displayFile(e.file.name, e.file.dataItem.filePath);
+  }
+  downloadFileFromUrl(fileName, fileData) {
+    this.fileName = fileName;
+    fileData = this.apiUrl + 'DocumentManager/Download?path=' + fileData;
+
+    const source = fileData;
+    const link = document.createElement('a');
+    link.href = source;
+    link.download = `${fileName}`
+    link.click();
   }
 
   displayFile(fileName: string, fileData: any) {
-    if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
-      fileData = 'data:image/png;base64,' + fileData;
-    }
-    else if (fileName.match(/.(pdf)$/i)) {
-      fileData = 'data:application/pdf;base64,' + fileData;
-    }
+
+    //if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
+    //  fileData = 'data:image/png;base64,' + fileData;
+    //}
+    //else if (fileName.match(/.(pdf)$/i)) {
+    //  fileData = 'data:application/pdf;base64,' + fileData;
+    //}
     this.fileName = fileName;
+    fileData = this.apiUrl + 'DocumentManager/Download?path=' + fileData;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
 
   downloadAllFilesAsZipFile(fileItems: DocumentManagerModel[]) {
     let type: string = '';
-    this.getFilesByKeys()
-    let files = this.downloadAllBasePath.map(m => m.fileBase64);;
+    //this.getFilesByKeys()
+    let files = this.downloadAllBasePath.map(m => m.fileBase64);
     const jszip = new JSZip();
     for (let k = 0; k < files.length; k++) {
       var binary = atob(files[k]);
@@ -683,13 +721,14 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
           this.alertInfo = this.documentManagerAlert.alertInfo[0];
           this.selectedHasAlertId = this.alertInfo.hasAlertId;
           this.hiddenAlertInfoPopUp.nativeElement.click();
-          this.updateTabId(this.tabId, true)
+          this.updateTabId(this.tabId, true);
         }
         else {
           if (res.totalRecords == null && res.response == false) {
             this.unSuccessNotification(res);
           } else {
             this.fileItems.push(res.response);
+            this.getBillDataInArray();
             this.fileManager.instance.refresh();
             this.successNotification(res);
             this.setFileManagerRowColor();
@@ -800,6 +839,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
   }
   renameOrCancelItem(isItemRename: boolean) {
+    debugger
     this.submitted = true;
     this.modelValue = 'modal';
     if (this.renameForm.invalid) {
@@ -809,33 +849,46 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     if (isItemRename) {
       let updatedNewFileName = this.refrenameForm.renameTxt.value + '.' + this.GetRenameFileExtension;
       if (updatedNewFileName != this.currentRenameItemRecord.name) {
-        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64);
+        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64); 
       }
     }
     else {
       this.currentRenameItemRecord = null;
     }
   }
-  getFilesByKeys(){
-    
+  getFilesByKeys(type: any) {
     var IdString: string = '';
-    let paths =  this.fileItems.map(m => m.filePath);
+    var paths = [];
+    if (type == 'Download All Files') {
+      paths = this.fileItems.map(m => m.filePath);
+    }
+    else if (type == 'Download Selected') {
+      paths = this.selectedFileItems.map(m => m.filePath);
+    }
     paths.forEach(res => {
-      IdString = paths + "," 
-     
+      IdString = paths + ","
     })
-    this.documentmanagerService.getFilesByKeys(true,JSON.stringify(IdString)).subscribe((res) => { 
+    this.documentmanagerService.getFilesByKeys(true, JSON.stringify(IdString)).subscribe((res) => {
       if (res.response != null) {
-          this.downloadAllBasePath = res.response
+        this.downloadAllBasePath = res.response
+        if (type == 'Download All Files') {
+          this.downloadAllFilesAsZipFile(this.fileItems);
+        }
+        if (type == 'Download Selected') {
+          this.downloadAllFilesAsZipFile(this.selectedFileItems);
+        }
       }
-    }) 
+    })
   }
   renameFile(docId: any, OldFileName: any, NewfileName: any, patientId: any, docType: string, fileBase64: any) {
     this.documentmanagerService.renameFile(true, OldFileName, NewfileName, patientId, docId, Number(this.storageService.user.UserId), this.fromPage, null, docType).subscribe((res) => {
       if (res.responseCode == 200) {
+        console.log(this.fileItems);
+        
         let index: number = this.fileItems.map(function (e) { return e.docId; }).indexOf(docId);
         if (index !== -1) {
           this.fileItems[index].name = res.response;
+          this.fileItems[index].filePath = this.fileItems[index].filePath.replace(OldFileName.replace(/%20/g,' ') ,res.response);
           this.fileManager.instance.refresh();
         }
         this.successNotification(res);
@@ -924,6 +977,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   }
 
   getBillDataInArray() {
+    this.billArray = [];
     this.billArray = this.fileItems.filter(a => a.docType == "Bill");
     this.billArray = this.billArray.sort(function (a, b) {
       var dateA = new Date(a.uploadedOn).getTime();
@@ -932,10 +986,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
   }
   IsLatestBill(uploadedDate: any) {
-
+    console.log(this.billArray);
+    // let uploadedDate_New 
     let uplDate = new Date(this.billArray[0].uploadedOn).getTime();
-    uploadedDate = new Date(uploadedDate).getTime();
-    return uplDate === uploadedDate;
+    let uploadedDate_New = new Date(uploadedDate).getTime();
+    return uplDate == uploadedDate_New;
   }
   toggleStartDemo() {
     if (this.startText === 'start Scanner') {
@@ -944,13 +999,21 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     else {
       this.startText = 'start Scanner'
-      this.show=false
+      this.show = false
     }
-   // this.bStartUp = !this.bStartUp;
+    // this.bStartUp = !this.bStartUp;
     //this.dwtService.bUseService = !this.bNoInstall;
     //this.dwtService.bUseCameraViaDirectShow = this.bUseCameraViaDirectShow && !this.bNoInstall;
-    
+
   }
+  closeScannerPopup($event) {
+    if ($event && this.startText == 'Close Scanner') {
+      this.toggleStartDemo();
+    }
+  }
+
 }
+
+
 
 

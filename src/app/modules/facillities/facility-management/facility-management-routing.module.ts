@@ -17,7 +17,7 @@ const routes: Routes = [
       }
       ,
       {
-        path:'parent-comp',component:ParentCompComponent, canActivate: [AuthGuard]
+        path:'parent-comp',component:ParentCompComponent, canActivate: [AuthGuard,RoleGuard]
       }
     ]
   }

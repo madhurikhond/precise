@@ -6,7 +6,7 @@ import { ESignComponent } from './e-sign.component';
 import { ElecAgreeComponent } from './elec-agree/elec-agree.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'elec-agree', pathMatch: 'full' },
+  { path: '', redirectTo: 'elec-agree', pathMatch: 'full',canActivate:[RoleGuard] },
   { path: 'elec-agree', component: ElecAgreeComponent, canActivate: [AuthGuard,RoleGuard] },
 ];
 

@@ -12,6 +12,7 @@ import { PatientLoginComponent } from './patient-login/patient-login.component';
 import { PatientCodeVerificationComponent } from './patient-code-verification/patient-code-verification.component';
 import { PAuthGuard } from '../core/guards/pauth.guard';
 import { MultipleRecordComponent } from './multiple-record/multiple-record.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
       { path: 'patient-portal', component: PatientLoginComponent },
       { path: 'patient-code-verification', component: PatientCodeVerificationComponent,canActivate: [PAuthGuard]  },
       { path: 'multiple-record-found', component: MultipleRecordComponent,canActivate: [PAuthGuard]  },
-      //{ path: 'reset-password/:id/:code', component: ResetPasswordComponent },
+      { path: 'reset-password/:uid', component: ResetPasswordComponent }
       //{ path: 'activate-account/:uid/:code', component: ActivateAccountComponent }
 
     ]

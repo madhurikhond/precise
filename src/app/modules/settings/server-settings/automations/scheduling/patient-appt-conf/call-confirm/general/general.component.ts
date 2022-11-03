@@ -11,6 +11,8 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./general.component.css']
 })
 export class GeneralComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   financialTypesList:any=[]
   statusNamesList:any=[]
   id:number
@@ -26,7 +28,8 @@ export class GeneralComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService) { }
+    private readonly notificationService: NotificationService,
+    private readonly commonMethodService: CommonMethodService) { }
 
   ngOnInit(): void {
     this.callSettingForm =  this.fb.group({
@@ -166,4 +169,9 @@ export class GeneralComponent implements OnInit {
 
   get csForm() { return this.callSettingForm.controls; }
   
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

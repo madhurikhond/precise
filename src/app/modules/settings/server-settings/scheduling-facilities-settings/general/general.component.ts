@@ -19,7 +19,7 @@ export class GeneralTabComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSchedulingFacilitySetting();
-    this.commonMethodService.setTitle('General');
+    this.commonMethodService.setTitle('Scheduling Facilities Settings');  
     this.addEditForm = this.fb.group({
       dollerweight:['', [Validators.required]],
       mileweight:['', [Validators.required]]

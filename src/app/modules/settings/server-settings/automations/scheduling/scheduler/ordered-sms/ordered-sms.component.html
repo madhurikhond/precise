@@ -14,16 +14,16 @@
 									<div class="form-group autocomplete">
 										<div class="theme-label">Financial  Type</div>
 										<ng-select [items]="financialTypesList" placeholder="Select" formControlName="orderedFinacialType"
-											bindLabel="financialtypename" [multiple]="true" [closeOnSelect]="false" 
+											bindLabel="financialtypename" [multiple]="true" id="id96" (add)="a1=ValidateMultiSelectTextLength('id96',a1)" [closeOnSelect]="false" 
 											bindValue="financialtypename" [(ngModel)]="selectedFinancialTypeList">
 											<ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
-												<div class="ng-value" *ngFor="let item of items | slice:0:4">
+												<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 													<span class="ng-value-label"> {{item.financialtypename}}</span>
 													<span class="ng-value-icon right" (click)="clear(item)"
 														aria-hidden="true">×</span>
 												</div>
-												<div class="ng-value" *ngIf="items.length > 4">
-													<span *ngIf="(items.length - 4)>0" class="ng-value-label">{{items.length - 4}} more...</span>
+												<div class="ng-value" *ngIf="items.length > a1">
+													<span *ngIf="(items.length - 4)>0" class="ng-value-label">{{items.length - a1}} more...</span>
 												</div>
 											</ng-template>
 										</ng-select>
@@ -32,16 +32,16 @@
 									<div class="form-group autocomplete">
 										<div class="theme-label">Modality</div>
 										<ng-select [items]="modalityList" placeholder="Select" formControlName="orderedModality" 
-											bindLabel="scheduledmodality" [multiple]="true" [closeOnSelect]="false" 
+											bindLabel="scheduledmodality" [multiple]="true" id="id97" (add)="a2=ValidateMultiSelectTextLength('id97',a2)" [closeOnSelect]="false" 
 											bindValue="scheduledmodality" [(ngModel)]="selectedModalityList">
 											<ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
-												<div class="ng-value" *ngFor="let item of items | slice:0:5">
+												<div class="ng-value" *ngFor="let item of items | slice:0:a2">
 													<span class="ng-value-label"> {{item.scheduledmodality}}</span>
 													<span class="ng-value-icon right" (click)="clear(item)"
 														aria-hidden="true">×</span>
 												</div>
-												<div class="ng-value" *ngIf="items.length > 5">
-													<span *ngIf="(items.length - 5)>0" class="ng-value-label">{{items.length - 5}} more...</span>
+												<div class="ng-value" *ngIf="items.length > a2">
+													<span *ngIf="(items.length - a2)>0" class="ng-value-label">{{items.length - a2}} more...</span>
 												</div>
 											</ng-template>
 										</ng-select>
@@ -51,16 +51,16 @@
 										<div class="theme-label">Radius Status</div>
 										<div class="input-group">
 										<ng-select [items]="statusList" placeholder="Select" formControlName="orderedStatus" 
-											bindLabel="status" [multiple]="true" [closeOnSelect]="false"
+											bindLabel="status" [multiple]="true" id="id98" (add)="a3=ValidateMultiSelectTextLength('id98',a3)" [closeOnSelect]="false"
 											bindValue="status" [(ngModel)]="selectedStatusList">
 											<ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
-												<div class="ng-value" *ngFor="let item of items | slice:0:3">
+												<div class="ng-value" *ngFor="let item of items | slice:0:a3">
 													<span class="ng-value-label"> {{item.status}}</span>
 													<span class="ng-value-icon right" (click)="clear(item)"
 														aria-hidden="true">×</span>
 												</div>
-												<div class="ng-value" *ngIf="items.length > 3">
-													<span *ngIf="(items.length - 3)>0" class="ng-value-label">{{items.length - 3}} more...</span>
+												<div class="ng-value" *ngIf="items.length > a3">
+													<span *ngIf="(items.length - a3)>0" class="ng-value-label">{{items.length - a3}} more...</span>
 												</div>
 											</ng-template>  
 										</ng-select>
@@ -78,16 +78,16 @@
 										<span>on the following days </span>
 										<ng-select 
 											[items]="dayList" placeholder="Select" formControlName="orderedDaysOfWeek" 
-											bindLabel="day" [multiple]="true" [closeOnSelect]="false" bindValue="day" 
+											bindLabel="day" [multiple]="true" id="id99" (add)="a4=ValidateMultiSelectTextLength('id99',a4)" [closeOnSelect]="false" bindValue="day" 
 											[(ngModel)]="selectedDays">
 											<ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
-												<div class="ng-value service-day-value" *ngFor="let item of items | slice:0:2">
+												<div class="ng-value service-day-value" *ngFor="let item of items | slice:0:a4">
 													<span class="ng-value-label"> {{item.day}}</span>
 													<span class="ng-value-icon right" (click)="clear(item)"
 														aria-hidden="true">×</span>
 												</div>
-												<div class="ng-value" *ngIf="items.length > 2">
-													<span *ngIf="(items.length - 2)>0" class="ng-value-label">{{items.length - 2}} more...</span>
+												<div class="ng-value" *ngIf="items.length > a4">
+													<span *ngIf="(items.length - a4)>0" class="ng-value-label">{{items.length - a4}} more...</span>
 												</div>
 											</ng-template>                                    
 										</ng-select>

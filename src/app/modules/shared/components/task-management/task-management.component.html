@@ -102,7 +102,7 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                     <div class="task-header-single">
                         <div class="precisemri-search">
                             <input type="text" class="form-search" placeholder="Search" [(ngModel)]="filterSearch" 
-                            (ngModelChange)="searchData($event)">
+                            (ngModelChange)="searchData($event)"  (focusout)="saveSearchonFocusOut($event)" (change)="searchDataChange($event)">
                             <a href="javascript:void(0)" class="pe-icon pe-7s-search"></a>
                         </div>
                     </div>

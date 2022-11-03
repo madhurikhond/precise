@@ -67,7 +67,7 @@ export class ParentCompComponent implements OnInit {
   }
   ngOnInit(): void {
     this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
-    this.commonMethodService.setTitle('Facility');
+    this.commonMethodService.setTitle('Parent Comp.');
     this.createParentCompanyDetailTabForm();
     this.createModalityServiceTabForm();
     this.createModalityMriTabForm();
@@ -424,6 +424,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityCurrentPricing() {
+    
     this.FacilityParentCurrentPricingList = [];
     this.facilityService.getFacilityParentPricing(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -435,6 +436,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityHistoryPricing() {
+   
     this.FacilityParentPricingHistoryList = [];
     this.facilityService.getFacilityParentPricingHistory(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -738,6 +740,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   saveChangesCurrentPricing() {
+   
     console.log(this.FacilityParentCurrentPricingList);
     this.facilityService.updateFacilityParentPricing(true, this.FacilityParentCurrentPricingList).subscribe((res) => {
       if (res.response != null) {

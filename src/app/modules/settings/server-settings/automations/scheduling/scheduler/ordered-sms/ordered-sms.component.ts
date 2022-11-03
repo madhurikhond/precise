@@ -13,6 +13,10 @@ import { JsonHubProtocol } from '@aspnet/signalr';
   styleUrls: ['./ordered-sms.component.css']
 })
 export class OrderedSmsComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
   ordredSmsSettingForm: FormGroup;
   financialTypesList: any = [];
   statusList: any = [];
@@ -171,5 +175,11 @@ export class OrderedSmsComponent implements OnInit {
         });
       }
     );
+  }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

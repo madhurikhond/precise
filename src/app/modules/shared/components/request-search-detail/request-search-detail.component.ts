@@ -20,6 +20,10 @@ declare const $: any;
 
 })
 export class RequestSearchDetailComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  maxDate = new Date();
   @ViewChild('buttonEmailConfirmationPopUp', { static: false }) emailPopUp: ElementRef;
   @ViewChild('buttonemailCustodianRecordsPopUp', { static: false }) HiddenemailCustodianRecords: ElementRef;
   @ViewChild('mainPopCloseButton', { static: false }) mainPopCloseButton: ElementRef;
@@ -44,13 +48,7 @@ export class RequestSearchDetailComponent implements OnInit {
   checkBoxesMode: string;
   tabId: string = '1'
   isShowDocTab: boolean = false;
-  requestAndProvidedTypeList: any = [{ Name: 'Medical' },
-  { Name: 'Billing' },
-  { Name: 'Breakdown' },
-  { Name: 'CNR' },
-  { Name: 'Refund Check' },
-  { Name: 'Media Only' }
-  ];
+  requestAndProvidedTypeList: any =[];
 
   mediaList: any = [{ mediaName: 'Films' },
   { mediaName: 'CD' },
@@ -111,6 +109,13 @@ export class RequestSearchDetailComponent implements OnInit {
     private readonly notificationService: NotificationService
     , private readonly storageService: StorageService, private datePipe: DatePipe,
     private commonMethodService: CommonMethodService, private sanitizer: DomSanitizer, private decimalPipe: DecimalPipe) {
+      this.requestAndProvidedTypeList= [{ Name: 'Medical' },
+      { Name: 'Billing' },
+      { Name: 'Breakdown' },
+      { Name: 'CNR' },
+      { Name: 'Refund Check' },
+      { Name: 'Media Only' }
+      ];
   }
   ngOnInit(): void {
     this.setGridSetting();
@@ -1109,6 +1114,11 @@ export class RequestSearchDetailComponent implements OnInit {
     } else {
       event.target.value = "";
     }
+  }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }
 

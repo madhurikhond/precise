@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="form-action">
-                    <a href="javascript:void(0)" (click)="searchBrokers()" class="btn btn-theme">Search</a>
+                    <button href="javascript:void(0)" (click)="searchBrokers()" type="submit" class="btn btn-theme">Search</button>
                     <a href="javascript:void(0)" (click)="clearBrokers()" class="btn btn-border">Clear</a>
                 </div>
             </form>
@@ -2051,15 +2051,15 @@
                                             <div class="input-group">
                                                 <ng-select [items]="docTypeList" formControlName="autoDocToBroker"
                                                     bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
-                                                    bindValue="docId" [(ngModel)]="selectedDocToBroker">
+                                                    bindValue="docId" [(ngModel)]="selectedDocToBroker" id="id18"  (add)="a1=ValidateMultiSelectTextLength('id18',a1)">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                        <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                                             <span class="ng-value-label"> {{item.docType}}</span>
                                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                                 aria-hidden="true">×</span>
                                                         </div>
-                                                        <div class="ng-value" *ngIf="items.length > 1">
-                                                            <span class="ng-value-label">{{items.length - 1}}
+                                                        <div class="ng-value" *ngIf="items.length > a1">
+                                                            <span class="ng-value-label">{{items.length - a1}}
                                                                 more...</span>
                                                         </div>
                                                     </ng-template>

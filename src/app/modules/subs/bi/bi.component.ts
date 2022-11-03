@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 @Component({
   selector: 'app-bi',
   templateUrl: './bi.component.html',
@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BiComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly commonMethodService: CommonMethodService) { }
 
   ngOnInit(): void {
+    this.commonMethodService.setTitle('Bi');
   }
 
 }

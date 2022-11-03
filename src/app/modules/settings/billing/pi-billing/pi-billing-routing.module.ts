@@ -18,13 +18,13 @@ const routes: Routes = [
   children: [
     { path: '', redirectTo: 'proc-groups', pathMatch: 'full'},
     { path: 'proc-groups', component: ProcGroupsComponent, canActivate: [AuthGuard,RoleGuard] },
-    { path: 'bpart', component: BpartComponent, canActivate: [AuthGuard] },
-    { path: 'dx-codes', component: DxCodesComponent, canActivate: [AuthGuard] },
-    { path: 'facilities', component: FacilitiesComponent, canActivate: [AuthGuard] },
-    { path: 'pi-invoice-pricing', component: PiInvoicePricingComponent, canActivate: [AuthGuard] },
-    { path: 'pre-neg-rates', loadChildren: () => import('./pre-neg-rates/pre-neg-rates.module').then(m => m.PreNegRatesModule), canActivate: [AuthGuard] },
-    { path: 'proc-codes', component: ProcCodesComponent, canActivate: [AuthGuard] },
-    { path: 'study-description', component: StudyDescriptionComponent, canActivate: [AuthGuard] },
+    { path: 'bpart', component: BpartComponent, canActivate: [AuthGuard,RoleGuard] },
+    { path: 'dx-codes', component: DxCodesComponent, canActivate: [AuthGuard,RoleGuard] },
+    { path: 'facilities', component: FacilitiesComponent, canActivate: [AuthGuard,RoleGuard] },
+    { path: 'pi-invoice-pricing', component: PiInvoicePricingComponent, canActivate: [AuthGuard,RoleGuard] },
+    { path: 'pre-neg-rates', loadChildren: () => import('./pre-neg-rates/pre-neg-rates.module').then(m => m.PreNegRatesModule), canActivate: [AuthGuard,RoleGuard] },
+    { path: 'proc-codes', component: ProcCodesComponent, canActivate: [AuthGuard,RoleGuard] },
+    { path: 'study-description', component: StudyDescriptionComponent, canActivate: [AuthGuard,RoleGuard] },
   ]
 }
 ];

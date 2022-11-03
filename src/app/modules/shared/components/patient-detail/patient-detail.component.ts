@@ -24,10 +24,17 @@ declare const $: any;
   providers: [DatePipe]
 })
 export class PatientDetailComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
+  a4: any = 20;
+  a5: any = 20;
+  a6: any = 20;
   @ViewChild('hiddenButton1', { static: false }) hiddenButton1: ElementRef;
   @ViewChild('hiddenBtnWarningMsg', { static: false }) hiddenBtnWarningMsg: ElementRef;
   @ViewChild('closebtn', { static: false }) closebtn: ElementRef;
   @ViewChild('notes') inputNotes;
+
 
   patientDetailForm: FormGroup;
   patientStudyDetailForm: FormGroup;
@@ -82,7 +89,7 @@ export class PatientDetailComponent implements OnInit {
   pageSize: number = 20;
   totalRecords: number;
   totalRecordsCreateAlerts: number = 1;
-  totalrecordsFullLog: number = 2;
+  totalrecordsFullLog: number = 1;
   filterBody: any = {};
   isShowColumnWithNoData = true;
   status: any;
@@ -167,7 +174,7 @@ export class PatientDetailComponent implements OnInit {
       this.patientID = res.PatientId;
       this.studySummaryClick = res.click ;
       this.totalRecordsCreateAlerts = 1;
-      this.totalrecordsFullLog = 2;
+      this.totalrecordsFullLog = 1;
       this.resetPateintDetailFormAndFields();
       this.isHasAlert = res.hasAlert == true ? true : false;
       this.isHasAlertSelectedTab = res.isHasAlertSelectedTab == 1 ? true : false;
@@ -759,6 +766,7 @@ export class PatientDetailComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
   onFocusedRowChanged(e: any) {
     
     this.studySummaryrowData = e.row && e.row.data;
@@ -1099,7 +1107,11 @@ export class PatientDetailComponent implements OnInit {
       this.repNameList3 = this.repNameList2;
     }
   }
-
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
   GetPatientDetailsCompare(){
     var request ={
      patientId : this.patientDetail.PATIENTID

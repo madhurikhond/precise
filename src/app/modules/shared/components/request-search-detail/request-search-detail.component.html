@@ -204,24 +204,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList && requestAndProvidedTypeList.length>0">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="requestAndProvidedTypeList && requestAndProvidedTypeList.length">
                                                 <div class="form-group">
                                                     <div class="theme-label">Requested Type</div>
                                                     <div class="input-group">
                                                         <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
-                                                            bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                            bindLabel="Name" [multiple]="true" id="id124" (add)="a1=ValidateMultiSelectTextLength('id124',a1)" [closeOnSelect]="false"
                                                             bindValue="Name" [(ngModel)]="selectedRequestedTypeList"
                                                             [ngClass]="{ 'is-invalid': (RequestedTypeList.errors && ( isrequestDetailFormSubmitted)) }"
-                                                            [ngModelOptions]="{standalone: true}" id="RequestedTypeList"
+                                                            [ngModelOptions]="{standalone: true}"
                                                             #RequestedTypeList="ngModel" required>
                                                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                                                     <span class="ng-value-label"> {{item.Name}}</span>
                                                                     <span class="ng-value-icon right" (click)="clear(item)"
                                                                         aria-hidden="true">×</span>
                                                                 </div>
-                                                                <div class="ng-value" *ngIf="items.length > 1"> <span
-                                                                        class="ng-value-label">{{items.length - 1}}
+                                                                <div class="ng-value" *ngIf="items.length > a1"> <span
+                                                                        class="ng-value-label">{{items.length - a1}}
                                                                         more...</span>
                                                                 </div>
                                                             </ng-template>
@@ -238,19 +238,19 @@
                                                 <div class="form-group">
                                                     <div class="theme-label">Provided Type</div>
                                                     <div class="input-group">
-                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select" bindLabel="Name" [multiple]="true" [closeOnSelect]="false"
+                                                        <ng-select [items]="requestAndProvidedTypeList" placeholder="Select" bindLabel="Name" [multiple]="true" id="id125" (add)="a2=ValidateMultiSelectTextLength('id125',a2)" [closeOnSelect]="false"
                                                     [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && ProvidedTypeList.errors) }"
                                                     bindValue="Name" [(ngModel)]="selectedProvidedTypeList"
                                                     [ngModelOptions]="{standalone: true}" id="ProvidedTypeList"
                                                     #ProvidedTypeList="ngModel" required>
                                                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                                                <div class="ng-value" *ngFor="let item of items | slice:0:a2">
                                                                     <span class="ng-value-label"> {{item.Name}}</span>
                                                                     <span class="ng-value-icon right" (click)="clear(item)"
                                                                         aria-hidden="true">×</span>
                                                                 </div>
-                                                                <div class="ng-value" *ngIf="items.length > 1"> <span
-                                                                        class="ng-value-label">{{items.length - 1}}
+                                                                <div class="ng-value" *ngIf="items.length > a2"> <span
+                                                                        class="ng-value-label">{{items.length - a2}}
                                                                         more...</span>
                                                                 </div>
                                                             </ng-template>
@@ -265,13 +265,13 @@
                                                 <div class="form-group">
                                                     <div class="theme-label">Media</div>
                                                     <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName"
-                                                        [multiple]="true" [closeOnSelect]="false" bindValue="mediaName"
+                                                        [multiple]="true" id="id126" (add)="a3=ValidateMultiSelectTextLength('id126',a3)" [closeOnSelect]="false" bindValue="mediaName"
                                                         [(ngModel)]="selectedMediaList" formControlName="media">
                                                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                                            <div class="ng-value" *ngFor="let item of items | slice:0:1"> <span class="ng-value-label"> {{item.mediaName}}</span>
+                                                            <div class="ng-value" *ngFor="let item of items | slice:0:a3"> <span class="ng-value-label"> {{item.mediaName}}</span>
                                                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                                                             </div>
-                                                            <div class="ng-value" *ngIf="items.length > 1"> <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                                            <div class="ng-value" *ngIf="items.length > a3"> <span class="ng-value-label">{{items.length - a3}} more...</span>
                                                             </div>
                                                         </ng-template>
                                                     </ng-select>

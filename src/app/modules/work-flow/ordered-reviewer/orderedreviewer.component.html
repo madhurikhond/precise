@@ -17,28 +17,28 @@
                 <div class="form-group">
                     <div class="theme-label">PATIENT ID</div>
                     <div class="input-group">
-                        <input type="text" class="form-control" #refPatientId
+                        <input type="text"  class="form-control" #refPatientId
                             (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="theme-label">LAST NAME</div>
                     <div class="input-group">
-                        <input type="text" class="form-control" #refLastName
+                        <input type="text"   class="form-control" #refLastName
                             (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="theme-label">FIRST NAME</div>
                     <div class="input-group">
-                        <input type="text" class="form-control" #refFirstName
+                        <input type="text"  class="form-control" #refFirstName
                             (keydown.enter)="applyFilter(refPatientId.value,refLastName.value,refFirstName.value,refDob.value)">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="theme-label">DOB</div>
                     <div class="input-group icon-active dob">
-                        <dx-date-box #refDob type="date" [value]="filterDOB" [showClearButton]="true"
+                        <dx-date-box #refDob type="date" [max]="maxDate" [value]="filterDOB" [showClearButton]="true"
                             [useMaskBehavior]="true" displayFormat="shortdate" [(ngModel)]="filterDOB">
                         </dx-date-box>
                     </div>
@@ -58,16 +58,16 @@
                     <div class="theme-label">Select Financial Type</div>
                     <div class="input-group">
                         <ng-select [items]="financialTypeList" placeholder="SELECT" bindLabel="financialtypename"
-                            [multiple]="true" [closeOnSelect]="false" bindValue="financialtypename"
+                            [multiple]="true" id="id135" (add)="a1=ValidateMultiSelectTextLength('id135',a1)" [closeOnSelect]="false" bindValue="financialtypename"
                             [(ngModel)]="selectedFinancialTypeList">
                             <ng-template ng-multi-label-tmp let-items="items" let-index="index" let-clear="clear">
-                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                     <span class="ng-value-label"> {{item.financialtypename}}</span>
                                     <span class="ng-value-icon right" (click)="clear(item)"
                                         aria-hidden="true">×</span>
                                 </div>
-                                <div class="ng-value" *ngIf="items.length > 1">
-                                    <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                <div class="ng-value" *ngIf="items.length > a1">
+                                    <span class="ng-value-label">{{items.length - a1}} more...</span>
                                 </div>
                             </ng-template>
                         </ng-select>

@@ -4,7 +4,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
- import { CKEditorModule } from 'ng2-ckeditor';
+import { CKEditorModule } from 'ng2-ckeditor';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TwoDigitDecimaNumberDirective } from './directives/twodigitdecimalnumber.directive';
@@ -55,7 +55,9 @@ import { SafeurlPipe } from './pipes/safeurl.pipe';
 import { DocdwtComponent } from './components/docdwt/docdwt.component';
 import { SchdFacilitiesComponent } from '../facillities/facility-management/schd-facilities/schd-facilities.component';
 import { DocumentManagerFacilityComponent } from '../facillities/facility-management/document-manager-facility/document-manager-facility.component';
-
+import { InputSpaceTrimDirective } from './directives/input-space-trim.directive';
+import { TrimWhiteSpaceDirective } from './directives/trim-white-space.directive';
+import { FormControlName } from '@angular/forms';
 //export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -70,7 +72,8 @@ const maskConfig: Partial<IConfig> = {
     InvalidControlTabContainerDirective, FilterPipe,PrescreeningSmallWindowComponent,PrescreengridComponent,DocumentManagerFacilityComponent,
     BrokerComponent, OnlyNumbersDirective, OnlyNumbersWithoutCommaDirective, DwtComponent  ,  CallbackPipe,SchdFacilitiesComponent,
     SafeurlPipe,
-    DocdwtComponent],
+    DocdwtComponent,
+    InputSpaceTrimDirective,TrimWhiteSpaceDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -142,12 +145,12 @@ const maskConfig: Partial<IConfig> = {
     DxTreeViewModule,
     DxListModule,
     DxContextMenuModule,
-
     PrescreeningSmallWindowRoutingModule,
     DwtComponent,
-    DocdwtComponent
+    DocdwtComponent,
+    InputSpaceTrimDirective,
   ],
-  providers: [PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
+  providers: [FormControlName,PatientService, ReferrersService, SubsService, TaskManagementService, SendDocumentService, CurrencyPipe,FacilityService]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<any> {

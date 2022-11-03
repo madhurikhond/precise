@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '', component: DefaultsComponent, children:[      
       { path: '', redirectTo: 'general', pathMatch: "full"},
       { path: 'general', component: GeneralComponent, canActivate: [AuthGuard,RoleGuard] },
-      { path: 'funding-company', component: BrokersComponent, canActivate: [AuthGuard] }
+      { path: 'funding-company', component: BrokersComponent, canActivate: [AuthGuard,RoleGuard] }
     ]
   }
 ];

@@ -4,28 +4,34 @@
             <div class="form-group">
                 <div class="theme-label">Select Group Name</div>
                 <div class="input-group">
-                    <select name="selectedGroup" [(ngModel)]="selectedGroup" class="form-control" (change)="selectGroup()">
+                    <select name="selectedGroup" [(ngModel)]="selectedGroup" class="form-control"
+                        (change)="selectGroup()">
                         <option value="" selected>Select</option>
                         <option *ngFor="let group of groupList" value={{group.GroupValue}}>
                             {{group.GroupName}}
-                        </option>                                              
+                        </option>
                     </select>
                 </div>
             </div>
             <div class="form-action">
-                <button (click)="addPremission()" class="btn btn-theme">Add New</button>                
-                <button (click)="savePremission()" [disabled]="isDisabled" class="btn btn-theme">Save</button>	
+                <button (click)="addPremission()" class="btn btn-theme">Add New</button>
+                <button (click)="savePremission()" [disabled]="isDisabled" class="btn btn-theme">Save</button>
+                <button (click)="deleteRoleGroupName()" [disabled]="isDisabled"
+                    class="btn btn-border-clear btn-sm">Delete</button>
+                <button (click)="editRolePermision()" [disabled]="isDisabled"
+                    class="btn btn-border btn-sm">Edit</button>
             </div>
         </form>
         <form *ngIf="isAdd" name="form2" #form="ngForm" class="theme-form">
             <div class="form-group group-name-field">
                 <div class="theme-label">Group Name</div>
                 <div class="input-group">
-                    <input type="text" #groupN="ngModel" (keyup)="setSubmitted()" name="groupName" [(ngModel)]="groupName" class="form-control">
-                </div>              
-                <div *ngIf="submitted">                   
-                    <small class="error text-danger" *ngIf="groupN.value==''">Please enter Group name</small>                     
-             </div> 
+                    <input type="text" #groupN="ngModel" (keyup)="setSubmitted()" name="groupName"
+                        [(ngModel)]="groupName" class="form-control">
+                </div>
+                <div *ngIf="submitted">
+                    <small class="error text-danger" *ngIf="groupN.value==''">Please enter Group name</small>
+                </div>
             </div>
         </form>
     </div>
@@ -33,92 +39,94 @@
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#1" (click)="updateTabId('1')"
-                [ngClass]="{'active': tabId === '1'}">Genral</a>
+                    [ngClass]="{'active': tabId === '1'}">Genral</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#2" (click)="updateTabId('2')"
-                [ngClass]="{'active': tabId === '2'}">AR Permission</a>
+                    [ngClass]="{'active': tabId === '2'}">AR Permission</a>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane"  [class.active]="tabId === '1' " id="1">
+            <div class="tab-pane" [class.active]="tabId === '1' " id="1">
                 <div class="row">
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div class="alert alert-danger" role="alert">
-                        <b>SASFP</b>-Show assigned studies for player
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="alert alert-danger" role="alert">
+                            <b>SASFP</b>-Show assigned studies for player
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="alert alert-danger" role="alert">
+                            <b>HPAM</b>-Hide Patient Action Menu
+                        </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div class="alert alert-danger" role="alert">
-                        <b>HPAM</b>-Hide Patient Action Menu
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <dx-data-grid id="general-permission" [dataSource]="generalPermissionList"
-                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
-                    [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ModuleId"
-                    [showBorders]="true" [allowAdding]="true" [(selectedRowKeys)]="gridSelectedRows">
-                    <dxo-sorting mode="multiple"></dxo-sorting>
-                    <dxo-paging [enabled]="false"></dxo-paging>
-                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-                    <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
-                    <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
-                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                    <!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."></dxo-search-panel> -->
-                    <!-- <dxo-selection  [showCheckBoxesMode]="checkBoxesMode"
+                <div class="table-responsive">
+                    <dx-data-grid id="general-permission" [dataSource]="generalPermissionList"
+                        [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                        [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ModuleId"
+                        [showBorders]="true" [allowAdding]="true" [(selectedRowKeys)]="gridSelectedRows">
+                        <dxo-sorting mode="multiple"></dxo-sorting>
+                        <dxo-paging [enabled]="false"></dxo-paging>
+                        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                        <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+                        <!-- <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row> -->
+                        <!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
+                        <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                        <!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."></dxo-search-panel> -->
+                        <!-- <dxo-selection  [showCheckBoxesMode]="checkBoxesMode"
                         mode="multiple">
                     </dxo-selection> -->
-                    <dxi-column dataField="Module" caption="ROLL NAME"></dxi-column>
-                    <dxi-column dataField="" cellTemplate = 'selectAll' caption="SELECT ALL"></dxi-column>
-                    <dxi-column dataField="IsAdd" cellTemplate = 'IsAdd'  caption="ADD" [allowEditing]="true">
-                    </dxi-column>
-                    <dxi-column dataField="IsEdit" cellTemplate = 'IsEdit' caption="EDIT" [allowEditing]="true" [visible]="false">
-                    </dxi-column>
-                    <dxi-column dataField="IsDelete" cellTemplate = 'IsDelete'  caption="DELETE"></dxi-column>
-                    <dxi-column dataField="IsView" cellTemplate = 'IsView' caption="VIEW"></dxi-column>
-                    <dxi-column dataField="IsAssignStudy" cellTemplate = 'IsAssignStudy' caption="SASFP"></dxi-column>
-                    <dxi-column dataField="IsPatientActionHide" cellTemplate = 'IsPatientActionHide' caption="HPAM"></dxi-column>
+                        <dxi-column dataField="Module" caption="ROLE NAME"></dxi-column>
+                        <dxi-column dataField="" cellTemplate='selectAll' caption="SELECT ALL"></dxi-column>
+                        <dxi-column dataField="IsAdd" cellTemplate='IsAdd' caption="ADD" [allowEditing]="true">
+                        </dxi-column>
+                        <dxi-column dataField="IsEdit" cellTemplate='IsEdit' caption="EDIT" [allowEditing]="true"
+                            [visible]="false">
+                        </dxi-column>
+                        <dxi-column dataField="IsDelete" cellTemplate='IsDelete' caption="DELETE"></dxi-column>
+                        <dxi-column dataField="IsView" cellTemplate='IsView' caption="VIEW"></dxi-column>
+                        <dxi-column dataField="IsAssignStudy" cellTemplate='IsAssignStudy' caption="SASFP"></dxi-column>
+                        <dxi-column dataField="IsPatientActionHide" cellTemplate='IsPatientActionHide' caption="HPAM">
+                        </dxi-column>
 
-                <div *dxTemplate="let data of 'selectAll' ">
-                    <input type="checkbox"  (change)="selectUnselectAll(data, $event)"
-                        [checked]="data.data.IsAdd && data.data.IsEdit && data.data.IsDelete && data.data.IsView && data.data.IsAssignStudy && data.data.IsPatientActionHide">
-                </div> 
+                        <div *dxTemplate="let data of 'selectAll' ">
+                            <input type="checkbox" (change)="selectUnselectAll(data, $event)"
+                                [checked]="data.data.IsAdd && data.data.IsEdit && data.data.IsDelete && data.data.IsView && data.data.IsAssignStudy && data.data.IsPatientActionHide">
+                        </div>
 
-                <div *dxTemplate="let data of 'IsAdd'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsAdd" (change)="selectCheckbox(data, $event)"
-                        [checked]="data.data.IsAdd">
-                </div> 
+                        <div *dxTemplate="let data of 'IsAdd'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsAdd" (change)="selectCheckbox(data, $event)"
+                                [checked]="data.data.IsAdd">
+                        </div>
 
-                <div *dxTemplate="let data of 'IsEdit'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsEdit" (change)="selectCheckbox(data, $event)"
-                        [checked]="data.data.IsEdit">
-                </div> 
+                        <div *dxTemplate="let data of 'IsEdit'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsEdit"
+                                (change)="selectCheckbox(data, $event)" [checked]="data.data.IsEdit">
+                        </div>
 
-                <div *dxTemplate="let data of 'IsDelete'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsDelete" (change)="selectCheckbox(data, $event)"
-                        [checked]="data.data.IsDelete">
+                        <div *dxTemplate="let data of 'IsDelete'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsDelete"
+                                (change)="selectCheckbox(data, $event)" [checked]="data.data.IsDelete">
+                        </div>
+
+                        <div *dxTemplate="let data of 'IsView'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsView" (change)="changeView(data, $event)"
+                                [checked]="data.data.IsView">
+                        </div>
+
+                        <div *dxTemplate="let data of 'IsAssignStudy'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsAssignStudy"
+                                (change)="selectCheckbox(data, $event)" [checked]="data.data.IsAssignStudy">
+                        </div>
+
+                        <div *dxTemplate="let data of 'IsPatientActionHide'">
+                            <input type="checkbox" [(ngModel)]="data.data.IsPatientActionHide"
+                                (change)="selectCheckbox(data, $event)" [checked]="data.data.IsPatientActionHide">
+                        </div>
+                    </dx-data-grid>
                 </div>
-
-                <div *dxTemplate="let data of 'IsView'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsView"  (change)="changeView(data, $event)"
-                        [checked]="data.data.IsView">
-                </div> 
-
-                <div *dxTemplate="let data of 'IsAssignStudy'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsAssignStudy" (change)="selectCheckbox(data, $event)"
-                        [checked]="data.data.IsAssignStudy">
-                </div>
-
-                <div *dxTemplate="let data of 'IsPatientActionHide'">
-                    <input type="checkbox"  [(ngModel)]="data.data.IsPatientActionHide" (change)="selectCheckbox(data, $event)"
-                        [checked]="data.data.IsPatientActionHide">
-                </div> 
-            </dx-data-grid>   
             </div>
-            </div>
-            <div class="tab-pane"  [class.active]="tabId === '2' " id="2">
+            <div class="tab-pane" [class.active]="tabId === '2' " id="2">
                 <div class="table-responsive">
                     <dx-data-grid id="2" [dataSource]="arPermissionList" [allowColumnResizing]="true"
                         [columnAutoWidth]="true" [allowColumnReordering]="true"
@@ -132,12 +140,13 @@
                         <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
 
                         <dxi-column dataField="Module" caption="Permission"></dxi-column>
-                        <dxi-column dataField="ispermitted" cellTemplate ='ispermitted'  caption="IS PERMITTED" [allowFixing]="true"></dxi-column>
+                        <dxi-column dataField="ispermitted" cellTemplate='ispermitted' caption="IS PERMITTED"
+                            [allowFixing]="true"></dxi-column>
 
                         <div *dxTemplate="let data of 'ispermitted'">
                             <input type="checkbox" (change)="selectCheckbox(data, $event)"
                                 [checked]="data.data.ispermitted">
-                        </div> 
+                        </div>
                     </dx-data-grid>
                 </div>
             </div>

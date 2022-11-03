@@ -49,7 +49,7 @@ export class OverridePricingComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Override Pricing');
+    this.commonMethodService.setTitle('Pi Billing');
     this.fillDropDown();
     this.getOverridePricings();
     this.myForm = this.fb.group({

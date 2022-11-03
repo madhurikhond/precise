@@ -32,7 +32,7 @@
 
                     <div class="input-group icon-active">
                         <dx-date-box   [displayFormat]="dateTimeFormatCustom.Date" #dob type="date"[showClearButton]="true"
-                            [useMaskBehavior]="true" [(ngModel)]="dobModel">
+                            [useMaskBehavior]="true" [max]="maxDate" [(ngModel)]="dobModel">
                         </dx-date-box>
                     </div>
                 </div>
@@ -57,30 +57,30 @@
                 </div>
                 <div class="form-group">
                     <div class="theme-label">Company Name</div>
-                    <ng-select [items]="companyList" placeholder="Select" bindLabel="CompanyName" [multiple]="true"
+                    <ng-select [items]="companyList" placeholder="Select" bindLabel="CompanyName" [multiple]="true" id="id127" (add)="a1=ValidateMultiSelectTextLength('id127',a1)"
                         [closeOnSelect]="false" bindValue="CompanyName" [(ngModel)]="companyNameModelList">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a1">
                                 <span class="ng-value-label"> {{item.CompanyName}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > 1">
-                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > a1">
+                                <span class="ng-value-label">{{items.length - a1}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
                 </div>
                 <div class="form-group">
                     <div class="theme-label">Status</div>
-                    <ng-select [items]="statusList" placeholder="Select" bindLabel="statusName" [multiple]="true"
+                    <ng-select [items]="statusList" placeholder="Select" bindLabel="statusName" [multiple]="true" id="id128" (add)="a2=ValidateMultiSelectTextLength('id128',a2)"
                         [closeOnSelect]="false" bindValue="statusName" [(ngModel)]="statusModelList">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a2">
                                 <span class="ng-value-label"> {{item.statusName}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > 1">
-                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > a2">
+                                <span class="ng-value-label">{{items.length - a2}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
@@ -88,30 +88,30 @@
                 <div class="form-group">
                     <div class="theme-label">Request Type</div>
                     <ng-select [items]="requestTypeList" placeholder="Select" bindLabel="requestTypeName"
-                        [multiple]="true" [closeOnSelect]="false" bindValue="requestTypeName"
+                        [multiple]="true" id="id129" (add)="a3=ValidateMultiSelectTextLength('id129',a3)" [closeOnSelect]="false" bindValue="requestTypeName"
                         [(ngModel)]="requestTypeModelList">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a3">
                                 <span class="ng-value-label"> {{item.requestTypeName}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > 1">
-                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > a3">
+                                <span class="ng-value-label">{{items.length - a3}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>
                 </div>
                 <div class="form-group">
                     <div class="theme-label">Media</div>
-                    <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName" [multiple]="true"
+                    <ng-select [items]="mediaList" placeholder="Select" bindLabel="mediaName" [multiple]="true" id="id130" (add)="a4=ValidateMultiSelectTextLength('id130',a4)"
                         [closeOnSelect]="false" bindValue="mediaName" [(ngModel)]="mediaNameModelList">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                            <div class="ng-value" *ngFor="let item of items | slice:0:a4">
                                 <span class="ng-value-label"> {{item.mediaName}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             </div>
-                            <div class="ng-value" *ngIf="items.length > 1">
-                                <span class="ng-value-label">{{items.length - 1}} more...</span>
+                            <div class="ng-value" *ngIf="items.length > a4">
+                                <span class="ng-value-label">{{items.length - a4}} more...</span>
                             </div>
                         </ng-template>
                     </ng-select>

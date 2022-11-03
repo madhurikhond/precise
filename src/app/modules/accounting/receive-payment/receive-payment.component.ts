@@ -26,6 +26,7 @@ export class ReceivePaymentComponent implements OnInit {
   a1: any = 20;
   a2: any = 20;
   a3: any = 20;
+  maxDate = new Date();
   searchForm: FormGroup;
   checkdetailForm: FormGroup;
   showDropdownLoader = true;
@@ -107,7 +108,7 @@ export class ReceivePaymentComponent implements OnInit {
     
     this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.setGridSetting();
-    this.commonMethodService.setTitle('Receive Payments');
+    this.commonMethodService.setTitle('Receive Payment');
     this.getDropdown();
     this.getBottomGrid();
     this.checkedData = [null]
@@ -791,34 +792,9 @@ export class ReceivePaymentComponent implements OnInit {
   get sForm() { return this.searchForm.controls; }
   get cform() { return this.checkdetailForm.controls; }
 
-  changefn(id,a) {
-    var endCellWidth: any = 0;
-    const ngSelectContainer = document.getElementById(id);
-    // const containerWidth = ngSelectContainer.offsetWidth;
-    const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
-    const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
-    for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
-      endCellWidth = endCellWidth + insideCellWidth1;
-      console.log(endCellWidth);
-    }
-    if (endCellWidth > 100) {
-      a = 1;
-    }
-    else if (insideCellWidth > 60) {
-      a = 1
-    }
-    else if (insideCellWidth < 60) {
-      a = 2;
-    }
-    else {
-      a = 20;
-    }
-    return a;
-    // let checkWidth: any = e.getElementsByClassName("ng-value")
-    // let x: any = checkWidth[0].offsetWidth
-    // console.log(x);
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

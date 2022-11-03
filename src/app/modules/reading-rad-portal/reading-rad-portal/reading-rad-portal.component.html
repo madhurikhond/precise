@@ -50,7 +50,7 @@
                             <div class="form-group">
                                 <div class="theme-label">DOB</div>
                                 <div class="input-group icon-active dob">
-                                    <dx-date-box #refDob type="date" [value]="filterDOB"
+                                    <dx-date-box #refDob type="date" [value]="filterDOB" [max]="maxDate"
                                         [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
                                         [(ngModel)]="filterDOB">
                                     </dx-date-box>
@@ -156,7 +156,7 @@
                                 <div class="theme-label">DOB</div>
                                 <div class="input-group icon-active dob">
                                     <dx-date-box #ref1Dob type="date" [value]="filter1DOB" [showClearButton]="true"
-                                         [(ngModel)]="filter1DOB" [useMaskBehavior]="true"
+                                         [(ngModel)]="filter1DOB" [max]="maxDate" [useMaskBehavior]="true"
                                         displayFormat="shortdate">
                                     </dx-date-box>
                                 </div>
@@ -283,7 +283,7 @@
                                 <div class="theme-label">DOB</div>
                                 <div class="input-group icon-active dob">
                                     <dx-date-box #ref2Dob type="date" [value]="filter2DOB"
-                                        [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
+                                        [showClearButton]="true" [useMaskBehavior]="true" [max]="maxDate" displayFormat="shortdate"
                                         [(ngModel)]="filter2DOB">
                                     </dx-date-box>
                                 </div>
@@ -408,7 +408,7 @@
                             <div class="form-group">
                                 <div class="theme-label">DOB</div>
                                 <div class="input-group icon-active dob">
-                                    <dx-date-box #ref3Dob type="date" [value]="filter3DOB"
+                                    <dx-date-box #ref3Dob type="date" [value]="filter3DOB" [max]="maxDate"
                                         [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate"
                                         [(ngModel)]="filter3DOB">
                                     </dx-date-box>

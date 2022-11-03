@@ -189,7 +189,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
               else {
                 this.isUploadShown = true;
                 if (event.target.files && event.target.files[i]) {
-                  if (this.splitFiles === true && this.barCodes === true && 1!=1) {
+                  if (this.splitFiles === true && this.barCodes === true) {
                     var reader = new FileReader();
                     reader.onload = (e: any) => {
                       var blob = new Blob(event.target.files, { type: event.target.files[i].type });
@@ -230,7 +230,10 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       });
     }
 
-  } 
+  }
+
+
+
   async MultipleSelectionSplit(formData: any) {
     await this.autoRouteV2Service.MultipleFileSplitBarCodesRead(true, formData).then(async (res) => {
       var result = JSON.stringify(res);

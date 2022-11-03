@@ -11,6 +11,8 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./sms-confirm.component.css']
 })
 export class SmsConfirmComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   statusNamesList: any = [];
   selectedStatusList:any =[];
   tempStatusList=[]
@@ -215,4 +217,10 @@ export class SmsConfirmComponent implements OnInit {
     );
   }  
   get scForm() { return this.smsConfirmForm.controls; }
+
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

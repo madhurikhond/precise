@@ -22,6 +22,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
   @Input() isGridDisplay: boolean = true
+  a1:any=20;
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
   modalityServiceForm: FormGroup;
@@ -126,7 +127,7 @@ export class SchdFacilitiesComponent implements OnInit {
     
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService) {
-    this.commonMethodService.setTitle('Scheduling Facility');
+    this.commonMethodService.setTitle('Sheduling-Facility');
     facilityService.sendDataToschdFacilities.subscribe(res => {
      
       if (res.row) {
@@ -2363,5 +2364,11 @@ export class SchdFacilitiesComponent implements OnInit {
   get facilityTagFormControls() { return this.facilityTagForm.controls; }
   get facilityPolicyFormControls() { return this.facilityPoliciesForm.controls; }
 
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
+  
 }
 

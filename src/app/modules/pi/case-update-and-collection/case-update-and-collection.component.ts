@@ -68,7 +68,7 @@ export class CaseUpdateAndCollectionComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter = false;
 
-    this.commonMethodService.setTitle('Case Update & Collection');
+    this.commonMethodService.setTitle('Case Updates & Collections');
     this.getDropdown();
     this.searchForm = this.fb.group({
       lastName: [''],

@@ -10,6 +10,8 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./personell.component.css']
 })
 export class PersonellComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
   personellForm:FormGroup;
   patientDropDownValue:string;
   isFormSubmitted:boolean=false;
@@ -20,6 +22,7 @@ export class PersonellComponent implements OnInit {
   isGridUpdateError:boolean=false;
   isGridAddError:boolean=false;
   constructor(private fb: FormBuilder,
+    private readonly commonMethodService: CommonMethodService,
     private readonly settingsService:  SettingsService,
     private readonly notificationService: NotificationService) { }
 
@@ -314,5 +317,9 @@ export class PersonellComponent implements OnInit {
   get personellGridForm(): FormArray {
 	return this.personellForm.get('personellGridForm') as FormArray;
   }
-  
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
 }

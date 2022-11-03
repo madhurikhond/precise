@@ -9,7 +9,7 @@ import { interval, Subscription } from 'rxjs';
 import ObjectFileSystemProvider from 'devextreme/file_management/object_provider';
 import { DxTreeViewComponent, DxContextMenuComponent } from 'devextreme-angular';
 import { FileManagerService, folderTree, FileItem, MenuItem } from 'src/app/services/file-manager-service/file-manager.service';
-
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 declare const $: any;
 
 @Component({
@@ -60,10 +60,12 @@ export class FileManagerComponent implements OnInit {
   selectedFileBLOB: any;
 
   constructor(public readonly fileManagerService: FileManagerService, private renderer: Renderer2, private elRef: ElementRef, public readonly documentmanagerService: DocumentmanagerService,
-    private notificationService: NotificationService, private readonly storageService: StorageService, private fb: FormBuilder, private sanitizer: DomSanitizer) { }
+    private notificationService: NotificationService, private readonly storageService: StorageService, private fb: FormBuilder, private sanitizer: DomSanitizer,
+    private readonly commonMethodService :CommonMethodService) { }
 
   ngOnInit(): void {
     this.getDisabled = true; this.newFolderContext = true;
+    this.commonMethodService.setTitle('File Manager');
     this.folderFileTree();
     this.getDocumentType();
     this.menuItems = this.fileManagerService.getMenuItems();

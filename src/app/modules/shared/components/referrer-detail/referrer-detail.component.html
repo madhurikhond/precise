@@ -1033,19 +1033,19 @@
 											<div class="theme-label">Grouping</div>
 											<div class="referrers-grouping">
 												<ng-select [items]="referrerList" bindLabel="username"
-													bindValue="username" [multiple]="true" groupBy="selectedAllGroup"
+													bindValue="username" [multiple]="true" id="id122" (add)="a1=ValidateMultiSelectTextLength('id122',a1)" groupBy="selectedAllGroup"
 													searchable="true" placeholder="Search Grouping Names"
 													[closeOnSelect]="false" 
 													(keyup)="onTagChange($event)">
 
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+														<div class="ng-value" *ngFor="let item of items | slice:0:a1">
 															<span class="ng-value-label"> {{item.username}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > 1"> <span
-																class="ng-value-label">{{items.length - 1}}
+														<div class="ng-value" *ngIf="items.length > a1"> <span
+																class="ng-value-label">{{items.length - a1}}
 																more..</span>
 														</div>
 													</ng-template>
@@ -1087,16 +1087,16 @@
 											<div class="theme-label">Doc Types to Exculde 1</div>
 											<div class="doc-types-field">
 												<ng-select [items]="docTypeList" formControlName="docId"
-													bindLabel="docType" [multiple]="true" [closeOnSelect]="false"
+													bindLabel="docType" [multiple]="true" id="id123" (add)="a2=ValidateMultiSelectTextLength('id123',a2)" [closeOnSelect]="false"
 													bindValue="docId" [(ngModel)]="selectedDocType">
 													<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-														<div class="ng-value" *ngFor="let item of items | slice:0:1">
+														<div class="ng-value" *ngFor="let item of items | slice:0:a2">
 															<span class="ng-value-label"> {{item.docType}}</span>
 															<span class="ng-value-icon right" (click)="clear(item)"
 																aria-hidden="true">×</span>
 														</div>
-														<div class="ng-value" *ngIf="items.length > 1">
-															<span class="ng-value-label">{{items.length - 1}}
+														<div class="ng-value" *ngIf="items.length > a2">
+															<span class="ng-value-label">{{items.length - a2}}
 																more...</span>
 														</div>
 													</ng-template>

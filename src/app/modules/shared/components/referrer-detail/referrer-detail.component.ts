@@ -18,7 +18,8 @@ import { CommonRegex } from 'src/app/constants/commonregex';
   styleUrls: ['./referrer-detail.component.css']
 })
 export class ReferrerDetailComponent implements OnInit {
-
+  a1: any = 20;
+  a2: any = 20;
   @ViewChild('referrer_details', { static: false }) referrer_details: ElementRef;
   @ViewChild ('hiddenButton2', { static: false }) hiddenButton2: ElementRef;
   
@@ -868,4 +869,9 @@ export class ReferrerDetailComponent implements OnInit {
   }
    get refForm() { return this.referrersForm.controls; }
    get referrerPolicyFormControls() { return this.ReferrerPoliciesForm.controls; }
+   ValidateMultiSelectTextLength(id, a)
+   {
+     a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+   return a;
+   }
 }

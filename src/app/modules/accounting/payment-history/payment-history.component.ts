@@ -21,6 +21,7 @@ export class PaymentHistoryComponent implements OnInit {
   a4: any = 20;
   a5: any = 20;
   a6: any = 20;
+  maxDate = new Date();
   searchForm: FormGroup;
   deleteForm: FormGroup;
   showDropdownLoader = true;
@@ -326,34 +327,10 @@ export class PaymentHistoryComponent implements OnInit {
 
   get sForm() { return this.searchForm.controls; }
   get dForm() { return this.deleteForm.controls; }
-  changefn(id,a) {
-    var endCellWidth: any = 0;
-    const ngSelectContainer = document.getElementById(id);
-    // const containerWidth = ngSelectContainer.offsetWidth;
-    const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
-    const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
-    for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
-      endCellWidth = endCellWidth + insideCellWidth1;
-      console.log(endCellWidth);
-    }
-    if (endCellWidth > 100) {
-      a = 1;
-    }
-    else if (insideCellWidth > 60) {
-      a = 1
-    }
-    else if (insideCellWidth < 60) {
-      a = 2;
-    }
-    else {
-      a = 20;
-    }
-    return a;
-    // let checkWidth: any = e.getElementsByClassName("ng-value")
-    // let x: any = checkWidth[0].offsetWidth
-    // console.log(x);
+  
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

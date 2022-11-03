@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
@@ -15,6 +15,8 @@ import { NgSelectComponent } from '@ng-select/ng-select'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { ReferrersService } from 'src/app/services/referrers.service';
+import { BrokerService } from 'src/app/services/broker.service';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 
 
@@ -24,6 +26,7 @@ declare const $: any;
   selector: 'app-patient',
   templateUrl: './patient.component.html',
   styleUrls: ['./patient.component.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [DatePipe]
 })
 export class PatientComponent implements OnInit {
@@ -49,6 +52,7 @@ export class PatientComponent implements OnInit {
   // billingFax3: string = '';
   // billingFax4: string = '';
   // billingFax5: string = '';
+  maxDate = new Date();
   a1: any = 20;
   b: any = 20;
   c: any = 20;
@@ -117,6 +121,7 @@ export class PatientComponent implements OnInit {
   totalRecordAppLog: number = 1;
   pageNumberLogs: number = 1;
   patientBillingDetailForm: FormGroup;
+  FormGroupName:FormGroup;
   patientID: any;
   BillingData: any;
   logsPageTitle: any = '';
@@ -161,7 +166,9 @@ export class PatientComponent implements OnInit {
     , private readonly storageService: StorageService,
     private readonly patientPortalService : PatientPortalService,
     private commonService: CommonMethodService,
-    private datePipe: DatePipe, private route: ActivatedRoute
+    private datePipe: DatePipe, private route: ActivatedRoute,
+    private readonly referrersService :  ReferrersService,
+    private readonly brokerService : BrokerService,
   ) {
     this.route.queryParamMap.subscribe((params: any) => {
       this.Phoneparam = params.params.Phone;
@@ -338,6 +345,7 @@ export class PatientComponent implements OnInit {
       { value: '5', Text: 'Not Ready To Bill' },
       { value: '6', Text: 'Gross Receipts' },
       { value: '7', Text: 'Generate e-Sign Link' },
+      { value: '34', Text: 'Generate Patient Portal Link'},
       { value: '8', Text: 'Generate PI TC & P PI Lien' },
       { value: '9', Text: 'Generate PI TC Lien' },
       { value: '10', Text: 'Generate PI P Lien' },
@@ -364,7 +372,6 @@ export class PatientComponent implements OnInit {
       { value: '31', Text: 'Charge A No Show Fee' },
       { value: '32', Text: 'Remove No Show Fee' },
       { value: '33', Text: 'Do Not Send SMS' },
-      { value: '34', Text: 'Generate Patient Portal Link'}
     ];
   }
 
@@ -971,7 +978,7 @@ export class PatientComponent implements OnInit {
     // this.itemClick(data.selectedRows);
   }
   _base64ToArrayBuffer(base64: any) {
-    
+
     var binary_string = window.atob(base64);
     var len = binary_string.length;
     var bytes = new Uint8Array(len);
@@ -1065,7 +1072,7 @@ export class PatientComponent implements OnInit {
         this.checkedPatientIdInternalStudyid = [];
       }
       else if (this.ddlCurrentValue == '6') {
-        // Gross Receipts 
+        // Gross Receipts
 
         let body =
 
@@ -1104,7 +1111,7 @@ export class PatientComponent implements OnInit {
           });
       }
       else if (this.ddlCurrentValue == '7') {
-        //  Generate e-Sign Link    
+        //  Generate e-Sign Link
         debugger
         for (let i = 0; i < this.checkedData.length; i++) {
           console.log(this.checkedPatientIdInternalStudyid);
@@ -1132,7 +1139,7 @@ export class PatientComponent implements OnInit {
           });
 
       } else if (this.ddlCurrentValue == '8') {
-        //  Generate_PI_TC_P_PI_Lien 
+        //  Generate_PI_TC_P_PI_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1147,7 +1154,7 @@ export class PatientComponent implements OnInit {
         this.patientService.getGeneratePI_TC_P_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.response != null) {
-            // this.success(res);             
+            // this.success(res);
             if (res.message.toString().toLowerCase() != 'success') {
               this.hiddenDisMessagePopUp.nativeElement.click();
               this.Generate_PI_TC_Message = res.message;
@@ -1157,7 +1164,7 @@ export class PatientComponent implements OnInit {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
               // var newWin=
-            
+
               window.open(URL.createObjectURL(file), '_blank');
             }
           } else {
@@ -1168,7 +1175,7 @@ export class PatientComponent implements OnInit {
             this.error(err);
           });
       } else if (this.ddlCurrentValue == '9') {
-        //  Generate_PI_TC_Lien         
+        //  Generate_PI_TC_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1189,9 +1196,9 @@ export class PatientComponent implements OnInit {
             for (let result of this.fileList) {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
-              
+
               window.open(URL.createObjectURL(file), '_blank');
-            
+
               //  this.success(res);
             }
           } else {
@@ -1202,7 +1209,7 @@ export class PatientComponent implements OnInit {
             this.error(err);
           });
       } else if (this.ddlCurrentValue == '10') {
-        //  Generate_P_PI_Lien         
+        //  Generate_P_PI_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1218,7 +1225,7 @@ export class PatientComponent implements OnInit {
         this.patientService.getGenerateP_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.responseCode == 200) {
-            //console.log(res);            
+            //console.log(res);
             if (res.message.toString().toLowerCase() != 'success') {
               this.hiddenDisMessagePopUp.nativeElement.click();
               this.Generate_PI_TC_Message = res.message;
@@ -1341,12 +1348,12 @@ export class PatientComponent implements OnInit {
       //|| DropDownObject.value == '14' || DropDownObject.value == '15' || DropDownObject.value == '16' || DropDownObject.value == '17' || DropDownObject.value == '18' || DropDownObject.value == '19')
       //4- Ready to Bill
       //5- Not Ready to Bill
-      //14- Patient Lien Signed 
-      //15- Patient Lien Not Signed 
-      //16- Attorney Lien Signed 
-      //17- Attorney Not Lien Signed 
-      //18- Tech ASL Signed 
-      //19- Tech ASL Not Signed 
+      //14- Patient Lien Signed
+      //15- Patient Lien Not Signed
+      //16- Attorney Lien Signed
+      //17- Attorney Not Lien Signed
+      //18- Tech ASL Signed
+      //19- Tech ASL Not Signed
       {
         this.checkedPatientIdInternalStudyid = [];
         for (let i = 0; i < this.checkedData.length; i++) {
@@ -1392,7 +1399,7 @@ export class PatientComponent implements OnInit {
         let actionOrderNo = this.ddlCurrentValue;
         for (let i = 0; i < this.checkedData.length; i++) {
           // this.checkedPatientIdInternalStudyid.push({
-          // InternalStudyId: this.checkedData[i].Internalstudyid,            
+          // InternalStudyId: this.checkedData[i].Internalstudyid,
           // })
           if (i < this.checkedData.length - 1) {
             internalPatientIds += this.checkedData[i].INTERNALPATIENTID + ',';
@@ -1650,7 +1657,7 @@ export class PatientComponent implements OnInit {
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
-    // console.log(stringInput);    
+    // console.log(stringInput);
     this.lastNameModel = stringInput.lastName;
     this.firstNameModel = stringInput.firstName;
     this.patientIdModel = stringInput.patientID;
@@ -1795,7 +1802,7 @@ export class PatientComponent implements OnInit {
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
-    // console.log(stringInput);    
+    // console.log(stringInput);
     this.lastNameModel = stringInput.lastName;
     this.firstNameModel = stringInput.firstName;
     this.patientIdModel = stringInput.patientID;
@@ -1891,35 +1898,48 @@ export class PatientComponent implements OnInit {
       return res && res.INTERNALPATIENTID ? res.INTERNALPATIENTID : 0;
     }
   }
-  changefn(id, a) {
-    var endCellWidth: any = 0;
-    const ngSelectContainer = document.getElementById(id);
-    // const containerWidth = ngSelectContainer.offsetWidth;
-    const containerWidthWithItemsSelected: any = ngSelectContainer.getElementsByClassName('ng-value-container');
-    var containerWidth: any = containerWidthWithItemsSelected[0].offsetWidth  //141
-    const insideCellElement: any = containerWidthWithItemsSelected[0].getElementsByClassName('ng-value')
-    var insideCellWidth: any = insideCellElement[0].offsetWidth;
-    for (let i = 0; i < insideCellElement.length; i++) {
-      var insideCellWidth1: any = insideCellElement[i].offsetWidth;
-      endCellWidth = endCellWidth + insideCellWidth1;
-      console.log(endCellWidth);
-    }
-    if (endCellWidth > 100) {
-      a = 1;
-    }
-    else if (insideCellWidth > 60) {
-      a = 1
-    }
-    else if (insideCellWidth < 60) {
-      a = 2;
-    }
-    else {
-      a = 20;
-    }
-    return a;
-    // let checkWidth: any = e.getElementsByClassName("ng-value")
-    // let x: any = checkWidth[0].offsetWidth
-    // console.log(x);
-  }
 
+ValidateMultiSelectTextLength(id, a)
+  {
+    a =this._commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
+  }
+  copyToClipboard(currentPageUrl) {
+    debugger
+     navigator.clipboard.writeText(currentPageUrl).catch(() => {
+      console.error("Unable to copy text");
+    });
+     this.notificationService.showToaster({
+       alertHeader: '',
+      alertMessage: currentPageUrl,
+       alertType: null
+     });
+  }
+  getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
+    debugger
+      if (referrerId) {
+      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
+  }
+  getBrokerDetailById(brokerName: string, brokerId: any) {
+    if (brokerId) {
+      let body = { 'brokerId': brokerId, 'brokerName': brokerName };
+      this.brokerService.sendDataToBrokerFromOrderedSchedularComponent(body);
+    }
+  }
+  getReferringPhyDetailById(referringPhysician: string, ReferringPhyId: any) {
+    debugger
+    if (ReferringPhyId) {
+      let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
+  }
+  getReadingPhysicianById(readingPhysician: string, RadlogistId: any) {
+    debugger
+    if (RadlogistId) {
+      let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab' : true};
+      this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
+    }
+  }
 }

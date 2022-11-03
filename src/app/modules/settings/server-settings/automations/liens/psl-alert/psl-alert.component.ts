@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonRegex } from 'src/app/constants/commonregex';
 
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { SettingsService } from 'src/app/services/settings.service';
 
@@ -12,6 +13,9 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./psl-alert.component.css']
 })
 export class PslAlertComponent implements OnInit {
+  a1: any = 20;
+  a2: any = 20;
+  a3: any = 20;
   pslAlertFormSettings: FormGroup;
   statusList:any=[];
   financialTypeList:any=[];
@@ -26,7 +30,8 @@ export class PslAlertComponent implements OnInit {
   readonly commonRegex=CommonRegex;
   constructor(private fb: FormBuilder,
     private readonly settingsService:  SettingsService,
-    private readonly notificationService: NotificationService) { }
+    private readonly notificationService: NotificationService,
+    private readonly commonMethodService: CommonMethodService) { }
     
   ngOnInit(): void {
     this.pslAlertFormSettings = this.fb.group({
@@ -187,5 +192,10 @@ export class PslAlertComponent implements OnInit {
           }
           );
         } 
+  }
+  ValidateMultiSelectTextLength(id, a)
+  {
+    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
+  return a;
   }
 }

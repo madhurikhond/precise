@@ -48,7 +48,7 @@ export class BrokersComponent implements OnInit {
     this.currentFilter = this.applyFilterTypes[0].key;
     this.showHeaderFilter=false;
     
-    this.commonMethodService.setTitle('Funding Company');
+    this.commonMethodService.setTitle('Ar Settings');
     this.getAllPaymentBasedBrokerTypes();
     this.getARSettingDropdown();
     this.addForm = this.fb.group({

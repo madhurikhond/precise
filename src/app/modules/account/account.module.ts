@@ -12,6 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxMaskModule } from 'ngx-mask';
 import { UnauthorizeAccessComponent } from './unauthorize-access/unauthorize-access.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PatientLoginComponent } from './patient-login/patient-login.component';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -31,7 +32,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 @NgModule({
   declarations: [
-    LoginComponent, AccountComponent, LoginRequestComponent, SubpoenaPickupStatusComponent, ContactUsComponent, ForgotPasswordComponent, UnauthorizeAccessComponent, PatientLoginComponent,PatientCodeVerificationComponent,MultipleRecordComponent
+    LoginComponent, AccountComponent, LoginRequestComponent, SubpoenaPickupStatusComponent, ContactUsComponent, ForgotPasswordComponent, UnauthorizeAccessComponent, ResetPasswordComponent, PatientLoginComponent,PatientCodeVerificationComponent,MultipleRecordComponent
   ],
   imports: [
     CommonModule,
