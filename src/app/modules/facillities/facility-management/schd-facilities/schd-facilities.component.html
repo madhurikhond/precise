@@ -3779,9 +3779,10 @@
 																
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn" (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI')">
-																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
+																<a href="javascript:void(0)" class="link-btn" data-target = #viewFile_Doc (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI','')">
+																	<i class="fa fa-file-pdf-o" style="font-size:48px;color:red;pointer-events: all;"></i>
 																</a>
+
 							
 															</div>
 														</dx-data-grid>
@@ -3849,6 +3850,26 @@
 											</div>
 										</div>
 									</div>
+
+
+
+
+									<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Agreement</h5>
+        <div class="close-dismiss" data-dismiss="modal"></div>
+      </div>
+      <div class="modal-body" *ngIf="fileData">
+        <iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
@@ -4076,4 +4097,6 @@
 		data-target="#confirmationLease"></button>
 	<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
 		data-target="#add-Edit-facility"></button>
+	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" 
+	    data-target="#viewFile_Doc"></button>
 	<app-document-manager-facility></app-document-manager-facility>
