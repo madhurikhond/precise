@@ -12,6 +12,8 @@ import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
+import { environment } from '../../../../../environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare const $: any;
 
 @Component({
@@ -24,6 +26,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
   @ViewChild('hiddenConfirmationLeaseBtn', { static: false }) hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @Input() isGridDisplay: boolean = true
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
@@ -109,6 +112,7 @@ export class SchdFacilitiesComponent implements OnInit {
   totalrecordsFull_MRI: number = 1;
   totalrecordsFull_CT: number = 1;
   submiited: boolean = false;
+  fileData: SafeResourceUrl;
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   sendDataDocManager: any;
   allowUpdatingPrice: boolean = false;
@@ -121,9 +125,12 @@ export class SchdFacilitiesComponent implements OnInit {
   btnActive:number=0;
   leaseIdArray:any=[];
   creditIdArray:any=[];
+  apiUrl:any ; 
+
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
+  
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -150,6 +157,7 @@ export class SchdFacilitiesComponent implements OnInit {
   constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
     private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
     private readonly blockleasescheduler: BlockLeaseSchedulerService, private modalService: NgbModal,
+    private sanitizer: DomSanitizer,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
     facilityService.sendDataToschdFacilities.subscribe(res => {
@@ -184,7 +192,15 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
-
+    this.fullblockLeaseAgreementMRIList = [
+      {
+        'TimeFrame' : 'Time Frame here',
+        'TotalLeaseHours' : 'TotalLeaseHours here',
+        'LeaseRatePerHour':'LeaseRatePerHour here',
+        'totalHour':'totalHour here',
+        'Aggrement': ''
+      }
+    ]
 
 
 
@@ -259,17 +275,21 @@ export class SchdFacilitiesComponent implements OnInit {
   onPaste($event: any): void {
     console.log("onPaste");
     //this.log += new Date() + "<br />";
+
   }
   onPageSizeChange(event) {
     this.pageSize = event;
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-  get3pLeaseFacilityData(blockId:any,modalityName:string='')
-  {
+  get3pLeaseFacilityData(blockId:any,modalityName:string='',fileData:any)
+  { 
     debugger
-    alert('BlockId for  PDF generation: '+ blockId + ', Modalitiy name: ' + modalityName);
-   console.log(blockId);
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
+    var path = 'D:/Mridula%20Malhotra/PRECISEMRI_API/PreciseMRI.API/Reports/LeaseAggreements/' + 'lse-100000.pdf'
+    fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
+    this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
+    this.hiddenViewFile.nativeElement.click();
    
   }
   getActiveEpicUsers() {
@@ -867,7 +887,7 @@ export class SchdFacilitiesComponent implements OnInit {
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
-    //this.isFacilityAnalyticsTabVisible=true; 
+    //this.isFacilityAnalyticsTabVisible=true;
     this.isApplyAndOkBtnVisisble = true;
     this.isInsertBtnVisisble = false;
     this.facilityDetail = [];
@@ -917,16 +937,16 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
   }
   updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
-  
+
     var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
     if (data.length > 0)
       data[0].ResourceId = ResourceId;
-    else 
+    else
     {
       if(Modality='ct')
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
-        // alert('CT Test ' + test);        
+        // alert('CT Test ' + test);
              if(this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId)
              {
                this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
@@ -934,13 +954,13 @@ export class SchdFacilitiesComponent implements OnInit {
       }
       else{
         var test = this.modalityMriForm.controls["mri1ResourceName"].value;
-        // alert('MRI Test ' + test);        
+        // alert('MRI Test ' + test);
              if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
              {
                this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
              }
       }
-    
+
     }
   }
   updateFacilityResources(arrayResources: any) {
@@ -953,12 +973,12 @@ export class SchdFacilitiesComponent implements OnInit {
           let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
           if (Modality.toLowerCase() == 'mri') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'mri', ModalitiyType: ModalitiyType });
-            
+
               this.modalityMriForm.patchValue({
                 [controlName]: getAllId.ResourceId
               });
-            
-           
+
+
           } else if (Modality.toLowerCase() == 'ct') {
             this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'ct', ModalitiyType: ModalitiyType });
             this.modalityCtForm.patchValue({
@@ -1040,7 +1060,7 @@ export class SchdFacilitiesComponent implements OnInit {
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
           this.blockLeaseAgreementMRIList = res.response;
-          this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
+          //this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
           this.totalrecordsFull_MRI = res.response[0].TotalRecords;
         }
         else {
@@ -2757,8 +2777,109 @@ export class SchdFacilitiesComponent implements OnInit {
         modalRef.componentInstance.TotalAmount = res.response[0].TotalAmount;
       }
     });
-    
+
   }
+
+  CheckSameCombinationMRI(type:string ){
+    const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
+    const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value ? this.modalityMriForm.controls['mri1ResourceName'].value : '';
+    const Mri2Type = this.modalityMriForm.controls['mri2type'].value;
+    const Mri2ResourceName = this.modalityMriForm.controls['mri2ResourceName'].value ? this.modalityMriForm.controls['mri2ResourceName'].value : '';
+    const Mri3Type = this.modalityMriForm.controls['mri3type'].value;
+    const Mri3ResourceName = this.modalityMriForm.controls['mri3ResourceName'].value ? this.modalityMriForm.controls['mri3ResourceName'].value : '';
+    var Dictionary = {
+      Type1: Mri1Type + " " +Mri1ResourceName,
+      Type2: Mri2Type + " " +Mri2ResourceName,
+      Type3: Mri3Type + " " +Mri3ResourceName
+    }
+    if(type=='Type1' || type == 'Resource1'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type2' || type == 'Resource2'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type3' || type == 'Resource3'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
+        if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
+        }
+      }
+    }
+  }
+
+  CheckSameCombinationCT(type:string){
+    const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
+    const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName'].value ? this.modalityCtForm.controls['ct1ResourceName'].value : '';
+    const Ct2Type = this.modalityCtForm.controls['ct2make'].value;
+    const Ct2ResourceName = this.modalityCtForm.controls['ct2ResourceName'].value ? this.modalityCtForm.controls['ct2ResourceName'].value : '';
+    const Ct3Type = this.modalityCtForm.controls['ct3make'].value;
+    const Ct3ResourceName = this.modalityCtForm.controls['ct3ResourceName'].value ? this.modalityCtForm.controls['ct3ResourceName'].value : '';
+    var Dictionary = {
+      Type1: Ct1Type + " " +Ct1ResourceName,
+      Type2: Ct2Type + " " +Ct2ResourceName,
+      Type3: Ct3Type + " " +Ct3ResourceName
+    }
+    if(type=='Type1' || type == 'Resource1'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type2' || type == 'Resource2'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type1 == Dictionary.Type2){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+    if(type=='Type3' || type == 'Resource3'){
+      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
+        if(Dictionary.Type2 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
+        }
+        else if(Dictionary.Type1 == Dictionary.Type3){
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
+        }
+      }
+    }
+  }
+
   get generalInfoFormControls() { return this.generalInfoForm.controls; }
   get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
   get modalityServiceFormControls() { return this.modalityServiceForm.controls; }
