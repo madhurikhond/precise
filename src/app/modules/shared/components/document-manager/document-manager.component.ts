@@ -89,6 +89,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   billArray: any;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
+  fileLocation :any ;
   @HostListener('document:click', ['$event'])
   onClickEvent(event: MouseEvent) {
     let docManagerHeadertd = <HTMLElement>event.target;
@@ -298,6 +299,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
   }
   getFilesByKey(name: any, path: any, text: any, e: any) {
+    console.log(e)
     this.documentmanagerService.getFilesByKey(true, JSON.stringify(path)).subscribe((res) => {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
@@ -305,11 +307,19 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
           
           this.displayFile(name, e.file.dataItem.filePath);
         }
-        else if (text == 'Download Selected') {
-          this.downloadFile(this.selectedFileNames, this.path);
-        }
+        // else if (text == 'Download Selected') {
+
+        //   this.downloadFile(this.selectedFileNames, this.path);
+        // }
       }
       if (text == 'Download Selected') {
+        let fileExtension = this.selectedFileNames.split('.').pop();
+        if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
+                  this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+                }
+                else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+                  this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+                }
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
       }
     })
@@ -332,8 +342,9 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     else if (e.itemData.text == 'Download Selected') {
       if (this.selectedFileKeys.length == 1) {
-        this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-       this.getFilesByKey(this.selectedFileNames, this.path, e.itemData.text, e)
+        this.getFilesByKey(this.selectedFileNames, this.fileLocation, e.itemData.text, e)
+        //this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
+       
         //this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
@@ -506,6 +517,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
 
     if (e.selectedItems.length == 1) {
+      this.fileLocation = e.selectedItems[0].dataItem.filePath
       //this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
       // let fileExtension = this.selectedFileNames.split('.').pop();
       //   this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems.map(f => f.dataItem).map(m => m.filePath)[0])).subscribe((res) => { 
@@ -529,6 +541,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     this.selectedFileItems = e.selectedItems.map(m => m.dataItem) as DocumentManagerModel[];
   }
   downloadFile(fileName, fileData) {
+
     const source = fileData;
     const link = document.createElement('a');
     link.href = source;
