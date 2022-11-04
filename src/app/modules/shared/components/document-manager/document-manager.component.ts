@@ -302,6 +302,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
         if (text == 'Open') {
+          
           this.displayFile(name, e.file.dataItem.filePath);
         }
         else if (text == 'Download Selected') {
@@ -314,10 +315,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
   }
   onItemClick(e) {
+   
     if (e.itemData.text == 'Open') {
+     
       if (this.selectedFileKeys.length == 1) {
-        this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
-        // this.displayFile(e.fileSystemItem.dataItem.name, this.path);
+       // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
+         this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath);
         // call the Api here. It takes 1 parameter the base64 string
       }
       else if (this.selectedFileKeys.length > 1) {
@@ -328,13 +331,13 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Download Selected') {
-
       if (this.selectedFileKeys.length == 1) {
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-        //this.getFilesByKey(this.selectedFileNames, this.path, e.itemData.text, e)
+       this.getFilesByKey(this.selectedFileNames, this.path, e.itemData.text, e)
         //this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
+       
         this.getFilesByKeys(e.itemData.text)
         //this.downloadAllFilesAsZipFile(this.selectedFileItems);
       }
@@ -413,6 +416,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Rename') {
+    
       if (this.selectedFileKeys.length == 1) {
         this.hiddenFileRenamePopUpItem.nativeElement.click();
         this.currentRenameItemRecord = null;
@@ -484,18 +488,18 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     if (this.selectedFileNames) {
       this.selectedFileKeys = e.selectedItemKeys;
       var fileExtension = this.selectedFileNames.split('.').pop();
-      this.documentmanagerService.getFilesByKey(true, JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => {
-        if (res.response != null) {
-          console.log()
-          this.path = JSON.parse(res.response).Base64;
-        }
-      })
-      if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
-        this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
-      }
-      else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-        this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
-      }
+      // this.documentmanagerService.getFilesByKey(true, JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => {
+      //   if (res.response != null) {
+      //     console.log()
+      //     this.path = JSON.parse(res.response).Base64;
+      //   }
+      // })
+      // if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
+      //   this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+      // }
+      // else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+      //   this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+      // }
 
 
     }
@@ -532,7 +536,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     link.click();
   }
   selectedFileDisplay(e) {
-    this.getFilesByKey(e.file.dataItem.name, e.file.dataItem.filePath, 'Open', e)
+    //this.getFilesByKey(e.file.dataItem.name, e.file.dataItem.filePath, 'Open', e)
+    this.displayFile(e.file.name, e.file.dataItem.filePath);
   }
   downloadFileFromUrl(fileName, fileData) {
     this.fileName = fileName;
@@ -546,6 +551,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   }
 
   displayFile(fileName: string, fileData: any) {
+
     //if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
     //  fileData = 'data:image/png;base64,' + fileData;
     //}
@@ -820,6 +826,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
   }
   renameOrCancelItem(isItemRename: boolean) {
+    debugger
     this.submitted = true;
     this.modelValue = 'modal';
     if (this.renameForm.invalid) {
@@ -829,7 +836,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     if (isItemRename) {
       let updatedNewFileName = this.refrenameForm.renameTxt.value + '.' + this.GetRenameFileExtension;
       if (updatedNewFileName != this.currentRenameItemRecord.name) {
-        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64);
+        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64); 
       }
     }
     else {
@@ -863,9 +870,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   renameFile(docId: any, OldFileName: any, NewfileName: any, patientId: any, docType: string, fileBase64: any) {
     this.documentmanagerService.renameFile(true, OldFileName, NewfileName, patientId, docId, Number(this.storageService.user.UserId), this.fromPage, null, docType).subscribe((res) => {
       if (res.responseCode == 200) {
+        console.log(this.fileItems);
+        
         let index: number = this.fileItems.map(function (e) { return e.docId; }).indexOf(docId);
         if (index !== -1) {
           this.fileItems[index].name = res.response;
+          this.fileItems[index].filePath = this.fileItems[index].filePath.replace(OldFileName.replace(/%20/g,' ') ,res.response);
           this.fileManager.instance.refresh();
         }
         this.successNotification(res);
