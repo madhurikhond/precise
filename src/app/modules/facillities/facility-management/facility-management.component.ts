@@ -65,7 +65,6 @@ export class FacilityManagementComponent implements OnInit {
   
     
   searchFilter(searchText: any, selectedUserTypeText: any) {
-    debugger
     this.facilityService.getFacilityFilterText(searchText, selectedUserTypeText);
   } 
 }

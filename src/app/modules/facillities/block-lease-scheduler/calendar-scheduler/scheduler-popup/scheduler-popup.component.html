@@ -145,7 +145,7 @@
                         <div class="input-group">
                             <div class="input-group">
                                 <select #modalityGetType id="modalityGetType" class="form-control"
-                                    [attr.disabled]="isLeaseSigned ? 'disabled' : null" formControlName="modalityType"
+                                     formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
                                     <option value="" selected>Select Modality</option>
@@ -155,6 +155,7 @@
                                             {{item.RESOURCENAME}}</option>
                                     </optgroup>
                                 </select>
+
                             </div>
                         </div>
                         <div *ngIf="(submitted && editFormControls.modalityType.errors)" class="invalid-feedback">
@@ -166,7 +167,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="form-control" [attr.disabled]="isLeaseSigned ? 'disabled' : null"
+                            <select class="form-control" 
                                 formControlName="contrastType"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.contrastType.errors) }">
                                 <option value="" selected>Select contrast Type</option>
@@ -270,7 +271,7 @@
                         many credits care available once they specify the resource and contrast&#125;</div>
                 </div>
             </div>           -->
-            <div class="row" *ngIf="isLeaseSigned">
+            <!-- <div class="row" *ngIf="isLeaseSigned">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
                 </div>
@@ -372,7 +373,7 @@
                     <div *ngIf="editFormControls.CreditReasonText.errors?.required">
                         Credit Reason Text is required</div>
                 </div>
-            </div>
+            </div> -->
         </form>
     </div>
     <div class="modal-footer">

@@ -130,7 +130,12 @@ export class SchdFacilitiesComponent implements OnInit {
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
+  blockLeasePaymentList: [] = [];
+  blockLeasePaymentMappingList:any;
+  blockLeaseCreditList:[]=[];
+  paymentMapping: any = [];
   
+  selectedleaseArray: any = [];
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -923,6 +928,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getAllBlockLeaseCredits();
         this.getFacilityCreditsUnUsed();
         this.getUnpaidLeases();
+        this.getblockLeasePaymentByFacilityId(this.facilityId);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -943,7 +949,7 @@ export class SchdFacilitiesComponent implements OnInit {
       data[0].ResourceId = ResourceId;
     else
     {
-      if(Modality='ct')
+      if(Modality=='ct')
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
         // alert('CT Test ' + test);
@@ -1159,6 +1165,36 @@ export class SchdFacilitiesComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
+  getblockLeasePaymentByFacilityId(facilityId: number) {
+    this.blockLeasePaymentList = [];
+    this.pageNumber = 1;
+    this.facilityService.GetblockLeasePaymentByFacilityId(true, facilityId.toString(),this.pageNumber, this.pageSize).subscribe((res) => {
+      if (res.response != null) {
+        console.log(res.response)
+        this.blockLeasePaymentList = res.response;
+      }
+    });
+  }
+
+  getLeasePaymentMappingByFacilityId(paymentMapping : any) {
+    this.facilityService.GetLeasePaymentMappingByFacilityId(true, paymentMapping.data.PaymentId).subscribe((res) => {      
+      if (res.response != null) {
+        this.blockLeasePaymentMappingList = res.response;
+        this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
+      }
+    });
+  }
+
+  getBlockLeaseCreditsByFacilityId(leaseId: string) {
+    this.blockLeaseCreditList = [];
+    this.facilityService.GetBlockLeaseCreditsByFacilityId(true, leaseId.toString()).subscribe((res) => {
+      if (res.response != null) {
+        this.blockLeaseCreditList = res.response;
+      }
+    });
+  }
+
   setGeneralInfoTabForm(data: any) {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
@@ -1270,6 +1306,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri1contrast: data.mri1contrast,
       mri1sedation: data.mri1sedation,
       mri1breast: data.mri1breast,
+
       mri2type: data.mri2type,
       mri2strength: data.mri2strength,
       mri2make: data.mri2make,
@@ -1277,6 +1314,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri2contrast: data.mri2contrast,
       mri2sedation: data.mri2sedation,
       mri2breast: data.mri2breast,
+
       mri3type: data.mri3type,
       mri3strength: data.mri3strength,
       mri3make: data.mri3make,
@@ -1284,9 +1322,11 @@ export class SchdFacilitiesComponent implements OnInit {
       mri3contrast: data.mri3contrast,
       mri3sedation: data.mri3sedation,
       mri3breast: data.mri3breast,
+
       mriwFlexandEXT: data.mriwFlexandEXT,
       mrI2WFlexandEXT: data.mrI2WFlexandEXT,
       mrI3WFlexandEXT: data.mrI3WFlexandEXT,
+
       mrinotes: data.mrinotes,
     });
   }
@@ -1312,6 +1352,7 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3contrast: data.ct3contrast,
       ct3sedation: data.ct3sedation,
       ct3breast: data.ct3breast,
+
       ctnotes: data.ctnotes
     });
   }
@@ -2500,6 +2541,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentPolicy = '';
     this.isPopUpInEditMode = false;
     this.facilityPoliciesForm.reset();
+    this.blockLeasePaymentList=[];
+    this.blockLeasePaymentMappingList=[];
+    this.blockLeaseCreditList=[];
   }
   reLoadAllFacility() {
     this.getSchedulingFacilities();
@@ -2743,6 +2787,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.btnActive=1;
       el.selectedRowsData.forEach(i => {
         leaseID.push(i.LeaseId)
+        this.selectedleaseArray.push(i);
       });
       this.leaseIdArray=leaseID;
     }
@@ -2771,10 +2816,26 @@ export class SchdFacilitiesComponent implements OnInit {
       "CreditId": creditIdListTemp
     }
     this.blockleasescheduler.getTotalAmountToPay(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
-      if(res.response[0].TotalAmount)
+      if(res.response[0].TotalAmount >= 0)
       {
         const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-        modalRef.componentInstance.TotalAmount = res.response[0].TotalAmount;
+        modalRef.componentInstance.AmountDetails = res.response[0];
+        modalRef.componentInstance.selectedleases = this.selectedleaseArray;
+        modalRef.componentInstance.selectedCreditIds = creditIdListTemp;
+        modalRef.componentInstance.facilityId = this.facilityId;
+        modalRef.result.then(
+          (result) => {
+            modalRef.close();
+          },
+          (reason) => {
+            if (reason == 5) {
+              modalRef.close();
+            }
+            else {
+              this.unSuccessNotification(reason);
+            }
+          }
+        );
       }
     });
 

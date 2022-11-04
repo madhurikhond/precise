@@ -49,8 +49,8 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string) {
-    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}`, showGlobalLoader).pipe(
+  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string, UserId : any) {
+    return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}&UserId=${UserId}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -137,6 +137,11 @@ export class BlockLeaseSchedulerService {
   }
   deleteUnusedCreditByCreditId(showGlobalLoader: boolean = true, frontendJsonInput: string) {
     return this._httpService.post(`BlockLeaseScheduler/DeleteUnusedCreditById`, frontendJsonInput, showGlobalLoader,true).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
+  CreatePayments(showGlobalLoader: boolean = true, body: any) {
+    return this._httpService.post(`BlockLeaseScheduler/CreatePayments`, body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
