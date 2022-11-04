@@ -60,7 +60,6 @@ export class AppComponent implements OnInit {
 
   }
   logoutLogin(): void {
-    console.log('login')
     this.deleteOrderedSchedulerActivity()
     this._commonMethodService.clearAllSubjects();
     this._storageService.clearAll();

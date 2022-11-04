@@ -58,7 +58,6 @@ export class CallPatientScheduleComponent implements OnInit {
   getCallPatientConfirmationCount() {
     this.workflowService.getCallPatientConfirmationCount(false).subscribe((res) => {
       var data: any = res;
-      console.log(res);
       if (data.response != null) {
         this.totalStudies = data.response.studycount;
         this.patientCount = data.response.patientcount;
@@ -152,7 +151,6 @@ export class CallPatientScheduleComponent implements OnInit {
         var data: any = res;
         this.totalRecords = res.totalRecords
         this.dataList = data.response;
-        console.log(this.dataList);
         if (this.dataList != null) {
           this.dataList.forEach((element, index) => {
             element.myId = index;

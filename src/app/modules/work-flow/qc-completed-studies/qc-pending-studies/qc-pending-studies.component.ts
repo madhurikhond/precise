@@ -346,7 +346,7 @@ export class QcPendingStudiesComponent implements OnInit {
     }
     else if (this.aForm.action.value == '12') {
       for (let i = 0; i < this.filterdata.length; i++) {
-        console.log(this.filterdata[i]);
+
         this.checkedPatientIdInternalStudyid.push({
           patientIdExport: this.filterdata[i].patientid,
           FINANCIALTYPENAME: this.filterdata[i].financialtypename,
@@ -407,7 +407,7 @@ export class QcPendingStudiesComponent implements OnInit {
         });
     }
     else if (this.aForm.action.value == '13') {
-      console.log(this.filterdata);
+
       for (let i = 0; i < this.filterdata.length; i++) {
         this.checkedPatientIdInternalStudyid.push({
           patientIdExport: this.filterdata[i].patientid,

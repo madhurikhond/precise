@@ -353,7 +353,7 @@ export class PrescreengridComponent implements OnInit {
 
 
   getPrescreeningQuestionData() {
-    debugger;
+    
     this.isMR = false;
     this.isMRWC = false;
     this.isCT = false;
@@ -1347,8 +1347,7 @@ export class PrescreengridComponent implements OnInit {
   }
 
   saveAndSubmit() {
-    console.log(this.preScreeningQuestionForm.errors);
-
+ 
     this.preScreeningQuestionSubmitted = true;
     this.preScreeningQuestionModal = "modal";
     if (this.preScreeningQuestionForm.invalid) {

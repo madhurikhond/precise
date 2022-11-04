@@ -242,7 +242,7 @@ export class EsignrequestaComponent implements OnInit {
   }
 
   openlien() {
-    debugger
+    
     if (this.agreeCheck) {
       this.esignbodyDisabled = false;
       this.AgreeEsignData = true;

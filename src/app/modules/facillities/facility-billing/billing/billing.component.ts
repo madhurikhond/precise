@@ -176,7 +176,6 @@ DisplayDataOnTabs(option : any,tabName:string){
   GetNotBilledYetFacilityBilling(filterBody: any){
     this.facilityService.getNotBilledYetFacilityBilling(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
       this.GridData = [];  
-      console.log(res.response);
       if (res.response != null && res.response.length > 0) {        
         this.totalFacility = res.totalRecords;
         this.GridData = res.response;    

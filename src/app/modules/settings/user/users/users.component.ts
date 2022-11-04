@@ -260,12 +260,12 @@ export class UsersComponent implements OnInit {
     );
   }
   onChange($event: any): void {
-    console.log("onChange");
+
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
+
     //this.log += new Date() + "<br />";
   }
 
@@ -284,7 +284,6 @@ export class UsersComponent implements OnInit {
     this.isSearchReferrer = true;
     this.topSearchText = this.copyForm.topSearchText.value ?? '';
     this.search_isactive = this.copyForm.search_isactive.value;
-    console.log(this.pageNumber); console.log(this.pageSize);
     if (this.search_isactive === null) {
       this.search_isactive = '';
     }
@@ -299,7 +298,7 @@ export class UsersComponent implements OnInit {
       this.getUsers(this.topSearchText, this.search_isactive);
   }
   search(){
-    debugger
+    
     this.pageNumber = 1;
     this.searchUserMgt()
   }

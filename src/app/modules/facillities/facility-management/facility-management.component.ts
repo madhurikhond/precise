@@ -53,7 +53,7 @@ export class FacilityManagementComponent implements OnInit {
       this.facilityService.sendActionDropText(actionValue);
   }
   onFileSelected(event: any) {
-    debugger;
+    
     this.fileMessage = '';
     this.selectedUploadFile = <File>event.target.files[0];
     this.isExcel = !!event.target.files[0].name.match(/(.xls|.xlsx)/);
@@ -65,7 +65,7 @@ export class FacilityManagementComponent implements OnInit {
   
     
   searchFilter(searchText: any, selectedUserTypeText: any) {
-    debugger
+    
     this.facilityService.getFacilityFilterText(searchText, selectedUserTypeText);
   } 
 }

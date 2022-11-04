@@ -328,7 +328,6 @@ export class DocumentReferralAndFundingcoComponent implements OnInit, AfterViewI
 
       this.documentmanagerService.getFilesByKey(true,JSON.stringify(e.selectedItems[0].dataItem.filePath)).subscribe((res) => { 
         if (res.response != null) {
-          console.log()
           this.path = JSON.parse(res.response).Base64 ;  
           if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
             this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;

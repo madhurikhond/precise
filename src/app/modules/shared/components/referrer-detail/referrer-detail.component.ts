@@ -78,13 +78,13 @@ export class ReferrerDetailComponent implements OnInit {
   constructor(private fb: FormBuilder, private referrersService: ReferrersService, private notificationService: NotificationService,
     private commonMethodService: CommonMethodService, private renderer: Renderer2, private readonly storageService: StorageService) {
     referrersService.sendDataToReferrerDetail.subscribe(res => {
-      debugger
+      
       this.getCurrentReferrerDetail(res.title, res.referrerId)
       //this.isPopUpDisplay=true;
       //this.isModalShow=true;
     });
     referrersService.sendDataToReferrerDetailToOrderedSchedular.subscribe(res => {
-      debugger
+      
       if(!this.isPoliciesTab){   
         this.updateTabId('edit-referrer-details')
       }else{
@@ -245,7 +245,7 @@ export class ReferrerDetailComponent implements OnInit {
     };
   }
   onTabclick(isPopOpen: boolean) {
-    debugger
+    
     if (this.isPoliciesTab) {
       this.isPoliciesTab = true;
       this.updateTabId('edit-policies')
@@ -255,7 +255,7 @@ export class ReferrerDetailComponent implements OnInit {
   }
   
   updateTabId(tabName: string) {
-    debugger
+    
     this.tabId = tabName;
   }
 
@@ -265,12 +265,10 @@ export class ReferrerDetailComponent implements OnInit {
     })
   }
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
   setGridSetting() {
@@ -296,7 +294,7 @@ export class ReferrerDetailComponent implements OnInit {
   //     return styles;
   // }
   getCurrentReferrerDetail(title: any, referrerId: any) {
-    debugger
+    
     this.title = title;
     this.id = referrerId;
     this.getreferrerById();
@@ -304,7 +302,7 @@ export class ReferrerDetailComponent implements OnInit {
   }
 
   getCurrentReferrerDetails(title: any, referrerId: any,isPoliciesTab:any) {
-    debugger
+    
     this.title = title;
     this.id = referrerId;
     this.isPoliciesTab = isPoliciesTab;
@@ -317,7 +315,7 @@ export class ReferrerDetailComponent implements OnInit {
     }
 
   getreferrerById() { 
-    debugger 
+     
     this.onTabclick(true)
     this.referrersService.getReferrerById(true, this.id).subscribe((res) => { 
       this.title = res.response.FullName
@@ -844,7 +842,7 @@ export class ReferrerDetailComponent implements OnInit {
 //     return item.id;
 // }
   onTagChange(tagVal: any) {
-   debugger
+   
     this.groupingNames = true;
     this.searchText = tagVal.target.value;
      //this.searchText = tagVal.event.target.value;

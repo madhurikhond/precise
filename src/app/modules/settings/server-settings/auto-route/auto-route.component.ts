@@ -79,13 +79,12 @@ export class AutoRouteComponent implements OnInit {
   }
   
   getMasterDocumentTypeList(){
-debugger;
+
     this.settingsService.getMasterDocumentTypeList(false).subscribe((res) => {
       var data: any = res;
-      debugger;
+      
       if (data.response != null && data.response.length > 0) {
         this.documentList = data.response;
-        console.log(this.documentList);
       }
       else {
         this.notificationService.showNotification({
@@ -131,7 +130,7 @@ debugger;
     });
   }
 
-  getDefaultAutoRouteSetting(){debugger;
+  getDefaultAutoRouteSetting(){
     this.settingsService.getDefaultAutoRouteSetting(true).subscribe((res) => {
       var data: any = res;
       if (data.response != null) {
@@ -195,12 +194,12 @@ debugger;
     }
     );
   }
-   onSelectAll() { debugger;
+   onSelectAll() { 
     var selected = this.documentList.map(item => item.docId);
     this.arForm.docIds.setValue(selected);
   }
 
-   onClearAll() { debugger;
+   onClearAll() { 
     this.arForm.docIds.setValue([]);
   }
 

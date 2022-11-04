@@ -75,10 +75,10 @@ export class ReferrersComponent implements OnInit {
     }];
     this.columnResizingMode = this.resizingModes[0];
     this.currentFilter = this.applyFilterTypes[0].key;
-    debugger
+    
     this.referrersService.getPersistentGridSetting(true, this.storageService.user.UserId, 'Referrers').subscribe((res) => {
       if (res.response != null) {
-        debugger;
+        
         let state = JSON.parse(res.response.GridSettings);
         this.dataGrid.instance.state(state);
       }
@@ -165,7 +165,7 @@ export class ReferrersComponent implements OnInit {
   }
 
   goButtonClick(DropDownObject: HTMLInputElement) {
-    debugger;
+    
     if (DropDownObject.value == 'Save Grid') {
       this.saveGridSetting();
     }
@@ -236,11 +236,10 @@ export class ReferrersComponent implements OnInit {
   get refForm() { return this.referrersForm.controls; }
 
   exportReferrerExcel() {
-    debugger
+    
     this.referrersService.exportReferrerExcel(this.pageNumber, this.pageSize, this.isSearchReferrer, this.searchText, this.exiledOption).subscribe(blob => {
       saveAs(blob, 'Referrer.xlsx');
     }, error => {
-      console.log('Something went wrong');
     });
   }
   pageChanged(event) {

@@ -34,7 +34,7 @@ export class PatientDetailGroupComponent implements OnInit, OnChanges {
       this.activityData = changes.viewingData['currentValue'].response;
       this.isSeen = this.setUserPreScreeningShowingState(this.data.key)
     }
-    console.log(this.data);
+
   }
 
   ngOnInit(): void {

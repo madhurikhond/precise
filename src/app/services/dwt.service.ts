@@ -699,7 +699,6 @@ export class DwtService {
                 this.barcodeResults.push(textResults);
                 bHasCallback ? callback() : outputResults();
               }, error => {
-                console.log(error);
                 bHasCallback ? callback() : outputResults();
               });
           } catch (err) { console.log(err); setTimeout(() => { decoderFunc() }, 1000); }

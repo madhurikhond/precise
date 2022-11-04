@@ -255,12 +255,12 @@ export class SchedulingFacillitiesComponent implements OnInit {
   }
 
   onChange($event: any): void {
-    console.log("onChange");
+
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
+
     //this.log += new Date() + "<br />";
   }
 
@@ -498,7 +498,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     });
   }
   getFinancialTypeList() {
-    debugger;
+    
     this.financialTypeList = [];
     this.facilityService.getFinancialTypes(true).subscribe((res) => {
       if (res.response != null) {
@@ -917,7 +917,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     this.getAllSchedulingFacility(this.filterBody);
   }
   applyFilter() {
-    debugger;
+    
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedXrayWalkIn = this.selectedXrayWalkIn ? this.selectedXrayWalkIn.toString() : '';

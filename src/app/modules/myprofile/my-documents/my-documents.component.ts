@@ -368,7 +368,6 @@ export class MyDocumentsComponent implements OnInit {
     let birthday = JSON.parse(localStorage.getItem('_cr_u_infor')).birthday; 
     let dateOfbirth =this.datepipe.transform(birthday, this.dateTimeFormatCustom.Date);
     let UserFolder = firstname + lastname + "_" + dateOfbirth + "_" + JSON.parse(localStorage.getItem('_cr_u_infor')).userid
-    console.log(UserFolder);
 
     this.myprofileService.getMyDocTree(UserFolder).subscribe((res) => {
       if (res.response) {

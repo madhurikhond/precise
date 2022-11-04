@@ -321,7 +321,7 @@ export class ReadingRadPortalComponent implements OnInit {
   }
   getAllSignedAndPendingBillStudies() {
 
-    debugger
+    
     this._radPortalService.getAllSignedAndPendingBillStudies(true, this.SignedAndPendingBillFilter).subscribe((res) => {
       if (res.response != null) {
         this.signedAndPendingBill = res.response[0].SignedAndPendingBill ? res.response[0].SignedAndPendingBill : [];
