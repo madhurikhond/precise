@@ -154,7 +154,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       this.headerTitle = '';
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
-      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
@@ -164,7 +163,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       this.headerTitle = '';
       this.fromPage = this.getPageName();
       this.currentPatientId = patientId;
-      console.log('m ' + this.currentPatientId)
       this.getPatientDocument(this.currentPatientId, 'All');
       this.getDocumentType();
 
@@ -299,7 +297,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
   }
   getFilesByKey(name: any, path: any, text: any, e: any) {
-    console.log(e)
     this.documentmanagerService.getFilesByKey(true, JSON.stringify(path)).subscribe((res) => {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
@@ -493,9 +490,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     });
   }
   fileManager_onSelectionChanged(e) {
-
     this.setFileManagerRowColor();
     this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
+    if ((this.selectedFileNames) == undefined)
+      this.selectedFileNames = ''
+      
     if (this.selectedFileNames) {
       this.selectedFileKeys = e.selectedItemKeys;
       var fileExtension = this.selectedFileNames.split('.').pop();
@@ -513,6 +512,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       // }
 
 
+    } else {
+      this.selectedFileKeys = 0;
     }
 
 
@@ -752,7 +753,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
 
   }
   onSaving(e) {
-    console.log(e);
   }
   updateTabId(tabName: string, val: boolean) {
     this.tabId = tabName;
@@ -839,7 +839,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
   }
   renameOrCancelItem(isItemRename: boolean) {
-    debugger
+    
     this.submitted = true;
     this.modelValue = 'modal';
     if (this.renameForm.invalid) {
@@ -883,7 +883,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   renameFile(docId: any, OldFileName: any, NewfileName: any, patientId: any, docType: string, fileBase64: any) {
     this.documentmanagerService.renameFile(true, OldFileName, NewfileName, patientId, docId, Number(this.storageService.user.UserId), this.fromPage, null, docType).subscribe((res) => {
       if (res.responseCode == 200) {
-        console.log(this.fileItems);
         
         let index: number = this.fileItems.map(function (e) { return e.docId; }).indexOf(docId);
         if (index !== -1) {
@@ -986,7 +985,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     })
   }
   IsLatestBill(uploadedDate: any) {
-    console.log(this.billArray);
     // let uploadedDate_New 
     let uplDate = new Date(this.billArray[0].uploadedOn).getTime();
     let uploadedDate_New = new Date(uploadedDate).getTime();

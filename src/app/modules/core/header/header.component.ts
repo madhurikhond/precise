@@ -111,7 +111,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getNotification(evt) {
-    console.log('Message received...');
+
 }
   
   showDocManager(patientId: string) {
@@ -178,7 +178,6 @@ export class HeaderComponent implements OnInit {
       this.preScreenQuestions=preScreentemp&&preScreentemp.PageTitle?preScreentemp.PageTitle:"";
       let autoRoutetemp=this.headerPopupList.find(x=>x.PageTitle=='AUTOROUTEV2');
       this.autoRouteV2=autoRoutetemp&&autoRoutetemp.PageTitle?autoRoutetemp.PageTitle:"";
-      console.log(this.rightNavList);
    }
    splitListAccToType(list1: any)
     {

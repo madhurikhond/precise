@@ -186,7 +186,6 @@ export class CaseStatusComponent implements OnInit {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {
         this.statusNamesList = data.response;
-        console.log(this.statusNamesList);
       }
       else {
         this.notificationService.showNotification({

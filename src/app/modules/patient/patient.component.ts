@@ -412,7 +412,7 @@ export class PatientComponent implements OnInit {
   }
 
   getPatientDetailById(e: any) {
-    debugger
+    
     let body = {
       'patientID': e.data.PATIENTID,
       'internalPatientId': e.data.INTERNALPATIENTID,
@@ -701,7 +701,6 @@ export class PatientComponent implements OnInit {
         this.billingHeaderTitle = JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].PATIENTID + ', ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].FAMILYNAME + ' ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].GIVENNAME + ', ' + this.datePipe.transform(JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].BIRTHDATE, this.dateTimeFormatCustom.Date);
         this.BillingData = res.response[0]
         this.setpatientBillingDetailFormData(this.BillingData)
-        console.log(this.patientBillingDetailForm)
       }
     });
   }
@@ -776,7 +775,7 @@ export class PatientComponent implements OnInit {
       this.InsertLastSearchRecord()
     }
 
-    debugger
+    
     let brokerId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.BrokerId : ''
     let facilityId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityID : '';
     let facilityParentId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityParentID : '';
@@ -825,7 +824,7 @@ export class PatientComponent implements OnInit {
     this.patientService.getPatientData(true, body, this.pageNumber, this.pageSize).subscribe((res) => {
 
       if (res.response != null && res.response.length > 0) {
-        debugger
+        
         this.patientGridList = res.response;
         this.totalRecord = res.totalRecords;
         this.dataGrid.instance.refresh();
@@ -970,7 +969,7 @@ export class PatientComponent implements OnInit {
   }
 
   selectionChanged(data: any) {
-    debugger
+    
     this.selectedRows = [];
     this.checkedData = data.selectedRowsData;
     this.selectedInternalPatientId = data.selectedRowKeys[0] ? data.selectedRowKeys[0].INTERNALPATIENTID : '';
@@ -999,7 +998,7 @@ export class PatientComponent implements OnInit {
 
   goButtonClick() {
 
-    debugger
+    
     if (this.ddlCurrentValue == '2')//'Save Grid'
     {
       let setting = { ...this.filterBody };
@@ -1112,9 +1111,8 @@ export class PatientComponent implements OnInit {
       }
       else if (this.ddlCurrentValue == '7') {
         //  Generate e-Sign Link
-        debugger
+        
         for (let i = 0; i < this.checkedData.length; i++) {
-          console.log(this.checkedPatientIdInternalStudyid);
           const results = this.checkedPatientIdInternalStudyid.filter(pt => {
             return pt.PATIENTIDEXPORT === this.checkedData[i].PATIENTID && pt.InternalStudyId === this.checkedData[i].Internalstudyid;
           });
@@ -1653,7 +1651,7 @@ export class PatientComponent implements OnInit {
   }
 
   lastSearchPatch(event) {
-    debugger
+    
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
@@ -1699,7 +1697,7 @@ export class PatientComponent implements OnInit {
   }
 
   InsertLastSearchRecord() {
-    debugger
+    
     let body = {
       'id': 0,
       'isSelected': 0,
@@ -1732,13 +1730,12 @@ export class PatientComponent implements OnInit {
     }
     this.patientService.InsertLastSearchRecord(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
       var data: any = res;
-      console.log(data);
     }
     )
   }
 
   GetLastSearchRecord() {
-    debugger
+    
     this.patientService.GetLastSearchRecord(true).subscribe((res) => {
       this.LastSearchRecordList = res.response
       if (this.LastSearchRecordList == null) {
@@ -1797,7 +1794,7 @@ export class PatientComponent implements OnInit {
   }
 
   onChangeSavedSearch(event) {
-    debugger
+    
     //this.clearFilter();
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
@@ -1905,7 +1902,7 @@ ValidateMultiSelectTextLength(id, a)
   return a;
   }
   copyToClipboard(currentPageUrl) {
-    debugger
+    
      navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
@@ -1916,7 +1913,7 @@ ValidateMultiSelectTextLength(id, a)
      });
   }
   getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
-    debugger
+    
       if (referrerId) {
       let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
@@ -1929,14 +1926,14 @@ ValidateMultiSelectTextLength(id, a)
     }
   }
   getReferringPhyDetailById(referringPhysician: string, ReferringPhyId: any) {
-    debugger
+    
     if (ReferringPhyId) {
       let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
   getReadingPhysicianById(readingPhysician: string, RadlogistId: any) {
-    debugger
+    
     if (RadlogistId) {
       let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);

@@ -28,7 +28,7 @@ export class BrokerService {
     this.sendDataToBrokerFromOrderedSchedular.emit(body);
   }
   sendDataToLoaderFromBrokerComponent(body:any): void {
-    debugger
+    
     this.sendDataToLoaderComponentFromBrokerComponent.emit(body);
   }
   addBroker(showGlobalLoader : boolean = true, body:any){

@@ -325,9 +325,6 @@ export class SettlementsComponent implements OnInit {
           this.dataList.forEach((element, index) => {
             element.myId = index;
           });
-          // this.isShowColumnWithNoData = true;
-
-          console.log(this.dataList);
 
         }
         else {
@@ -569,7 +566,7 @@ export class SettlementsComponent implements OnInit {
                               ${this.studyDetail.FINANCIALTYPENAME ? ' - ' + this.studyDetail.FINANCIALTYPENAME : ''}`;
         this.filePath = this.studyDetail.FileName ? res.origin + this.studyDetail.FileName : null;
         //var p = (moment(this.studyDetail.startDate)).format('DD-MMM-YYYY');
-        debugger
+        
         this.editSettleForm.patchValue({
           settlementAmount: this.studyDetail.SettlementAmount,
           settlementDate: this.studyDetail.SettlementDate ? this.studyDetail.SettlementDate : null,

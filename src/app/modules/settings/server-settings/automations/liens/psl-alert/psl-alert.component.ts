@@ -73,7 +73,6 @@ export class PslAlertComponent implements OnInit {
     this.settingsService.getMasterFinancialTypes(false).subscribe((res) => {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {
-        console.log(data.response);
         this.financialTypeList = data.response;
       }
       else {
@@ -108,7 +107,6 @@ export class PslAlertComponent implements OnInit {
       var data=res;
       if (data.response != null && data.response.length > 0) {
         this.id=data.response[0].id;
-        console.log(data.response[0]);
         if(data.response[0].matchPslStatus)
         {
           this.selectedMatchStatus =data.response[0].matchPslStatus.split(',').map(function(item) {

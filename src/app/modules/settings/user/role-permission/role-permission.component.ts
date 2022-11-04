@@ -66,7 +66,7 @@ export class RolePermissionComponent implements OnInit {
 
   getPermission(groupName: string) {
     this.settingService.getPermission(true, groupName).subscribe((res) => {
-      debugger
+      
       var data: any = res;
       if (data.response != null) {
         this.isDisabled = false;
@@ -154,7 +154,7 @@ export class RolePermissionComponent implements OnInit {
     this.submitted = false;
   }
   savePremission() {
-    debugger
+    
     if (this.isAdd && this.groupName === '') {
       //alert('Please enter Group name.')
       this.submitted = true;

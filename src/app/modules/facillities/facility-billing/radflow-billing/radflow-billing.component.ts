@@ -342,7 +342,6 @@ PendingQbInv(filterBody: any){
         FacilityNeedReviewStudies.push({PatientID: this.WarningPopup[i].PATIENTID, InternalStudyID:this.WarningPopup[i].INTERNALSTUDYID,FacilityParentID:this.WarningPopup[i].FacilityParentID,FacilityID:this.WarningPopup[i].FacilityID,UserId:this.storageService.user.UserId,RadFlowOrFacility:'RadFlow', Rebill_Note:'',Remove_Note:'',Study_Status:'Review',Action:'OverrideStudy',TabSelection:'Not Billed Yet - RadFlow'});  
       }
    }
-   console.log(FacilityNeedReviewStudies);
    if(FacilityNeedReviewStudies.length>0){
         this.facilityService.FacilityBillingOverrideBill(true,FacilityNeedReviewStudies).subscribe((res)=>{
           if (res) {

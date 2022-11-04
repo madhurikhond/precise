@@ -164,7 +164,7 @@ export class OrderedSchedulerComponent implements OnInit {
     }, 0);
   }
   getBrokerDetailById(brokerName: string, brokerId: any) {
-    debugger
+    
     if (brokerId) {
       let body = { 'brokerId': brokerId, 'brokerName': brokerName };
       this.brokerService.sendDataToBrokerFromOrderedSchedularComponent(body);
@@ -181,7 +181,7 @@ export class OrderedSchedulerComponent implements OnInit {
     this.deleteOrderedSchedulerActivity();
   }
   getReferrerDetailById(referrerName: any, referrerId: any, isPoliciesTab: any) {
-    debugger
+    
     if (referrerId) {
       let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab': true };
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
@@ -301,7 +301,7 @@ export class OrderedSchedulerComponent implements OnInit {
   }
 
   onRowPrepared(e) {
-    console.log(e);
+
   }
   onRowExpanding(e) {
     if (e.key.length > 1) {
@@ -1054,7 +1054,6 @@ export class OrderedSchedulerComponent implements OnInit {
       'filters': this.sForm.filter.value != 'null' ? this.sForm.filter.value : null,
       'financialType': this.sForm.financialType.value != 'null' ? this.sForm.financialType.value : null
     }
-    console.log(data);
 
     this.workflowService.getOrderedSchedulerData(data, this.pageNumber, this.pageSize).subscribe((res) => {
       this.totalRecords = 1;
@@ -1076,7 +1075,6 @@ export class OrderedSchedulerComponent implements OnInit {
         this.totalRescheduled = data.response ? data.response[0].AllCount[0].TotalRescheduled : 0;
         this.countData = true;
         this.dataList = data.response;
-        console.log(this.dataList)
         if (this.dataList != null) {
           this.dataList.forEach((element, index) => {
             element.myId = index;
@@ -1159,8 +1157,7 @@ export class OrderedSchedulerComponent implements OnInit {
   }
 
   saveAndSubmit() {
-    console.log(this.preScreeningQuestionForm.errors);
-
+   
     this.preScreeningQuestionSubmitted = true;
     this.preScreeningQuestionModal = 'modal';
     if (this.preScreeningQuestionForm.invalid) {
@@ -1651,7 +1648,7 @@ export class OrderedSchedulerComponent implements OnInit {
   }
 
   SaveOrderedSchedulerLog(type: any) {
-    debugger
+    
     if (!this.selectedRows || this.selectedRows.length == 0) {
       this.notificationService.showNotification({
         alertHeader: null,

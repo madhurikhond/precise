@@ -74,12 +74,10 @@ export class TemplateComponent implements OnInit {
     this.getEmailTemplates();
   }
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
 
@@ -157,7 +155,6 @@ goFirstPage(){
   }
 
   onSubmit(){
-    console.log(this.editTemplateForm)
     this.submitted = true;
     this.modelValue='modal';
     if (this.editTemplateForm.invalid) {

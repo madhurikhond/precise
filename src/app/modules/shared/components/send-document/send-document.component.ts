@@ -758,7 +758,6 @@ export class SendDocumentComponent implements OnInit, AfterViewInit {
     this.sendDocumentService.sendDocumentToUser(true, this.sendDocumentInput).subscribe((res) => {
       var data: any = res;
       if (res != null) {
-        console.log(res);
       }
       this.notificationService.showNotification({
         alertHeader: null,

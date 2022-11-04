@@ -229,7 +229,7 @@ export class BrokersComponent implements OnInit {
   }
   
   getAllPaymentBasedBrokerTypes() {
-    debugger
+    
     this.settingService.getAllPaymentBasedBrokerTypes(this.pageNumber, this.pageSize, true).subscribe((res) => {
       var data: any = res;
       this.totalRecords = res.totalRecords;

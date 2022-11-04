@@ -54,7 +54,7 @@ export class CreateAlertComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.createAlertPopUpObservable.subscribe((res) => {
-      debugger
+      
       this.alertButtonClick = res;
       this.hiddenCreateAlertPopUpButton.nativeElement.click();
       this.getDropdown();
@@ -126,12 +126,12 @@ export class CreateAlertComponent implements OnInit {
     $('#cke_1_top').remove()
   }
   onChange($event: any): void {
-    console.log("onChange");
+
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
+
     //this.log += new Date() + "<br />";
   }
   getDropdown() {
@@ -197,7 +197,6 @@ export class CreateAlertComponent implements OnInit {
           if (data.response.refPhyList != null) { this.refPhyInfoList = data.response.refPhyList[0]; }
           if (data.response.brokerInfoList != null) { this.brokerInfoList = data.response.brokerInfoList[0] }
           if (data.response.patientInfoList != null) { this.patientInfoList = data.response.patientInfoList[0]; }
-          console.log(this.patientInfoList)
           this.FillContactInfo();
           this.updateSubjectBody();
           this.isContactModelShow = true;
@@ -446,7 +445,6 @@ export class CreateAlertComponent implements OnInit {
     } this.modalValue = 'modal'
     this.phoneSend = '9888793469';
     this.contactInfoForm.patchValue({ smsTextModel: this.smsTextModel });
-    console.log(this.contactInfoForm)
     if (this.phoneSend.length > 0) {
       var data = {
         'patientid': this.patientInfoList.ID,

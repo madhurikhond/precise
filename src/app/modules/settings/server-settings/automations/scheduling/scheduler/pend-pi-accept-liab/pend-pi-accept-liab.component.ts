@@ -188,7 +188,7 @@ export class PendPiAcceptLiabComponent implements OnInit {
     this.pendPiAcceptLiabWithGridForm.push(this.addPendPiAcceptLiabWithGridFormGroup());
   }
   deleteGridRow(rowIndex:any){  
-    debugger;
+    
     this.rowIndex = rowIndex;
   } 
 

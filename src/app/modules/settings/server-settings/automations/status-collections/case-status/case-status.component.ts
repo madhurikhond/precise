@@ -32,7 +32,7 @@ export class CaseStatusComponent implements OnInit {
     private readonly notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    debugger;
+    
     this.caseStatusForm = this.fb.group({
       caseServiceActive:[''],
       sendStatusTime:['',[Validators.required]],

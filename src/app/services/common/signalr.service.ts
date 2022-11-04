@@ -22,7 +22,7 @@ export class SignalRService {
       .withUrl(domain + 'inform')
       .configureLogging(LogLevel.Debug)
       .build();
-
+    this.hubConnection.serverTimeoutInMilliseconds = 3600000;
   }
   private register(): void {
     this.hubConnection.on('HubCommunication', (param: string) => {
