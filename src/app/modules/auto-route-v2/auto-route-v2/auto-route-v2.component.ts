@@ -167,7 +167,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
 
   onFileChange(event: any) {
-
+debugger;
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.select_all = false;
@@ -259,7 +259,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
 
   async saveWithSplit_BarCodeAttachDoc(formData: any) {
-
+debugger;
     this.SplitBarCodessubscribe = await this.autoRouteV2Service.UploadFileSplitBarCodesRead(true, formData).subscribe(async (res) => {
       if (res.response != null) {
         if (res.response.length > 0) {
