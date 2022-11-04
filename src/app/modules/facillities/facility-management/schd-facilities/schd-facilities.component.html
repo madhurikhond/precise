@@ -4088,7 +4088,7 @@
 																<div
 																	*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
 																</div>
-																<pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls>
+																<!-- <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls> -->
 															</div>
 													</div>
 												</div>
@@ -4100,17 +4100,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-border-gray btn-sm pull-right"
-						data-dismiss="modal">Close</button>
-					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
-						[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
-					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
-						[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
-					<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
-						(click)="updateFacility(true)">Apply</button>
-				</div>
-
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-border-gray btn-sm pull-right"
