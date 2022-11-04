@@ -150,7 +150,7 @@ export class EsignrequestComponent implements OnInit {
   }
 
   checkdriverFirstName() {
-    debugger;
+    
     if (this.model.driverFirstName && this.isAlreadyExistsDriverName) {
       this.hiddenAlreadyExistsDriverNamePopUp.nativeElement.click();
     }

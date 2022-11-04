@@ -112,7 +112,7 @@ export class SubpoenaPickupStatusComponent implements OnInit {
         this.openPickupModal();
         this.subDetails = data.response;
         this.Status = data.response[0].Status;
-        debugger
+        
         this.totalRecords = data.response[0].Totalrecords;
         this.dataGrid.focusedRowIndex = 0;
         this.getSubDetailById(this.subDetails[0].SubsID);

@@ -74,7 +74,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
     });
   }
   getTaskManagementSettingForLabelTab() {
-    debugger;
+    
     this.labelTabData=null;
     this.taskManagementService.getTaskManagementSettingForLabelTab(true).subscribe((res)=>{
       if(res.response!=null)
@@ -88,7 +88,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
   }
 
   getTaskManagementSettingForSlackTab() {
-    debugger;
+    
     this.SlackTabData=null;
     this.taskManagementService.getTaskManagementSettingForSlackTab(true).subscribe((res)=>{
       if(res.response!=null)
@@ -161,7 +161,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
   }
   updateTaskManagementSlackGlobalSettings()
   {
-    debugger;
+    
     let body=new TaskManagementSlackGlobalSettings(
       this.slackGlobleControls.id.value,
       this.slackGlobleControls.isNotifyOnTaskCreationGlobal.value?this.slackGlobleControls.isNotifyOnTaskCreationGlobal.value:false,
@@ -191,7 +191,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
 
   actionArrowButtonClickForLabelTab(editRow:any)
   {
-   debugger;
+   
    this.submitted=false;
    this.modalValue='modal';
    this.currentEditLabelId=editRow.Id;
@@ -230,7 +230,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
       this.modalValue='';
       return ;
     }
-    debugger;
+    
     this.taskManagementService.updateTaskManagementSettingForLabel(true,this.taskManagementSettingsFormForLabelTab.value).subscribe((res)=>{
       if(res.response!=null)
       {
@@ -266,7 +266,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
       this.modalValue='';
       return ;
     }
-    debugger
+    
     this.taskManagementService.addTaskManagementSettingForLabel(true,this.taskManagementSettingsFormForLabelTab.value).subscribe((res)=>{
 
       if (res.response != null) {
@@ -282,7 +282,7 @@ export class TaskManagementSettingComponent implements OnInit,OnDestroy {
     });
   }
   ngOnDestroy() {  
-    debugger;
+    
     this.days=null;
     this.epicEmployees=null;
     this.labelTabData=null;

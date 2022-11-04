@@ -540,7 +540,6 @@ export class CopyservicemanagementComponent implements OnInit {
     this.isSearchReferrer = true;
     this.searchText = this.copyForm.searchText.value ?? '';
     this.search_isactive = this.copyForm.search_isactive.value;
-    console.log(this.pageNumber); console.log(this.pageSize);
     if (this.search_isactive === null) {
       this.search_isactive = ''
     }

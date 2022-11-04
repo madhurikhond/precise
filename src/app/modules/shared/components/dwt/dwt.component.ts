@@ -426,14 +426,12 @@ export class DwtComponent implements OnInit, OnDestroy {
       return true;
     } else {
       alert(2)
-      console.log(this.DWObject);
 
       this.showMessage(this.DWObject.ErrorString);
       return false;
     }
   }
   bindViewer() {
-    console.log(this.DWObject)
     this.DWObject.Viewer.bind(<HTMLDivElement>document.getElementById(this.containerId));
     this.DWObject.Viewer.width = "100%";
     this.DWObject.Viewer.height = "100%";
@@ -502,7 +500,7 @@ export class DwtComponent implements OnInit, OnDestroy {
       document.getElementById(this.containerId).parentElement.appendChild(WASMInput);
     }
     else {
-      console.log(this.DWObject.ErrorString);
+   
     }
   }
   initDWT(): void {
@@ -1303,18 +1301,12 @@ export class DwtComponent implements OnInit, OnDestroy {
                 .then(result => {
                   this.clearMessage();
                   this.saveResults.savedFiles.push(result);
-                  console.log(result);
                   this.saveResults.saveFileText.push("Copy path for  " + result.name);
                 }, err => this.showMessage(err));
             }
           }, err => this.showMessage(err));
       }
     }
-
-
-    console.log(this.saveResults.uploadedFiles)
-    console.log(this.saveResults.savedFiles)
-    console.log(this.saveResults.base64String)
   }
   UploadAsPDF() {
     var url = Dynamsoft.Lib.detect.ssl ? "https://" : "http://";
@@ -1338,10 +1330,8 @@ export class DwtComponent implements OnInit, OnDestroy {
         "HelloWorld.pdf",
         function () {
           //The server response is empty!
-          console.log("Successfully uploaded!")
         },
         function (errCode, errString, response) {
-          console.log(errString);
         }
       );
     }

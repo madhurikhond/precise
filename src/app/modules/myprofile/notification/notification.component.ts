@@ -69,7 +69,7 @@ export class NotificationsComponent implements OnInit {
   }
   filterNoticifation()
   {
-    debugger;
+    
     this.notificationList=[];
      this.myprofileService.getNotificationByFilter(true,this.notificationMessage, this.filterForm, this.filterTo, this.dropDownValue).subscribe((res)=>{
       if(res.response!=null)

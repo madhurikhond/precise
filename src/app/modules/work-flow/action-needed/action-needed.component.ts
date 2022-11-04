@@ -267,7 +267,7 @@ export class ActionNeededComponent implements OnInit {
 
 
   goButtonClick(DropDownObject: HTMLInputElement) {
-    debugger
+    
     if (DropDownObject.value !== '0') {
       if (!this.selectedRows || this.selectedRows.length == 0) {
         this.notificationService.showNotification({

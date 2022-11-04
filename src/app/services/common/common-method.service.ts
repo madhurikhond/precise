@@ -123,7 +123,7 @@ export class CommonMethodService {
     return true;
   }
   onExporting(instance: DataGrid, fileName: string) {
-    debugger;
+    
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet(fileName);
     exportDataGrid({

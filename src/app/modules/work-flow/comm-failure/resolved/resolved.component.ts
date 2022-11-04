@@ -65,7 +65,7 @@ export class ResolvedComponent implements OnInit {
 }
 
   getRecordList() {
-    debugger
+    
     if(this.searchText ===''){
     this.workflowService.getCommunicationFailure(1, this.pageNumber, this.pageSize, true).subscribe((res) => {
       var data: any = res;
@@ -91,7 +91,7 @@ export class ResolvedComponent implements OnInit {
    }
   }
   getSearchRecordList(){
-    debugger
+    
     this.workflowService.getSearchDataCommFailure(1,this.searchText, this.pageNumber, this.pageSize, true).subscribe((res) => {
       var data: any = res;
       this.totalRecords = 1;

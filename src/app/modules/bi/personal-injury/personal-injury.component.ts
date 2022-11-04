@@ -40,7 +40,6 @@ export class PersonalInjuryComponent implements OnInit {
         }
         for (let i = 0; i < responseHierarchy.length; i++) {
           list.push(responseHierarchy[i].hierarchy);
-          console.log(list);
           if(list[0].Url!=='')
           {
             valReturn=list[0].Url

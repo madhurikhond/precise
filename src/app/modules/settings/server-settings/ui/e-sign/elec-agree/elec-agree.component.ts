@@ -37,12 +37,10 @@ export class ElecAgreeComponent implements OnInit {
   }
 
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
 

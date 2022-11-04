@@ -149,7 +149,7 @@ export class RadPortalTabComponent implements OnInit {
     }
   }
   onUpdate3Tab(): void {
-    debugger
+    
     if (this.f3.valid) {
       let oModel = {};
       oModel = this.tab3Model;

@@ -39,7 +39,7 @@ export class ResetPasswordComponent implements OnInit {
     private readonly notificationService: NotificationService, private readonly storageService: StorageService,) { }
 
   ngOnInit(): void {
-    debugger
+    
     this.resetPasswordForm = this.fb.group({
 
       newPassword: [null, [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-z0-9])[A-Za-z\d].{8,}')]],
@@ -89,7 +89,7 @@ export class ResetPasswordComponent implements OnInit {
           else {
             this.isValidResetPassword = false;
 
-            debugger
+            
             this.strSuccessMessage = res.message;
 
           }

@@ -153,7 +153,6 @@ export class ProcGroupsComponent implements OnInit {
         'masterModality': (this.eForm.masterModality.value === '0') ? null : this.eForm.masterModality.value,
         //'masterModalityID': this.eForm.masterModalityID.value.toString()     
       }     
-      console.log(this.eForm.masterModalityID.value);
       this.settingService.updateProcGroup(true, data).subscribe((res) =>{      
         if (res) {
           this.notificationService.showNotification({ 
@@ -210,8 +209,6 @@ export class ProcGroupsComponent implements OnInit {
       this.totalRecords = res.totalRecords;
       if (data.response != null && data.response.length > 0) {
         this.procGroupList = data.response;
-     
-        console.log(this.procGroupList);
       }
       else {
         this.notificationService.showNotification({
