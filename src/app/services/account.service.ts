@@ -17,7 +17,6 @@ export class AccountService {
 
   
   getValidToken(val: any) {
-    debugger
     this.validToken.next(val);
   }
   get isLoggedIn() {

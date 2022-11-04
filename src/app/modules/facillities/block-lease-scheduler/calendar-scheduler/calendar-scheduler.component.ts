@@ -23,6 +23,7 @@ declare let scheduler: any;
     styleUrls: ['./calendar-scheduler.component.css']
 })
 export class CalendarSchedulerComponent implements OnInit {
+    @ViewChild('validatedefaultsign', { static: true }) validatedefaultsign: ElementRef;
     @ViewChild("scheduler_here", { static: true }) schedulerContainer: ElementRef;
     @ViewChild('frmCal', { static: true }) f: NgForm | any;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
@@ -46,6 +47,7 @@ export class CalendarSchedulerComponent implements OnInit {
     reasonId: number = 0;
     FACILITY_NAME: string;
     approveGoToNext: boolean = false;
+    isDefaultSign:any ;
     approveAllCheckForButton: boolean = false;
     otherFacilitiesParsed: any = [];
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
@@ -317,8 +319,12 @@ export class CalendarSchedulerComponent implements OnInit {
         }
     }
     GetBlockLeaseData() {
-        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = []; this.autoBlockOffDays = [];
-        this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID).subscribe((res) => {
+        var userID = this.storageService.user.UserId
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
+        this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID,userID).subscribe((res) => {
+            if(res.response){
+                this.isDefaultSign = res.response[0].IsDefaultEsign ? res.response[0].IsDefaultEsign : 0
+            }
             if (res.response[0].BlockLeases)
                 this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
             if (res.response[0].AllClosedDays)
@@ -413,6 +419,9 @@ export class CalendarSchedulerComponent implements OnInit {
         this.model.Title = '';
     }
     confirmBlockToLease(defaultSign: boolean, body: any = '') {
+        if(this.isDefaultSign == 0) {
+            this.validatedefaultsign.nativeElement.click();
+        }
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         if (defaultSign) {
             body = {

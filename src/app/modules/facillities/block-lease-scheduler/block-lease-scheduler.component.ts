@@ -35,12 +35,12 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
   selectedPaid: any='ALL';
-  ngOnInit(): void {
-    this.getFacilityParentList();
-    //this.getFacilityList();
+  ngOnInit(): void {   
+    this.getFacilityParentList();  
     this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
+    
   }
 
   getFacilityParentList() {
@@ -48,7 +48,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.facilityList=[];
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
-      if (res.response) {
+      if (res.response!= null) {
         this.facilityParentList = res.response[0].ParentFacilities;
         if(this.selectedParentFacility){
           this.facilityList = res.response[0].Facilities;
@@ -133,7 +133,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   changed(FacilityParentID: any) {  
     this.selectedParentFacility =  FacilityParentID.FacilityParentID;
     this.getFacilityParentList();
-    alert(this.selectedParentFacility);
+    //alert(this.selectedParentFacility);
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
@@ -146,8 +146,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
         this.blockLeaseGridList = [];
         this.totalRecord = 1;
       }
-    }, (err: any) => {
-      this.errorNotification(err);
     });
   }
 

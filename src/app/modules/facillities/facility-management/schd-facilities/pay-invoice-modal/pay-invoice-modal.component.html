@@ -35,7 +35,7 @@
         </form>
     </div>
     <div class="modal-footer">    
-        <button type="button" class="btn btn-theme" [disabled]="!payInvoiceForm.valid" (click)="abc($event)" [ngStyle]="{'background-color':(!payInvoiceForm.valid)? '#bfbfbf' : '#3b8beb'}">Mark As Paid</button>  
+        <button type="button" class="btn btn-theme" [disabled]="!payInvoiceForm.valid" (click)="MakePayment($event)" [ngStyle]="{'background-color':(!payInvoiceForm.valid)? '#bfbfbf' : '#3b8beb'}">Mark As Paid</button>  
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="cancel()">Cancel</a>
     </div>
 </div>
