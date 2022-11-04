@@ -15,14 +15,14 @@ export class DocumentmanagerService {
     );
   }
   getFilesByKey(showGlobalLoader: boolean = true,body){
-    debugger
+    
     return this._httpService.post(`DocumentManager/GetFileByKey`, body,showGlobalLoader,true).pipe(
       map((res: ApiResponse) => res)
     );
   }
 
   getFilesByKeys(showGlobalLoader: boolean = true,files){
-    debugger
+    
     return this._httpService.post(`DocumentManager/GetFileByKeys`, files,showGlobalLoader,true).pipe(
       map((res: ApiResponse) => res)
     );

@@ -151,12 +151,11 @@ export class BrokerComponent implements OnInit {
   }
  
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
+
     //this.log += new Date() + "<br />";
   }
   createGeneralPoliciesForm() {
@@ -440,7 +439,6 @@ export class BrokerComponent implements OnInit {
       this.modelValue = '';
     }
     if (this.addEditForm.invalid) {
-      console.log(this.addEditForm)
       this.modelValue = '';
       return;
     }
@@ -1036,7 +1034,6 @@ export class BrokerComponent implements OnInit {
           });
         }
       }, (err) => {
-        console.log(err);
         this.notificationService.showNotification({
           alertHeader: err.statusText,
           alertMessage: err.message,
@@ -1054,7 +1051,7 @@ export class BrokerComponent implements OnInit {
     this.sendMailForm.reset();
   }
   searchBrokers() {
-    debugger
+    
     this.pageNumber = 1;
     this.pageSize = 20;
     this.isSearchBroker = true;

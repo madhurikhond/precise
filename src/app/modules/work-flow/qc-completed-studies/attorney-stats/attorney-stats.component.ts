@@ -58,12 +58,12 @@ export class AttorneyStatsComponent implements OnInit {
   }
 
   pageChanged(event) {
-    debugger;
+    
     this.pageNumber = event;
     this.getAttorneyStats();
   }
   onPageSizeChange(event) {
-    debugger;
+    
     this.pageNumber = 1;
     this.pageSize = event;
     this.getAttorneyStats();

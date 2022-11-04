@@ -215,7 +215,6 @@ export class DocumentManagerFacilityComponent implements OnInit {
     this.prepareFilesList($event);
   }
   uploadFileMgr(file: any) {
-    console.log(this.selectedTreeItem);
     if (this.selectedUploadFile.length == 0) {
       return;
     }
@@ -297,7 +296,7 @@ export class DocumentManagerFacilityComponent implements OnInit {
   deleteFolder() { this.selectedFileKeys.length > 0 ? this.folderFileDelete = "file" : this.folderFileDelete = "folder"; this.hiddenFileDeleteItem.nativeElement.click(); }
   
   getFilesByKey(name: any, path:any){
-    debugger
+    
     this.documentmanagerService.getFilesByKey(true,JSON.stringify(path)).subscribe((res) => { 
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64 ;  
@@ -348,7 +347,6 @@ export class DocumentManagerFacilityComponent implements OnInit {
           });
           this.currentFileRename = true;
           //this.currentRenameItemRecord = { 'docId': e.fileSystemItem.dataItem.docId, 'name': e.fileSystemItem.dataItem.name, 'referrerId': e.fileSystemItem.dataItem.referreId, 'docType': e.fileSystemItem.dataItem.docType, 'fileBase64': e.fileSystemItem.dataItem.fileBase64 }
-          console.log(this.selectedFileKeys);
         }
         else if (this.selectedFileKeys.length > 1) {
           this.CodeErrorNotification('only single file can rename at a time.');
@@ -669,7 +667,6 @@ export class DocumentManagerFacilityComponent implements OnInit {
     });
   }
   onContentReady(e) {
-    console.log("in con");
   }
 
   okCreateNewFolder(isItemNewFolder: boolean) {

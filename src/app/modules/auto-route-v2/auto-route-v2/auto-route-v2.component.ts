@@ -98,7 +98,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     this.GetUpdateDoNotSplitFilesReadBarCodes();
 
     this.commonMethodService.getPatientDocListObser.subscribe((res) => {
-      debugger
+      
       this.isUploadShown = true;
       this.patientList = [...this.patientList, ...res];
       for (let i = 0; i < this.patientList.length; i++) {
@@ -138,7 +138,6 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       var data: any = res;
       if (data.response != null) {
         this.RadiologistList = data.response;
-        console.log(this.RadiologistList);
       }
     },
       (err: any) => {
@@ -157,7 +156,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
     return function () {
       if (!executed) {
         executed = true;
-        this.EmptyDirectorySubscribe = this.autoRouteV2Service.getEmptyDirectory(true, this.storageService.user.UserId).subscribe((res) => { console.log(res); });
+        this.EmptyDirectorySubscribe = this.autoRouteV2Service.getEmptyDirectory(true, this.storageService.user.UserId).subscribe((res) => { });
       }
     };
   })();
@@ -414,7 +413,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
       this.indexNumber = null;
 
       if (this._selectedAction == 5) {//Copy filename to PatientID
-        debugger;
+        
         for (let i = 0; i < this.patientList.length; i++) {
           if (this.patientList[i].is_selected === true) {
             let fileNameForPtId = this.patientList[i].name;

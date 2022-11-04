@@ -263,9 +263,8 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
 
 
   downloadFile(data, filename='data') {
-    debugger;
+    
     let csvData = this.ConvertToCSV(data, ['FirstName','LastName', 'PATIENTIDEXPORT',  'Address','DOB','Gender','BillSent','InsuranceCompany','COVERAGELEVEL','INSUREDID','POLICYGROUP','Notes','ATTORNEY','BusinessPhoneNumber','DOS','CPT','ReferringPhysician','InternalStudyId','ReportSignedTime']);
-    console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement('a');
     let url = URL.createObjectURL(blob);

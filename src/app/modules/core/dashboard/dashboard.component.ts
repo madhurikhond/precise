@@ -102,12 +102,10 @@ export class DashboardComponent implements OnInit {
     });
   }
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
   unSuccessNotification(res: any, msg: any) {
@@ -126,7 +124,7 @@ export class DashboardComponent implements OnInit {
   applyFilter(assignedBy: string, assignedTo: string, dueDate: string, label: string, savedSearch:string, status: string) {
 
     this.applyFilterBody = new TaskManagementApplyFilter(assignedBy, assignedTo, dueDate, label, savedSearch, status, this.storageService.user.UserId);
-    debugger
+    
     this.taskManagementService.taskManagementApplyFilter(true, this.applyFilterBody).subscribe((res) => {
       this.allTaskArray = [];
       if (res.response != null && res.response?.length > 0) {
@@ -154,7 +152,6 @@ export class DashboardComponent implements OnInit {
       this.linksList = [];
       if (res.response != null) {
         this.linksList = res.response;
-        console.log(this.linksList);
       }
       else {
         this.linksList = [];
@@ -173,7 +170,7 @@ export class DashboardComponent implements OnInit {
     });
   }
   viewTask2(taskId: any) {
-    debugger
+    
     $('.no-collapsable').on('click', function (e) {
       e.stopPropagation();
     });
@@ -209,7 +206,7 @@ export class DashboardComponent implements OnInit {
   }
 
   markTaskArchived(taskId: any) {
-    debugger
+    
     let body = { 'taskId': taskId }
     this.taskManagementService.markTaskArchived(true, body).subscribe((res) => {
 
@@ -269,7 +266,7 @@ export class DashboardComponent implements OnInit {
   }
   
   openPatientDetailWindow(patientDetail: string) {
-    debugger;
+    
     let patient = patientDetail.split(',');
     let body = {
       'internalPatientId': patient[0],

@@ -135,7 +135,7 @@ export class OrderedSmsComponent implements OnInit {
   }
   get getFromControls() { return this.ordredSmsSettingForm.controls; }
   onSubmit() {
-    debugger
+    
     this.submitted = true
     if (!this.ordredSmsSettingForm.valid) {
       return;

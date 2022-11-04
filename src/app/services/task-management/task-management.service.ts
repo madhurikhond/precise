@@ -61,7 +61,7 @@ export class TaskManagementService {
     );
   }
   getTaskDetailById(showGlobalLoader : boolean = true,taskId:any,userId:any){
-    debugger
+    
     return this._httpService.get(`TaskManagement/GetTaskDetailById?taskId=${taskId}&userId=${userId}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );

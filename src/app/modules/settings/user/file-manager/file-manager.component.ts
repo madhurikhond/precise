@@ -556,8 +556,6 @@ export class FileManagerComponent implements OnInit {
             this.treeView.instance.selectItem(1);
             this.selectedTreeItem = this.treeView.instance.getSelectedNodes()[0].itemData;
           }
-          // console.log(this.treeView.instance.getSelectedNodes()[0].itemData)
-
           this.getAllFIles();
 
         }, 500);
@@ -565,7 +563,6 @@ export class FileManagerComponent implements OnInit {
     });
   }
   onContentReady(e) {
-    console.log("in con");
   }
 
   okCreateNewFolder(isItemNewFolder: boolean) {

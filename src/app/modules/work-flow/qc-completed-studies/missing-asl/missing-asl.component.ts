@@ -172,7 +172,7 @@ export class MissingAslComponent implements OnInit {
   }
 
   onActionClick() {
-    debugger;
+    
     this.submitted = true;
     if (this.actionForm.invalid) {
       return;

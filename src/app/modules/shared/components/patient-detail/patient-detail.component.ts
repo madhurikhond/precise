@@ -755,7 +755,6 @@ export class PatientDetailComponent implements OnInit {
     let isReadyToBill = event.target.checked ? 1 : 0;
     let body = { 'internalStudyID': internalStudyID, 'isReadyToBill': isReadyToBill }
     this.patientService.markPatientStudyReadyToBill(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
-      console.log(res)
       if (res.responseCode == 200) {
         this.showNotificationOnSucess(res);
       }

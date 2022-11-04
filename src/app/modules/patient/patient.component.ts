@@ -345,6 +345,7 @@ export class PatientComponent implements OnInit {
       { value: '5', Text: 'Not Ready To Bill' },
       { value: '6', Text: 'Gross Receipts' },
       { value: '7', Text: 'Generate e-Sign Link' },
+      { value: '34', Text: 'Generate Patient Portal Link'},
       { value: '8', Text: 'Generate PI TC & P PI Lien' },
       { value: '9', Text: 'Generate PI TC Lien' },
       { value: '10', Text: 'Generate PI P Lien' },
@@ -371,7 +372,6 @@ export class PatientComponent implements OnInit {
       { value: '31', Text: 'Charge A No Show Fee' },
       { value: '32', Text: 'Remove No Show Fee' },
       { value: '33', Text: 'Do Not Send SMS' },
-      { value: '34', Text: 'Generate Patient Portal Link'}
     ];
   }
 
@@ -412,7 +412,7 @@ export class PatientComponent implements OnInit {
   }
 
   getPatientDetailById(e: any) {
-    debugger
+    
     let body = {
       'patientID': e.data.PATIENTID,
       'internalPatientId': e.data.INTERNALPATIENTID,
@@ -701,7 +701,6 @@ export class PatientComponent implements OnInit {
         this.billingHeaderTitle = JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].PATIENTID + ', ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].FAMILYNAME + ' ' + JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].GIVENNAME + ', ' + this.datePipe.transform(JSON.parse(res.response[0].JsonPatientDetailForDetailTab)['Patient Detail'][0].BIRTHDATE, this.dateTimeFormatCustom.Date);
         this.BillingData = res.response[0]
         this.setpatientBillingDetailFormData(this.BillingData)
-        console.log(this.patientBillingDetailForm)
       }
     });
   }
@@ -776,7 +775,7 @@ export class PatientComponent implements OnInit {
       this.InsertLastSearchRecord()
     }
 
-    debugger
+    
     let brokerId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.BrokerId : ''
     let facilityId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityID : '';
     let facilityParentId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityParentID : '';
@@ -825,7 +824,7 @@ export class PatientComponent implements OnInit {
     this.patientService.getPatientData(true, body, this.pageNumber, this.pageSize).subscribe((res) => {
 
       if (res.response != null && res.response.length > 0) {
-        debugger
+        
         this.patientGridList = res.response;
         this.totalRecord = res.totalRecords;
         this.dataGrid.instance.refresh();
@@ -970,7 +969,7 @@ export class PatientComponent implements OnInit {
   }
 
   selectionChanged(data: any) {
-    debugger
+    
     this.selectedRows = [];
     this.checkedData = data.selectedRowsData;
     this.selectedInternalPatientId = data.selectedRowKeys[0] ? data.selectedRowKeys[0].INTERNALPATIENTID : '';
@@ -978,7 +977,7 @@ export class PatientComponent implements OnInit {
     // this.itemClick(data.selectedRows);
   }
   _base64ToArrayBuffer(base64: any) {
-    
+
     var binary_string = window.atob(base64);
     var len = binary_string.length;
     var bytes = new Uint8Array(len);
@@ -999,7 +998,7 @@ export class PatientComponent implements OnInit {
 
   goButtonClick() {
 
-    debugger
+    
     if (this.ddlCurrentValue == '2')//'Save Grid'
     {
       let setting = { ...this.filterBody };
@@ -1072,7 +1071,7 @@ export class PatientComponent implements OnInit {
         this.checkedPatientIdInternalStudyid = [];
       }
       else if (this.ddlCurrentValue == '6') {
-        // Gross Receipts 
+        // Gross Receipts
 
         let body =
 
@@ -1111,10 +1110,9 @@ export class PatientComponent implements OnInit {
           });
       }
       else if (this.ddlCurrentValue == '7') {
-        //  Generate e-Sign Link    
-        debugger
+        //  Generate e-Sign Link
+        
         for (let i = 0; i < this.checkedData.length; i++) {
-          console.log(this.checkedPatientIdInternalStudyid);
           const results = this.checkedPatientIdInternalStudyid.filter(pt => {
             return pt.PATIENTIDEXPORT === this.checkedData[i].PATIENTID && pt.InternalStudyId === this.checkedData[i].Internalstudyid;
           });
@@ -1139,7 +1137,7 @@ export class PatientComponent implements OnInit {
           });
 
       } else if (this.ddlCurrentValue == '8') {
-        //  Generate_PI_TC_P_PI_Lien 
+        //  Generate_PI_TC_P_PI_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1154,7 +1152,7 @@ export class PatientComponent implements OnInit {
         this.patientService.getGeneratePI_TC_P_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.response != null) {
-            // this.success(res);             
+            // this.success(res);
             if (res.message.toString().toLowerCase() != 'success') {
               this.hiddenDisMessagePopUp.nativeElement.click();
               this.Generate_PI_TC_Message = res.message;
@@ -1164,7 +1162,7 @@ export class PatientComponent implements OnInit {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
               // var newWin=
-            
+
               window.open(URL.createObjectURL(file), '_blank');
             }
           } else {
@@ -1175,7 +1173,7 @@ export class PatientComponent implements OnInit {
             this.error(err);
           });
       } else if (this.ddlCurrentValue == '9') {
-        //  Generate_PI_TC_Lien         
+        //  Generate_PI_TC_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1196,9 +1194,9 @@ export class PatientComponent implements OnInit {
             for (let result of this.fileList) {
               let ArrayBuff = this._base64ToArrayBuffer(result.file);
               let file = new Blob([ArrayBuff], { type: 'application/pdf' });
-              
+
               window.open(URL.createObjectURL(file), '_blank');
-            
+
               //  this.success(res);
             }
           } else {
@@ -1209,7 +1207,7 @@ export class PatientComponent implements OnInit {
             this.error(err);
           });
       } else if (this.ddlCurrentValue == '10') {
-        //  Generate_P_PI_Lien         
+        //  Generate_P_PI_Lien
         for (let i = 0; i < this.checkedData.length; i++) {
           this.checkedPatientIdInternalStudyid.push({
             patientId: this.checkedData[i].PATIENTID,
@@ -1225,7 +1223,7 @@ export class PatientComponent implements OnInit {
         this.patientService.getGenerateP_PI_Lien(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
           this.checkedPatientIdInternalStudyid = [];
           if (res.responseCode == 200) {
-            //console.log(res);            
+            //console.log(res);
             if (res.message.toString().toLowerCase() != 'success') {
               this.hiddenDisMessagePopUp.nativeElement.click();
               this.Generate_PI_TC_Message = res.message;
@@ -1348,12 +1346,12 @@ export class PatientComponent implements OnInit {
       //|| DropDownObject.value == '14' || DropDownObject.value == '15' || DropDownObject.value == '16' || DropDownObject.value == '17' || DropDownObject.value == '18' || DropDownObject.value == '19')
       //4- Ready to Bill
       //5- Not Ready to Bill
-      //14- Patient Lien Signed 
-      //15- Patient Lien Not Signed 
-      //16- Attorney Lien Signed 
-      //17- Attorney Not Lien Signed 
-      //18- Tech ASL Signed 
-      //19- Tech ASL Not Signed 
+      //14- Patient Lien Signed
+      //15- Patient Lien Not Signed
+      //16- Attorney Lien Signed
+      //17- Attorney Not Lien Signed
+      //18- Tech ASL Signed
+      //19- Tech ASL Not Signed
       {
         this.checkedPatientIdInternalStudyid = [];
         for (let i = 0; i < this.checkedData.length; i++) {
@@ -1399,7 +1397,7 @@ export class PatientComponent implements OnInit {
         let actionOrderNo = this.ddlCurrentValue;
         for (let i = 0; i < this.checkedData.length; i++) {
           // this.checkedPatientIdInternalStudyid.push({
-          // InternalStudyId: this.checkedData[i].Internalstudyid,            
+          // InternalStudyId: this.checkedData[i].Internalstudyid,
           // })
           if (i < this.checkedData.length - 1) {
             internalPatientIds += this.checkedData[i].INTERNALPATIENTID + ',';
@@ -1653,11 +1651,11 @@ export class PatientComponent implements OnInit {
   }
 
   lastSearchPatch(event) {
-    debugger
+    
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
-    // console.log(stringInput);    
+    // console.log(stringInput);
     this.lastNameModel = stringInput.lastName;
     this.firstNameModel = stringInput.firstName;
     this.patientIdModel = stringInput.patientID;
@@ -1699,7 +1697,7 @@ export class PatientComponent implements OnInit {
   }
 
   InsertLastSearchRecord() {
-    debugger
+    
     let body = {
       'id': 0,
       'isSelected': 0,
@@ -1732,13 +1730,12 @@ export class PatientComponent implements OnInit {
     }
     this.patientService.InsertLastSearchRecord(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
       var data: any = res;
-      console.log(data);
     }
     )
   }
 
   GetLastSearchRecord() {
-    debugger
+    
     this.patientService.GetLastSearchRecord(true).subscribe((res) => {
       this.LastSearchRecordList = res.response
       if (this.LastSearchRecordList == null) {
@@ -1797,12 +1794,12 @@ export class PatientComponent implements OnInit {
   }
 
   onChangeSavedSearch(event) {
-    debugger
+    
     //this.clearFilter();
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
-    // console.log(stringInput);    
+    // console.log(stringInput);
     this.lastNameModel = stringInput.lastName;
     this.firstNameModel = stringInput.firstName;
     this.patientIdModel = stringInput.patientID;
@@ -1898,14 +1895,14 @@ export class PatientComponent implements OnInit {
       return res && res.INTERNALPATIENTID ? res.INTERNALPATIENTID : 0;
     }
   }
- 
+
 ValidateMultiSelectTextLength(id, a)
   {
     a =this._commonMethodService.ValidateMultiSelectTextLength(id,a);
   return a;
   }
   copyToClipboard(currentPageUrl) {
-    debugger
+    
      navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
@@ -1916,7 +1913,7 @@ ValidateMultiSelectTextLength(id, a)
      });
   }
   getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
-    debugger
+    
       if (referrerId) {
       let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
@@ -1929,14 +1926,14 @@ ValidateMultiSelectTextLength(id, a)
     }
   }
   getReferringPhyDetailById(referringPhysician: string, ReferringPhyId: any) {
-    debugger
+    
     if (ReferringPhyId) {
       let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
   getReadingPhysicianById(readingPhysician: string, RadlogistId: any) {
-    debugger
+    
     if (RadlogistId) {
       let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab' : true};
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
