@@ -97,7 +97,7 @@ export class EsignrequestasComponent implements OnInit {
         }
         this.updateDriverName();
         if (fromSign) {
-          debugger
+          
           this.patientService.sendDataToEsignrequestKeeper.subscribe(res => {
             this.agreeCheck = res;
             this.AgreeEsignData = res;            
@@ -235,7 +235,7 @@ export class EsignrequestasComponent implements OnInit {
     this.agreeCheck = event.target.checked;
   }
   openlien() {
-    debugger
+    
     if (this.agreeCheck) {
       this.esignbodyDisabled = false;
       this.AgreeEsignData = true;

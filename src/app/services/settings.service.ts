@@ -1277,13 +1277,13 @@ export class SettingsService {
     )
   }
   deleteRoleGroupName(showGlobalLoader: boolean = true, groupName) {
-    debugger
+    
     return this._httpService.delete(`Automation/DeleteRoleGroupName?groupName=${groupName}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
   updateRoleGroupName(showGlobalLoader:boolean = true,  groupName,oldGroupName) {
-    debugger
+    
     return this._httpService.get(`Automation/UpdateRoleGroupName?groupName=${groupName}&oldGroupName=${oldGroupName}`,showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     ) 

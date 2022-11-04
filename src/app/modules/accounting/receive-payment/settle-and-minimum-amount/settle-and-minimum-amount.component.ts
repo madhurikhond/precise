@@ -50,7 +50,7 @@ export class SettleAndMinimumAmountComponent implements OnInit {
   }
   
   createARPayment(){
-     debugger
+     
      this.createPaymemts(this.data); 
      this.activeModal.dismiss(false);
      this.commanMethodService.sendDatatoRequestSearch(true);

@@ -103,7 +103,7 @@ export class OrderedreviewerComponent implements OnInit {
     });
   }
   onNeedToReviewedTabClicked() {
-    debugger;
+    
     this.needToOrderedReviewPageNumber = 1;
     this.NeedToOrderedReviewList = null;
     this.getAllNeedsToBeReviewedStudies();
@@ -151,7 +151,7 @@ export class OrderedreviewerComponent implements OnInit {
   }
   getPatientPersonalInfo(patientId: any) {
     this.workFlowService.getPatientDetailByPatientId(true, patientId).subscribe((patientInfoResponse) => {
-      debugger;
+      
       this.popUpTittle = '';
       this.patientDetailWindowData = {};
       if (patientInfoResponse.response != null) {
@@ -168,13 +168,13 @@ export class OrderedreviewerComponent implements OnInit {
     });
   }
   openPatientDetailWindow() {
-    debugger;
+    
     //alert(JSON.stringify(this.patientDetailWindowData));
     this.patientService.sendDataToPatientDetailWindow(this.patientDetailWindowData);
   }
   getPatientStudyDetailByPatientId(patientId: any) {
     this.workFlowService.getPatientStudyDetailByPatientId(true, patientId).subscribe((patientStudyResponse) => {
-      debugger;
+      
       if (patientStudyResponse.response != null) {
         this.patientStudyList = patientStudyResponse.response;
       }
@@ -247,7 +247,7 @@ export class OrderedreviewerComponent implements OnInit {
     }
   }
   onPageSizeChange(pageSize: any) {
-    debugger;
+    
     this.needToOrderedReviewPageSize = pageSize;
     this.orderedReviewedPageSize = pageSize;
     if (this.isFilterApply) {

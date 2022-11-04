@@ -123,12 +123,10 @@ export class ParentCompComponent implements OnInit {
     // };
   }
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
   
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
   onPageSizeChange(event) {
@@ -429,7 +427,6 @@ export class ParentCompComponent implements OnInit {
     this.facilityService.getFacilityParentPricing(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
         this.FacilityParentCurrentPricingList = res.response;
-        console.log(this.FacilityParentCurrentPricingList);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -606,7 +603,7 @@ export class ParentCompComponent implements OnInit {
 
   updateParentFacilityById() {
 
-    debugger;
+    
     this.submitted = true;
     this.modalValue = 'modal';
     if (this.parentCompanyDetailForm.invalid) {
@@ -740,8 +737,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   saveChangesCurrentPricing() {
-   
-    console.log(this.FacilityParentCurrentPricingList);
+
     this.facilityService.updateFacilityParentPricing(true, this.FacilityParentCurrentPricingList).subscribe((res) => {
       if (res.response != null) {
         this.showSuccessNotification(res);

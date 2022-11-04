@@ -35,7 +35,6 @@ export class MyAppointmentsComponent implements OnInit {
     patientId : this.patientPortalService.patientDetail.patientId,
   }
  this.patientPortalService.GetAppointmentDetails(request).subscribe(res=>{
-  console.log(res);
   this.appointmentDetails = res.result;
  })
  }

@@ -433,7 +433,7 @@ export class TaskManagementComponent implements OnInit {
     }
   }
   openPatientDetailWindow(patientDetail: string) {
-    debugger;
+    
     let patient = patientDetail.split(',');
     let body = {
       'internalPatientId': patient[0],

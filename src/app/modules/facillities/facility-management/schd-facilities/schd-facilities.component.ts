@@ -223,12 +223,10 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   onChange($event: any): void {
-    console.log("onChange");
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
   onPageSizeChange(event) {
@@ -846,7 +844,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getTagListByFacilityId(true, facilityId).subscribe((tagRes) => {
       if (tagRes.response != null) {
         this.facilityTagList = tagRes.response;
-        console.log(this.facilityTagList);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -1739,7 +1736,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }
 
     this.facilityService.updateFacility(true, body).subscribe((res) => {
-      debugger
+      
       if (res.response != null) {
         this.showNotificationOnSucess(res);
         if (this.facilityNotesFormControls.Note.value != null && this.facilityNotesFormControls.Note.value.toString().trim() != '') {

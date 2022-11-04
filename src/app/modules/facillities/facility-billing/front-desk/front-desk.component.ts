@@ -148,7 +148,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             data: this.GridData
           }
         }
-        console.log(this.dataSource);
       }
       this.onInitialized = this.onInitialized.bind(this);
     }, (err: any) => {

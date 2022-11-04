@@ -299,7 +299,7 @@ export class PaymentHistoryComponent implements OnInit {
   showCheck(patientId, fileName) {
     this.accountingService.getPatientPaymentCheck(true, patientId, fileName).subscribe((res) => {
       var data: any = res;
-      debugger
+      
       if (data.response) {
         this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(data.response);
         //this.pdfSrc = data.response;

@@ -14,7 +14,7 @@ export class CommunicationComponent implements OnInit {
   constructor(private commonMethodService: CommonMethodService, private logService:LogsService) { }
 
   ngOnInit(): void {
-    debugger;
+    
     this.commonMethodService.setTitle('Communication')
     this.logService.setTextFilter().subscribe(textsearch => this.searchTextBoxModal = textsearch);
     this.isGoBtnDisabled = true;

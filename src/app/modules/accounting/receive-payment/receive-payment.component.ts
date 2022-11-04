@@ -97,7 +97,7 @@ export class ReceivePaymentComponent implements OnInit {
     private readonly accountingService: AccoutingService, private readonly notificationService: NotificationService,
     private readonly storageService: StorageService, private _modalService: NgbModal,) { 
       this.commonMethodService.requestSearchObservable.subscribe((res) => {
-        debugger
+        
        this.updateSelectedData = res ;
   
       }, (err: any) => {
@@ -410,7 +410,7 @@ export class ReceivePaymentComponent implements OnInit {
       }
       this.accountingService.getARPaymentData(true, data, this.pageNumber, this.pageSize).subscribe((res) => {
         if (res) {
-          debugger
+          
           var data: any = res;
           this.dataList = data.response;
           this.SelectedAmount = 0;
@@ -466,7 +466,7 @@ export class ReceivePaymentComponent implements OnInit {
     }, 200);
   }
   OnRowselected(data: any) {
-    debugger
+    
     this.SelectedRow = data.selectedRowsData.length;
     if (data.selectedRowsData.length > 0) {
       this.oncreateARPayments(data);
@@ -475,10 +475,9 @@ export class ReceivePaymentComponent implements OnInit {
     this.onDeleteCurrentSelectedStudy(data);
   }
   onSaving(e) {
-    console.log('in');
   }
   onCellUpdating(data: any) {
-    debugger
+    
     var e = false;
     let ssx:any ={...data.oldData}; 
     var a: NgbModalRef;
@@ -496,7 +495,7 @@ export class ReceivePaymentComponent implements OnInit {
           }, (reson) => {           
             // if (!reson) {
             //   if(this.updateSelectedData){
-            //     debugger    
+            //         
             //     this.SelectedAmount = Number(this.SelectedAmount) + Number(data.newData.Nowpaid) - Number(ssx.Nowpaid);
             //     this.BalanceAmount = Number(this.CheckAmount) - Number(this.SelectedAmount);
             //   }
@@ -604,7 +603,7 @@ export class ReceivePaymentComponent implements OnInit {
   onDeleteCurrentSelectedStudy(data: any) {
     if (data.currentDeselectedRowKeys.length > 0) {
       for (let i = 0; i < data.currentDeselectedRowKeys.length; i++) {
-        debugger
+        
         let deselectedKey = data.currentDeselectedRowKeys[i];
         let deselectedrow = this.dataList.filter(x => x.INTERNALSTUDYID === deselectedKey);
         this.SelectedAmount = Number(this.SelectedAmount) - Number(deselectedrow[0].Nowpaid);

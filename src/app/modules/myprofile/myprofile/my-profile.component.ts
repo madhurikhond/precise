@@ -53,7 +53,6 @@ export class ProfileComponent implements OnInit {
   {
     this.onSubmit();
     let body=this.model;  
-    console.log(this.model)
     if (this.model.FIRSTNAME && this.model.LASTNAME) {
 
       this.myprofileService.updateUser(true,body).subscribe((res)=>{
