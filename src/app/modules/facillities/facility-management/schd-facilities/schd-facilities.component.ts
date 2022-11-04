@@ -949,8 +949,8 @@ export class SchdFacilitiesComponent implements OnInit {
       data[0].ResourceId = ResourceId;
     else
     {
-      //debugger
-      if(Modality='ct')
+      debugger
+      if(Modality=='ct')
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
         // alert('CT Test ' + test);
@@ -1307,6 +1307,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri1contrast: data.mri1contrast,
       mri1sedation: data.mri1sedation,
       mri1breast: data.mri1breast,
+
       mri2type: data.mri2type,
       mri2strength: data.mri2strength,
       mri2make: data.mri2make,
@@ -1314,6 +1315,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri2contrast: data.mri2contrast,
       mri2sedation: data.mri2sedation,
       mri2breast: data.mri2breast,
+
       mri3type: data.mri3type,
       mri3strength: data.mri3strength,
       mri3make: data.mri3make,
@@ -1321,9 +1323,11 @@ export class SchdFacilitiesComponent implements OnInit {
       mri3contrast: data.mri3contrast,
       mri3sedation: data.mri3sedation,
       mri3breast: data.mri3breast,
+
       mriwFlexandEXT: data.mriwFlexandEXT,
       mrI2WFlexandEXT: data.mrI2WFlexandEXT,
       mrI3WFlexandEXT: data.mrI3WFlexandEXT,
+
       mrinotes: data.mrinotes,
     });
   }
@@ -1349,6 +1353,7 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3contrast: data.ct3contrast,
       ct3sedation: data.ct3sedation,
       ct3breast: data.ct3breast,
+
       ctnotes: data.ctnotes
     });
   }
