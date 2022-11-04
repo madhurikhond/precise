@@ -490,9 +490,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     });
   }
   fileManager_onSelectionChanged(e) {
-
     this.setFileManagerRowColor();
     this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
+    if ((this.selectedFileNames) == undefined)
+      this.selectedFileNames = ''
+      
     if (this.selectedFileNames) {
       this.selectedFileKeys = e.selectedItemKeys;
       var fileExtension = this.selectedFileNames.split('.').pop();
@@ -510,6 +512,8 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       // }
 
 
+    } else {
+      this.selectedFileKeys = 0;
     }
 
 
