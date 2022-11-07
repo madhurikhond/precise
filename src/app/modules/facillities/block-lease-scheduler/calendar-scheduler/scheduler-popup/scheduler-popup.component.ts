@@ -311,7 +311,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
-          if (res.response[0].TotalCreditHours)
+          if (res.response[0].TotalLeaseHours)
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
 
           
