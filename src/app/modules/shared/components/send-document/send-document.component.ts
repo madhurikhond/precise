@@ -139,7 +139,9 @@ export class SendDocumentComponent implements OnInit, AfterViewInit {
         this.selectedEmailPatient = [];
         this.selectedEmailFacility = [];
         this.selectedEmailBroker = [];
-
+        this.addEmailForm.reset();
+        this.addPostMailForm.reset();
+        this.addFaxForm.reset();
       }
     })
     this.FormInitialization();
