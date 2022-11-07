@@ -1067,7 +1067,7 @@ export class SchdFacilitiesComponent implements OnInit {
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
           this.blockLeaseAgreementMRIList = res.response;
-          //this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
+          this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
           this.totalrecordsFull_MRI = res.response[0].TotalRecords;
         }
         else {
