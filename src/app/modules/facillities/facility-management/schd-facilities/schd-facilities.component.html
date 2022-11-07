@@ -4038,9 +4038,9 @@
 															<dx-data-grid #grid id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
-																(onRowClick)="getLeasePaymentMappingByFacilityId($event)" 
+																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
 																[allowColumnResizing]="true"
-																[columnResizingMode]="columnResizingMode" 
+																[columnResizingMode]="columnResizingMode"
 																[columnAutoWidth]="true">
 																<dxo-selection mode="single"></dxo-selection>
 																<dxo-paging [pageSize]="10"></dxo-paging><dxo-sorting mode="none"></dxo-sorting>
@@ -4052,7 +4052,11 @@
 																<dxi-column dataField="CheckNo" caption="CHECK #"> </dxi-column>
 																<dxi-column dataField="CheckDate" caption="CHECK DATE" [width]="200"> </dxi-column>
 																<dxi-column dataField="CheckAmount" caption="CHECK AMOUNT"  dataType="number" format="currency"></dxi-column>
-																<dxi-column dataField="newGlobal" caption="VIEW PDF PAYMENT DETAILS"></dxi-column>
+																<dxi-column dataField="newGlobal" caption="VIEW PDF PAYMENT DETAILS" cellTemplate="cellTemplate">
+																	<div *dxTemplate="let data of 'cellTemplate'">
+																		<a class="PDFIcon" (click)="downloadFile(data.fileName,data.fileBytes)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+																	</div>
+																</dxi-column>
 																<dxo-master-detail [enabled]="true" template="productDetail"></dxo-master-detail>
 																<div *dxTemplate="let detail of 'productDetail'">
 																	<dx-data-grid  [dataSource]="blockLeasePaymentMappingList"
@@ -4067,7 +4071,7 @@
 																		<dxi-column dataField="LeaseTotal" caption="Lease Total" dataType="number" format="currency"></dxi-column>
 																	</dx-data-grid>
 																	<dx-data-grid id="gridContainerBlockLeaseCreditList"
-																		[dataSource]="blockLeaseCreditList" 
+																		[dataSource]="blockLeaseCreditList"
 																		[showBorders]="true" [allowColumnResizing]="true" [columnAutoWidth]="true" style="Max-height:150px">
 																		<dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
 																		<dxi-column dataField="Lease" caption="Lease #"></dxi-column>
@@ -4186,6 +4190,6 @@
 		data-target="#confirmationLease"></button>
 	<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
 		data-target="#add-Edit-facility"></button>
-	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" 
+	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal"
 	    data-target="#viewFile_Doc"></button>
 	<app-document-manager-facility></app-document-manager-facility>
