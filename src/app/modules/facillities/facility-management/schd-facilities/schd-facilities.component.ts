@@ -165,6 +165,17 @@ export class SchdFacilitiesComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private readonly storageService: StorageService) {
     this.commonMethodService.setTitle('Scheduling Facility');
+
+    blockleasescheduler.sendDataToFacilityDetail.subscribe(res => {
+      if(res)
+      {
+        if(res.facilityId)
+        {
+          this.getFacilityDetail(res.facilityId);
+          this.defaultPopupTab = res.type;
+        }
+      }
+    });
     facilityService.sendDataToschdFacilities.subscribe(res => {
       if (res.FacilityID) {
         this.isGridDisplay = false;

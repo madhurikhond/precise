@@ -164,4 +164,11 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     });
   }
 
+  getFacilityDetail(facilityId: any,type:any) {  
+    let body = {
+      'facilityId': facilityId,
+      'type':type
+    }
+    this.blockLeaseSchedulerService.sendDataToPatientFacilityWindow(body);
+  }
 }

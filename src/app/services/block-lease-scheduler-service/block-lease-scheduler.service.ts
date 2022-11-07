@@ -13,9 +13,14 @@ export class BlockLeaseSchedulerService {
 
 
   sendDataToCalendarScheduler: EventEmitter<any> = new EventEmitter<any>();
+  sendDataToFacilityDetail: EventEmitter<any> = new EventEmitter<any>();
 
   sendDataToCalendarSchedulerWindow(body: any): void {
     this.sendDataToCalendarScheduler.emit(body);
+  }
+
+  sendDataToPatientFacilityWindow(body: any): void {
+    this.sendDataToFacilityDetail.emit(body);
   }
   
   constructor(private readonly _httpService: HttpService, private readonly storageService: StorageService,) { }
