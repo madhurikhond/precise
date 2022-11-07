@@ -927,7 +927,6 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getTagListByFacilityId(this.facilityId);
         this.getAllBlockLeaseCredits();
         this.getFacilityCreditsUnUsed();
-        this.getUnpaidLeases();
         this.getblockLeasePaymentByFacilityId(this.facilityId);
       }
     }, (err: any) => {
@@ -2687,6 +2686,9 @@ export class SchdFacilitiesComponent implements OnInit {
     if (this.defaultPopupTab == 'BlockLeaseRate' || this.defaultPopupTab == 'Leases') {
       this.getBlockLeasePricing(this.facilityId);
     }
+    if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab =='LeasePaymentsUnPaid') {
+      this.getUnpaidLeases();
+    }
   }
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({
@@ -2831,6 +2833,7 @@ export class SchdFacilitiesComponent implements OnInit {
           },
           (reason) => {
             if (reason == 5) {
+              this.getUnpaidLeases();
               modalRef.close();
             }
             else {
