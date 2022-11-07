@@ -74,7 +74,7 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isLeaseSigned = true;  
+    //this.isLeaseSigned = true;  
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -154,7 +154,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
-          // this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
+          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.selectedModality = this.LeaseDetails['ModalityType'];
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
@@ -270,7 +270,8 @@ export class SchedulerPopupComponent implements OnInit {
       'startTime': this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
       'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
       'modality': this.selectedModality.toUpperCase(),
-      'resourceId': this.selectedresourceId
+      'resourceId': this.selectedresourceId,
+      'contrast': this.editFormControls.contrastType.value
     }
     this.blockLeaseSchedulerService.getAlreadyBlockedLease(true, body).subscribe((res) => {
       if (res.response != null) {

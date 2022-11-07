@@ -187,7 +187,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
         };
         scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
-        console.log(this.SchedulerDayWeekMonth);
+        scheduler.deleteMarkedTimespan();
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
         let displayClosedDays = [];
         if (this.allClosedDays) {
