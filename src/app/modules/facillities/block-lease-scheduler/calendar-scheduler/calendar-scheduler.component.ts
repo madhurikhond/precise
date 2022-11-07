@@ -55,6 +55,7 @@ export class CalendarSchedulerComponent implements OnInit {
         private readonly storageService: StorageService, private datePipe: DatePipe,
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
+            debugger
             if (res) {
                 this.bodyRes = res;
                 this.FacilityName = res.FacilityName;
@@ -457,16 +458,59 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserFirstName': this.model.firstName,
                 'PreciseUserLastName': this.model.lastName,
             }
+
             this.confirmBlockToLease(false, data)
             this.f.submitted = false;
         }
     }
+
+    ApproveSubmitSign(isItemSign: boolean) {
+        if (this.model.signature == '') {
+            return;
+        }
+        if (this.f.valid) {
+            let data = {
+                'FacilityID': this.FacilityID,
+                'UserId': this.storageService.user.UserId,
+                'DefaultSign': this.model.signature
+            }
+
+            this.approveAllParentToLease(false, data)
+            this.f.submitted = false;
+        }
+    }
+
     errorNotification(err: any) {
         this.notificationService.showNotification({
             alertHeader: err.statusText,
             alertMessage: err.message,
             alertType: err.status
         });
+    }
+    approveAllParentToLease(defaultSign: boolean, body: any = '') {
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
+        if (defaultSign) {
+            body = {
+                FacilityID: this.FacilityID
+            }
+        }
+        this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
+            if (res.response) {
+                if (res.responseCode === 200) {
+
+                    this.notificationService.showNotification({
+                        alertHeader: 'Success',
+                        alertMessage: res.response.message,
+                        alertType: res.response.ResponseCode
+                    })
+                }
+            }
+        }, (err: any) => {
+            this.errorNotification(err);
+        });
+
+
+
     }
     getTwentyFourHourTime(time) {
         let hours = Number(time.match(/^(\d+)/)[1]);

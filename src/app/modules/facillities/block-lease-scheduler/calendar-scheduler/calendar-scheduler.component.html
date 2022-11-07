@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">{{FacilityName}} - scheduler
                 </h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div class="close-dismiss" data-dismiss="modal"></div>Approve
             </div>
             <div class="modal-body">
                 <div #scheduler_here class="dhx_cal_container" style="width: 100%; height:100vh">
@@ -18,7 +18,7 @@
                         <div class="dhx_cal_tab" name="timeline_tab"></div>
                         <div class="dhx_cal_tab" name="day_tab"></div>
                         <div class="dhx_cal_tab" name="week_tab"></div>
-                        <div class="dhx_cal_tab" name="month_tab"></div>                       
+                        <div class="dhx_cal_tab" name="month_tab"></div>
                         <!--- HERE -->
 
                         <!-- <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
@@ -34,12 +34,18 @@
 
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" *ngIf="approveGoToNext" class="btn btn-theme" (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{'{ ' + FACILITY_NAME  + ' }'}}</a>
-                <a href="javascript:void(0)" *ngIf="approveAllCheckForButton" class="btn btn-theme">APPROVE ALL PARENT_CO. FACILITIES & SEND LEASE AGREEMENT</a>
-                <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal" class="btn btn-theme">Approve and send lease
+                <a href="javascript:void(0)" *ngIf="approveGoToNext" class="btn btn-theme"
+                    (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{'{ ' + FACILITY_NAME + ' }'}}</a>
+                <a href="javascript:void(0)" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
+                    data-toggle="modal" class="btn btn-theme">APPROVE ALL Parent Company Name FACILITIES & SEND LEASE
+                    AGREEMENT</a>
+                <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal"
+                    class="btn btn-theme">Approve and send lease
                     agreement to facility</a>
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
                     data-dismiss="modal">Close</a>
+
+
             </div>
         </div>
     </div>
