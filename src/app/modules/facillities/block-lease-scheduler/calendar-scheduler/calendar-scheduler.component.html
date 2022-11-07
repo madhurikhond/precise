@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">{{FacilityName}} - scheduler
                 </h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>Approve
+                <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <div class="modal-body">
                 <div #scheduler_here class="dhx_cal_container" style="width: 100%; height:100vh">
@@ -180,6 +180,78 @@
                     #closeBtn (click)="signConfirm(false)">Close</a>
             </div>
         </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="approveLeasePopup1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>DO YOU WANT TO LEASE BLOCK with use default sign?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                    [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                    class="btn btn-theme btn-sm pull-left">Approve</button>
+                <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                    #closeBtn (click)="signConfirm(false)">Close</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="approveAllParentToLease(true)" hrefTo="javascript:void(0)"
+                    class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
+                    class="btn btn-theme pull-left btn-sm">No</a>
+            </div> 
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" #approveAddEsign id="approveAddEsign" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SIGN</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form name="form" (ngSubmit)="f.form.valid && (model.signature!='') && ApproveSubmitSign(true)" #f="ngForm"
+                class="theme-form" novalidate>
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div
+                                        [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                                        <signature-pad id="signature-pad" ngDefaultControl
+                                            [options]="signaturePadOptions" [(ngModel)]="model.signature"
+                                            [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
+                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div *ngIf="f.submitted && model.signature==''" class="invalid-feedback">
+                                        <div>signature is required</div>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                    class="btn btn-theme btn-sm">Clear Signature</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">Approve</button>
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                        #closeBtn (click)="signConfirm(false)">Close</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
