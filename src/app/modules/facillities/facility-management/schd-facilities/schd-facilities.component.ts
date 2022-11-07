@@ -948,7 +948,6 @@ export class SchdFacilitiesComponent implements OnInit {
       data[0].ResourceId = ResourceId;
     else
     {
-      debugger
       if(Modality=='ct')
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
@@ -2102,7 +2101,6 @@ export class SchdFacilitiesComponent implements OnInit {
     }
     console.log(body);
     this.facilityService.updateFacility(true, body).subscribe((res) => {
-      debugger
       if (res.response != null) {
         this.showNotificationOnSucess(res);
         if (this.facilityNotesFormControls.Note.value != null && this.facilityNotesFormControls.Note.value.toString().trim() != '') {

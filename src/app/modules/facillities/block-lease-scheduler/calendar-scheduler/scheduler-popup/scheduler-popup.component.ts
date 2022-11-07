@@ -106,10 +106,10 @@ export class SchedulerPopupComponent implements OnInit {
     if (!this.event['LeaseBlockId']) {
       this.leaseBlockOffForm = this.formBuilder.group({
         modalityType: ['', Validators.required],
-        start_date: [this.event['start_date']],
-        start_time: [this.event['start_date']],
-        end_date: [this.event['end_date']],
-        end_time: [this.event['end_date']],
+        start_date: [this.event['start_date'], Validators.required],
+        start_time: [this.event['start_date'], Validators.required],
+        end_date: [this.event['end_date'], Validators.required],
+        end_time: [this.event['end_date'], Validators.required],
       });
     }
     if (this.mode == 'month') {
@@ -217,6 +217,7 @@ export class SchedulerPopupComponent implements OnInit {
   setRequired() {
     return [Validators.required];
   }
+
   changedOffDays(event: any) {
     this.selectedresourceId = event.target.value;
     this.selectedModality="";
@@ -456,19 +457,21 @@ export class SchedulerPopupComponent implements OnInit {
   handleBlockOffDaysChange(e: any, from: string) {
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
-    if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
-      this.leaseBlockOffForm.patchValue({
-        end_date: null,
-        end_time: null
-      });
-      this.dateTimeValidationMsg = "End date should be greater than Start date";
-      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-    } else if (((this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')))) {
-      this.leaseBlockOffForm.patchValue({
-        end_time: null
-      });
-      this.dateTimeValidationMsg = "End time should be greater than Start time";
-      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+    if(this.editBlockOffFormControls.end_date.value != null){
+      if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
+        this.leaseBlockOffForm.patchValue({
+          end_date: null,
+          end_time: null
+        });
+        this.dateTimeValidationMsg = "End date should be greater than Start date";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      } else if (((this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+        this.leaseBlockOffForm.patchValue({
+          end_time: null
+        });
+        this.dateTimeValidationMsg = "End time should be greater than Start time";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      }
     }
   }
   handleValueChange(e: any, from: string) {
@@ -483,35 +486,37 @@ export class SchedulerPopupComponent implements OnInit {
     const newValueDate = new Date(newValue.toLocaleDateString());
     var start_date = new Date(this.editFormControls.start_date.value);
     var end_date = new Date(this.editFormControls.end_date.value);
-    if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
-      this.leaseForm.patchValue({
-        end_date: null,
-        end_time: null
-      });
-      this.dateTimeValidationMsg = "End date should be greater than Start date";
-      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-    } else if (((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
-      this.leaseForm.patchValue({
-        end_time: null
-      });
-      this.dateTimeValidationMsg = "End time should be greater than Start time";
-      this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-    } else {
-      if (from == 'start_date' || from == 'end_date') {
-        if (from == 'start_date' && newValueDate < current_Date) {
-          this.pastDate_start_date = previousValue;
-          isValid = false;
-          this.hiddenpastDateConfirm.nativeElement.click();
+    if(this.editFormControls.end_date.value != null){
+      if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
+        this.leaseForm.patchValue({
+          end_date: null,
+          end_time: null
+        });
+        this.dateTimeValidationMsg = "End date should be greater than Start date";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      } else if (((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+        this.leaseForm.patchValue({
+          end_time: null
+        });
+        this.dateTimeValidationMsg = "End time should be greater than Start time";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      } else {
+        if (from == 'start_date' || from == 'end_date') {
+          if (from == 'start_date' && newValueDate < current_Date) {
+            this.pastDate_start_date = previousValue;
+            isValid = false;
+            this.hiddenpastDateConfirm.nativeElement.click();
+          }
+          else if (from == 'end_date' && newValueDate < current_Date) {
+            this.pastDate_end_date = previousValue; isValid = false;
+            this.hiddenpastDateConfirm.nativeElement.click();
+          }
         }
-        else if (from == 'end_date' && newValueDate < current_Date) {
-          this.pastDate_end_date = previousValue; isValid = false;
-          this.hiddenpastDateConfirm.nativeElement.click();
-        }
-      }
-      if ((previousValue != newValue) && isValid) {
-        this.getTotalLeaseAndCreditHours();
-        if (this.selectedresourceId && this.selectedModality) {
-          this.MatchFacilityHours();
+        if ((previousValue != newValue) && isValid) {
+          this.getTotalLeaseAndCreditHours();
+          if (this.selectedresourceId && this.selectedModality) {
+            this.MatchFacilityHours();
+          }
         }
       }
     }
