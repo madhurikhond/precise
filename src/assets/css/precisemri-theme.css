@@ -4095,6 +4095,7 @@ button {
 	text-transform: uppercase;
 	border-radius: 6px 6px 0px 0px;
 	/* border: none !important; */
+	cursor: pointer;
 }
 .tab-section .tab-content {
 	width: 100%;
