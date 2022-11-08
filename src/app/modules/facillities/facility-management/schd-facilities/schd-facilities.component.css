@@ -10,6 +10,10 @@
     height: calc(100vh - 140px);
     } */
 
-    .dx-freespace-row {  
-      height: 0px !important;  
-   }  
+    .dx-freespace-row {
+      height: 0px !important;
+   }
+   .PDFIcon{
+    cursor: pointer;
+    color: black;
+   }

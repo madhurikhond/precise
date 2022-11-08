@@ -1,6 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
@@ -14,20 +19,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
 import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { saveAs } from '@progress/kendo-file-saver';
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 declare const $: any;
 
 @Component({
   selector: 'app-schd-facilities',
   templateUrl: './schd-facilities.component.html',
   styleUrls: ['./schd-facilities.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class SchdFacilitiesComponent implements OnInit {
-  @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
-  @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
-  @ViewChild('hiddenConfirmationLeaseBtn', { static: false }) hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenDeleteTagPopUpButton', { static: false })
+  hiddenDeleteTagPopUpButton: ElementRef;
+  @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef })
+  hiddenAddEditPopUpItem: ElementRef;
+  @ViewChild('hiddenConfirmationLeaseBtn', { static: false })
+  hiddenConfirmationLeaseBtn: ElementRef;
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
-  @Input() isGridDisplay: boolean = true
+  @Input() isGridDisplay: boolean = true;
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
   modalityServiceForm: FormGroup;
@@ -41,8 +51,8 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityIntakeForm: FormGroup;
   facilityTagForm: FormGroup;
   schedulingPricing: any = [];
-  public facilityPolicy: string = '' //// For Policies Tab
-  public parentPolicy: string = '' ////  For Policies Tab
+  public facilityPolicy: string = ''; //// For Policies Tab
+  public parentPolicy: string = ''; ////  For Policies Tab
   searchText: string;
   facilityParentList: any[] = [];
   userType: number;
@@ -81,14 +91,15 @@ export class SchdFacilitiesComponent implements OnInit {
   blockLeasePricingList: any = [];
   blockLeaseAgreementMRIList: any = [];
   fullblockLeaseAgreementMRIList: any = [];
-  blockLeaseAgreementCTList: any = []; fullblockLeaseAgreementCTList: any = [];
+  blockLeaseAgreementCTList: any = [];
+  fullblockLeaseAgreementCTList: any = [];
   CreditDebitList: any = [];
-  UnusedCreditsList:any =[];
-  GetUnpaidLeasesList:any=[];
-  pageSizeOfUnusdCredits:number =20;
-  pageSizeOfUnpaidLeases:number=20;
-  pageNumberOfUnpaidLeases:number=1;
-  pageNumberOfUnusedCredits:number=1;
+  UnusedCreditsList: any = [];
+  GetUnpaidLeasesList: any = [];
+  pageSizeOfUnusdCredits: number = 20;
+  pageSizeOfUnpaidLeases: number = 20;
+  pageNumberOfUnpaidLeases: number = 1;
+  pageNumberOfUnusedCredits: number = 1;
   facilityPricingHistoryList: any = [];
   updatedResourceName: any = [];
   submitted: boolean = false;
@@ -102,7 +113,7 @@ export class SchdFacilitiesComponent implements OnInit {
   deleteTagId: number;
   tagNameList = [];
   totalRecords: number = 1;
-  totalRecordUnpaidLeases:number=1;
+  totalRecordUnpaidLeases: number = 1;
   totalRecordBlockLeaseCredits: number = 1;
   totalRecordunUsedCredits: number = 1;
   pageNumber: number = 1;
@@ -122,20 +133,21 @@ export class SchdFacilitiesComponent implements OnInit {
   ckConfig: any;
   mycontent: string;
   log: string = '';
-  btnActive:number=0;
-  leaseIdArray:any=[];
-  creditIdArray:any=[];
-  apiUrl:any ; 
+  btnActive: number = 0;
+  leaseIdArray: any = [];
+  creditIdArray: any = [];
+  apiUrl: any;
 
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
   blockLeasePaymentList: [] = [];
-  blockLeasePaymentMappingList:any;
-  blockLeaseCreditList:[]=[];
+  blockLeasePaymentMappingList: any;
+  blockLeaseCreditList: [] = [];
   paymentMapping: any = [];
-  
+
   selectedleaseArray: any = [];
+
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -159,13 +171,19 @@ export class SchdFacilitiesComponent implements OnInit {
   //     removeButtons: 'Subscript,Superscript,Anchor,Source,Table',
   //     format_tags: 'p;h1;h2;h3;pre;div'
   //  }
-  constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
-    private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
-    private readonly blockleasescheduler: BlockLeaseSchedulerService, private modalService: NgbModal,
+  constructor(
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private readonly facilityService: FacilityService,
+    private notificationService: NotificationService,
+    private readonly commonMethodService: CommonMethodService,
+    private readonly blockleasescheduler: BlockLeaseSchedulerService,
+    private modalService: NgbModal,
     private sanitizer: DomSanitizer,
-    private readonly storageService: StorageService) {
+    private readonly storageService: StorageService
+  ) {
     this.commonMethodService.setTitle('Scheduling Facility');
-    facilityService.sendDataToschdFacilities.subscribe(res => {
+    facilityService.sendDataToschdFacilities.subscribe((res) => {
       if (res.FacilityID) {
         this.isGridDisplay = false;
         this.getFacilityDetail(res.FacilityID);
@@ -178,7 +196,10 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
+    this.pageSize =
+      this.pageSizeArray.filter((x) => x.IsSelected).length > 0
+        ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
+        : this.pageSizeArray[0].value;
     this.getActiveEpicUsers();
     this.getAllTagList();
     this.getSchedulingFacilityLevel();
@@ -199,15 +220,13 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getFacilityParentList();
     this.fullblockLeaseAgreementMRIList = [
       {
-        'TimeFrame' : 'Time Frame here',
-        'TotalLeaseHours' : 'TotalLeaseHours here',
-        'LeaseRatePerHour':'LeaseRatePerHour here',
-        'totalHour':'totalHour here',
-        'Aggrement': ''
-      }
-    ]
-
-
+        TimeFrame: 'Time Frame here',
+        TotalLeaseHours: 'TotalLeaseHours here',
+        LeaseRatePerHour: 'LeaseRatePerHour here',
+        totalHour: 'totalHour here',
+        Aggrement: '',
+      },
+    ];
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -220,33 +239,36 @@ export class SchdFacilitiesComponent implements OnInit {
       allowedContent: false,
       forcePasteAsPlainText: true,
       readOnly: true,
-      removePlugins: 'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
-      removeButtons: 'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
+      removePlugins:
+        'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
+      removeButtons:
+        'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
     };
 
-
     let lastSearchBody = {
-      'searchText': '',
-      'isActive': 0,
-      'tabName': 'Schd. Facilities',
-      'userId': this.storageService.user.UserId,
-      'clear': 2
-    }
+      searchText: '',
+      isActive: 0,
+      tabName: 'Schd. Facilities',
+      userId: this.storageService.user.UserId,
+      clear: 2,
+    };
     this.getFacilityLastFilterRecord(lastSearchBody);
 
     this.facilityService.filterResult.subscribe((res: any) => {
-
       this.searchText = res.searchText;
       this.userType = parseInt(res.userTypeText);
       this.pageNumber = 1;
-      this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
+      this.pageSize =
+        this.pageSizeArray.filter((x) => x.IsSelected).length > 0
+          ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
+          : this.pageSizeArray[0].value;
       let lastSearchBody = {
-        'searchText': this.searchText,
-        'isActive': this.userType,
-        'tabName': 'Schd. Facilities',
-        'userId': this.storageService.user.UserId,
-        'clear': 0,
-      }
+        searchText: this.searchText,
+        isActive: this.userType,
+        tabName: 'Schd. Facilities',
+        userId: this.storageService.user.UserId,
+        clear: 0,
+      };
       this.getFacilityLastFilterRecord(lastSearchBody);
     });
     this.facilityService.clearClickedEvent.subscribe((res: string) => {
@@ -254,106 +276,127 @@ export class SchdFacilitiesComponent implements OnInit {
         this.searchText = '';
         this.userType = 1;
         let lastSearchBody = {
-          'searchText': '',
-          'isActive': 1,
-          'tabName': 'Schd. Facilities',
-          'userId': this.storageService.user.UserId,
-          'clear': 1
-        }
+          searchText: '',
+          isActive: 1,
+          tabName: 'Schd. Facilities',
+          userId: this.storageService.user.UserId,
+          clear: 1,
+        };
         this.getFacilityLastFilterRecord(lastSearchBody);
       }
     });
     this.facilityService.actionDropDown.subscribe((actionValue: any) => {
-      if (actionValue == this.facilityService.actionDropDownEnum.ExportFacilitiesToExcel) {
+      if (
+        actionValue ==
+        this.facilityService.actionDropDownEnum.ExportFacilitiesToExcel
+      ) {
         this.onExporting();
-      }
-      else if (actionValue == this.facilityService.actionDropDownEnum.DuplicateFacility) {
+      } else if (
+        actionValue == this.facilityService.actionDropDownEnum.DuplicateFacility
+      ) {
         this.createDuplicateFacility();
       }
     });
   }
   onChange($event: any): void {
-    console.log("onChange");
+    console.log('onChange');
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
+    console.log('onPaste');
     //this.log += new Date() + "<br />";
-
   }
   onPageSizeChange(event) {
     this.pageSize = event;
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-  get3pLeaseFacilityData(blockId:any,modalityName:string='',fileData:any)
-  { 
-    debugger
+  get3pLeaseFacilityData(
+    blockId: any,
+    modalityName: string = '',
+    fileData: any
+  ) {
+    debugger;
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
-    var path = 'D:/Mridula%20Malhotra/PRECISEMRI_API/PreciseMRI.API/Reports/LeaseAggreements/' + 'lse-100000.pdf'
+    var path =
+      'D:/Mridula%20Malhotra/PRECISEMRI_API/PreciseMRI.API/Reports/LeaseAggreements/' +
+      'lse-100000.pdf';
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
-   
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
-    this.facilityService.getActiveEpicUsers(true).subscribe((userRes) => {
-      if (userRes.response !== null) {
-        this.EpicUserList = userRes.response;
+    this.facilityService.getActiveEpicUsers(true).subscribe(
+      (userRes) => {
+        if (userRes.response !== null) {
+          this.EpicUserList = userRes.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getAllTagList() {
-
     //Id:0, facilityId:11, recorceId, modality, modalityType:
-    this.facilityService.getAllTagList(true).subscribe((TagRes) => {
-      if (TagRes.response !== null) {
-        this.TagList = TagRes.response;
-        this.tagNameList = [...new Set(this.TagList.map(item => item.tagName.toUpperCase()))];
+    this.facilityService.getAllTagList(true).subscribe(
+      (TagRes) => {
+        if (TagRes.response !== null) {
+          this.TagList = TagRes.response;
+          this.tagNameList = [
+            ...new Set(this.TagList.map((item) => item.tagName.toUpperCase())),
+          ];
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getSchedulingFacilityLevel() {
     this.schedulingFacilityLevelList = [];
-    this.facilityService.getSchedulingFacilityLevel(true).subscribe((res) => {
-
-      if (res.response != null) {
-        this.schedulingFacilityLevelList = res.response;
+    this.facilityService.getSchedulingFacilityLevel(true).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.schedulingFacilityLevelList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getFacilityParentNames() {
     this.facilityParentCompanyList = [];
-    this.facilityService.getFacilityParentNames(true).subscribe((res) => {
-
-      if (res.response != null) {
-        this.facilityParentCompanyList = res.response;
+    this.facilityService.getFacilityParentNames(true).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.facilityParentCompanyList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   setGridSetting() {
     this.allMode = 'page';
-    this.checkBoxesMode = 'always'
+    this.checkBoxesMode = 'always';
     this.showFilterRow = true;
     this.showHeaderFilter = false;
-    this.applyFilterTypes = [{
-      key: 'auto',
-      name: 'Immediately'
-    }, {
-      key: 'onClick',
-      name: 'On Button Click'
-    }];
+    this.applyFilterTypes = [
+      {
+        key: 'auto',
+        name: 'Immediately',
+      },
+      {
+        key: 'onClick',
+        name: 'On Button Click',
+      },
+    ];
     this.columnResizingMode = this.resizingModes[0];
     this.currentFilter = this.applyFilterTypes[0].key;
   }
@@ -386,51 +429,143 @@ export class SchdFacilitiesComponent implements OnInit {
   createFacilityDetailTabForm() {
     this.facilityContactDetailForm = this.fb.group({
       itsupportContact: [''],
-      itsupportEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      itsupportEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       itsupportOfficePhone: ['', [Validators.minLength(10)]],
-      itsupportCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      itsupportHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      itsupportCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      itsupportHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       itsupportFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       reportsContact: [''],
-      reportsEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      reportsEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       reportsOfficePhone: ['', [Validators.minLength(10)]],
-      reportsCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      reportsHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      reportsCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      reportsHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       reportsFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       statusCheckContact: [''],
-      statusCheckEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      statusCheckEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       statusCheckOfficePhone: ['', [Validators.minLength(10)]],
-      statusCheckCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      statusCheckHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      statusCheckFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      statusCheckCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      statusCheckHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      statusCheckFax: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
 
       schedulingContact: [''],
-      schedulingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      schedulingEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       schedulingOfficePhone: ['', [Validators.minLength(10)]],
-      schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      schedulingCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      schedulingHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      defaultEmailAddress3P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      emailAddress13P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      emailAddress23P: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      defaultEmailAddress3P: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      emailAddress13P: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      emailAddress23P: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
 
       imagesContact: [''],
-      imagesEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      imagesEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       imagesOfficePhone: ['', [Validators.minLength(10)]],
-      imagesCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      imagesHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      imagesCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      imagesHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       imagesFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       billingContact: [''],
-      billingEmail: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      billingEmail: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       billingOfficePhone: ['', [Validators.minLength(10)]],
-      billingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      billingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      billingCellPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      billingHomePhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       billingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
     });
-
   }
 
   createModalityServiceTabForm() {
@@ -507,7 +642,7 @@ export class SchdFacilitiesComponent implements OnInit {
 
       ct1ResourceName: [null],
       ct2ResourceName: [null],
-      ct3ResourceName: [null]
+      ct3ResourceName: [null],
     });
   }
   createModalityExceptionsTabForm() {
@@ -559,8 +694,6 @@ export class SchdFacilitiesComponent implements OnInit {
       ctArthroServiceException: [''],
       ctArthroServiceexpDescription: [''],
       ctArthoExpires: [''],
-
-
     });
   }
   createSchedulingDetailTabForm() {
@@ -714,19 +847,19 @@ export class SchdFacilitiesComponent implements OnInit {
       wednesdayxrayIsClosed: [false],
       thursdayxrayIsClosed: [false],
       fridayxrayIsClosed: [false],
-      saturdayxrayIsClosed: [false]
+      saturdayxrayIsClosed: [false],
     });
   }
   createNotesTabForm() {
     this.facilityNotesForm = this.fb.group({
-      Note: ['']
+      Note: [''],
     });
   }
   createGeneralPoliciesForm() {
     this.facilityPoliciesForm = this.fb.group({
-      facilityPolicy: ['',],
-      parentPolicy: ['',]
-    })
+      facilityPolicy: [''],
+      parentPolicy: [''],
+    });
   }
   createParentCompanyTabForm() {
     this.facilityParentCompanyForm = this.fb.group({
@@ -738,21 +871,39 @@ export class SchdFacilitiesComponent implements OnInit {
       parentZip: [''],
       parentWebsite: [''],
       parentOwnerName: [''],
-      parentOwnerPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      parentOwnerPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       parentOwnerEmail: [''],
-      parentOwnerFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      parentOwnerFax: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       parentManagerName: [''],
       parentManagerEmail: [''],
-      parentManagerPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      parentManagerFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      parentManagerPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      parentManagerFax: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
       parentITName: [''],
       parentITEmail: [''],
       parentITPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       parentITFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       parentBillingName: [''],
       parentBillingEmail: [''],
-      parentBillingPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      parentBillingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      parentBillingPhone: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
+      parentBillingFax: [
+        '',
+        [Validators.minLength(10), Validators.maxLength(10)],
+      ],
     });
     this.facilityParentCompanyForm.disable();
   }
@@ -768,88 +919,137 @@ export class SchdFacilitiesComponent implements OnInit {
       intakeFax4: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       intakeFax5: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       isEmailIntakePacket: [''],
-      intakeEmail1: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      intakeEmail2: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      intakeEmail3: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      intakeEmail4: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      intakeEmail5: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      intakeEmail1: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      intakeEmail2: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      intakeEmail3: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      intakeEmail4: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      intakeEmail5: [
+        '',
+        [
+          Validators.email,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
       isElectricIntake: [''],
       isElecScreenForm: [''],
       isRxnotification: [''],
       isPrescreening: [''],
       userList: [''],
-
     });
   }
   createTagForm() {
     this.facilityTagForm = this.fb.group({
-      tagName: ['', Validators.required]
+      tagName: ['', Validators.required],
     });
   }
   getFacilityLastFilterRecord(body: any) {
-    this.facilityService.getFacilitySearchData(true, body).subscribe((res) => {
-      if (res.response != null) {
-        this.searchText = res.response[0].searchText;
-        this.userType = res.response[0].isActive;
-        this.facilityService.updateSearchText(this.searchText);
-        this.facilityService.updateDropDown(this.userType);
-        this.getSchedulingFacilities();
+    this.facilityService.getFacilitySearchData(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.searchText = res.response[0].searchText;
+          this.userType = res.response[0].isActive;
+          this.facilityService.updateSearchText(this.searchText);
+          this.facilityService.updateDropDown(this.userType);
+          this.getSchedulingFacilities();
+        } else {
+          this.searchText = '';
+          this.userType = 1;
+          this.facilityService.updateSearchText(this.searchText);
+          this.facilityService.updateDropDown(this.userType);
+          this.getSchedulingFacilities();
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-      else {
-        this.searchText = '';
-        this.userType = 1;
-        this.facilityService.updateSearchText(this.searchText);
-        this.facilityService.updateDropDown(this.userType);
-        this.getSchedulingFacilities();
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   pageChanged(event) {
     this.pageNumber = event;
-    this.getSchedulingFacilities()
+    this.getSchedulingFacilities();
   }
   AddUpdateIsClosedDays(Day: string, Modality: string, event: any) {
-    let body = { 'FacilityId': this.facilityId, 'Modality': Modality, 'Day': Day, 'IsClosed': event.target.checked }
-    this.facilityService.addUpdateFacilityClosedDays(true, body).subscribe((res) => {
-      if (res.response != null) {
-        this.showNotificationOnSucess(res);
+    let body = {
+      FacilityId: this.facilityId,
+      Modality: Modality,
+      Day: Day,
+      IsClosed: event.target.checked,
+    };
+    this.facilityService.addUpdateFacilityClosedDays(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.showNotificationOnSucess(res);
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getSchedulingFacilities() {
+    let body = {
+      isActive: this.userType,
+      pageSize: this.pageSize,
+      pageNumber: this.pageNumber,
+      searchText: this.searchText,
+    };
 
-    let body = { 'isActive': this.userType, 'pageSize': this.pageSize, 'pageNumber': this.pageNumber, 'searchText': this.searchText }
-
-    this.facilityService.getFacilityList(true, body).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {
-        this.facilityList = res.response;
-        this.totalRecords = res.totalRecords;
-        this.isShowColumnWithNoData = true;
+    this.facilityService.getFacilityList(true, body).subscribe(
+      (res) => {
+        if (res.response != null && res.response.length > 0) {
+          this.facilityList = res.response;
+          this.totalRecords = res.totalRecords;
+          this.isShowColumnWithNoData = true;
+        } else {
+          this.isShowColumnWithNoData = false;
+          this.totalRecords = 1;
+          this.facilityList = [];
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-      else {
-        this.isShowColumnWithNoData = false;
-        this.totalRecords = 1;
-        this.facilityList = [];
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
-
   getFacilityResourceDropDownData() {
-    this.facilityService.getResourceDropDownData(true, this.facilityId).subscribe((res) => {
-      if (res.response != null) {
-        this.ResourceNameList = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getResourceDropDownData(true, this.facilityId)
+      .subscribe(
+        (res) => {
+          if (res.response != null) {
+            this.ResourceNameList = res.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
 
   // common Error Method
@@ -857,22 +1057,21 @@ export class SchdFacilitiesComponent implements OnInit {
     this.notificationService.showNotification({
       alertHeader: err.statusText,
       alertMessage: err.message,
-      alertType: err.status
+      alertType: err.status,
     });
   }
   showNotificationOnSucess(data: any) {
     this.notificationService.showNotification({
       alertHeader: 'Success',
       alertMessage: data.message,
-      alertType: data.responseCode
+      alertType: data.responseCode,
     });
   }
   showNotificationOnFailure(data: any) {
-
     this.notificationService.showNotification({
       alertHeader: 'Fail',
       alertMessage: data.message,
-      alertType: data.responseCode
+      alertType: data.responseCode,
     });
   }
 
@@ -885,10 +1084,8 @@ export class SchdFacilitiesComponent implements OnInit {
     this.isPopUpInEditMode = true;
     this.getFacilityDetailById();
     this.getFacilityResourceDropDownData();
-
   }
   getFacilityDetailById() {
-
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
@@ -937,8 +1134,8 @@ export class SchdFacilitiesComponent implements OnInit {
     this.sendDataDocManager = {
       facilityId: this.facilityId,
       facilityName: this.facilityDetail.facilityName,
-      from: 'Facility'
-    }
+      from: 'Facility',
+    };
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
   }
   updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
@@ -952,87 +1149,152 @@ export class SchdFacilitiesComponent implements OnInit {
       {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
         // alert('CT Test ' + test);
-             if(this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct1ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId || this.modalityCtForm.controls["ct3ResourceName"].value != ResourceId && this.modalityCtForm.controls["ct2ResourceName"].value != ResourceId)
-             {
-               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
-             }
-      }
-      else{
-        var test = this.modalityMriForm.controls["mri1ResourceName"].value;
+        if (
+          (this.modalityCtForm.controls['ct1ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct2ResourceName'].value !=
+              ResourceId) ||
+          (this.modalityCtForm.controls['ct1ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct3ResourceName'].value !=
+              ResourceId) ||
+          (this.modalityCtForm.controls['ct3ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct2ResourceName'].value != ResourceId)
+        ) {
+          this.updatedResourceName.push({
+            ID: 0,
+            ResourceId: ResourceId,
+            FacilityId: this.facilityId,
+            UserId: this.storageService.user.UserId,
+            Modality: Modality,
+            ModalitiyType: ModalitiyType,
+          });
+        }
+      } else {
+        var test = this.modalityMriForm.controls['mri1ResourceName'].value;
         // alert('MRI Test ' + test);
-             if(this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri1ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId || this.modalityMriForm.controls["mri3ResourceName"].value != ResourceId && this.modalityMriForm.controls["mri2ResourceName"].value != ResourceId)
-             {
-               this.updatedResourceName.push({ ID: 0, ResourceId: ResourceId, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, Modality: Modality, ModalitiyType: ModalitiyType });
-             }
+        if (
+          (this.modalityMriForm.controls['mri1ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri2ResourceName'].value !=
+              ResourceId) ||
+          (this.modalityMriForm.controls['mri1ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri3ResourceName'].value !=
+              ResourceId) ||
+          (this.modalityMriForm.controls['mri3ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri2ResourceName'].value !=
+              ResourceId)
+        ) {
+          this.updatedResourceName.push({
+            ID: 0,
+            ResourceId: ResourceId,
+            FacilityId: this.facilityId,
+            UserId: this.storageService.user.UserId,
+            Modality: Modality,
+            ModalitiyType: ModalitiyType,
+          });
+        }
       }
-
     }
   }
   updateFacilityResources(arrayResources: any) {
-    let getOnlyModality = arrayResources.map(item => item.Modality).filter((value, index, self) => self.indexOf(value) === index);
+    let getOnlyModality = arrayResources
+      .map((item) => item.Modality)
+      .filter((value, index, self) => self.indexOf(value) === index);
     if (getOnlyModality) {
-      getOnlyModality.forEach(Modality => {
-        let getModalitiyType = arrayResources.filter(arr => arr.Modality == Modality).map(arr => arr.ModalitiyType);
-        getModalitiyType.forEach(ModalitiyType => {
-          let getAllId = arrayResources.filter(data => data.Modality == Modality && data.ModalitiyType == ModalitiyType)[0];
+      getOnlyModality.forEach((Modality) => {
+        let getModalitiyType = arrayResources
+          .filter((arr) => arr.Modality == Modality)
+          .map((arr) => arr.ModalitiyType);
+        getModalitiyType.forEach((ModalitiyType) => {
+          let getAllId = arrayResources.filter(
+            (data) =>
+              data.Modality == Modality && data.ModalitiyType == ModalitiyType
+          )[0];
           let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
           if (Modality.toLowerCase() == 'mri') {
-            this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'mri', ModalitiyType: ModalitiyType });
+            this.updatedResourceName.push({
+              ID: getAllId.ID,
+              FacilityId: this.facilityId,
+              UserId: this.storageService.user.UserId,
+              ResourceId: getAllId.ResourceId,
+              Modality: 'mri',
+              ModalitiyType: ModalitiyType,
+            });
 
-              this.modalityMriForm.patchValue({
-                [controlName]: getAllId.ResourceId
-              });
-
-
+            this.modalityMriForm.patchValue({
+              [controlName]: getAllId.ResourceId,
+            });
           } else if (Modality.toLowerCase() == 'ct') {
-            this.updatedResourceName.push({ ID: getAllId.ID, FacilityId: this.facilityId, UserId: this.storageService.user.UserId, ResourceId: getAllId.ResourceId, Modality: 'ct', ModalitiyType: ModalitiyType });
+            this.updatedResourceName.push({
+              ID: getAllId.ID,
+              FacilityId: this.facilityId,
+              UserId: this.storageService.user.UserId,
+              ResourceId: getAllId.ResourceId,
+              Modality: 'ct',
+              ModalitiyType: ModalitiyType,
+            });
             this.modalityCtForm.patchValue({
-              [controlName]: getAllId.ResourceId
+              [controlName]: getAllId.ResourceId,
             });
           }
-        })
-      })
+        });
+      });
     }
   }
 
-
   updateFacilityCloseddays(arrayUpdate: any) {
-
-    let getOnlyModality = arrayUpdate.map(item => item.Modality).filter((value, index, self) => self.indexOf(value) === index);
-    let getOnlyWeek = arrayUpdate.map(item => item.Day).filter((value, index, self) => self.indexOf(value) === index);
+    let getOnlyModality = arrayUpdate
+      .map((item) => item.Modality)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    let getOnlyWeek = arrayUpdate
+      .map((item) => item.Day)
+      .filter((value, index, self) => self.indexOf(value) === index);
     if (getOnlyModality && getOnlyWeek) {
-      getOnlyModality.forEach(Modality => {
-
-        let getOnlyWeekN = arrayUpdate.filter(arr => arr.Modality == Modality).map(arr => arr.Day);
-        getOnlyWeekN.forEach(Day => {
-          let isClosed = arrayUpdate.filter(data => data.Modality == Modality && data.Day == Day)[0].IsClosed;
+      getOnlyModality.forEach((Modality) => {
+        let getOnlyWeekN = arrayUpdate
+          .filter((arr) => arr.Modality == Modality)
+          .map((arr) => arr.Day);
+        getOnlyWeekN.forEach((Day) => {
+          let isClosed = arrayUpdate.filter(
+            (data) => data.Modality == Modality && data.Day == Day
+          )[0].IsClosed;
           let controlName = `${Day}${Modality}IsClosed`;
           this.facilitySchedulingDetailForm.patchValue({
-            [controlName]: isClosed
+            [controlName]: isClosed,
           });
         });
       });
     }
   }
 
-
   getFacilityNotes(facilityId: number) {
     this.facilityNoteList = [];
-    this.facilityService.getAllFacilityNotesByFacililityId(true, facilityId).subscribe((notesRes) => {
-      if (notesRes.response != null) {
-        this.facilityNoteList = notesRes.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getAllFacilityNotesByFacililityId(true, facilityId)
+      .subscribe(
+        (notesRes) => {
+          if (notesRes.response != null) {
+            this.facilityNoteList = notesRes.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
   getFacilityPricing(facilityId: number) {
     this.facilityPricingList = [];
-    this.facilityService.getFacilityPricing(true, facilityId).subscribe((res) => {
-      if (res.response != null) {
-        this.facilityPricingList = res.response;
-      }
-    });
+    this.facilityService
+      .getFacilityPricing(true, facilityId)
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.facilityPricingList = res.response;
+        }
+      });
   }
   checkForLease(event: any, from: string) {
     this.ConfirmationLeaseCheckedFrom = from;
@@ -1044,11 +1306,11 @@ export class SchdFacilitiesComponent implements OnInit {
     if (!checked) {
       if (this.ConfirmationLeaseCheckedFrom == 'isActive') {
         this.generalInfoForm.patchValue({
-          isActive: true
+          isActive: true,
         });
       } else {
         this.generalInfoForm.patchValue({
-          useBlockLease: true
+          useBlockLease: true,
         });
       }
     }
@@ -1056,7 +1318,10 @@ export class SchdFacilitiesComponent implements OnInit {
   getLeaseAgreementsByFacilityId(facilityId: number) {
     this.blockLeaseAgreementMRIList = [];
     let body: any;
-    if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
+    if (
+      this.defaultPopupTab == 'LeaseAgreements' ||
+      this.defaultPopupTab == 'LeaseAgreement_MRI'
+    ) {
       body = { FacilityID: facilityId, Modality: 'MRI' };
     } else {
       body = { FacilityID: facilityId, Modality: 'CT' };
@@ -1078,11 +1343,18 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
-    this.MRIPageNumber = pageNumber
+    this.MRIPageNumber = pageNumber;
     if (type == 'MRI') {
-      this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice((this.MRIPageNumber - 1) * this.MRIpageSize, ((this.MRIPageNumber - 1) * this.MRIpageSize) + this.MRIpageSize)
+      this.fullblockLeaseAgreementMRIList =
+        this.blockLeaseAgreementMRIList.slice(
+          (this.MRIPageNumber - 1) * this.MRIpageSize,
+          (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+        );
     } else {
-      this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice((this.MRIPageNumber - 1) * this.MRIpageSize, ((this.MRIPageNumber - 1) * this.MRIpageSize) + this.MRIpageSize)
+      this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(
+        (this.MRIPageNumber - 1) * this.MRIpageSize,
+        (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+      );
     }
   }
   getBlockLeasePricing(facilityId: number) {
@@ -1099,18 +1371,22 @@ export class SchdFacilitiesComponent implements OnInit {
   getAllBlockLeaseCredits() {
     this.CreditDebitList = [];
     this.pageSize = 20;
-    this.facilityService.getAllBlockLeaseCredits(true, this.pageNumber, this.pageSize).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {
-        this.CreditDebitList = res.response;
-        this.totalRecordBlockLeaseCredits = res.response[0].TotalRecords;
-      }
-      else {
-        this.totalRecords = 1;
-        this.CreditDebitList = [];
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getAllBlockLeaseCredits(true, this.pageNumber, this.pageSize)
+      .subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.CreditDebitList = res.response;
+            this.totalRecordBlockLeaseCredits = res.response[0].TotalRecords;
+          } else {
+            this.totalRecords = 1;
+            this.CreditDebitList = [];
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
   onPageNumberChange(pageNumber: any) {
     this.pageNumber = pageNumber;
@@ -1121,87 +1397,154 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   saveBlockLeasePricing() {
     this.submitted = true;
-    console.log(this.eventBlockLeasePricingData)
+    console.log(this.eventBlockLeasePricingData);
     if (this.eventBlockLeasePricingData['data']) {
       let body = {
-        'ID': this.eventBlockLeasePricingData['data'].ID,
-        'FacilityID': this.facilityId,
-        'Modality': this.eventBlockLeasePricingData['data'].Modality,
-        'LeaseRatePerHour': this.eventBlockLeasePricingData['data'].LeaseRatePerHour,
-        'ContrastCostPerUnit': this.eventBlockLeasePricingData['data'].ContrastCostPerUnit,
-        'Operation': 2
-      }
+        ID: this.eventBlockLeasePricingData['data'].ID,
+        FacilityID: this.facilityId,
+        Modality: this.eventBlockLeasePricingData['data'].Modality,
+        LeaseRatePerHour:
+          this.eventBlockLeasePricingData['data'].LeaseRatePerHour,
+        ContrastCostPerUnit:
+          this.eventBlockLeasePricingData['data'].ContrastCostPerUnit,
+        Operation: 2,
+      };
       for (var i = 0; i < this.blockLeasePricingList.length; i++) {
-        this.blockLeasePricingList[i]["Operation"] = 2;
+        this.blockLeasePricingList[i]['Operation'] = 2;
       }
-      this.facilityService.getBlockLeasePricing(true, this.blockLeasePricingList).subscribe((res) => {
-        if (res.response != null) {
-          this.blockLeasePricingList = res.response;
-          this.showNotificationOnSucess(res);
-        }
-      }, (err: any) => {
-        this.errorNotification(err);
-      });
+      this.facilityService
+        .getBlockLeasePricing(true, this.blockLeasePricingList)
+        .subscribe(
+          (res) => {
+            if (res.response != null) {
+              this.blockLeasePricingList = res.response;
+              this.showNotificationOnSucess(res);
+            }
+          },
+          (err: any) => {
+            this.errorNotification(err);
+          }
+        );
     }
-
-
   }
   getFacilityPricingHistory(facilityId: number) {
     this.facilityPricingHistoryList = [];
-    this.facilityService.getFacilityPricingHistory(true, facilityId).subscribe((res) => {
-      if (res.response != null) {
-        this.facilityPricingHistoryList = res.response;
-      }
-    });
+    this.facilityService
+      .getFacilityPricingHistory(true, facilityId)
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.facilityPricingHistoryList = res.response;
+        }
+      });
   }
   getTagListByFacilityId(facilityId: number) {
     this.facilityTagList = [];
-    this.facilityService.getTagListByFacilityId(true, facilityId).subscribe((tagRes) => {
-      if (tagRes.response != null) {
-        this.facilityTagList = tagRes.response;
+    this.facilityService.getTagListByFacilityId(true, facilityId).subscribe(
+      (tagRes) => {
+        if (tagRes.response != null) {
+          this.facilityTagList = tagRes.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   getblockLeasePaymentByFacilityId(facilityId: number) {
     this.blockLeasePaymentList = [];
     this.pageNumber = 1;
-    this.facilityService.GetblockLeasePaymentByFacilityId(true, facilityId.toString(),this.pageNumber, this.pageSize).subscribe((res) => {
-      if (res.response != null) {
-        console.log(res.response)
-        this.blockLeasePaymentList = res.response;
-      }
-    });
+    this.facilityService
+      .GetblockLeasePaymentByFacilityId(
+        true,
+        facilityId.toString(),
+        this.pageNumber,
+        this.pageSize
+      )
+      .subscribe((res) => {
+        if (res.response != null) {
+          console.log(res.response);
+          this.blockLeasePaymentList = res.response;
+        }
+      });
   }
 
-  getLeasePaymentMappingByFacilityId(paymentMapping : any) {
-    this.facilityService.GetLeasePaymentMappingByFacilityId(true, paymentMapping.data.PaymentId).subscribe((res) => {      
-      if (res.response != null) {
-        this.blockLeasePaymentMappingList = res.response;
-        this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
-      }
-    });
+  getLeasePaymentMappingByFacilityId(paymentMapping: any) {
+    this.facilityService
+      .GetLeasePaymentMappingByFacilityId(true, paymentMapping.data.PaymentId)
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.blockLeasePaymentMappingList = res.response;
+          this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
+        }
+      });
   }
 
   getBlockLeaseCreditsByFacilityId(leaseId: string) {
     this.blockLeaseCreditList = [];
-    this.facilityService.GetBlockLeaseCreditsByFacilityId(true, leaseId.toString()).subscribe((res) => {
-      if (res.response != null) {
-        this.blockLeaseCreditList = res.response;
+    this.facilityService
+      .GetBlockLeaseCreditsByFacilityId(true, leaseId.toString())
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.blockLeaseCreditList = res.response;
+        }
+      });
+  }
+
+
+  _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
+
+  downloadFile(fileData) {
+    if(fileData.data.FileDetail != null || fileData.data.FileDetail != undefined){
+      var data = fileData.data.FileDetail.FileBytes ;
+      var fileName = fileData.data.FileDetail.FileName;
+    var pdfData = this._base64ToArrayBuffer(data);
+    var file = new Blob([pdfData], {type:'application/pdf'});
+    var fileUrl = URL.createObjectURL(file);
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.href = fileUrl;
+      a.target = '_blank';
+      a.click();
+    }else{
+      var notification ={
+        alertType:ResponseStatusCode.NotFound,
+      alertHeader : 'Error',
+        alertMessage : 'Not Found'
       }
-    });
+      this.notificationService.showNotification(notification)
+    }
   }
 
   setGeneralInfoTabForm(data: any) {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
     if (!data.useBlockLease) {
-      $('#BlockLeaseRate').not('.btn').attr("disabled", true).addClass('disabledClass');
-      $('#gridContainerLeaseAgreement_MRI').not('.btn').attr("disabled", true).addClass('disabledClass');
-      $('#gridContainerLeaseAgreement_CT').not('.btn').attr("disabled", true).addClass('disabledClass');
-      $('#CreditandDebit').not('.btn').attr("disabled", true).addClass('disabledClass');
+      $('#BlockLeaseRate')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+      $('#gridContainerLeaseAgreement_MRI')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+      $('#gridContainerLeaseAgreement_CT')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+      $('#CreditandDebit')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
     }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
@@ -1225,12 +1568,10 @@ export class SchdFacilitiesComponent implements OnInit {
       previousFacilityName1: data.previousFacilityName1,
       previousFacilityName2: data.previousFacilityName2,
       schedulingLevel: data.schedulingLevel,
-      schedFacilityTaxID: data.schedFacilityTaxID
+      schedFacilityTaxID: data.schedFacilityTaxID,
     });
-    if (data.overridePrice)
-      this.allowUpdatingPrice = true;
-    else
-      this.allowUpdatingPrice = false;
+    if (data.overridePrice) this.allowUpdatingPrice = true;
+    else this.allowUpdatingPrice = false;
   }
   setFacilityContactDetailTabForm(data: any) {
     this.facilityContactDetailForm.patchValue({
@@ -1293,7 +1634,7 @@ export class SchdFacilitiesComponent implements OnInit {
       xrayService: data.xrayService,
       MyElogramService: data.MyElogramService,
       dexaService: data.dexaService,
-      ctArthroService: data.ctArthroService
+      ctArthroService: data.ctArthroService,
     });
   }
   setModalityMriTabForm(data: any) {
@@ -1553,14 +1894,13 @@ export class SchdFacilitiesComponent implements OnInit {
       parking: data.parking,
       preArrivalTime: data.preArrivalTime,
       xrayWalkIn: data.xrayWalkIn,
-
     });
   }
 
   SetPolicyForm(data: any) {
     this.facilityPoliciesForm.patchValue({
       facilityPolicy: data.facilityPolicy,
-      parentPolicy: data.parentPolicy
+      parentPolicy: data.parentPolicy,
     });
   }
 
@@ -1568,7 +1908,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.selectedEpicUserList = null;
 
     if (data.userList != null && data.userList != '') {
-      this.selectedEpicUserList = data.userList.split(',').map(function (item) { return item.trim(); });
+      this.selectedEpicUserList = data.userList.split(',').map(function (item) {
+        return item.trim();
+      });
     }
     this.isIntakeScreeningAndWaiverVisible = data.isPacketDocOnly;
     this.isIntakeFaxVisible = data.IsFaxIntakePacket;
@@ -1593,59 +1935,63 @@ export class SchdFacilitiesComponent implements OnInit {
       isElecScreenForm: data.isElecScreenForm,
       isRxnotification: data.isRxnotification,
       isPrescreening: data.isPrescreening,
-
     });
   }
   addNote(isNoteButtonClick: boolean) {
     if (this.facilityNotesFormControls.Note.value.trim() != '') {
       let body = {
-        'facilityNoteId': 0,
-        'facilityId': this.facilityId,
-        'note': this.facilityNotesFormControls.Note.value,
-        'username': this.storageService.user.FullName,
-        'timestamp': this.datePipe.transform(new Date(), 'MM/dd/yyyy h:mm a')
-      }
+        facilityNoteId: 0,
+        facilityId: this.facilityId,
+        note: this.facilityNotesFormControls.Note.value,
+        username: this.storageService.user.FullName,
+        timestamp: this.datePipe.transform(new Date(), 'MM/dd/yyyy h:mm a'),
+      };
       this.facilityNotesFormControls.Note.setValue('');
-      this.facilityService.addFacilityNote(true, body).subscribe((res) => {
-        if (res.response != null) {
-          if (isNoteButtonClick) {
-            this.showNotificationOnSucess(res);
+      this.facilityService.addFacilityNote(true, body).subscribe(
+        (res) => {
+          if (res.response != null) {
+            if (isNoteButtonClick) {
+              this.showNotificationOnSucess(res);
+            }
+            this.getFacilityNotes(this.facilityId);
           }
-          this.getFacilityNotes(this.facilityId);
+        },
+        (err: any) => {
+          this.errorNotification(err);
         }
-      }, (err: any) => {
-        this.errorNotification(err);
-      });
+      );
     }
   }
   addFacilityTag(isTagButtonClick: boolean) {
-
     this.submiited = true;
     this.isTagRequired = false;
     if (this.facilityTagFormControls.tagName.errors) {
       return;
     }
     let body = {
-      'facilityID': this.facilityId,
-      'tagName': this.facilityTagFormControls.tagName.value.toString(),
-    }
+      facilityID: this.facilityId,
+      tagName: this.facilityTagFormControls.tagName.value.toString(),
+    };
 
-    this.facilityService.addTagList(true, body).subscribe((res) => {
-      if (res.response != null) {
-        this.submiited = false;
-        if (res.responseCode === 200) {
-          this.showNotificationOnSucess(res);
-        } else {
-          this.errorNotification(res);
+    this.facilityService.addTagList(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.submiited = false;
+          if (res.responseCode === 200) {
+            this.showNotificationOnSucess(res);
+          } else {
+            this.errorNotification(res);
+          }
+          this.getTagListByFacilityId(this.facilityId);
+          this.facilityTagForm.reset();
+          this.tagBtnDisabled = true;
+          this.getAllTagList();
         }
-        this.getTagListByFacilityId(this.facilityId);
-        this.facilityTagForm.reset();
-        this.tagBtnDisabled = true;
-        this.getAllTagList();
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   onPacketDocOnlyChanged(isPackDoc: any) {
@@ -1657,7 +2003,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.isIntakeEmailVisible = false;
   }
   onIntakeFaxChanged(isFax: any) {
-
     this.facilityIntakeFormControls.IsFaxIntakePacket.setValue(isFax);
     this.isIntakeFaxVisible = isFax;
     this.isIntakeScreeningAndWaiverVisible = false;
@@ -1673,8 +2018,7 @@ export class SchdFacilitiesComponent implements OnInit {
   onTagChange(tagVal: any) {
     if (tagVal) {
       this.tagBtnDisabled = false;
-    }
-    else {
+    } else {
       this.tagBtnDisabled = true;
     }
   }
@@ -1684,23 +2028,25 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   deleteFacilityTag() {
     if (this.deleteTagId) {
-      this.facilityService.deleteTagListById(true, this.deleteTagId).subscribe((res) => {
-        if (res.responseCode === 200) {
-
-          this.showNotificationOnSucess(res);
-          // this.getTagListByFacilityId(this.facilityId);
-          let index = this.facilityTagList.findIndex(d => d.id === this.deleteTagId);
-          this.facilityTagList.splice(index, 1);
-          this.getAllTagList();
+      this.facilityService.deleteTagListById(true, this.deleteTagId).subscribe(
+        (res) => {
+          if (res.responseCode === 200) {
+            this.showNotificationOnSucess(res);
+            // this.getTagListByFacilityId(this.facilityId);
+            let index = this.facilityTagList.findIndex(
+              (d) => d.id === this.deleteTagId
+            );
+            this.facilityTagList.splice(index, 1);
+            this.getAllTagList();
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
         }
-      }, (err: any) => {
-        this.errorNotification(err);
-      });
-
+      );
     }
   }
   checkNotes(noteText: string) {
-
     if (noteText.trim() === '') {
       this.noteBtnDisabled = true;
       return;
@@ -1713,18 +2059,26 @@ export class SchdFacilitiesComponent implements OnInit {
 
   getFacilityParentList() {
     this.facilityParentList = [];
-    this.facilityService.getFacilityParentNames(true).subscribe((res) => {
-      if (res.response !== null) {
-        this.facilityParentList = res.response;
+    this.facilityService.getFacilityParentNames(true).subscribe(
+      (res) => {
+        if (res.response !== null) {
+          this.facilityParentList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
     this.submitted = true;
-    if (this.generalInfoForm.invalid || this.facilityContactDetailForm.invalid || this.facilityIntakeForm.invalid || this.facilityPoliciesForm.invalid) {
+    if (
+      this.generalInfoForm.invalid ||
+      this.facilityContactDetailForm.invalid ||
+      this.facilityIntakeForm.invalid ||
+      this.facilityPoliciesForm.invalid
+    ) {
       this.modalValue = '';
       return;
     }
@@ -1742,75 +2096,243 @@ export class SchdFacilitiesComponent implements OnInit {
       lacounty: this.generalInfoFormControls.lacounty.value,
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
-      doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      doNotScheduleFacility:
+        this.generalInfoFormControls.doNotScheduleFacility.value,
       useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
       longitude: this.generalInfoFormControls.longitude.value,
-      previousFacilityName: this.generalInfoFormControls.previousFacilityName.value,
-      previousFacilityName1: this.generalInfoFormControls.previousFacilityName1.value,
-      previousFacilityName2: this.generalInfoFormControls.previousFacilityName2.value,
+      previousFacilityName:
+        this.generalInfoFormControls.previousFacilityName.value,
+      previousFacilityName1:
+        this.generalInfoFormControls.previousFacilityName1.value,
+      previousFacilityName2:
+        this.generalInfoFormControls.previousFacilityName2.value,
       schedFacilityTaxID: this.generalInfoFormControls.schedFacilityTaxID.value,
 
       //// Contact Detail Tab Form Controls
 
-      itsupportContact: this.facilityContactDetailFormControls.itsupportContact.value,
-      itsupportEmail: this.facilityContactDetailFormControls.itsupportEmail.value,
-      itsupportOfficePhone: this.facilityContactDetailFormControls.itsupportOfficePhone.value != null ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(/\D+/g, '') : '',
-      itsupportCellPhone: this.facilityContactDetailFormControls.itsupportCellPhone.value != null ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(/\D+/g, '') : '',
-      itsupportHomePhone: this.facilityContactDetailFormControls.itsupportHomePhone.value != null ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(/\D+/g, '') : '',
-      itsupportFax: this.facilityContactDetailFormControls.itsupportFax.value != null ? this.facilityContactDetailFormControls.itsupportFax.value.replace(/\D+/g, '') : '',
+      itsupportContact:
+        this.facilityContactDetailFormControls.itsupportContact.value,
+      itsupportEmail:
+        this.facilityContactDetailFormControls.itsupportEmail.value,
+      itsupportOfficePhone:
+        this.facilityContactDetailFormControls.itsupportOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportCellPhone:
+        this.facilityContactDetailFormControls.itsupportCellPhone.value != null
+          ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportHomePhone:
+        this.facilityContactDetailFormControls.itsupportHomePhone.value != null
+          ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportFax:
+        this.facilityContactDetailFormControls.itsupportFax.value != null
+          ? this.facilityContactDetailFormControls.itsupportFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      reportsContact: this.facilityContactDetailFormControls.reportsContact.value,
+      reportsContact:
+        this.facilityContactDetailFormControls.reportsContact.value,
       reportsEmail: this.facilityContactDetailFormControls.reportsEmail.value,
-      reportsOfficePhone: this.facilityContactDetailFormControls.reportsOfficePhone.value != null ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(/\D+/g, '') : '',
-      reportsCellPhone: this.facilityContactDetailFormControls.reportsCellPhone.value != null ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(/\D+/g, '') : '',
-      reportsHomePhone: this.facilityContactDetailFormControls.reportsHomePhone.value != null ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(/\D+/g, '') : '',
-      reportsFax: this.facilityContactDetailFormControls.reportsFax.value != null ? this.facilityContactDetailFormControls.reportsFax.value.replace(/\D+/g, '') : '',
+      reportsOfficePhone:
+        this.facilityContactDetailFormControls.reportsOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsCellPhone:
+        this.facilityContactDetailFormControls.reportsCellPhone.value != null
+          ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsHomePhone:
+        this.facilityContactDetailFormControls.reportsHomePhone.value != null
+          ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsFax:
+        this.facilityContactDetailFormControls.reportsFax.value != null
+          ? this.facilityContactDetailFormControls.reportsFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      statusCheckContact: this.facilityContactDetailFormControls.statusCheckContact.value,
-      statusCheckEmail: this.facilityContactDetailFormControls.statusCheckEmail.value,
-      statusCheckOfficePhone: this.facilityContactDetailFormControls.statusCheckOfficePhone.value != null ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(/\D+/g, '') : '',
-      statusCheckCellPhone: this.facilityContactDetailFormControls.statusCheckCellPhone.value != null ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(/\D+/g, '') : '',
-      statusCheckHomePhone: this.facilityContactDetailFormControls.statusCheckHomePhone.value != null ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(/\D+/g, '') : '',
-      statusCheckFax: this.facilityContactDetailFormControls.statusCheckFax.value != null ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(/\D+/g, '') : '',
+      statusCheckContact:
+        this.facilityContactDetailFormControls.statusCheckContact.value,
+      statusCheckEmail:
+        this.facilityContactDetailFormControls.statusCheckEmail.value,
+      statusCheckOfficePhone:
+        this.facilityContactDetailFormControls.statusCheckOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckCellPhone:
+        this.facilityContactDetailFormControls.statusCheckCellPhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckHomePhone:
+        this.facilityContactDetailFormControls.statusCheckHomePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckFax:
+        this.facilityContactDetailFormControls.statusCheckFax.value != null
+          ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      schedulingContact: this.facilityContactDetailFormControls.schedulingContact.value,
-      schedulingEmail: this.facilityContactDetailFormControls.schedulingEmail.value,
-      schedulingOfficePhone: this.facilityContactDetailFormControls.schedulingOfficePhone.value != null ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(/\D+/g, '') : '',
-      schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
-      schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
-      schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
-      defaultEmailAddress3P: this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
-      emailAddress13P: this.facilityContactDetailFormControls.emailAddress13P.value,
-      emailAddress23P: this.facilityContactDetailFormControls.emailAddress23P.value,
+      schedulingContact:
+        this.facilityContactDetailFormControls.schedulingContact.value,
+      schedulingEmail:
+        this.facilityContactDetailFormControls.schedulingEmail.value,
+      schedulingOfficePhone:
+        this.facilityContactDetailFormControls.schedulingOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingCellPhone:
+        this.facilityContactDetailFormControls.schedulingCellPhone.value != null
+          ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingHomePhone:
+        this.facilityContactDetailFormControls.schedulingHomePhone.value != null
+          ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingFax:
+        this.facilityContactDetailFormControls.schedulingFax.value != null
+          ? this.facilityContactDetailFormControls.schedulingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      defaultEmailAddress3P:
+        this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P:
+        this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P:
+        this.facilityContactDetailFormControls.emailAddress23P.value,
 
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
-      imagesOfficePhone: this.facilityContactDetailFormControls.imagesOfficePhone.value != null ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(/\D+/g, '') : '',
-      imagesCellPhone: this.facilityContactDetailFormControls.imagesCellPhone.value != null ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(/\D+/g, '') : '',
-      imagesHomePhone: this.facilityContactDetailFormControls.imagesHomePhone.value != null ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(/\D+/g, '') : '',
-      imagesFax: this.facilityContactDetailFormControls.imagesFax.value != null ? this.facilityContactDetailFormControls.imagesFax.value.replace(/\D+/g, '') : '',
+      imagesOfficePhone:
+        this.facilityContactDetailFormControls.imagesOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesCellPhone:
+        this.facilityContactDetailFormControls.imagesCellPhone.value != null
+          ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesHomePhone:
+        this.facilityContactDetailFormControls.imagesHomePhone.value != null
+          ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesFax:
+        this.facilityContactDetailFormControls.imagesFax.value != null
+          ? this.facilityContactDetailFormControls.imagesFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      billingContact: this.facilityContactDetailFormControls.billingContact.value,
+      billingContact:
+        this.facilityContactDetailFormControls.billingContact.value,
       billingEmail: this.facilityContactDetailFormControls.billingEmail.value,
-      billingOfficePhone: this.facilityContactDetailFormControls.billingOfficePhone.value != null ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(/\D+/g, '') : '',
-      billingCellPhone: this.facilityContactDetailFormControls.billingCellPhone.value != null ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(/\D+/g, '') : '',
-      billingHomePhone: this.facilityContactDetailFormControls.billingHomePhone.value != null ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(/\D+/g, '') : '',
-      billingFax: this.facilityContactDetailFormControls.billingFax.value != null ? this.facilityContactDetailFormControls.billingFax.value.replace(/\D+/g, '') : '',
-
+      billingOfficePhone:
+        this.facilityContactDetailFormControls.billingOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingCellPhone:
+        this.facilityContactDetailFormControls.billingCellPhone.value != null
+          ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingHomePhone:
+        this.facilityContactDetailFormControls.billingHomePhone.value != null
+          ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingFax:
+        this.facilityContactDetailFormControls.billingFax.value != null
+          ? this.facilityContactDetailFormControls.billingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
       ///// Modality Service Tab Form Controls
 
-      arthrogramService: this.modalityServiceFormControls.arthrogramService.value,
-      boneDensityService: this.modalityServiceFormControls.boneDensityService.value,
+      arthrogramService:
+        this.modalityServiceFormControls.arthrogramService.value,
+      boneDensityService:
+        this.modalityServiceFormControls.boneDensityService.value,
       ctservice: this.modalityServiceFormControls.ctservice.value,
-      mammographService: this.modalityServiceFormControls.mammographService.value,
+      mammographService:
+        this.modalityServiceFormControls.mammographService.value,
       mriservice: this.modalityServiceFormControls.mriservice.value,
-      nuclearMedicineService: this.modalityServiceFormControls.nuclearMedicineService.value,
+      nuclearMedicineService:
+        this.modalityServiceFormControls.nuclearMedicineService.value,
       petscanService: this.modalityServiceFormControls.petscanService.value,
-      ultrasoundService: this.modalityServiceFormControls.ultrasoundService.value,
+      ultrasoundService:
+        this.modalityServiceFormControls.ultrasoundService.value,
       xrayService: this.modalityServiceFormControls.xrayService.value,
       MyElogramService: this.modalityServiceFormControls.MyElogramService.value,
       dexaService: this.modalityServiceFormControls.dexaService.value,
@@ -1867,220 +2389,371 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3breast: this.modalityCtFormControls.ct3breast.value,
       ctnotes: this.modalityCtFormControls.ctnotes.value,
 
-
       ///// Modality Exceptions Tab Form Controls
 
-
       mriexception: this.modalityExceptionsFormControls.mriexception.value,
-      mriexceptionDescription: this.modalityExceptionsFormControls.mriexceptionDescription.value,
+      mriexceptionDescription:
+        this.modalityExceptionsFormControls.mriexceptionDescription.value,
       mriexpires: this.modalityExceptionsFormControls.mriexpires.value,
 
       ctexception: this.modalityExceptionsFormControls.ctexception.value,
-      ctexceptionDescription: this.modalityExceptionsFormControls.ctexceptionDescription.value,
+      ctexceptionDescription:
+        this.modalityExceptionsFormControls.ctexceptionDescription.value,
       ctexpires: this.modalityExceptionsFormControls.ctexpires.value,
 
       xrexception: this.modalityExceptionsFormControls.xrexception.value,
-      xrexceptionDescription: this.modalityExceptionsFormControls.xrexceptionDescription.value,
+      xrexceptionDescription:
+        this.modalityExceptionsFormControls.xrexceptionDescription.value,
       xrayexpires: this.modalityExceptionsFormControls.xrayexpires.value,
 
       arthoException: this.modalityExceptionsFormControls.arthoException.value,
-      arthoExceptionDescription: this.modalityExceptionsFormControls.arthoExceptionDescription.value,
+      arthoExceptionDescription:
+        this.modalityExceptionsFormControls.arthoExceptionDescription.value,
       arthoExpires: this.modalityExceptionsFormControls.arthoExpires.value,
 
       bnexception: this.modalityExceptionsFormControls.bnexception.value,
-      bnexceptionDescription: this.modalityExceptionsFormControls.bnexceptionDescription.value,
+      bnexceptionDescription:
+        this.modalityExceptionsFormControls.bnexceptionDescription.value,
       bnexpires: this.modalityExceptionsFormControls.bnexpires.value,
 
       mammoException: this.modalityExceptionsFormControls.mammoException.value,
-      mammoExceptionDescription: this.modalityExceptionsFormControls.mammoExceptionDescription.value,
+      mammoExceptionDescription:
+        this.modalityExceptionsFormControls.mammoExceptionDescription.value,
       mammoExpires: this.modalityExceptionsFormControls.mammoExpires.value,
 
       nmexception: this.modalityExceptionsFormControls.nmexception.value,
-      nmexceptionDescription: this.modalityExceptionsFormControls.nmexceptionDescription.value,
+      nmexceptionDescription:
+        this.modalityExceptionsFormControls.nmexceptionDescription.value,
       nmexpires: this.modalityExceptionsFormControls.nmexpires.value,
 
       psexception: this.modalityExceptionsFormControls.psexception.value,
-      psexceptionDescription: this.modalityExceptionsFormControls.psexceptionDescription.value,
+      psexceptionDescription:
+        this.modalityExceptionsFormControls.psexceptionDescription.value,
       psexpires: this.modalityExceptionsFormControls.psexpires.value,
 
       usexception: this.modalityExceptionsFormControls.usexception.value,
-      usexceptionDescription: this.modalityExceptionsFormControls.usexceptionDescription.value,
+      usexceptionDescription:
+        this.modalityExceptionsFormControls.usexceptionDescription.value,
       usexpires: this.modalityExceptionsFormControls.usexpires.value,
 
-      myElogramServiceException: this.modalityExceptionsFormControls.myElogramServiceException.value,
-      myElogramServiceexpDescription: this.modalityExceptionsFormControls.myElogramServiceexpDescription.value,
-      myElogramExpires: this.modalityExceptionsFormControls.myElogramExpires.value,
+      myElogramServiceException:
+        this.modalityExceptionsFormControls.myElogramServiceException.value,
+      myElogramServiceexpDescription:
+        this.modalityExceptionsFormControls.myElogramServiceexpDescription
+          .value,
+      myElogramExpires:
+        this.modalityExceptionsFormControls.myElogramExpires.value,
 
-      dexaServiceException: this.modalityExceptionsFormControls.dexaServiceException.value,
-      dexaServiceexpDescription: this.modalityExceptionsFormControls.dexaServiceexpDescription.value,
+      dexaServiceException:
+        this.modalityExceptionsFormControls.dexaServiceException.value,
+      dexaServiceexpDescription:
+        this.modalityExceptionsFormControls.dexaServiceexpDescription.value,
       dexaExpires: this.modalityExceptionsFormControls.dexaExpires.value,
 
-      ctArthroServiceException: this.modalityExceptionsFormControls.ctArthroServiceException.value,
-      ctArthroServiceexpDescription: this.modalityExceptionsFormControls.ctArthroServiceexpDescription.value,
+      ctArthroServiceException:
+        this.modalityExceptionsFormControls.ctArthroServiceException.value,
+      ctArthroServiceexpDescription:
+        this.modalityExceptionsFormControls.ctArthroServiceexpDescription.value,
       ctArthoExpires: this.modalityExceptionsFormControls.ctArthoExpires.value,
 
       ///// Modality Scheduling Detail Tab Form Controls
 
-      schedulingSunOpenFrom: this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom.value,
-      schedulingSunOpenTo: this.facilitySchedulingDetailFormControls.schedulingSunOpenTo.value,
-      schedulingSunOpenFrom2: this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom2.value,
-      schedulingSunOpenTo2: this.facilitySchedulingDetailFormControls.schedulingSunOpenTo2.value,
-      schedulingMonOpenFrom: this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom.value,
-      schedulingMonOpenTo: this.facilitySchedulingDetailFormControls.schedulingMonOpenTo.value,
-      schedulingMonOpenFrom2: this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom2.value,
-      schedulingMonOpenTo2: this.facilitySchedulingDetailFormControls.schedulingMonOpenTo2.value,
-      shedulingTueOpenFrom: this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom.value,
-      shedulingTueOpenTo: this.facilitySchedulingDetailFormControls.shedulingTueOpenTo.value,
-      shedulingTueOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom2.value,
-      shedulingTueOpenTo2: this.facilitySchedulingDetailFormControls.shedulingTueOpenTo2.value,
-      shedulingWedOpenFrom: this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom.value,
-      shedulingWedOpenTo: this.facilitySchedulingDetailFormControls.shedulingWedOpenTo.value,
-      shedulingWedOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom2.value,
-      shedulingWedOpenTo2: this.facilitySchedulingDetailFormControls.shedulingWedOpenTo2.value,
-      shedulingThuOpenFrom: this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom.value,
-      shedulingThuOpenTo: this.facilitySchedulingDetailFormControls.shedulingThuOpenTo.value,
-      shedulingThuOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom2.value,
-      shedulingThuOpenTo2: this.facilitySchedulingDetailFormControls.shedulingThuOpenTo2.value,
-      shedulingFriOpenFrom: this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom.value,
-      shedulingFriOpenTo: this.facilitySchedulingDetailFormControls.shedulingFriOpenTo.value,
-      shedulingFriOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom2.value,
-      shedulingFriOpenTo2: this.facilitySchedulingDetailFormControls.shedulingFriOpenTo2.value,
-      shedulingSatOpenFrom: this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom.value,
-      shedulingSatOpenTo: this.facilitySchedulingDetailFormControls.shedulingSatOpenTo.value,
-      shedulingSatOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom2.value,
-      shedulingSatOpenTo2: this.facilitySchedulingDetailFormControls.shedulingSatOpenTo2.value,
+      schedulingSunOpenFrom:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom.value,
+      schedulingSunOpenTo:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenTo.value,
+      schedulingSunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom2.value,
+      schedulingSunOpenTo2:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenTo2.value,
+      schedulingMonOpenFrom:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom.value,
+      schedulingMonOpenTo:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenTo.value,
+      schedulingMonOpenFrom2:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom2.value,
+      schedulingMonOpenTo2:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenTo2.value,
+      shedulingTueOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom.value,
+      shedulingTueOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenTo.value,
+      shedulingTueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom2.value,
+      shedulingTueOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenTo2.value,
+      shedulingWedOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom.value,
+      shedulingWedOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenTo.value,
+      shedulingWedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom2.value,
+      shedulingWedOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenTo2.value,
+      shedulingThuOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom.value,
+      shedulingThuOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenTo.value,
+      shedulingThuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom2.value,
+      shedulingThuOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenTo2.value,
+      shedulingFriOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom.value,
+      shedulingFriOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenTo.value,
+      shedulingFriOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom2.value,
+      shedulingFriOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenTo2.value,
+      shedulingSatOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom.value,
+      shedulingSatOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenTo.value,
+      shedulingSatOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom2.value,
+      shedulingSatOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenTo2.value,
 
       sunOpenFrom: this.facilitySchedulingDetailFormControls.sunOpenFrom.value,
       sunOpenTo: this.facilitySchedulingDetailFormControls.sunOpenTo.value,
-      sunOpenFrom2: this.facilitySchedulingDetailFormControls.sunOpenFrom2.value,
+      sunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.sunOpenFrom2.value,
       sunOpenTo2: this.facilitySchedulingDetailFormControls.sunOpenTo2.value,
       monOpenFrom: this.facilitySchedulingDetailFormControls.monOpenFrom.value,
       monOpenTo: this.facilitySchedulingDetailFormControls.monOpenTo.value,
-      monOpenFrom2: this.facilitySchedulingDetailFormControls.monOpenFrom2.value,
+      monOpenFrom2:
+        this.facilitySchedulingDetailFormControls.monOpenFrom2.value,
       monOpenTo2: this.facilitySchedulingDetailFormControls.monOpenTo2.value,
       tueOpenFrom: this.facilitySchedulingDetailFormControls.tueOpenFrom.value,
       tueOpenTo: this.facilitySchedulingDetailFormControls.tueOpenTo.value,
-      tueOpenFrom2: this.facilitySchedulingDetailFormControls.tueOpenFrom2.value,
+      tueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.tueOpenFrom2.value,
       tueOpenTo2: this.facilitySchedulingDetailFormControls.tueOpenTo2.value,
       wedOpenFrom: this.facilitySchedulingDetailFormControls.wedOpenFrom.value,
       wedOpenTo: this.facilitySchedulingDetailFormControls.wedOpenTo.value,
-      wedOpenFrom2: this.facilitySchedulingDetailFormControls.wedOpenFrom2.value,
+      wedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.wedOpenFrom2.value,
       wedOpenTo2: this.facilitySchedulingDetailFormControls.wedOpenTo2.value,
       thuOpenFrom: this.facilitySchedulingDetailFormControls.thuOpenFrom.value,
       thuOpenTo: this.facilitySchedulingDetailFormControls.thuOpenTo.value,
-      thuOpenFrom2: this.facilitySchedulingDetailFormControls.thuOpenFrom2.value,
+      thuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.thuOpenFrom2.value,
       thuOpenTo2: this.facilitySchedulingDetailFormControls.thuOpenTo2.value,
       friOpenFrom: this.facilitySchedulingDetailFormControls.friOpenFrom.value,
       friOpenTo: this.facilitySchedulingDetailFormControls.friOpenTo.value,
-      friOpenFrom2: this.facilitySchedulingDetailFormControls.friOpenFrom2.value,
+      friOpenFrom2:
+        this.facilitySchedulingDetailFormControls.friOpenFrom2.value,
       friOpenTo2: this.facilitySchedulingDetailFormControls.friOpenTo2.value,
       satOpenFrom: this.facilitySchedulingDetailFormControls.satOpenFrom.value,
       satOpenTo: this.facilitySchedulingDetailFormControls.satOpenTo.value,
-      satOpenFrom2: this.facilitySchedulingDetailFormControls.satOpenFrom2.value,
+      satOpenFrom2:
+        this.facilitySchedulingDetailFormControls.satOpenFrom2.value,
       satOpenTo2: this.facilitySchedulingDetailFormControls.satOpenTo2.value,
 
-      ctSunOpenFrom: this.facilitySchedulingDetailFormControls.ctSunOpenFrom.value,
+      ctSunOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctSunOpenFrom.value,
       ctSunOpenTo: this.facilitySchedulingDetailFormControls.ctSunOpenTo.value,
-      ctSunOpenFrom2: this.facilitySchedulingDetailFormControls.ctSunOpenFrom2.value,
-      ctSunOpenTo2: this.facilitySchedulingDetailFormControls.ctSunOpenTo2.value,
-      ctMonOpenFrom: this.facilitySchedulingDetailFormControls.ctMonOpenFrom.value,
+      ctSunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctSunOpenFrom2.value,
+      ctSunOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctSunOpenTo2.value,
+      ctMonOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctMonOpenFrom.value,
       ctMonOpenTo: this.facilitySchedulingDetailFormControls.ctMonOpenTo.value,
-      ctMonOpenFrom2: this.facilitySchedulingDetailFormControls.ctMonOpenFrom2.value,
-      ctMonOpenTo2: this.facilitySchedulingDetailFormControls.ctMonOpenTo2.value,
-      ctTueOpenFrom: this.facilitySchedulingDetailFormControls.ctTueOpenFrom.value,
+      ctMonOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctMonOpenFrom2.value,
+      ctMonOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctMonOpenTo2.value,
+      ctTueOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctTueOpenFrom.value,
       ctTueOpenTo: this.facilitySchedulingDetailFormControls.ctTueOpenTo.value,
-      ctTueOpenFrom2: this.facilitySchedulingDetailFormControls.ctTueOpenFrom2.value,
-      ctTueOpenTo2: this.facilitySchedulingDetailFormControls.ctTueOpenTo2.value,
-      ctWedOpenFrom: this.facilitySchedulingDetailFormControls.ctWedOpenFrom.value,
+      ctTueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctTueOpenFrom2.value,
+      ctTueOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctTueOpenTo2.value,
+      ctWedOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctWedOpenFrom.value,
       ctWedOpenTo: this.facilitySchedulingDetailFormControls.ctWedOpenTo.value,
-      ctWedOpenFrom2: this.facilitySchedulingDetailFormControls.ctWedOpenFrom2.value,
-      ctWedOpenTo2: this.facilitySchedulingDetailFormControls.ctWedOpenTo2.value,
-      ctThuOpenFrom: this.facilitySchedulingDetailFormControls.ctThuOpenFrom.value,
+      ctWedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctWedOpenFrom2.value,
+      ctWedOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctWedOpenTo2.value,
+      ctThuOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctThuOpenFrom.value,
       ctThuOpenTo: this.facilitySchedulingDetailFormControls.ctThuOpenTo.value,
-      ctThuOpenFrom2: this.facilitySchedulingDetailFormControls.ctThuOpenFrom2.value,
-      ctThuOpenTo2: this.facilitySchedulingDetailFormControls.ctThuOpenTo2.value,
-      ctFriOpenFrom: this.facilitySchedulingDetailFormControls.ctFriOpenFrom.value,
+      ctThuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctThuOpenFrom2.value,
+      ctThuOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctThuOpenTo2.value,
+      ctFriOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctFriOpenFrom.value,
       ctFriOpenTo: this.facilitySchedulingDetailFormControls.ctFriOpenTo.value,
-      ctFriOpenFrom2: this.facilitySchedulingDetailFormControls.ctFriOpenFrom2.value,
-      ctFriOpenTo2: this.facilitySchedulingDetailFormControls.ctFriOpenTo2.value,
-      ctSatOpenFrom: this.facilitySchedulingDetailFormControls.ctSatOpenFrom.value,
+      ctFriOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctFriOpenFrom2.value,
+      ctFriOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctFriOpenTo2.value,
+      ctSatOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctSatOpenFrom.value,
       ctSatOpenTo: this.facilitySchedulingDetailFormControls.ctSatOpenTo.value,
-      ctSatOpenFrom2: this.facilitySchedulingDetailFormControls.ctSatOpenFrom2.value,
-      ctSatOpenTo2: this.facilitySchedulingDetailFormControls.ctSatOpenTo2.value,
+      ctSatOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctSatOpenFrom2.value,
+      ctSatOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctSatOpenTo2.value,
 
       sunXrayFrom: this.facilitySchedulingDetailFormControls.sunXrayFrom.value,
       sunXrayTo: this.facilitySchedulingDetailFormControls.sunXrayTo.value,
-      sunXrayFrom2: this.facilitySchedulingDetailFormControls.sunXrayFrom2.value,
+      sunXrayFrom2:
+        this.facilitySchedulingDetailFormControls.sunXrayFrom2.value,
       sunXrayTo2: this.facilitySchedulingDetailFormControls.sunXrayTo2.value,
       monXrayFrom: this.facilitySchedulingDetailFormControls.monXrayFrom.value,
       monXrayTo: this.facilitySchedulingDetailFormControls.monXrayTo.value,
-      monXrayFrom2: this.facilitySchedulingDetailFormControls.monXrayFrom2.value,
+      monXrayFrom2:
+        this.facilitySchedulingDetailFormControls.monXrayFrom2.value,
       monXrayTo2: this.facilitySchedulingDetailFormControls.monXrayTo2.value,
       tueXrayFrom: this.facilitySchedulingDetailFormControls.tueXrayFrom.value,
       tueXrayTo: this.facilitySchedulingDetailFormControls.tueXrayTo.value,
-      tueXrayFrom2: this.facilitySchedulingDetailFormControls.tueXrayFrom2.value,
+      tueXrayFrom2:
+        this.facilitySchedulingDetailFormControls.tueXrayFrom2.value,
       tueXrayTo2: this.facilitySchedulingDetailFormControls.tueXrayTo2.value,
       wedXrayFrom: this.facilitySchedulingDetailFormControls.wedXrayFrom.value,
       wedXrayTo: this.facilitySchedulingDetailFormControls.wedXrayTo.value,
-      wedXrayFrom2: this.facilitySchedulingDetailFormControls.wedXrayFrom2.value,
+      wedXrayFrom2:
+        this.facilitySchedulingDetailFormControls.wedXrayFrom2.value,
       wedXrayTo2: this.facilitySchedulingDetailFormControls.wedXrayTo2.value,
       thuXrayFrom: this.facilitySchedulingDetailFormControls.thuXrayFrom.value,
       thuXrayTo: this.facilitySchedulingDetailFormControls.thuXrayTo.value,
-      thuXrayFrom2: this.facilitySchedulingDetailFormControls.thuXrayFrom2.value,
+      thuXrayFrom2:
+        this.facilitySchedulingDetailFormControls.thuXrayFrom2.value,
       thuXrayTo2: this.facilitySchedulingDetailFormControls.thuXrayTo2.value,
       friXrayFrom: this.facilitySchedulingDetailFormControls.friXrayFrom.value,
       friXrayTo: this.facilitySchedulingDetailFormControls.friXrayTo.value,
-      friXrayFrom2: this.facilitySchedulingDetailFormControls.friXrayFrom2.value,
+      friXrayFrom2:
+        this.facilitySchedulingDetailFormControls.friXrayFrom2.value,
       friXrayTo2: this.facilitySchedulingDetailFormControls.friXrayTo2.value,
       satXrayFrom: this.facilitySchedulingDetailFormControls.satXrayFrom.value,
       satXrayTo: this.facilitySchedulingDetailFormControls.satXrayTo.value,
-      satXrayFrom2: this.facilitySchedulingDetailFormControls.satXrayFrom2.value,
+      satXrayFrom2:
+        this.facilitySchedulingDetailFormControls.satXrayFrom2.value,
       satXrayTo2: this.facilitySchedulingDetailFormControls.satXrayTo2.value,
       parking: this.facilitySchedulingDetailFormControls.parking.value,
-      preArrivalTime: this.facilitySchedulingDetailFormControls.preArrivalTime.value,
+      preArrivalTime:
+        this.facilitySchedulingDetailFormControls.preArrivalTime.value,
       xrayWalkIn: this.facilitySchedulingDetailFormControls.xrayWalkIn.value,
 
       //// Notes TAB Have Different API's
 
-
       //// Facility Parent Detail Tab Form Controls
 
-      facilityParentName: this.facilityParentCompanyFormControls.facilityParentName.value,
+      facilityParentName:
+        this.facilityParentCompanyFormControls.facilityParentName.value,
       //facilityParentId:this.facilityParentCompanyFormControls.facilityParentId.value,
       parentAddress: this.facilityParentCompanyFormControls.parentAddress.value,
       parentCity: this.facilityParentCompanyFormControls.parentCity.value,
       parentState: this.facilityParentCompanyFormControls.parentState.value,
       parentZip: this.facilityParentCompanyFormControls.parentZip.value,
       parentWebsite: this.facilityParentCompanyFormControls.parentWebsite.value,
-      parentOwnerName: this.facilityParentCompanyFormControls.parentOwnerName.value,
-      parentOwnerPhone: this.facilityParentCompanyFormControls.parentOwnerPhone.value != null ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(/\D+/g, '') : '',
-      parentOwnerEmail: this.facilityParentCompanyFormControls.parentOwnerEmail.value,
-      parentOwnerFax: this.facilityParentCompanyFormControls.parentOwnerFax.value != null ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(/\D+/g, '') : '',
-      parentManagerName: this.facilityParentCompanyFormControls.parentManagerName.value,
-      parentManagerEmail: this.facilityParentCompanyFormControls.parentManagerEmail.value,
-      parentManagerPhone: this.facilityParentCompanyFormControls.parentManagerPhone.value != null ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(/\D+/g, '') : '',
-      parentManagerFax: this.facilityParentCompanyFormControls.parentManagerFax.value != null ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(/\D+/g, '') : '',
+      parentOwnerName:
+        this.facilityParentCompanyFormControls.parentOwnerName.value,
+      parentOwnerPhone:
+        this.facilityParentCompanyFormControls.parentOwnerPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentOwnerEmail:
+        this.facilityParentCompanyFormControls.parentOwnerEmail.value,
+      parentOwnerFax:
+        this.facilityParentCompanyFormControls.parentOwnerFax.value != null
+          ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentManagerName:
+        this.facilityParentCompanyFormControls.parentManagerName.value,
+      parentManagerEmail:
+        this.facilityParentCompanyFormControls.parentManagerEmail.value,
+      parentManagerPhone:
+        this.facilityParentCompanyFormControls.parentManagerPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentManagerFax:
+        this.facilityParentCompanyFormControls.parentManagerFax.value != null
+          ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
       parentITName: this.facilityParentCompanyFormControls.parentITName.value,
       parentITEmail: this.facilityParentCompanyFormControls.parentITEmail.value,
-      parentITPhone: this.facilityParentCompanyFormControls.parentITPhone.value != null ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(/\D+/g, '') : '',
-      parentITFax: this.facilityParentCompanyFormControls.parentITFax.value != null ? this.facilityParentCompanyFormControls.parentITFax.value.replace(/\D+/g, '') : '',
-      parentBillingName: this.facilityParentCompanyFormControls.parentBillingName.value,
-      parentBillingEmail: this.facilityParentCompanyFormControls.parentBillingEmail.value,
-      parentBillingPhone: this.facilityParentCompanyFormControls.parentBillingPhone.value != null ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(/\D+/g, '') : '',
-      parentBillingFax: this.facilityParentCompanyFormControls.parentBillingFax.value != null ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(/\D+/g, '') : '',
+      parentITPhone:
+        this.facilityParentCompanyFormControls.parentITPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentITFax:
+        this.facilityParentCompanyFormControls.parentITFax.value != null
+          ? this.facilityParentCompanyFormControls.parentITFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentBillingName:
+        this.facilityParentCompanyFormControls.parentBillingName.value,
+      parentBillingEmail:
+        this.facilityParentCompanyFormControls.parentBillingEmail.value,
+      parentBillingPhone:
+        this.facilityParentCompanyFormControls.parentBillingPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentBillingFax:
+        this.facilityParentCompanyFormControls.parentBillingFax.value != null
+          ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
       //// Intake Tab Form Controls
 
       isPacketDocOnly: this.facilityIntakeFormControls.isPacketDocOnly.value,
-      isMriScreeningForm: this.facilityIntakeFormControls.isMriScreeningForm.value,
+      isMriScreeningForm:
+        this.facilityIntakeFormControls.isMriScreeningForm.value,
       IsXrayWaiverForm: this.facilityIntakeFormControls.IsXrayWaiverForm.value,
-      IsFaxIntakePacket: this.facilityIntakeFormControls.IsFaxIntakePacket.value,
-      intakeFax1: this.facilityIntakeFormControls.intakeFax1.value != null ? this.facilityIntakeFormControls.intakeFax1.value.replace(/\D+/g, '') : '',
-      intakeFax2: this.facilityIntakeFormControls.intakeFax2.value != null ? this.facilityIntakeFormControls.intakeFax2.value.replace(/\D+/g, '') : '',
-      intakeFax3: this.facilityIntakeFormControls.intakeFax3.value != null ? this.facilityIntakeFormControls.intakeFax3.value.replace(/\D+/g, '') : '',
-      intakeFax4: this.facilityIntakeFormControls.intakeFax4.value != null ? this.facilityIntakeFormControls.intakeFax4.value.replace(/\D+/g, '') : '',
-      intakeFax5: this.facilityIntakeFormControls.intakeFax5.value != null ? this.facilityIntakeFormControls.intakeFax5.value.replace(/\D+/g, '') : '',
-      isEmailIntakePacket: this.facilityIntakeFormControls.isEmailIntakePacket.value,
+      IsFaxIntakePacket:
+        this.facilityIntakeFormControls.IsFaxIntakePacket.value,
+      intakeFax1:
+        this.facilityIntakeFormControls.intakeFax1.value != null
+          ? this.facilityIntakeFormControls.intakeFax1.value.replace(/\D+/g, '')
+          : '',
+      intakeFax2:
+        this.facilityIntakeFormControls.intakeFax2.value != null
+          ? this.facilityIntakeFormControls.intakeFax2.value.replace(/\D+/g, '')
+          : '',
+      intakeFax3:
+        this.facilityIntakeFormControls.intakeFax3.value != null
+          ? this.facilityIntakeFormControls.intakeFax3.value.replace(/\D+/g, '')
+          : '',
+      intakeFax4:
+        this.facilityIntakeFormControls.intakeFax4.value != null
+          ? this.facilityIntakeFormControls.intakeFax4.value.replace(/\D+/g, '')
+          : '',
+      intakeFax5:
+        this.facilityIntakeFormControls.intakeFax5.value != null
+          ? this.facilityIntakeFormControls.intakeFax5.value.replace(/\D+/g, '')
+          : '',
+      isEmailIntakePacket:
+        this.facilityIntakeFormControls.isEmailIntakePacket.value,
       intakeEmail1: this.facilityIntakeFormControls.intakeEmail1.value,
       intakeEmail2: this.facilityIntakeFormControls.intakeEmail2.value,
       intakeEmail3: this.facilityIntakeFormControls.intakeEmail3.value,
@@ -2090,15 +2763,17 @@ export class SchdFacilitiesComponent implements OnInit {
       isElecScreenForm: this.facilityIntakeFormControls.isElecScreenForm.value,
       isRxnotification: this.facilityIntakeFormControls.isRxnotification.value,
       isPrescreening: this.facilityIntakeFormControls.isPrescreening.value,
-      userList: this.selectedEpicUserList != null ? this.selectedEpicUserList.toString() : null,
+      userList:
+        this.selectedEpicUserList != null
+          ? this.selectedEpicUserList.toString()
+          : null,
       // facilityPolicy:this.facilityPolicy!=null?this.facilityPolicy.toString():'',
       // parentPolicy:this.parentPolicy!=null?this.parentPolicy.toString():''
       facilityPolicy: this.facilityPolicyFormControls.facilityPolicy.value,
       parentPolicy: this.facilityPolicyFormControls.parentPolicy.value,
       /// For Tag Tab we are using Different API
-      FacilityResourceJson: JSON.stringify(this.updatedResourceName)
-
-    }
+      FacilityResourceJson: JSON.stringify(this.updatedResourceName),
+    };
     console.log(body);
     this.facilityService.updateFacility(true, body).subscribe((res) => {
       if (res.response != null) {
@@ -2121,11 +2796,14 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   addFacility() {
-
-
     this.modalValue = 'modal';
     this.submitted = true;
-    if (this.generalInfoForm.invalid || this.facilityContactDetailForm.invalid || this.facilityIntakeForm.invalid || this.facilityPoliciesForm.invalid) {
+    if (
+      this.generalInfoForm.invalid ||
+      this.facilityContactDetailForm.invalid ||
+      this.facilityIntakeForm.invalid ||
+      this.facilityPoliciesForm.invalid
+    ) {
       this.modalValue = '';
       return;
     }
@@ -2144,75 +2822,243 @@ export class SchdFacilitiesComponent implements OnInit {
       lacounty: this.generalInfoFormControls.lacounty.value,
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
-      doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      doNotScheduleFacility:
+        this.generalInfoFormControls.doNotScheduleFacility.value,
       useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
       longitude: this.generalInfoFormControls.longitude.value,
-      previousFacilityName: this.generalInfoFormControls.previousFacilityName.value,
-      previousFacilityName1: this.generalInfoFormControls.previousFacilityName1.value,
-      previousFacilityName2: this.generalInfoFormControls.previousFacilityName2.value,
+      previousFacilityName:
+        this.generalInfoFormControls.previousFacilityName.value,
+      previousFacilityName1:
+        this.generalInfoFormControls.previousFacilityName1.value,
+      previousFacilityName2:
+        this.generalInfoFormControls.previousFacilityName2.value,
       schedFacilityTaxID: this.generalInfoFormControls.schedFacilityTaxID.value,
 
       //// Contact Detail Tab Form Controls
 
-      itsupportContact: this.facilityContactDetailFormControls.itsupportContact.value,
-      itsupportEmail: this.facilityContactDetailFormControls.itsupportEmail.value,
-      itsupportOfficePhone: this.facilityContactDetailFormControls.itsupportOfficePhone.value != null ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(/\D+/g, '') : '',
-      itsupportCellPhone: this.facilityContactDetailFormControls.itsupportCellPhone.value != null ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(/\D+/g, '') : '',
-      itsupportHomePhone: this.facilityContactDetailFormControls.itsupportHomePhone.value != null ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(/\D+/g, '') : '',
-      itsupportFax: this.facilityContactDetailFormControls.itsupportFax.value != null ? this.facilityContactDetailFormControls.itsupportFax.value.replace(/\D+/g, '') : '',
+      itsupportContact:
+        this.facilityContactDetailFormControls.itsupportContact.value,
+      itsupportEmail:
+        this.facilityContactDetailFormControls.itsupportEmail.value,
+      itsupportOfficePhone:
+        this.facilityContactDetailFormControls.itsupportOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportCellPhone:
+        this.facilityContactDetailFormControls.itsupportCellPhone.value != null
+          ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportHomePhone:
+        this.facilityContactDetailFormControls.itsupportHomePhone.value != null
+          ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      itsupportFax:
+        this.facilityContactDetailFormControls.itsupportFax.value != null
+          ? this.facilityContactDetailFormControls.itsupportFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      reportsContact: this.facilityContactDetailFormControls.reportsContact.value,
+      reportsContact:
+        this.facilityContactDetailFormControls.reportsContact.value,
       reportsEmail: this.facilityContactDetailFormControls.reportsEmail.value,
-      reportsOfficePhone: this.facilityContactDetailFormControls.reportsOfficePhone.value != null ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(/\D+/g, '') : '',
-      reportsCellPhone: this.facilityContactDetailFormControls.reportsCellPhone.value != null ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(/\D+/g, '') : '',
-      reportsHomePhone: this.facilityContactDetailFormControls.reportsHomePhone.value != null ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(/\D+/g, '') : '',
-      reportsFax: this.facilityContactDetailFormControls.reportsFax.value != null ? this.facilityContactDetailFormControls.reportsFax.value.replace(/\D+/g, '') : '',
+      reportsOfficePhone:
+        this.facilityContactDetailFormControls.reportsOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsCellPhone:
+        this.facilityContactDetailFormControls.reportsCellPhone.value != null
+          ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsHomePhone:
+        this.facilityContactDetailFormControls.reportsHomePhone.value != null
+          ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      reportsFax:
+        this.facilityContactDetailFormControls.reportsFax.value != null
+          ? this.facilityContactDetailFormControls.reportsFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      statusCheckContact: this.facilityContactDetailFormControls.statusCheckContact.value,
-      statusCheckEmail: this.facilityContactDetailFormControls.statusCheckEmail.value,
-      statusCheckOfficePhone: this.facilityContactDetailFormControls.statusCheckOfficePhone.value != null ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(/\D+/g, '') : '',
-      statusCheckCellPhone: this.facilityContactDetailFormControls.statusCheckCellPhone.value != null ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(/\D+/g, '') : '',
-      statusCheckHomePhone: this.facilityContactDetailFormControls.statusCheckHomePhone.value != null ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(/\D+/g, '') : '',
-      statusCheckFax: this.facilityContactDetailFormControls.statusCheckFax.value != null ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(/\D+/g, '') : '',
+      statusCheckContact:
+        this.facilityContactDetailFormControls.statusCheckContact.value,
+      statusCheckEmail:
+        this.facilityContactDetailFormControls.statusCheckEmail.value,
+      statusCheckOfficePhone:
+        this.facilityContactDetailFormControls.statusCheckOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckCellPhone:
+        this.facilityContactDetailFormControls.statusCheckCellPhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckHomePhone:
+        this.facilityContactDetailFormControls.statusCheckHomePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      statusCheckFax:
+        this.facilityContactDetailFormControls.statusCheckFax.value != null
+          ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      schedulingContact: this.facilityContactDetailFormControls.schedulingContact.value,
-      schedulingEmail: this.facilityContactDetailFormControls.schedulingEmail.value,
-      schedulingOfficePhone: this.facilityContactDetailFormControls.schedulingOfficePhone.value != null ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(/\D+/g, '') : '',
-      schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
-      schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
-      schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
-      defaultEmailAddress3P: this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
-      emailAddress13P: this.facilityContactDetailFormControls.emailAddress13P.value,
-      emailAddress23P: this.facilityContactDetailFormControls.emailAddress23P.value,
+      schedulingContact:
+        this.facilityContactDetailFormControls.schedulingContact.value,
+      schedulingEmail:
+        this.facilityContactDetailFormControls.schedulingEmail.value,
+      schedulingOfficePhone:
+        this.facilityContactDetailFormControls.schedulingOfficePhone.value !=
+        null
+          ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingCellPhone:
+        this.facilityContactDetailFormControls.schedulingCellPhone.value != null
+          ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingHomePhone:
+        this.facilityContactDetailFormControls.schedulingHomePhone.value != null
+          ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      schedulingFax:
+        this.facilityContactDetailFormControls.schedulingFax.value != null
+          ? this.facilityContactDetailFormControls.schedulingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      defaultEmailAddress3P:
+        this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P:
+        this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P:
+        this.facilityContactDetailFormControls.emailAddress23P.value,
 
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
-      imagesOfficePhone: this.facilityContactDetailFormControls.imagesOfficePhone.value != null ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(/\D+/g, '') : '',
-      imagesCellPhone: this.facilityContactDetailFormControls.imagesCellPhone.value != null ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(/\D+/g, '') : '',
-      imagesHomePhone: this.facilityContactDetailFormControls.imagesHomePhone.value != null ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(/\D+/g, '') : '',
-      imagesFax: this.facilityContactDetailFormControls.imagesFax.value != null ? this.facilityContactDetailFormControls.imagesFax.value.replace(/\D+/g, '') : '',
+      imagesOfficePhone:
+        this.facilityContactDetailFormControls.imagesOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesCellPhone:
+        this.facilityContactDetailFormControls.imagesCellPhone.value != null
+          ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesHomePhone:
+        this.facilityContactDetailFormControls.imagesHomePhone.value != null
+          ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      imagesFax:
+        this.facilityContactDetailFormControls.imagesFax.value != null
+          ? this.facilityContactDetailFormControls.imagesFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
-      billingContact: this.facilityContactDetailFormControls.billingContact.value,
+      billingContact:
+        this.facilityContactDetailFormControls.billingContact.value,
       billingEmail: this.facilityContactDetailFormControls.billingEmail.value,
-      billingOfficePhone: this.facilityContactDetailFormControls.billingOfficePhone.value != null ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(/\D+/g, '') : '',
-      billingCellPhone: this.facilityContactDetailFormControls.billingCellPhone.value != null ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(/\D+/g, '') : '',
-      billingHomePhone: this.facilityContactDetailFormControls.billingHomePhone.value != null ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(/\D+/g, '') : '',
-      billingFax: this.facilityContactDetailFormControls.billingFax.value != null ? this.facilityContactDetailFormControls.billingFax.value.replace(/\D+/g, '') : '',
-
+      billingOfficePhone:
+        this.facilityContactDetailFormControls.billingOfficePhone.value != null
+          ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingCellPhone:
+        this.facilityContactDetailFormControls.billingCellPhone.value != null
+          ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingHomePhone:
+        this.facilityContactDetailFormControls.billingHomePhone.value != null
+          ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      billingFax:
+        this.facilityContactDetailFormControls.billingFax.value != null
+          ? this.facilityContactDetailFormControls.billingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
       ///// Modality Service Tab Form Controls
 
-      arthrogramService: this.modalityServiceFormControls.arthrogramService.value,
-      boneDensityService: this.modalityServiceFormControls.boneDensityService.value,
+      arthrogramService:
+        this.modalityServiceFormControls.arthrogramService.value,
+      boneDensityService:
+        this.modalityServiceFormControls.boneDensityService.value,
       ctservice: this.modalityServiceFormControls.ctservice.value,
-      mammographService: this.modalityServiceFormControls.mammographService.value,
+      mammographService:
+        this.modalityServiceFormControls.mammographService.value,
       mriservice: this.modalityServiceFormControls.mriservice.value,
-      nuclearMedicineService: this.modalityServiceFormControls.nuclearMedicineService.value,
+      nuclearMedicineService:
+        this.modalityServiceFormControls.nuclearMedicineService.value,
       petscanService: this.modalityServiceFormControls.petscanService.value,
-      ultrasoundService: this.modalityServiceFormControls.ultrasoundService.value,
+      ultrasoundService:
+        this.modalityServiceFormControls.ultrasoundService.value,
       xrayService: this.modalityServiceFormControls.xrayService.value,
       MyElogramService: this.modalityServiceFormControls.MyElogramService.value,
       dexaService: this.modalityServiceFormControls.dexaService.value,
@@ -2269,220 +3115,371 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3breast: this.modalityCtFormControls.ct3breast.value,
       ctnotes: this.modalityCtFormControls.ctnotes.value,
 
-
       ///// Modality Exceptions Tab Form Controls
 
-
       mriexception: this.modalityExceptionsFormControls.mriexception.value,
-      mriexceptionDescription: this.modalityExceptionsFormControls.mriexceptionDescription.value,
+      mriexceptionDescription:
+        this.modalityExceptionsFormControls.mriexceptionDescription.value,
       mriexpires: this.modalityExceptionsFormControls.mriexpires.value,
 
       ctexception: this.modalityExceptionsFormControls.ctexception.value,
-      ctexceptionDescription: this.modalityExceptionsFormControls.ctexceptionDescription.value,
+      ctexceptionDescription:
+        this.modalityExceptionsFormControls.ctexceptionDescription.value,
       ctexpires: this.modalityExceptionsFormControls.ctexpires.value,
 
       xrexception: this.modalityExceptionsFormControls.xrexception.value,
-      xrexceptionDescription: this.modalityExceptionsFormControls.xrexceptionDescription.value,
+      xrexceptionDescription:
+        this.modalityExceptionsFormControls.xrexceptionDescription.value,
       xrayexpires: this.modalityExceptionsFormControls.xrayexpires.value,
 
       arthoException: this.modalityExceptionsFormControls.arthoException.value,
-      arthoExceptionDescription: this.modalityExceptionsFormControls.arthoExceptionDescription.value,
+      arthoExceptionDescription:
+        this.modalityExceptionsFormControls.arthoExceptionDescription.value,
       arthoExpires: this.modalityExceptionsFormControls.arthoExpires.value,
 
       bnexception: this.modalityExceptionsFormControls.bnexception.value,
-      bnexceptionDescription: this.modalityExceptionsFormControls.bnexceptionDescription.value,
+      bnexceptionDescription:
+        this.modalityExceptionsFormControls.bnexceptionDescription.value,
       bnexpires: this.modalityExceptionsFormControls.bnexpires.value,
 
       mammoException: this.modalityExceptionsFormControls.mammoException.value,
-      mammoExceptionDescription: this.modalityExceptionsFormControls.mammoExceptionDescription.value,
+      mammoExceptionDescription:
+        this.modalityExceptionsFormControls.mammoExceptionDescription.value,
       mammoExpires: this.modalityExceptionsFormControls.mammoExpires.value,
 
       nmexception: this.modalityExceptionsFormControls.nmexception.value,
-      nmexceptionDescription: this.modalityExceptionsFormControls.nmexceptionDescription.value,
+      nmexceptionDescription:
+        this.modalityExceptionsFormControls.nmexceptionDescription.value,
       nmexpires: this.modalityExceptionsFormControls.nmexpires.value,
 
       psexception: this.modalityExceptionsFormControls.psexception.value,
-      psexceptionDescription: this.modalityExceptionsFormControls.psexceptionDescription.value,
+      psexceptionDescription:
+        this.modalityExceptionsFormControls.psexceptionDescription.value,
       psexpires: this.modalityExceptionsFormControls.psexpires.value,
 
       usexception: this.modalityExceptionsFormControls.usexception.value,
-      usexceptionDescription: this.modalityExceptionsFormControls.usexceptionDescription.value,
+      usexceptionDescription:
+        this.modalityExceptionsFormControls.usexceptionDescription.value,
       usexpires: this.modalityExceptionsFormControls.usexpires.value,
 
-      myElogramServiceException: this.modalityExceptionsFormControls.myElogramServiceException.value,
-      myElogramServiceexpDescription: this.modalityExceptionsFormControls.myElogramServiceexpDescription.value,
-      myElogramExpires: this.modalityExceptionsFormControls.myElogramExpires.value,
+      myElogramServiceException:
+        this.modalityExceptionsFormControls.myElogramServiceException.value,
+      myElogramServiceexpDescription:
+        this.modalityExceptionsFormControls.myElogramServiceexpDescription
+          .value,
+      myElogramExpires:
+        this.modalityExceptionsFormControls.myElogramExpires.value,
 
-      dexaServiceException: this.modalityExceptionsFormControls.dexaServiceException.value,
-      dexaServiceexpDescription: this.modalityExceptionsFormControls.dexaServiceexpDescription.value,
+      dexaServiceException:
+        this.modalityExceptionsFormControls.dexaServiceException.value,
+      dexaServiceexpDescription:
+        this.modalityExceptionsFormControls.dexaServiceexpDescription.value,
       dexaExpires: this.modalityExceptionsFormControls.dexaExpires.value,
 
-      ctArthroServiceException: this.modalityExceptionsFormControls.ctArthroServiceException.value,
-      ctArthroServiceexpDescription: this.modalityExceptionsFormControls.ctArthroServiceexpDescription.value,
+      ctArthroServiceException:
+        this.modalityExceptionsFormControls.ctArthroServiceException.value,
+      ctArthroServiceexpDescription:
+        this.modalityExceptionsFormControls.ctArthroServiceexpDescription.value,
       ctArthoExpires: this.modalityExceptionsFormControls.ctArthoExpires.value,
 
       ///// Modality Scheduling Detail Tab Form Controls
 
-      schedulingSunOpenFrom: this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom.value,
-      schedulingSunOpenTo: this.facilitySchedulingDetailFormControls.schedulingSunOpenTo.value,
-      schedulingSunOpenFrom2: this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom2.value,
-      schedulingSunOpenTo2: this.facilitySchedulingDetailFormControls.schedulingSunOpenTo2.value,
-      schedulingMonOpenFrom: this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom.value,
-      schedulingMonOpenTo: this.facilitySchedulingDetailFormControls.schedulingMonOpenTo.value,
-      schedulingMonOpenFrom2: this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom2.value,
-      schedulingMonOpenTo2: this.facilitySchedulingDetailFormControls.schedulingMonOpenTo2.value,
-      shedulingTueOpenFrom: this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom.value,
-      shedulingTueOpenTo: this.facilitySchedulingDetailFormControls.shedulingTueOpenTo.value,
-      shedulingTueOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom2.value,
-      shedulingTueOpenTo2: this.facilitySchedulingDetailFormControls.shedulingTueOpenTo2.value,
-      shedulingWedOpenFrom: this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom.value,
-      shedulingWedOpenTo: this.facilitySchedulingDetailFormControls.shedulingWedOpenTo.value,
-      shedulingWedOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom2.value,
-      shedulingWedOpenTo2: this.facilitySchedulingDetailFormControls.shedulingWedOpenTo2.value,
-      shedulingThuOpenFrom: this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom.value,
-      shedulingThuOpenTo: this.facilitySchedulingDetailFormControls.shedulingThuOpenTo.value,
-      shedulingThuOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom2.value,
-      shedulingThuOpenTo2: this.facilitySchedulingDetailFormControls.shedulingThuOpenTo2.value,
-      shedulingFriOpenFrom: this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom.value,
-      shedulingFriOpenTo: this.facilitySchedulingDetailFormControls.shedulingFriOpenTo.value,
-      shedulingFriOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom2.value,
-      shedulingFriOpenTo2: this.facilitySchedulingDetailFormControls.shedulingFriOpenTo2.value,
-      shedulingSatOpenFrom: this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom.value,
-      shedulingSatOpenTo: this.facilitySchedulingDetailFormControls.shedulingSatOpenTo.value,
-      shedulingSatOpenFrom2: this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom2.value,
-      shedulingSatOpenTo2: this.facilitySchedulingDetailFormControls.shedulingSatOpenTo2.value,
+      schedulingSunOpenFrom:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom.value,
+      schedulingSunOpenTo:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenTo.value,
+      schedulingSunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenFrom2.value,
+      schedulingSunOpenTo2:
+        this.facilitySchedulingDetailFormControls.schedulingSunOpenTo2.value,
+      schedulingMonOpenFrom:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom.value,
+      schedulingMonOpenTo:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenTo.value,
+      schedulingMonOpenFrom2:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenFrom2.value,
+      schedulingMonOpenTo2:
+        this.facilitySchedulingDetailFormControls.schedulingMonOpenTo2.value,
+      shedulingTueOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom.value,
+      shedulingTueOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenTo.value,
+      shedulingTueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenFrom2.value,
+      shedulingTueOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingTueOpenTo2.value,
+      shedulingWedOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom.value,
+      shedulingWedOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenTo.value,
+      shedulingWedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenFrom2.value,
+      shedulingWedOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingWedOpenTo2.value,
+      shedulingThuOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom.value,
+      shedulingThuOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenTo.value,
+      shedulingThuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenFrom2.value,
+      shedulingThuOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingThuOpenTo2.value,
+      shedulingFriOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom.value,
+      shedulingFriOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenTo.value,
+      shedulingFriOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenFrom2.value,
+      shedulingFriOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingFriOpenTo2.value,
+      shedulingSatOpenFrom:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom.value,
+      shedulingSatOpenTo:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenTo.value,
+      shedulingSatOpenFrom2:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenFrom2.value,
+      shedulingSatOpenTo2:
+        this.facilitySchedulingDetailFormControls.shedulingSatOpenTo2.value,
 
       sunOpenFrom: this.facilitySchedulingDetailFormControls.sunOpenFrom.value,
       sunOpenTo: this.facilitySchedulingDetailFormControls.sunOpenTo.value,
-      sunOpenFrom2: this.facilitySchedulingDetailFormControls.sunOpenFrom2.value,
+      sunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.sunOpenFrom2.value,
       sunOpenTo2: this.facilitySchedulingDetailFormControls.sunOpenTo2.value,
       monOpenFrom: this.facilitySchedulingDetailFormControls.monOpenFrom.value,
       monOpenTo: this.facilitySchedulingDetailFormControls.monOpenTo.value,
-      monOpenFrom2: this.facilitySchedulingDetailFormControls.monOpenFrom2.value,
+      monOpenFrom2:
+        this.facilitySchedulingDetailFormControls.monOpenFrom2.value,
       monOpenTo2: this.facilitySchedulingDetailFormControls.monOpenTo2.value,
       tueOpenFrom: this.facilitySchedulingDetailFormControls.tueOpenFrom.value,
       tueOpenTo: this.facilitySchedulingDetailFormControls.tueOpenTo.value,
-      tueOpenFrom2: this.facilitySchedulingDetailFormControls.tueOpenFrom2.value,
+      tueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.tueOpenFrom2.value,
       tueOpenTo2: this.facilitySchedulingDetailFormControls.tueOpenTo2.value,
       wedOpenFrom: this.facilitySchedulingDetailFormControls.wedOpenFrom.value,
       wedOpenTo: this.facilitySchedulingDetailFormControls.wedOpenTo.value,
-      wedOpenFrom2: this.facilitySchedulingDetailFormControls.wedOpenFrom2.value,
+      wedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.wedOpenFrom2.value,
       wedOpenTo2: this.facilitySchedulingDetailFormControls.wedOpenTo2.value,
       thuOpenFrom: this.facilitySchedulingDetailFormControls.thuOpenFrom.value,
       thuOpenTo: this.facilitySchedulingDetailFormControls.thuOpenTo.value,
-      thuOpenFrom2: this.facilitySchedulingDetailFormControls.thuOpenFrom2.value,
+      thuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.thuOpenFrom2.value,
       thuOpenTo2: this.facilitySchedulingDetailFormControls.thuOpenTo2.value,
       friOpenFrom: this.facilitySchedulingDetailFormControls.friOpenFrom.value,
       friOpenTo: this.facilitySchedulingDetailFormControls.friOpenTo.value,
-      friOpenFrom2: this.facilitySchedulingDetailFormControls.friOpenFrom2.value,
+      friOpenFrom2:
+        this.facilitySchedulingDetailFormControls.friOpenFrom2.value,
       friOpenTo2: this.facilitySchedulingDetailFormControls.friOpenTo2.value,
       satOpenFrom: this.facilitySchedulingDetailFormControls.satOpenFrom.value,
       satOpenTo: this.facilitySchedulingDetailFormControls.satOpenTo.value,
-      satOpenFrom2: this.facilitySchedulingDetailFormControls.satOpenFrom2.value,
+      satOpenFrom2:
+        this.facilitySchedulingDetailFormControls.satOpenFrom2.value,
       satOpenTo2: this.facilitySchedulingDetailFormControls.satOpenTo2.value,
 
-      ctSunOpenFrom: this.facilitySchedulingDetailFormControls.ctSunOpenFrom.value,
+      ctSunOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctSunOpenFrom.value,
       ctSunOpenTo: this.facilitySchedulingDetailFormControls.ctSunOpenTo.value,
-      ctSunOpenFrom2: this.facilitySchedulingDetailFormControls.ctSunOpenFrom2.value,
-      ctSunOpenTo2: this.facilitySchedulingDetailFormControls.ctSunOpenTo2.value,
-      ctMonOpenFrom: this.facilitySchedulingDetailFormControls.ctMonOpenFrom.value,
+      ctSunOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctSunOpenFrom2.value,
+      ctSunOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctSunOpenTo2.value,
+      ctMonOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctMonOpenFrom.value,
       ctMonOpenTo: this.facilitySchedulingDetailFormControls.ctMonOpenTo.value,
-      ctMonOpenFrom2: this.facilitySchedulingDetailFormControls.ctMonOpenFrom2.value,
-      ctMonOpenTo2: this.facilitySchedulingDetailFormControls.ctMonOpenTo2.value,
-      ctTueOpenFrom: this.facilitySchedulingDetailFormControls.ctTueOpenFrom.value,
+      ctMonOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctMonOpenFrom2.value,
+      ctMonOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctMonOpenTo2.value,
+      ctTueOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctTueOpenFrom.value,
       ctTueOpenTo: this.facilitySchedulingDetailFormControls.ctTueOpenTo.value,
-      ctTueOpenFrom2: this.facilitySchedulingDetailFormControls.ctTueOpenFrom2.value,
-      ctTueOpenTo2: this.facilitySchedulingDetailFormControls.ctTueOpenTo2.value,
-      ctWedOpenFrom: this.facilitySchedulingDetailFormControls.ctWedOpenFrom.value,
+      ctTueOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctTueOpenFrom2.value,
+      ctTueOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctTueOpenTo2.value,
+      ctWedOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctWedOpenFrom.value,
       ctWedOpenTo: this.facilitySchedulingDetailFormControls.ctWedOpenTo.value,
-      ctWedOpenFrom2: this.facilitySchedulingDetailFormControls.ctWedOpenFrom2.value,
-      ctWedOpenTo2: this.facilitySchedulingDetailFormControls.ctWedOpenTo2.value,
-      ctThuOpenFrom: this.facilitySchedulingDetailFormControls.ctThuOpenFrom.value,
+      ctWedOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctWedOpenFrom2.value,
+      ctWedOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctWedOpenTo2.value,
+      ctThuOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctThuOpenFrom.value,
       ctThuOpenTo: this.facilitySchedulingDetailFormControls.ctThuOpenTo.value,
-      ctThuOpenFrom2: this.facilitySchedulingDetailFormControls.ctThuOpenFrom2.value,
-      ctThuOpenTo2: this.facilitySchedulingDetailFormControls.ctThuOpenTo2.value,
-      ctFriOpenFrom: this.facilitySchedulingDetailFormControls.ctFriOpenFrom.value,
+      ctThuOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctThuOpenFrom2.value,
+      ctThuOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctThuOpenTo2.value,
+      ctFriOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctFriOpenFrom.value,
       ctFriOpenTo: this.facilitySchedulingDetailFormControls.ctFriOpenTo.value,
-      ctFriOpenFrom2: this.facilitySchedulingDetailFormControls.ctFriOpenFrom2.value,
-      ctFriOpenTo2: this.facilitySchedulingDetailFormControls.ctFriOpenTo2.value,
-      ctSatOpenFrom: this.facilitySchedulingDetailFormControls.ctSatOpenFrom.value,
+      ctFriOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctFriOpenFrom2.value,
+      ctFriOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctFriOpenTo2.value,
+      ctSatOpenFrom:
+        this.facilitySchedulingDetailFormControls.ctSatOpenFrom.value,
       ctSatOpenTo: this.facilitySchedulingDetailFormControls.ctSatOpenTo.value,
-      ctSatOpenFrom2: this.facilitySchedulingDetailFormControls.ctSatOpenFrom2.value,
-      ctSatOpenTo2: this.facilitySchedulingDetailFormControls.ctSatOpenTo2.value,
+      ctSatOpenFrom2:
+        this.facilitySchedulingDetailFormControls.ctSatOpenFrom2.value,
+      ctSatOpenTo2:
+        this.facilitySchedulingDetailFormControls.ctSatOpenTo2.value,
 
       sunXrayFrom: this.facilitySchedulingDetailFormControls.sunXrayFrom.value,
       sunXrayTo: this.facilitySchedulingDetailFormControls.sunXrayTo.value,
-      sunXrayFrom2: this.facilitySchedulingDetailFormControls.sunXrayFrom2.value,
+      sunXrayFrom2:
+        this.facilitySchedulingDetailFormControls.sunXrayFrom2.value,
       sunXrayTo2: this.facilitySchedulingDetailFormControls.sunXrayTo2.value,
       monXrayFrom: this.facilitySchedulingDetailFormControls.monXrayFrom.value,
       monXrayTo: this.facilitySchedulingDetailFormControls.monXrayTo.value,
-      monXrayFrom2: this.facilitySchedulingDetailFormControls.monXrayFrom2.value,
+      monXrayFrom2:
+        this.facilitySchedulingDetailFormControls.monXrayFrom2.value,
       monXrayTo2: this.facilitySchedulingDetailFormControls.monXrayTo2.value,
       tueXrayFrom: this.facilitySchedulingDetailFormControls.tueXrayFrom.value,
       tueXrayTo: this.facilitySchedulingDetailFormControls.tueXrayTo.value,
-      tueXrayFrom2: this.facilitySchedulingDetailFormControls.tueXrayFrom2.value,
+      tueXrayFrom2:
+        this.facilitySchedulingDetailFormControls.tueXrayFrom2.value,
       tueXrayTo2: this.facilitySchedulingDetailFormControls.tueXrayTo2.value,
       wedXrayFrom: this.facilitySchedulingDetailFormControls.wedXrayFrom.value,
       wedXrayTo: this.facilitySchedulingDetailFormControls.wedXrayTo.value,
-      wedXrayFrom2: this.facilitySchedulingDetailFormControls.wedXrayFrom2.value,
+      wedXrayFrom2:
+        this.facilitySchedulingDetailFormControls.wedXrayFrom2.value,
       wedXrayTo2: this.facilitySchedulingDetailFormControls.wedXrayTo2.value,
       thuXrayFrom: this.facilitySchedulingDetailFormControls.thuXrayFrom.value,
       thuXrayTo: this.facilitySchedulingDetailFormControls.thuXrayTo.value,
-      thuXrayFrom2: this.facilitySchedulingDetailFormControls.thuXrayFrom2.value,
+      thuXrayFrom2:
+        this.facilitySchedulingDetailFormControls.thuXrayFrom2.value,
       thuXrayTo2: this.facilitySchedulingDetailFormControls.thuXrayTo2.value,
       friXrayFrom: this.facilitySchedulingDetailFormControls.friXrayFrom.value,
       friXrayTo: this.facilitySchedulingDetailFormControls.friXrayTo.value,
-      friXrayFrom2: this.facilitySchedulingDetailFormControls.friXrayFrom2.value,
+      friXrayFrom2:
+        this.facilitySchedulingDetailFormControls.friXrayFrom2.value,
       friXrayTo2: this.facilitySchedulingDetailFormControls.friXrayTo2.value,
       satXrayFrom: this.facilitySchedulingDetailFormControls.satXrayFrom.value,
       satXrayTo: this.facilitySchedulingDetailFormControls.satXrayTo.value,
-      satXrayFrom2: this.facilitySchedulingDetailFormControls.satXrayFrom2.value,
+      satXrayFrom2:
+        this.facilitySchedulingDetailFormControls.satXrayFrom2.value,
       satXrayTo2: this.facilitySchedulingDetailFormControls.satXrayTo2.value,
       parking: this.facilitySchedulingDetailFormControls.parking.value,
-      preArrivalTime: this.facilitySchedulingDetailFormControls.preArrivalTime.value,
+      preArrivalTime:
+        this.facilitySchedulingDetailFormControls.preArrivalTime.value,
       xrayWalkIn: this.facilitySchedulingDetailFormControls.xrayWalkIn.value,
 
       //// Notes TAB Have Different API's
 
-
       //// Facility Parent Detail Tab Form Controls
 
-      facilityParentName: this.facilityParentCompanyFormControls.facilityParentName.value,
+      facilityParentName:
+        this.facilityParentCompanyFormControls.facilityParentName.value,
       //facilityParentId:this.facilityParentCompanyFormControls.facilityParentId.value,
       parentAddress: this.facilityParentCompanyFormControls.parentAddress.value,
       parentCity: this.facilityParentCompanyFormControls.parentCity.value,
       parentState: this.facilityParentCompanyFormControls.parentState.value,
       parentZip: this.facilityParentCompanyFormControls.parentZip.value,
       parentWebsite: this.facilityParentCompanyFormControls.parentWebsite.value,
-      parentOwnerName: this.facilityParentCompanyFormControls.parentOwnerName.value,
-      parentOwnerPhone: this.facilityParentCompanyFormControls.parentOwnerPhone.value != null ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(/\D+/g, '') : '',
-      parentOwnerEmail: this.facilityParentCompanyFormControls.parentOwnerEmail.value,
-      parentOwnerFax: this.facilityParentCompanyFormControls.parentOwnerFax.value != null ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(/\D+/g, '') : '',
-      parentManagerName: this.facilityParentCompanyFormControls.parentManagerName.value,
-      parentManagerEmail: this.facilityParentCompanyFormControls.parentManagerEmail.value,
-      parentManagerPhone: this.facilityParentCompanyFormControls.parentManagerPhone.value != null ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(/\D+/g, '') : '',
-      parentManagerFax: this.facilityParentCompanyFormControls.parentManagerFax.value != null ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(/\D+/g, '') : '',
+      parentOwnerName:
+        this.facilityParentCompanyFormControls.parentOwnerName.value,
+      parentOwnerPhone:
+        this.facilityParentCompanyFormControls.parentOwnerPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentOwnerEmail:
+        this.facilityParentCompanyFormControls.parentOwnerEmail.value,
+      parentOwnerFax:
+        this.facilityParentCompanyFormControls.parentOwnerFax.value != null
+          ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentManagerName:
+        this.facilityParentCompanyFormControls.parentManagerName.value,
+      parentManagerEmail:
+        this.facilityParentCompanyFormControls.parentManagerEmail.value,
+      parentManagerPhone:
+        this.facilityParentCompanyFormControls.parentManagerPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentManagerFax:
+        this.facilityParentCompanyFormControls.parentManagerFax.value != null
+          ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
       parentITName: this.facilityParentCompanyFormControls.parentITName.value,
       parentITEmail: this.facilityParentCompanyFormControls.parentITEmail.value,
-      parentITPhone: this.facilityParentCompanyFormControls.parentITPhone.value != null ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(/\D+/g, '') : '',
-      parentITFax: this.facilityParentCompanyFormControls.parentITFax.value != null ? this.facilityParentCompanyFormControls.parentITFax.value.replace(/\D+/g, '') : '',
-      parentBillingName: this.facilityParentCompanyFormControls.parentBillingName.value,
-      parentBillingEmail: this.facilityParentCompanyFormControls.parentBillingEmail.value,
-      parentBillingPhone: this.facilityParentCompanyFormControls.parentBillingPhone.value != null ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(/\D+/g, '') : '',
-      parentBillingFax: this.facilityParentCompanyFormControls.parentBillingFax.value != null ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(/\D+/g, '') : '',
+      parentITPhone:
+        this.facilityParentCompanyFormControls.parentITPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentITFax:
+        this.facilityParentCompanyFormControls.parentITFax.value != null
+          ? this.facilityParentCompanyFormControls.parentITFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentBillingName:
+        this.facilityParentCompanyFormControls.parentBillingName.value,
+      parentBillingEmail:
+        this.facilityParentCompanyFormControls.parentBillingEmail.value,
+      parentBillingPhone:
+        this.facilityParentCompanyFormControls.parentBillingPhone.value != null
+          ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
+      parentBillingFax:
+        this.facilityParentCompanyFormControls.parentBillingFax.value != null
+          ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(
+              /\D+/g,
+              ''
+            )
+          : '',
 
       //// Intake Tab Form Controls
 
       isPacketDocOnly: this.facilityIntakeFormControls.isPacketDocOnly.value,
-      isMriScreeningForm: this.facilityIntakeFormControls.isMriScreeningForm.value,
+      isMriScreeningForm:
+        this.facilityIntakeFormControls.isMriScreeningForm.value,
       IsXrayWaiverForm: this.facilityIntakeFormControls.IsXrayWaiverForm.value,
-      IsFaxIntakePacket: this.facilityIntakeFormControls.IsFaxIntakePacket.value,
-      intakeFax1: this.facilityIntakeFormControls.intakeFax1.value != null ? this.facilityIntakeFormControls.intakeFax1.value.replace(/\D+/g, '') : '',
-      intakeFax2: this.facilityIntakeFormControls.intakeFax2.value != null ? this.facilityIntakeFormControls.intakeFax2.value.replace(/\D+/g, '') : '',
-      intakeFax3: this.facilityIntakeFormControls.intakeFax3.value != null ? this.facilityIntakeFormControls.intakeFax3.value.replace(/\D+/g, '') : '',
-      intakeFax4: this.facilityIntakeFormControls.intakeFax4.value != null ? this.facilityIntakeFormControls.intakeFax4.value.replace(/\D+/g, '') : '',
-      intakeFax5: this.facilityIntakeFormControls.intakeFax5.value != null ? this.facilityIntakeFormControls.intakeFax5.value.replace(/\D+/g, '') : '',
-      isEmailIntakePacket: this.facilityIntakeFormControls.isEmailIntakePacket.value,
+      IsFaxIntakePacket:
+        this.facilityIntakeFormControls.IsFaxIntakePacket.value,
+      intakeFax1:
+        this.facilityIntakeFormControls.intakeFax1.value != null
+          ? this.facilityIntakeFormControls.intakeFax1.value.replace(/\D+/g, '')
+          : '',
+      intakeFax2:
+        this.facilityIntakeFormControls.intakeFax2.value != null
+          ? this.facilityIntakeFormControls.intakeFax2.value.replace(/\D+/g, '')
+          : '',
+      intakeFax3:
+        this.facilityIntakeFormControls.intakeFax3.value != null
+          ? this.facilityIntakeFormControls.intakeFax3.value.replace(/\D+/g, '')
+          : '',
+      intakeFax4:
+        this.facilityIntakeFormControls.intakeFax4.value != null
+          ? this.facilityIntakeFormControls.intakeFax4.value.replace(/\D+/g, '')
+          : '',
+      intakeFax5:
+        this.facilityIntakeFormControls.intakeFax5.value != null
+          ? this.facilityIntakeFormControls.intakeFax5.value.replace(/\D+/g, '')
+          : '',
+      isEmailIntakePacket:
+        this.facilityIntakeFormControls.isEmailIntakePacket.value,
       intakeEmail1: this.facilityIntakeFormControls.intakeEmail1.value,
       intakeEmail2: this.facilityIntakeFormControls.intakeEmail2.value,
       intakeEmail3: this.facilityIntakeFormControls.intakeEmail3.value,
@@ -2492,33 +3489,37 @@ export class SchdFacilitiesComponent implements OnInit {
       isElecScreenForm: this.facilityIntakeFormControls.isElecScreenForm.value,
       isRxnotification: this.facilityIntakeFormControls.isRxnotification.value,
       isPrescreening: this.facilityIntakeFormControls.isPrescreening.value,
-      userList: this.selectedEpicUserList ? this.selectedEpicUserList.toString() : '',
+      userList: this.selectedEpicUserList
+        ? this.selectedEpicUserList.toString()
+        : '',
       //facilityPolicy:this.facilityPolicy!=null?this.facilityPolicy.toString():'',
       //parentPolicy:this.parentPolicy!=null?this.parentPolicy.toString():''
       facilityPolicy: this.facilityPolicyFormControls.facilityPolicy.value,
-      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value
+      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value,
       /// Tag Tab Have Different API
-    }
+    };
 
-    this.facilityService.addFacility(true, body).subscribe((res) => {
-      if (res.response != null) {
-        this.showNotificationOnSucess(res);
+    this.facilityService.addFacility(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.showNotificationOnSucess(res);
+        } else {
+          this.showNotificationOnFailure(res);
+        }
+      },
+      (err) => {
+        this.errorNotification(err);
       }
-      else {
-        this.showNotificationOnFailure(res);
-      }
-    }, (err) => {
-      this.errorNotification(err);
-    })
+    );
   }
 
   parentDropDownOnChange($event: any) {
-
-    this.parentDropDownModel = $event.target.options[$event.target.options.selectedIndex].text;
+    this.parentDropDownModel =
+      $event.target.options[$event.target.options.selectedIndex].text;
   }
 
   resetFacilityForm() {
-    this.facilityName = 'Add New Facility'
+    this.facilityName = 'Add New Facility';
     this.defaultPopupTab = 'General Info';
     this.isApplyAndOkBtnVisisble = false;
     this.isInsertBtnVisisble = true;
@@ -2540,148 +3541,243 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentPolicy = '';
     this.isPopUpInEditMode = false;
     this.facilityPoliciesForm.reset();
-    this.blockLeasePaymentList=[];
-    this.blockLeasePaymentMappingList=[];
-    this.blockLeaseCreditList=[];
+    this.blockLeasePaymentList = [];
+    this.blockLeasePaymentMappingList = [];
+    this.blockLeaseCreditList = [];
   }
   reLoadAllFacility() {
     this.getSchedulingFacilities();
   }
 
   getSchedulingFacilityDetail(row: any) {
-
     this.facilityId = row.data.facilityId;
     if (this.facilityId) {
-      this.getFacilityDetail1()
+      this.getFacilityDetail1();
     }
   }
   getFacilityDetail1() {
-
-    let body = this.getApplyFilter(true, this.facilityId.toString(), 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-    this.facilityService.getSchedulingFacilityData(true, body, 1, 1).subscribe((res) => {
-      if (res.response != null) {
-        let facilityDetail = res.response[0];
-        this.facilityPolicy = res.response[0].facilityPolicy ? res.response[0].facilityPolicy : '';
-        this.parentPolicy = res.response[0].parentPolicy ? res.response[0].parentPolicy : '';
-        this.setGeneralInfoTabForm(facilityDetail);
-        this.setFacilityContactDetailTabForm(facilityDetail);
-        this.setParentCompanyTabForm(facilityDetail);
-        this.setModalityServiceTabForm(facilityDetail);
-        this.setModalityMriTabForm(facilityDetail);
-        this.setModalityCtTabForm(facilityDetail);
-        this.setModalityExceptionsTabForm(facilityDetail);
-        this.getSchedulingFacilityPricing();
-        this.getAllFacilityNotesByFacililityId();
-        this.setSchedulingDetailTabForm(facilityDetail);
+    let body = this.getApplyFilter(
+      true,
+      this.facilityId.toString(),
+      0,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
+    );
+    this.facilityService.getSchedulingFacilityData(true, body, 1, 1).subscribe(
+      (res) => {
+        if (res.response != null) {
+          let facilityDetail = res.response[0];
+          this.facilityPolicy = res.response[0].facilityPolicy
+            ? res.response[0].facilityPolicy
+            : '';
+          this.parentPolicy = res.response[0].parentPolicy
+            ? res.response[0].parentPolicy
+            : '';
+          this.setGeneralInfoTabForm(facilityDetail);
+          this.setFacilityContactDetailTabForm(facilityDetail);
+          this.setParentCompanyTabForm(facilityDetail);
+          this.setModalityServiceTabForm(facilityDetail);
+          this.setModalityMriTabForm(facilityDetail);
+          this.setModalityCtTabForm(facilityDetail);
+          this.setModalityExceptionsTabForm(facilityDetail);
+          this.getSchedulingFacilityPricing();
+          this.getAllFacilityNotesByFacililityId();
+          this.setSchedulingDetailTabForm(facilityDetail);
+        } else if (res.responseCode === 400) {
+          this.unSuccessNotification(res);
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-      else if (res.responseCode === 400) {
-        this.unSuccessNotification(res);
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   unSuccessNotification(data: any) {
     this.notificationService.showNotification({
       alertHeader: 'Something went wrong.',
       alertMessage: '',
-      alertType: data.responseCode
+      alertType: data.responseCode,
     });
   }
 
   getSchedulingFacilityPricing() {
-
     this.schedulingPricing = [];
-    this.facilityService.getSchedulingFacilityPricing(true, this.facilityId.toString()).subscribe((res) => {
-      if (res.response != null) {
-        this.schedulingPricing = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getSchedulingFacilityPricing(true, this.facilityId.toString())
+      .subscribe(
+        (res) => {
+          if (res.response != null) {
+            this.schedulingPricing = res.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
 
   getAllFacilityNotesByFacililityId() {
-    this.facilityService.getAllFacilityNotesByFacililityId(true, this.facilityId).subscribe((res) => {
-
-      if (res.response != null) {
-        this.facilityNotesList = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getAllFacilityNotesByFacililityId(true, this.facilityId)
+      .subscribe(
+        (res) => {
+          if (res.response != null) {
+            this.facilityNotesList = res.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
 
-  getApplyFilter(isActive: boolean, facilityId: any, brokerId: any, facilityName: any, parentCompanyName: any,
-    xraywalikIn: any, financialType: any, modality: any, daysOfWeek: any, xrayWeek: any, mriType: any, mriStrength: any,
-    mriMake: any, mriWeight: any, mriContrast: any, mriSedation: any, mriBreast: any,
-    ctSlices: any, ctMake: any, ctWeight: any, ctContrast: any,
-    ctSedation: any, ctBreast: any, workZip: any, homeZip: any): any {
+  getApplyFilter(
+    isActive: boolean,
+    facilityId: any,
+    brokerId: any,
+    facilityName: any,
+    parentCompanyName: any,
+    xraywalikIn: any,
+    financialType: any,
+    modality: any,
+    daysOfWeek: any,
+    xrayWeek: any,
+    mriType: any,
+    mriStrength: any,
+    mriMake: any,
+    mriWeight: any,
+    mriContrast: any,
+    mriSedation: any,
+    mriBreast: any,
+    ctSlices: any,
+    ctMake: any,
+    ctWeight: any,
+    ctContrast: any,
+    ctSedation: any,
+    ctBreast: any,
+    workZip: any,
+    homeZip: any
+  ): any {
     return {
-      'isActive': isActive, 'facilityId': facilityId.toString(), 'brokerId': brokerId, 'facilityName': facilityName,
-      'parentCompanyName': parentCompanyName, 'xraywalikIn': xraywalikIn, 'financialType': financialType,
-      'modality': modality, 'daysOfWeek': daysOfWeek, 'xrayWeek': xrayWeek,
-      'mriType': mriType, 'mriStrength': mriStrength, 'mriMake': mriMake, 'mriWeight': mriWeight, 'mriContrast': mriContrast,
-      'mriSedation': mriSedation, 'mriBreast': mriBreast, 'ctSlices': ctSlices,
-      'ctMake': ctMake, 'ctWeight': ctWeight, 'ctContrast': ctContrast,
-      'ctSedation': ctSedation, 'ctBreast': ctBreast, 'workZip': workZip, 'homeZip': homeZip
-    }
+      isActive: isActive,
+      facilityId: facilityId.toString(),
+      brokerId: brokerId,
+      facilityName: facilityName,
+      parentCompanyName: parentCompanyName,
+      xraywalikIn: xraywalikIn,
+      financialType: financialType,
+      modality: modality,
+      daysOfWeek: daysOfWeek,
+      xrayWeek: xrayWeek,
+      mriType: mriType,
+      mriStrength: mriStrength,
+      mriMake: mriMake,
+      mriWeight: mriWeight,
+      mriContrast: mriContrast,
+      mriSedation: mriSedation,
+      mriBreast: mriBreast,
+      ctSlices: ctSlices,
+      ctMake: ctMake,
+      ctWeight: ctWeight,
+      ctContrast: ctContrast,
+      ctSedation: ctSedation,
+      ctBreast: ctBreast,
+      workZip: workZip,
+      homeZip: homeZip,
+    };
   }
 
   saveChangesCurrentPricing() {
     this.submitted = true;
-    this.facilityService.updateFacilityPricing(true, this.facilityPricingList).subscribe((res) => {
-      if (res.response != null) {
-        this.showNotificationOnSucess(res);
-        setTimeout(() => {
-          this.getFacilityDetailById();
-        }, 200);
-
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .updateFacilityPricing(true, this.facilityPricingList)
+      .subscribe(
+        (res) => {
+          if (res.response != null) {
+            this.showNotificationOnSucess(res);
+            setTimeout(() => {
+              this.getFacilityDetailById();
+            }, 200);
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
   onExporting() {
-
     let element = document.getElementById('scheduling-Facility-grid-container');
     let instance = DataGrid.getInstance(element) as DataGrid;
-    this.commonMethodService.onExporting(instance, 'SchedulingFacility')
+    this.commonMethodService.onExporting(instance, 'SchedulingFacility');
   }
   createDuplicateFacility() {
-    if (this.gridSelectedRows.length === 0 || this.gridSelectedRows.length > 1) {
+    if (
+      this.gridSelectedRows.length === 0 ||
+      this.gridSelectedRows.length > 1
+    ) {
       if (this.gridSelectedRows.length === 0)
         this.CodeErrorNotification('Please select facility to duplicate');
       else
-        this.CodeErrorNotification('Please select only one facility to duplicate');
+        this.CodeErrorNotification(
+          'Please select only one facility to duplicate'
+        );
 
       return;
     }
     this.duplicateFacility();
   }
   duplicateFacility() {
-    const facilityId = Number(this.gridSelectedRows.toString())
-    this.facilityService.createDuplicateFacility(true, facilityId).subscribe((res) => {
-
-      if (res.response != null && res.response === true) {
-        this.showNotificationOnSucess(res);
-        this.reLoadAllFacility();
+    const facilityId = Number(this.gridSelectedRows.toString());
+    this.facilityService.createDuplicateFacility(true, facilityId).subscribe(
+      (res) => {
+        if (res.response != null && res.response === true) {
+          this.showNotificationOnSucess(res);
+          this.reLoadAllFacility();
+        } else {
+          this.showNotificationOnFailure(res);
+        }
+      },
+      (err) => {
+        this.errorNotification(err);
       }
-      else {
-        this.showNotificationOnFailure(res);
-      }
-    }, (err) => {
-      this.errorNotification(err);
-    });
+    );
   }
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
-    if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' || this.defaultPopupTab == 'LeaseAgreement_CT') {
-      this.MRIPageNumber = 1; this.MRIpageSize = 20;
+    if (
+      this.defaultPopupTab == 'LeaseAgreements' ||
+      this.defaultPopupTab == 'LeaseAgreement_MRI' ||
+      this.defaultPopupTab == 'LeaseAgreement_CT'
+    ) {
+      this.MRIPageNumber = 1;
+      this.MRIpageSize = 20;
       this.getLeaseAgreementsByFacilityId(this.facilityId);
     }
-    if (this.defaultPopupTab == 'BlockLeaseRate' || this.defaultPopupTab == 'Leases') {
+    if (
+      this.defaultPopupTab == 'BlockLeaseRate' ||
+      this.defaultPopupTab == 'Leases'
+    ) {
       this.getBlockLeasePricing(this.facilityId);
     }
     if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab =='LeasePaymentsUnPaid') {
@@ -2692,121 +3788,123 @@ export class SchdFacilitiesComponent implements OnInit {
     this.notificationService.showNotification({
       alertHeader: msg,
       alertMessage: '',
-      alertType: 400
+      alertType: 400,
     });
   }
 
   customizeText(cellInfo) {
-    return cellInfo.valueText.replace("USD", "$");
+    return cellInfo.valueText.replace('USD', '$');
   }
 
-  getFacilityCreditsUnUsed()
-  {
+  getFacilityCreditsUnUsed() {
     var data = {
-      "FacilityId": this.facilityId,
-      "pageNo": this.pageNumberOfUnusedCredits,
-      "pageSize": this.pageSizeOfUnusdCredits
-    }
+      FacilityId: this.facilityId,
+      pageNo: this.pageNumberOfUnusedCredits,
+      pageSize: this.pageSizeOfUnusdCredits,
+    };
 
-    this.blockleasescheduler.getFacilityCreditsUnUsed(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {
-        this.UnusedCreditsList = res.response;
-        this.totalRecordunUsedCredits = res.response[0].TotalRecords;
-      }
-      else {
-        this.totalRecordunUsedCredits = 1;
-        this.UnusedCreditsList = [];
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
-  deleteUnusedCredit(e)
-  {
-    var unUsedCreditId:string='';
-    if(e.data.CreditId)
-    {
-      unUsedCreditId=e.data.CreditId;
-      let body=
-      {
-        "unUsedCreditId": unUsedCreditId
-      }
-      this.blockleasescheduler.deleteUnusedCreditByCreditId(true,JSON.stringify(JSON.stringify(body)).toString()).subscribe((res)=>{
-        if(res)
-        {
-          if(res.response.ResponseCode==200)
-          {
-            this.showNotificationOnCreditDeleted(res.response);
-            this.getFacilityCreditsUnUsed();
+    this.blockleasescheduler
+      .getFacilityCreditsUnUsed(
+        true,
+        JSON.stringify(JSON.stringify(data)).toString()
+      )
+      .subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.UnusedCreditsList = res.response;
+            this.totalRecordunUsedCredits = res.response[0].TotalRecords;
+          } else {
+            this.totalRecordunUsedCredits = 1;
+            this.UnusedCreditsList = [];
           }
-          else{
-            this.showNotificationOnCreditDeleted(res.response);
-          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
         }
-      });
+      );
+  }
+  deleteUnusedCredit(e) {
+    var unUsedCreditId: string = '';
+    if (e.data.CreditId) {
+      unUsedCreditId = e.data.CreditId;
+      let body = {
+        unUsedCreditId: unUsedCreditId,
+      };
+      this.blockleasescheduler
+        .deleteUnusedCreditByCreditId(
+          true,
+          JSON.stringify(JSON.stringify(body)).toString()
+        )
+        .subscribe((res) => {
+          if (res) {
+            if (res.response.ResponseCode == 200) {
+              this.showNotificationOnCreditDeleted(res.response);
+              this.getFacilityCreditsUnUsed();
+            } else {
+              this.showNotificationOnCreditDeleted(res.response);
+            }
+          }
+        });
     }
   }
   showNotificationOnCreditDeleted(data: any) {
     this.notificationService.showNotification({
       alertHeader: data.Message,
       alertMessage: '',
-      alertType: data.ResponseCode
+      alertType: data.ResponseCode,
     });
   }
   onPageNumberChangeunUsedcredits(pageNumber: any) {
     this.pageNumberOfUnusedCredits = pageNumber;
     this.getFacilityCreditsUnUsed();
   }
-  getUnpaidLeases()
-  {
+  getUnpaidLeases() {
     var data = {
-      "FacilityId": this.facilityId,
-      "PageNumber": this.pageNumberOfUnpaidLeases,
-      "PageSize": this.pageSizeOfUnpaidLeases
-    }
-    this.blockleasescheduler.getUnpaidLeases(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
-      if (res.response != null && res.response.length > 0) {
-        this.GetUnpaidLeasesList = res.response;
-        this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
-      }
-      else {
-        this.totalRecordUnpaidLeases = 1;
-        this.GetUnpaidLeasesList = [];
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+      FacilityId: this.facilityId,
+      PageNumber: this.pageNumberOfUnpaidLeases,
+      PageSize: this.pageSizeOfUnpaidLeases,
+    };
+    this.blockleasescheduler
+      .getUnpaidLeases(true, JSON.stringify(JSON.stringify(data)).toString())
+      .subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.GetUnpaidLeasesList = res.response;
+            this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
+          } else {
+            this.totalRecordUnpaidLeases = 1;
+            this.GetUnpaidLeasesList = [];
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
   onPageNumberChangeUnpaidLesaes(pageNumber: any) {
     this.pageNumberOfUnpaidLeases = pageNumber;
     this.getUnpaidLeases();
   }
-  onSelectionChangedLease(el)
-  {
-    var leaseID:any=[];
-    if(el.selectedRowsData.length!==0)
-    {
-      this.btnActive=1;
-      el.selectedRowsData.forEach(i => {
-        leaseID.push(i.LeaseId)
+  onSelectionChangedLease(el) {
+    var leaseID: any = [];
+    if (el.selectedRowsData.length !== 0) {
+      this.btnActive = 1;
+      el.selectedRowsData.forEach((i) => {
+        leaseID.push(i.LeaseId);
         this.selectedleaseArray.push(i);
       });
-      this.leaseIdArray=leaseID;
-    }
-    else
-    {
-      this.btnActive=0;
+      this.leaseIdArray = leaseID;
+    } else {
+      this.btnActive = 0;
     }
   }
-  onSelectionChangedCredit(ec)
-  {
-    var CreditID:any=[];
-    if(ec.selectedRowsData.length!==0)
-    {
-      ec.selectedRowsData.forEach(i => {
-        CreditID.push(i.CreditId)
+  onSelectionChangedCredit(ec) {
+    var CreditID: any = [];
+    if (ec.selectedRowsData.length !== 0) {
+      ec.selectedRowsData.forEach((i) => {
+        CreditID.push(i.CreditId);
       });
-      this.creditIdArray=CreditID;
+      this.creditIdArray = CreditID;
     }
   }
   UnpaidButtonClick(e)
@@ -2844,49 +3942,76 @@ export class SchdFacilitiesComponent implements OnInit {
 
   }
 
-  CheckSameCombinationMRI(type:string ){
+  CheckSameCombinationMRI(type: string) {
     const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
-    const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value ? this.modalityMriForm.controls['mri1ResourceName'].value : '';
+    const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName']
+      .value
+      ? this.modalityMriForm.controls['mri1ResourceName'].value
+      : '';
     const Mri2Type = this.modalityMriForm.controls['mri2type'].value;
-    const Mri2ResourceName = this.modalityMriForm.controls['mri2ResourceName'].value ? this.modalityMriForm.controls['mri2ResourceName'].value : '';
+    const Mri2ResourceName = this.modalityMriForm.controls['mri2ResourceName']
+      .value
+      ? this.modalityMriForm.controls['mri2ResourceName'].value
+      : '';
     const Mri3Type = this.modalityMriForm.controls['mri3type'].value;
-    const Mri3ResourceName = this.modalityMriForm.controls['mri3ResourceName'].value ? this.modalityMriForm.controls['mri3ResourceName'].value : '';
+    const Mri3ResourceName = this.modalityMriForm.controls['mri3ResourceName']
+      .value
+      ? this.modalityMriForm.controls['mri3ResourceName'].value
+      : '';
     var Dictionary = {
-      Type1: Mri1Type + " " +Mri1ResourceName,
-      Type2: Mri2Type + " " +Mri2ResourceName,
-      Type3: Mri3Type + " " +Mri3ResourceName
-    }
-    if(type=='Type1' || type == 'Resource1'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
-        if(Dictionary.Type1 == Dictionary.Type2){
+      Type1: Mri1Type + ' ' + Mri1ResourceName,
+      Type2: Mri2Type + ' ' + Mri2ResourceName,
+      Type3: Mri3Type + ' ' + Mri3ResourceName,
+    };
+    if (type == 'Type1' || type == 'Resource1') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
           this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type1 == Dictionary.Type3){
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
           this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
         }
       }
     }
-    if(type=='Type2' || type == 'Resource2'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
-        if(Dictionary.Type1 == Dictionary.Type2){
+    if (type == 'Type2' || type == 'Resource2') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
           this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type2 == Dictionary.Type3){
+        } else if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
           this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
         }
       }
     }
-    if(type=='Type3' || type == 'Resource3'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Mri3ResourceName != '' || Mri2ResourceName != '' || Mri1ResourceName != '')){
-        if(Dictionary.Type2 == Dictionary.Type3){
+    if (type == 'Type3' || type == 'Resource3') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
           this.modalityMriForm.controls['mri2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type1 == Dictionary.Type3){
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
           this.modalityMriForm.controls['mri3ResourceName'].setValue(null);
         }
@@ -2894,49 +4019,76 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
 
-  CheckSameCombinationCT(type:string){
+  CheckSameCombinationCT(type: string) {
     const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
-    const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName'].value ? this.modalityCtForm.controls['ct1ResourceName'].value : '';
+    const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct1ResourceName'].value
+      : '';
     const Ct2Type = this.modalityCtForm.controls['ct2make'].value;
-    const Ct2ResourceName = this.modalityCtForm.controls['ct2ResourceName'].value ? this.modalityCtForm.controls['ct2ResourceName'].value : '';
+    const Ct2ResourceName = this.modalityCtForm.controls['ct2ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct2ResourceName'].value
+      : '';
     const Ct3Type = this.modalityCtForm.controls['ct3make'].value;
-    const Ct3ResourceName = this.modalityCtForm.controls['ct3ResourceName'].value ? this.modalityCtForm.controls['ct3ResourceName'].value : '';
+    const Ct3ResourceName = this.modalityCtForm.controls['ct3ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct3ResourceName'].value
+      : '';
     var Dictionary = {
-      Type1: Ct1Type + " " +Ct1ResourceName,
-      Type2: Ct2Type + " " +Ct2ResourceName,
-      Type3: Ct3Type + " " +Ct3ResourceName
-    }
-    if(type=='Type1' || type == 'Resource1'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
-        if(Dictionary.Type1 == Dictionary.Type2){
+      Type1: Ct1Type + ' ' + Ct1ResourceName,
+      Type2: Ct2Type + ' ' + Ct2ResourceName,
+      Type3: Ct3Type + ' ' + Ct3ResourceName,
+    };
+    if (type == 'Type1' || type == 'Resource1') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type1 == Dictionary.Type3){
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
         }
       }
     }
-    if(type=='Type2' || type == 'Resource2'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
-        if(Dictionary.Type1 == Dictionary.Type2){
+    if (type == 'Type2' || type == 'Resource2') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type2 == Dictionary.Type3){
+        } else if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
         }
       }
     }
-    if(type=='Type3' || type == 'Resource3'){
-      if((Dictionary.Type1 == Dictionary.Type2 || Dictionary.Type2 == Dictionary.Type3 || Dictionary.Type1 == Dictionary.Type3)&&(Ct1ResourceName != '' || Ct2ResourceName != '' || Ct3ResourceName != '')){
-        if(Dictionary.Type2 == Dictionary.Type3){
+    if (type == 'Type3' || type == 'Resource3') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.controls['ct2ResourceName'].setValue(null);
-        }
-        else if(Dictionary.Type1 == Dictionary.Type3){
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.controls['ct3ResourceName'].setValue(null);
         }
@@ -2944,18 +4096,40 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
 
-  get generalInfoFormControls() { return this.generalInfoForm.controls; }
-  get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
-  get modalityServiceFormControls() { return this.modalityServiceForm.controls; }
-  get modalityMriFormControls() { return this.modalityMriForm.controls; }
-  get modalityCtFormControls() { return this.modalityCtForm.controls; }
-  get modalityExceptionsFormControls() { return this.modalityExceptionsForm.controls; }
-  get facilitySchedulingDetailFormControls() { return this.facilitySchedulingDetailForm.controls; }
-  get facilityNotesFormControls() { return this.facilityNotesForm.controls; }
-  get facilityParentCompanyFormControls() { return this.facilityParentCompanyForm.controls; }
-  get facilityIntakeFormControls() { return this.facilityIntakeForm.controls; }
-  get facilityTagFormControls() { return this.facilityTagForm.controls; }
-  get facilityPolicyFormControls() { return this.facilityPoliciesForm.controls; }
-
+  get generalInfoFormControls() {
+    return this.generalInfoForm.controls;
+  }
+  get facilityContactDetailFormControls() {
+    return this.facilityContactDetailForm.controls;
+  }
+  get modalityServiceFormControls() {
+    return this.modalityServiceForm.controls;
+  }
+  get modalityMriFormControls() {
+    return this.modalityMriForm.controls;
+  }
+  get modalityCtFormControls() {
+    return this.modalityCtForm.controls;
+  }
+  get modalityExceptionsFormControls() {
+    return this.modalityExceptionsForm.controls;
+  }
+  get facilitySchedulingDetailFormControls() {
+    return this.facilitySchedulingDetailForm.controls;
+  }
+  get facilityNotesFormControls() {
+    return this.facilityNotesForm.controls;
+  }
+  get facilityParentCompanyFormControls() {
+    return this.facilityParentCompanyForm.controls;
+  }
+  get facilityIntakeFormControls() {
+    return this.facilityIntakeForm.controls;
+  }
+  get facilityTagFormControls() {
+    return this.facilityTagForm.controls;
+  }
+  get facilityPolicyFormControls() {
+    return this.facilityPoliciesForm.controls;
+  }
 }
-
