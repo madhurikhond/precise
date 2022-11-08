@@ -244,7 +244,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(Dta.fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist, name2: Dta.FileName.replace(/_Mergerd.*.pdf/, '') });
+            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist, name2: Dta.FileName.replace(/_Merged.*.pdf/, '') });
           }
 
           this.updateDropDownArray();
@@ -266,7 +266,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(res.response[i].fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist, name2: res.response[i].FileName.replace(/_Mergerd.*.pdf/, '') })
+            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist, name2: res.response[i].FileName.replace(/_Merged.*.pdf/, '') })
 
           }
           this.updateDropDownArray();
@@ -471,8 +471,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
                   for (let i = 0; i < this.patientList.length; i++) {
                     if (insert == i) {
-
-                        this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[0].RadiologistId, Radiologist: res.response[0].Radiologist, name2: res.response[0].FileName.replace(/_Mergerd.*.pdf/, '_Mergerd.pdf') });
+                        this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[0].RadiologistId, Radiologist: res.response[0].Radiologist, name2: res.response[0].FileName.replace(/_Merged.*.pdf/, '_Merged.pdf') });
                     }
                   }
                 }
@@ -533,7 +532,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             formData.append('barCodes', <string><any>this.barCodes);
             formData.append('RadiologistId', this.patientList[i].RadiologistId.toString());
             formData.append('Radiologist', this.patientList[i].Radiologist);
-            if (this.patientList[i].name.toLowerCase().indexOf('mergerd.pdf') !== -1) {
+            if (this.patientList[i].name.toLowerCase().indexOf('_merged') !== -1) {
               formData.append('MergedFile', 'true');
             } else { formData.append('MergedFile', 'false'); }
             setTimeout(() => {
