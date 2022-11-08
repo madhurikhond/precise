@@ -15,6 +15,7 @@ export class FacilityService {
   @Output() filterFrontDesk = new EventEmitter<any>();
   @Output() filterRadFlowFacilityBilling = new EventEmitter<any>();
   @Output() docManagerFacility= new EventEmitter<any>();
+  sendDataToFacilityDetail: EventEmitter<any> = new EventEmitter<any>();
 
   private searchTextBox = new Subject<string>();
   private userTypeDropDown = new Subject<number>();
@@ -57,6 +58,11 @@ export class FacilityService {
   public updateSearchText(value: string): void {
     this.searchTextBox.next(value);
   }
+
+  sendDataToPatientFacilityWindow(body: any): void {
+    this.sendDataToFacilityDetail.emit(body);
+  }
+
   sendActionDropText(actionValue:string)
   {
    this.actionDropDown.emit(actionValue);

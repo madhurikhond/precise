@@ -13,11 +13,11 @@ export class BlockLeaseSchedulerService {
 
 
   sendDataToCalendarScheduler: EventEmitter<any> = new EventEmitter<any>();
-
+ 
   sendDataToCalendarSchedulerWindow(body: any): void {
     this.sendDataToCalendarScheduler.emit(body);
   }
-  
+ 
   constructor(private readonly _httpService: HttpService, private readonly storageService: StorageService,) { }
   getScheduleStatusList(showGlobalLoader: boolean = true) {
     return this._httpService.get(`BlockLeaseScheduler/GetScheduleStatusList`, showGlobalLoader).pipe(

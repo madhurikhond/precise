@@ -19,7 +19,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
 import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { saveAs } from '@progress/kendo-file-saver';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 declare const $: any;
 
@@ -183,6 +182,18 @@ export class SchdFacilitiesComponent implements OnInit {
     private readonly storageService: StorageService
   ) {
     this.commonMethodService.setTitle('Scheduling Facility');
+
+    facilityService.sendDataToFacilityDetail.subscribe(res => {
+      if(res)
+      {
+        this.isGridDisplay = false;
+        if(res.facilityId)
+        {
+          this.getFacilityDetail(res.facilityId);
+          this.defaultPopupTab = res.type;
+        }
+      }
+    });
     facilityService.sendDataToschdFacilities.subscribe((res) => {
       if (res.FacilityID) {
         this.isGridDisplay = false;
