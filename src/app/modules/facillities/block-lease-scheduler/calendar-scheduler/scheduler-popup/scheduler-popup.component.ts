@@ -51,6 +51,7 @@ export class SchedulerPopupComponent implements OnInit {
   isLeaseSigned: boolean = false;
   TotalCreditAvailable: string = '0';
   TotalBlockHours: string; TotalCreditHours: string;
+  TotalLeaseHours: string;
   facilityClosedDaysJSON: any = [];
   FacilityTimesJSON: any = [];
   creditReasonList: any = [];
@@ -306,11 +307,16 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
+      debugger;
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
+          if (res.response[0].TotalLeaseHours)
+          this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
+
+          
       }
     },
       (err: any) => {
@@ -477,6 +483,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
   handleValueChange(e: any, from: string) {
     this.TotalBlockHours = '';
+    this.TotalLeaseHours='';
     this.eventLeaseTime = e;
     var currentDate = new Date(); this.pastDate_start_date = '';
     this.pastDate_end_date = '';
