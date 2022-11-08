@@ -24,7 +24,7 @@
                         <div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
                     </div>
                     <form name="form"
-                        (ngSubmit)="f.form.valid && (lastName.valid && Title.valid && firstName.valid && model.signature!='') && submitSign(true)"
+                        (ngSubmit)="f.form.valid && (lastName.valid && Title.valid && firstName.valid && model.signature!='') && submitSign(f)"
                         #f="ngForm" class="theme-form" novalidate>
                         <div class="modal-body">
                             <div class="modal-body-inner">

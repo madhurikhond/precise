@@ -426,7 +426,8 @@ export class CalendarSchedulerComponent implements OnInit {
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         if (defaultSign) {
             body = {
-                FacilityID: this.FacilityID
+              FacilityID: this.FacilityID,
+              IsDefaultSign: defaultSign
             }
         }
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
