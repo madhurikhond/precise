@@ -68,10 +68,11 @@ export class FacilityEsignComponent implements OnInit {
     this.signaturePad.clear();
     this.model.signature = '';
   }
-  submitSign(isItemSign: boolean) {
+  submitSign(f: NgForm) {
     if (this.model.signature == '') {
       return;
     }
+    this.f = f;
     if (this.f.valid) {
       let data = {
         'BlockLeaseNumber': this.BlockLeaseNumber,
@@ -82,8 +83,8 @@ export class FacilityEsignComponent implements OnInit {
       }
       this.blockLeaseSchedulerService.validateEmailLinkAndSaveFacilitySign(true, data).subscribe((res) => {
         console.log(res);
-        if (res.response.ResponseCode == 200) {
-          this.successNotification(res.response);
+        if (res.responseCode == 200) {
+          this.successNotification(res);
           this.alreadySignedbodyDisabled=true;
         } else {
           this.error(res.response);
@@ -99,7 +100,7 @@ export class FacilityEsignComponent implements OnInit {
     this.notificationService.showNotification({
       alertHeader: 'Success',
       alertMessage: data.Message,
-      alertType: data.ResponseCode
+      alertType: data.responseCode
     });
   }
   CodeErrorNotification(msg: string) {
