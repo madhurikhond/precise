@@ -103,7 +103,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <form name="form" (ngSubmit)="frmCal.form.valid && (model.signature!='') && submitSign(true)" #frmCal="ngForm"
             class="theme-form" novalidate>
@@ -216,7 +216,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <form name="form" (ngSubmit)="f.form.valid && (model.signature!='') && ApproveSubmitSign(true)" #f="ngForm"
                 class="theme-form" novalidate>

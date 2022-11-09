@@ -26,6 +26,7 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild('validatedefaultsign', { static: true }) validatedefaultsign: ElementRef;
     @ViewChild("scheduler_here", { static: true }) schedulerContainer: ElementRef;
     @ViewChild('frmCal', { static: true }) f: NgForm | any;
+    @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
@@ -461,7 +462,8 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
             this.confirmBlockToLease(false, data)
-            this.f.submitted = false;
+          this.f.submitted = false;
+          this.modaldismiss1.nativeElement.click();
         }
     }
 
@@ -477,7 +479,8 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
             this.approveAllParentToLease(false, data)
-            this.f.submitted = false;
+          this.f.submitted = false;
+          this.modaldismiss1.nativeElement.click();
         }
     }
 
