@@ -44,6 +44,13 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
+
+  getAllLeasesOfFacilityByStatus( Body: any,showGlobalLoader: boolean = true) {
+    debugger
+    return this._httpService.post(`BlockLeaseScheduler/GetAllLeasesOfFacilityByStatus`, Body, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
   saveBlockLeaseData(showGlobalLoader: boolean = true, Body: any) {
     return this._httpService.post(`BlockLeaseScheduler/SaveBlockLeaseData`, Body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)

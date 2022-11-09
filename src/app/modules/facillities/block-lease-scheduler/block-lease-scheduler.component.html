@@ -142,13 +142,15 @@
                           
 
                             <dxi-column cellTemplate="viewCellTemplate" caption="Facility Name"></dxi-column>
-                           
+                           <dxi-column dataField="facilityId" cellTemplate="cellTemplateStatus"></dxi-column>
                             <div *dxTemplate="let data of 'viewCellTemplate'">
                                 <a href="javascript:void(0);" class="link-btn" (click)="getCalendarSchedulerWindowById(data)"
                                     data-toggle="modal" data-target="#CalendarSchedulerWindow">
                                     {{data.data.FacilityName}}</a>
                             </div>
-            
+                            <div *dxTemplate="let data of 'cellTemplateStatus'">                              
+                                <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(data)" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/paid.png" style="height: 18px;"/>{{data.data.facilityID}}</a>
+                           </div>
                             <dxo-context-menu>
                                 <!-- <dxi-item text="Open" [disabled]="getDisabled" beginGroup="true"></dxi-item> -->
                                 <dxi-item text="Columns" beginGroup="true"></dxi-item>
@@ -317,6 +319,139 @@
                 </li>
               
             </ul>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="all-leases-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leases</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="page-top-action">
+                    <div class="precisemri-search">
+                        <select class="form-search">
+                            <option selected="">Select an Action</option>
+                            <option>Paid</option>
+                            <option>Unpaid</option>
+                        </select>
+                        <a href="javascript:void(0)" class="search">Go</a>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive">
+                    <table class="table table-theme">
+                        <thead>
+                            <tr>
+                                <th width="50">Lease #</th>
+                                <th width="100">Lease Dates</th>
+                                <th width="100">Lease Hours</th>
+                                <th width="100">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>		
+                            <tr>
+                                <td>1</td>
+                                <td>11/26/2019</td>
+                                <td>12:09:03 PM</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>11/26/2019</td>
+                                <td>12:09:03 PM</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>11/26/2019</td>
+                                <td>12:09:03 PM</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>11/26/2019</td>
+                                <td>12:09:03 PM</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>11/26/2019</td>
+                                <td>12:09:03 PM</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-theme">
+                    <ul>
+                        <li><a href="javascript:void(0)">First</a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                        <li class="active"><a href="javascript:void(0)">1</a></li>
+                        <li><a href="javascript:void(0)">2</a></li>
+                        <li><a href="javascript:void(0)">3</a></li>
+                        <li><a href="javascript:void(0)">4</a></li>
+                        <li><a href="javascript:void(0)">5</a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                        <li><a href="javascript:void(0)">Last</a></li>
+                    </ul>
+                </div> -->
+                <div class="table-responsive">
+                    <dx-data-grid id="facility-leases-grid-container" [dataSource]="facilityLeasesList" [allowColumnResizing]="true"
+                        [columnAutoWidth]="true" [allowColumnReordering]="true" 
+                        [columnMinWidth]="30"  keyExpr="LeaseId"
+                        [showBorders]="true" >
+                        <dxo-sorting mode="multiple"></dxo-sorting>
+                        <dxo-paging [enabled]="false"></dxo-paging>
+                        <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                        <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+                      
+                        <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                        <dxi-column dataField="LeaseId" caption="Lease #" ></dxi-column>
+                        <dxi-column dataField="LeaseDate" caption="Lease Dates" ></dxi-column>
+                        <dxi-column dataField="TotalHours" caption="Lease Hours" ></dxi-column>
+                        <dxi-column dataField="PaymentStatus" caption="Payment Status" ></dxi-column>
+                        <dxi-column dataField="LeaseId" cellTemplate="leaseAggrementTemplate"  caption="Lease Aggrements"></dxi-column>
+                        <div *dxTemplate="let data of 'leaseAggrementTemplate'">
+                            <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.data.LeaseId)"
+                                class="link-btn fa fa-file-pdf-o" data-toggle="modal"
+                                data-target="#view-lease-aggrement-pdf"></a>
+                        </div>
+                    </dx-data-grid>
+                </div>
+                <div>
+                    <div>
+                        <div
+                            *ngFor="let item of facilityLeasesList | paginate: { id:'paginate2', itemsPerPage: leasePageSize, currentPage: leasePageNumber, totalItems:totalLeaseRecords }">
+                        </div>
+                        <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-border btn-sm" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
