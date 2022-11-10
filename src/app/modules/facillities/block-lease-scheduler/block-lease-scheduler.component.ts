@@ -22,6 +22,15 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   facilityParentList: any[] = [];
   selectedParentFacility: Number=0;
   facilityList: any[] = [];
+  facilityLeasesList: any =[];
+  facilityID: number=0;
+  leaseMonth: any;
+  leaseYear: number=2022;
+  modalityName: any='CT';
+  leaseStatus: any='PAID';
+  leasePageNumber: number=1;
+  leasePageSize: number=5;
+  totalLeaseRecords : number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
   selectedscheduleStatus: any;
@@ -148,7 +157,44 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
     });
   }
+getAllLeasesOfFacilityByStatus(data: any  ) {
+   
+    this.facilityID=  data ; 
+  let body =
+  {
+    'FacilityId': this.facilityID,
+    'LeaseMonth': this.leaseMonth,
+    'LeaseYear': this.leaseYear,
+    'Modality': this.modalityName,
+    'LeaseStatus': this.leaseStatus,
+    'PageNumber': this.leasePageNumber,
+    'PageSize': this.leasePageSize
+   
+  }
+  this.blockLeaseSchedulerService.getAllLeasesOfFacilityByStatus( body, true).subscribe((res) => {
+    if (res.response != null) {
+      this.facilityLeasesList = res.response;
+     this.totalLeaseRecords= res.response[0]["totalCount"];
+      if (this.totalLeaseRecords> 0) {
+       
+      } else {
+          this.facilityLeasesList = [];
+        this.totalLeaseRecords = 1;
+      }
 
+    } 
+  }, (err: any) => {
+    this.errorNotification(err);
+  });
+}
+pageChanged(event) { 
+  this.leasePageNumber = event; 
+  this.getAllLeasesOfFacilityByStatus(this.facilityID);
+}
+getLeaseAggrementDetail(row: any)
+{
+  alert('Lease aggrement pdf selected :' + row.LeaseId);
+}
   errorNotification(err: any) {
     this.notificationService.showNotification({
       alertHeader: err.statusText,
