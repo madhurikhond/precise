@@ -23,7 +23,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   selectedParentFacility: Number=0;
   facilityList: any[] = [];
   facilityLeasesList: any =[];
-
   facilityID: number=0;
   leaseMonth: any;
   leaseYear: number=2022;
@@ -32,7 +31,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   leasePageNumber: number=1;
   leasePageSize: number=5;
   totalLeaseRecords : number;
-  isEnableLeasePaging: boolean = false;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
   selectedscheduleStatus: any;
@@ -159,17 +157,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
     });
   }
-getAllLeasesOfFacilityByStatus(row: any  ) {
-  debugger;
-  if(this.isEnableLeasePaging=== false)
-  {
-    this.facilityID= row.data.FacilityID;
-  }
-  else if(this.isEnableLeasePaging=== true){
-    this.facilityID= row;
-  }
-
-  
+getAllLeasesOfFacilityByStatus(data: any  ) {
+   
+    this.facilityID=  data ; 
   let body =
   {
     'FacilityId': this.facilityID,
@@ -197,12 +187,9 @@ getAllLeasesOfFacilityByStatus(row: any  ) {
     this.errorNotification(err);
   });
 }
-pageChanged(event) {
-  debugger
-  this.isEnableLeasePaging= true;
-  this.leasePageNumber = event;
- var fclId = this.facilityID;
-  this.getAllLeasesOfFacilityByStatus(fclId);
+pageChanged(event) { 
+  this.leasePageNumber = event; 
+  this.getAllLeasesOfFacilityByStatus(this.facilityID);
 }
 getLeaseAggrementDetail(row: any)
 {

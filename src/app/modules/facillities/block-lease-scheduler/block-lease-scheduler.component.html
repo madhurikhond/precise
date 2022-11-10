@@ -149,7 +149,7 @@
                                     {{data.data.FacilityName}}</a>
                             </div>
                             <div *dxTemplate="let data of 'cellTemplateStatus'">                              
-                                <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(data)" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/paid.png" style="height: 18px;"/>{{data.data.facilityID}}</a>
+                                <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(row.data.FacilityID)" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/paid.png" style="height: 18px;"/>{{data.data.facilityID}}</a>
                            </div>
                             <dxo-context-menu>
                                 <!-- <dxi-item text="Open" [disabled]="getDisabled" beginGroup="true"></dxi-item> -->
