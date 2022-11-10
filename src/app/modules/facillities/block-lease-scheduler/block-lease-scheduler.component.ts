@@ -20,17 +20,17 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     private readonly storageService: StorageService) {
   }
   facilityParentList: any[] = [];
-  selectedParentFacility: Number=0;
+  selectedParentFacility: Number = 0;
   facilityList: any[] = [];
-  facilityLeasesList: any =[];
-  facilityID: number=0;
+  facilityLeasesList: any = [];
+  facilityID: number = 0;
   leaseMonth: any;
-  leaseYear: number=2022;
-  modalityName: any='CT';
-  leaseStatus: any='PAID';
-  leasePageNumber: number=1;
-  leasePageSize: number=5;
-  totalLeaseRecords : number;
+  leaseYear: number = 2022;
+  modalityName: any = 'CT';
+  leaseStatus: any = 'PAID';
+  leasePageNumber: number = 1;
+  leasePageSize: number = 20;
+  totalLeaseRecords: number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
   selectedscheduleStatus: any;
@@ -39,27 +39,27 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 50;
   readonly pageSizeArray = PageSizeArray;
-  setUserEsignSetting:boolean=true;
+  setUserEsignSetting: boolean = true;
   totalRecord: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
-  selectedPaid: any='ALL';
-  ngOnInit(): void {   
-    this.getFacilityParentList();  
+  selectedPaid: any = 'ALL';
+  ngOnInit(): void {
+    this.getFacilityParentList();
     this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
-    
+
   }
 
   getFacilityParentList() {
     this.facilityParentList = [];
-    this.facilityList=[];
+    this.facilityList = [];
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
-      if (res.response!= null) {
+      if (res.response != null) {
         this.facilityParentList = res.response[0].ParentFacilities;
-        if(this.selectedParentFacility){
+        if (this.selectedParentFacility) {
           this.facilityList = res.response[0].Facilities;
         }
       }
@@ -120,27 +120,27 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', ''));
   }
   applyFilter() {
- 
+
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, paidStatus));
   }
-  setUserSetting(){
+  setUserSetting() {
 
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any, paidStatus:any): any {
+    modality: any, paidStatus: any): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
       'modality': modality,
-      'paidStatus' : paidStatus
+      'paidStatus': paidStatus
     }
   }
-  changed(FacilityParentID: any) {  
-    this.selectedParentFacility =  FacilityParentID.FacilityParentID;
+  changed(FacilityParentID: any) {
+    this.selectedParentFacility = FacilityParentID.FacilityParentID;
     this.getFacilityParentList();
     //alert(this.selectedParentFacility);
   }
@@ -157,44 +157,43 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
     });
   }
-getAllLeasesOfFacilityByStatus(data: any  ) {
-   
-    this.facilityID=  data ; 
-  let body =
-  {
-    'FacilityId': this.facilityID,
-    'LeaseMonth': this.leaseMonth,
-    'LeaseYear': this.leaseYear,
-    'Modality': this.modalityName,
-    'LeaseStatus': this.leaseStatus,
-    'PageNumber': this.leasePageNumber,
-    'PageSize': this.leasePageSize
-   
-  }
-  this.blockLeaseSchedulerService.getAllLeasesOfFacilityByStatus( body, true).subscribe((res) => {
-    if (res.response != null) {
-      this.facilityLeasesList = res.response;
-     this.totalLeaseRecords= res.response[0]["totalCount"];
-      if (this.totalLeaseRecords> 0) {
-       
-      } else {
-          this.facilityLeasesList = [];
+  getAllLeasesOfFacilityByStatus(facilityID: any, IsClicked: boolean = true, Status: any = 'PAID') {
+    if (IsClicked) {
+      this.leasePageNumber = 1;
+    }
+    this.facilityID = facilityID;
+    this.leaseStatus = Status;
+    let body =
+    {
+      'FacilityId': this.facilityID,
+      'LeaseMonth': this.leaseMonth,
+      'LeaseYear': this.leaseYear,
+      'Modality': this.modalityName,
+      'LeaseStatus': this.leaseStatus,
+      'PageNumber': this.leasePageNumber,
+      'PageSize': this.leasePageSize
+
+    }
+    this.blockLeaseSchedulerService.getAllLeasesOfFacilityByStatus(body, true).subscribe((res) => {
+      if (res.response !== null) {
+        this.facilityLeasesList = res.response;
+        this.totalLeaseRecords = res.response[0]["totalCount"];
+      }
+      else {
+        this.facilityLeasesList = [];
         this.totalLeaseRecords = 1;
       }
-
-    } 
-  }, (err: any) => {
-    this.errorNotification(err);
-  });
-}
-pageChanged(event) { 
-  this.leasePageNumber = event; 
-  this.getAllLeasesOfFacilityByStatus(this.facilityID);
-}
-getLeaseAggrementDetail(row: any)
-{
-  alert('Lease aggrement pdf selected :' + row.LeaseId);
-}
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
+  }
+  pageChanged(event) {
+    this.leasePageNumber = event;
+    this.getAllLeasesOfFacilityByStatus(this.facilityID,false);
+  }
+  getLeaseAggrementDetail(row: any) {
+    alert('Lease aggrement pdf selected :' + row.LeaseId);
+  }
   errorNotification(err: any) {
     this.notificationService.showNotification({
       alertHeader: err.statusText,
@@ -210,10 +209,10 @@ getLeaseAggrementDetail(row: any)
     });
   }
 
-  getFacilityDetail(facilityId: any,type:any) {  
+  getFacilityDetail(facilityId: any, type: any) {
     let body = {
       'facilityId': facilityId,
-      'type':type
+      'type': type
     }
     this.facilityService.sendDataToPatientFacilityWindow(body);
   }
