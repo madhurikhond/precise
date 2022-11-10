@@ -206,7 +206,7 @@ pageChanged(event) {
 }
 getLeaseAggrementDetail(row: any)
 {
-  alert('Lease aggrement pdf selected :' + row.data.LeaseId);
+  alert('Lease aggrement pdf selected :' + row.LeaseId);
 }
   errorNotification(err: any) {
     this.notificationService.showNotification({

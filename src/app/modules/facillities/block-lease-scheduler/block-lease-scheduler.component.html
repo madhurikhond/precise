@@ -339,84 +339,7 @@
                         </select>
                         <a href="javascript:void(0)" class="search">Go</a>
                     </div>
-                </div>
-                <!-- <div class="table-responsive">
-                    <table class="table table-theme">
-                        <thead>
-                            <tr>
-                                <th width="50">Lease #</th>
-                                <th width="100">Lease Dates</th>
-                                <th width="100">Lease Hours</th>
-                                <th width="100">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>		
-                            <tr>
-                                <td>1</td>
-                                <td>11/26/2019</td>
-                                <td>12:09:03 PM</td>
-                                <td>
-                                    <div class="table-actions">
-                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>11/26/2019</td>
-                                <td>12:09:03 PM</td>
-                                <td>
-                                    <div class="table-actions">
-                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>11/26/2019</td>
-                                <td>12:09:03 PM</td>
-                                <td>
-                                    <div class="table-actions">
-                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>11/26/2019</td>
-                                <td>12:09:03 PM</td>
-                                <td>
-                                    <div class="table-actions">
-                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>11/26/2019</td>
-                                <td>12:09:03 PM</td>
-                                <td>
-                                    <div class="table-actions">
-                                        <a href="javascript:void(0);" class="single-action fa fa-file-pdf-o"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination-theme">
-                    <ul>
-                        <li><a href="javascript:void(0)">First</a></li>
-                        <li><a href="javascript:void(0)"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-                        <li class="active"><a href="javascript:void(0)">1</a></li>
-                        <li><a href="javascript:void(0)">2</a></li>
-                        <li><a href="javascript:void(0)">3</a></li>
-                        <li><a href="javascript:void(0)">4</a></li>
-                        <li><a href="javascript:void(0)">5</a></li>
-                        <li><a href="javascript:void(0)"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                        <li><a href="javascript:void(0)">Last</a></li>
-                    </ul>
-                </div> -->
+                </div>            
                 <div class="table-responsive">
                     <dx-data-grid id="facility-leases-grid-container" [dataSource]="facilityLeasesList" [allowColumnResizing]="true"
                         [columnAutoWidth]="true" [allowColumnReordering]="true" 
@@ -434,7 +357,7 @@
                         <dxi-column dataField="PaymentStatus" caption="Payment Status" ></dxi-column>
                         <dxi-column dataField="LeaseId" cellTemplate="leaseAggrementTemplate"  caption="Lease Aggrements"></dxi-column>
                         <div *dxTemplate="let data of 'leaseAggrementTemplate'">
-                            <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.data.LeaseId)"
+                            <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.LeaseId)"
                                 class="link-btn fa fa-file-pdf-o" data-toggle="modal"
                                 data-target="#view-lease-aggrement-pdf"></a>
                         </div>
