@@ -148,9 +148,10 @@
                                     data-toggle="modal" data-target="#CalendarSchedulerWindow">
                                     {{data.data.FacilityName}}</a>
                             </div>
-                            <div *dxTemplate="let data of 'cellTemplateStatus'">                              
-                                <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID)" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/paid.png" style="height: 18px;"/>{{data.data.facilityID}}</a>
-                           </div>
+                            <div *dxTemplate="let data of 'cellTemplateStatus'">
+                              <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID)" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/paid.png" style="height: 18px;" />{{data.data.facilityID}}</a>
+                              <a href="javascript:void(0);" class="link-btn" (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,true,'LEASESIGNED')" data-toggle="modal" data-target="#all-leases-popup"><img src="/assets/images/sign-lease.png" style="height: 18px;" />{{data.data.facilityID}}</a>
+                            </div>
                             <dxo-context-menu>
                                 <!-- <dxi-item text="Open" [disabled]="getDisabled" beginGroup="true"></dxi-item> -->
                                 <dxi-item text="Columns" beginGroup="true"></dxi-item>
@@ -346,7 +347,6 @@
                         [columnMinWidth]="30"  keyExpr="LeaseId"
                         [showBorders]="true" >
                         <dxo-sorting mode="multiple"></dxo-sorting>
-                        <dxo-paging [enabled]="false"></dxo-paging>
                         <dxo-load-panel [enabled]="true"></dxo-load-panel>
                         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
                       
@@ -366,9 +366,9 @@
                 <div>
                     <div>
                         <div
-                            *ngFor="let item of facilityLeasesList | paginate: { id:'paginate2', itemsPerPage: leasePageSize, currentPage: leasePageNumber, totalItems:totalLeaseRecords }">
+                            *ngFor="let item of facilityLeasesList | paginate: { itemsPerPage: leasePageSize, currentPage: leasePageNumber, totalItems:totalLeaseRecords }">
                         </div>
-                        <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls>
+                        <pagination-controls  (pageChange)="pageChanged($event)"></pagination-controls>
                     </div>
                 </div>
             </div>
