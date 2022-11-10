@@ -3794,6 +3794,9 @@ export class SchdFacilitiesComponent implements OnInit {
     if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab =='LeasePaymentsUnPaid') {
       this.getUnpaidLeases();
     }
+    if (this.defaultPopupTab =='LeasePaymentsPaid') {
+      this.getblockLeasePaymentByFacilityId(this.facilityId);
+    }
   }
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({
