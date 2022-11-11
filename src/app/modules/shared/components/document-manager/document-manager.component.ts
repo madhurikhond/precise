@@ -866,7 +866,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       paths = this.selectedFileItems.map(m => m.filePath);
     }
     paths.forEach(res => {
-      IdString = paths + ","
+      IdString = paths + "|"
     })
     this.documentmanagerService.getFilesByKeys(true, JSON.stringify(IdString)).subscribe((res) => {
       if (res.response != null) {
