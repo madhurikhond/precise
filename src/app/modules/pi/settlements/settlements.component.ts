@@ -690,7 +690,7 @@ export class SettlementsComponent implements OnInit {
   approveStudy() {
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
-    if (sumAllocatedAmount === parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
+    if (sumAllocatedAmount.toFixed(2) === parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
 
       var data = {
         'settleId': this.settleId,
@@ -733,7 +733,7 @@ export class SettlementsComponent implements OnInit {
     }
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
-    if (sumAllocatedAmount === parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
+    if (sumAllocatedAmount.toFixed(2) === parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
       var allocationData = this.studyDetail.settleData.map(({ INTERNALSTUDYID, AllocatedAmount }) => ({ INTERNALSTUDYID, AllocatedAmount }));
       var data = {
         'settlementId': this.studyDetail.Id,
@@ -795,7 +795,7 @@ export class SettlementsComponent implements OnInit {
     }
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
-    if (sumAllocatedAmount === parseFloat(this.settleForm1.settlementAmount.value ? this.settleForm1.settlementAmount.value : 0)) {
+    if (sumAllocatedAmount.toFixed(2) === parseFloat(this.settleForm1.settlementAmount.value ? this.settleForm1.settlementAmount.value : 0)) {
       var allocationData = this.studyDetail.settleData.map(({ INTERNALSTUDYID, AllocatedAmount }) => ({ INTERNALSTUDYID, AllocatedAmount }));
       var data = {
         'settlementId': this.studyDetail.Id,
