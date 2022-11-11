@@ -8,6 +8,7 @@ import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-schedul
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { textChangeRangeIsUnchanged } from 'typescript';
 
+
 @Component({
   selector: 'app-block-lease-scheduler',
   templateUrl: './block-lease-scheduler.component.html',
@@ -19,8 +20,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService) {
   }
+
   facilityParentList: any[] = [];
-  selectedParentFacility: Number=0;
+  selectedParentFacility: Number = 0;
   facilityList: any[] = [];
   selectedFacility: any;
   scheduleStatusList: any[] = [];
@@ -30,27 +32,27 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 50;
   readonly pageSizeArray = PageSizeArray;
-  setUserEsignSetting:boolean=true;
+  setUserEsignSetting: boolean = true;
   totalRecord: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
-  selectedPaid: any='ALL';
-  ngOnInit(): void {   
-    this.getFacilityParentList();  
+  selectedPaid: any = 'ALL';
+  AllBlockLeaseList: any = [];
+  ngOnInit(): void {
+    this.getFacilityParentList();
     this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
-    
   }
 
   getFacilityParentList() {
     this.facilityParentList = [];
-    this.facilityList=[];
+    this.facilityList = [];
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
-      if (res.response!= null) {
+      if (res.response != null) {
         this.facilityParentList = res.response[0].ParentFacilities;
-        if(this.selectedParentFacility){
+        if (this.selectedParentFacility) {
           this.facilityList = res.response[0].Facilities;
         }
       }
@@ -111,29 +113,61 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', ''));
   }
   applyFilter() {
- 
+
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, paidStatus));
   }
-  setUserSetting(){
+  convertDataTomodel() {
+    var arr: any = [];
+    let element = {}
+    arr = [];
+    for (var i = 0; i < this.blockLeaseGridList.length; i++) {
+      var Months = []; var FacilityData = [];
+      element['FacilityID'] = this.blockLeaseGridList[i]['FacilityID'];
+      element['Facilityname'] = this.blockLeaseGridList[i]['FacilityName'];
+      element['IsCtService'] = this.blockLeaseGridList[i]['IsCtService'];
+      element['IsMriService'] = this.blockLeaseGridList[i]['IsMriService'];
+      Months = this.blockLeaseGridList[i]['Months'];
+      for (var j = 0; j < Months.length; j++) {
+        element[`MonthLabels${j}`] = Months[j].MonthLabels;
+        if (Months[j].FacilityData) {
+          FacilityData = JSON.parse(Months[j].FacilityData);
+          element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
+          element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
+          element[`IsPaid${j}`] = FacilityData['IsPaid'];
+          element[`MRI${j}`] = FacilityData['MRI'];
+          element[`CT${j}`] = FacilityData['CT'];
+        } else {
+          element[`IsFacilitySign${j}`] = null;
+          element[`IsScheduledComplete${j}`] = null;
+          element[`IsPaid${j}`] = null;
+          element[`MRI${j}`] = null;
+          element[`CT${j}`] = null;
+        }
+      }
+      arr.push(element);
+      element = {};
+    }   
+    this.AllBlockLeaseList = arr;
+  }
+  setUserSetting() {
 
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any, paidStatus:any): any {
+    modality: any, paidStatus: any): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
       'modality': modality,
-      'paidStatus' : paidStatus
+      'paidStatus': paidStatus
     }
   }
-  changed(FacilityParentID: any) {  
-    this.selectedParentFacility =  FacilityParentID.FacilityParentID;
-    this.getFacilityParentList();
-    //alert(this.selectedParentFacility);
+  changed(FacilityParentID: any) {
+    this.selectedParentFacility = FacilityParentID.FacilityParentID;
+    this.getFacilityParentList();   
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
@@ -141,6 +175,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       if (res.response != null) {
         this.totalRecord = res.totalRecords;
         this.blockLeaseGridList = res.response;
+        console.log(this.blockLeaseGridList);
+        this.convertDataTomodel();
       }
       else {
         this.blockLeaseGridList = [];
@@ -163,5 +199,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       alertType: data.responseCode
     });
   }
-
 }
+
+
