@@ -10,6 +10,7 @@ import { textChangeRangeIsUnchanged } from 'typescript';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 
+
 @Component({
   selector: 'app-block-lease-scheduler',
   templateUrl: './block-lease-scheduler.component.html',
@@ -22,6 +23,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     private readonly storageService: StorageService,
     private sanitizer: DomSanitizer,  ) {
   }
+
   facilityParentList: any[] = [];
   selectedParentFacility: Number = 0;
   facilityList: any[] = [];
@@ -49,12 +51,12 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   selectedPaid: any = 'ALL';
   apiUrl: any;
   fileData: SafeResourceUrl;
+  AllBlockLeaseList: any = [];
   ngOnInit(): void {
     this.getFacilityParentList();
     this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
-
   }
 
   getFacilityParentList() {
@@ -132,6 +134,39 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, paidStatus));
   }
+  convertDataTomodel() {
+    var arr: any = [];
+    let element = {}
+    arr = [];
+    for (var i = 0; i < this.blockLeaseGridList.length; i++) {
+      var Months = []; var FacilityData = [];
+      element['FacilityID'] = this.blockLeaseGridList[i]['FacilityID'];
+      element['Facilityname'] = this.blockLeaseGridList[i]['FacilityName'];
+      element['IsCtService'] = this.blockLeaseGridList[i]['IsCtService'];
+      element['IsMriService'] = this.blockLeaseGridList[i]['IsMriService'];
+      Months = this.blockLeaseGridList[i]['Months'];
+      for (var j = 0; j < Months.length; j++) {
+        element[`MonthLabels${j}`] = Months[j].MonthLabels;
+        if (Months[j].FacilityData) {
+          FacilityData = JSON.parse(Months[j].FacilityData);
+          element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
+          element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
+          element[`IsPaid${j}`] = FacilityData['IsPaid'];
+          element[`MRI${j}`] = FacilityData['MRI'];
+          element[`CT${j}`] = FacilityData['CT'];
+        } else {
+          element[`IsFacilitySign${j}`] = null;
+          element[`IsScheduledComplete${j}`] = null;
+          element[`IsPaid${j}`] = null;
+          element[`MRI${j}`] = null;
+          element[`CT${j}`] = null;
+        }
+      }
+      arr.push(element);
+      element = {};
+    }   
+    this.AllBlockLeaseList = arr;
+  }
   setUserSetting() {
 
   }
@@ -146,8 +181,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   changed(FacilityParentID: any) {
     this.selectedParentFacility = FacilityParentID.FacilityParentID;
-    this.getFacilityParentList();
-    //alert(this.selectedParentFacility);
+    this.getFacilityParentList();   
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
@@ -155,6 +189,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       if (res.response != null) {
         this.totalRecord = res.totalRecords;
         this.blockLeaseGridList = res.response;
+        console.log(this.blockLeaseGridList);
+        this.convertDataTomodel();
       }
       else {
         this.blockLeaseGridList = [];
@@ -225,3 +261,5 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.facilityService.sendDataToPatientFacilityWindow(body);
   }
 }
+
+
