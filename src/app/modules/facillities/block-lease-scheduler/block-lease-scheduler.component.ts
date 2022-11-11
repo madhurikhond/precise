@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -7,6 +7,8 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { textChangeRangeIsUnchanged } from 'typescript';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-block-lease-scheduler',
@@ -14,10 +16,11 @@ import { textChangeRangeIsUnchanged } from 'typescript';
   styleUrls: ['./block-lease-scheduler.component.css']
 })
 export class BlockLeaseSchedulerComponent implements OnInit {
-
+  @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService, private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,
-    private readonly storageService: StorageService) {
+    private readonly storageService: StorageService,
+    private sanitizer: DomSanitizer,  ) {
   }
   facilityParentList: any[] = [];
   selectedParentFacility: Number = 0;
@@ -44,6 +47,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
   selectedPaid: any = 'ALL';
+  apiUrl: any;
+  fileData: SafeResourceUrl;
   ngOnInit(): void {
     this.getFacilityParentList();
     this.getModalityList();
@@ -189,10 +194,13 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   pageChanged(event) {
     this.leasePageNumber = event;
-    this.getAllLeasesOfFacilityByStatus(this.facilityID,false);
+    this.getAllLeasesOfFacilityByStatus(this.facilityID, false, this.leaseStatus);
   }
-  getLeaseAggrementDetail(row: any) {
-    alert('Lease aggrement pdf selected :' + row.LeaseId);
+  getLeaseAggrementDetail(path: any,fileData: any) {
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
+    fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
+    this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
+    this.hiddenViewFile.nativeElement.click();
   }
   errorNotification(err: any) {
     this.notificationService.showNotification({
