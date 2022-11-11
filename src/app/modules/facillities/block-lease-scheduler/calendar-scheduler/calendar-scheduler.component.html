@@ -65,7 +65,7 @@
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <a (click)="confirmBlockToLease(true)"  data-target="#validatedefaultsign" hrefTo="javascript:void(0)"
+                <a (click)="confirmBlockToLease(true)" data-target="#validatedefaultsign" hrefTo="javascript:void(0)"
                     class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
                 <a href="javascript:void(0)" data-dismiss="modal" data-target="#addEsign" data-toggle="modal"
                     class="btn btn-theme pull-left btn-sm">No</a>
@@ -87,7 +87,7 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                    data-dismiss="modal">CLOSE</a>         
+                    data-dismiss="modal">CLOSE</a>
                 <!-- <a  hrefTo="javascript:void(0)"
                     class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
                 <a href="javascript:void(0)" data-dismiss="modal" data-target="#addEsign" data-toggle="modal"
@@ -105,81 +105,84 @@
                 <h5 class="modal-title">SIGN</h5>
                 <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
             </div>
-            <form name="form" (ngSubmit)="frmCal.form.valid && (model.signature!='') && submitSign(true)" #frmCal="ngForm"
-            class="theme-form" novalidate>
-            <div class="modal-body">
-                <div class="modal-body-inner">
-                    <div class="row">     
-                        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <div class="theme-label">Title</div>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="Title" [(ngModel)]="model.Title"
-                                        #Title="ngModel" [ngModelOptions]="{ standalone : true }"
-                                        [ngClass]="{ 'is-invalid': f.submitted && Title.invalid }" required />
-                                </div>
-                                <div *ngIf="f.submitted && Title.invalid" class="invalid-feedback">
-                                    <div *ngIf="Title.errors.required">Title is required</div>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <div class="theme-label">First Name</div>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="firstName"
-                                        [(ngModel)]="model.firstName" #firstName="ngModel"
-                                        [ngModelOptions]="{ standalone : true }"
-                                        [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" required />
-                                </div>
-                                <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
-                                    <div *ngIf="firstName.errors.required">First Name is required</div>
+
+
+            <form name="form" (ngSubmit)="frmCal.form.valid && submitSign(true)" class="theme-form" #frmCal="ngForm"
+                novalidate>
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Title</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Title" [(ngModel)]="model.Title"
+                                            #Title="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && Title.invalid }" required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && Title.invalid" class="invalid-feedback">
+                                        <div *ngIf="Title.errors.required">Title is required</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div> <br>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <div class="theme-label">Last Name</div>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="lastName"
-                                        [(ngModel)]="model.lastName" #lastName="ngModel"
-                                        [ngModelOptions]="{ standalone : true }"
-                                        [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }" required />
+                            <br />
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">First Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="firstName"
+                                            [(ngModel)]="model.firstName" #firstName="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && firstName.invalid }"
+                                            required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && firstName.invalid" class="invalid-feedback">
+                                        <div *ngIf="firstName.errors.required">First Name is required</div>
+                                    </div>
                                 </div>
-                                <div *ngIf="f.submitted && lastName.invalid" class="invalid-feedback">
-                                    <div *ngIf="lastName.errors.required">Last Name is required</div>
+                            </div> <br>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Last Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="lastName"
+                                            [(ngModel)]="model.lastName" #lastName="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && lastName.invalid }"
+                                            required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && lastName.invalid" class="invalid-feedback">
+                                        <div *ngIf="lastName.errors.required">Last Name is required</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>                  
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
-                                <div
-                                    [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
-                                    <signature-pad id="signature-pad" ngDefaultControl [options]="signaturePadOptions"
-                                        [(ngModel)]="model.signature" [ngModelOptions]="{ standalone : true }"
-                                        [ngClass]="{ 'is-invalid': frmCal.submitted && model.signature=='' }"
-                                        #signature="ngModel" (onEndEvent)="drawComplete()">
-                                    </signature-pad>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div
+                                        [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                                        <signature-pad id="signature-pad" ngDefaultControl
+                                            [options]="signaturePadOptions" [(ngModel)]="model.signature"
+                                            [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && model.signature=='' }"
+                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && model.signature==''" class="invalid-feedback">
+                                        <div>signature is required</div>
+                                    </div>
                                 </div>
-                                <div *ngIf="frmCal.submitted && model.signature==''" class="invalid-feedback">
-                                    <div>signature is required</div>
-                                </div>
+                                <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                    class="btn btn-theme btn-sm">Clear Signature</a>
                             </div>
-                            <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
-                                class="btn btn-theme btn-sm">Clear Signature</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
-                    [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
-                    class="btn btn-theme btn-sm pull-left">Approve</button>
-                <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-                    #closeBtn (click)="signConfirm(false)">Close</a>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">Approve</button>
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                        #closeBtn (click)="signConfirm(false)">Close</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -206,12 +209,12 @@
                     class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
                 <a href="javascript:void(0)" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
                     class="btn btn-theme pull-left btn-sm">No</a>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
-<div class="modal fade modal-theme modal-small" #approveAddEsign id="approveAddEsign" data-backdrop="static" data-keyboard="false"
-    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme modal-small" #approveAddEsign id="approveAddEsign" data-backdrop="static"
+    data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
