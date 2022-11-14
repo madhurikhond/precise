@@ -134,11 +134,11 @@
         <div class="row">
             <div>
                 <div class="cash-price-table">
-                    <div class="table-responsive scheduling-facillities-table">                        
+                    <div *ngIf="AllBlockLeaseList" class="table-responsive scheduling-facillities-table">                        
                         <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                             [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true">
                             <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                            <dxi-column dataField="Facilityname"> </dxi-column>
+                            <dxi-column cellTemplate="viewCellTemplate" dataField="Facilityname"> </dxi-column>
                             <dxi-column [caption]="AllBlockLeaseList[0].MonthLabels0">
                                 <dxi-column caption="MRI" cellTemplate="mammographServiceTemplate">
                                 </dxi-column>
@@ -223,6 +223,11 @@
                                     <li><a href="javascript:void(0);"><img src="assets/images/sign-lease.png" style="width: 18px;" /></a>
                                     </li>
                                 </ul>  
+                            </div>
+                            <div *dxTemplate="let data of 'viewCellTemplate'">
+                                <a href="javascript:void(0);" class="link-btn" (click)="getCalendarSchedulerWindowById(data)"
+                                    data-toggle="modal" data-target="#CalendarSchedulerWindow">
+                                    {{data.data.Facilityname}}</a>
                             </div>
                         </dx-data-grid>
 

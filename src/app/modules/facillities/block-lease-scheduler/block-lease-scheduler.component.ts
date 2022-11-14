@@ -87,8 +87,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-  getCalendarSchedulerWindowById(row: any) {
-    console.log(row.data);
+  getCalendarSchedulerWindowById(row: any) { 
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
@@ -150,8 +149,10 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
       arr.push(element);
       element = {};
-    }   
+    } 
+   
     this.AllBlockLeaseList = arr;
+    console.log(this.AllBlockLeaseList);  
   }
   setUserSetting() {
 
