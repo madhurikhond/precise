@@ -168,6 +168,28 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.AllBlockLeaseList = arr;
     console.log(this.AllBlockLeaseList);  
   }
+
+  getColumnByDataField(column: any) {
+    var retArray = [];
+    let index = 0;
+    if (column.column.caption == 'MRI')
+      index = (Number(Number(column.columnIndex) - 1) / 2);
+    else
+      index = (Number(Number(column.columnIndex) - 2) / 2);
+    retArray.push({
+      'MRI': column.row.data[`MRI${index}`],
+      'IsFacilitySign': column.row.data[`IsFacilitySign${index}`],
+      'IsScheduledComplete': column.row.data[`IsScheduledComplete${index}`],
+      'IsPaid': column.row.data[`IsPaid${index}`],
+      'CT': column.row.data[`CT${index}`],
+      'IsCtService': column.row.data['IsCtService'],
+      'IsMriService': column.row.data['IsMriService']
+    })
+    // console.log(retArray);
+    return retArray
+    console.log(this.AllBlockLeaseList);
+  }
+
   setUserSetting() {
 
   }

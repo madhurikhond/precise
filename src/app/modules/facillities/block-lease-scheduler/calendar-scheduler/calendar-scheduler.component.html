@@ -37,9 +37,10 @@
                 <div [hidden]="readOnlyCalender">
                     <a href="javascript:void(0)" *ngIf="approveGoToNext" class="btn btn-theme"
                     (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{'{ ' + FACILITY_NAME + ' }'}}</a>
-                <a href="javascript:void(0)" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
-                    data-toggle="modal" class="btn btn-theme">APPROVE ALL Parent Company Name FACILITIES & SEND LEASE
-                    AGREEMENT</a>
+                    <a href="javascript:void(0)" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
+                       data-toggle="modal" class="btn btn-theme" style="background: green;">APPROVE ALL Parent{{ParentCompanyName}} FACILITIES & SEND LEASE
+                      AGREEMENT
+                    </a>
                 <a href="javascript:void(0)" data-target="#approveLeasePopup" data-toggle="modal"
                     class="btn btn-theme">Approve and send lease
                     agreement to facility</a>
