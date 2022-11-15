@@ -419,7 +419,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.signaturePad.clear();
         this.model.signature = '';
   }
-  clearSignapproveAddEsignModel(): void {
+  clearSignApproveAddEsign(): void {
     this.signaturePadapproveAddEsignModel.clear();
     this.approveAddEsignModel.signature = '';
   }
