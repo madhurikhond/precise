@@ -105,7 +105,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
+                <div #modaldismiss2 class="close-dismiss" data-dismiss="modal"></div>
             </div>
 
 
@@ -223,36 +223,79 @@
                 <h5 class="modal-title">SIGN</h5>
                 <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
             </div>
-            <form name="form" (ngSubmit)="f.form.valid && (model.signature!='') && ApproveSubmitSign(true)" #f="ngForm"
+
+            <form name="form" (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
                 class="theme-form" novalidate>
                 <div class="modal-body">
                     <div class="modal-body-inner">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <div
-                                        [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
-                                        <signature-pad id="signature-pad" ngDefaultControl
-                                            [options]="signaturePadOptions" [(ngModel)]="model.signature"
-                                            [ngModelOptions]="{ standalone : true }"
-                                            [ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
-                                            #signature="ngModel" (onEndEvent)="drawComplete()">
-                                        </signature-pad>
-                                    </div>
-                                    <div *ngIf="f.submitted && model.signature==''" class="invalid-feedback">
-                                        <div>signature is required</div>
-                                    </div>
-                                </div>
-                                <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
-                                    class="btn btn-theme btn-sm">Clear Signature</a>
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">Title</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="Title" [(ngModel)]="approveAddEsignModel.Title"
+                                     #approveAddEsignTitle="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && Title.invalid }" required />
                             </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignTitle.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignTitle.errors.required">Title is required</div>
+                            </div>
+                          </div>
                         </div>
+                        <br />
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">First Name</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="firstName"
+                                     [(ngModel)]="approveAddEsignModel.firstName" #approveAddEsignfirstName="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignfirstName.invalid }"
+                                     required />
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignfirstName.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignfirstName.errors.required">First Name is required</div>
+                            </div>
+                          </div>
+                        </div> <br>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">Last Name</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="lastName"
+                                     [(ngModel)]="approveAddEsignModel.lastName" #approveAddEsignlastName="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignlastName.invalid }"
+                                     required />
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignlastName.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignlastName.errors.required">Last Name is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                              <signature-pad id="signature-pad" ngDefaultControl
+                                             [options]="signaturePadOptions" [(ngModel)]="approveAddEsignModel.signature"
+                                             [ngModelOptions]="{ standalone : true }"
+                                             [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsign.signature=='' }"
+                                             #signature="ngModel" (onEndEvent)="drawCompleteapproveAddEsign()">
+                              </signature-pad>
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsign.signature==''" class="invalid-feedback">
+                              <div>signature is required</div>
+                            </div>
+                          </div>
+                          <a href="javascript:void(0)" (click)="clearSignApproveAddEsign();" style="background-color: gray;"
+                             class="btn btn-theme btn-sm">Clear Signature</a>
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
-                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                    <button type="submit" style="float: left;" [disabled]="(approveAddEsignModel.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((approveAddEsignModel.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                         class="btn btn-theme btn-sm pull-left">Approve</button>
+
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
                         #closeBtn (click)="signConfirm(false)">Close</a>
                 </div>
