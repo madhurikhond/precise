@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'server-settings/template', component: TemplateComponent, canActivate: [AuthGuard,RoleGuard] },
   { path: 'server-settings/document-tagging', component: DocumentTaggingComponent, canActivate: [AuthGuard,RoleGuard] },
   { path: 'server-settings/bookmark-tagging', component: BookmarkTaggingComponent, canActivate: [AuthGuard,RoleGuard] },
-  { path: 'server-settings/use-bookmark', component: UseBookmarkComponent, canActivate: [AuthGuard,RoleGuard] },
+  { path: 'server-settings/bookmark-tagging/use-bookmark', component: UseBookmarkComponent, canActivate: [AuthGuard,RoleGuard]},
   { path: 'server-settings/player-type', component: PlayerTypeComponent, canActivate: [AuthGuard,RoleGuard] },
   { path: 'server-settings/sftp', component: SftpComponent, canActivate: [AuthGuard,RoleGuard] },
   { path: 'billing-settings/pi-billing', loadChildren: () => import('../settings/billing/pi-billing/pi-billing.module').then(m => m.PiBillingModule), canActivate: [AuthGuard,RoleGuard] },
