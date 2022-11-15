@@ -238,7 +238,7 @@
                                         <img src="/assets/images/schedule-cross.png" style="width: 18px;" />
                                     </li>
                                     <li *ngIf="getColumnByDataField(data)[0].IsPaid != null">
-                                        <img [src]="getColumnByDataField(data)[0].IsPaid==true?'assets/images/paid.png':'assets/images/unpaid.png'"
+                                        <img class="paid_unpaid_cursor" (click)="getColumnByDataField(data)[0].IsPaid==true?getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid'):getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')" data-toggle="modal" data-target="#add-Edit-facility" [src]="getColumnByDataField(data)[0].IsPaid==true?'assets/images/paid.png':'assets/images/unpaid.png'"
                                             style="width: 18px;" />
                                     </li>
                                     <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign != null">
@@ -290,11 +290,11 @@
                 </li>
             </ul>
             <ul>
-                <li class="paid_unpaid_cursor" (click)="getFacilityDetail(56,'LeasePaymentsPaid')" data-toggle="modal" data-target="#add-Edit-facility">
+                <li>
                     <img src="/assets/images/paid.png" style="width:11px;" />
                     <span>Paid</span>
                 </li>
-                <li class="paid_unpaid_cursor" (click)="getFacilityDetail(56,'LeasePaymentsUnPaid')" data-toggle="modal" data-target="#add-Edit-facility">
+                <li>
                     <img src="/assets/images/unpaid.png" style="width:11px;" />
                     <span>Unpaid</span>
                 </li>
