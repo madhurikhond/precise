@@ -55,7 +55,8 @@ export class CalendarSchedulerComponent implements OnInit {
     approveGoToNext: boolean = false;
     isDefaultSign:any ;
     approveAllCheckForButton: boolean = false;
-    otherFacilitiesParsed: any = [];
+  otherFacilitiesParsed: any = [];
+  ParentCompanyName: string;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -382,7 +383,7 @@ export class CalendarSchedulerComponent implements OnInit {
         var otherFacilities: any = [];
         this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
             if (res.response.OtherFacilities) {
-
+              this.ParentCompanyName = res.response.ParentCompanyName;
                 this.otherFacilitiesParsed = JSON.parse(res.response.OtherFacilities);
                 if (this.otherFacilitiesParsed.length > 0) {
                     this.approveGoToNext = true;
@@ -446,7 +447,7 @@ export class CalendarSchedulerComponent implements OnInit {
     this.approveAddEsignModel.Title = '';
   }
     confirmBlockToLease(defaultSign: boolean, body: any = '') {
-        if(this.isDefaultSign == 0) {
+      if (this.isDefaultSign == 0 && body === '') {
             this.validatedefaultsign.nativeElement.click();
         }
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];

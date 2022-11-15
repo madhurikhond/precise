@@ -77,7 +77,8 @@
 
 
 
-                                    <div *dxTemplate="let data of 'getName'"> {{this.storageService.user.FullName}}
+                                    <div *dxTemplate="let data of 'getName'">
+                                      {{data.data.FirstName}} {{data.data.LastName}}
                                     </div>
                                     <div *dxTemplate="let data of 'cellTemplate'">
                                         <img id="imgSign" [src]="data.value" />
@@ -228,7 +229,7 @@
                         [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                         class="btn btn-theme btn-sm pull-left">Sign</button>
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-                        #closeBtn (click)="signConfirm(false)">Clear</a>
+                       #closeBtn (click)="signConfirm(false)">Close</a>
                 </div>
             </form>
         </div>

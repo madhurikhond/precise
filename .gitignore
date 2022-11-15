@@ -48,3 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
+/.vs/precisemri_web/FileContentIndex
+/.vs/precisemri_web/config
