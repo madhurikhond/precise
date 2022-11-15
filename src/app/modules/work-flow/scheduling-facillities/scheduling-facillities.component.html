@@ -470,27 +470,27 @@
                      <div
                         [ngStyle]="{'background-color':data.data.mriexceptionDescription!='' && data.data.mriexceptionDescription!=null ? 'yellow' : '' }"
                         [title]="data.data.mriexceptionDescription!='' && data.data.mriexceptionDescription!=null ? data.data.mriexceptionDescription:''">
-                        <img [src]="data.data.mriservice==true?'assets/images/yes.png':'assets/images/no.png'"
+                        <img  (click)="data.data.mriservice==true? abcCheck(data):false"
+                              [src]="data.data.mriservice==true?'assets/images/yes.png':'assets/images/no.png'" 
                            width="20" height="20" />
                      </div>
                   </div>
                   <div *dxTemplate="let data of 'ctserviceTemplate'">
-                     <div
-                        [ngStyle]="{'background-color':data.data.ctexceptionDescription!='' && data.data.ctexceptionDescription!=null ? 'yellow' : '' }"
+                     <div [ngStyle]="{'background-color':data.data.ctexceptionDescription!='' && data.data.ctexceptionDescription!=null ? 'yellow' : '' }"
                         [title]="data.data.ctexceptionDescription!='' && data.data.ctexceptionDescription!=null ? data.data.ctexceptionDescription:''">
-                        <img [src]="data.data.ctservice==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
+                        <img  (click)="data.data.ctservice==true? abcCheck(data):false" [src]="data.data.ctservice==true?'assets/images/yes.png':'assets/images/no.png'" width="20"
                            height="20" />
                      </div>
                   </div>
                   <div *dxTemplate="let data of 'xrayServiceTemplate'">
                      <div>
-                        <img
+                        <img (click)="data.data.xrayService==false? false :data.data.xrayService==true && data.data.xrayWalkIn=='Yes' ?false:data.data.xrayService==true && data.data.xrayWalkIn=='No'?false:data.data.xrayService==true && data.data.xrayWalkIn=='w/ MRI Only'?false:abcCheck(data)"
                            [src]="data.data.xrayService==false? 'assets/images/no.png' :data.data.xrayService==true && data.data.xrayWalkIn=='Yes' ?'assets/images/walk.png':data.data.xrayService==true && data.data.xrayWalkIn=='No'?'assets/images/calender3.png':data.data.xrayService==true && data.data.xrayWalkIn=='w/ MRI Only'?'assets/images/alert.png':'assets/images/yes.png'"
                            width="20" height="20" />
                      </div>
                   </div>
                   <div *dxTemplate="let data of 'mri1contrastTemplate'">
-                     <img
+                     <img (click)="(data.data.mri1contrast=='' || data.data.mri1contrast==null || data.data.mri1contrast=='No')? false:abcCheck(data)"
                         [src]="(data.data.mri1contrast=='' || data.data.mri1contrast==null || data.data.mri1contrast=='No') ? 'assets/images/no.png':'assets/images/yes.png'"
                         width="20" height="20" />
                   </div>
@@ -2557,3 +2557,5 @@
       </div>
    </div>
    <!-- Pop Up End -->
+   <div data-toggle="modal" data-target="#CalendarSchedulerWindow" #isCalanderShow></div>
+   <app-calendar-scheduler></app-calendar-scheduler>

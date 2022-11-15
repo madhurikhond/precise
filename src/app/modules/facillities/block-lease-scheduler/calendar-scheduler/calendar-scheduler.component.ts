@@ -36,6 +36,7 @@ export class CalendarSchedulerComponent implements OnInit {
         canvasWidth: 750,
         canvasHeight: 200
     };
+    readOnlyCalender:boolean=false;
     FacilityName: string = '';
     FacilityID: string = '';
     modalityResourcesList: any[] = [];
@@ -61,6 +62,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 this.bodyRes = res;
                 this.FacilityName = res.FacilityName;
                 this.FacilityID = res.FacilityID;
+                this.readOnlyCalender = res.fromSchedulingFacility;
                 this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
                 setTimeout(() => {
                     this.GetBlockLeaseData();
@@ -86,6 +88,10 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.icons_select = ['icon_details', 'icon_delete'];
         // scheduler.config.first_hour = 7;
         scheduler.config.now_date = new Date();
+        if(this.readOnlyCalender==true)
+        {
+            scheduler.config.readonly = true;
+        }
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
