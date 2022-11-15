@@ -17,7 +17,7 @@
                                 <input class="form-control" type="text" [(ngModel)]="searchKeyword" name="searchText" />
                             </div>
                         </div>
-                        <a routerLink="/settings/server-settings/player-type" class="link pull-right">Player Type</a> 
+                        <a routerLink="/settings/server-settings/bookmark-tagging/player-type" class="link pull-right">Player Type</a> 
                     </div>
                 </div> 
                 <div class="use-book-marks" *ngFor="let table of bookmarkList | bookmark: searchKeyword;;  let i= index; ">
