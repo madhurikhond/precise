@@ -34,6 +34,6 @@ import { FacilityEsignComponent } from './block-lease-scheduler/facility-esign/f
     DxFileManagerModule,DxTreeViewModule,DxListModule,DxContextMenuModule,DxDateBoxModule,
     ContextMenuModule.forRoot(),
     SignaturePadModule
-  ], providers:[FacilityService]
+  ],  exports: [CalendarSchedulerComponent], providers:[FacilityService]
 })
 export class FacillitiesModule { }

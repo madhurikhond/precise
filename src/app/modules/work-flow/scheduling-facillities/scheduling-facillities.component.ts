@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/services/common/storage.service';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
+import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
   styleUrls: ['./scheduling-facillities.component.css']
 })
 export class SchedulingFacillitiesComponent implements OnInit {
+  @ViewChild('isCalanderShow', { static: true }) isCalanderShow: ElementRef;
   columnResizingMode: string;
   applyFilterTypes: any;
   currentFilter: any;
@@ -95,7 +97,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
   mycontent: string;
   log: string = '';
 
-  constructor(private readonly facilityService:FacilityService,private notificationService:NotificationService,private fb: FormBuilder,
+  constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,private readonly facilityService:FacilityService,private notificationService:NotificationService,private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,private readonly storageService:StorageService,
     private _clipboardService: ClipboardService) 
     {
@@ -1008,6 +1010,18 @@ copyToClipboard(data: any){
  onEditorPreparing(e:any)
  {
   
+ }
+ abcCheck(data)
+ {
+  this.isCalanderShow.nativeElement.click();
+  console.log(data);
+  let body = {
+    'FacilityID': data.data.facilityID,
+    'FacilityParentID': data.data.facilityParentID,
+    'FacilityName': data.data.facilityName,
+    'fromSchedulingFacility': true
+  }
+  this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
  }
  get refmodalityCtFormForm() { return this.modalityCtForm.controls; }
  get refmodalityMriForm(){return this.modalityMriForm.controls;}

@@ -17,6 +17,7 @@ import { PatientDetailGroupComponent } from './ordered-scheduler/patient-detail-
 import { DxAutocompleteModule, DxButtonModule } from 'devextreme-angular';
 import { NgxMaskModule } from 'ngx-mask';
 import { FormsModule } from '@angular/forms';
+import { FacillitiesModule } from '../facillities/facillities.module';
 
 @NgModule({
   declarations: [SchedulingFacillitiesComponent, OrderedreviewerComponent, CallPatientScheduleComponent, PatientDetailsComponent, OrderedSchedulerComponent, ActionNeededComponent, PatientDetailGroupComponent,
@@ -27,6 +28,7 @@ import { FormsModule } from '@angular/forms';
     WorkflowRoutingModule,
     DxButtonModule,
     DxAutocompleteModule,
+    FacillitiesModule,
     FormsModule,
     NgxMaskModule.forRoot({
       // showMaskTyped : true,
