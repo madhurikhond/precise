@@ -147,7 +147,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       for (var j = 0; j < Months.length; j++) {
         element[`MonthLabels${j}`] = Months[j].MonthLabels;
         if (Months[j].FacilityData) {
-          FacilityData = JSON.parse(Months[j].FacilityData);
+          FacilityData = Months[j].FacilityData[0];// JSON.parse(Months[j].FacilityData);
           element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
