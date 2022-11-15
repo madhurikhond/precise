@@ -7006,3 +7006,15 @@ tree-node:last-child > .tree-node > .tree-children::after {
   .dhx_scheduler_month .dhx_marked_timespan { 
     display: block;
   }
+  .displayCounter {
+	font-size: 9px;
+	width: 17px;
+	height: 17px;
+	line-height: 17px;
+	text-align: center;
+	color: #ffffff;
+	font-weight: normal;
+	position: absolute;	
+	background: #e74c3b;
+	border-radius: 50%;
+}

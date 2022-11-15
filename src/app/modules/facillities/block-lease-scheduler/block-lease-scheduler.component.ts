@@ -87,7 +87,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-  getCalendarSchedulerWindowById(row: any) { 
+  getCalendarSchedulerWindowById(row: any) {
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
@@ -133,7 +133,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       for (var j = 0; j < Months.length; j++) {
         element[`MonthLabels${j}`] = Months[j].MonthLabels;
         if (Months[j].FacilityData) {
-          FacilityData = JSON.parse(Months[j].FacilityData);
+          FacilityData = Months[j].FacilityData[0]//JSON.parse(Months[j].FacilityData);
           element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
@@ -149,10 +149,30 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
       arr.push(element);
       element = {};
-    } 
-   
+    }
     this.AllBlockLeaseList = arr;
-    console.log(this.AllBlockLeaseList);  
+    console.log(this.AllBlockLeaseList);
+  }
+  getColumnByDataField(column: any) {    
+    var retArray = [];
+    let index = 0;
+    if (column.column.caption == 'MRI')
+    index = (Number(Number(column.columnIndex) - 1) / 2);
+    else
+      index = (Number(Number(column.columnIndex) - 2) / 2);
+
+    retArray.push({
+      'MRI': column.row.data[`MRI${index}`],
+      'IsFacilitySign': column.row.data[`IsFacilitySign${index}`],
+      'IsScheduledComplete': column.row.data[`IsScheduledComplete${index}`],
+      'IsPaid': column.row.data[`IsPaid${index}`],
+      'CT': column.row.data[`CT${index}`],
+      'IsCtService': column.row.data['IsCtService'],
+      'IsMriService': column.row.data['IsMriService']
+    })
+    // console.log(retArray);
+    return retArray
+
   }
   setUserSetting() {
 
@@ -168,7 +188,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   changed(FacilityParentID: any) {
     this.selectedParentFacility = FacilityParentID.FacilityParentID;
-    this.getFacilityParentList();   
+    this.getFacilityParentList();
   }
   getAllBlockLeaseFacility(filterBody: any) {
     this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
