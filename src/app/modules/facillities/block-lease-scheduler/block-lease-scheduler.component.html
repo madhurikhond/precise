@@ -12,26 +12,7 @@
             <div class="row">
                 <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11">
                     <div class="theme-form">
-                        <div class="form-group autocomplete form-group1">
-                            <div class="theme-label">Facility Parent</div>
-                            <div class="input-group">
-                                <ng-select [items]="facilityParentList" #facilityParent (change)="changed($event)"
-                                    placeholder="Select" [ngModelOptions]="{standalone: true}"
-                                    bindLabel="FacilityParentName" [multiple]="false" [closeOnSelect]="false"
-                                    bindValue="FacilityParentID" [(ngModel)]="selectedParentFacility">
-                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                            <span class="ng-value-label"> {{item.FacilityParentName}}</span>
-                                            <span class="ng-value-icon right" (click)="clear(item)"
-                                                aria-hidden="true">×</span>
-                                        </div>
-                                        <div class="ng-value" *ngIf="items.length > 1">
-                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
-                                        </div>
-                                    </ng-template>
-                                </ng-select>
-                            </div>
-                        </div>
+                        
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Facility</div>
                             <div class="input-group">
@@ -71,22 +52,14 @@
                             </div>
                         </div>
                         <div class="form-group autocomplete form-group1">
-                            <div class="theme-label">Schedule Status</div>
+                            <div class="theme-label">Schedule Created</div>
                             <div class="input-group">
-                                <ng-select [items]="scheduleStatusList" placeholder="Select" bindLabel="STATUS"
-                                    [multiple]="true" [closeOnSelect]="false" bindValue="STATUS"
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedscheduleStatus">
-                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
-                                            <span class="ng-value-label"> {{item.STATUS}}</span>
-                                            <span class="ng-value-icon right" (click)="clear(item)"
-                                                aria-hidden="true">×</span>
-                                        </div>
-                                        <div class="ng-value" *ngIf="items.length > 1">
-                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
-                                        </div>
-                                    </ng-template>
-                                </ng-select>
+                            <select class="form-control" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="selectedScheduleStatus">
+                                <option value="0">Select</option>
+                                <option value="NotCompleted">Not completed</option>
+                                <option value="Completed">Completed</option>
+                            </select>                            
                             </div>
                         </div>
                         <div class="form-group autocomplete form-group1">
