@@ -447,8 +447,9 @@ export class CalendarSchedulerComponent implements OnInit {
     this.approveAddEsignModel.Title = '';
   }
     confirmBlockToLease(defaultSign: boolean, body: any = '') {
-      if (this.isDefaultSign == 0 && body === '') {
-            this.validatedefaultsign.nativeElement.click();
+      if (this.isDefaultSign == 0 && body === '' && defaultSign) {
+        this.validatedefaultsign.nativeElement.click();
+        return;
         }
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         if (defaultSign) {
@@ -520,7 +521,11 @@ export class CalendarSchedulerComponent implements OnInit {
             alertType: err.status
         });
     }
-    approveAllParentToLease(defaultSign: boolean, body: any = '') {
+     approveAllParentToLease(defaultSign: boolean, body: any = '') {
+       if (this.isDefaultSign == 0 && body === '' && defaultSign) {
+          this.validatedefaultsign.nativeElement.click();
+          return;
+        }
         this.SchedulerDayWeekMonth = []; this.forTimelineList = [];
         if (defaultSign) {
             body = {
