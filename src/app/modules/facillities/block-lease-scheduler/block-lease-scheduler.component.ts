@@ -105,7 +105,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
-      'FacilityName': row.data.FacilityName
+      'FacilityName': row.data.Facilityname
     }
     this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
   }
@@ -277,11 +277,19 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   getFacilityDetail(facilityId: any, type: any) {
+    if(facilityId){
     let body = {
       'facilityId': facilityId,
       'type': type
     }
     this.facilityService.sendDataToPatientFacilityWindow(body);
+  }
+  else{
+    var data = {
+      'responseCode': 404
+    }
+    this.unSuccessNotification(data);
+  }
   }
 }
 
