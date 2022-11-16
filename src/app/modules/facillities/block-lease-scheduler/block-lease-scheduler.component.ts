@@ -38,7 +38,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   totalLeaseRecords: number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
-  selectedscheduleStatus: any;
+  selectedScheduleStatus: string = '0';
   modalityList: any[] = [];
   selectedModality: any = [];
   pageNumber: number = 1;
@@ -64,11 +64,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.facilityList = [];
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
-      if (res.response != null) {
-        this.facilityParentList = res.response[0].ParentFacilities;
-        if (this.selectedParentFacility) {
+      if (res.response != null && res.response.length > 0) {
           this.facilityList = res.response[0].Facilities;
-        }
       }
     }, (err: any) => {
       this.errorNotification(err);
