@@ -201,11 +201,11 @@
                 <p>DO YOU WANT TO LEASE BLOCK with use default sign?</p>
             </div>
             <div class="modal-footer">
-                <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                <!--<button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
                     [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                     class="btn btn-theme btn-sm pull-left">Approve</button>
                 <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-                    #closeBtn (click)="signConfirm(false)">Close</a>
+                    #closeBtn (click)="signConfirm(false)">Close</a>-->
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
                     data-dismiss="modal">Cancel</a>
                 <a (click)="approveAllParentToLease(true)" hrefTo="javascript:void(0)"
