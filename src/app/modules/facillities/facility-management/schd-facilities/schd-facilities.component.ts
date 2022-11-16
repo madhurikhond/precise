@@ -229,15 +229,15 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
-    this.fullblockLeaseAgreementMRIList = [
-      {
-        TimeFrame: 'Time Frame here',
-        TotalLeaseHours: 'TotalLeaseHours here',
-        LeaseRatePerHour: 'LeaseRatePerHour here',
-        totalHour: 'totalHour here',
-        Aggrement: '',
-      },
-    ];
+    // this.fullblockLeaseAgreementMRIList = [
+    //   {
+    //     TimeFrame: 'Time Frame here',
+    //     TotalLeaseHours: 'TotalLeaseHours here',
+    //     LeaseRatePerHour: 'LeaseRatePerHour here',
+    //     totalHour: 'totalHour here',
+    //     Aggrement: '',
+    //   },
+    // ];
 
     // this.ckeConfig = {
     //   allowedContent: false,
