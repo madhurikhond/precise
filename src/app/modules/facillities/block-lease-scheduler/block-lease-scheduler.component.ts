@@ -65,10 +65,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
       if (res.response != null && res.response.length > 0) {
-        
-       if (res.response.length > 0) {
           this.facilityList = res.response[0].Facilities;
-        }
       }
     }, (err: any) => {
       this.errorNotification(err);
