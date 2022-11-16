@@ -83,6 +83,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.FacilityID = this.data.FacilityID;
       this.getModalityResourcesList();
       if (this.event) {
+        console.log(this.event);
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];  
         }
@@ -114,10 +115,10 @@ export class SchedulerPopupComponent implements OnInit {
       });
     }
     if (this.mode == 'month') {
-      this.leaseForm.patchValue({
-        start_time: null,
-        end_time: null
-      })
+      // this.leaseForm.patchValue({
+      //   start_time: null,
+      //   end_time: null
+      // })
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,
