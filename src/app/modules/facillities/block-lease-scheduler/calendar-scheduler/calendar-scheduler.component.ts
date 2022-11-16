@@ -53,10 +53,11 @@ export class CalendarSchedulerComponent implements OnInit {
     reasonId: number = 0;
     FACILITY_NAME: string;
     approveGoToNext: boolean = false;
-    isDefaultSign:any ;
+    isDefaultSign: any;
     approveAllCheckForButton: boolean = false;
   otherFacilitiesParsed: any = [];
   ParentCompanyName: string;
+    isDisplayApproveBtn: boolean = false;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -334,8 +335,8 @@ export class CalendarSchedulerComponent implements OnInit {
     GetBlockLeaseData() {
         var userID = this.storageService.user.UserId
         this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
-        this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID,userID).subscribe((res) => {
-            if(res.response){
+        this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID, userID).subscribe((res) => {
+            if (res.response) {
                 this.isDefaultSign = res.response[0].IsDefaultEsign ? res.response[0].IsDefaultEsign : 0
             }
             if (res.response[0].BlockLeases)
@@ -347,6 +348,9 @@ export class CalendarSchedulerComponent implements OnInit {
             if (res.response[0].AutoBlockOffDays)
                 this.autoBlockOffDays = res.response[0].AutoBlockOffDays;
 
+            if (this.SchedulerDayWeekMonth) {
+                this.isDisplayApproveBtn =  (this.SchedulerDayWeekMonth.filter(dta => dta.LeaseId == null).length>0)?false:true;
+            }
             console.log(this.autoBlockOffDays);
 
             if (forTimelineView && this.SchedulerDayWeekMonth) {
