@@ -184,11 +184,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.commonMethodService.setTitle('Scheduling Facility');
 
     facilityService.sendDataToFacilityDetail.subscribe(res => {
-      if(res)
-      {
+      if (res) {
         this.isGridDisplay = false;
-        if(res.facilityId)
-        {
+        if (res.facilityId) {
           this.getFacilityDetail(res.facilityId);
           this.defaultPopupTab = res.type;
         }
@@ -229,15 +227,15 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
-    this.fullblockLeaseAgreementMRIList = [
-      {
-        TimeFrame: 'Time Frame here',
-        TotalLeaseHours: 'TotalLeaseHours here',
-        LeaseRatePerHour: 'LeaseRatePerHour here',
-        totalHour: 'totalHour here',
-        Aggrement: '',
-      },
-    ];
+    // this.fullblockLeaseAgreementMRIList = [
+    //   {
+    //     TimeFrame: 'Time Frame here',
+    //     TotalLeaseHours: 'TotalLeaseHours here',
+    //     LeaseRatePerHour: 'LeaseRatePerHour here',
+    //     totalHour: 'totalHour here',
+    //     Aggrement: '',
+    //   },
+    // ];
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -1154,21 +1152,19 @@ export class SchdFacilitiesComponent implements OnInit {
     var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
     if (data.length > 0)
       data[0].ResourceId = ResourceId;
-    else
-    {
-      if(Modality=='ct')
-      {
+    else {
+      if (Modality == 'ct') {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
         // alert('CT Test ' + test);
         if (
           (this.modalityCtForm.controls['ct1ResourceName'].value !=
             ResourceId &&
             this.modalityCtForm.controls['ct2ResourceName'].value !=
-              ResourceId) ||
+            ResourceId) ||
           (this.modalityCtForm.controls['ct1ResourceName'].value !=
             ResourceId &&
             this.modalityCtForm.controls['ct3ResourceName'].value !=
-              ResourceId) ||
+            ResourceId) ||
           (this.modalityCtForm.controls['ct3ResourceName'].value !=
             ResourceId &&
             this.modalityCtForm.controls['ct2ResourceName'].value != ResourceId)
@@ -1189,15 +1185,15 @@ export class SchdFacilitiesComponent implements OnInit {
           (this.modalityMriForm.controls['mri1ResourceName'].value !=
             ResourceId &&
             this.modalityMriForm.controls['mri2ResourceName'].value !=
-              ResourceId) ||
+            ResourceId) ||
           (this.modalityMriForm.controls['mri1ResourceName'].value !=
             ResourceId &&
             this.modalityMriForm.controls['mri3ResourceName'].value !=
-              ResourceId) ||
+            ResourceId) ||
           (this.modalityMriForm.controls['mri3ResourceName'].value !=
             ResourceId &&
             this.modalityMriForm.controls['mri2ResourceName'].value !=
-              ResourceId)
+            ResourceId)
         ) {
           this.updatedResourceName.push({
             ID: 0,
@@ -1429,8 +1425,20 @@ export class SchdFacilitiesComponent implements OnInit {
           (res) => {
             if (res.response != null) {
               this.blockLeasePricingList = res.response;
-              this.showNotificationOnSucess(res);
+              this.showNotificationOnSucess({
+                message:res.response.message,
+                responseCode:res.responseCode
+              }); 
             }
+
+            if(this.isApplyAndOkBtnVisisble){
+              this.updateFacility(true);
+            }
+            else if(this.isInsertBtnVisisble){
+              this.addFacility();
+            }
+
+
           },
           (err: any) => {
             this.errorNotification(err);
@@ -1508,29 +1516,29 @@ export class SchdFacilitiesComponent implements OnInit {
     var len = binary_string.length;
     var bytes = new Uint8Array(len);
     for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
+      bytes[i] = binary_string.charCodeAt(i);
     }
     return bytes.buffer;
-}
+  }
 
 
   downloadFile(fileData) {
-    if(fileData.data.FileDetail != null || fileData.data.FileDetail != undefined){
-      var data = fileData.data.FileDetail.FileBytes ;
+    if (fileData.data.FileDetail != null || fileData.data.FileDetail != undefined) {
+      var data = fileData.data.FileDetail.FileBytes;
       var fileName = fileData.data.FileDetail.FileName;
-    var pdfData = this._base64ToArrayBuffer(data);
-    var file = new Blob([pdfData], {type:'application/pdf'});
-    var fileUrl = URL.createObjectURL(file);
+      var pdfData = this._base64ToArrayBuffer(data);
+      var file = new Blob([pdfData], { type: 'application/pdf' });
+      var fileUrl = URL.createObjectURL(file);
       var a = document.createElement("a");
       document.body.appendChild(a);
       a.href = fileUrl;
       a.target = '_blank';
       a.click();
-    }else{
-      var notification ={
-        alertType:ResponseStatusCode.NotFound,
-      alertHeader : 'Error',
-        alertMessage : 'Not Found'
+    } else {
+      var notification = {
+        alertType: ResponseStatusCode.NotFound,
+        alertHeader: 'Error',
+        alertMessage: 'Not Found'
       }
       this.notificationService.showNotification(notification)
     }
@@ -2130,32 +2138,32 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.itsupportEmail.value,
       itsupportOfficePhone:
         this.facilityContactDetailFormControls.itsupportOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportCellPhone:
         this.facilityContactDetailFormControls.itsupportCellPhone.value != null
           ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportHomePhone:
         this.facilityContactDetailFormControls.itsupportHomePhone.value != null
           ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportFax:
         this.facilityContactDetailFormControls.itsupportFax.value != null
           ? this.facilityContactDetailFormControls.itsupportFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       reportsContact:
@@ -2164,30 +2172,30 @@ export class SchdFacilitiesComponent implements OnInit {
       reportsOfficePhone:
         this.facilityContactDetailFormControls.reportsOfficePhone.value != null
           ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsCellPhone:
         this.facilityContactDetailFormControls.reportsCellPhone.value != null
           ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsHomePhone:
         this.facilityContactDetailFormControls.reportsHomePhone.value != null
           ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsFax:
         this.facilityContactDetailFormControls.reportsFax.value != null
           ? this.facilityContactDetailFormControls.reportsFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       statusCheckContact:
@@ -2196,34 +2204,34 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.statusCheckEmail.value,
       statusCheckOfficePhone:
         this.facilityContactDetailFormControls.statusCheckOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckCellPhone:
         this.facilityContactDetailFormControls.statusCheckCellPhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckHomePhone:
         this.facilityContactDetailFormControls.statusCheckHomePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckFax:
         this.facilityContactDetailFormControls.statusCheckFax.value != null
           ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       schedulingContact:
@@ -2232,32 +2240,32 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.schedulingEmail.value,
       schedulingOfficePhone:
         this.facilityContactDetailFormControls.schedulingOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingCellPhone:
         this.facilityContactDetailFormControls.schedulingCellPhone.value != null
           ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingHomePhone:
         this.facilityContactDetailFormControls.schedulingHomePhone.value != null
           ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingFax:
         this.facilityContactDetailFormControls.schedulingFax.value != null
           ? this.facilityContactDetailFormControls.schedulingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       defaultEmailAddress3P:
         this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
@@ -2271,30 +2279,30 @@ export class SchdFacilitiesComponent implements OnInit {
       imagesOfficePhone:
         this.facilityContactDetailFormControls.imagesOfficePhone.value != null
           ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesCellPhone:
         this.facilityContactDetailFormControls.imagesCellPhone.value != null
           ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesHomePhone:
         this.facilityContactDetailFormControls.imagesHomePhone.value != null
           ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesFax:
         this.facilityContactDetailFormControls.imagesFax.value != null
           ? this.facilityContactDetailFormControls.imagesFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       billingContact:
@@ -2303,30 +2311,30 @@ export class SchdFacilitiesComponent implements OnInit {
       billingOfficePhone:
         this.facilityContactDetailFormControls.billingOfficePhone.value != null
           ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingCellPhone:
         this.facilityContactDetailFormControls.billingCellPhone.value != null
           ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingHomePhone:
         this.facilityContactDetailFormControls.billingHomePhone.value != null
           ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingFax:
         this.facilityContactDetailFormControls.billingFax.value != null
           ? this.facilityContactDetailFormControls.billingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       ///// Modality Service Tab Form Controls
@@ -2669,18 +2677,18 @@ export class SchdFacilitiesComponent implements OnInit {
       parentOwnerPhone:
         this.facilityParentCompanyFormControls.parentOwnerPhone.value != null
           ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentOwnerEmail:
         this.facilityParentCompanyFormControls.parentOwnerEmail.value,
       parentOwnerFax:
         this.facilityParentCompanyFormControls.parentOwnerFax.value != null
           ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentManagerName:
         this.facilityParentCompanyFormControls.parentManagerName.value,
@@ -2689,32 +2697,32 @@ export class SchdFacilitiesComponent implements OnInit {
       parentManagerPhone:
         this.facilityParentCompanyFormControls.parentManagerPhone.value != null
           ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentManagerFax:
         this.facilityParentCompanyFormControls.parentManagerFax.value != null
           ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentITName: this.facilityParentCompanyFormControls.parentITName.value,
       parentITEmail: this.facilityParentCompanyFormControls.parentITEmail.value,
       parentITPhone:
         this.facilityParentCompanyFormControls.parentITPhone.value != null
           ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentITFax:
         this.facilityParentCompanyFormControls.parentITFax.value != null
           ? this.facilityParentCompanyFormControls.parentITFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentBillingName:
         this.facilityParentCompanyFormControls.parentBillingName.value,
@@ -2723,16 +2731,16 @@ export class SchdFacilitiesComponent implements OnInit {
       parentBillingPhone:
         this.facilityParentCompanyFormControls.parentBillingPhone.value != null
           ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentBillingFax:
         this.facilityParentCompanyFormControls.parentBillingFax.value != null
           ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       //// Intake Tab Form Controls
@@ -2856,32 +2864,32 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.itsupportEmail.value,
       itsupportOfficePhone:
         this.facilityContactDetailFormControls.itsupportOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.itsupportOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportCellPhone:
         this.facilityContactDetailFormControls.itsupportCellPhone.value != null
           ? this.facilityContactDetailFormControls.itsupportCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportHomePhone:
         this.facilityContactDetailFormControls.itsupportHomePhone.value != null
           ? this.facilityContactDetailFormControls.itsupportHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       itsupportFax:
         this.facilityContactDetailFormControls.itsupportFax.value != null
           ? this.facilityContactDetailFormControls.itsupportFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       reportsContact:
@@ -2890,30 +2898,30 @@ export class SchdFacilitiesComponent implements OnInit {
       reportsOfficePhone:
         this.facilityContactDetailFormControls.reportsOfficePhone.value != null
           ? this.facilityContactDetailFormControls.reportsOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsCellPhone:
         this.facilityContactDetailFormControls.reportsCellPhone.value != null
           ? this.facilityContactDetailFormControls.reportsCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsHomePhone:
         this.facilityContactDetailFormControls.reportsHomePhone.value != null
           ? this.facilityContactDetailFormControls.reportsHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       reportsFax:
         this.facilityContactDetailFormControls.reportsFax.value != null
           ? this.facilityContactDetailFormControls.reportsFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       statusCheckContact:
@@ -2922,34 +2930,34 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.statusCheckEmail.value,
       statusCheckOfficePhone:
         this.facilityContactDetailFormControls.statusCheckOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckCellPhone:
         this.facilityContactDetailFormControls.statusCheckCellPhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckHomePhone:
         this.facilityContactDetailFormControls.statusCheckHomePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.statusCheckHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       statusCheckFax:
         this.facilityContactDetailFormControls.statusCheckFax.value != null
           ? this.facilityContactDetailFormControls.statusCheckFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       schedulingContact:
@@ -2958,32 +2966,32 @@ export class SchdFacilitiesComponent implements OnInit {
         this.facilityContactDetailFormControls.schedulingEmail.value,
       schedulingOfficePhone:
         this.facilityContactDetailFormControls.schedulingOfficePhone.value !=
-        null
+          null
           ? this.facilityContactDetailFormControls.schedulingOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingCellPhone:
         this.facilityContactDetailFormControls.schedulingCellPhone.value != null
           ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingHomePhone:
         this.facilityContactDetailFormControls.schedulingHomePhone.value != null
           ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       schedulingFax:
         this.facilityContactDetailFormControls.schedulingFax.value != null
           ? this.facilityContactDetailFormControls.schedulingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       defaultEmailAddress3P:
         this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
@@ -2997,30 +3005,30 @@ export class SchdFacilitiesComponent implements OnInit {
       imagesOfficePhone:
         this.facilityContactDetailFormControls.imagesOfficePhone.value != null
           ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesCellPhone:
         this.facilityContactDetailFormControls.imagesCellPhone.value != null
           ? this.facilityContactDetailFormControls.imagesCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesHomePhone:
         this.facilityContactDetailFormControls.imagesHomePhone.value != null
           ? this.facilityContactDetailFormControls.imagesHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       imagesFax:
         this.facilityContactDetailFormControls.imagesFax.value != null
           ? this.facilityContactDetailFormControls.imagesFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       billingContact:
@@ -3029,30 +3037,30 @@ export class SchdFacilitiesComponent implements OnInit {
       billingOfficePhone:
         this.facilityContactDetailFormControls.billingOfficePhone.value != null
           ? this.facilityContactDetailFormControls.billingOfficePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingCellPhone:
         this.facilityContactDetailFormControls.billingCellPhone.value != null
           ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingHomePhone:
         this.facilityContactDetailFormControls.billingHomePhone.value != null
           ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       billingFax:
         this.facilityContactDetailFormControls.billingFax.value != null
           ? this.facilityContactDetailFormControls.billingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       ///// Modality Service Tab Form Controls
@@ -3395,18 +3403,18 @@ export class SchdFacilitiesComponent implements OnInit {
       parentOwnerPhone:
         this.facilityParentCompanyFormControls.parentOwnerPhone.value != null
           ? this.facilityParentCompanyFormControls.parentOwnerPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentOwnerEmail:
         this.facilityParentCompanyFormControls.parentOwnerEmail.value,
       parentOwnerFax:
         this.facilityParentCompanyFormControls.parentOwnerFax.value != null
           ? this.facilityParentCompanyFormControls.parentOwnerFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentManagerName:
         this.facilityParentCompanyFormControls.parentManagerName.value,
@@ -3415,32 +3423,32 @@ export class SchdFacilitiesComponent implements OnInit {
       parentManagerPhone:
         this.facilityParentCompanyFormControls.parentManagerPhone.value != null
           ? this.facilityParentCompanyFormControls.parentManagerPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentManagerFax:
         this.facilityParentCompanyFormControls.parentManagerFax.value != null
           ? this.facilityParentCompanyFormControls.parentManagerFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentITName: this.facilityParentCompanyFormControls.parentITName.value,
       parentITEmail: this.facilityParentCompanyFormControls.parentITEmail.value,
       parentITPhone:
         this.facilityParentCompanyFormControls.parentITPhone.value != null
           ? this.facilityParentCompanyFormControls.parentITPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentITFax:
         this.facilityParentCompanyFormControls.parentITFax.value != null
           ? this.facilityParentCompanyFormControls.parentITFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentBillingName:
         this.facilityParentCompanyFormControls.parentBillingName.value,
@@ -3449,16 +3457,16 @@ export class SchdFacilitiesComponent implements OnInit {
       parentBillingPhone:
         this.facilityParentCompanyFormControls.parentBillingPhone.value != null
           ? this.facilityParentCompanyFormControls.parentBillingPhone.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
       parentBillingFax:
         this.facilityParentCompanyFormControls.parentBillingFax.value != null
           ? this.facilityParentCompanyFormControls.parentBillingFax.value.replace(
-              /\D+/g,
-              ''
-            )
+            /\D+/g,
+            ''
+          )
           : '',
 
       //// Intake Tab Form Controls
@@ -3791,10 +3799,10 @@ export class SchdFacilitiesComponent implements OnInit {
     ) {
       this.getBlockLeasePricing(this.facilityId);
     }
-    if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab =='LeasePaymentsUnPaid') {
+    if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab == 'LeasePaymentsUnPaid') {
       this.getUnpaidLeases();
     }
-    if (this.defaultPopupTab =='LeasePaymentsPaid') {
+    if (this.defaultPopupTab == 'LeasePaymentsPaid') {
       this.getblockLeasePaymentByFacilityId(this.facilityId);
     }
   }
@@ -3921,17 +3929,15 @@ export class SchdFacilitiesComponent implements OnInit {
       this.creditIdArray = CreditID;
     }
   }
-  UnpaidButtonClick(e)
-  {
-    var leaseIdListTemp=this.leaseIdArray?this.leaseIdArray.join(","):'';
-    var creditIdListTemp=this.creditIdArray?this.creditIdArray.join(","):'';
-    var data={
+  UnpaidButtonClick(e) {
+    var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
+    var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';
+    var data = {
       "LeaseId": leaseIdListTemp,
       "CreditId": creditIdListTemp
     }
-    this.blockleasescheduler.getTotalAmountToPay(true,JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
-      if(res.response[0].TotalAmount >= 0)
-      {
+    this.blockleasescheduler.getTotalAmountToPay(true, JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if (res.response[0].TotalAmount >= 0) {
         const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
         modalRef.componentInstance.AmountDetails = res.response[0];
         modalRef.componentInstance.selectedleases = this.selectedleaseArray;

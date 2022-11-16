@@ -1078,7 +1078,8 @@
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="mri1type" (change)="CheckSameCombinationMRI('Type1')">
+																<select class="form-control" formControlName="mri1type"
+																	(change)="CheckSameCombinationMRI('Type1')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1174,7 +1175,8 @@
 														<tr>
 															<td>2</td>
 															<td>
-																<select class="form-control" formControlName="mri2type" (change)="CheckSameCombinationMRI('Type2')">
+																<select class="form-control" formControlName="mri2type"
+																	(change)="CheckSameCombinationMRI('Type2')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1270,7 +1272,8 @@
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="mri3type" (change)="CheckSameCombinationMRI('Type3')">
+																<select class="form-control" formControlName="mri3type"
+																	(change)="CheckSameCombinationMRI('Type3')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1393,7 +1396,8 @@
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="ct1make" (change)="CheckSameCombinationCT('Type1')">
+																<select class="form-control" formControlName="ct1make"
+																	(change)="CheckSameCombinationCT('Type1')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1474,7 +1478,8 @@
 														<tr>
 															<td>2</td>
 															<td>
-																<select class="form-control" formControlName="ct2make" (change)="CheckSameCombinationCT('Type2')">
+																<select class="form-control" formControlName="ct2make"
+																	(change)="CheckSameCombinationCT('Type2')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1555,7 +1560,8 @@
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="ct3make" (change)="CheckSameCombinationCT('Type3')">
+																<select class="form-control" formControlName="ct3make"
+																	(change)="CheckSameCombinationCT('Type3')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -3711,10 +3717,10 @@
 										[ngClass]="defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'Leases'  ? 'active show' : 'fade'"
 										id="BlockLeaseRate">
 
-										<div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
+										<!-- <div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
 												data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">Save
 												Changes</a>
-										</div>
+										</div> -->
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerBlockLeasePricing"
 												[dataSource]="blockLeasePricingList"
@@ -3759,7 +3765,7 @@
 															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
 															<dxo-paging [enabled]="false"></dxo-paging>
 															<dxi-column dataField="LeaseId" caption="LeaseId"
-																[visible]="false"></dxi-column>
+																></dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
@@ -3787,8 +3793,10 @@
 
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn" data-target = #viewFile_Doc (click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI','')">
-																	<i class="fa fa-file-pdf-o" ></i>
+																<a href="javascript:void(0)" class="link-btn"
+																	data-target=#viewFile_Doc
+																	(click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI','')">
+																	<i class="fa fa-file-pdf-o"></i>
 																</a>
 
 															</div>
@@ -3813,7 +3821,7 @@
 															[dataSource]="fullblockLeaseAgreementCTList"
 															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
 															<dxi-column dataField="LeaseId" caption="LeaseId"
-																[visible]="false"></dxi-column>
+																></dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
@@ -3867,20 +3875,22 @@
 
 
 
-									<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static" data-keyboard="false" tabindex="-1"
-  role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Agreement</h5>
-        <div class="close-dismiss" data-dismiss="modal"></div>
-      </div>
-      <div class="modal-body" *ngIf="fileData">
-        <iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
-      </div>
-    </div>
-  </div>
-</div>
+									<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"
+										data-keyboard="false" tabindex="-1" role="dialog"
+										aria-labelledby="exampleModalLabel" aria-modal="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Agreement</h5>
+													<div class="close-dismiss" data-dismiss="modal"></div>
+												</div>
+												<div class="modal-body" *ngIf="fileData">
+													<iframe width="100%" height="100%" frameBorder="0"
+														[src]="fileData"></iframe>
+												</div>
+											</div>
+										</div>
+									</div>
 
 
 									<div class="tab-pane"
@@ -3957,28 +3967,35 @@
 																[allowColumnReordering]="false"
 																[dataSource]="GetUnpaidLeasesList" [showBorders]="true"
 																(onSelectionChanged)="onSelectionChangedLease($event)">
-																<dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode"
+																<dxo-selection [selectAllMode]="allMode"
+																	[showCheckBoxesMode]="checkBoxesMode"
 																	mode="multiple">
 																</dxo-selection>
 																<dxo-sorting mode="multiple"></dxo-sorting>
 																<dxo-paging [enabled]="false"></dxo-paging>
 																<dxo-load-panel [enabled]="true"></dxo-load-panel>
-																<dxo-grouping #expand [autoExpandAll]="true"> </dxo-grouping>
-																<dxi-column dataField="LeaseId" caption="LEASE #"></dxi-column>
-																<dxi-column dataField="MonthLabel" caption="MONTH"></dxi-column>
-																<dxi-column dataField="MRI" caption="MRI HOURS"></dxi-column>
-																<dxi-column dataField="CT" caption="CT HOURS"></dxi-column>
-																<dxi-column dataField="TotalAmount"	caption="LEASE TOTAL"></dxi-column>
+																<dxo-grouping #expand [autoExpandAll]="true">
+																</dxo-grouping>
+																<dxi-column dataField="LeaseId" caption="LEASE #">
+																</dxi-column>
+																<dxi-column dataField="MonthLabel" caption="MONTH">
+																</dxi-column>
+																<dxi-column dataField="MRI" caption="MRI HOURS">
+																</dxi-column>
+																<dxi-column dataField="CT" caption="CT HOURS">
+																</dxi-column>
+																<dxi-column dataField="TotalAmount"
+																	caption="LEASE TOTAL"></dxi-column>
 															</dx-data-grid>
 														</div>
-															<div class="pagination-theme">
-																<div
-																	*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1002' , itemsPerPage: pageSizeOfUnpaidLeases, currentPage: pageNumberOfUnpaidLeases, totalItems:totalRecordUnpaidLeases}">
-																</div>
-																<pagination-controls id="pagination1002"
-																	(pageChange)="onPageNumberChangeUnpaidLesaes($event)">
-																</pagination-controls>
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1002' , itemsPerPage: pageSizeOfUnpaidLeases, currentPage: pageNumberOfUnpaidLeases, totalItems:totalRecordUnpaidLeases}">
 															</div>
+															<pagination-controls id="pagination1002"
+																(pageChange)="onPageNumberChangeUnpaidLesaes($event)">
+															</pagination-controls>
+														</div>
 													</div>
 													<!------------------ Unpaid lease Grid Ends------------------>
 													<!------------------ Unpaid Credits Grid Starts------------------>
@@ -4019,14 +4036,14 @@
 																</div>
 															</dx-data-grid>
 														</div>
-															<div class="pagination-theme">
-																<div
-																	*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1009' , itemsPerPage: pageSizeOfUnusdCredits, currentPage: pageNumberOfUnusedCredits, totalItems:totalRecordunUsedCredits}">
-																</div>
-																<pagination-controls id="pagination1009"
-																	(pageChange)="onPageNumberChangeunUsedcredits($event)">
-																</pagination-controls>
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1009' , itemsPerPage: pageSizeOfUnusdCredits, currentPage: pageNumberOfUnusedCredits, totalItems:totalRecordunUsedCredits}">
 															</div>
+															<pagination-controls id="pagination1009"
+																(pageChange)="onPageNumberChangeunUsedcredits($event)">
+															</pagination-controls>
+														</div>
 													</div>
 													<!------------------ Unpaid Credits Grid Ends------------------>
 												</div>
@@ -4042,57 +4059,92 @@
 																[columnResizingMode]="columnResizingMode"
 																[columnAutoWidth]="true">
 																<dxo-selection mode="single"></dxo-selection>
-																<dxo-paging [pageSize]="10"></dxo-paging><dxo-sorting mode="none"></dxo-sorting>
+																<dxo-paging [pageSize]="10"></dxo-paging>
+																<dxo-sorting mode="none"></dxo-sorting>
 																<!-- <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling> -->
-																<dxi-column dataField="facilityId" caption="facilityId" [visible]="false"></dxi-column>
-																<dxi-column dataField="PaymentId" caption="PaymentId" [visible]="false"></dxi-column>
-																<dxi-column dataField="PaymentTXN" caption="PAYMENT TXN"></dxi-column>
-																<dxi-column dataField="DateCreated" caption="DATE CREATED"></dxi-column>
-																<dxi-column dataField="CheckNo" caption="CHECK #"> </dxi-column>
-																<dxi-column dataField="CheckDate" caption="CHECK DATE" [width]="200"> </dxi-column>
-																<dxi-column dataField="CheckAmount" caption="CHECK AMOUNT"  dataType="number" format="currency"></dxi-column>
-																<dxi-column dataField="FileDetail " caption="VIEW PDF PAYMENT DETAILS" cellTemplate="cellTemplate">
+																<dxi-column dataField="facilityId" caption="facilityId"
+																	[visible]="false"></dxi-column>
+																<dxi-column dataField="PaymentId" caption="PaymentId"
+																	[visible]="false"></dxi-column>
+																<dxi-column dataField="PaymentTXN"
+																	caption="PAYMENT TXN"></dxi-column>
+																<dxi-column dataField="DateCreated"
+																	caption="DATE CREATED"></dxi-column>
+																<dxi-column dataField="CheckNo" caption="CHECK #">
+																</dxi-column>
+																<dxi-column dataField="CheckDate" caption="CHECK DATE"
+																	[width]="200"> </dxi-column>
+																<dxi-column dataField="CheckAmount"
+																	caption="CHECK AMOUNT" dataType="number"
+																	format="currency"></dxi-column>
+																<dxi-column dataField="FileDetail "
+																	caption="VIEW PDF PAYMENT DETAILS"
+																	cellTemplate="cellTemplate">
 																	<div *dxTemplate="let data of 'cellTemplate'">
-																		<a class="PDFIcon" (click)="downloadFile(data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+																		<a class="PDFIcon"
+																			(click)="downloadFile(data)"><i
+																				class="fa fa-file-pdf-o PDFIcon"></i></a>
 																	</div>
 																</dxi-column>
-																<dxo-master-detail [enabled]="true" template="productDetail"></dxo-master-detail>
+																<dxo-master-detail [enabled]="true"
+																	template="productDetail"></dxo-master-detail>
 																<div *dxTemplate="let detail of 'productDetail'">
-																	<dx-data-grid  [dataSource]="blockLeasePaymentMappingList"
-																		[columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
-																		[allowColumnResizing]="true" style="Max-height:150px">
-																		<dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+																	<dx-data-grid
+																		[dataSource]="blockLeasePaymentMappingList"
+																		[columnAutoWidth]="true" [showBorders]="true"
+																		[repaintChangesOnly]="true"
+																		[allowColumnResizing]="true"
+																		style="Max-height:150px">
+																		<dxo-scrolling columnRenderingMode="virtual">
+																		</dxo-scrolling>
 																		<dxo-sorting mode="none"></dxo-sorting>
-																		<dxi-column dataField="Lease" caption="LEASE #"> </dxi-column>
-																		<dxi-column dataField="Month" caption="Month"></dxi-column>
-																		<dxi-column dataField="MRIHours" caption="MRI Hours"></dxi-column>
-																		<dxi-column dataField="CtHours" caption="CT Hours"></dxi-column>
-																		<dxi-column dataField="LeaseTotal" caption="Lease Total" dataType="number" format="currency"></dxi-column>
+																		<dxi-column dataField="Lease" caption="LEASE #">
+																		</dxi-column>
+																		<dxi-column dataField="Month" caption="Month">
+																		</dxi-column>
+																		<dxi-column dataField="MRIHours"
+																			caption="MRI Hours"></dxi-column>
+																		<dxi-column dataField="CtHours"
+																			caption="CT Hours"></dxi-column>
+																		<dxi-column dataField="LeaseTotal"
+																			caption="Lease Total" dataType="number"
+																			format="currency"></dxi-column>
 																	</dx-data-grid>
 																	<dx-data-grid id="gridContainerBlockLeaseCreditList"
 																		[dataSource]="blockLeaseCreditList"
-																		[showBorders]="true" [allowColumnResizing]="true" [columnAutoWidth]="true" style="Max-height:150px">
-																		<dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
-																		<dxi-column dataField="Lease" caption="Lease #"></dxi-column>
-																		<dxi-column dataField="Credit" caption="Credit #"></dxi-column>
-																		<dxi-column dataField="CreditReason" caption="Credit Reason"></dxi-column>
-																		<dxi-column dataField="CreditTime" caption="Credit Time"></dxi-column>
-																		<dxi-column dataField="ModalityType" caption="Modality"></dxi-column>
-																		<dxi-column dataField="CreditAmount" caption="Credit Amount"></dxi-column>
+																		[showBorders]="true"
+																		[allowColumnResizing]="true"
+																		[columnAutoWidth]="true"
+																		style="Max-height:150px">
+																		<dxo-scrolling columnRenderingMode="virtual">
+																		</dxo-scrolling>
+																		<dxi-column dataField="Lease" caption="Lease #">
+																		</dxi-column>
+																		<dxi-column dataField="Credit"
+																			caption="Credit #"></dxi-column>
+																		<dxi-column dataField="CreditReason"
+																			caption="Credit Reason"></dxi-column>
+																		<dxi-column dataField="CreditTime"
+																			caption="Credit Time"></dxi-column>
+																		<dxi-column dataField="ModalityType"
+																			caption="Modality"></dxi-column>
+																		<dxi-column dataField="CreditAmount"
+																			caption="Credit Amount"></dxi-column>
 																		<dxo-summary>
-																			<dxi-total-item column="CreditAmount" summaryType="sum" displayFormat="{0}"
+																			<dxi-total-item column="CreditAmount"
+																				summaryType="sum" displayFormat="{0}"
 																				valueFormat="currency"></dxi-total-item>
 																		</dxo-summary>
 																	</dx-data-grid>
 																</div>
 															</dx-data-grid>
 														</div>
-															<div class="pagination-theme">
-																<div
-																	*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
-																</div>
-																<!-- <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls> -->
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
 															</div>
+															<!-- <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls> -->
+														</div>
 													</div>
 												</div>
 											</div>
@@ -4105,83 +4157,105 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-border-gray btn-sm pull-right"
-					data-dismiss="modal">Close</button>
-				<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
-				<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
-				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
-					(click)="updateFacility(true)">Apply</button>
+				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
+
+				<div *ngIf="defaultPopupTab != 'BlockLeaseRate' && defaultPopupTab != 'Leases'">
+					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
+
+					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
+
+					<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
+						(click)="updateFacility(true)">Apply</button>
+
+				</div>
+
+				<div *ngIf="defaultPopupTab == 'BlockLeaseRate' || defaultPopupTab == 'Leases'">
+						
+					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">insert</button>
+
+					<button type="button"
+						*ngIf="isApplyAndOkBtnVisisble"
+						class="btn btn-theme btn-sm pull-left" data-toggle="modal"
+						data-target="#blockLeasePricingUpdatePopUp">Ok</button>
+
+					<button
+						*ngIf="isApplyAndOkBtnVisisble"
+						type="button" data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp"
+						class="btn btn-border btn-sm pull-left">Apply</button>
+
+				</div>
 			</div>
 
 		</div>
 
 
-		</div>
-		<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Delete</h5>
-						<div class="close-dismiss" data-dismiss="modal"></div>
-					</div>
-					<div class="modal-body">
-						<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
-					</div>
-					<div class="modal-footer">
-						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-							data-dismiss="modal">Cancel</a>
-						<a (click)="deleteFacilityTag()" href="javascript:void(0)"
-							class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
-					</div>
+	</div>
+	<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+						data-dismiss="modal">Cancel</a>
+					<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+						data-dismiss="modal">Ok</a>
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-modal="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Alert</h5>
-						<div class="close-dismiss" data-dismiss="modal"></div>
-					</div>
-					<div class="modal-body">
-						<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE
-							TO
-							PROCEED?</p>
-					</div>
-					<div class="modal-footer">
-						<a href="javascript:void(0)" (click)="confirmationLease(false)"
-							class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
-						<a (click)="confirmationLease(true)" href="javascript:void(0)"
-							class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
-					</div>
+	<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Alert</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE
+						TO
+						PROCEED?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" (click)="confirmationLease(false)"
+						class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+					<a (click)="confirmationLease(true)" href="javascript:void(0)"
+						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Alert</h5>
-						<div class="close-dismiss" data-dismiss="modal"></div>
-					</div>
-					<div class="modal-body">
-						<p>ARE YOU SURE YOU WANT TO UPDATE RATE. IT WILL AFFECT ONLY UNSIGNED LEASES?</p>
-					</div>
-					<div class="modal-footer">
-						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-							data-dismiss="modal">Cancel</a>
-						<a (click)="saveBlockLeasePricing()" href="javascript:void(0)"
-							class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
-					</div>
+	</div>
+	<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Alert</h5>
+					<div class="close-dismiss" data-dismiss="modal"></div>
+				</div>
+				<div class="modal-body">
+					<p>ARE YOU SURE YOU WANT TO UPDATE RATE. IT WILL AFFECT ONLY UNSIGNED LEASES?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+						data-dismiss="modal">Cancel</a>
+					<a (click)="saveBlockLeasePricing()" href="javascript:void(0)"
+						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
 				</div>
 			</div>
 		</div>
+	</div>
 
 	<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
 		data-target="#deleteLink"></button>
@@ -4189,6 +4263,5 @@
 		data-target="#confirmationLease"></button>
 	<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
 		data-target="#add-Edit-facility"></button>
-	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal"
-	    data-target="#viewFile_Doc"></button>
+	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
 	<app-document-manager-facility></app-document-manager-facility>

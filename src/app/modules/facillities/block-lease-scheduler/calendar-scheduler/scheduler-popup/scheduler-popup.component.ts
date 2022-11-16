@@ -31,7 +31,7 @@ export class SchedulerPopupComponent implements OnInit {
   @Input() data: any;
   @Output() saved: EventEmitter<Event> = new EventEmitter();
   @Output() deleted: EventEmitter<Event> = new EventEmitter();
-  popupMessage:string='';
+  popupMessage: string = '';
   FacilityName: string = '';
   FacilityID: string = '';
   LeaseBlockId: number = 0;
@@ -84,7 +84,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.getModalityResourcesList();
       if (this.event) {
         if (this.event['LeaseBlockId']) {
-          this.LeaseBlockId = this.event['LeaseBlockId'];  
+          this.LeaseBlockId = this.event['LeaseBlockId'];
         }
         this.getLeaseData();
       }
@@ -221,7 +221,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   changedOffDays(event: any) {
     this.selectedresourceId = event.target.value;
-    this.selectedModality="";
+    this.selectedModality = "";
     this.IsAllModality = false;
     if (this.selectedresourceId != '0') {
       const selectedIndex = event.target.selectedIndex;
@@ -313,10 +313,10 @@ export class SchedulerPopupComponent implements OnInit {
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
-          if (res.response[0].TotalLeaseHours)
+        if (res.response[0].TotalLeaseHours)
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
 
-          
+
       }
     },
       (err: any) => {
@@ -364,7 +364,15 @@ export class SchedulerPopupComponent implements OnInit {
       }
       this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
         if (res.responseCode == 200) {
-          this.showNotificationOnSucess(res);
+          if (res.response) {
+            this.showNotificationOnSucess({
+              message: res.response.message,
+              responseCode: res.responseCode
+            });
+          }
+          else {
+            this.showNotificationOnSucess(res);
+          }
           this.modal.dismiss(ModalResult.OTHER);
         }
       }, (err: any) => {
@@ -394,7 +402,15 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
-            this.showNotificationOnSucess(res);
+            if (res.response) {
+              this.showNotificationOnSucess({
+                message: res.response.message,
+                responseCode: res.responseCode
+              });
+            }
+            else {
+              this.showNotificationOnSucess(res);
+            }
             this.modal.dismiss(ModalResult.SAVE);
           }
         }, (err: any) => {
@@ -427,11 +443,9 @@ export class SchedulerPopupComponent implements OnInit {
         this.showNotificationOnSucess(res);
         this.modal.close(ModalResult.SAVE);
       }
-      else if(res.responseCode === 404)
-      {
-        if(res.message)
-        {
-          this.popupMessage=res.message;
+      else if (res.responseCode === 404) {
+        if (res.message) {
+          this.popupMessage = res.message;
           this.hiddengreaterCreditTimePopUp.nativeElement.click();
         }
       }
@@ -464,7 +478,7 @@ export class SchedulerPopupComponent implements OnInit {
   handleBlockOffDaysChange(e: any, from: string) {
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
-    if(this.editBlockOffFormControls.end_date.value != null){
+    if (this.editBlockOffFormControls.end_date.value != null) {
       if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
         this.leaseBlockOffForm.patchValue({
           end_date: null,
@@ -483,7 +497,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
   handleValueChange(e: any, from: string) {
     this.TotalBlockHours = '';
-    this.TotalLeaseHours='';
+    this.TotalLeaseHours = '';
     this.eventLeaseTime = e;
     var currentDate = new Date(); this.pastDate_start_date = '';
     this.pastDate_end_date = '';
@@ -494,7 +508,7 @@ export class SchedulerPopupComponent implements OnInit {
     const newValueDate = new Date(newValue.toLocaleDateString());
     var start_date = new Date(this.editFormControls.start_date.value);
     var end_date = new Date(this.editFormControls.end_date.value);
-    if(this.editFormControls.end_date.value != null){
+    if (this.editFormControls.end_date.value != null) {
       if (Date.parse(end_date.toDateString()) < Date.parse(start_date.toDateString())) {
         this.leaseForm.patchValue({
           end_date: null,
@@ -541,8 +555,7 @@ export class SchedulerPopupComponent implements OnInit {
     this.modalityResourcesList = [];
     this.blockLeaseSchedulerService.getCalenderModalityResourceDropDownData(true, this.FacilityID).subscribe((res) => {
       if (res.response != null) {
-        if(res.response.length > 0)
-        {
+        if (res.response.length > 0) {
           this.IsAllModality = true;
           this.modalityResourcesList = res.response;
         }
@@ -642,5 +655,5 @@ export enum ModalResult {
   CANCEL = 4,
   SAVE = 5,
   DELETE = 6,
-  OTHER=2
+  OTHER = 2
 }
