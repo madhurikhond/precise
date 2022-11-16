@@ -55,8 +55,9 @@ export class CalendarSchedulerComponent implements OnInit {
     approveGoToNext: boolean = false;
     isDefaultSign:any ;
     approveAllCheckForButton: boolean = false;
-  otherFacilitiesParsed: any = [];
-  ParentCompanyName: string;
+    otherFacilitiesParsed: any = [];
+    ParentCompanyName: string;
+    displayClosedDays = [];
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -202,13 +203,13 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
         scheduler.deleteMarkedTimespan();
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
-        let displayClosedDays = [];
+        this.displayClosedDays = [];
         if (this.allClosedDays) {
             this.allClosedDays.forEach(element => {
-                displayClosedDays.push(WeekDay[element.Day]);
+                this.displayClosedDays.push(WeekDay[element.Day]);
             });
             scheduler.addMarkedTimespan({
-                days: displayClosedDays,
+                days: this.displayClosedDays,
                 zones: "fullday",
                 css: "addMarked"
             });
@@ -237,7 +238,23 @@ export class CalendarSchedulerComponent implements OnInit {
         }
 
         this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
-            if (res.response) {
+            if(!this.displayClosedDays.includes(event._sday + 1))
+            {
+                if (res.response) {
+
+                    const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                    modalRef.componentInstance.isPastDateOrOffDays = true;
+                    modalRef.result.then().catch((reason: ModalResult | any) => {
+                        if (reason == 5) {
+                            scheduler.startLightbox(id, this.openForm(event));
+                        } else {
+                            scheduler.deleteEvent(event.id);
+                        }
+                    });
+                } else {
+                    scheduler.startLightbox(id, this.openForm(event));
+                }
+            }else{
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = true;
                 modalRef.result.then().catch((reason: ModalResult | any) => {
@@ -247,9 +264,8 @@ export class CalendarSchedulerComponent implements OnInit {
                         scheduler.deleteEvent(event.id);
                     }
                 });
-            } else {
-                scheduler.startLightbox(id, this.openForm(event));
             }
+           
         }, (err: any) => {
             this.errorNotification(err);
         });
@@ -367,13 +383,15 @@ export class CalendarSchedulerComponent implements OnInit {
                 }
             }
             scheduler.clearAll();
-            if (this.reasonId == 5) {
-                scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth), "json");
-                scheduler.updateCollection("sections", this.forTimelineList);
+            this.schedulerLoad();
+            // if (this.reasonId == 5) {
+            //     //scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth), "json");
+            //     //scheduler.updateCollection("sections", this.forTimelineList);
+            //     this.schedulerLoad();
 
-            } else {
-                this.schedulerLoad();
-            }
+            // } else {
+            //     this.schedulerLoad();
+            // }
         }, (err: any) => {
             this.errorNotification(err);
         });

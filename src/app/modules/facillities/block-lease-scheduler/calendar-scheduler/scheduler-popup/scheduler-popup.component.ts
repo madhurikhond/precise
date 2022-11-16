@@ -59,6 +59,7 @@ export class SchedulerPopupComponent implements OnInit {
   selectedCreditReason = '';
   submitted: boolean = false;
   pastDate_start_date: string;
+  modality_change = false;
   pastDate_end_date: string; IsAllModality: boolean = false;
   eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true; isBlockOffTime: boolean = true;
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
@@ -225,8 +226,10 @@ export class SchedulerPopupComponent implements OnInit {
     this.IsAllModality = false;
     if (this.selectedresourceId != '0') {
       const selectedIndex = event.target.selectedIndex;
+      this.modality_change = true;
       this.selectedModality = event.target.options[selectedIndex].parentNode.getAttribute('label');
     } else {
+      this.modality_change = false;
       this.IsAllModality = true;
     }
     this.validateAutoBlockOffDays();
@@ -337,8 +340,11 @@ export class SchedulerPopupComponent implements OnInit {
           this.FacilityTimesJSON = res.response[0].FacilityTimes;
         }
         if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0) {
-          this.isValidTimeAndClosedDays = false;
-          this.hiddenCheckFacilityPopupBtn.nativeElement.click();
+          if(!this.modality_change)
+          {
+            this.isValidTimeAndClosedDays = false;
+            this.hiddenCheckFacilityPopupBtn.nativeElement.click();
+          }
         }
       }
     }, (err: any) => {
