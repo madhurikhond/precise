@@ -55,14 +55,14 @@ export class CalendarSchedulerComponent implements OnInit {
     approveGoToNext: boolean = false;
     isDefaultSign:any ;
     approveAllCheckForButton: boolean = false;
-  otherFacilitiesParsed: any = [];
-  ParentCompanyName: string;
+    otherFacilitiesParsed: any = [];
+    ParentCompanyName: string;
+
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
-            debugger
             if (res) {
                 this.bodyRes = res;
                 this.FacilityName = res.FacilityName;
@@ -222,6 +222,24 @@ export class CalendarSchedulerComponent implements OnInit {
 
             });
         }
+
+        //// Malhar
+        const currentDate = new Date();
+        const day = currentDate && currentDate.getDate() || -1;
+        const dayWithZero = day.toString().length > 1 ? day : '0' + day;
+        const month = currentDate && currentDate.getMonth() + 1 || -1;
+        const monthWithZero = month.toString().length > 1 ? month : '0' + month;
+        const year = currentDate && currentDate.getFullYear() || -1;
+    
+        var dayCountOfWeek = currentDate.getDay();
+        var finalDate = `${dayWithZero}-${monthWithZero}-${year}`;
+        
+        scheduler.addMarkedTimespan({
+            start_time: finalDate,
+            end_time: finalDate,
+            css: "scheduleTime"
+        });
+        ////
         scheduler.updateView();
     }
     checkBlockedOffDays(event: any, id: number) {
@@ -335,9 +353,8 @@ export class CalendarSchedulerComponent implements OnInit {
         var userID = this.storageService.user.UserId
         this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID,userID).subscribe((res) => {
-            if(res.response){
+            if(res.response)
                 this.isDefaultSign = res.response[0].IsDefaultEsign ? res.response[0].IsDefaultEsign : 0
-            }
             if (res.response[0].BlockLeases)
                 this.SchedulerDayWeekMonth = res.response[0].BlockLeases;
             if (res.response[0].AllClosedDays)
