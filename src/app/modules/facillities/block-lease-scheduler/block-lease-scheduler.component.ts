@@ -173,10 +173,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     // console.log(retArray);
     return retArray
 
-  }
-  setUserSetting() {
-
-  }
+  }  
   getApplyFilter(facilityName: any, parentCompanyName: any,
     modality: any, paidStatus: any): any {
     return {

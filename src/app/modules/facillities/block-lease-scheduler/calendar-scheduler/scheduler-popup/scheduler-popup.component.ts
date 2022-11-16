@@ -584,9 +584,10 @@ export class SchedulerPopupComponent implements OnInit {
     this.form.patchValue({ ...this.event });
   }
   showNotificationOnSucess(data: any) {
+    
     this.notificationService.showNotification({
       alertHeader: 'Success',
-      alertMessage: data.message,
+      alertMessage: data.response.message,
       alertType: data.responseCode
     });
   }

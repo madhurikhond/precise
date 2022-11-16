@@ -6,5 +6,7 @@
  .dhx_scheduler_month .dhx_cal_data {
    overflow: visible;
  }
+     
+ .disabled{ pointer-events: none }
 
  
