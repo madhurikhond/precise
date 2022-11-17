@@ -220,7 +220,7 @@
                             <div *dxTemplate="let data of 'getDataTemplate'">
                                 <ul class="datagrid-list">
                                     <li *ngIf="getColumnByDataField(data)[0].IsScheduledComplete != null">
-                                        <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
+                                        <img (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASECOMPLETE')" data-toggle="modal" data-target="#all-leases-popup" [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
                                             style="width: 18px;" />
                                         <span
                                             *ngIf="getColumnByDataField(data)[0].MRI != null && data.column.caption == 'MRI'"
@@ -311,7 +311,7 @@
         <div class="close-dismiss" data-dismiss="modal"></div>
       </div>
       <div class="modal-body">
-        <div class="page-top-action">
+        <!--<div class="page-top-action">
           <div class="precisemri-search">
             <select class="form-search">
               <option selected="">Select an Action</option>
@@ -320,7 +320,7 @@
             </select>
             <a href="javascript:void(0)" class="search">Go</a>
           </div>
-        </div>
+        </div>-->
         <div class="table-responsive">
           <dx-data-grid id="facility-leases-grid-container" [dataSource]="facilityLeasesList" [allowColumnResizing]="true"
                         [columnAutoWidth]="true" [allowColumnReordering]="true"
