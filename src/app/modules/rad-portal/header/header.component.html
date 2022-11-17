@@ -1,0 +1,28 @@
+<div class="radPortal-Header">
+    <div class="page-title-group">
+
+        <a href="javascript:void(0)" class="page-title"><img src="assets/images/radflowsolutions-logo.png"
+                routerLink="/dashboard" routerLinkActive="active" class="nav-link" title="dashboard"></a>
+
+        <div class="header-action-right">
+
+
+            <div class="header-action action-web dropdown">
+                <div class="dropdown-toggle nav-link" id="dropdownlogout" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <div class="user-photo">
+                        <i class="pe-icon pe-7s-user"></i>
+                    </div>
+                    <div class="user-name">Danny</div>
+                </div>
+                <ul class="dropdown-menu animated fadeInUp" aria-labelledby="dropdownlogout">
+                    <li><a routerLinkActive="active" routerLink="/myprofile/profile"><i class="fa fa-user-o"></i>My
+                            Profile</a></li>
+                    <li><a routerLinkActive="active" routerLink="/myprofile/change-password"><i
+                                class="fa fa-key"></i>Change Password</a></li>
+                    <li><a (click)="logOut()"><i class="fa fa-sign-out"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

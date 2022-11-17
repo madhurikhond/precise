@@ -13,6 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { PageModules } from 'src/app/services/common/page-modules';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 
 
 declare const $: any;
@@ -110,7 +111,13 @@ export class LoginComponent implements OnInit {
         this.storageService.JWTToken = res.token;
         this.storageService.JWTTokenRoles = res.roles;
         this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-        this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+        if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
+        {
+          this.router.navigate(['radportal']);
+        }else{
+          this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+        }
+        
 
         this.accountService.getValidToken(true);
 

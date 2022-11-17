@@ -1,0 +1,136 @@
+<div class="radProtal-section Liensettings">
+    <app-header></app-header>
+    <div class="radportal-body">
+        <div class="rad-lien-setting">
+            <h3 class="lien-title">Radiologist Lien Management</h3>
+            <div class="tab-section setting-tab">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#settings"
+                            (click)="onSettingTabClicked()">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#funding-company"
+                            (click)="onFundingCompanyTabClicked()">Funding Company</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="settings">
+                        <div class="reminder bill-patient">
+                            <div class="setting-content">
+                                <div class="switch-sec">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <div class="slider"></div>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="info-txt">Email me a reminder to bill patients & assign studies every</div>
+                            <div class="selectedDays">
+                                <div class="form-group">
+                                    <ng-select [items]="days" bindLabel="name" bindValue="id" [multiple]="true"
+                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days"
+                                        (change)="onMaterialGroupChange($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <span>At</span>
+                            <div class="showFilter">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select class="form-control">
+                                            <option>Show all hours in 1 hour increments</option>
+                                            <option>Show all hours in 2 hour increments</option>
+                                            <option>Show all hours in 3 hour increments</option>
+                                            <option>Show all hours in 4 hour increments</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reminder pdf-copy">
+                            <div class="setting-content">
+                                <div class="switch-sec">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <div class="slider"></div>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="info-txt">Email me a PDF copy of the fully executed AR assignment once both
+                                parties sign it</div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Default email from user ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="addl' email to send file to">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="addl' email to send file to">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reminder signature">
+                            <div class="setting-content">
+                                <div class="switch-sec">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <div class="slider"></div>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="info-txt">Insert my saved signature by default</div>
+                            <div class="form-group">
+                                <div class="signature-custom">
+                                    <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
+                                        [(ngModel)]="dummyData" [ngModelOptions]="{ standalone : true }"
+                                        #signature="ngModel" (onEndEvent)="drawComplete()">
+                                    </signature-pad>
+                                </div>
+                                <div class="signatureBtn">
+                                    <a href="javascript:void(0)" (click)="clearSign();"
+                                        class="btn btnsignature btn-clear">Clear Signature</a>
+                                    <a href="javascript:void(0)" class="btn btnsignature btn-preview">Save Signature</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="funding-company">
+                        <div class="funding-cmp-content">
+                            <div class="headerBtn">
+                                <a class="btn btn-common btn-preciseFunding btn-grey" data-toggle="modal"
+                                    data-target="#RetainedARModal">Add Precise Imaging Funding Co.</a>
+                                <a class="btn btn-common btn-newFunding btn-blue" data-toggle="modal"
+                                    data-target="#signatureModal">Add new funding company</a>
+                            </div>
+                            <div class="funding-cmp-table">
+                                <dx-data-grid [dataSource]="FundingCompanyDataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
+                                    [allowColumnReordering]="true" [showBorders]="true">
+                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                    <dxo-sorting mode="multiple"></dxo-sorting>
+                                    <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="ActionTemplate"  caption="Action">
+                                    </dxi-column>
+                                    <dxi-column dataField="fundingcmp" caption="Funding Company"></dxi-column>
+                                    <dxi-column dataField="defaultcmp" caption="Default Co."></dxi-column>
+                                    <dxi-column dataField="isactive" caption="Is Active"></dxi-column>
+                                    <div *dxTemplate="let data of 'ActionTemplate'">
+                                        <a href="javascript:void(0)" class="editAction">Edit</a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
