@@ -87,6 +87,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   headerTitle: string = '';
   selectedFileData: any;
   billArray: any;
+  isFileSizeSmall : any 
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
   @HostListener('document:click', ['$event'])
@@ -347,6 +348,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       //this.downloadAllFilesAsZipFile(this.fileItems);
     }
     else if (e.itemData.text == 'Upload') {
+      debugger
       this.docTypeModelChange = false;
       this.selectedDocumentTypeId = '';
       this.selectedUploadFile = [];
@@ -496,8 +498,6 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       else if (this.selectedFileNames.match(/.(pdf)$/i)) {
         this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
       }
-
-
     }
 
 
@@ -598,7 +598,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   // File Method
 
   formatBytes(bytes, decimals) {
-
+    debugger
     if (bytes === 0) {
       return '0 Bytes';
     }
@@ -656,7 +656,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
   fileBrowseHandler(files) {
-
+debugger
     this.selectedUploadFile = [];
     if (files.length > 1) {
       this.hiddenCommonMessagePopUpButton.nativeElement.click();
@@ -665,10 +665,12 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }
     if (files[0].name.match(/.(jpg|jpeg|png|gif|bmp|txt|doc|docx|xlsx|xls|pdf)$/i)) {
       let fileSize = this.formatBytes(files[0].size, undefined);
-      if (files[0].size < 4000000) {
+      this.isFileSizeSmall = files[0].size == 0 ? true : false ;
+      if (files[0].size < 4000000 && !this.isFileSizeSmall) {
         this.prepareFilesList(files);
         this.isfileSizeOk = false;
-      } else {
+      }
+        else if(!this.isFileSizeSmall){
         this.isfileSizeOk = true;
       }
     }
@@ -677,10 +679,9 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       //this.commonPopUpMessage = 'file type not allowed';
       this.CodeErrorNotification('File type not allowed');
     }
-
   }
+  
   uploadFile(file: any) {
-
     if (this.selectedUploadFile.length == 0) {
       return;
     }

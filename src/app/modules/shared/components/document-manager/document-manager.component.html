@@ -160,7 +160,8 @@
                                                 <span class="fileupload-preview"></span>
                                             </span>
                                         </div>
-
+                                        <p class="red-color" style="float: right; margin-right: 9%;"
+                                            *ngIf="isFileSizeSmall">File should be greater than 0Kb</p>
                                         <p class="red-color" style="float: right; margin-right: 7%;"
                                             *ngIf="isfileSizeOk">File should be less than 4MB</p>
                                         <!-- <ng-template #otherMsg>
