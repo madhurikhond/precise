@@ -104,12 +104,11 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div>
-                <div class="cash-price-table">
-                    <div *ngIf="AllBlockLeaseList.length>0" class="table-responsive scheduling-facillities-table">
+        
+                <div class="cash-price-table table-responsive">
+                    <div *ngIf="AllBlockLeaseList.length>0" class="scheduling-facillities-table">
                         <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
-                            [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true">
+                            [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true" [wordWrapEnabled]="true">
                             <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
                             <dxi-column cellTemplate="viewCellTemplate" dataField="Facilityname"> </dxi-column>
                             <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels0"> 
@@ -212,7 +211,7 @@
                                     </li>
                                     <li *ngIf="getColumnByDataField(data)[0].IsPaid != null">
                                         <img class="paid_unpaid_cursor" (click)="getColumnByDataField(data)[0].IsPaid==true?getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid'):getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')" data-toggle="modal" data-target="#add-Edit-facility" [src]="getColumnByDataField(data)[0].IsPaid==true?'assets/images/paid.png':'assets/images/unpaid.png'"
-                                            style="width: 18px;" />
+                                            style="width: 11px;" />
                                     </li>
                                     <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign != null">
                                         <img [src]="getColumnByDataField(data)[0].IsFacilitySign==true?'assets/images/sign-lease.png':'assets/images/sign-pending.png'"
@@ -231,8 +230,7 @@
                     </div>
 
                 </div>
-            </div>
-        </div>
+           
         <div class="cash-price-list">
             <ul>
                 <li>

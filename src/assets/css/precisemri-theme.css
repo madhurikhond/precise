@@ -7008,17 +7008,38 @@ tree-node:last-child > .tree-node > .tree-children::after {
   }
   .displayCounter {
 	font-size: 9px;
-	width: 17px;
-	height: 17px;
-	line-height: 17px;
-	text-align: center;
-	color: #ffffff;
-	font-weight: normal;
-	position: absolute;	
-	background: #e74c3b;
-	border-radius: 50%;
+    line-height: 17px;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 700;
+    position: absolute;
+    background: #e74c3b;
+    border-radius: 50%;
+    top: -8px;
+    left: 8px;
+    padding: 0px 3px;
+    height: 18px;
 }
-
 .dhx_scale_holder_now{
 	background-color: #fff !important;
 } 
+.dhx_cal_cover{
+	display: none;
+}
+#add-Edit-facility{
+	z-index: 1051;
+}
+.scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list{
+	margin: 8px 0px 0px;
+}
+.scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list li{
+	position: relative;
+	padding-right: 20px;
+}
+.cash-price-table.table-responsive{
+	height: auto;
+	overflow-x: auto;
+}
+.cash-price-table.table-responsive .dx-datagrid-rowsview{
+	max-height: 300px;
+}
