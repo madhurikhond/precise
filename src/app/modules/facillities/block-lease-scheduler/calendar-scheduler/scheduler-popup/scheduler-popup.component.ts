@@ -607,7 +607,7 @@ export class SchedulerPopupComponent implements OnInit {
     
     this.notificationService.showNotification({
       alertHeader: 'Success',
-      alertMessage: data.response.message,
+      alertMessage: data.response? data.response.message: data.message,
       alertType: data.responseCode
     });
   }

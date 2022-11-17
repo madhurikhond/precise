@@ -3793,10 +3793,8 @@
 
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn"
-																	data-target=#viewFile_Doc
-																	(click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'MRI','')">
-																	<i class="fa fa-file-pdf-o"></i>
+																<a href="javascript:void(0)" class="link-btn" data-target = #viewFile_Doc (click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
+																	<i class="fa fa-file-pdf-o" ></i>
 																</a>
 
 															</div>
@@ -3847,10 +3845,10 @@
 																	{{"$"+data.data.totalHour}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
 
-															</div>
-															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
+															</div> 
+															<div *dxTemplate="let data of 'pdfCTLinkTemplate'"> 
 																<a href="javascript:void(0)" class="link-btn"
-																	(click)="get3pLeaseFacilityData(data.data.LeaseBlockId,'CT')">
+																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
 
