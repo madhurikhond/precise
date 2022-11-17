@@ -29,6 +29,7 @@ export class CalendarSchedulerComponent implements OnInit {
   @ViewChild('approveAddEsignFrom', { static: true }) ff: NgForm | any;
   @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
   @ViewChild("modaldismiss2", { static: true }) modaldismiss2: ElementRef;
+  @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
   model: any = { firstName: '', lastName: '', Title: '', signature: '' };
   approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
@@ -506,6 +507,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                   this.signConfirm(false);
                   this.modaldismiss2.nativeElement.click();
+                  this.modaldismissscheduler.nativeElement.click();
                 }
             }
         }, (err: any) => {
@@ -581,6 +583,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                   this.signConfirm(false);
                   this.modaldismiss1.nativeElement.click();
+                  this.modaldismissscheduler.nativeElement.click();
               }
                 else {
                   this.errorNotification(res.message);

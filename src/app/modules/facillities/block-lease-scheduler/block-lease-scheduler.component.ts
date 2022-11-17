@@ -52,6 +52,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   apiUrl: any;
   fileData: SafeResourceUrl;
   AllBlockLeaseList: any = [];
+  LeasesOfFacilityData: any;
   ngOnInit(): void {
     this.getFacilityParentList();
     this.getModalityList();
@@ -216,12 +217,14 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
     });
   }
-  getAllLeasesOfFacilityByStatus(facilityID: any, IsClicked: boolean = true, Status: any = 'PAID') {
+  getAllLeasesOfFacilityByStatus(FacilityID: any, data:any, IsClicked: boolean = true, Status: any = 'PAID') {
     if (IsClicked) {
       this.leasePageNumber = 1;
     }
-    this.facilityID = facilityID;
+    this.LeasesOfFacilityData = data;
+    this.facilityID = FacilityID;
     this.leaseStatus = Status;
+    this.getMonthByDataField(data);
     let body =
     {
       'FacilityId': this.facilityID,
@@ -248,7 +251,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   pageChanged(event) {
     this.leasePageNumber = event;
-    this.getAllLeasesOfFacilityByStatus(this.facilityID, false, this.leaseStatus);
+    this.getAllLeasesOfFacilityByStatus(this.facilityID, this.LeasesOfFacilityData, false, this.leaseStatus);
   }
   getLeaseAggrementDetail(path: any,fileData: any) {
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
@@ -285,6 +288,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     }
     this.unSuccessNotification(data);
   }
+  }
+
+  getMonthByDataField(column: any) {
+    debugger
+    let index = 0;
+    if (column.column.caption == 'MRI')
+      index = (Number(Number(column.columnIndex) - 1) / 2);
+    else
+      index = (Number(Number(column.columnIndex) - 2) / 2);
+    this.leaseMonth = column.row.data[`MonthLabels${index}`];
   }
 }
 
