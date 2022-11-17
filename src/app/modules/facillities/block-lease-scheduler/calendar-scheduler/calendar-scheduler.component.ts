@@ -14,6 +14,7 @@ import { SignaturePad } from 'angular2-signaturepad';
 import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { DatePipe } from '@angular/common';
+import { CommonMethodService } from '../../../../services/common/common-method.service';
 
 declare let scheduler: any;
 
@@ -62,7 +63,8 @@ export class CalendarSchedulerComponent implements OnInit {
     isDisplayApproveBtn:any;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
-        private readonly storageService: StorageService, private datePipe: DatePipe,
+      private readonly storageService: StorageService, private datePipe: DatePipe,
+      private readonly commonService: CommonMethodService
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
             if (res) {
@@ -508,6 +510,7 @@ export class CalendarSchedulerComponent implements OnInit {
                   this.signConfirm(false);
                   this.modaldismiss2.nativeElement.click();
                   this.modaldismissscheduler.nativeElement.click();
+                  this.commonService.sendDataBlockLeaseScheduler('true');
                 }
             }
         }, (err: any) => {
@@ -584,6 +587,7 @@ export class CalendarSchedulerComponent implements OnInit {
                   this.signConfirm(false);
                   this.modaldismiss1.nativeElement.click();
                   this.modaldismissscheduler.nativeElement.click();
+                  this.commonService.sendDataBlockLeaseScheduler('true');
               }
                 else {
                   this.errorNotification(res.message);

@@ -11,6 +11,7 @@ import {
 } from 'devextreme-angular';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
+import { CommonMethodService } from '../../../../../services/common/common-method.service';
 declare const $: any;
 
 @Component({
@@ -72,7 +73,8 @@ export class SchedulerPopupComponent implements OnInit {
     private notificationService: NotificationService,
     private datePipe: DatePipe,
     private facilityService: FacilityService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private readonly commonService: CommonMethodService
   ) { }
 
   ngOnInit(): void {
@@ -381,6 +383,7 @@ export class SchedulerPopupComponent implements OnInit {
             this.showNotificationOnSucess(res);
           }
           this.modal.dismiss(ModalResult.OTHER);
+          this.commonService.sendDataBlockLeaseScheduler('true');
         }
       }, (err: any) => {
         this.errorNotification(err);
