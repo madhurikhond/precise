@@ -1,0 +1,41 @@
+.btn-common {
+    font-size: 14px;
+    min-width: auto;
+    height: 30px;
+    line-height: 28px;
+    padding: 0px 15px;
+    margin-right: 0;
+    background: #3b8beb;
+    border-radius: 6px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+}
+.btn-retainedAR{
+    margin-right:16px;
+}
+.btn-grey{
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+.btn-common:hover{
+    background: #ffffff;
+    color: #3b8beb;
+}
+.btn-common.btn-grey:hover{
+    background: #ffffff;
+    color: #7e7e7e;
+}
+.headerBtnSection {
+    display: flex;
+    justify-content: flex-end;
+}
+#RecevivePaymentModal .theme-label {
+    font-size: 13px;
+    text-transform: capitalize;
+    font-weight: 600;
+    min-width: 100px;
+    line-height: 30px;
+}
+#RecevivePaymentModal .modal-dialog {
+    max-width: 340px;
+  }

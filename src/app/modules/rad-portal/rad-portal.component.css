@@ -1,0 +1,24 @@
+.radProtal-section {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+.radPortal-Header .page-title-group{
+    box-shadow: 0 0 6px #eee;
+}
+
+.radportal-body{
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    padding: 16px;
+}
+.tab-section .nav-tabs .nav-item .nav-link.active{
+    border-top: 1px solid #dee2e6;
+}
+.tab-section .nav-tabs .nav-link:hover{
+    border-top: 1px solid #dee2e6;
+}

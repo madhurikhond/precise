@@ -1,0 +1,79 @@
+.btn-common {
+    font-size: 14px;
+    min-width: auto;
+    height: 30px;
+    line-height: 28px;
+    padding: 0px 15px;
+    margin-right: 0;
+    background: #3b8beb;
+    border-radius: 6px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+}
+.btn-retainedAR{
+    margin-right:16px;
+}
+.btn-grey{
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+.btn-common:hover{
+    background: #ffffff;
+    color: #3b8beb;
+}
+.btn-common.btn-grey:hover{
+    background: #ffffff;
+    color: #7e7e7e;
+}
+.headerBtnSection {
+    display: flex;
+    justify-content: flex-end;
+}
+.signature-custom {
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 6px;
+}
+.btnsignature {
+    border: 1px solid #eee;
+    color: #000;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 24px;
+}
+.btn-preview {
+    margin-left: auto;
+}
+.signatureBtn{
+    display: flex;
+    margin-top: 16px;
+}
+.note {
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #000;
+    line-height: 24px;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.note span {
+    font-weight: 400;
+}
+.stepText {
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3f3e3e;
+}
+.confirmationText {
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    line-height: 20px;
+    margin-bottom: 15px;
+}
+.modal-content .confirmationText:last-child{
+    margin-bottom: 0;
+}
