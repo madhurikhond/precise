@@ -226,16 +226,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createIntakeTabForm();
     this.createTagForm();
     this.createGeneralPoliciesForm();
-    this.getFacilityParentList();
-    // this.fullblockLeaseAgreementMRIList = [
-    //   {
-    //     TimeFrame: 'Time Frame here',
-    //     TotalLeaseHours: 'TotalLeaseHours here',
-    //     LeaseRatePerHour: 'LeaseRatePerHour here',
-    //     totalHour: 'totalHour here',
-    //     Aggrement: '',
-    //   },
-    // ];
+    this.getFacilityParentList();   
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -321,16 +312,10 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-  get3pLeaseFacilityData(
-    blockId: any,
-    modalityName: string = '',
-    fileData: any
-  ) {
+  get3pLeaseFacilityData(path: any,fileData: any) {
     debugger;
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
-    var path =
-      'D:/Mridula%20Malhotra/PRECISEMRI_API/PreciseMRI.API/Reports/LeaseAggreements/' +
-      'lse-100000.pdf';
+
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
@@ -3953,7 +3938,7 @@ export class SchdFacilitiesComponent implements OnInit {
               modalRef.close();
             }
             else {
-              this.unSuccessNotification(reason);
+              // this.unSuccessNotification(reason);
             }
           }
         );

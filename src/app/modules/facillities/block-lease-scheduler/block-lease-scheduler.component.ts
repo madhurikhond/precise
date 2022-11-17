@@ -38,7 +38,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   totalLeaseRecords: number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
-  selectedscheduleStatus: any;
+  selectedScheduleStatus: string = '0';
   modalityList: any[] = [];
   selectedModality: any = [];
   pageNumber: number = 1;
@@ -59,17 +59,13 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getScheduleStatusList();
     this.applyFilter();
   }
-
   getFacilityParentList() {
     this.facilityParentList = [];
     this.facilityList = [];
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
-      if (res.response != null) {
-        this.facilityParentList = res.response[0].ParentFacilities;
-        if (this.selectedParentFacility) {
+      if (res.response != null && res.response.length > 0) {
           this.facilityList = res.response[0].Facilities;
-        }
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -124,15 +120,17 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.selectedParentFacility = null;
     this.selectedFacility = null;
     this.selectedModality = null;
-    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', ''));
+    this.selectedPaid= "0";
+    this.selectedScheduleStatus= "0";
+    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', ''));
   }
   applyFilter() {
-
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
+    let selectedScheduleCreated = this.selectedScheduleStatus ?  this.selectedScheduleStatus.toString() : '';
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, paidStatus));
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus));
   }
   convertDataTomodel() {
     var arr: any = [];
@@ -188,18 +186,15 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     })
     // console.log(retArray);
     return retArray
-    console.log(this.AllBlockLeaseList);
-  }
 
-  setUserSetting() {
-
-  }
+  }  
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any, paidStatus: any): any {
+    modality: any,schedululeCreated: any, paidStatus: any): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
       'modality': modality,
+      'schedululeCreated' : schedululeCreated,
       'paidStatus': paidStatus
     }
   }

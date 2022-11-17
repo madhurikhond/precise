@@ -7018,3 +7018,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	background: #e74c3b;
 	border-radius: 50%;
 }
+
+.dhx_scale_holder_now{
+	background-color: #fff !important;
+} 
