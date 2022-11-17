@@ -58,6 +58,7 @@ export class CalendarSchedulerComponent implements OnInit {
     otherFacilitiesParsed: any = [];
     ParentCompanyName: string;
     displayClosedDays = [];
+    isDisplayApproveBtn:any;
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
