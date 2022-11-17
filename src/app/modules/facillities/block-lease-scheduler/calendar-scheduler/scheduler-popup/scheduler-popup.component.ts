@@ -64,6 +64,9 @@ export class SchedulerPopupComponent implements OnInit {
   eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true; isBlockOffTime: boolean = true;
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
+  blockLeasePricingList: any = [];
+  MriPrice:any=[];
+  CtPrice:any=[];
 
   constructor(
     public modal: NgbActiveModal,
@@ -169,6 +172,18 @@ export class SchedulerPopupComponent implements OnInit {
           $("optgroup#" + this.LeaseDetails['ModalityType'] + " > option[value='" + this.selectedresourceId + "']").attr("selected", "selected");
           this.getTotalLeaseAndCreditHours();
         }
+
+        this.blockLeasePricingList = [];
+        let data = [{ FacilityID: this.FacilityID, Operation: 5 }];
+        this.facilityService.getBlockLeasePricing(true, data).subscribe((res) => {
+          if (res.response != null) {
+            this.MriPrice =[];
+            this.CtPrice=[];
+            this.blockLeasePricingList = res.response;
+            this.addMriAndCtPrice(this.blockLeasePricingList);
+          }
+        });
+
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -178,6 +193,13 @@ export class SchedulerPopupComponent implements OnInit {
       this.getReasonData();
     }
   }
+
+  addMriAndCtPrice(data:any){
+    this.CtPrice = data.find(x => x.Modality =='CT');
+    this.MriPrice = data.find(x => x.Modality =='MRI');
+  }
+
+
   setValidatorForleaseForm() {
     if (this.isLeaseSigned == true) {
       this.leaseForm.controls.creditReasonID.setValidators(this.setRequired());
@@ -353,6 +375,26 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
+
+    if(this.selectedModality.toUpperCase()=='CT' &&  (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null))
+    {
+      this.notificationService.showNotification({
+        alertHeader : '',
+        alertMessage: "Please set ct price !",
+        alertType: null
+      });
+      return;
+    } 
+    if(this.selectedModality.toUpperCase()=='MRI' &&  (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null))
+    {
+      this.notificationService.showNotification({
+        alertHeader : '',
+        alertMessage: 'Please set mri price !',
+        alertType: null
+      });
+      return;
+    }
+    
     if (!this.isBlockOffTime) {
       this.submitted = false;
       this.BlockOffDaysSubmitted = true;
