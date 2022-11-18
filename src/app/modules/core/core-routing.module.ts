@@ -25,6 +25,7 @@ const routes: Routes = [
       { path: 'auto-route-v2', loadChildren: () => import('../auto-route-v2/auto-route-v2.module').then(m => m.AutoRouteV2Module), canActivate: [AuthGuard] },
       { path: 'rad-portal', loadChildren: () => import('../reading-rad-portal/reading-rad-portal.module').then(m => m.ReadingRadPortalModule), canActivate: [AuthGuard] },
       { path: 'lien-management', loadChildren: () => import('../lien-management/lien-management.module').then(m => m.LienManagementModule), canActivate: [AuthGuard] },
+      { path: 'lien-funding-co', loadChildren: () => import('../lien-funding-co/lien-funding-co.module').then(m => m.LienFundingCoModule) },
       { path: 'shared', loadChildren: () => import('../shared/shared.module').then(m => m.SharedModule)},
     ]
   },

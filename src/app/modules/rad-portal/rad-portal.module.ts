@@ -21,11 +21,12 @@ import { RetainUnpaidComponent } from './retain-unpaid/retain-unpaid.component';
 import { RetainPaidComponent } from './retain-paid/retain-paid.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SettingComponent } from './setting/setting.component';
-import { HeaderComponent } from './header/header.component';
+import { AddFundingCompanyComponent } from './add-funding-company/add-funding-company.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 
 @NgModule({
-  declarations: [RadPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, HeaderComponent],
+  declarations: [HeaderComponent,RadPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent],
   imports: [
     CommonModule,
     NgSelectModule,

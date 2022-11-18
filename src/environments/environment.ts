@@ -11,6 +11,7 @@ export const environment = {
   //baseUrl: `https://staging-precise.radflow360.com/API/api`,
   baseUrl: `http://localhost:64465/api`,
   basePatientUrl: `https://localhost:7155/`,
+  baseLienPortalUrl: `https://localhost:7007/`,
   apiKey: 'f0M65v8av8ns3iZ4XFEacXc1dKWqWI6756Nb4nRVymYysN1jtKmSBQUyEfgGeRc3tDyBF5bP61Z8VcT4zm8GvCe8xSiLgS143V6Y3OQ4a062qutS13qgx55T4A9DNhAk',
   //baseUrl: `http://localhost:64465/api`,
   currentVersion: `1`,
