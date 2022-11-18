@@ -21,7 +21,13 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService, private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService,
-    private sanitizer: DomSanitizer,  ) {
+    private sanitizer: DomSanitizer,) {
+    this.commonMethodService.leaseSaveObserver.subscribe((res) => {
+      if (res) {
+        this.applyFilter();
+      }
+    }, (err: any) => {
+    });
   }
 
   facilityParentList: any[] = [];
