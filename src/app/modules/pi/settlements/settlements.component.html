@@ -36,22 +36,38 @@
                     <div class="theme-label">DOB</div>
                     <div class="input-group">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dob" type="date"
-                            [showClearButton]="true" [max]="maxDate" [useMaskBehavior]="true" >
+                            [showClearButton]="true" [max]="maxDate" [useMaskBehavior]="true">
                         </dx-date-box>
                     </div>
                 </div>
+                <div class="form-group autocomplete">
+                    <div class="theme-label">ATTORNEY</div>
+                    <div class="input-group">
+                        <ng-select [items]="attorneyList" placeholder="Select" bindLabel="ATTORNEY"
+                            formControlName="attorney" [multiple]="false" id="idabc114" [loading]="showDropdownLoader"
+                            bindValue="ATTORNEY">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items">
+                                    <span class="ng-value-label"> {{item.ATTORNEY}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                    </div>
+                </div>
+                <!-- 
                 <div class="form-group">
                     <div class="theme-label">ATTORNEY</div>
                     <div class="input-group input-loader">
                         <select formControlName="attorney" class="form-control">
                             <option value=null selected>SELECT</option>
-                            <option *ngFor="let item of attorneyList" value={{item.Attorney}}>
-                                {{item.Attorney}}
+                            <option *ngFor="let item of attorneyList" value={{item.ATTORNEY}}>
+                                {{item.ATTORNEY}}
                             </option>
                         </select>
                         <i *ngIf="showDropdownLoader" class="fa fa-circle-o-notch fa-spin ajax-loader"></i>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <div class="theme-label">DOI</div>
                     <div class="input-group icon-active">
@@ -65,7 +81,7 @@
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examFromDate"
                             type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                           
+
                         </dx-date-box>
                     </div>
                 </div>
@@ -74,7 +90,7 @@
                     <div class="input-group icon-active">
                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="examToDate"
                             type="date" [showClearButton]="true" [useMaskBehavior]="true">
-                           
+
                         </dx-date-box>
                     </div>
                 </div>
@@ -83,7 +99,7 @@
                     <ng-select [items]="statusList" [multiple]="true" bindLabel="Status" placeholder="Select"
                         groupBy="Type" formControlName="status" [selectableGroup]="true"
                         [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="Status"
-                        [loading]="showDropdownLoader" id="id20"  (add)="a1=ValidateMultiSelectTextLength('id20',a1)">
+                        [loading]="showDropdownLoader" id="id20" (add)="a1=ValidateMultiSelectTextLength('id20',a1)">
                         <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
                             <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{ standalone : true }"
                                 [(ngModel)]="item$.selected" /> {{item.Type | uppercase}}
@@ -107,7 +123,8 @@
                     <div class="theme-label">SETTLED BY</div>
                     <ng-select [items]="settledByList" placeholder="Select" bindLabel="USERNAME"
                         formControlName="settledBy" [multiple]="true" [closeOnSelect]="false"
-                        [loading]="showDropdownLoader" bindValue="USERID" id="id21"  (add)="a2=ValidateMultiSelectTextLength('id21',a2)">
+                        [loading]="showDropdownLoader" bindValue="USERID" id="id21"
+                        (add)="a2=ValidateMultiSelectTextLength('id21',a2)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:a2">
                                 <span class="ng-value-label"> {{item.USERNAME}}</span>
@@ -123,7 +140,8 @@
                     <div class="theme-label">FINANCIAL TYPE</div>
                     <ng-select [items]="financialTypeList" placeholder="Select" bindLabel="FINANCIALTYPENAME"
                         formControlName="financialType" [multiple]="true" [closeOnSelect]="false"
-                        [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME" id="id22"  (add)="a3=ValidateMultiSelectTextLength('id22',a3)">
+                        [loading]="showDropdownLoader" bindValue="FINANCIALTYPENAME" id="id22"
+                        (add)="a3=ValidateMultiSelectTextLength('id22',a3)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:a3">
                                 <span class="ng-value-label"> {{item.FINANCIALTYPENAME}}</span>
@@ -138,8 +156,9 @@
                 <div class="form-group">
                     <div class="theme-label">Funding Company</div>
                     <ng-select [items]="brokerList" placeholder="Select" bindLabel="Broker" formControlName="broker"
-                        [multiple]="true" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="Broker" id="id23"  (add)="a4=ValidateMultiSelectTextLength('id23',a4)">
-                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear" >
+                        [multiple]="true" [closeOnSelect]="false" [loading]="showDropdownLoader" bindValue="Broker"
+                        id="id23" (add)="a4=ValidateMultiSelectTextLength('id23',a4)">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:a4">
                                 <span class="ng-value-label"> {{item.Broker}}</span>
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
@@ -154,7 +173,8 @@
                     <div class="theme-label">INSURANCE CARRIER</div>
                     <ng-select [items]="insuranceCompanyList" placeholder="Select" bindLabel="CompanyName"
                         formControlName="insuranceCompany" [multiple]="true" [closeOnSelect]="false"
-                        [loading]="showDropdownLoader" bindValue="CompanyName" id="id24"  (add)="a5=ValidateMultiSelectTextLength('id24',a5)">
+                        [loading]="showDropdownLoader" bindValue="CompanyName" id="id24"
+                        (add)="a5=ValidateMultiSelectTextLength('id24',a5)">
                         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                             <div class="ng-value" *ngFor="let item of items | slice:0:a5">
                                 <span class="ng-value-label"> {{item.CompanyName}}</span>
@@ -364,7 +384,7 @@
                                                 <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                     formControlName="settlementDate" type="date"
                                                     [showClearButton]="true" [useMaskBehavior]="true">
-                                                    
+
                                                 </dx-date-box>
                                             </div>
                                             <div *ngIf="settleSubmitted && settleForm.settlementDate"
@@ -394,7 +414,7 @@
                                                 <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                                     formControlName="radEstPaymentDate" type="date"
                                                     [showClearButton]="true" [useMaskBehavior]="true">
-                                                  
+
                                                 </dx-date-box>
                                             </div>
                                         </div>
@@ -629,7 +649,7 @@
                                     <div class="input-group">
                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date"
                                             formControlName="radEstPaymentDate" type="date" [showClearButton]="true"
-                                            [useMaskBehavior]="true" >
+                                            [useMaskBehavior]="true">
                                         </dx-date-box>
                                     </div>
                                 </div>
