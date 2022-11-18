@@ -377,12 +377,12 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-
+debugger;
     if(this.selectedModality.toUpperCase()=='CT' &&  (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null))
     {
       this.notificationService.showNotification({
         alertHeader : '',
-        alertMessage: "Please set ct price !",
+        alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease!",
         alertType: null
       });
       return;
@@ -391,7 +391,7 @@ export class SchedulerPopupComponent implements OnInit {
     {
       this.notificationService.showNotification({
         alertHeader : '',
-        alertMessage: 'Please set mri price !',
+        alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease!',
         alertType: null
       });
       return;
