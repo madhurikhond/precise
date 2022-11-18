@@ -443,7 +443,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.bodyRes = {
             'FacilityID': this.FacilityID,
             'FacilityName': this.FacilityName,
-            'fromSchedulingFacility': false
+            'fromSchedulingFacility':false
         }
         this.GetBlockLeaseData();
         let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
