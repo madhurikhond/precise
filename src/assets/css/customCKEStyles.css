@@ -1,0 +1,14 @@
+/* @import url("https://fonts.googleapis.com/css?family=Libre Barcode 128"); */
+/* @font-face {
+  font-family: "Code39", sans-serif;
+   src: url("https://fonts.cdnfonts.com/css/code-39");
+} */
+@font-face {
+  font-family: "Code128";
+  src: url("../fonts/code128.ttf") format("truetype");
+}
+
+/* @font-face {
+  font-family: 'Code 128';
+  src: url('https://www.fontsaddict.com/fontface/code-128.ttf') format("truetype");
+} */
