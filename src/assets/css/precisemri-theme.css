@@ -5331,6 +5331,7 @@ textarea.form-control {
 .search-field-theme .theme-form .form-group .input-group .form-control.form-control-modiality, .search-field-theme .theme-form .form-group .input-group .form-control.form-control-facility{
 	width: auto;
 }
+.search-field-theme .form-group1.normal-text .ng-option span{white-space: normal; display: block; line-height: 15px; padding: 2px 0px;}
 .input-label-title {
 	width: 100%;
 	position: relative;
