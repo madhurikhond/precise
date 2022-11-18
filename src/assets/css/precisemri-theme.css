@@ -5312,7 +5312,7 @@ textarea.form-control {
 	height: 14px;
 }
 .search-field-theme .theme-form .form-group .input-group {
-	z-index: 1;
+	z-index: 4;
 	height: 30px;
 }
 .search-field-theme .theme-form .form-group .input-group .fa-right-icon {
