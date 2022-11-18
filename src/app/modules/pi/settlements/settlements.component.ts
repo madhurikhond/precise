@@ -120,7 +120,7 @@ export class SettlementsComponent implements OnInit {
       broker: [''],
       insuranceCompany: [''],
       financialType: [''],
-      work: [null]
+      work: [null]   
     });
 
     this.addNoteForm = this.fb.group({
@@ -304,7 +304,8 @@ export class SettlementsComponent implements OnInit {
       'patientId': this.sForm.patientId.value ? this.sForm.patientId.value : null,
       'lastName': this.sForm.lastName.value ? this.sForm.lastName.value : null,
       'firstName': this.sForm.firstName.value ? this.sForm.firstName.value : null,
-      'birthDate': this.sForm.dob.value ? this.sForm.dob.value : null,
+      //'birthDate': this.sForm.dob.value ? this.sForm.dob.value : null,
+      'birthDate': this.searchForm.controls['dob'].value? moment(this.searchForm.controls['dob'].value).format('MM/DD/YYYY') : null,
       'attorney': this.sForm.attorney.value,
       'injuryDate': this.sForm.doi.value ? this.sForm.doi.value : null,
       'examFrom': this.sForm.examFromDate.value ? this.sForm.examFromDate.value : null,
@@ -315,7 +316,7 @@ export class SettlementsComponent implements OnInit {
       'financialType': this.sForm.financialType.value ? this.sForm.financialType.value.toString() : null,
       'settledBy': this.sForm.settledBy.value ? this.sForm.settledBy.value.toString() : null,
       'workList': this.sForm.work.value
-    }
+          }
     this.workflowService.getSettlements(true, data, this.pageNumber, this.pageSize).subscribe((res) => {
       if (res) {
         var data: any = res;
