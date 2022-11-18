@@ -39,7 +39,8 @@ export class CommonMethodService {
   
   private getCreateAlerts = new BehaviorSubject('');
   getCreateAlerts$ = this.getCreateAlerts.asObservable();
-
+  private leaseSave = new Subject<any>();
+  leaseSaveObserver = this.leaseSave.asObservable();
   constructor(private _titleService: Title, private readonly _httpService: HttpService) {
     this.preScreeningUser.next(null)
     this.viewerRecords.next(null)
@@ -201,5 +202,8 @@ export class CommonMethodService {
   loadCreateAlertRecords(patientID: string) {
   
     this.getCreateAlerts.next(patientID)
+  }
+  sendDataBlockLeaseScheduler(data: any) {
+    this.leaseSave.next(data);
   }
 }

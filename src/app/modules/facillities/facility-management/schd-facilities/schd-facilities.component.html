@@ -3782,13 +3782,13 @@
 															</dxi-column>
 															<div *dxTemplate="let data of 'MriRateTemplate'">
 																<p *ngIf="data.data.LeaseRatePerHour">
-																	{{"$"+data.data.LeaseRatePerHour}}</p>
+																	${{data.data.LeaseRatePerHour| number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.LeaseRatePerHour"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'TotalHourTemplate'">
 																<p *ngIf="data.data.totalHour">
-																	{{"$"+data.data.totalHour}}</p>
+																	${{data.data.totalHour | number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
 
 															</div>
@@ -3836,13 +3836,13 @@
 															</dxi-column>
 															<div *dxTemplate="let data of 'CTRateTemplate'">
 																<p *ngIf="data.data.LeaseRatePerHour">
-																	{{"$"+data.data.LeaseRatePerHour}}</p>
+																	${{data.data.LeaseRatePerHour |  number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.LeaseRatePerHour"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
 																<p *ngIf="data.data.totalHour">
-																	{{"$"+data.data.totalHour}}</p>
+																	${{data.data.totalHour | number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
 
 															</div> 
@@ -3982,8 +3982,15 @@
 																</dxi-column>
 																<dxi-column dataField="CT" caption="CT HOURS">
 																</dxi-column>
-																<dxi-column dataField="TotalAmount"
+																<dxi-column dataField="TotalAmount" cellTemplate="leaseTotalTemplate"
 																	caption="LEASE TOTAL"></dxi-column>
+																				
+															<div *dxTemplate="let data of 'leaseTotalTemplate'">
+																<p *ngIf="data.data.TotalAmount">
+																	${{data.data.TotalAmount | number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.TotalAmount"></p>
+
+															</div>
 															</dx-data-grid>
 														</div>
 														<div class="pagination-theme">
