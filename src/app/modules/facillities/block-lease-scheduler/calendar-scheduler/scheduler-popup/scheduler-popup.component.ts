@@ -142,6 +142,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
   getLeaseData() {
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
+      debugger
       if (res.response != null) {
         if (res.response.CreditDetails != null) {
           this.CreditDetailsList = res.response.CreditDetails;
@@ -159,6 +160,7 @@ export class SchedulerPopupComponent implements OnInit {
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
         console.log(this.LeaseDetails);
         if (this.LeaseDetails != null) {
+          this.FacilityID= this.LeaseDetails['FacilityId'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
@@ -174,7 +176,10 @@ export class SchedulerPopupComponent implements OnInit {
           $("optgroup#" + this.LeaseDetails['ModalityType'] + " > option[value='" + this.selectedresourceId + "']").attr("selected", "selected");
           this.getTotalLeaseAndCreditHours();
         }
-
+        if (this.isLeaseSigned == true) {
+          this.getCreditMins();
+          this.getReasonData();
+        }
         this.blockLeasePricingList = [];
         let data = [{ FacilityID: this.FacilityID, Operation: 5 }];
         this.facilityService.getBlockLeasePricing(true, data).subscribe((res) => {
@@ -190,10 +195,7 @@ export class SchedulerPopupComponent implements OnInit {
     }, (err: any) => {
       this.errorNotification(err);
     });
-    if (this.isLeaseSigned == true) {
-      this.getCreditMins();
-      this.getReasonData();
-    }
+  
   }
 
   addMriAndCtPrice(data:any){
@@ -219,6 +221,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   getReasonData() {
+    debugger
     this.creditReasonList = [];
     this.selectedCreditReason = '';
     let body = {
@@ -477,6 +480,7 @@ debugger;
     }
   }
   saveCreditInfo() {
+  
     let body = {
       'facilityId': this.FacilityID,
       'LeaseBlockId': this.LeaseBlockId,
@@ -491,6 +495,7 @@ debugger;
       //'ID': this.CreditId
     }
     this.blockLeaseSchedulerService.manageCredits(true, body).subscribe((res) => {
+      debugger
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
         this.modal.close(ModalResult.SAVE);
