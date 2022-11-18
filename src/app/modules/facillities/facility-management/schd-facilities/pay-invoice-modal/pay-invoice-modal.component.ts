@@ -47,7 +47,7 @@ export class PayInvoiceModalComponent implements OnInit {
   setPayInvoiceForm()
   {
     this.payInvoiceForm.patchValue({
-      checkAmount: '$' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
+      checkAmount: new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
     });
   }
   MakePayment(e)
