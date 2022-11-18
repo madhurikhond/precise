@@ -7043,3 +7043,4 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .cash-price-table.table-responsive .dx-datagrid-rowsview{
 	max-height: 300px;
 }
+#CalendarSchedulerWindow .dhx_cal_event >div{height: auto; word-wrap: break-word;}
