@@ -504,16 +504,19 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
             if (res.response) {
-                if (res.responseCode == 200) {
+                if (res.responseCode == 200 || res.response.ResponseCode==200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
-                        alertMessage: res.response.message,
-                        alertType: res.response.ResponseCode
+                        alertMessage:  res.response.message? res.response.message: res.response,
+                        alertType: 200
                     })
                   this.signConfirm(false);
                   this.modaldismiss2.nativeElement.click();
                   this.modaldismissscheduler.nativeElement.click();
                   this.commonService.sendDataBlockLeaseScheduler('true');
+                }
+                else{
+                    this.errorNotification(res);
                 }
             }
         }, (err: any) => {
