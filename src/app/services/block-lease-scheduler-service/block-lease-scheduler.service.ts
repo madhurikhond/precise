@@ -24,8 +24,8 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  getBlockLeaseSchedulerFilterData(showGlobalLoader: boolean = true, filterBody: any, pageNumber: number, pageSize: number) {
-    return this._httpService.post(`BlockLeaseScheduler/GetBlockLeaseSchedulerFilterData?pageNumber=${pageNumber}&pageSize=${pageSize}`, filterBody, showGlobalLoader).pipe(
+  getBlockLeaseSchedulerFilterData(showGlobalLoader: boolean = true, filterBody: any) {
+    return this._httpService.post(`BlockLeaseScheduler/GetBlockLeaseSchedulerFilterData`, filterBody, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
