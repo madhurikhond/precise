@@ -9,8 +9,8 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 export class LienFundingCoComponent implements OnInit {
   
   readingread :boolean = true;
-  check :boolean = true;
-  batch :boolean = true;
+  check :boolean = false;
+  batch :boolean = false;
   
   constructor() {
     
@@ -27,7 +27,7 @@ export class LienFundingCoComponent implements OnInit {
  
   onPendingSignatureTabClicked() {
     this.readingread=true;
-    this.check=true;
+    this.check=false;
     this.batch=false;
     
   }

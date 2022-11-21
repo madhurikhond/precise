@@ -1,7 +1,7 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RadPortalRoutingModule } from './rad-portal-routing.module';
-import { RadPortalComponent } from './rad-portal.component';
+import { LienPortalRoutingModule } from './lien-portal-routing.module';
+import { LienPortalComponent } from './lien-portal.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../shared/shared.module';
 import { NgbProgressbarModule, NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,12 +26,12 @@ import { RAuthGuard } from '../core/guards/rauth.guard';
 
 
 @NgModule({
-  declarations: [HeaderComponent,RadPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent],
+  declarations: [HeaderComponent,LienPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent],
   imports: [
     CommonModule,
     NgSelectModule,
     SharedModule,
-    RadPortalRoutingModule,
+    LienPortalRoutingModule,
     NgbProgressbarModule,
     DxProgressBarModule,
     NgbTooltipModule,
@@ -49,4 +49,4 @@ import { RAuthGuard } from '../core/guards/rauth.guard';
   schemas:[ CUSTOM_ELEMENTS_SCHEMA ],
   providers:[RAuthGuard]
 })
-export class RadPortalModule { }
+export class LienPortalModule { }

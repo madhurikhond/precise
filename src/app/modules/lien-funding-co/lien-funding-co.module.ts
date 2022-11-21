@@ -14,9 +14,12 @@ import {
 } from 'devextreme-angular';
 import { LienFundingCoComponent } from './lien-funding-co.component';
 import { LienFundingCoRoutingModule } from './lien-funding-co-routing.module';
+import { PendingSignatureComponent } from './pending-signature/pending-signature.component';
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { FundingCoUnpaidComponent } from './funding-co-unpaid/funding-co-unpaid.component';
 
 @NgModule({
-  declarations: [LienFundingCoComponent],
+  declarations: [LienFundingCoComponent, PendingSignatureComponent, FundingCoUnpaidComponent],
   imports: [
     CommonModule,
     NgSelectModule,
@@ -34,6 +37,7 @@ import { LienFundingCoRoutingModule } from './lien-funding-co-routing.module';
     DxSelectBoxModule,  
     NgSelectModule,
     FormsModule,
+    SignaturePadModule
   ],
   schemas:[ CUSTOM_ELEMENTS_SCHEMA ],
   providers:[]

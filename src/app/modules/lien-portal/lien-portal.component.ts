@@ -3,10 +3,10 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-rad-portal',
-  templateUrl: './rad-portal.component.html',
-  styleUrls: ['./rad-portal.component.css']
+  templateUrl: './lien-portal.component.html',
+  styleUrls: ['./lien-portal.component.css']
 })
-export class RadPortalComponent implements OnInit {
+export class LienPortalComponent implements OnInit {
   
   fundingCmp :boolean = false;
   fundingSigned :boolean = false; 
