@@ -6,7 +6,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../shared/shared.module';
 import { NgbProgressbarModule, NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxProgressBarModule } from 'devextreme-angular';
-import { PAuthGuard } from '../core/guards/pauth.guard';
 import {  DxDateBoxModule,DxCheckBoxModule,DxSelectBoxModule } from "devextreme-angular";
 import { FormsModule } from "@angular/forms";
 import {
@@ -23,6 +22,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { SettingComponent } from './setting/setting.component';
 import { AddFundingCompanyComponent } from './add-funding-company/add-funding-company.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { RAuthGuard } from '../core/guards/rauth.guard';
 
 
 @NgModule({
@@ -47,6 +47,6 @@ import { HeaderComponent } from './shared/header/header.component';
     SignaturePadModule
   ],
   schemas:[ CUSTOM_ELEMENTS_SCHEMA ],
-  providers:[]
+  providers:[RAuthGuard]
 })
 export class RadPortalModule { }

@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PAuthGuard } from '../core/guards/pauth.guard';
+import { RAuthGuard } from '../core/guards/rauth.guard';
 import { RadPortalComponent } from './rad-portal.component';
 import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
-
-  {path: 'radportal', component: RadPortalComponent,pathMatch:'full'},
-  {path: 'radsetting', component: SettingComponent},
+  { path: 'radportal', component: RadPortalComponent, canActivate: [RAuthGuard] },
+  { path: 'radsetting', component: SettingComponent, canActivate: [RAuthGuard] },
 ];
 
 @NgModule({
