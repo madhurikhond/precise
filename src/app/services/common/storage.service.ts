@@ -13,6 +13,7 @@ const PATIENT_STUDY = 'p_study';
 const PATIENT_PREGNANCY = 'p_pregnancy';
 const PATIENT_PRESCREENING = 'p_prescreening';
 const PATIENT_TIMEOUT = 'p_timeout';
+const LIEN_TIMEOUT = 'lien_timeout';
 const LAST_PAGE_URL = 'last_page_url';
 //const User_Role = 'user_permission';
 const EXPAND_ROWS = 'expand_rows';
@@ -61,6 +62,16 @@ export class StorageService {
 
   public get PTimeout():string {
     return localStorage.getItem(PATIENT_TIMEOUT);
+  }
+
+  
+
+  public set LienTimeout(date: string) {
+    localStorage.setItem(LIEN_TIMEOUT, date);
+  }
+
+  public get LienTimeout():string {
+    return localStorage.getItem(LIEN_TIMEOUT);
   }
 
   public set PartnerId(partnerId: string) {
@@ -164,11 +175,18 @@ export class StorageService {
 
   LogoutPatient()
   {
-    localStorage.removeItem('p_jwt_t');
-    localStorage.removeItem('p_id');
+    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
     localStorage.clear();
   }
 
+  LogoutLienPortal()
+  {
+    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
+    localStorage.removeItem(LIEN_TIMEOUT);
+    localStorage.clear();
+  }
   // public set UserRole(value: string) {
   //   localStorage.setItem(User_Role, JSON.stringify(value));
   // }

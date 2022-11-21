@@ -14,6 +14,7 @@ import { PageModules } from 'src/app/services/common/page-modules';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 
 declare const $: any;
@@ -39,12 +40,13 @@ export class LoginComponent implements OnInit {
   submitted = false;
   loading: boolean = false;
   freshLogin: string;
-  redirectLinkWithPermission : any;
-  readonly commonRegex=CommonRegex;
+  redirectLinkWithPermission: any;
+  readonly commonRegex = CommonRegex;
   constructor(private fb: FormBuilder,
     private readonly accountService: AccountService,
     private readonly storageService: StorageService,
     private readonly patientPortalService: PatientPortalService,
+    private readonly lienPortalService: LienPortalService,
     private readonly commonMethodService: CommonMethodService,
     private readonly router: Router,
     private readonly notificationService: NotificationService) {
@@ -63,11 +65,11 @@ export class LoginComponent implements OnInit {
     }
     else {
       this.loginForm = this.fb.group({
-        email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex )]],
+        email: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex)]],
         password: ['', [Validators.required, noWhitespaceValidator]],
         keepSignIn: [false]
       });
-      
+
       this.commonMethodService.setTitle('Login');
     }
     // $(".modal-backdrop" ).remove();
@@ -111,13 +113,13 @@ export class LoginComponent implements OnInit {
         this.storageService.JWTToken = res.token;
         this.storageService.JWTTokenRoles = res.roles;
         this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-        if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
-        {
-          this.router.navigate(['radportal']);
-        }else{
+        if (this.storageService.user.UserType === RADIOLOGIST_TYPE) {
+          this.lienPortalService.refreshToken();
+          this.onLienPortalLogin();
+        } else {
           this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
         }
-        
+
 
         this.accountService.getValidToken(true);
 
@@ -160,34 +162,37 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  onLienPortalLogin() {
+    var expirydate = this.storageService.addHours(24);
+    this.storageService.LienTimeout = expirydate.toJSON();
+    this.router.navigate(['radportal']);
+  }
   //Method to reset form 
   onReset() {
     this.submitted = false;
     this.loginForm.reset();
   }
-  redirectLinkPremission(data: any)
-  {
+  redirectLinkPremission(data: any) {
     var valReturn: any;
     let list: any = [];
     let responseHierarchy = JSON.parse(data);
-        if (responseHierarchy && responseHierarchy.length) {
-          responseHierarchy.forEach((value) => {
-            if (value && value.hierarchy) {
-              value.hierarchy = JSON.parse(value.hierarchy);
-            }
-          });
+    if (responseHierarchy && responseHierarchy.length) {
+      responseHierarchy.forEach((value) => {
+        if (value && value.hierarchy) {
+          value.hierarchy = JSON.parse(value.hierarchy);
         }
-        for (let i = 0; i < responseHierarchy.length; i++) {
-          list.push(responseHierarchy[i].hierarchy);
-          if(list[0].Url!=='')
-          {
-            valReturn=list[0].Url
-          }
-          else if(list[0].Url=='' && list[0].Children)
-          {
-            valReturn=list[0].Children[0].Url
-          }
-        }
-        return valReturn;
+      });
+    }
+    for (let i = 0; i < responseHierarchy.length; i++) {
+      list.push(responseHierarchy[i].hierarchy);
+      if (list[0].Url !== '') {
+        valReturn = list[0].Url
+      }
+      else if (list[0].Url == '' && list[0].Children) {
+        valReturn = list[0].Children[0].Url
+      }
+    }
+    return valReturn;
   }
 }
