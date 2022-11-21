@@ -31,12 +31,10 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
     @ViewChild("modaldismiss2", { static: true }) modaldismiss2: ElementRef;
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
-  model: any = { firstName: '', lastName: '', Title: '', signature: '' };
+    model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
     @ViewChild(SignaturePad) signaturePadapproveAddEsignModel: SignaturePad;
-    isDisplayApproveBtn: boolean = false;
-
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
@@ -62,10 +60,14 @@ export class CalendarSchedulerComponent implements OnInit {
     otherFacilitiesParsed: any = [];
     ParentCompanyName: string;
     displayClosedDays = [];
+    isDisplayApproveBtn: any;
+
+    latestStartDate: any = "";
+    latestSchedulerMode: string = "";
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
-      private readonly storageService: StorageService, private datePipe: DatePipe,
-      private readonly commonService: CommonMethodService
+        private readonly storageService: StorageService, private datePipe: DatePipe,
+        private readonly commonService: CommonMethodService
     ) {
         blockLeaseSchedulerService.sendDataToCalendarScheduler.subscribe(res => {
             if (res) {
@@ -203,7 +205,14 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
         };
-        scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
+
+
+        if (this.latestStartDate && this.latestSchedulerMode) {
+            scheduler.init(this.schedulerContainer.nativeElement, this.latestStartDate, this.latestSchedulerMode);
+        } else {
+            scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
+        }
+
         scheduler.deleteMarkedTimespan();
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
         this.displayClosedDays = [];
@@ -245,6 +254,10 @@ export class CalendarSchedulerComponent implements OnInit {
         });
         ////
         scheduler.updateView();
+    }
+    resetDate() {
+        this.latestSchedulerMode = "";
+        this.latestStartDate = "";
     }
     checkBlockedOffDays(event: any, id: number) {
         let body =
@@ -332,6 +345,8 @@ export class CalendarSchedulerComponent implements OnInit {
             .catch((reason: ModalResult | any) => {
                 if ((reason == 5)) {
                     this.reasonId = 5;
+                    this.latestStartDate = event.start_date;
+                    this.latestSchedulerMode = scheduler.getState().mode;
                     this.GetBlockLeaseData();
                     this.backToCalendar();
                 }
@@ -384,7 +399,8 @@ export class CalendarSchedulerComponent implements OnInit {
 
             if (this.SchedulerDayWeekMonth) {
                 this.isDisplayApproveBtn = (this.SchedulerDayWeekMonth.filter(dta => dta.LeaseId == null).length > 0) ? false : true;
-            }       
+            }
+            console.log(this.autoBlockOffDays);
 
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
@@ -510,10 +526,10 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertMessage:  res.response.message? res.response.message: res.response,
                         alertType: 200
                     })
-                  this.signConfirm(false);
-                  this.modaldismiss2.nativeElement.click();
-                  this.modaldismissscheduler.nativeElement.click();
-                  this.commonService.sendDataBlockLeaseScheduler('true');
+                    this.signConfirm(false);
+                    this.modaldismiss2.nativeElement.click();
+                    this.modaldismissscheduler.nativeElement.click();
+                    this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else{
                     this.errorNotification(res);
@@ -590,11 +606,11 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertMessage: res.response.message,
                         alertType: res.response.ResponseCode
                     })
-                  this.signConfirm(false);
-                  this.modaldismiss1.nativeElement.click();
-                  this.modaldismissscheduler.nativeElement.click();
-                  this.commonService.sendDataBlockLeaseScheduler('true');
-              }
+                    this.signConfirm(false);
+                    this.modaldismiss1.nativeElement.click();
+                    this.modaldismissscheduler.nativeElement.click();
+                    this.commonService.sendDataBlockLeaseScheduler('true');
+                }
                 else {
                     this.errorNotification(res.message);
                 }
