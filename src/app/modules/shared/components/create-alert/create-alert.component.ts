@@ -386,9 +386,9 @@ export class CreateAlertComponent implements OnInit {
   }
   btnCreateAlert() {
     debugger
-    var one  = this.contactInfoForm.get('patientID').value ;
-    var patientId = one.toLowerCase().includes('pre') ? one : 'PRE' + one;
-    this.contactInfoForm.get('patientID').setValue(one);
+    var PatientID  = this.contactInfoForm.get('patientID').value ;
+    var patientId = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
+    this.contactInfoForm.get('patientID').setValue(patientId);
     this.Issubmitted= true;
     if (this.contactInfoForm.invalid) {
       this.modalValue = '';
