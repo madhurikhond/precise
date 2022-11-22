@@ -197,6 +197,7 @@ export class PatientComponent implements OnInit {
     this.getStatusNames();
     this.ddlvalue = this.selectAnActionDdl();
     this.getAllSavedSearchList();
+ 
     this.PatientActionShowHide();
     this.createPatientBillingDetailForm();
     this.GetLastSearchRecord();
@@ -405,32 +406,30 @@ export class PatientComponent implements OnInit {
       });
   }
   onInitialized(e) {
-
     setTimeout(() => {
       e.component.option('stateStoring', { ignoreColumnOptionNames: [true] });
     }, 100)
   }
 
-  getPatientDetailById(e: any) {
+  getPatientDetailById(e: any,isHasAlertSelectedTab :any = 0) {
     
     let body = {
       'patientID': e.data.PATIENTID,
       'internalPatientId': e.data.INTERNALPATIENTID,
       'internalStudyId': e.data.Internalstudyid,
       'hasAlert': e.data.HasAlert,
-      'click': true
+      'click': true,
+      'isHasAlertSelectedTab' : isHasAlertSelectedTab
     }
-
     let dataGridalltrList: any = document.getElementsByTagName("tr");
     for (var i = 0; i < dataGridalltrList.length; i++) {
       dataGridalltrList[i].classList.remove("custom-patient-row-selection")
     }
-
     for (let index = 0; index < e.row.cells.length; index++) {
       e.row.cells[index].cellElement.parentElement.classList.add("custom-patient-row-selection");
     }
-
     this.patientService.sendDataToPatientDetailWindow(body);
+   
   }
 
   getFinancialType() {
@@ -969,13 +968,21 @@ export class PatientComponent implements OnInit {
   }
 
   selectionChanged(data: any) {
-    
     this.selectedRows = [];
     this.checkedData = data.selectedRowsData;
     this.selectedInternalPatientId = data.selectedRowKeys[0] ? data.selectedRowKeys[0].INTERNALPATIENTID : '';
-
-    // this.itemClick(data.selectedRows);
+// this.itemClick(data.selectedRows);
   }
+
+
+  onCellPrepared(e: any) { 
+    if (e.rowType === 'data' && e.columnIndex) {     
+      if ((e.data.HasAlert) == 1) {
+        e.cellElement.style.backgroundColor = "#efef49";
+      }
+    }
+  }
+
   _base64ToArrayBuffer(base64: any) {
 
     var binary_string = window.atob(base64);
