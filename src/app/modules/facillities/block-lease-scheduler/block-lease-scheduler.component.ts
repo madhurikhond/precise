@@ -51,7 +51,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   pageSize: number = 50;
   readonly pageSizeArray = PageSizeArray;
   setUserEsignSetting: boolean = true;
-  totalRecord: number;
+  totalRecords: number;
   SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
   selectedPaid: any = 'ALL';
@@ -71,7 +71,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       console.log(res.response[0]);
       if (res.response != null && res.response.length > 0) {
-          this.facilityList = res.response[0].Facilities;
+        this.facilityList = res.response[0].Facilities;
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -104,7 +104,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-  getCalendarSchedulerWindowById(row: any) { 
+  getCalendarSchedulerWindowById(row: any) {
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
@@ -126,17 +126,17 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.selectedParentFacility = null;
     this.selectedFacility = null;
     this.selectedModality = null;
-    this.selectedPaid= "0";
-    this.selectedScheduleStatus= "0";
-    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', ''));
+    this.selectedPaid = "0";
+    this.selectedScheduleStatus = "0";
+    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', '', this.pageNumber, this.pageSize));
   }
   applyFilter() {
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
-    let selectedScheduleCreated = this.selectedScheduleStatus ?  this.selectedScheduleStatus.toString() : '';
+    let selectedScheduleCreated = this.selectedScheduleStatus ? this.selectedScheduleStatus.toString() : '';
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus));
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus, this.pageNumber, this.pageSize));
   }
   convertDataTomodel() {
     var arr: any = [];
@@ -168,10 +168,10 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       }
       arr.push(element);
       element = {};
-    } 
-   
+    }
+
     this.AllBlockLeaseList = arr;
-    console.log(this.AllBlockLeaseList);  
+    console.log(this.AllBlockLeaseList);
   }
 
   getColumnByDataField(column: any) {
@@ -193,37 +193,39 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     // console.log(retArray);
     return retArray
 
-  }  
+  }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any,schedululeCreated: any, paidStatus: any): any {
+    modality: any, schedululeCreated: any, paidStatus: any, PageNumber: Number, PageSize: Number): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
       'modality': modality,
-      'schedululeCreated' : schedululeCreated,
-      'paidStatus': paidStatus
+      'schedululeCreated': schedululeCreated,
+      'paidStatus': paidStatus,
+      'PageNumber': PageNumber,
+      'PageSize': PageSize
     }
   }
   changed(FacilityParentID: any) {
     this.selectedParentFacility = FacilityParentID.FacilityParentID;
-    this.getFacilityParentList();   
+    this.getFacilityParentList();
   }
   getAllBlockLeaseFacility(filterBody: any) {
-    this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
+    this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody).subscribe((res) => {
       this.blockLeaseGridList = [];
       if (res.response != null) {
-        this.totalRecord = res.totalRecords;
+        this.totalRecords = res.response[0].totalRecords;
         this.blockLeaseGridList = res.response;
         console.log(this.blockLeaseGridList);
         this.convertDataTomodel();
       }
       else {
         this.blockLeaseGridList = [];
-        this.totalRecord = 1;
+        this.totalRecords = 1;
       }
     });
   }
-  getAllLeasesOfFacilityByStatus(FacilityID: any, data:any, IsClicked: boolean = true, Status: any = 'PAID') {
+  getAllLeasesOfFacilityByStatus(FacilityID: any, data: any, IsClicked: boolean = true, Status: any = 'PAID') {
     if (IsClicked) {
       this.leasePageNumber = 1;
     }
@@ -259,7 +261,11 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.leasePageNumber = event;
     this.getAllLeasesOfFacilityByStatus(this.facilityID, this.LeasesOfFacilityData, false, this.leaseStatus);
   }
-  getLeaseAggrementDetail(path: any,fileData: any) {
+  pageChangedForAllLeases(event) {
+    (event == 0) ? this.pageNumber = 1 : this.pageNumber = event;
+    this.applyFilter();
+  }
+  getLeaseAggrementDetail(path: any, fileData: any) {
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
@@ -281,19 +287,19 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   getFacilityDetail(facilityId: any, type: any) {
-    if(facilityId){
-    let body = {
-      'facilityId': facilityId,
-      'type': type
+    if (facilityId) {
+      let body = {
+        'facilityId': facilityId,
+        'type': type
+      }
+      this.facilityService.sendDataToPatientFacilityWindow(body);
     }
-    this.facilityService.sendDataToPatientFacilityWindow(body);
-  }
-  else{
-    var data = {
-      'responseCode': 404
+    else {
+      var data = {
+        'responseCode': 404
+      }
+      this.unSuccessNotification(data);
     }
-    this.unSuccessNotification(data);
-  }
   }
 
   getMonthByDataField(column: any) {

@@ -144,7 +144,6 @@ export class SchedulerPopupComponent implements OnInit {
   }
   getLeaseData() {
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
-      debugger
       if (res.response != null) {
         if (res.response.CreditDetails != null) {
           this.CreditDetailsList = res.response.CreditDetails;
@@ -163,11 +162,12 @@ export class SchedulerPopupComponent implements OnInit {
         console.log(this.LeaseDetails);
         if (this.LeaseDetails != null) {
           this.FacilityID= this.LeaseDetails['FacilityId'];
+          this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
           this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
-          this.selectedModality = this.LeaseDetails['ModalityType'];
+          
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
             // LeaseTitle: this.LeaseDetails['LeaseTitle'],
