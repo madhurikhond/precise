@@ -98,6 +98,8 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   leaseFormInitialization() {
+    var eTime = new Date(this.event['end_date']);
+    eTime.setSeconds(eTime.getSeconds() + 1);
     this.leaseForm = this.formBuilder.group({
       //LeaseTitle: [this.event['text']],
       modalityType: [''],
@@ -105,7 +107,7 @@ export class SchedulerPopupComponent implements OnInit {
       start_date: [this.event['start_date']],
       start_time: [this.event['start_date']],
       end_date: [this.event['end_date']],
-      end_time: [this.event['end_date']],
+      end_time: eTime,
       creditReasonID: [''],
       creditHours: [''],
       creditMinutes: [''],
