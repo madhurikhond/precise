@@ -1,6 +1,9 @@
 export const ckeConfig = {
   allowedContent: false,
   forcePasteAsPlainText: true,
+  extraAllowedContent: {
+    span: {classes: 'ss'}
+  },
   removePlugins:
     'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
   removeButtons:
@@ -26,35 +29,58 @@ export class CkeEvent{
   public getQRCodeString(input: string): string {
     var output = null;
     try {
-      let text = input.split('*');
-      if (text.length == 3) {
-        let data = text[1];
-        if (data.search("<") == -1) {
-          text[1] = "<img alt='Barcode : " + data + "' src='" + this.textWiseQR(data) + "' />";
-          output = text.join('');
-        }
-      }
+      // let text = input.split('*');
+      // if (text.length > 2) {
+      //   let data = text[1];
+      //   if (data.search("<") == -1) {
+      //     text[1] = "<span class='ss'>"+this.textWiseQR(data)+"</span>";
+      //     output = text.join('');
+      //   }
+      // }
   
       let text1 = (output == null ? input : output).split('<span style="font-family:Code128">');
       if (text1.length == 2) {
         let data = text1[1].split('</span>');
         if (data.length > 1) {
-          data[0] = "<img alt='Barcode : " + data[0] + "' src='" + this.textWiseQR(data[0]) + "' />";
+          data[0] = "<span class='ss'>"+this.textWiseQR(data[0])+"</span>";
           text1[1] = data.join('');
           output = text1.join('');
         }
       }
     } catch (error) {
-      output = error.message;
+      output = null;
     }
     return output;
   }
   
   private textWiseQR(text: string): string {
-    let fileData = "https://barcode.tec-it.com/barcode.ashx?data=" + text + "&code=Code128&multiplebarcodes=true&translate-esc=true";
-    let source = fileData;
-    // let source = 'data:image/png;base64,' + fileData;
-    return source;
+  text = '*'+text+'*';
+  var x = text;
+  
+  var i, j, intWeight, intLength, intWtProd = 0, arrayData = [], fs,chrString;
+  var arraySubst = [ "Ã", "Ä", "Å", "Æ", "Ç", "È", "É", "Ê" ];
+
+/*
+ * Checksum Calculation for Code 128 B
+ */
+  intLength = x.length;
+	arrayData[0] = 104; 
+	intWtProd = 104;
+	for (j = 0; j < intLength; j += 1) {
+			arrayData[j + 1] = x.charCodeAt(j) - 32; 
+			intWeight = j + 1; 
+			intWtProd += intWeight * arrayData[j + 1]; 
+	}
+	arrayData[j + 1] = intWtProd % 103; 
+	arrayData[j + 2] = 106; 
+  var chr = parseInt(arrayData[j + 1], 10); 
+  if (chr > 94) {
+    chrString = arraySubst[chr - 95];
+  } else {
+    chrString = String.fromCharCode(chr + 32);
+  }
+  var source = 'Ì' + x + chrString + 'Î'; 
+  return source;
   }
   
 }
