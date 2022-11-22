@@ -745,7 +745,7 @@
         </div>
         <div class="table-responsive patient-table-responsive">
             <dx-data-grid #gridPatient id="patient-grid-container" [dataSource]="patientGridList"
-                [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                [allowColumnResizing]="true" [columnAutoWidth]="true" (onCellPrepared)="onCellPrepared($event)" [allowColumnReordering]="true"
                 [columnResizingMode]="columnResizingMode" (onSelectionChanged)="selectionChanged($event)"
                 [showBorders]="true" (onInitialized)="onInitialized($event)"
                 (onContextMenuPreparing)="onContextMenuPreparing($event)">
@@ -758,12 +758,21 @@
                 <dxo-group-panel [visible]="true"></dxo-group-panel>
                 <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
                 <dxo-sorting mode="multiple"></dxo-sorting>
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
                 <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
                 <!-- <dxo-header-filter [visible]="false"></dxo-header-filter> -->
+
+
+                <dxi-column caption="" [fixed]="true" [showInColumnChooser]="false" fixedPosition="left"
+                cellTemplate="bellIconCellTemplate" [allowGrouping]="false" tabindex="0">
+            </dxi-column>
+
+
                 <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                 <dxi-column caption="View" [fixed]="true" [showInColumnChooser]="false" fixedPosition="left"
                     cellTemplate="patientIdCellTemplate" [allowGrouping]="false" tabindex="1">
                 </dxi-column>
+               
                 <dxi-column dataField="PATIENTID" caption="PATIENT ID" groupCellTemplate="groupCellTemplate"
                     [calculateGroupValue]="getReason" [groupIndex]="1" tabindex="1">
                 </dxi-column>
@@ -888,18 +897,23 @@
 
 
                 <div *dxTemplate="let data of 'viewCellTemplate'">
-                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data,0)"
                         data-toggle="modal" data-target="#patient-Detail-Window"><b>{{data.data.PATIENTID}}</b></a>
                 </div>
 
+                <div *dxTemplate="let data of 'bellIconCellTemplate'"> 
+                    <i *ngIf= "data.data.HasAlert == '1' "  class="fa fa-bell my-border" aria-hidden="true"
+                    (click)="getPatientDetailById(data,1)" data-toggle="modal" data-target="#patient-Detail-Window"></i>
+                </div>
+
                 <div *dxTemplate="let data of 'viewCellTemplate'">
-                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data,0)"
                         data-toggle="modal" data-target="#patient-Detail-Window"><b
                             hidden="true">{{data.data.PATIENTID}}</b><i class="fa fa-eye text-success"></i></a>
                 </div>
 
                 <div *dxTemplate="let data of 'patientIdCellTemplate'">
-                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data)"
+                    <a href="javascript:void(0);" class="link-btn" (click)="getPatientDetailById(data,0)"
                         data-toggle="modal" data-target="#patient-Detail-Window">{{data.data.PATIENTID}}</a>
                 </div>
 

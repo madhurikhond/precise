@@ -181,7 +181,7 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   showContactInfo(PatientID) {
-   
+    PatientID = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
     if (this.contactInfoForm.get('patientID').value != PatientID) {
       if(PatientID && this.alertButtonClick){
         this.patientFieldDisable = true;
@@ -385,7 +385,10 @@ export class CreateAlertComponent implements OnInit {
 
   }
   btnCreateAlert() {
-    
+    debugger
+    var PatientID  = this.contactInfoForm.get('patientID').value ;
+    var patientId = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
+    this.contactInfoForm.get('patientID').setValue(patientId);
     this.Issubmitted= true;
     if (this.contactInfoForm.invalid) {
       this.modalValue = '';
