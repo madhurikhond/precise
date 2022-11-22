@@ -166,7 +166,7 @@ export class LoginComponent implements OnInit {
   onLienPortalLogin() {
     var expirydate = this.storageService.addHours(24);
     this.storageService.LienTimeout = expirydate.toJSON();
-    this.router.navigate(['radportal']);
+    this.router.navigate(['lien-portal']);
   }
   //Method to reset form 
   onReset() {

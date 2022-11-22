@@ -6,36 +6,40 @@
             <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#signatureModal">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
-        <dx-data-grid [dataSource]="dataSourse" [allowColumnResizing]="true" [columnAutoWidth]="true"
+        <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
             [allowColumnReordering]="true" [showBorders]="true">
+
+            <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+            <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
             <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-pager [visible]="false"></dxo-pager>
+            
             <dxo-sorting mode="multiple"></dxo-sorting>
-            <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
-            </dxo-selection>
+            
 
             <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
             </dxi-column>
             <dxi-column dataField="rad" caption="RAD"></dxi-column>
-            <dxi-column dataField="dateread" caption="DATE READ"></dxi-column>
-            <dxi-column dataField="patientid" caption="PATIENT ID"></dxi-column>
-            <dxi-column dataField="lastname" caption="LAST NAME"></dxi-column>
-            <dxi-column dataField="firstname" caption="FIRST NAME"></dxi-column>
-            <dxi-column dataField="dob" caption="DOB"></dxi-column>
-            <dxi-column dataField="dos" caption="DOS"></dxi-column>
+            <dxi-column dataField="dateRead" caption="DATE READ"></dxi-column>
+            <dxi-column dataField="patientId" caption="PATIENT ID"></dxi-column>
+            <dxi-column dataField="lastName" caption="LAST NAME"></dxi-column>
+            <dxi-column dataField="firstName" caption="FIRST NAME"></dxi-column>
+            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
+            <dxi-column dataField="dateOfStudy" caption="DOS"></dxi-column>
             <dxi-column dataField="study" caption="STUDY"></dxi-column>
-            <dxi-column dataField="access" caption="ACCESS#"></dxi-column>
-            <dxi-column dataField="cptgroup" caption="CPT GROUP"></dxi-column>
+            <dxi-column dataField="accession" caption="ACCESS#"></dxi-column>
+            <dxi-column dataField="cptGroup" caption="CPT GROUP"></dxi-column>
 
 
             <div *dxTemplate="let data of 'facilityIdTemplate'">
-                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
+                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal" data-target="#docManager" (click)="showDocManager(data)"></a>
             </div>
         </dx-data-grid>
 
         <div class="pagination-theme">
             <div class="pagination-theme">
                 <div
-                    *ngFor="let item of dataSourse | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecord}">
+                    *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecord}">
                 </div>
                 <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
             </div>
@@ -58,7 +62,7 @@
                 <div class="modal-content">
                     <p class="stepText"> 1. Assign a funding company</p>
                     <div class="form-group">
-                        <ng-select [items]="cities" bindLabel="name" bindValue="id" [searchable]="false"
+                        <ng-select [items]="fundingCompanies" bindLabel="name" bindValue="id" [searchable]="false"
                              placeholder="List of AR Companies"
                             (change)="onMaterialGroupChange($event)">
                         </ng-select>

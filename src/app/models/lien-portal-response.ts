@@ -12,13 +12,13 @@ export enum LienPortalStatusMessage {
 }
 
 export enum LienPortalURLName{
-  LIEN_PORTAL = "/radportal",
-  LIEN_PORTAL_SETTINGS = "/radsetting",
+  LIEN_PORTAL = "/lien-portal",
+  LIEN_PORTAL_SETTINGS = "/lien-portal-setting",
 }
 
 export enum LienPortalURL{
-  LIEN_PORTAL = "radportal",
-  LIEN_PORTAL_SETTINGS = "radsetting",
+  LIEN_PORTAL = "lien-portal",
+  LIEN_PORTAL_SETTINGS = "lien-portal-setting",
 }
 
 export class LienPortalResponse {

@@ -3,6 +3,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 @Component({
   selector: 'app-pending-bill',
@@ -23,210 +24,32 @@ export class PendingBillComponent implements OnInit {
     Placeholder:'test'
   };
 
-  dataSourse =[{
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '1',
-    lastname:'lastname1',
-    firstname:'firstname1',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '2',
-    lastname:'lastname2',
-    firstname:'firstname2',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '3',
-    lastname:'lastname3',
-    firstname:'firstname3',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '4',
-    lastname:'lastname4',
-    firstname:'firstname4',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '5',
-    lastname:'lastname5',
-    firstname:'firstname5',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '6',
-    lastname:'lastname6',
-    firstname:'firstname6',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '7',
-    lastname:'lastname7',
-    firstname:'firstname7',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '8',
-    lastname:'lastname8',
-    firstname:'firstname8',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '9',
-    lastname:'lastname9',
-    firstname:'firstname9',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '10',
-    lastname:'lastname10',
-    firstname:'firstname10',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '11',
-    lastname:'lastname11',
-    firstname:'firstname11',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '12',
-    lastname:'lastname12',
-    firstname:'firstname12',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '13',
-    lastname:'lastname13',
-    firstname:'firstname13',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '14',
-    lastname:'lastname14',
-    firstname:'firstname14',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  {
-    rad:'dr bob',
-    dateread:'2/2/22',
-    patientid : '15',
-    lastname:'lastname15',
-    firstname:'firstname15',
-    dob:'10/25/84',
-    dos:'10/25/21',
-    study:'mri of knee',
-    access:'ram845881',
-    cptgroup:'mri'
-  },
-  ];
+  dataSource = [];
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
-  totalRecord: number = 1;
-  pageSize: number;
+  totalRecord: number = 0;
+  pageSize: number = 20;
   cities = [];
+  fundingCompanies = [];
   selectedCityIds: string[];
   dummyData :string;
 
-  constructor() {
+  constructor(private lienPortalService: LienPortalService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
    
    }
 
   ngOnInit(): void {
+    this.getListingData();
     this.getData();
     //this.selectAllForDropdownItems(this.getData());
   }
 
   onPageNumberChange(pageNumber: any) {
     this.pageNumber = pageNumber;
-    // this.applyFilter();
+    this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
   }
   onMaterialGroupChange(event) {
     console.log(event);
@@ -235,6 +58,40 @@ export class PendingBillComponent implements OnInit {
   clearSign(): void {
     this.signaturePad.clear();
     this.dummyData = '';
+  }
+
+  getListingData() {
+    try {
+      var data = {
+        "userType": "",
+        "procGroupName": "",
+        "loggedPartnerId": 1,
+        "jwtToken": "",
+        "patientId": "",
+        "dateFrom": "2022-11-22T06:20:26.206Z",
+        "dateTo": "2022-11-22T06:20:26.206Z",
+        "dateType": "",
+        "userId": 268
+      };
+
+      this.lienPortalService.GetPendingToBill(data).subscribe((result) => {
+        if (result.status == 0) {
+          if (result.result && result.result.length > 0) {
+            this.dataSource = result.result
+            this.fundingCompanies = this.dataSource;
+            this.totalRecord = result.result.length;
+            this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
+          }
+        }
+        if (!result.exception) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        this.lienPortalService.errorNotification(error.message);
+      })
+    } catch (error) {
+      this.lienPortalService.errorNotification(error.message);
+    }
   }
 
   getData() {

@@ -29,6 +29,12 @@ export class LienPortalService {
     );
   }
 
+  GetAssignedARUnpaid(data:any,showGlobalLoader : boolean = true){
+    return this._httpService.post('LienPortal/GetAssignedARUnpaid',data,showGlobalLoader).pipe(
+      map((res:LienPortalResponse) => res)
+    );
+  }
+
   
   successNotification(msg: string) {
     this.notificationService.showNotification({
