@@ -106,85 +106,86 @@
         </div>
 
         <div class="cash-price-table table-responsive">
-            <div *ngIf="AllBlockLeaseList.length>0" class="scheduling-facillities-table">
+            <div class="scheduling-facillities-table">               
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
                     <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
                     <dxi-column cellTemplate="viewCellTemplate" dataField="Facilityname"> </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels0">
+                    <dxi-column [width]="250"
+                        [caption]="checkUndefiend('MonthLabels0')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels1">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels1')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels2">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels2')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels3">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels3')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels4">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels4')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels5">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels5')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels6">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels6')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels7">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels7')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels8">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels8')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels9">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels9')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels10">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels10')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels11">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels11')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
                         </dxi-column>
                     </dxi-column>
-                    <dxi-column [width]="250" [caption]="AllBlockLeaseList[0].MonthLabels12">
+                    <dxi-column [width]="250" [caption]="checkUndefiend('MonthLabels12')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
                         </dxi-column>
                         <dxi-column [width]="125" caption="CT" cellTemplate="getDataTemplate">
