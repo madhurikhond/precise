@@ -393,7 +393,7 @@
         <button type="button" *ngIf="!isLeaseSigned && LeaseBlockId!=0" (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
         <button type="button" (click)="saveBlockLeaseData()"
-            class="btn btn-theme btn-sm pull-right">{{isBlockOffTime?"Save":"Add Block"}}</button>
+            class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
     </div>
 </div>
@@ -442,7 +442,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">OK</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">OK</a>
             </div>
         </div>
     </div>
