@@ -60,6 +60,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   AllBlockLeaseList: any = [];
   LeasesOfFacilityData: any;
   ngOnInit(): void {
+    // let elementO = {};
+    // var arr: any = [];
+    // elementO['FacilityID'] = '';
+    // this.AllBlockLeaseList.push(elementO);
+    // for (var j = 0; j < 12; j++) {
+    //   elementO[`MonthLabels${j}`] = 'Nov 2022';     
+    //   arr.push(elementO);
+    //   elementO = {};
+    // }
+    // this.AllBlockLeaseList = arr;   
     this.getFacilityParentList();
     this.getModalityList();
     this.getScheduleStatusList();
@@ -68,8 +78,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   getFacilityParentList() {
     this.facilityParentList = [];
     this.facilityList = [];
-    this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
-      console.log(res.response[0]);
+    this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {      
       if (res.response != null && res.response.length > 0) {
         this.facilityList = res.response[0].Facilities;
       }
@@ -104,6 +113,18 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+  checkUndefiend(HeaderTxt: string) {
+    if (this.AllBlockLeaseList[0] === undefined) {
+      return ''
+    } else {
+      if (this.AllBlockLeaseList[0][HeaderTxt] === undefined) {
+        return ''
+      } else {
+        return this.AllBlockLeaseList[0][HeaderTxt];
+      }
+    }
+  }
+
   getCalendarSchedulerWindowById(row: any) {
     let body = {
       'FacilityID': row.data.FacilityID,
@@ -139,6 +160,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus, this.pageNumber, this.pageSize));
   }
   convertDataTomodel() {
+
+
+
     var arr: any = [];
     let element = {}
     arr = [];
@@ -152,26 +176,40 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       for (var j = 0; j < Months.length; j++) {
         element[`MonthLabels${j}`] = Months[j].MonthLabels;
         if (Months[j].FacilityData) {
-          FacilityData = Months[j].FacilityData[0];// JSON.parse(Months[j].FacilityData);
-          element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
+          FacilityData = Months[j].FacilityData[0];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
-          element[`MRI${j}`] = FacilityData['MRI'];
-          element[`CT${j}`] = FacilityData['CT'];
+          let MriTotal = 0, CtTotal = 0;
+          let IsFacilityNotSign = false, IsFacilitySign = false;
+          for (var data = 0; data < Months[j].FacilityData.length; data++) {
+            if (Months[j].FacilityData[data]['MRI'])
+              MriTotal += parseFloat(Months[j].FacilityData[data]['MRI']);
+            if (Months[j].FacilityData[data]['CT'])
+              CtTotal += parseFloat(Months[j].FacilityData[data]['CT']);
+            if (!Months[j].FacilityData[data]['IsFacilitySign']) {
+              IsFacilityNotSign = true;
+            } else if (Months[j].FacilityData[data]['IsFacilitySign']) {
+              IsFacilitySign = true;
+            }
+          }
+          element[`MRI${j}`] = Math.trunc(MriTotal);
+          element[`CT${j}`] = Math.trunc(CtTotal);
+          element[`IsFacilitySign${j}`] = IsFacilitySign;
+          element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
           element[`IsFacilitySign${j}`] = null;
           element[`IsScheduledComplete${j}`] = null;
           element[`IsPaid${j}`] = null;
           element[`MRI${j}`] = null;
           element[`CT${j}`] = null;
+          element[`IsFacilitySign${j}`] = null;
+          element[`IsFacilityNotSign${j}`] = null;
         }
       }
       arr.push(element);
       element = {};
     }
-
-    this.AllBlockLeaseList = arr;
-    console.log(this.AllBlockLeaseList);
+    this.AllBlockLeaseList = arr;    
   }
 
   getColumnByDataField(column: any) {
@@ -189,8 +227,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       'CT': column.row.data[`CT${index}`],
       'IsCtService': column.row.data['IsCtService'],
       'IsMriService': column.row.data['IsMriService']
-    })
-    // console.log(retArray);
+    })   
     return retArray
 
   }
@@ -211,19 +248,21 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getFacilityParentList();
   }
   getAllBlockLeaseFacility(filterBody: any) {
-    this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody).subscribe((res) => {
-      this.blockLeaseGridList = [];
-      if (res.response != null) {
-        this.totalRecords = res.response[0].totalRecords;
-        this.blockLeaseGridList = res.response;
-        console.log(this.blockLeaseGridList);
-        this.convertDataTomodel();
-      }
-      else {
+    setTimeout(() => {
+      this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody).subscribe((res) => {
         this.blockLeaseGridList = [];
-        this.totalRecords = 1;
-      }
-    });
+        if (res.response != null) {
+          this.totalRecords = res.response[0].totalRecords;
+          this.blockLeaseGridList = res.response;         
+          this.convertDataTomodel();
+        }
+        else {
+          this.blockLeaseGridList = [];
+          this.totalRecords = 1;
+        }
+      });
+    }, 500);
+
   }
   getAllLeasesOfFacilityByStatus(FacilityID: any, data: any, IsClicked: boolean = true, Status: any = 'PAID') {
     if (IsClicked) {
