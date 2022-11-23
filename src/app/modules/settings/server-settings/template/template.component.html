@@ -112,9 +112,9 @@
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                 <div class="cke-editor-group">
                                     <div class="theme-label">Body</div>
-                                    <ckeditor #myckeditor 
-                                        formControlName="body" required [config]="CkeConfig"
-                                        (paste)="onPaste($event)" id="email-editor" (change)="onChange($event)">
+                                    <ckeditor #myckeditor_body 
+                                        formControlName="body" name="body" required [config]="CkeConfig"
+                                        (paste)="onPaste($event)" id="email-editor" (change)="onChange_body($event)">
                                     </ckeditor>
                                     <!-- <ckeditor [editor]="Editor" formControlName="body">
                                         <textarea class="form-control" id="email-editor" cols="30" rows="10" formControlName="body" required></textarea>
@@ -128,9 +128,9 @@
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                 <div class="cke-editor-group">
                                     <div class="theme-label">Spanish Body</div>
-                                    <ckeditor #myckeditor 
-                                        formControlName="spanishEmailBody" required id="spanish-editor" 
-                                        [config]="CkeConfig" (paste)="onPaste($event)" (change)="onChange($event)">
+                                    <ckeditor #myckeditor_spanishEmailBody 
+                                        formControlName="spanishEmailBody" name="spanishEmailBody" required id="spanish-editor" 
+                                        [config]="CkeConfig" (paste)="onPaste($event)" (change)="onChange_spanishEmailBody($event)">
                                     </ckeditor>
                                     <!-- <ckeditor [editor]="Editor" formControlName="spanishEmailBody">
                                         <textarea class="form-control" id="spanish-editor" cols="30" rows="10" formControlName="spanishEmailBody" required></textarea>

@@ -1,0 +1,9 @@
+
+.ss {
+  font-family: 'Code128';
+}
+@font-face {
+  font-family: "Code128";
+  src: url("../fonts/code128.ttf") format("truetype");
+}
+
