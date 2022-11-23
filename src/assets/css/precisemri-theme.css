@@ -7047,3 +7047,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	max-height: 300px;
 }
 #CalendarSchedulerWindow .dhx_cal_event >div{height: auto; word-wrap: break-word;}
+
+.payment-invoice-popup{
+	z-index: 1052;
+}
