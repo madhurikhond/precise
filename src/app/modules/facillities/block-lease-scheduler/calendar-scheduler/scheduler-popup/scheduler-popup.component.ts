@@ -277,6 +277,7 @@ export class SchedulerPopupComponent implements OnInit {
       'resourceId': this.selectedresourceId,
       'IsAllModality': this.IsAllModality
     }
+    
     console.log(body);
   }
 
@@ -311,7 +312,7 @@ export class SchedulerPopupComponent implements OnInit {
     this.blockLeaseSchedulerService.getAlreadyBlockedLease(true, body).subscribe((res) => {
       if (res.response != null) {
         this.AlreadyBlockedLeaseList = res.response;
-        this.isValidAlreadyBlockedLease = true;
+        this.isValidAlreadyBlockedLease = false;
         if (this.LeaseBlockId) {
           if (this.AlreadyBlockedLeaseList.filter(a => a.LeaseBlockId != this.LeaseBlockId).length > 0) {
             this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
@@ -322,7 +323,7 @@ export class SchedulerPopupComponent implements OnInit {
         }
 
       } else {
-
+            this.isValidAlreadyBlockedLease = true;
         this.validateFacilityTimeAndClosedDays(body);
       }
     }, (err: any) => {
@@ -370,7 +371,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.FacilityTimesJSON = res.response[0].FacilityTimes;
         }
         if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0) {
-          if(!this.modality_change)
+          if(this.modality_change)
           {
             this.isValidTimeAndClosedDays = false;
             this.hiddenCheckFacilityPopupBtn.nativeElement.click();
@@ -564,7 +565,9 @@ debugger;
     const newValue = e.value;
     let isValid = true;
     const current_Date = new Date(currentDate.toLocaleDateString());
-    const newValueDate = new Date(newValue.toLocaleDateString());
+    const newValueDate = new Date(newValue);
+
+   
     var start_date = new Date(this.editFormControls.start_date.value);
     var end_date = new Date(this.editFormControls.end_date.value);
     if (this.editFormControls.end_date.value != null) {

@@ -177,6 +177,7 @@ export class CalendarSchedulerComponent implements OnInit {
         };
         scheduler.date.timeline_start = scheduler.date.day_start;
 
+
         scheduler.showLightbox = (id: any) => {
             const event = scheduler.getEvent(id);
             var currentDate = new Date();
@@ -212,9 +213,12 @@ export class CalendarSchedulerComponent implements OnInit {
         } else {
             scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'week');
         }
-
         scheduler.deleteMarkedTimespan();
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
+        scheduler.templates.event_bar_date = function (start, end, ev) {
+            return "• <b>" + scheduler.templates.event_date(end) + "</b> ";
+        };
+
         this.displayClosedDays = [];
         if (this.allClosedDays) {
             this.allClosedDays.forEach(element => {
@@ -463,7 +467,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.bodyRes = {
             'FacilityID': this.FacilityID,
             'FacilityName': this.FacilityName,
-            'fromSchedulingFacility':false
+            'fromSchedulingFacility': false
         }
         this.GetBlockLeaseData();
         let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
@@ -521,10 +525,10 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
             if (res.response) {
-                if (res.responseCode == 200 || res.response.ResponseCode==200) {
+                if (res.responseCode == 200 || res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
-                        alertMessage:  res.response.message? res.response.message: res.response,
+                        alertMessage: res.response.message ? res.response.message : res.response,
                         alertType: 200
                     })
                     this.signConfirm(false);
@@ -532,7 +536,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
-                else{
+                else {
                     this.errorNotification(res);
                 }
             }
