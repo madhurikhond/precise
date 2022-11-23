@@ -1,164 +1,38 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { StorageService } from 'src/app/services/common/storage.service';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-assign-unpaid',
   templateUrl: './assign-unpaid.component.html',
   styleUrls: ['./assign-unpaid.component.css']
 })
 export class AssignUnpaidComponent implements OnInit {
-
+ getfilterData:any;
+  @Input()
+  set filterData(val: any) {
+    if(val && val != ""){
+      this.getfilterData = val;
+      this.getListingData();
+    }
+  }
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  
-  AssignARUnpaid =[{
-    Batchname:'batch name 1',
-  },
-  {
-    Batchname:'batch name 2',
-  },
-  {
-    Batchname:'batch name 3',
-  },
-  {
-    Batchname:'batch name 4',
-  }];
-
-
-  BatchDetailList =[{
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE9998',
-    patientid:'PRE9998',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE77612',
-    patientid:'PRE77612',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  }];
-
-
 
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
   totalRecord: number = 1;
-  pageSize: number;
+  pageSize: number = 10;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
   applyFilterTypes: any;
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
+  dataSource: any = [];
+  AssignARUnpaid: any = [];
 
-  constructor() { 
+  constructor(private lienPortalService: LienPortalService, public storageService: StorageService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -179,5 +53,30 @@ export class AssignUnpaidComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+
+  getListingData() {
+    try {
+      this.lienPortalService.GetAssignedARUnpaid(this.getfilterData).subscribe((result) => {
+        console.log(result);
+        if (result.status == 0) {
+          if (result.result && result.result.length > 0) {
+            this.dataSource = result.result
+            this.AssignARUnpaid = this.dataSource;
+            this.totalRecord = result.result.length;
+            // this.dataSource = this.AssignARUnpaid.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
+          }
+        }
+        if (!result.exception) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        this.lienPortalService.errorNotification(error.message);
+      })
+    } catch (error) {
+      this.lienPortalService.errorNotification(error.message);
+    }
+  }
+
 
 }

@@ -16,6 +16,7 @@ export class LienPortalService {
     private readonly notificationService: NotificationService,
     public storageService: StorageService) { }
 
+  // Login API
   GetPartnerToken(showGlobalLoader: boolean = true) {
     const param = 'partnerApiKey=' + environment.apiKey;
     return this._httpService.postByPass('Partner/GetRefreshToken?' + param, '', showGlobalLoader).pipe(
@@ -23,19 +24,40 @@ export class LienPortalService {
     );
   }
 
-  GetPendingToBill(data:any,showGlobalLoader : boolean = true){
-    return this._httpService.post('LienPortal/GetPendingToBill',data,showGlobalLoader).pipe(
-      map((res:LienPortalResponse) => res)
+  // Radiologist API
+  GetPendingToBill(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetPendingToBill', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+  
+
+  GetAssignedARUnpaid(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetAssignedARUnpaid', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
     );
   }
 
-  GetAssignedARUnpaid(data:any,showGlobalLoader : boolean = true){
-    return this._httpService.post('LienPortal/GetAssignedARUnpaid',data,showGlobalLoader).pipe(
-      map((res:LienPortalResponse) => res)
+  GetAssignedARPaid(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetAssignedARPaid', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
     );
   }
 
   
+  GetReferrerByUser(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetReferrerByUser', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+  
+  GetCPTGroupList(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetCPTGroupList', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+
   successNotification(msg: string) {
     this.notificationService.showNotification({
       alertHeader: 'Success',
@@ -72,7 +94,7 @@ export class LienPortalService {
           this.storageService.PartnerJWTToken = res.result.jwtToken;
         }
       }
-      else{
+      else {
         this.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }
     },

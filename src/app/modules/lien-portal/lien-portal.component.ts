@@ -1,4 +1,7 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { StorageService } from 'src/app/services/common/storage.service';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 
 @Component({
@@ -7,73 +10,174 @@ import { Component, OnInit,ViewChild } from '@angular/core';
   styleUrls: ['./lien-portal.component.css']
 })
 export class LienPortalComponent implements OnInit {
-  
-  fundingCmp :boolean = false;
-  fundingSigned :boolean = false; 
-  cptGroup :boolean = true;
-  readingread :boolean = true;
-  check :boolean = false;
-  checknumber :boolean = false;
-  
-  constructor() {
-    
-   }
+
+  constructor(private lienPortalService: LienPortalService,
+    private storageService: StorageService,
+    private fb: FormBuilder) { }
+
   ngOnInit(): void {
-   
-  }
-  logOut(){
-    
-  }
-  clearFilter(){
+    this.filterForm = this.fb.group({
+      patientId: [''],
+      readingRad: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      dateType: [''],
+      fundingCompany: [''],
+      fundingCoSigned: [''],
+      check: [''],
+      checkNumber: [''],
+    });
 
+    // Dropdown Binding
+    this.bindCPTGroup_DDL();
+    this.bindReferrerByUser();
+
+    // Default Pending Click
+    this.onPendingBillTabClicked();
   }
- 
+
+  list_CPTGroup: any = [];
+  bindCPTGroup_DDL() {
+    try {
+      var data = {
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
+        "userId": this.storageService.user.UserId
+      };
+
+      this.lienPortalService.GetCPTGroupList(data).subscribe((result) => {
+        if (result.status == 0) {
+          if (result.result && result.result.length > 0) {
+            this.list_CPTGroup = result.result
+          }
+        }
+        if (!result.exception) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        this.lienPortalService.errorNotification(error.message);
+      })
+    } catch (error) {
+      this.lienPortalService.errorNotification(error.message);
+    }
+  }
+
+  list_ReferrerByUser: any = [];
+  bindReferrerByUser() {
+    try {
+      var data = {
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
+        "userId": this.storageService.user.UserId
+      };
+
+      this.lienPortalService.GetReferrerByUser(data).subscribe((result) => {
+        if (result.status == 0) {
+          if (result.result && result.result.length > 0) {
+            this.list_ReferrerByUser = result.result
+          }
+        }
+        if (!result.exception) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        this.lienPortalService.errorNotification(error.message);
+      })
+    } catch (error) {
+      this.lienPortalService.errorNotification(error.message);
+    }
+  }
+
+  filter: any;
+  selectedMode: string;
   onPendingBillTabClicked() {
-    this.fundingCmp=false;
-    this.fundingSigned=false;
-    this.cptGroup=true;
-    this.readingread=true;
-    this.check=false;
-    this.checknumber=false;
-    
+    this.selectedMode = "pending";
+    this.clearFilter();
   }
-  onAssignUnpaidTabClicked(){
-    this.fundingCmp=true;
-    this.fundingSigned=true;
-    this.cptGroup=false;
-    this.readingread=false;
-    this.check=false;
-    this.checknumber=false;
-    
+
+  onAssignUnpaidTabClicked() {
+    this.selectedMode = "assign_unpaid";
+    this.clearFilter();
   }
-  onAssignPaidTabClicked(){
-    this.fundingSigned=false;
-    this.fundingCmp=true;
-    this.cptGroup=false;
-    this.readingread=false;
-    this.check=true;
-    this.checknumber=false;
-   
+
+  onAssignPaidTabClicked() {
+    this.selectedMode = "assign_paid";
+    this.clearFilter();
   }
-  onRetainedUnpaidTabClicked(){
-    this.fundingSigned=false;
-    this.fundingCmp=false;
-    this.cptGroup=false;
-    this.readingread=false;
-    this.check=false;
-    this.checknumber=false;
+
+  onRetainedUnpaidTabClicked() {
+    this.selectedMode = "retain_unpaid";
+    this.clearFilter();
   }
-  onRetainedPaidTabClicked(){
-    this.fundingSigned=false;
-    this.fundingCmp=true;
-    this.cptGroup=false;
-    this.readingread=false;
-    this.check=false;
-    this.checknumber=true;
+
+  onRetainedPaidTabClicked() {
+    this.selectedMode = "retain_paid";
+    this.clearFilter();
   }
 
 
-  
+  filterForm: FormGroup;
+  onFilter() {
+    switch (this.selectedMode) {
+      case "pending":
+        this.filter = {
+          "userType": "",
+          "procGroupName": "",
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.filterForm.get("dateFrom").value,
+          "dateTo": this.filterForm.get("dateTo").value,
+          "dateType": this.filterForm.get("dateType").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "userId": this.storageService.user.UserId
+        };
+        break;
+      case "assign_unpaid":
+        this.filter = {
+          "fundingCompany": this.filterForm.get("fundingCompany").value,
+          "isFundingCompanySigned": false,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.filterForm.get("dateFrom").value,
+          "dateTo": this.filterForm.get("dateTo").value,
+          "dateType": this.filterForm.get("dateType").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "userId": this.storageService.user.UserId
+        };
+        break;
+      case "assign_paid":
+        this.filter = {
+        };
+        break;
+      case "retain_unpaid":
+        this.filter = {
+        };
+        break;
+      case "retain_paid":
+        this.filter = {
+        };
+        break;
+      default:
+        this.filter = undefined;
+        break;
+    }
+  }
+
+  clearFilter() {
+    this.filterForm.patchValue({
+      patientId: '',
+      readingRad: '',
+      dateFrom: new Date().toISOString(),
+      dateTo: new Date().toISOString(),
+      dateType: '',
+      fundingCompany: '',
+      fundingCoSigned: '',
+      check: '',
+      checkNumber: '',
+    });
+    this.onFilter();
+  }
+
 }
 
 

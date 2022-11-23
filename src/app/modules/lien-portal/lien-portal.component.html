@@ -1,159 +1,155 @@
 <div class="radProtal-section">
     <app-header></app-header>
-     <div class="radportal-body">
-         <div class="inner-page-body">
-             <div class="filter-sec search-field search-field-theme">
-                 <div class="theme-form">
-                     <div class="filter-title-setting-sec">
-                         <div class="theme-label-title">By Patient Details</div>
-                         <div class="setting">
-                             <a  routerLink="/lien-portal-setting"><i class="fa fa-cog"></i></a>
-                         </div>
-                     </div>
-                     
-                     <div class="form-group">
-                         <div class="theme-label">Patient ID</div>
-                         <div class="input-group">
-                             <input type="text" class="form-control">
-                         </div>
-                     </div>
-                     <div class="form-group" *ngIf="readingread">
-                         <div class="theme-label">Reading Rad</div>
-                         <div class="input-group">
-                             <select class="form-control">
-                                 <option>Today</option>
-                                 <option>Yesterday</option>
-                                 <option>Last 7 Days</option>
-                                 <option>Last 14 Days</option>
-                                 <option>Last 30 Days</option>
-                                 <option>Last 60 Days</option>
-                                 <option>Last 90 Days</option>
-                                 <option>Last 180 Days</option>
-                                 <option>Last 365 Days</option>
-                                 <option>Year To Date</option>
-                             </select>
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <div class="theme-label">From Date</div>
-                         <div class="input-group icon-active">
-                             <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
-                                 [useMaskBehavior]="true">
-                             </dx-date-box>
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <div class="theme-label">To Date</div>
-                         <div class="input-group icon-active">
-                             <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
-                                 [useMaskBehavior]="true">
-                             </dx-date-box>
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <div class="theme-label">Date Type</div>
-                         <div class="input-group">
-                             <select class="form-control">
-                                 <option>Type 1</option>
-                                 <option>Type 2</option>
-                                 <option>Type 3</option>
-                                 <option>Type 4</option>
-                                 <option>Type 5</option>
-                             </select>
-                         </div>
-                     </div>
-                     <div class="form-group" *ngIf="cptGroup">
-                         <div class="theme-label">CPT Group Combo</div>
-                         <div class="input-group">
-                             <select class="form-control">
-                                 <option>Combo 1</option>
-                                 <option>Combo 2</option>
-                                 <option>Combo 3</option>
-                                 <option>Combo 4</option>
-                                 <option>Combo 5</option>
-                             </select>
-                         </div>
-                     </div>
-                     
-                     <div class="form-group" *ngIf='fundingCmp'>
-                         <div class="theme-label">Funding Company</div>
-                         <div class="input-group">
-                             <select class="form-control">
-                                 <option>Company 1</option>
-                                 <option>Company 2</option>
-                                 <option>Company 3</option>
-                                 <option>Company 4</option>
-                                 <option>Company 5</option>
-                             </select>
-                         </div>
-                     </div>
-                     <div class="form-group" *ngIf="fundingSigned">
-                         <div class="theme-label">Funding Co Signed</div>
-                         <div class="input-group">
-                             <select class="form-control">
-                                 <option>Signed 1</option>
-                                 <option>Signed 2</option>
-                                 <option>Signed 3</option>
-                                 <option>Signed 4</option>
-                                 <option>Signed 5</option>
-                             </select>
-                         </div>
-                     </div>
-                     <div class="form-group"  *ngIf="check" >
-                         <div class="theme-label">Check#</div>
-                         <div class="input-group">
-                             <input type="text" class="form-control">
-                         </div>
-                     </div>
-                     <div class="form-group"  *ngIf="checknumber">
-                         <div class="theme-label">Check Number</div>
-                         <div class="input-group">
-                             <input type="text" class="form-control">
-                         </div>
-                     </div>
-                     <div class="form-action">
-                         <a href="javascript:void(0)" class="btn btn-theme">SEARCH</a>
-                         <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">CLEAR</a>
-                     </div>
-                 </div>
-             </div>
-             <div class="tab-section">
-                 <ul class="nav nav-tabs">
-                     <li class="nav-item">
-                         <a class="nav-link active" data-toggle="tab" href="#pending-to-bill"
-                             (click)="onPendingBillTabClicked()">Pending To Bill</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" data-toggle="tab" href="#assigned-unpaid" (click)="onAssignUnpaidTabClicked()">Assigned & Unpaid</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" data-toggle="tab" href="#assigned-paid" (click)="onAssignPaidTabClicked()">Assigned & Paid</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" data-toggle="tab" href="#retained-unpaid" (click)="onRetainedUnpaidTabClicked()">Retained & Unpaid</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" data-toggle="tab" href="#retained-paid" (click)="onRetainedPaidTabClicked()">Retained & Paid</a>
-                     </li>
-                 </ul>
-                 <div class="tab-content">
-                     <div class="tab-pane active" id="pending-to-bill" >
-                         <app-pending-bill></app-pending-bill>
-                     </div>
-                     <div class="tab-pane fade" id="assigned-unpaid">
-                         <app-assign-unpaid></app-assign-unpaid>
-                     </div>
-                     <div class="tab-pane fade" id="assigned-paid">
-                         <app-assign-paid></app-assign-paid>
-                     </div>
-                     <div class="tab-pane fade" id="retained-unpaid">
-                        <app-retain-unpaid></app-retain-unpaid>
-                     </div>
-                     <div class="tab-pane fade" id="retained-paid">
-                         <app-retain-paid></app-retain-paid>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- </div>
+    <div class="radportal-body">
+        <div class="inner-page-body">
+            <div class="filter-sec search-field search-field-theme">
+                <div class="theme-form">
+                    <div class="filter-title-setting-sec">
+                        <div class="theme-label-title">By Patient Details</div>
+                        <div class="setting">
+                            <a routerLink="/lien-portal-setting"><i class="fa fa-cog"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="theme-label">Patient ID</div>
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="selectedMode == 'pending'">
+                        <div class="theme-label">Reading Rad</div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let item of list_ReferrerByUser" [value]="item.referrerName">
+                                    {{item.referrerName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="theme-label">From Date</div>
+                        <div class="input-group icon-active">
+                            <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
+                                [useMaskBehavior]="true">
+                            </dx-date-box>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="theme-label">To Date</div>
+                        <div class="input-group icon-active">
+                            <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
+                                [useMaskBehavior]="true">
+                            </dx-date-box>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="theme-label">Date Type</div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option value="" selected>Select</option>
+                                <option value="1">Type 1</option>
+                                <option value="2">Type 2</option>
+                                <option value="3">Type 3</option>
+                                <option value="4">Type 4</option>
+                                <option value="5">Type 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="selectedMode == 'pending'">
+                        <div class="theme-label">CPT Group Combo</div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let item of list_CPTGroup" [value]="item.groupId">{{item.groupName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="selectedMode == 'assign_unpaid' || selectedMode == 'assign_paid'|| selectedMode == 'retain_paid'">
+                        <div class="theme-label">Funding Company</div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option>Company 1</option>
+                                <option>Company 2</option>
+                                <option>Company 3</option>
+                                <option>Company 4</option>
+                                <option>Company 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="selectedMode == 'assign_unpaid'">
+                        <div class="theme-label">Funding Co Signed</div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option>Signed 1</option>
+                                <option>Signed 2</option>
+                                <option>Signed 3</option>
+                                <option>Signed 4</option>
+                                <option>Signed 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="selectedMode == 'assign_paid'">
+                        <div class="theme-label">Check#</div>
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="selectedMode == 'retain_paid'">
+                        <div class="theme-label">Check Number</div>
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-action">
+                        <a href="javascript:void(0)" class="btn btn-theme">SEARCH</a>
+                        <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">CLEAR</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-section">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#pending-to-bill"
+                            (click)="onPendingBillTabClicked()">Pending To Bill</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#assigned-unpaid"
+                            (click)="onAssignUnpaidTabClicked()">Assigned & Unpaid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#assigned-paid"
+                            (click)="onAssignPaidTabClicked()">Assigned & Paid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#retained-unpaid"
+                            (click)="onRetainedUnpaidTabClicked()">Retained & Unpaid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#retained-paid"
+                            (click)="onRetainedPaidTabClicked()">Retained & Paid</a>
+                    </li>
+                </ul>
+                <div class="tab-content" *ngIf="selectedMode">
+                    <div class="tab-pane active" id="pending-to-bill">
+                        <app-pending-bill *ngIf="selectedMode == 'pending'" [filterData]="filter"></app-pending-bill>
+                    </div>
+                    <div class="tab-pane fade" id="assigned-unpaid">
+                        <app-assign-unpaid *ngIf="selectedMode == 'assign_unpaid'" [filterData]="filter"></app-assign-unpaid>
+                    </div>
+                    <div class="tab-pane fade" id="assigned-paid">
+                        <app-assign-paid *ngIf="selectedMode == 'assign_paid'" [filterData]="filter"></app-assign-paid>
+                    </div>
+                    <div class="tab-pane fade" id="retained-unpaid">
+                        <app-retain-unpaid *ngIf="selectedMode == 'retain_unpaid'" [filterData]="filter"></app-retain-unpaid>
+                    </div>
+                    <div class="tab-pane fade" id="retained-paid">
+                        <app-retain-paid *ngIf="selectedMode == 'retain_paid'" [filterData]="filter"></app-retain-paid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
