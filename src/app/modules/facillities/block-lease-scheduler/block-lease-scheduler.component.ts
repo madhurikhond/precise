@@ -152,26 +152,40 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       for (var j = 0; j < Months.length; j++) {
         element[`MonthLabels${j}`] = Months[j].MonthLabels;
         if (Months[j].FacilityData) {
-          FacilityData = Months[j].FacilityData[0];// JSON.parse(Months[j].FacilityData);
-          element[`IsFacilitySign${j}`] = FacilityData['IsFacilitySign'];
+          FacilityData = Months[j].FacilityData[0];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
-          element[`MRI${j}`] = FacilityData['MRI'];
-          element[`CT${j}`] = FacilityData['CT'];
+          let MriTotal = 0, CtTotal = 0;
+          let IsFacilityNotSign = false, IsFacilitySign = false;
+          for (var data = 0; data < Months[j].FacilityData.length; data++) {
+            if (Months[j].FacilityData[data]['MRI'])
+              MriTotal += parseFloat(Months[j].FacilityData[data]['MRI']);
+            if (Months[j].FacilityData[data]['CT'])
+              CtTotal += parseFloat(Months[j].FacilityData[data]['CT']);
+            if (!Months[j].FacilityData[data]['IsFacilitySign']) {
+              IsFacilityNotSign = true;
+            } else if (Months[j].FacilityData[data]['IsFacilitySign']) {
+              IsFacilitySign = true;
+            }
+          }
+          element[`MRI${j}`] = Math.trunc(MriTotal);
+          element[`CT${j}`] = Math.trunc(CtTotal);
+          element[`IsFacilitySign${j}`] = IsFacilitySign;
+          element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
           element[`IsFacilitySign${j}`] = null;
           element[`IsScheduledComplete${j}`] = null;
           element[`IsPaid${j}`] = null;
           element[`MRI${j}`] = null;
           element[`CT${j}`] = null;
+          element[`IsFacilitySign${j}`] = null;
+          element[`IsFacilityNotSign${j}`] = null;
         }
       }
       arr.push(element);
       element = {};
     }
-
     this.AllBlockLeaseList = arr;
-    console.log(this.AllBlockLeaseList);
   }
 
   getColumnByDataField(column: any) {
