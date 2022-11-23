@@ -141,7 +141,7 @@ export class SchdFacilitiesComponent implements OnInit {
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
-  blockLeasePaymentList:any;
+  blockLeasePaymentList: any = [];
   blockLeasePaymentMappingList: any;
   blockLeaseCreditList: [] = [];
   paymentMapping: any = [];
