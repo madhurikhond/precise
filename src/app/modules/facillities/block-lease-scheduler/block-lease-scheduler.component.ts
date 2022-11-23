@@ -160,9 +160,6 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus, this.pageNumber, this.pageSize));
   }
   convertDataTomodel() {
-
-
-
     var arr: any = [];
     let element = {}
     arr = [];
@@ -342,7 +339,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   getMonthByDataField(column: any) {
-    debugger
+    this.modalityName = column.column.caption;
     let index = 0;
     if (column.column.caption == 'MRI')
       index = (Number(Number(column.columnIndex) - 1) / 2);
