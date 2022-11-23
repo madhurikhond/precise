@@ -128,7 +128,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.selectedModality = null;
     this.selectedPaid= "0";
     this.selectedScheduleStatus= "0";
-    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', ''));
+    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', '',1,50));
   }
   applyFilter() {
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
@@ -136,7 +136,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let selectedScheduleCreated = this.selectedScheduleStatus ?  this.selectedScheduleStatus.toString() : '';
     let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus));
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus,this.pageSize,this.pageNumber));
   }
   convertDataTomodel() {
     var arr: any = [];
@@ -195,13 +195,15 @@ export class BlockLeaseSchedulerComponent implements OnInit {
 
   }  
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any,schedululeCreated: any, paidStatus: any): any {
+    modality: any,schedululeCreated: any, paidStatus: any,PageSize:any,PageNumber:any): any {
     return {
       'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
       'modality': modality,
       'schedululeCreated' : schedululeCreated,
-      'paidStatus': paidStatus
+      'paidStatus': paidStatus,
+      'PageSize':PageSize,
+      'PageNumber':PageNumber
     }
   }
   changed(FacilityParentID: any) {
@@ -209,7 +211,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.getFacilityParentList();   
   }
   getAllBlockLeaseFacility(filterBody: any) {
-    this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody, this.pageNumber, this.pageSize).subscribe((res) => {
+
+    this.blockLeaseSchedulerService.getBlockLeaseSchedulerFilterData(true, filterBody).subscribe((res) => {
       this.blockLeaseGridList = [];
       if (res.response != null) {
         this.totalRecord = res.totalRecords;
@@ -297,7 +300,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   getMonthByDataField(column: any) {
-    debugger
+    this.modalityName = column.column.caption;
     let index = 0;
     if (column.column.caption == 'MRI')
       index = (Number(Number(column.columnIndex) - 1) / 2);
