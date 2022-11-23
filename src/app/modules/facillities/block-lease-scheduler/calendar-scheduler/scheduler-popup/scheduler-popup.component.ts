@@ -66,8 +66,8 @@ export class SchedulerPopupComponent implements OnInit {
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   blockLeasePricingList: any = [];
-  MriPrice:any=[];
-  CtPrice:any=[];
+  MriPrice: any = [];
+  CtPrice: any = [];
 
   constructor(
     public modal: NgbActiveModal,
@@ -81,7 +81,7 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.isLeaseSigned = true;  
+    //this.isLeaseSigned = true;
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -92,10 +92,15 @@ export class SchedulerPopupComponent implements OnInit {
         console.log(this.event);
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
+          document.getElementById('SaveBtn').style.display = 'none';
+        } else {
+          document.getElementById('SaveBtn').style.display = 'block';
         }
         this.getLeaseData();
       }
     }
+    document.getElementById('deleteBtn').style.display = 'none';
+
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
@@ -161,13 +166,23 @@ export class SchedulerPopupComponent implements OnInit {
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
         console.log(this.LeaseDetails);
         if (this.LeaseDetails != null) {
-          this.FacilityID= this.LeaseDetails['FacilityId'];
+          this.FacilityID = this.LeaseDetails['FacilityId'];
           this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
+          if (this.LeaseId) {
+            document.getElementById('deleteBtn').style.display = 'none';
+            document.getElementById('SaveBtn').style.display = 'none';
+          }
+          else {
+            document.getElementById('SaveBtn').style.display = 'block';
+            document.getElementById('deleteBtn').style.display = 'block';
+          }
+
+
           this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
-          
+
           console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
           this.leaseForm.patchValue({
             // LeaseTitle: this.LeaseDetails['LeaseTitle'],
@@ -186,8 +201,8 @@ export class SchedulerPopupComponent implements OnInit {
         let data = [{ FacilityID: this.FacilityID, Operation: 5 }];
         this.facilityService.getBlockLeasePricing(true, data).subscribe((res) => {
           if (res.response != null) {
-            this.MriPrice =[];
-            this.CtPrice=[];
+            this.MriPrice = [];
+            this.CtPrice = [];
             this.blockLeasePricingList = res.response;
             this.addMriAndCtPrice(this.blockLeasePricingList);
           }
@@ -197,12 +212,12 @@ export class SchedulerPopupComponent implements OnInit {
     }, (err: any) => {
       this.errorNotification(err);
     });
-  
+
   }
 
-  addMriAndCtPrice(data:any){
-    this.CtPrice = data.find(x => x.Modality =='CT');
-    this.MriPrice = data.find(x => x.Modality =='MRI');
+  addMriAndCtPrice(data: any) {
+    this.CtPrice = data.find(x => x.Modality == 'CT');
+    this.MriPrice = data.find(x => x.Modality == 'MRI');
   }
 
 
@@ -277,7 +292,7 @@ export class SchedulerPopupComponent implements OnInit {
       'resourceId': this.selectedresourceId,
       'IsAllModality': this.IsAllModality
     }
-    
+
     console.log(body);
   }
 
@@ -323,7 +338,7 @@ export class SchedulerPopupComponent implements OnInit {
         }
 
       } else {
-            this.isValidAlreadyBlockedLease = true;
+        this.isValidAlreadyBlockedLease = true;
         this.validateFacilityTimeAndClosedDays(body);
       }
     }, (err: any) => {
@@ -371,8 +386,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.FacilityTimesJSON = res.response[0].FacilityTimes;
         }
         if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0) {
-          if(this.modality_change)
-          {
+          if (this.modality_change) {
             this.isValidTimeAndClosedDays = false;
             this.hiddenCheckFacilityPopupBtn.nativeElement.click();
           }
@@ -383,26 +397,24 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-debugger;
-    if(this.selectedModality.toUpperCase()=='CT' &&  (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null))
-    {
+    debugger;
+    if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null)) {
       this.notificationService.showNotification({
-        alertHeader : '',
+        alertHeader: '',
         alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
         alertType: null
       });
       return;
-    } 
-    if(this.selectedModality.toUpperCase()=='MRI' &&  (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null))
-    {
+    }
+    if (this.selectedModality.toUpperCase() == 'MRI' && (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null)) {
       this.notificationService.showNotification({
-        alertHeader : '',
+        alertHeader: '',
         alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease',
         alertType: null
       });
       return;
     }
-    
+
     if (!this.isBlockOffTime) {
       this.submitted = false;
       this.BlockOffDaysSubmitted = true;
@@ -483,7 +495,7 @@ debugger;
     }
   }
   saveCreditInfo() {
-  
+
     let body = {
       'facilityId': this.FacilityID,
       'LeaseBlockId': this.LeaseBlockId,
@@ -567,7 +579,7 @@ debugger;
     const current_Date = new Date(currentDate.toLocaleDateString());
     const newValueDate = new Date(newValue);
 
-   
+
     var start_date = new Date(this.editFormControls.start_date.value);
     var end_date = new Date(this.editFormControls.end_date.value);
     if (this.editFormControls.end_date.value != null) {
@@ -659,10 +671,10 @@ debugger;
     this.form.patchValue({ ...this.event });
   }
   showNotificationOnSucess(data: any) {
-    
+
     this.notificationService.showNotification({
       alertHeader: 'Success',
-      alertMessage: data.response? data.response.message: data.message,
+      alertMessage: data.response ? data.response.message : data.message,
       alertType: data.responseCode
     });
   }

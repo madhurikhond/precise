@@ -135,8 +135,8 @@
                     <div class="theme-label-subtitle"><a class="link-btn" (click)="senddatatoschd_facilities()">Facility
                             Details</a></div>
                 </div>
-            </div>
-            <div class="row">
+            </div>           
+            <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Modality/Resource</div>
                 </div>
@@ -145,7 +145,7 @@
                         <div class="input-group">
                             <div class="input-group">
                                 <select #modalityGetType id="modalityGetType" class="form-control"
-                                     formControlName="modalityType"
+                                    formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
                                     <option value="" selected>Select Modality</option>
@@ -167,8 +167,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="form-control" 
-                                formControlName="contrastType"
+                            <select class="form-control" formControlName="contrastType"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.contrastType.errors) }">
                                 <option value="" selected>Select contrast Type</option>
                                 <option value='w/o'>W / O Contrast ONLY</option>
@@ -189,7 +188,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Lease Time Starts</div>
                 </div>
@@ -197,9 +196,8 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                            [displayFormat]="dateTimeFormatCustom.Date"
-                            [useMaskBehavior]="true"
-                            dateSerializationFormat="MM-dd-yyyy"
+                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
+                                dateSerializationFormat="MM-dd-yyyy"
                                 (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date"
                                 type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_date.errors) }">
@@ -235,7 +233,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Lease Time Ends</div>
                 </div>
@@ -243,9 +241,8 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                            [displayFormat]="dateTimeFormatCustom.Date"
-                            [useMaskBehavior]="true"
-                            dateSerializationFormat="MM-dd-yyyy"
+                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
+                                dateSerializationFormat="MM-dd-yyyy"
                                 (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="disableIt(event)"
                                 formControlName="end_date" type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
@@ -386,20 +383,20 @@
                     <div *ngIf="editFormControls.CreditReasonText.errors?.required">
                         Credit Reason Text is required</div>
                 </div>
-            </div> 
+            </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" *ngIf="!isLeaseSigned && LeaseBlockId!=0" (click)="confirmDelete()"
+        <button #deleteBtn id="deleteBtn"  (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
-        <button type="button" (click)="saveBlockLeaseData()"
+        <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
             class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
     </div>
 </div>
 
-<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkFacilityPopup" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkFacilityPopup" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -419,8 +416,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkAlreadyBlockedLeasePopup" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkAlreadyBlockedLeasePopup"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -480,7 +477,8 @@
                 <p>{{popupMessage}}</p>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>

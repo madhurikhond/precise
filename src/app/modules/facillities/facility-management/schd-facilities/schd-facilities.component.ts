@@ -227,7 +227,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createIntakeTabForm();
     this.createTagForm();
     this.createGeneralPoliciesForm();
-    this.getFacilityParentList();   
+    this.getFacilityParentList();
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -313,7 +313,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
-  get3pLeaseFacilityData(path: any,fileData: any) {
+  get3pLeaseFacilityData(path: any, fileData: any) {
     debugger;
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
@@ -1134,15 +1134,15 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
   }
   updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
-  
-//alert('Respource Id:' + ResourceId);
+
+    //alert('Respource Id:' + ResourceId);
     var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
     if (data.length > 0)
       data[0].ResourceId = ResourceId;
     else {
       if (Modality == 'ct') {
         var test = this.modalityCtForm.controls["ct1ResourceName"].value;
-         //alert('CT Test ' + test);
+        //alert('CT Test ' + test);
         if (
           (this.modalityCtForm.controls['ct1ResourceName'].value !=
             ResourceId &&
@@ -1167,7 +1167,7 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       } else {
         var test = this.modalityMriForm.controls['mri1ResourceName'].value;
-         //alert('MRI Test ' + test);
+        //alert('MRI Test ' + test);
         if (
           (this.modalityMriForm.controls['mri1ResourceName'].value !=
             ResourceId &&
@@ -1413,15 +1413,15 @@ export class SchdFacilitiesComponent implements OnInit {
             if (res.response != null) {
               this.blockLeasePricingList = res.response;
               this.showNotificationOnSucess({
-                message:res.response.message,
-                responseCode:res.responseCode
-              }); 
+                message: res.response.message,
+                responseCode: res.responseCode
+              });
             }
 
-            if(this.isApplyAndOkBtnVisisble){
+            if (this.isApplyAndOkBtnVisisble) {
               this.updateFacility(true);
             }
-            else if(this.isInsertBtnVisisble){
+            else if (this.isInsertBtnVisisble) {
               this.addFacility();
             }
 
@@ -1561,6 +1561,23 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
+    } else {
+      $('#BlockLeaseRate')
+        .not('.btn')
+        .attr('disabled', false)
+        .removeClass('disabledClass');
+      $('#gridContainerLeaseAgreement_MRI')
+        .not('.btn')
+        .attr('disabled', true)
+        .removeClass('disabledClass');
+      $('#gridContainerLeaseAgreement_CT')
+        .not('.btn')
+        .attr('disabled', true)
+        .removeClass('disabledClass');
+      $('#CreditandDebit')
+        .not('.btn')
+        .attr('disabled', true)
+        .removeClass('disabledClass');
     }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
@@ -3976,30 +3993,27 @@ export class SchdFacilitiesComponent implements OnInit {
       ? this.modalityMriForm.controls['mri3ResourceName'].value
       : '';
 
-      if(parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)  )
-      {        
-        this.modalityMriForm.patchValue({
-          ['mri2ResourceName']: 0,
-        });
-        this.MRIDuplicateResourceNotification();
-       
-      }
-      if(parseInt(Mri2ResourceName) == parseInt(Mri3ResourceName)  )
-      {     
-        this.modalityMriForm.patchValue({
-          ['mri3ResourceName']: 0,
-        });
-        this.MRIDuplicateResourceNotification();   
-       
-      }
-      if(parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)  )
-      {    
-        this.modalityMriForm.patchValue({
-          ['mri3ResourceName']: 0,
-        });    
-        this.MRIDuplicateResourceNotification();
-      
-      }
+    if (parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri2ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
+    if (parseInt(Mri2ResourceName) == parseInt(Mri3ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri3ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
+    if (parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri3ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
     var Dictionary = {
       Type1: Mri1Type + ' ' + Mri1ResourceName,
       Type2: Mri2Type + ' ' + Mri2ResourceName,
@@ -4019,13 +4033,13 @@ export class SchdFacilitiesComponent implements OnInit {
           this.modalityMriForm.patchValue({
             ['mri2ResourceName']: 0,
           });
-         
+
         } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
           this.modalityMriForm.patchValue({
             ['mri3ResourceName']: 0,
           });
-         
+
         }
       }
     }
@@ -4040,7 +4054,7 @@ export class SchdFacilitiesComponent implements OnInit {
       ) {
         if (Dictionary.Type1 == Dictionary.Type2) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
-        
+
           this.modalityMriForm.patchValue({
             ['mri2ResourceName']: 0,
           });
@@ -4049,7 +4063,7 @@ export class SchdFacilitiesComponent implements OnInit {
           this.modalityMriForm.patchValue({
             ['mri3ResourceName']: 0,
           });
-        
+
         }
       }
     }
@@ -4064,36 +4078,34 @@ export class SchdFacilitiesComponent implements OnInit {
       ) {
         if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
-         
-         this.modalityMriForm.patchValue({
-          ['mri2ResourceName']: 0,
-        });
+
+          this.modalityMriForm.patchValue({
+            ['mri2ResourceName']: 0,
+          });
         } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
-      
-         this.modalityMriForm.patchValue({
-          ['mri3ResourceName']: 0,
-        });
+
+          this.modalityMriForm.patchValue({
+            ['mri3ResourceName']: 0,
+          });
         }
       }
     }
   }
- MRIDuplicateResourceNotification()
-{
-  this.notificationService.showNotification({
-    alertHeader: 'Duplicate MRI Resource Name',
-    alertMessage: 'selection of Duplicate MRI Resource Name is not allowed.',
-    alertType: 404,
-  });  
-}
-CTDuplicateResourceNotification()
-{
-  this.notificationService.showNotification({
-    alertHeader: 'Duplicate CT Resource Name',
-    alertMessage: 'selection of Duplicate CT Resource Name is not allowed.',
-    alertType: 404,
-  });  
-}
+  MRIDuplicateResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate MRI Resource Name',
+      alertMessage: 'selection of Duplicate MRI Resource Name is not allowed.',
+      alertType: 404,
+    });
+  }
+  CTDuplicateResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate CT Resource Name',
+      alertMessage: 'selection of Duplicate CT Resource Name is not allowed.',
+      alertType: 404,
+    });
+  }
   CheckSameCombinationCT(type: string) {
     debugger
     const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
@@ -4112,30 +4124,27 @@ CTDuplicateResourceNotification()
       ? this.modalityCtForm.controls['ct3ResourceName'].value
       : '';
 
-      if(parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName) )
-      {        
-        this.modalityCtForm.patchValue({
-          ['ct2ResourceName']: 0,
-        });
-        this.CTDuplicateResourceNotification();
-      
-      }
-      if(parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)  )
-      {     
-        this.modalityCtForm.patchValue({
-          ['ct3ResourceName']: 0,
-        });
-        this.CTDuplicateResourceNotification();   
-      
-      }
-      if(parseInt(Ct3ResourceName) == parseInt(Ct1ResourceName)  )
-      {        
-        this.modalityCtForm.patchValue({
-          ['ct3ResourceName']: 0,
-        });
-        this.CTDuplicateResourceNotification();
-       
-      }
+    if (parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct2ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
+    if (parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct3ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
+    if (parseInt(Ct3ResourceName) == parseInt(Ct1ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct3ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
     var Dictionary = {
       Type1: Ct1Type + ' ' + Ct1ResourceName,
       Type2: Ct2Type + ' ' + Ct2ResourceName,
@@ -4203,7 +4212,7 @@ CTDuplicateResourceNotification()
           this.modalityCtForm.patchValue({
             ['ct3ResourceName']: 0,
           });
-         // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+          // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
         }
       }
     }
