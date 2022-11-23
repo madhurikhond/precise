@@ -3935,7 +3935,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }
     this.blockleasescheduler.getTotalAmountToPay(true, JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
       if (res.response[0].TotalAmount >= 0) {
-        const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+        const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small payment-invoice-popup' });
         modalRef.componentInstance.AmountDetails = res.response[0];
         modalRef.componentInstance.selectedleases = this.selectedleaseArray;
         modalRef.componentInstance.selectedCreditIds = creditIdListTemp;
