@@ -1,0 +1,99 @@
+<div class="inner-tab-content">
+    <div class="headerBtnSection">
+       <div class="selectAction-sec">
+            <div class="selectAction-Dropdown">
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option>Select Action</option>
+                            <option>Cancel & Remove</option>
+                            <option>Edit Payment Info</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="ationPerformBtn">
+                <button class="btn btn-go" data-toggle="modal" data-target="#paidActionModal">Go</button>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fundingcopaid-section" id="FundingCoPaid">
+        <div class="table-responsive">
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="FundingCoPaid"
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-sorting mode="none"></dxo-sorting>
+
+                <dxi-column dataField="checkno" caption="Checkno"></dxi-column>
+                <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                <div *dxTemplate="let data of 'PDFIconTemplate'">
+                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                </div>
+                <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
+                <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
+                    <dx-data-grid [dataSource]="batchNameList" class="innerList" [columnAutoWidth]="true"
+                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
+                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling> 
+                        <dxo-sorting mode="none"></dxo-sorting>
+                        <dxi-column dataField="Batchname" caption="Batchname"> </dxi-column>
+                        <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
+                        <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
+                            <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
+                                [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                                <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                                <dxo-sorting mode="none"></dxo-sorting>
+                                <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="readingIconTemplate"></dxi-column>
+                                <dxi-column dataField="rad" caption="RAD"> </dxi-column>
+                                <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
+                                <dxi-column dataField="executeddate" caption="Executed Date"></dxi-column>
+                                <dxi-column dataField="paiddate" caption="Paid Date"></dxi-column>
+                                <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
+                                <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
+                                <dxi-column dataField="firstname" caption="First Name"></dxi-column>
+                                <dxi-column dataField="dob" caption="DOB"></dxi-column>
+                                <dxi-column dataField="study" caption="Study"></dxi-column>
+                                <dxi-column dataField="access" caption="Access#"></dxi-column>
+                                <dxi-column dataField="cptgroup" caption="CPT Group"></dxi-column>
+                                <dxi-column dataField="arprice" caption="AR Price"></dxi-column>
+                                <div *dxTemplate="let data of 'readingIconTemplate'">
+                                    <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
+                                </div>
+                            </dx-data-grid>
+        
+                        </div>
+                    </dx-data-grid>
+
+                </div>
+            </dx-data-grid>
+        </div>
+        <!-- <div class="pagination-theme">
+            <div
+                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            </div>
+            
+        </div> -->
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="paidActionModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <p class="confirmationText">This will remove the entire payment. Are you sure you want to continue?</p>
+                    <p class="confirmationText">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES. VOID ANY NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" data-dismiss="modal">Cancel</a>
+                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
