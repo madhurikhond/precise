@@ -4,15 +4,27 @@
             <div id="englishpatient" class="esign-request" style="display: block;">
                 <div class="esign-header">
                     <div class="esign-header-left">
-                        <img src="assets/images/radflowsolutions-logo.png" class="logo">
+                        <img src="assets/images/precise-imaging-logo.png" class="logo">
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(leaseAgreementPath,'')"
+                            class="link-btn fa fa-file-pdf-o" data-toggle="modal"
+                            data-target="#view-lease-aggrement-pdf"></a>
                     </div>
                 </div>
-                <div class="esign-header-title"> <span id="lblepftype" class="page-title">LEASE AGREEMENT</span>
+                <div class="esign-header-title"> <span id="lblepftype" class="page-title">FACILITY LEASE
+                        AGREEMENT</span>
                 </div>
                 <div class="paragraph-group">
                     <p> <strong>This LEASE AGREEMENT .</strong></p>
-                    This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
+                    <!-- This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
                     {{LeaseDetail.createdOn}} (the "Effective Date") by and between {{LeaseDetail.FacilityParentName }}
+                    (hereinafter referred to as
+                    the "Lessor") and Precise MRI Corp., dba Precise Imaging, a California Corporation (here in after
+                    referred
+                    to as the “Lessee"). -->
+                    This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
+                    (the "Effective Date") by and between 
                     (hereinafter referred to as
                     the "Lessor") and Precise MRI Corp., dba Precise Imaging, a California Corporation (here in after
                     referred
@@ -107,6 +119,21 @@
                                 data-dismiss="modal" #closeBtn (click)="signConfirm(false)">Clear</a>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-theme in" id="view-lease-aggrement-pdf" data-backdrop="static"
+            data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Lease Agreement</h5>
+                        <div class="close-dismiss" data-dismiss="modal"></div>
+                    </div>
+                    <div class="modal-body" *ngIf="fileData">
+                        <iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
