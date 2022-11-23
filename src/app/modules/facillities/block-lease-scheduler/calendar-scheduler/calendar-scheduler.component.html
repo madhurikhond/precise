@@ -38,11 +38,11 @@
                     <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" *ngIf="approveGoToNext" class="btn btn-theme pull-left"
                     (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{'{ ' + FACILITY_NAME + ' }'}}</a>
                  <a href="javascript:void(0)"  [class.disabled]="isDisplayApproveBtn" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
-                       data-toggle="modal" class="btn btn-theme  pull-left" style="background: green;">APPROVE ALL Parent{{ParentCompanyName}} FACILITIES & SEND LEASE
-                      AGREEMENT
+                       data-toggle="modal" class="btn btn-theme  pull-left" style="background: green;">APPROVE ALL
+                  Parent {{ParentCompanyName}} FACILITIES & SEND LEASE AGREEMENT
                     </a>
                 <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" data-target="#approveLeasePopup" data-toggle="modal"
-                    class="btn btn-theme  pull-left">Approve and send lease
+                    class="btn btn-theme  pull-left">Approve & send lease
                     agreement to facility</a>
                 </div>
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
