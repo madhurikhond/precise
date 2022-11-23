@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { SignaturePad } from 'angular2-signaturepad';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-facility-esign',
@@ -11,12 +13,15 @@ import { NotificationService } from 'src/app/services/common/notification.servic
   styleUrls: ['./facility-esign.component.css']
 })
 export class FacilityEsignComponent implements OnInit {
-
+  @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @ViewChild('f', { static: true }) f: NgForm | any;
   model: any = { firstName: '', lastName: '', Title: '', signature: '' };
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   BlockLeaseNumber: string; alreadySignedbodyDisabled: boolean;
   LeaseDetail: any = [];
+  fileData : any;
+  apiUrl : any ;
+  leaseAgreementPath:any;
   signaturePadOptions: Object = {
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -27,7 +32,8 @@ export class FacilityEsignComponent implements OnInit {
   submitted = false; modelValue: string = 'modal';
   constructor(private Activatedroute: ActivatedRoute,
     private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
-    private readonly notificationService: NotificationService) { }
+    private readonly notificationService: NotificationService,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.Activatedroute.paramMap.subscribe(params => {
@@ -37,6 +43,7 @@ export class FacilityEsignComponent implements OnInit {
 
   }
   getEsignData() {
+  
     let body =
     {
       'key': this.BlockLeaseNumber
@@ -44,6 +51,7 @@ export class FacilityEsignComponent implements OnInit {
     this.blockLeaseSchedulerService.getLeaseDetail(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
       if (res.responseCode == 200) {
         this.LeaseDetail = res.response;
+        this.leaseAgreementPath = res.response.LeaseAgreementPath;
         if (this.LeaseDetail.IsLinkExpired) {
           this.alreadySignedbodyDisabled = true;
         }else{
@@ -67,6 +75,14 @@ export class FacilityEsignComponent implements OnInit {
   clearSign(): void {
     this.signaturePad.clear();
     this.model.signature = '';
+  }
+
+  getLeaseAggrementDetail(path: any,fileData: any) {
+    
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
+    fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
+    this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
+    this.hiddenViewFile.nativeElement.click();
   }
   submitSign(f: NgForm) {
     if (this.model.signature == '') {

@@ -32,7 +32,7 @@
                                     [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors) }"
                                     (change)="changedOffDays($event)">
                                     <option value="" selected>Select Modality</option>
-                                    <option *ngIf="IsAllModality" value="0" selected>All</option>
+                                    <option value="0" selected>All</option>
                                     <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
                                         label="{{group.Modality}}">
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
@@ -197,6 +197,9 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                            [displayFormat]="dateTimeFormatCustom.Date"
+                            [useMaskBehavior]="true"
+                            dateSerializationFormat="MM-dd-yyyy"
                                 (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date"
                                 type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_date.errors) }">
@@ -240,6 +243,9 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                            [displayFormat]="dateTimeFormatCustom.Date"
+                            [useMaskBehavior]="true"
+                            dateSerializationFormat="MM-dd-yyyy"
                                 (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="disableIt(event)"
                                 formControlName="end_date" type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
