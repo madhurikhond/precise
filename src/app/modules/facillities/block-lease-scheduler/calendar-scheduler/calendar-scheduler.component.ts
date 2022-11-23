@@ -436,6 +436,7 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     GetAllParentFacilitiesByFacilityId() {
         var otherFacilities: any = [];
+        this.approveGoToNext = false;
         this.blockLeaseSchedulerService.getAllParentFacilitiesByFacilityId(true, this.FacilityID).subscribe((res) => {
             if (res.response.OtherFacilities) {
                 this.ParentCompanyName = res.response.ParentCompanyName;
