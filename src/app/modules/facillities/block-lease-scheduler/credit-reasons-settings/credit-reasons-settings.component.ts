@@ -18,6 +18,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   resizingModes: string[] = ['widget', 'nextColumn'];
   addCreditReasonForm: FormGroup;
   creditReasonsList: any = [];
+  PagecreditReasonsList: any = [];
   esignList: any = [];
   submitted = false;
   modelValue: string = 'modal';
@@ -25,6 +26,10 @@ export class CreditReasonsSettingComponent implements OnInit {
   esignId: number = 0;
   @ViewChild('f', { static: true }) f: NgForm | any;
   model: any = { firstName: '', lastName: '', Title: '', signature: '' };
+  pageSize: number = 20;
+  pageNumber: number = 1;
+  totalesignList: number = 0;
+  totalcreditReasonsList: number = 0;
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
@@ -61,6 +66,8 @@ export class CreditReasonsSettingComponent implements OnInit {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {
         this.creditReasonsList = data.response;
+        this.totalcreditReasonsList = this.creditReasonsList.length;
+        this.PagecreditReasonsList = this.paginate(this.creditReasonsList, this.pageSize, this.pageNumber);
       }
       else {
         this.notificationService.showNotification({
@@ -83,6 +90,7 @@ export class CreditReasonsSettingComponent implements OnInit {
       var data: any = res;
       if (data.response != null && data.response.length > 0) {
         this.esignList = data.response;
+        this.totalesignList = this.esignList.length;
       }
     },
       (err: any) => {
@@ -283,4 +291,11 @@ export class CreditReasonsSettingComponent implements OnInit {
       });
   }
   get addForm() { return this.addCreditReasonForm.controls; }
+  onPageNumberChange(pageNumber: any) {
+    this.pageNumber = pageNumber;
+    this.PagecreditReasonsList = this.paginate(this.creditReasonsList, this.pageSize, this.pageNumber);
+  }
+  paginate(array, page_size, page_number) {
+  return array.slice((page_number - 1) * page_size, page_number * page_size);
+}
 }
