@@ -2,8 +2,8 @@
 
     <div class="tableDataSection">
         <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelection ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
-            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelection ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal">BILL
+            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
         <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
@@ -59,9 +59,8 @@
                 <div class="modal-content">
                     <p class="stepText"> 1. Assign a funding company</p>
                     <div class="form-group">
-                        <ng-select [items]="fundingCompanies" bindLabel="name" bindValue="id" [searchable]="false"
-                             placeholder="List of AR Companies"
-                            (change)="onMaterialGroupChange($event)">
+                        <ng-select [items]="fundingCompanies" [(ngModel)]="selecteFundComp" [ngModelOptions]="{ standalone : true }" bindLabel="name" bindValue="id" [searchable]="true"
+                             placeholder="List of AR Companies">
                         </ng-select>
                     </div>
                     <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
@@ -70,14 +69,14 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="First Name">
+                                        <input type="text" class="form-control" [(ngModel)]="firstName" placeholder="First Name">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Last Name">
+                                        <input type="text" class="form-control" [(ngModel)]="lastName" placeholder="Last Name">
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +86,7 @@
                                 <div class="form-group">
                                     <div class="signature-custom">
                                         <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
-                                            [(ngModel)]="dummyData" [ngModelOptions]="{ standalone : true }"
+                                            [(ngModel)]="radiologistSign" [ngModelOptions]="{ standalone : true }"
                                             #signature="ngModel" (onEndEvent)="drawComplete()">
                                         </signature-pad>
                                     </div>
@@ -107,7 +106,7 @@
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
+                <button type="button" [ngClass]="!onAssignARValidation() ? 'disabled':''" (click)="onAssignAR()" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
             </div>
         </div>
     </div>

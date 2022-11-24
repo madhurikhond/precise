@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
@@ -19,6 +20,7 @@ export class LienPortalComponent implements OnInit {
     this.filterForm = this.fb.group({
       patientId: [''],
       readingRad: [''],
+      cptGroup: [''],
       dateFrom: [''],
       dateTo: [''],
       dateType: [''],
@@ -51,14 +53,18 @@ export class LienPortalComponent implements OnInit {
             this.list_CPTGroup = result.result
           }
         }
-        if (!result.exception) {
+        if (result.exception && result.exception.message) {
           this.lienPortalService.errorNotification(result.exception.message);
         }
       }, (error) => {
-        this.lienPortalService.errorNotification(error.message);
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
       })
     } catch (error) {
-      this.lienPortalService.errorNotification(error.message);
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
     }
   }
 
@@ -77,14 +83,18 @@ export class LienPortalComponent implements OnInit {
             this.list_ReferrerByUser = result.result
           }
         }
-        if (!result.exception) {
+        if (result.exception && result.exception.message) {
           this.lienPortalService.errorNotification(result.exception.message);
         }
       }, (error) => {
-        this.lienPortalService.errorNotification(error.message);
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
       })
     } catch (error) {
-      this.lienPortalService.errorNotification(error.message);
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
     }
   }
 
@@ -121,32 +131,41 @@ export class LienPortalComponent implements OnInit {
     switch (this.selectedMode) {
       case "pending":
         this.filter = {
-          "userType": "",
-          "procGroupName": "",
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.filterForm.get("dateFrom").value,
-          "dateTo": this.filterForm.get("dateTo").value,
-          "dateType": this.filterForm.get("dateType").value,
+          "referrers": this.filterForm.get("readingRad").value,
+          "cptGroup": this.filterForm.get("cptGroup").value,
           "loggedPartnerId": this.storageService.PartnerId,
           "jwtToken": this.storageService.PartnerJWTToken,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateType": this.filterForm.get("dateType").value,
           "userId": this.storageService.user.UserId
         };
         break;
       case "assign_unpaid":
         this.filter = {
           "fundingCompany": this.filterForm.get("fundingCompany").value,
-          "isFundingCompanySigned": false,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.filterForm.get("dateFrom").value,
-          "dateTo": this.filterForm.get("dateTo").value,
-          "dateType": this.filterForm.get("dateType").value,
+          "isFundingCompanySigned": this.filterForm.get("fundingCoSigned").value,
           "loggedPartnerId": this.storageService.PartnerId,
           "jwtToken": this.storageService.PartnerJWTToken,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateType": this.filterForm.get("dateType").value,
           "userId": this.storageService.user.UserId
         };
         break;
       case "assign_paid":
         this.filter = {
+          "fundingCompany": this.filterForm.get("fundingCompany").value,
+          "checkNumber": this.filterForm.get("checkNumber").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateType": this.filterForm.get("dateType").value,
+          "userId": this.storageService.user.UserId
         };
         break;
       case "retain_unpaid":
@@ -167,15 +186,20 @@ export class LienPortalComponent implements OnInit {
     this.filterForm.patchValue({
       patientId: '',
       readingRad: '',
-      dateFrom: new Date().toISOString(),
-      dateTo: new Date().toISOString(),
+      cptGroup: '',
+      dateFrom: this.convertDateFormat(new Date()),
+      dateTo: this.convertDateFormat(new Date()),
       dateType: '',
       fundingCompany: '',
-      fundingCoSigned: '',
+      fundingCoSigned: false,
       check: '',
       checkNumber: '',
     });
     this.onFilter();
+  }
+
+  convertDateFormat(date){
+    return moment(date).format('MM/DD/YYYY');
   }
 
 }
