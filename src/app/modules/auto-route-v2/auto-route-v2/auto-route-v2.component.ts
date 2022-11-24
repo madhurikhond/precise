@@ -82,6 +82,9 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
   show: boolean = false;
   data: string = 'AutoRouteV2'
   deleteMessage: string
+  isFileSizeOk = [] ; 
+  fileItems = [] ;
+  isFileSizeSmall : any = false;
   constructor(
     private readonly notificationService: NotificationService,
     private http: HttpClient,
@@ -166,7 +169,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
 
   onFileChange(event: any) {
-
+    this.isFileSizeSmall = false;
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.select_all = false;
@@ -178,52 +181,61 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
         if (res != null) {
           var selectedFiles = event.target.files;
           for (let i = 0; i < selectedFiles.length; i++) {
-            this._fileExtension = res.response[0].FileExtension;
-            if (this._fileExtension != null) {
-              this._matchExtension = !!event.target.files[i].name.toLocaleLowerCase().match(this._fileExtension);
-              if (!this._matchExtension) {
-                this.CodeErrorNotification('File type not allowed');
-                return;
-              }
-              else {
-                this.isUploadShown = true;
-                if (event.target.files && event.target.files[i]) {
-                  if (this.splitFiles === true && this.barCodes === true) {
-                    var reader = new FileReader();
-                    reader.onload = (e: any) => {
-                      var blob = new Blob(event.target.files, { type: event.target.files[i].type });
-                      var url = window.URL.createObjectURL(blob);
-                      this.name = event.target.files[i]['name'];
-                      this.viewUrl = reader.result;
-                      this.patientList.push({ name: this.name, viewUrl: url, is_selected: false, DocId: 0, Dtype: 'Select Document File Type', Abbreviation: '', ReferreId: '', fileInfo: event.target.files[i], RadiologistId: 0, Radiologist: 'Select Document File Type', name2: this.name });
-                      this.updateDropDownArray();
-                    }
-                    reader.readAsDataURL(event.target.files[i]);
-                  } else {
-                    let formData = new FormData();
-                    formData.append('file', event.target.files[i]);
-                    formData.append('UserId', this.storageService.user.UserId);
-                    formData.append('splitFiles', <string><any>this.splitFiles);
-                    formData.append('barCodes', <string><any>this.barCodes);
-                    if (selectedFiles.length > 1) {
-                      setTimeout(() => {
-                        this.MultipleSelectionSplit(formData);
-                      }, 400);
+            debugger
+            if(selectedFiles[i]['size'] == 0){
+              this.isFileSizeSmall = true
+            }
+            if(selectedFiles[i]['size'] > 0){
+              this._fileExtension = res.response[0].FileExtension;
+              if (this._fileExtension != null) {
+                this._matchExtension = !!event.target.files[i].name.toLocaleLowerCase().match(this._fileExtension);
+                if (!this._matchExtension) {
+                  this.CodeErrorNotification('File type not allowed');
+                  return;
+                }
+                else {
+                  this.isUploadShown = true;
+                  if (event.target.files && event.target.files[i]) {
+                    if (this.splitFiles === true && this.barCodes === true) {
+                      var reader = new FileReader();
+                      reader.onload = (e: any) => {
+                        var blob = new Blob(event.target.files, { type: event.target.files[i].type });
+                        var url = window.URL.createObjectURL(blob);
+                        this.name = event.target.files[i]['name'];
+                        this.viewUrl = reader.result;
+                        this.patientList.push({ name: this.name, viewUrl: url, is_selected: false, DocId: 0, Dtype: 'Select Document File Type', Abbreviation: '', ReferreId: '', fileInfo: event.target.files[i], RadiologistId: 0, Radiologist: 'Select Document File Type', name2: this.name });
+                        this.updateDropDownArray();
+                      }
+                      reader.readAsDataURL(event.target.files[i]);
                     } else {
-                      setTimeout(() => {
-
-                        this.saveWithSplit_BarCodeAttachDoc(formData);
-
-                      }, 400);
+                      let formData = new FormData();
+                      formData.append('file', event.target.files[i]);
+                      formData.append('UserId', this.storageService.user.UserId);
+                      formData.append('splitFiles', <string><any>this.splitFiles);
+                      formData.append('barCodes', <string><any>this.barCodes);
+                      if (selectedFiles.length > 1) {
+                        setTimeout(() => {
+                          this.MultipleSelectionSplit(formData);
+                        }, 400);
+                      } else {
+                        setTimeout(() => {
+  
+                          this.saveWithSplit_BarCodeAttachDoc(formData);
+  
+                        }, 400);
+                      }
                     }
                   }
-
                 }
               }
-            }
+            } 
           }
+          if (this.isFileSizeSmall){
+            this.CodeErrorNotification('Some File(s) appears to be empty since the file size is 0 KB.  Please recheck the file and try again.')
+          }  
           $('#myInputFile').val('')
         }
+        
       }, (err: any) => {
         this.errorNotification(err);
       });
@@ -244,7 +256,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(Dta.fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist, name2: Dta.FileName.replace(/_Mergerd.*.pdf/, '') });
+            this.patientList.push({ name: Dta.FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: Dta.DocID, Dtype: Dta.DocType, Abbreviation: Dta.Abbreviation, ReferreId: Dta.PatientID, fileInfo: Dta.Path, RadiologistId: Dta.RadiologistId, Radiologist: Dta.Radiologist, name2: Dta.FileName.replace(/_Merged.*.pdf/, '') });
           }
 
           this.updateDropDownArray();
@@ -266,7 +278,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             let ArrayBuff = this._base64ToArrayBuffer(res.response[i].fileBytes);
             let file = new Blob([ArrayBuff], { type: 'application/pdf' });
             let FileName = file['name'];
-            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist, name2: res.response[i].FileName.replace(/_Mergerd.*.pdf/, '') })
+            this.patientList.push({ name: res.response[i].FileName, viewUrl: URL.createObjectURL(file), is_selected: false, DocId: res.response[i].DocID, Dtype: res.response[i].DocType, Abbreviation: res.response[i].Abbreviation, ReferreId: res.response[i].PatientID, fileInfo: res.response[i].Path, RadiologistId: res.response[i].RadiologistId, Radiologist: res.response[i].Radiologist, name2: res.response[i].FileName.replace(/_Merged.*.pdf/, '') })
 
           }
           this.updateDropDownArray();
@@ -471,8 +483,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
 
                   for (let i = 0; i < this.patientList.length; i++) {
                     if (insert == i) {
-
-                        this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[0].RadiologistId, Radiologist: res.response[0].Radiologist, name2: res.response[0].FileName.replace(/_Mergerd.*.pdf/, '_Mergerd.pdf') });
+                        this.patientList.splice(index, 1, { name: res.response[0].FileName, viewUrl: fileURL, is_selected: false, DocId: res.response[0].DocID, Dtype: res.response[0].DocType, Abbreviation: res.response[0].Abbreviation, ReferreId: res.response[0].PatientID, fileInfo: res.response[0].Path, RadiologistId: res.response[0].RadiologistId, Radiologist: res.response[0].Radiologist, name2: res.response[0].FileName.replace(/_Merged.*.pdf/, '_Merged.pdf') });
                     }
                   }
                 }
@@ -533,7 +544,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
             formData.append('barCodes', <string><any>this.barCodes);
             formData.append('RadiologistId', this.patientList[i].RadiologistId.toString());
             formData.append('Radiologist', this.patientList[i].Radiologist);
-            if (this.patientList[i].name.toLowerCase().indexOf('mergerd.pdf') !== -1) {
+            if (this.patientList[i].name.toLowerCase().indexOf('_merged') !== -1) {
               formData.append('MergedFile', 'true');
             } else { formData.append('MergedFile', 'false'); }
             setTimeout(() => {

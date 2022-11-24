@@ -26,6 +26,7 @@ export class ReceivePaymentComponent implements OnInit {
   a1: any = 20;
   a2: any = 20;
   a3: any = 20;
+  botomGridDataCount:any=0;
   maxDate = new Date();
   searchForm: FormGroup;
   checkdetailForm: FormGroup;
@@ -193,6 +194,12 @@ export class ReceivePaymentComponent implements OnInit {
   getBottomGrid() {
 
     this.accountingService.getBottomGrid(true, this.bottomPageNumber, this.pageSize, Number(this.storageService.user.UserId)).subscribe((res) => {
+      if(res.response.length>0){
+        this.botomGridDataCount=res.response.length;
+      }
+      else{
+        this.botomGridDataCount=0;
+      }
       var data: any = res;
       this.bottomDataList = data.response;
       this.bottomTotalRecords = data.totalRecords;
