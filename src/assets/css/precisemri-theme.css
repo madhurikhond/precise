@@ -2571,7 +2571,7 @@ button {
 	display: inline-block;
 	flex-wrap: initial;
 	align-items: flex-end;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 	/*overflow: hidden;*/
 	text-overflow: ellipsis;
 	margin: 0;
@@ -7012,7 +7012,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
   }
   .displayCounter {
 	font-size: 9px;
-    line-height: 17px;
+    line-height: 18px;
     text-align: center;
     color: #ffffff;
     font-weight: 700;
@@ -7022,7 +7022,8 @@ tree-node:last-child > .tree-node > .tree-children::after {
     top: -8px;
     left: 8px;
     padding: 0px 3px;
-    height: 18px;
+    height: 20px;
+    width: 20px;
 }
 .dhx_scale_holder_now{
 	background-color: #fff !important;
