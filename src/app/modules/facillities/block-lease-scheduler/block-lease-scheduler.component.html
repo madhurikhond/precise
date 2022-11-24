@@ -321,11 +321,16 @@
 
                         <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                         <dxi-column dataField="LeaseId" caption="Lease #"></dxi-column>
-                        <dxi-column dataField="LeaseDate" caption="Lease Dates"></dxi-column>
+                        <dxi-column dataField="LeaseDate" caption="Lease Dates"  cellTemplate="leaseDateCellTemplate"></dxi-column>
                         <dxi-column dataField="TotalHours" caption="Lease Hours"></dxi-column>
                         <dxi-column dataField="PaymentStatus" caption="Payment Status"></dxi-column>
                         <dxi-column dataField="LeaseAgreement" cellTemplate="leaseAggrementTemplate"
                             caption="Lease Aggrements"></dxi-column>
+                            <div *dxTemplate="let data of 'leaseDateCellTemplate'">
+                                <ng-container *ngIf="data && data.value">
+                                    {{data.value | date:dateTimeFormatCustom.Date}}
+                                </ng-container>
+                            </div>
                         <div *dxTemplate="let data of 'leaseAggrementTemplate'">
                             <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.data.LeaseAgreement,'')"
                                 class="link-btn fa fa-file-pdf-o" data-toggle="modal"
