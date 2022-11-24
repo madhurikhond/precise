@@ -11,6 +11,14 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
   styleUrls: ['./lien-portal.component.css']
 })
 export class LienPortalComponent implements OnInit {
+ 
+  list_CPTGroup: any = [];
+  list_ReferrerByUser: any = [];
+
+  filter: any;
+  selectedMode: string;
+
+  filterForm: FormGroup;
 
   constructor(private lienPortalService: LienPortalService,
     private storageService: StorageService,
@@ -38,7 +46,6 @@ export class LienPortalComponent implements OnInit {
     this.onPendingBillTabClicked();
   }
 
-  list_CPTGroup: any = [];
   bindCPTGroup_DDL() {
     try {
       var data = {
@@ -68,7 +75,6 @@ export class LienPortalComponent implements OnInit {
     }
   }
 
-  list_ReferrerByUser: any = [];
   bindReferrerByUser() {
     try {
       var data = {
@@ -98,8 +104,6 @@ export class LienPortalComponent implements OnInit {
     }
   }
 
-  filter: any;
-  selectedMode: string;
   onPendingBillTabClicked() {
     this.selectedMode = "pending";
     this.clearFilter();
@@ -125,8 +129,6 @@ export class LienPortalComponent implements OnInit {
     this.clearFilter();
   }
 
-
-  filterForm: FormGroup;
   onFilter() {
     switch (this.selectedMode) {
       case "pending":

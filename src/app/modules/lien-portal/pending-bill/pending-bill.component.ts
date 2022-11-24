@@ -36,20 +36,17 @@ export class PendingBillComponent implements OnInit {
   radiologistSign: string;
 
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+  
   dataSource = [];
-
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 0;
   currentPageNumber: number = 1;
   totalRecord: number = 0;
   pageSize: number = 20;
-
   fundingCompanies = [];
   selecteFundComp: number = 0;
-
   checkboxSelectedData: any = [];
-
   firstName: string;
   lastName: string;
 
