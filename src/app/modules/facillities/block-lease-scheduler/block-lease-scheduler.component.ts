@@ -9,7 +9,7 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { textChangeRangeIsUnchanged } from 'typescript';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
-
+import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 @Component({
   selector: 'app-block-lease-scheduler',
@@ -18,6 +18,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class BlockLeaseSchedulerComponent implements OnInit {
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
+  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService, private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService,
