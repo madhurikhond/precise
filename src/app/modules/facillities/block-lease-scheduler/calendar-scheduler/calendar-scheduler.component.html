@@ -36,10 +36,10 @@
             <div class="modal-footer">
                 <div [hidden]="readOnlyCalender">
                     <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" *ngIf="approveGoToNext" class="btn btn-theme pull-left"
-                    (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY {{FACILITY_NAME}}</a>
+                    (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY <b> ({{FACILITY_NAME}} )</b></a>
                  <a href="javascript:void(0)"  [class.disabled]="isDisplayApproveBtn" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
-                       data-toggle="modal" class="btn btn-theme  pull-left" style="background: green;">APPROVE ALL
-                  Parent {{ParentCompanyName}} FACILITIES & SEND LEASE AGREEMENT
+                       data-toggle="modal" class="btn btn-theme  pull-left" style="background: green;"><b>APPROVE ALL Parent </b>
+                    <b>( {{ ParentCompanyName }} )</b> <b>  FACILITIES & SEND LEASE AGREEMENT</b>
                     </a>
                 <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" data-target="#approveLeasePopup" data-toggle="modal"
                     class="btn btn-theme  pull-left">Approve & send lease
