@@ -4,6 +4,8 @@ import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { StorageService } from 'src/app/services/common/storage.service';
 
 @Component({
   selector: 'app-pending-bill',
@@ -27,15 +29,18 @@ export class PendingBillComponent implements OnInit {
   dataSource = [];
   checkBoxesMode: string;
   allMode: string;
-  pageNumber: number = 1;
+  pageNumber: number = 0;
+  currentPageNumber: number = 1;
   totalRecord: number = 0;
   pageSize: number = 20;
   cities = [];
   fundingCompanies = [];
   selectedCityIds: string[];
   dummyData :string;
+  checkboxSelection:boolean = false;
 
-  constructor(private lienPortalService: LienPortalService) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,
+    private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
    
@@ -48,8 +53,12 @@ export class PendingBillComponent implements OnInit {
   }
 
   onPageNumberChange(pageNumber: any) {
-    this.pageNumber = pageNumber;
-    this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
+    this.currentPageNumber = pageNumber;
+    if(pageNumber > 1)
+    this.pageNumber = pageNumber - 1;
+    else
+    this.pageNumber = 0;
+    //this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
   }
   onMaterialGroupChange(event) {
     console.log(event);
@@ -60,30 +69,32 @@ export class PendingBillComponent implements OnInit {
     this.dummyData = '';
   }
 
+  showDocManager(patientId:any) {
+    this.commonService.sendDataToDocumentManager(patientId);
+  }
+
   getListingData() {
     try {
       var data = {
         "userType": "",
         "procGroupName": "",
-        "loggedPartnerId": 1,
-        "jwtToken": "",
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
         "patientId": "",
-        "dateFrom": "2022-11-22T06:20:26.206Z",
-        "dateTo": "2022-11-22T06:20:26.206Z",
+        "dateFrom": new Date().toISOString(),
+        "dateTo": new Date().toISOString(),
         "dateType": "",
-        "userId": 268
+        "userId": parseInt(this.storageService.user.UserId)
       };
 
       this.lienPortalService.GetPendingToBill(data).subscribe((result) => {
         if (result.status == 0) {
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
-            this.fundingCompanies = this.dataSource;
             this.totalRecord = result.result.length;
-            this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
           }
         }
-        if (!result.exception) {
+        if (result.exception) {
           this.lienPortalService.errorNotification(result.exception.message);
         }
       }, (error) => {
@@ -91,6 +102,18 @@ export class PendingBillComponent implements OnInit {
       })
     } catch (error) {
       this.lienPortalService.errorNotification(error.message);
+    }
+  }
+
+  changeCheckbox(item:any){
+    
+    this.checkboxSelection = false;
+    if(item)
+    {
+      if(item.selectedRowKeys.length > 0)
+      {
+        this.checkboxSelection = true;
+      }
     }
   }
 

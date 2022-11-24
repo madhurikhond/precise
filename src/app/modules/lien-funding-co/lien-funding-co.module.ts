@@ -17,9 +17,11 @@ import { LienFundingCoRoutingModule } from './lien-funding-co-routing.module';
 import { PendingSignatureComponent } from './pending-signature/pending-signature.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { FundingCoUnpaidComponent } from './funding-co-unpaid/funding-co-unpaid.component';
+import { FundingCoPaidComponent } from './funding-co-paid/funding-co-paid.component';
+import { FundingCoSettingComponent } from './funding-co-setting/funding-co-setting.component';
 
 @NgModule({
-  declarations: [LienFundingCoComponent, PendingSignatureComponent, FundingCoUnpaidComponent],
+  declarations: [LienFundingCoComponent, PendingSignatureComponent, FundingCoUnpaidComponent,FundingCoPaidComponent,FundingCoSettingComponent],
   imports: [
     CommonModule,
     NgSelectModule,

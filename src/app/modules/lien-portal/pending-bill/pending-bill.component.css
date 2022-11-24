@@ -17,6 +17,10 @@
     background: #7e7e7e;
     border: 1px solid #7e7e7e;
 }
+.disabled{
+    background: #7e7e7e !important;
+    border: 1px solid #7e7e7e !important;
+}
 .btn-common:hover{
     background: #ffffff;
     color: #3b8beb;

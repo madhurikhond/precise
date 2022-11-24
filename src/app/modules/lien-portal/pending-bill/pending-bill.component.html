@@ -2,21 +2,18 @@
 
     <div class="tableDataSection">
         <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR btn-grey" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
-            <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#signatureModal">BILL
+            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelection ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelection ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
         <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
-            [allowColumnReordering]="true" [showBorders]="true">
-
+            [allowColumnReordering]="true" [showBorders]="true" (onSelectionChanged)="changeCheckbox($event)">
+            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
             <dxo-load-panel [enabled]="true"> </dxo-load-panel>
-            <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
-            <dxo-paging [enabled]="false"></dxo-paging>
+            <dxo-selection [selectAllMode]="allMode"  [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
+            <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
             <dxo-pager [visible]="false"></dxo-pager>
-            
             <dxo-sorting mode="multiple"></dxo-sorting>
-            
-
             <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
             </dxi-column>
             <dxi-column dataField="rad" caption="RAD"></dxi-column>
@@ -32,14 +29,14 @@
 
 
             <div *dxTemplate="let data of 'facilityIdTemplate'">
-                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal" data-target="#docManager" (click)="showDocManager(data)"></a>
+                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal" data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
             </div>
         </dx-data-grid>
 
         <div class="pagination-theme">
             <div class="pagination-theme">
                 <div
-                    *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecord}">
+                    *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
                 </div>
                 <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
             </div>
