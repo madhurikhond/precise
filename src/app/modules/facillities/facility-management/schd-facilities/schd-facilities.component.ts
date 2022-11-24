@@ -1479,21 +1479,23 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
-    let PaymentId = '';
-    if (paymentMapping.data === undefined) {
-      PaymentId = paymentMapping.PaymentId;
-    }
-    else {
-      PaymentId = paymentMapping.data.PaymentId;
-    }
-    this.facilityService
-      .GetLeasePaymentMappingByFacilityId(true, PaymentId)
-      .subscribe((res) => {
-        if (res.response != null) {
-          this.blockLeasePaymentMappingList = res.response;
-          this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
-        }
-      });
+    if (paymentMapping.isExpanded) {
+      let PaymentId = '';
+      if (paymentMapping.data === undefined) {
+        PaymentId = paymentMapping.PaymentId;
+      }
+      else {
+        PaymentId = paymentMapping.data.PaymentId;
+      }
+      this.facilityService
+        .GetLeasePaymentMappingByFacilityId(true, PaymentId)
+        .subscribe((res) => {
+          if (res.response != null) {
+            this.blockLeasePaymentMappingList = res.response;
+            this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
+          }
+        });
+    }  
   }
 
   getBlockLeaseCreditsByFacilityId(leaseId: string) {
