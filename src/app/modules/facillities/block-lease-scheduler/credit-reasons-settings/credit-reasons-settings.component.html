@@ -20,37 +20,45 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
-                            <div class="row">
-                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
-                                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
-                                        data-toggle="modal" data-target="#add-new-record"><i class="fa fa-plus"></i> Add
-                                        New Record</a>
-                                </div>
-                            </div>
-                            <div class="table-responsive">
-                                <dx-data-grid id="gridContainer" [dataSource]="creditReasonsList"
-                                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
-                                    [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ID"
-                                    [showBorders]="true">
-                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                                    <dxi-column dataField="ID" [width]="2" caption="Action" [allowFiltering]="false"
-                                        [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
-                                    </dxi-column>
-                                    <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
-                                    <dxi-column dataField="IsActive" caption="Active" cellTemplate="IsActive">
-                                    </dxi-column>
-                                    <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
-                                    <div *dxTemplate="let data of 'cellTemplate'">
-                                        <a href="javascript:void(0)" (click)="edit(data.data.ID)"
-                                            class="single-action fa fa-pencil-square-o" data-toggle="modal"
-                                            data-target="#add-new-record"></a>
-                                    </div>
-                                </dx-data-grid>
-                            </div>
-
+                      <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
+                        <div class="row">
+                          <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                            <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
+                               data-toggle="modal" data-target="#add-new-record">
+                              <i class="fa fa-plus"></i> Add
+                              New Record
+                            </a>
+                          </div>
                         </div>
+                        <div class="table-responsive">
+                          <dx-data-grid id="gridContainer" [dataSource]="PagecreditReasonsList"
+                                        [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                        [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ID"
+                                        [showBorders]="true">
+                            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                            <dxi-column dataField="ID" [width]="2" caption="Action" [allowFiltering]="false"
+                                        [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
+                            </dxi-column>
+                            <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
+                            <dxi-column dataField="IsActive" caption="Active" cellTemplate="IsActive">
+                            </dxi-column>
+                            <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+                            <div *dxTemplate="let data of 'cellTemplate'">
+                              <a href="javascript:void(0)" (click)="edit(data.data.ID)"
+                                 class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                                 data-target="#add-new-record"></a>
+                            </div>
+                          </dx-data-grid>
+                        </div>
+                        <div class="pagination-theme">
+                          <div *ngFor="let item of PagecreditReasonsList | paginate: { id: 'pagination1020' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalcreditReasonsList}">
+                          </div>
+                          <pagination-controls id="pagination1020"
+                                               (pageChange)="onPageNumberChange($event)">
+                          </pagination-controls>
+                        </div>
+                      </div>
                         <div class="tab-pane" [ngClass]="tabId == 'eSignSetting' ? 'active show' : 'fade'"
                             id="eSignSetting">
                             <div class="row">
@@ -68,7 +76,7 @@
                                     [showBorders]="true">
                                     <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                                     <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                                    <dxi-column dataField="ID" [width]="2" caption="Action" [allowFiltering]="false"
+                                    <dxi-column dataField="ID" [width]="2" caption="Action aa" [allowFiltering]="false"
                                         [allowSorting]="false" cellTemplate="editCellTemplate" [visible]="true">
                                     </dxi-column>
                                     <dxi-column caption="Name" [width]="100" cellTemplate="getName"> </dxi-column>
@@ -89,7 +97,7 @@
                                     </div>
                                 </dx-data-grid>
                             </div>
-
+                          
                         </div>
                     </div>
                 </div>
