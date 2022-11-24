@@ -434,11 +434,11 @@ export class SchdFacilitiesComponent implements OnInit {
       itsupportOfficePhone: ['', [Validators.minLength(10)]],
       itsupportCellPhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       itsupportHomePhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       itsupportFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
@@ -453,13 +453,13 @@ export class SchdFacilitiesComponent implements OnInit {
       reportsOfficePhone: ['', [Validators.minLength(10)]],
       reportsCellPhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       reportsHomePhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
-      reportsFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      reportsFax: ['', [Validators.minLength(10), Validators.maxLength(14)]],
 
       statusCheckContact: [''],
       statusCheckEmail: [
@@ -472,15 +472,15 @@ export class SchdFacilitiesComponent implements OnInit {
       statusCheckOfficePhone: ['', [Validators.minLength(10)]],
       statusCheckCellPhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       statusCheckHomePhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       statusCheckFax: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
 
       schedulingContact: [''],
@@ -494,13 +494,13 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingOfficePhone: ['', [Validators.minLength(10)]],
       schedulingCellPhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
       schedulingHomePhone: [
         '',
-        [Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.minLength(10), Validators.maxLength(14)],
       ],
-      schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(14)]],
       defaultEmailAddress3P: [
         '',
         [
