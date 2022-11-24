@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
@@ -14,16 +14,24 @@ import { StorageService } from 'src/app/services/common/storage.service';
 })
 export class PendingBillComponent implements OnInit {
 
+  getfilterData: any;
+  @Input()
+  set filterData(val: any) {
+    if (val && val != "") {
+      this.getfilterData = val;
+      this.getListingData();
+    }
+  }
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
- 
+
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
     backgroundcolor: 'rgb(255,255,255)',
     canvasWidth: 750,
     canvasHeight: 100,
-    Placeholder:'test'
+    Placeholder: 'test'
   };
 
   dataSource = [];
@@ -36,32 +44,27 @@ export class PendingBillComponent implements OnInit {
   cities = [];
   fundingCompanies = [];
   selectedCityIds: string[];
-  dummyData :string;
-  checkboxSelection:boolean = false;
+  dummyData: string;
+  checkboxSelection: boolean = false;
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,
-    private storageService: StorageService) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
-   
-   }
+  }
 
   ngOnInit(): void {
-    this.getListingData();
     this.getData();
-    //this.selectAllForDropdownItems(this.getData());
   }
 
   onPageNumberChange(pageNumber: any) {
     this.currentPageNumber = pageNumber;
-    if(pageNumber > 1)
-    this.pageNumber = pageNumber - 1;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
     else
-    this.pageNumber = 0;
-    //this.dataSource = this.fundingCompanies.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
+      this.pageNumber = 0;
   }
+
   onMaterialGroupChange(event) {
-    console.log(event);
   }
 
   clearSign(): void {
@@ -69,49 +72,39 @@ export class PendingBillComponent implements OnInit {
     this.dummyData = '';
   }
 
-  showDocManager(patientId:any) {
+  showDocManager(patientId: any) {
     this.commonService.sendDataToDocumentManager(patientId);
   }
 
   getListingData() {
     try {
-      var data = {
-        "userType": "",
-        "procGroupName": "",
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "patientId": "",
-        "dateFrom": new Date().toISOString(),
-        "dateTo": new Date().toISOString(),
-        "dateType": "",
-        "userId": parseInt(this.storageService.user.UserId)
-      };
-
-      this.lienPortalService.GetPendingToBill(data).subscribe((result) => {
+      this.lienPortalService.GetPendingToBill(this.getfilterData).subscribe((result) => {
         if (result.status == 0) {
+          this.totalRecord = result.result.length;
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
-            this.totalRecord = result.result.length;
           }
         }
-        if (result.exception) {
+        if (result.exception && result.exception.message) {
           this.lienPortalService.errorNotification(result.exception.message);
         }
       }, (error) => {
-        this.lienPortalService.errorNotification(error.message);
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
       })
     } catch (error) {
-      this.lienPortalService.errorNotification(error.message);
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
     }
   }
 
-  changeCheckbox(item:any){
-    
+  changeCheckbox(item: any) {
+
     this.checkboxSelection = false;
-    if(item)
-    {
-      if(item.selectedRowKeys.length > 0)
-      {
+    if (item) {
+      if (item.selectedRowKeys.length > 0) {
         this.checkboxSelection = true;
       }
     }
@@ -128,7 +121,7 @@ export class PendingBillComponent implements OnInit {
       { id: 7, name: 'vanraj' },
     ]);
   }
- 
+
   drawComplete() {
     this.dummyData = this.signaturePad.toDataURL();
   }
@@ -137,15 +130,4 @@ export class PendingBillComponent implements OnInit {
     console.log('begin drawing');
   }
 
-  // selectAllForDropdownItems(items: any[]) {
-  //   let allSelect = (items) => {
-  //     items.forEach((element) => {
-  //       element['selectedAllGroup'] = 'selectedAllGroup';
-  //     });
-  //   };
-
-  //   allSelect(items);
-  // }
-
 }
- 

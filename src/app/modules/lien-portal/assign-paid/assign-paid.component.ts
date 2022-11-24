@@ -1,5 +1,6 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-assign-paid',
   templateUrl: './assign-paid.component.html',
@@ -7,160 +8,16 @@ import { DxDataGridComponent } from 'devextreme-angular';
 })
 export class AssignPaidComponent implements OnInit {
 
+  getfilterData:any;
+  @Input()
+  set filterData(val: any) {
+    if(val && val != ""){
+      this.getfilterData = val;
+      this.getAssigndPaidData();
+    }
+  }
+
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  
-  AssignARpaid =[{
-    checkno:'8887',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'4589',
-  },
-
-  ];
-
-
-  batchNameList=[{
-    Batchname:'batch name 1',
-  },
-  {
-    Batchname:'batch name 2',
-  },
-  {
-    Batchname:'batch name 3',
-  },
-  {
-    Batchname:'batch name 4',
-  }];
-
-  BatchDetailList =[{
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE9998',
-    patientid:'PRE9998',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE6770',
-    patientid:'PRE6770',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arassigneddate:'2/9/20',
-    executiondate:'2/9/20',
-    fundingco:'PRE77612',
-    patientid:'PRE77612',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE'
-  }];
-
-
-
 
   checkBoxesMode: string;
   allMode: string;
@@ -173,8 +30,10 @@ export class AssignPaidComponent implements OnInit {
   applyFilterTypes: any;
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
+  dataSource: any = [];
+  AssignARpaid:any = [];
 
-  constructor() { 
+  constructor(private lienPortalService : LienPortalService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -194,6 +53,87 @@ export class AssignPaidComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  getAssigndPaidData(){
+    this.lienPortalService.GetAssignedARPaid(this.getfilterData).subscribe((res)=>{
+      res.result = [
+        {
+          "checkNumber": "78455645",
+          "checkDate": "11-22-2022",
+          "checkAmount": 120.23,
+          "fileName": null,
+          "checkWiseData": [
+            {
+              "batchName": "Test_Darshit_20221122_600",
+              "batchId": 1,
+              "batchWiseData": [
+                {
+                  "rad": "EllaTest",
+                  "dateRead": "09-22-1966",
+                  "patientId": "PRE605603",
+                  "lastName": "FEHRMANN",
+                  "firstName": "GARY",
+                  "dateOfBirth": "09-22-1966",
+                  "study": "MRI LUMBAR SPINE W/O CONTRAST",
+                  "dateARAssiged": "11-22-2022",
+                  "paidDate": null,
+                  "fundingCompany": "CYPRESS CARED",
+                  "executionDate": null
+                },
+                {
+                  "rad": "EllaTest",
+                  "dateRead": "09-22-1966",
+                  "patientId": "PRE605603",
+                  "lastName": "FEHRMANN",
+                  "firstName": "GARY",
+                  "dateOfBirth": "09-22-1966",
+                  "study": "MRI LUMBAR SPINE W/O CONTRAST",
+                  "dateARAssiged": "11-22-2022",
+                  "paidDate": null,
+                  "fundingCompany": "CYPRESS CARED",
+                  "executionDate": null
+                }
+              ]
+            },
+            {
+              "batchName": "Test_Darshit_20221122_6001",
+              "batchId": 1,
+              "batchWiseData": [
+                {
+                  "rad": "EllaTest",
+                  "dateRead": "09-22-1966",
+                  "patientId": "PRE605603",
+                  "lastName": "FEHRMANN",
+                  "firstName": "GARY",
+                  "dateOfBirth": "09-22-1966",
+                  "study": "MRI CERVICAL SPINE W/O CONTRAST",
+                  "dateARAssiged": "11-22-2022",
+                  "paidDate": null,
+                  "fundingCompany": "BLEDIN",
+                  "executionDate": null
+                },
+                {
+                  "rad": "EllaTest",
+                  "dateRead": "09-22-1966",
+                  "patientId": "PRE605603",
+                  "lastName": "FEHRMANN",
+                  "firstName": "GARY",
+                  "dateOfBirth": "09-22-1966",
+                  "study": "MRI CERVICAL SPINE W/O CONTRAST",
+                  "dateARAssiged": "11-22-2022",
+                  "paidDate": null,
+                  "fundingCompany": "BLEDIN",
+                  "executionDate": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+      this.dataSource = res.result;
+      this.AssignARpaid = this.dataSource;
+    })
   }
 
 }

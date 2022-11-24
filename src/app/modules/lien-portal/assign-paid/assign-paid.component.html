@@ -8,38 +8,36 @@
                 <dxo-paging [pageSize]="10"></dxo-paging>
                 <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column dataField="checkno" caption="Checkno"></dxi-column>
-                <!-- <dxi-column dataField="checkdate" caption="CheckDate"></dxi-column>
-                <dxi-column dataField="amount" caption="amount"></dxi-column> -->
-                <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                <dxi-column dataField="checkNumber" caption="Checkno"></dxi-column>
+                <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
                     <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                 </div>
                 <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
                 <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
-                    <dx-data-grid [dataSource]="batchNameList" class="innerList" [columnAutoWidth]="true"
+                    <dx-data-grid [dataSource]="detail.data.checkWiseData" class="innerList" [columnAutoWidth]="true"
                         [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
-                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling> 
+                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
-                        <dxi-column dataField="Batchname" caption="Batchname"> </dxi-column>
+                        <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
                         <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                            <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
+                            <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList" [columnAutoWidth]="true"
                                 [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
                                 <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                                 <dxo-sorting mode="none"></dxo-sorting>
                                 <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                                <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
-                                <dxi-column dataField="arassigneddate" caption="AR Assigned Date"></dxi-column>
-                                <dxi-column dataField="executiondate" caption="Execution Date"></dxi-column>
-                                <dxi-column dataField="fundingco" caption="Funding CO"></dxi-column>
-                                <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
-                                <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
-                                <dxi-column dataField="firstname" caption="First Name"></dxi-column>
-                                <dxi-column dataField="dob" caption="DOB"></dxi-column>
+                                <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                                <dxi-column dataField="dateARAssiged" caption="AR Assigned Date"></dxi-column>
+                                <dxi-column dataField="executionDate" caption="Execution Date"></dxi-column>
+                                <dxi-column dataField="fundingCompany" caption="Funding CO"></dxi-column>
+                                <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                                <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                                <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                                <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
                                 <dxi-column dataField="study" caption="Study"></dxi-column>
                             </dx-data-grid>
-        
+
                         </div>
                     </dx-data-grid>
 
@@ -50,7 +48,6 @@
             <div
                 *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
             </div>
-            
         </div> -->
     </div>
 </div>

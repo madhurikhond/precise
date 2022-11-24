@@ -8,10 +8,10 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
   styleUrls: ['./assign-unpaid.component.css']
 })
 export class AssignUnpaidComponent implements OnInit {
- getfilterData:any;
+  getfilterData: any;
   @Input()
   set filterData(val: any) {
-    if(val && val != ""){
+    if (val && val != "") {
       this.getfilterData = val;
       this.getListingData();
     }
@@ -58,23 +58,25 @@ export class AssignUnpaidComponent implements OnInit {
   getListingData() {
     try {
       this.lienPortalService.GetAssignedARUnpaid(this.getfilterData).subscribe((result) => {
-        console.log(result);
         if (result.status == 0) {
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
             this.AssignARUnpaid = this.dataSource;
             this.totalRecord = result.result.length;
-            // this.dataSource = this.AssignARUnpaid.slice((this.pageNumber - 1) * this.pageSize, ((this.pageNumber - 1) * this.pageSize) + this.pageSize)
           }
         }
-        if (!result.exception) {
+        if (result.exception && result.exception.message) {
           this.lienPortalService.errorNotification(result.exception.message);
         }
       }, (error) => {
-        this.lienPortalService.errorNotification(error.message);
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
       })
     } catch (error) {
-      this.lienPortalService.errorNotification(error.message);
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
     }
   }
 
