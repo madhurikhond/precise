@@ -10,6 +10,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PatientPortalURLName } from 'src/app/models/patient-response';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { LienPortalURLName } from 'src/app/models/lien-portal-response';
 
 declare const $: any;
 
@@ -61,6 +62,11 @@ export class AuthInterceptor implements HttpInterceptor {
       url === PatientPortalURLName.EXAM_QUESTION_FOR_CT_CR ||
       url === PatientPortalURLName.PREGNANCY_WAIVER ||
       url === PatientPortalURLName.PREGNANCY_WAIVERS) {
+        this._storageService.LastPageURL = null;
+        this.makeActive();
+      }
+      else if(url === LienPortalURLName.LIEN_PORTAL || url === LienPortalURLName.LIEN_PORTAL)
+      {
         this._storageService.LastPageURL = null;
         this.makeActive();
       }
