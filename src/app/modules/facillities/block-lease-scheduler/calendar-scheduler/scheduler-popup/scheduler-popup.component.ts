@@ -81,14 +81,14 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.isLeaseSigned = true;
+    // this.isLeaseSigned = true;
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
       this.FacilityName = this.data.FacilityName;
       this.FacilityID = this.data.FacilityID;
       this.getModalityResourcesList();
-      if (this.event) {       
+      if (this.event) {
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
           document.getElementById('SaveBtn').style.display = 'none';
@@ -162,24 +162,27 @@ export class SchedulerPopupComponent implements OnInit {
           // }
         }
 
-        this.LeaseDetails = JSON.parse(res.response.LeaseDetails);       
+        this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
         if (this.LeaseDetails != null) {
+
+          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.FacilityID = this.LeaseDetails['FacilityId'];
           this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
 
-          if (this.LeaseId) {
+          if (this.LeaseId && !this.isLeaseSigned) {
             document.getElementById('deleteBtn').style.display = 'none';
             document.getElementById('SaveBtn').style.display = 'none';
+          } else if (this.isLeaseSigned) {
+            document.getElementById('SaveBtn').style.display = 'block';
+            document.getElementById('deleteBtn').style.display = 'none';
           }
           else {
             document.getElementById('SaveBtn').style.display = 'block';
             document.getElementById('deleteBtn').style.display = 'block';
           }
 
-
-          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;         
           this.leaseForm.patchValue({
             // LeaseTitle: this.LeaseDetails['LeaseTitle'],
             modalityType: this.selectedresourceId,
@@ -234,7 +237,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   getReasonData() {
-   
+
     this.creditReasonList = [];
     this.selectedCreditReason = '';
     let body = {
@@ -360,7 +363,7 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-   
+
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
@@ -518,7 +521,7 @@ export class SchedulerPopupComponent implements OnInit {
       //'ID': this.CreditId
     }
     this.blockLeaseSchedulerService.manageCredits(true, body).subscribe((res) => {
-  
+
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
         this.modal.close(ModalResult.SAVE);
