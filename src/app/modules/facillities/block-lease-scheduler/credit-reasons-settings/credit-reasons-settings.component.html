@@ -235,7 +235,7 @@
                     <button type="submit" style="float: left;"
                         [disabled]="(firstName.invalid || Title.invalid || lastName.invalid || model.signature =='') ? true:false"
                         [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
-                        class="btn btn-theme btn-sm pull-left">Sign</button>
+                        class="btn btn-theme btn-sm pull-left">UPDATE SIGNATURE</button>
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
                        #closeBtn (click)="signConfirm(false)">Close</a>
                 </div>
