@@ -94,7 +94,7 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
-        scheduler.config.hour_date = "%h:%i %a";
+       // scheduler.config.hour_date = "%h:%i %a";
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
@@ -104,10 +104,7 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.now_date = new Date();
         if (this.readOnlyCalender == true) {
             scheduler.config.readonly = true;
-        }
-        scheduler.config.icons_select = [
-            "icon_edit"
-        ];
+        }     
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
