@@ -110,7 +110,7 @@
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
                     <dxi-column caption="Facility" cellTemplate="viewCellTemplate" [fixed]="true" dataField="Facilityname"> </dxi-column>
                     <dxi-column [width]="250"
                         [caption]="checkUndefiend('MonthLabels0')">
@@ -194,8 +194,8 @@
                     <div *dxTemplate="let data of 'getDataTemplate'">
                         <ul class="datagrid-list">
                             <li *ngIf="getColumnByDataField(data)[0].IsScheduledComplete != null">
-                                <img 
-                                    
+                                <img (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASECOMPLETE')"
+                                    data-toggle="modal" data-target="#all-leases-popup"
                                     [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
                                     style="width: 18px;" />
                                 <span *ngIf="getColumnByDataField(data)[0].MRI != null && data.column.caption == 'MRI'"
@@ -219,8 +219,8 @@
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign != null">
-                                <img  data-toggle="modal" data-target="#all-leases-popup" (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,getColumnByDataField(data)[0].IsFacilitySign==true?'LEASESIGNED':'LEASEUNSIGNED')" [src]="getColumnByDataField(data)[0].IsFacilitySign==true?'assets/images/sign-lease.png':'assets/images/sign-pending.png'"
-                                   class="paid_unpaid_cursor"  style="width: 18px;" />
+                                <img [src]="getColumnByDataField(data)[0].IsFacilitySign==true?'assets/images/sign-lease.png':'assets/images/sign-pending.png'"
+                                    style="width: 18px;" />
                             </li>
                         </ul>
                     </div>
@@ -266,7 +266,7 @@
                     <span>Lease signed</span>
                 </li>
                 <li>
-                    <img src="/assets/images/sign-pending.png" />
+                    <img src="/assets/images/sign-parties.png" />
                     <span>Pending facility signature</span>
                 </li>
                 <li>
@@ -321,16 +321,11 @@
 
                         <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                         <dxi-column dataField="LeaseId" caption="Lease #"></dxi-column>
-                        <dxi-column dataField="LeaseDate" caption="Lease Dates"  cellTemplate="leaseDateCellTemplate"></dxi-column>
+                        <dxi-column dataField="LeaseDate" caption="Lease Dates"></dxi-column>
                         <dxi-column dataField="TotalHours" caption="Lease Hours"></dxi-column>
                         <dxi-column dataField="PaymentStatus" caption="Payment Status"></dxi-column>
                         <dxi-column dataField="LeaseAgreement" cellTemplate="leaseAggrementTemplate"
                             caption="Lease Aggrements"></dxi-column>
-                            <div *dxTemplate="let data of 'leaseDateCellTemplate'">
-                                <ng-container *ngIf="data && data.value">
-                                    {{data.value | date:dateTimeFormatCustom.Date}}
-                                </ng-container>
-                            </div>
                         <div *dxTemplate="let data of 'leaseAggrementTemplate'">
                             <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.data.LeaseAgreement,'')"
                                 class="link-btn fa fa-file-pdf-o" data-toggle="modal"
