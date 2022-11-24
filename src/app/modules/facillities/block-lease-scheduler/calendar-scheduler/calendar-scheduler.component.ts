@@ -642,7 +642,7 @@ export class CalendarSchedulerComponent implements OnInit {
         const minutes = Number(time.match(/:(\d+)/)[1]);
         const AMPM = time.match(/\s(.*)$/)[1];
         if (AMPM == "PM" && Number(hours) < 12) hours = hours + 12;
-        if (AMPM == "AM" && hours == 12) hours = hours - 12;
+       // if (AMPM == "AM" && hours == 12) hours = hours - 12;
         let sHours = hours.toString();
         let sMinutes = minutes.toString();
         if (hours < 10) sHours = "0" + sHours;

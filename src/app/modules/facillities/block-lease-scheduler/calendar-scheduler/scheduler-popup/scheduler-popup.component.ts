@@ -234,7 +234,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   getReasonData() {
-    debugger
+   
     this.creditReasonList = [];
     this.selectedCreditReason = '';
     let body = {
@@ -360,7 +360,7 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-      debugger;
+   
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
@@ -401,7 +401,7 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-    debugger;
+
     if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null)) {
       this.notificationService.showNotification({
         alertHeader: '',
@@ -518,7 +518,7 @@ export class SchedulerPopupComponent implements OnInit {
       //'ID': this.CreditId
     }
     this.blockLeaseSchedulerService.manageCredits(true, body).subscribe((res) => {
-      debugger
+  
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
         this.modal.close(ModalResult.SAVE);
@@ -656,7 +656,7 @@ export class SchedulerPopupComponent implements OnInit {
     const minutes = Number(time.match(/:(\d+)/)[1]);
     const AMPM = time.match(/\s(.*)$/)[1];
     if (AMPM == "PM" && Number(hours) < 12) hours = hours + 12;
-    if (AMPM == "AM" && hours == 12) hours = hours - 12;
+    //if (AMPM == "AM" && hours == 12) hours = hours - 12;
     let sHours = hours.toString();
     let sMinutes = minutes.toString();
     if (hours < 10) sHours = "0" + sHours;
