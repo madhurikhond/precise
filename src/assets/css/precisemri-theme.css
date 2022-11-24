@@ -7051,4 +7051,6 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .payment-invoice-popup{
 	z-index: 1052;
 }
-
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_month, #CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_timeline .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_day .dhx_cal_data{
+	overflow-y: hidden;
+}
