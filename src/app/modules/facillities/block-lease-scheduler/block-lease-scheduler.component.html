@@ -15,7 +15,7 @@
 
                         <div class="form-group autocomplete form-group1  normal-text">
                             <div class="theme-label">Facility</div>
-                            <div class="input-group">
+                            <div>
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
                                     [multiple]="false" [closeOnSelect]="false" bindValue="FacilityID"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedFacility">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Modality</div>
-                            <div class="input-group">
+                            <div>
                                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
                                     [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedModality">
