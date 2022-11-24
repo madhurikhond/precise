@@ -4097,14 +4097,14 @@ export class SchdFacilitiesComponent implements OnInit {
   MRIDuplicateResourceNotification() {
     this.notificationService.showNotification({
       alertHeader: 'Duplicate MRI Resource Name',
-      alertMessage: 'selection of Duplicate MRI Resource Name is not allowed.',
+      alertMessage: 'Selection of duplicate MRI resource name is not allowed.',
       alertType: 404,
     });
   }
   CTDuplicateResourceNotification() {
     this.notificationService.showNotification({
       alertHeader: 'Duplicate CT Resource Name',
-      alertMessage: 'selection of Duplicate CT Resource Name is not allowed.',
+      alertMessage: 'Selection of duplicate CT resource name is not allowed.',
       alertType: 404,
     });
   }
