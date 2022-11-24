@@ -8,5 +8,8 @@
  }
      
  .disabled{ pointer-events: none }
+ .dhx_menu_icon .icon_delete{
+   display: none;
+ }
 
  

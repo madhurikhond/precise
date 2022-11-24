@@ -97,12 +97,13 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
-        scheduler.config.icons_select = ['icon_details', 'icon_delete'];
+        scheduler.config.mark_now = false;
+        scheduler.config.icons_select = ['icon_edit'];
         // scheduler.config.first_hour = 7;
         scheduler.config.now_date = new Date();
         if (this.readOnlyCalender == true) {
             scheduler.config.readonly = true;
-        }
+        }       
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
@@ -147,7 +148,8 @@ export class CalendarSchedulerComponent implements OnInit {
             }
         });
         var dragStartDate = null;
-
+        scheduler.attachEvent("onBeforeLightbox", function (id) 
+        { scheduler.config.buttons_right = (scheduler.getState().new_event) ? [] : ["dhx_delete_btn"]; scheduler.resetLightbox(); return true; });
         // and store initial dates of all moved events, so we could revert drag and drop if it's canceled from "onBeforeEventChange" 
         var initialDates = {};
         scheduler.attachEvent("onEventDrag", function (id, mode, e) {
@@ -171,10 +173,11 @@ export class CalendarSchedulerComponent implements OnInit {
             return true;
         });
 
-        scheduler._click.buttons.delete = (id: number) => {
-            //lease signed 
-            this.openConfirm(id);
-        };
+        // scheduler._click.buttons.delete = (id: number) => {
+        //     //lease signed 
+        //     this.openConfirm(id);
+        // };
+        
         scheduler.date.timeline_start = scheduler.date.day_start;
 
 
@@ -206,7 +209,7 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
         };
-
+        
 
         if (this.latestStartDate && this.latestSchedulerMode) {
             scheduler.init(this.schedulerContainer.nativeElement, this.latestStartDate, this.latestSchedulerMode);
