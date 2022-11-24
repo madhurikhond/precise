@@ -94,16 +94,20 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
+        scheduler.config.hour_date = "%h:%i %a";
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
         scheduler.config.mark_now = false;
-        scheduler.config.icons_select = ['icon_edit'];
+        scheduler.config.icons_select = ['icon_details'];
         // scheduler.config.first_hour = 7;
         scheduler.config.now_date = new Date();
         if (this.readOnlyCalender == true) {
             scheduler.config.readonly = true;
-        }       
+        }
+        scheduler.config.icons_select = [
+            "icon_edit"
+        ];
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
@@ -148,8 +152,7 @@ export class CalendarSchedulerComponent implements OnInit {
             }
         });
         var dragStartDate = null;
-        scheduler.attachEvent("onBeforeLightbox", function (id) 
-        { scheduler.config.buttons_right = (scheduler.getState().new_event) ? [] : ["dhx_delete_btn"]; scheduler.resetLightbox(); return true; });
+        scheduler.attachEvent("onBeforeLightbox", function (id) { scheduler.config.buttons_right = (scheduler.getState().new_event) ? [] : ["dhx_delete_btn"]; scheduler.resetLightbox(); return true; });
         // and store initial dates of all moved events, so we could revert drag and drop if it's canceled from "onBeforeEventChange" 
         var initialDates = {};
         scheduler.attachEvent("onEventDrag", function (id, mode, e) {
@@ -177,7 +180,7 @@ export class CalendarSchedulerComponent implements OnInit {
         //     //lease signed 
         //     this.openConfirm(id);
         // };
-        
+
         scheduler.date.timeline_start = scheduler.date.day_start;
 
 
@@ -209,7 +212,7 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
         };
-        
+
 
         if (this.latestStartDate && this.latestSchedulerMode) {
             scheduler.init(this.schedulerContainer.nativeElement, this.latestStartDate, this.latestSchedulerMode);
@@ -267,21 +270,37 @@ export class CalendarSchedulerComponent implements OnInit {
         this.latestStartDate = "";
     }
     checkBlockedOffDays(event: any, id: number) {
-        let body =
-        {
-            'facilityId': this.FacilityID,
-            'startDate': this.datePipe.transform(event.start_date, 'yyyy-MM-dd'),
-            'endDate': this.datePipe.transform(event.end_date, 'yyyy-MM-dd'),
-            'startTime': this.getTwentyFourHourTime(event.start_date.toLocaleTimeString('en-US')),
-            'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
-            'modality': null,
-            'resourceId': 0
-        }
+        if (event.LeaseBlockId) {
+            scheduler.startLightbox(id, this.openForm(event));
+        } else {
+            let body =
+            {
+                'facilityId': this.FacilityID,
+                'startDate': this.datePipe.transform(event.start_date, 'yyyy-MM-dd'),
+                'endDate': this.datePipe.transform(event.end_date, 'yyyy-MM-dd'),
+                'startTime': this.getTwentyFourHourTime(event.start_date.toLocaleTimeString('en-US')),
+                'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
+                'modality': null,
+                'resourceId': 0
+            }
 
-        this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
-            if (!this.displayClosedDays.includes(event._sday + 1)) {
-                if (res.response) {
+            this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
+                if (!this.displayClosedDays.includes(event._sday + 1)) {
+                    if (res.response) {
 
+                        const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                        modalRef.componentInstance.isPastDateOrOffDays = true;
+                        modalRef.result.then().catch((reason: ModalResult | any) => {
+                            if (reason == 5) {
+                                scheduler.startLightbox(id, this.openForm(event));
+                            } else {
+                                scheduler.deleteEvent(event.id);
+                            }
+                        });
+                    } else {
+                        scheduler.startLightbox(id, this.openForm(event));
+                    }
+                } else {
                     const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                     modalRef.componentInstance.isPastDateOrOffDays = true;
                     modalRef.result.then().catch((reason: ModalResult | any) => {
@@ -291,24 +310,12 @@ export class CalendarSchedulerComponent implements OnInit {
                             scheduler.deleteEvent(event.id);
                         }
                     });
-                } else {
-                    scheduler.startLightbox(id, this.openForm(event));
                 }
-            } else {
-                const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-                modalRef.componentInstance.isPastDateOrOffDays = true;
-                modalRef.result.then().catch((reason: ModalResult | any) => {
-                    if (reason == 5) {
-                        scheduler.startLightbox(id, this.openForm(event));
-                    } else {
-                        scheduler.deleteEvent(event.id);
-                    }
-                });
-            }
 
-        }, (err: any) => {
-            this.errorNotification(err);
-        });
+            }, (err: any) => {
+                this.errorNotification(err);
+            });
+        }
     }
 
     openConfirm(id: number) {
