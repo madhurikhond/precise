@@ -7037,7 +7037,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 }
 .scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list li{
 	position: relative;
-	padding-right: 20px;
+	padding-right: 10px;
 }
 .cash-price-table.table-responsive{
 	height: auto;
@@ -7051,3 +7051,4 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .payment-invoice-popup{
 	z-index: 1052;
 }
+
