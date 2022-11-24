@@ -103,7 +103,7 @@
                                                 <div>signature is required</div>
                                             </div>
                                         </div>
-                                        <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                        <a href="javascript:void(0)" (click)="clearSign(false);" style="background-color: gray;"
                                         class="btn btn-theme btn-sm">Clear Signature</a>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                 [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                                 class="btn btn-theme btn-sm pull-left">Sign</button>
                             <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
-                                data-dismiss="modal" #closeBtn (click)="clearSign()" >Clear</a>
+                                data-dismiss="modal" #closeBtn (click)="clearSign(true)" >Clear</a>
                         </div>
                     </form>
                 </div>

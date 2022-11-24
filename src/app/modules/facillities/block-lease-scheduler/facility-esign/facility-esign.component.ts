@@ -76,12 +76,15 @@ export class FacilityEsignComponent implements OnInit {
     this.model.lastName = '';
     this.model.Title = '';
   }
-  clearSign(): void {
+  clearSign(button:any): void {
     this.signaturePad.clear();
     this.model.signature = '';
-    this.model.firstName = '';
-    this.model.lastName = '';
-    this.model.Title = '';
+    if(button == true){
+      this.model.firstName = '';
+      this.model.lastName = '';
+      this.model.Title = '';
+    }
+   
   }
 
   getLeaseAggrementDetail(path: any, fileData: any) {
