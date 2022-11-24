@@ -1568,15 +1568,15 @@ export class SchdFacilitiesComponent implements OnInit {
         .removeClass('disabledClass');
       $('#gridContainerLeaseAgreement_MRI')
         .not('.btn')
-        .attr('disabled', true)
+        .attr('disabled', false)
         .removeClass('disabledClass');
       $('#gridContainerLeaseAgreement_CT')
         .not('.btn')
-        .attr('disabled', true)
+        .attr('disabled', false)
         .removeClass('disabledClass');
       $('#CreditandDebit')
         .not('.btn')
-        .attr('disabled', true)
+        .attr('disabled', false)
         .removeClass('disabledClass');
     }
     this.generalInfoForm.patchValue({

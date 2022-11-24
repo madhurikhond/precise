@@ -135,7 +135,7 @@
                     <div class="theme-label-subtitle"><a class="link-btn" (click)="senddatatoschd_facilities()">Facility
                             Details</a></div>
                 </div>
-            </div>           
+            </div>
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Modality/Resource</div>
@@ -387,7 +387,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button #deleteBtn id="deleteBtn"  (click)="confirmDelete()"
+        <button #deleteBtn id="deleteBtn" (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
         <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
             class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
@@ -425,10 +425,15 @@
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <div class="modal-body">
-                <p *ngIf="AlreadyBlockedLeaseList;else isDateValid">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
-                    BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
-                    ALREADY LEASE
-                    BLOCKED :</p>
+                <p *ngIf="AlreadyBlockedLeaseList;else isDateValid">
+                    <span *ngIf="isBlockOffTime">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
+                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        ALREADY LEASE
+                        BLOCKED :</span>
+                    <span *ngIf="!isBlockOffTime">YOU CAN NOT BLOCK OFF SOME OF THE DATES SELECTED IN
+                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        ALREADY BLOCKED OFF :</span>
+                </p>
                 <ng-template #isDateValid>{{dateTimeValidationMsg}}</ng-template>
                 <table>
                     <tbody>

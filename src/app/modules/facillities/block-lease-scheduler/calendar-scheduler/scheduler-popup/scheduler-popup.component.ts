@@ -64,7 +64,7 @@ export class SchedulerPopupComponent implements OnInit {
   pastDate_end_date: string; IsAllModality: boolean = false;
   eventLeaseTime: any; isValidAlreadyBlockedLease: boolean = true; isBlockOffTime: boolean = true;
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
-  readonly dateTimeFormatCustom = DateTimeFormatCustom;
+  readonly dateTimeFormatCustom = DateTimeFormatCustom; isValidAlreadyBlockedOffLease: boolean = false;
   blockLeasePricingList: any = [];
   MriPrice: any = [];
   CtPrice: any = [];
@@ -88,8 +88,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.FacilityName = this.data.FacilityName;
       this.FacilityID = this.data.FacilityID;
       this.getModalityResourcesList();
-      if (this.event) {
-        console.log(this.event);
+      if (this.event) {       
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
           document.getElementById('SaveBtn').style.display = 'none';
@@ -163,8 +162,7 @@ export class SchedulerPopupComponent implements OnInit {
           // }
         }
 
-        this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
-        console.log(this.LeaseDetails);
+        this.LeaseDetails = JSON.parse(res.response.LeaseDetails);       
         if (this.LeaseDetails != null) {
           this.FacilityID = this.LeaseDetails['FacilityId'];
           this.selectedModality = this.LeaseDetails['ModalityType'];
@@ -181,9 +179,7 @@ export class SchedulerPopupComponent implements OnInit {
           }
 
 
-          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
-
-          console.log(this.LeaseDetails['Contrast'].toLocaleLowerCase());
+          this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;         
           this.leaseForm.patchValue({
             // LeaseTitle: this.LeaseDetails['LeaseTitle'],
             modalityType: this.selectedresourceId,
@@ -277,10 +273,12 @@ export class SchedulerPopupComponent implements OnInit {
       this.modality_change = false;
       this.IsAllModality = true;
     }
-    this.validateAutoBlockOffDays();
+    if (!this.isBlockOffTime)
+      this.validateAutoBlockOffDays();
 
   }
   validateAutoBlockOffDays() {
+    this.AlreadyBlockedLeaseList = [];
     let body =
     {
       'facilityId': this.FacilityID,
@@ -292,8 +290,14 @@ export class SchedulerPopupComponent implements OnInit {
       'resourceId': this.selectedresourceId,
       'IsAllModality': this.IsAllModality
     }
-
-    console.log(body);
+    this.blockLeaseSchedulerService.getAlreadyBlockedOffDaysModalityBased(true, body).subscribe((res) => {
+      if (res.response != null) {
+        this.AlreadyBlockedLeaseList = res.response;
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      }
+    }, (err: any) => {
+      this.errorNotification(err);
+    });
   }
 
   changed(event: any) {
@@ -416,38 +420,42 @@ export class SchedulerPopupComponent implements OnInit {
     }
 
     if (!this.isBlockOffTime) {
-      this.submitted = false;
-      this.BlockOffDaysSubmitted = true;
-      if (this.leaseBlockOffForm.invalid) {
-        return;
-      }
-      let body = {
-        'facilityId': this.FacilityID,
-        'modality': this.selectedModality.toUpperCase(),
-        'startDate': this.datePipe.transform(this.editBlockOffFormControls.start_date.value, 'yyyy-MM-dd'),
-        'endDate': this.datePipe.transform(this.editBlockOffFormControls.end_date.value, 'yyyy-MM-dd'),
-        'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
-        'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
-        'resourceId': this.selectedresourceId,
-        'IsAllModality': this.IsAllModality
-      }
-      this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
-        if (res.responseCode == 200) {
-          if (res.response) {
-            this.showNotificationOnSucess({
-              message: res.response.message,
-              responseCode: res.responseCode
-            });
-          }
-          else {
-            this.showNotificationOnSucess(res);
-          }
-          this.modal.dismiss(ModalResult.OTHER);
-          this.commonService.sendDataBlockLeaseScheduler('true');
+      if (this.AlreadyBlockedLeaseList.length > 0) {
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      } else {
+        this.submitted = false;
+        this.BlockOffDaysSubmitted = true;
+        if (this.leaseBlockOffForm.invalid) {
+          return;
         }
-      }, (err: any) => {
-        this.errorNotification(err);
-      });
+        let body = {
+          'facilityId': this.FacilityID,
+          'modality': this.selectedModality.toUpperCase(),
+          'startDate': this.datePipe.transform(this.editBlockOffFormControls.start_date.value, 'yyyy-MM-dd'),
+          'endDate': this.datePipe.transform(this.editBlockOffFormControls.end_date.value, 'yyyy-MM-dd'),
+          'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
+          'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
+          'resourceId': this.selectedresourceId,
+          'IsAllModality': this.IsAllModality
+        }
+        this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
+          if (res.responseCode == 200) {
+            if (res.response) {
+              this.showNotificationOnSucess({
+                message: res.response.message,
+                responseCode: res.responseCode
+              });
+            }
+            else {
+              this.showNotificationOnSucess(res);
+            }
+            this.modal.dismiss(ModalResult.OTHER);
+            this.commonService.sendDataBlockLeaseScheduler('true');
+          }
+        }, (err: any) => {
+          this.errorNotification(err);
+        });
+      }
     }
     else if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
       this.BlockOffDaysSubmitted = false;
@@ -691,6 +699,14 @@ export class SchedulerPopupComponent implements OnInit {
       this.modal.dismiss(ModalResult.CLOSE);
   }
   changeScheduleType(checked: any) {
+    this.leaseForm.patchValue({
+      modalityType: "",
+      contrastType: "",
+    });
+    this.leaseBlockOffForm.patchValue({
+      modalityType: "",
+    });
+    this.AlreadyBlockedLeaseList = [];
     if (checked == "true")
       this.isBlockOffTime = true;
     else
