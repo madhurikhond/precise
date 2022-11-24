@@ -82,12 +82,8 @@
                       <div class="theme-label">Funding Co Signed</div>
                       <div class="input-group">
                           <select class="form-control" formControlName="fundingCoSigned">
-                              <option value="">Select</option>
-                              <option value="1">Signed 1</option>
-                              <option value="2">Signed 2</option>
-                              <option value="3">Signed 3</option>
-                              <option value="4">Signed 4</option>
-                              <option value="5">Signed 5</option>
+                              <option [value]="false">NO</option>
+                              <option [value]="true">YES</option>
                           </select>
                       </div>
                   </div>

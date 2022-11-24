@@ -22,9 +22,8 @@ export class PendingBillComponent implements OnInit {
       this.getListingData();
     }
   }
-  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  @ViewChild(SignaturePad) signaturePad: SignaturePad;
 
+  @ViewChild(SignaturePad) signaturePad: SignaturePad;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -33,27 +32,37 @@ export class PendingBillComponent implements OnInit {
     canvasHeight: 100,
     Placeholder: 'test'
   };
+  
+  radiologistSign: string;
 
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   dataSource = [];
+
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 0;
   currentPageNumber: number = 1;
   totalRecord: number = 0;
   pageSize: number = 20;
-  cities = [];
-  fundingCompanies = [];
-  selectedCityIds: string[];
-  dummyData: string;
-  checkboxSelection: boolean = false;
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
+  fundingCompanies = [];
+  selecteFundComp: number = 0;
+
+  checkboxSelectedData: any = [];
+
+  firstName: string;
+  lastName: string;
+
+
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
   }
 
   ngOnInit(): void {
-    this.getData();
+    this.firstName = this.storageService.user.FirstName;
+    this.lastName = this.storageService.user.LastName;
+    this.bindFundComp_DDL();
   }
 
   onPageNumberChange(pageNumber: any) {
@@ -69,7 +78,7 @@ export class PendingBillComponent implements OnInit {
 
   clearSign(): void {
     this.signaturePad.clear();
-    this.dummyData = '';
+    this.radiologistSign = '';
   }
 
   showDocManager(patientId: any) {
@@ -101,17 +110,14 @@ export class PendingBillComponent implements OnInit {
   }
 
   changeCheckbox(item: any) {
-
-    this.checkboxSelection = false;
     if (item) {
-      if (item.selectedRowKeys.length > 0) {
-        this.checkboxSelection = true;
-      }
+      this.checkboxSelectedData = item.selectedRowsData;
     }
   }
 
-  getData() {
-    return (this.cities = [
+  bindFundComp_DDL() {
+    this.fundingCompanies = [
+      { id: 0, name: 'Select' },
       { id: 1, name: 'Amar' },
       { id: 2, name: 'Akbhar' },
       { id: 3, name: 'Anthony' },
@@ -119,15 +125,52 @@ export class PendingBillComponent implements OnInit {
       { id: 5, name: 'Baave' },
       { id: 6, name: 'samar' },
       { id: 7, name: 'vanraj' },
-    ]);
+    ];
   }
 
   drawComplete() {
-    this.dummyData = this.signaturePad.toDataURL();
+    this.radiologistSign = this.signaturePad.toDataURL();
   }
 
-  drawStart() {
-    console.log('begin drawing');
+  onAssignAR() {
+    if (this.onAssignARValidation()) {
+      var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
+        patientId: data.patientId,
+        internalStudyId: data.internalStudyId,
+        cptGroup: data.cptGroup
+      }));
+      var assignData = {
+        request: checkboxSelectedData,
+        radiologistSign: this.radiologistSign,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        fundingCompanyId: this.selecteFundComp,
+        loggedPartnerId: this.storageService.PartnerId,
+        jwtToken: this.storageService.PartnerJWTToken,
+        userId: this.storageService.user.UserId
+      }
+
+      console.log(assignData);
+    }
+  }
+
+  onAssignARValidation(): boolean {
+    return (
+      this.radiologistSign &&
+      this.radiologistSign != "" &&
+
+      this.checkboxSelectedData &&
+      this.checkboxSelectedData.length > 0 &&
+
+      this.selecteFundComp &&
+      this.selecteFundComp > 0 &&
+
+      this.firstName &&
+      this.firstName != "" &&
+
+      this.lastName &&
+      this.lastName != ""
+    );
   }
 
 }

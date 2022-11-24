@@ -137,21 +137,19 @@ export class LienPortalComponent implements OnInit {
           "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
           "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
           "dateType": this.filterForm.get("dateType").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
           "userId": this.storageService.user.UserId
         };
         break;
       case "assign_unpaid":
         this.filter = {
           "fundingCompany": this.filterForm.get("fundingCompany").value,
-          "isFundingCompanySigned": false,
+          "isFundingCompanySigned": this.filterForm.get("fundingCoSigned").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
           "patientId": this.filterForm.get("patientId").value,
           "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
           "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
           "dateType": this.filterForm.get("dateType").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
           "userId": this.storageService.user.UserId
         };
         break;
@@ -191,7 +189,7 @@ export class LienPortalComponent implements OnInit {
       dateTo: this.convertDateFormat(new Date()),
       dateType: '',
       fundingCompany: '',
-      fundingCoSigned: '',
+      fundingCoSigned: false,
       check: '',
       checkNumber: '',
     });

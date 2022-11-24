@@ -19,6 +19,7 @@ import { PatientService } from '../../../../services/patient/patient.service';
 import { ConstantPool } from '@angular/compiler';
 import { Console } from 'console';
 import { environment } from '../../../../../environments/environment';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 declare const $: any;
 
 @Component({
@@ -91,6 +92,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
   fileLocation :any ;
+  isRadioLogist:boolean = false;
   @HostListener('document:click', ['$event'])
   onClickEvent(event: MouseEvent) {
     let docManagerHeadertd = <HTMLElement>event.target;
@@ -131,14 +133,32 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       items: [{ text: 'Open' }, { text: 'Send Document' }, { text: 'Delete' }, { text: 'Rename' }, { text: 'Upload' }],
       onItemClick: this.onItemClick.bind(this)
     };
-    this.CustomToolBarItem1 = {
-      items: [{ text: 'Upload' }, { text: 'Scan' }, { text: 'Download All Files' }, { text: 'Delete Selected Files' }],
+    if(this.storageService.user.UserType == RADIOLOGIST_TYPE)
+    {
+      this.CustomToolBarItem1 = {
+      items: [{ text: 'Download All Files' }],
       onItemClick: this.onItemClick.bind(this)
-    };
+      };
+      this.isRadioLogist = false;
+    }else{
+      this.CustomToolBarItem1 = {
+        items: [{ text: 'Upload' }, { text: 'Scan' }, { text: 'Download All Files' }, { text: 'Delete Selected Files' }],
+        onItemClick: this.onItemClick.bind(this)
+        };
+      this.isRadioLogist = true;
+    }
+    if(this.isRadioLogist)
+    {
+      this.CustomToolBarItem2 = {
+        items: [{ text: 'Download Selected' }],
+        onItemClick: this.onItemClick.bind(this)
+      };
+    }else{
     this.CustomToolBarItem2 = {
       items: [{ text: 'Download Selected' }, { text: 'Delete Selected Files' }],
       onItemClick: this.onItemClick.bind(this)
     };
+  }
     this.onItemClick = this.onItemClick.bind(this);
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
