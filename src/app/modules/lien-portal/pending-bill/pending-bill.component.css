@@ -44,8 +44,13 @@
     font-weight: 600;
     line-height: 24px;
 }
-.btn-preview {
+.btn-clear {
     margin-left: auto;
+}
+.btn-preview{
+color: #2269be;
+border-color: #2269be;
+font-style: normal !important;
 }
 .signatureBtn{
     display: flex;

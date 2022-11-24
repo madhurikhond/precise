@@ -131,11 +131,11 @@ export class LienPortalComponent implements OnInit {
     switch (this.selectedMode) {
       case "pending":
         this.filter = {
-          "userType": "",
-          "procGroupName": "",
+          "referrers": this.filterForm.get("readingRad").value,
+          "cptGroup": this.filterForm.get("cptGroup").value,
           "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
           "dateType": this.filterForm.get("dateType").value,
           "loggedPartnerId": this.storageService.PartnerId,
           "jwtToken": this.storageService.PartnerJWTToken,
@@ -199,7 +199,12 @@ export class LienPortalComponent implements OnInit {
   }
 
   convertDateFormat(date){
-    return moment(date).format('MM/DD/YYYY');
+    if(date == null){
+      return ''
+    }
+    else{
+      return moment(date).format('MM/DD/YYYY');
+    }
   }
 
 }

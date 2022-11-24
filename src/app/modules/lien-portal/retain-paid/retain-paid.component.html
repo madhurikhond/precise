@@ -9,15 +9,11 @@
                 <dxo-sorting mode="none"></dxo-sorting>
 
                 <dxi-column dataField="checkno" caption="Checkno"></dxi-column>
-                <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
-                <div *dxTemplate="let data of 'PDFIconTemplate'">
-                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
-                </div>
                 <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
                 <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
                     <dx-data-grid [dataSource]="batchNameList" class="innerList" [columnAutoWidth]="true"
                         [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
-                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling> 
+                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
                         <dxi-column dataField="Batchname" caption="Batchname"> </dxi-column>
                         <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
@@ -39,7 +35,7 @@
                                 <dxi-column dataField="access" caption="Access#"></dxi-column>
                                 <dxi-column dataField="mri" ></dxi-column>
                             </dx-data-grid>
-        
+
                         </div>
                     </dx-data-grid>
 
@@ -50,7 +46,7 @@
             <div
                 *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
             </div>
-            
+
         </div> -->
     </div>
 </div>
