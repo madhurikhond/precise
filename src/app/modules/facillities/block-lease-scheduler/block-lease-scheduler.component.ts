@@ -188,6 +188,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
               MriTotal += parseFloat(Months[j].FacilityData[data]['MRI']);
             if (Months[j].FacilityData[data]['CT'])
               CtTotal += parseFloat(Months[j].FacilityData[data]['CT']);
+
             if (!Months[j].FacilityData[data]['IsFacilitySign']) {
               IsFacilityNotSign = true;
             } else if (Months[j].FacilityData[data]['IsFacilitySign']) {
@@ -199,7 +200,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
-          element[`IsFacilitySign${j}`] = null;
+        //  element[`IsFacilitySign${j}`] = null;
           element[`IsScheduledComplete${j}`] = null;
           element[`IsPaid${j}`] = null;
           element[`MRI${j}`] = null;
@@ -224,6 +225,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     retArray.push({
       'MRI': column.row.data[`MRI${index}`],
       'IsFacilitySign': column.row.data[`IsFacilitySign${index}`],
+      'IsFacilityNotSign': column.row.data[`IsFacilityNotSign${index}`],      
       'IsScheduledComplete': column.row.data[`IsScheduledComplete${index}`],
       'IsPaid': column.row.data[`IsPaid${index}`],
       'CT': column.row.data[`CT${index}`],
