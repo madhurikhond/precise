@@ -11,6 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
+
 @Component({
   selector: 'app-block-lease-scheduler',
   templateUrl: './block-lease-scheduler.component.html',
@@ -37,9 +38,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   facilityLeasesList: any = [];
   facilityID: number = 0;
   leaseMonth: any;
-  leaseYear: number = 2022;
-  modalityName: any = 'CT';
-  leaseStatus: any = 'PAID';
+  leaseYear: Number;
+  modalityName: any;
+  leaseStatus: any;
   leasePageNumber: number = 1;
   leasePageSize: number = 20;
   totalLeaseRecords: number;
@@ -172,11 +173,14 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       element['IsMriService'] = this.blockLeaseGridList[i]['IsMriService'];
       Months = this.blockLeaseGridList[i]['Months'];
       for (var j = 0; j < Months.length; j++) {
-        element[`MonthLabels${j}`] = Months[j].MonthLabels;
+        element[`MonthLabels${j}`] = Months[j].MonthLabels;      
+        
         if (Months[j].FacilityData) {
+          
           FacilityData = Months[j].FacilityData[0];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
+          element[`PaidYear${j}`] = FacilityData['PaidYear'];
           let MriTotal = 0, CtTotal = 0;
           let IsFacilityNotSign = false, IsFacilitySign = false;
           for (var data = 0; data < Months[j].FacilityData.length; data++) {
@@ -347,6 +351,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     else
       index = (Number(Number(column.columnIndex) - 2) / 2);
     this.leaseMonth = column.row.data[`MonthLabels${index}`];
+    this.leaseYear = column.row.data[`PaidYear${index}`];    
   }
 }
 
