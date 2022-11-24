@@ -114,6 +114,7 @@ export class LoginComponent implements OnInit {
         this.storageService.JWTTokenRoles = res.roles;
         this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
         if (this.storageService.user.UserType === RADIOLOGIST_TYPE) {
+          this.storageService.LastPageURL = null;
           this.lienPortalService.refreshToken();
           this.onLienPortalLogin();
         } else {
