@@ -1,5 +1,5 @@
 <div [ngClass]="{'d-none':alreadySignedbodyDisabled}">
-    <div class="esign-request-body" id="facilityEsignbody" *ngIf="!alreadySignedbodyDisabled">
+    <div class="esign-request-body" id="facilityEsignbody" *ngIf="!alreadySignedbodyDisabled && !isEsignValid">
         <div class="esign-request-main esign-request-main-group">
             <div id="englishpatient" class="esign-request" style="display: block;">
                 <div class="esign-header">
@@ -103,9 +103,8 @@
                                                 <div>signature is required</div>
                                             </div>
                                         </div>
-                                        <a href="javascript:void(0)" (click)="clearSign();"
-                                            style="background-color: gray;" class="btn btn-theme btn-sm">Clear
-                                            Signature</a>
+                                        <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                        class="btn btn-theme btn-sm">Clear Signature</a>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +115,7 @@
                                 [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                                 class="btn btn-theme btn-sm pull-left">Sign</button>
                             <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
-                                data-dismiss="modal" #closeBtn (click)="signConfirm(false)">Clear</a>
+                                data-dismiss="modal" #closeBtn (click)="clearSign()" >Clear</a>
                         </div>
                     </form>
                 </div>
@@ -143,4 +142,8 @@
 <div class="esign-successful" *ngIf="alreadySignedbodyDisabled">
     <img src="assets/images/award.png">
     <p>We have received your eSigned, thank you.</p>
+</div>
+<div  class="esign-successful" *ngIf="isEsignValid">
+    <img src="assets\images\alert.png">
+    <p>The lease agreement has been already signed by the facility.</p>
 </div>
