@@ -19,9 +19,10 @@ export class FacilityEsignComponent implements OnInit {
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   BlockLeaseNumber: string; alreadySignedbodyDisabled: boolean;
   LeaseDetail: any = [];
-  fileData : any;
-  apiUrl : any ;
-  leaseAgreementPath:any;
+  fileData: any;
+  apiUrl: any;
+  leaseAgreementPath: any;
+  isEsignValid: boolean = false;
   signaturePadOptions: Object = {
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -37,26 +38,29 @@ export class FacilityEsignComponent implements OnInit {
 
   ngOnInit(): void {
     this.Activatedroute.paramMap.subscribe(params => {
-      this.BlockLeaseNumber = params.get('BLS');     
+      this.BlockLeaseNumber = params.get('BLS');
       this.getEsignData();
     });
 
   }
   getEsignData() {
-  
+
     let body =
     {
       'key': this.BlockLeaseNumber
     }
     this.blockLeaseSchedulerService.getLeaseDetail(true, JSON.stringify(JSON.stringify(body))).subscribe((res) => {
-      if (res.responseCode == 200) {
+      if (res.responseCode == 200 && res.response !== null) {
         this.LeaseDetail = res.response;
         this.leaseAgreementPath = res.response.LeaseAgreementPath;
         if (this.LeaseDetail.IsLinkExpired) {
           this.alreadySignedbodyDisabled = true;
-        }else{
+        } else {
           this.alreadySignedbodyDisabled = false;
         }
+      }
+      else if (res.response == null) {
+        this.isEsignValid = true;
       } else {
         this.error(res);
       }
@@ -75,10 +79,13 @@ export class FacilityEsignComponent implements OnInit {
   clearSign(): void {
     this.signaturePad.clear();
     this.model.signature = '';
+    this.model.firstName = '';
+    this.model.lastName = '';
+    this.model.Title = '';
   }
 
-  getLeaseAggrementDetail(path: any,fileData: any) {
-    
+  getLeaseAggrementDetail(path: any, fileData: any) {
+
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
@@ -101,7 +108,7 @@ export class FacilityEsignComponent implements OnInit {
         console.log(res);
         if (res.responseCode == 200) {
           this.successNotification(res);
-          this.alreadySignedbodyDisabled=true;
+          this.alreadySignedbodyDisabled = true;
         } else {
           this.error(res.response);
         }
