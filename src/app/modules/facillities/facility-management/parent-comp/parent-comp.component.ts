@@ -354,7 +354,7 @@ export class ParentCompComponent implements OnInit {
       BillingFax: res.response.BillingFax,
       DefaultEmailAddress3P:res.response.DefaultEmailAddress3P,
       EmailAddress13P:res.response.EmailAddress13P,
-      EmailAddress23P:res.response.emailAddress23P
+      EmailAddress23P:res.response.EmailAddress23P
     });
   }
   setModalityServiceForm(res: any) {
