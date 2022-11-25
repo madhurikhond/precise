@@ -365,7 +365,9 @@ export class CalendarSchedulerComponent implements OnInit {
                     scheduler.endLightbox(false, null);
                     this.backToCalendar();
                 }
-                else if ((reason == 3 || reason == 6 || reason == 2)) {
+                else if ((reason == 3 || reason == 6 || reason == 2 || reason == 1)) {
+                    this.latestStartDate = event.start_date;
+                    this.latestSchedulerMode = scheduler.getState().mode;
                     scheduler.deleteEvent(event.id);
                     this.GetBlockLeaseData();
                     this.backToCalendar();
