@@ -7056,3 +7056,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #CalendarSchedulerWindow .modal-body .dhx_scheduler_month, #CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_timeline .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_day .dhx_cal_data{
 	overflow-y: hidden;
 }
+.invalid-feedback{
+	line-height: 17px;
+	margin-top: 35px;
+}
