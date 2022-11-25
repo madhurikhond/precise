@@ -1,5 +1,7 @@
 import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-assign-paid',
@@ -33,7 +35,7 @@ export class AssignPaidComponent implements OnInit {
   dataSource: any = [];
   AssignARpaid:any = [];
 
-  constructor(private lienPortalService : LienPortalService) {
+  constructor(private lienPortalService : LienPortalService,private commonService: CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -53,6 +55,7 @@ export class AssignPaidComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.ASSIGN_AND_PAID);
   }
 
   getAssigndPaidData(){

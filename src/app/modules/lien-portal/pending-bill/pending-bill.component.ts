@@ -6,6 +6,7 @@ import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
+import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
 
 @Component({
   selector: 'app-pending-bill',
@@ -51,12 +52,14 @@ export class PendingBillComponent implements OnInit {
   lastName: string;
 
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService) {
+  constructor(private lienPortalService: LienPortalService, 
+    private commonService: CommonMethodService, private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
   }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.PENDING_TO_BILL);
     this.firstName = this.storageService.user.FirstName;
     this.lastName = this.storageService.user.LastName;
     this.bindFundComp_DDL();
@@ -147,7 +150,7 @@ export class PendingBillComponent implements OnInit {
         jwtToken: this.storageService.PartnerJWTToken,
         userId: this.storageService.user.UserId
       }
-
+     
       console.log(assignData);
     }
   }

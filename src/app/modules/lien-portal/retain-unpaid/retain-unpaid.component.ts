@@ -1,5 +1,7 @@
 import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-retain-unpaid',
@@ -191,7 +193,7 @@ export class RetainUnpaidComponent implements OnInit {
   retainARUnpaid :any = [];
   checkboxSelectedData:any;
 
-  constructor(private lienPortalService: LienPortalService) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -211,6 +213,7 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
   }
 
   getRetainUnPaidList(){

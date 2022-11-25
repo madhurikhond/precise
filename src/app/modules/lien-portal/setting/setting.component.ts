@@ -1,6 +1,8 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 
 @Component({
   selector: 'app-setting',
@@ -64,17 +66,18 @@ export class SettingComponent implements OnInit {
   
   ];
 
-  constructor() { }
+  constructor(private commonService: CommonMethodService) { }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.SETTINGS);
     this.getData();
   }
 
   onSettingTabClicked(){
-
+    this.commonService.setTitle(LienPortalPageTitleOption.SETTINGS);
   }
   onFundingCompanyTabClicked(){
-
+    this.commonService.setTitle(LienPortalPageTitleOption.FUNDING_COMPANY);
   }
   onMaterialGroupChange(event) {
     console.log(event);
