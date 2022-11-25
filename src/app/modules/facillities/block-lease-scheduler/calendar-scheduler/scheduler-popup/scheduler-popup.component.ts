@@ -12,6 +12,7 @@ import {
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
 import { CommonMethodService } from '../../../../../services/common/common-method.service';
+
 declare const $: any;
 
 @Component({
@@ -77,7 +78,8 @@ export class SchedulerPopupComponent implements OnInit {
     private datePipe: DatePipe,
     private facilityService: FacilityService,
     private modalService: NgbModal,
-    private readonly commonService: CommonMethodService
+    private readonly commonService: CommonMethodService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -147,6 +149,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   getLeaseData() {
+
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
       if (res.response != null) {
         if (res.response.CreditDetails != null) {
@@ -170,7 +173,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.LeaseId = this.LeaseDetails['leaseId'];
-
+          this.setValidatorForleaseForm();
           if (this.LeaseId && !this.isLeaseSigned) {
             document.getElementById('deleteBtn').style.display = 'none';
             document.getElementById('SaveBtn').style.display = 'none';
@@ -235,6 +238,7 @@ export class SchedulerPopupComponent implements OnInit {
       this.leaseForm.controls.end_date.setValidators(this.setRequired());
       this.leaseForm.controls.end_time.setValidators(this.setRequired());
     }
+    this.leaseForm.updateValueAndValidity()
   }
   getReasonData() {
 
@@ -367,7 +371,7 @@ export class SchedulerPopupComponent implements OnInit {
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
-        if (res.response[0].TotalCreditHours)
+        if (res.response[0].TotalCreditHours && this.CreditDetailsList.length>0)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
         if (res.response[0].TotalLeaseHours)
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
@@ -443,11 +447,12 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
-            if (res.response) {
+            if (res.response) { 
               this.showNotificationOnSucess({
                 message: res.response.message,
                 responseCode: res.responseCode
               });
+              this.modal.dismiss(ModalResult.OTHER);
             }
             else {
               this.showNotificationOnSucess(res);
@@ -488,6 +493,8 @@ export class SchedulerPopupComponent implements OnInit {
                 message: res.response.message,
                 responseCode: res.responseCode
               });
+
+
             }
             else {
               this.showNotificationOnSucess(res);
@@ -506,6 +513,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   saveCreditInfo() {
+  
 
     let body = {
       'facilityId': this.FacilityID,
@@ -524,7 +532,11 @@ export class SchedulerPopupComponent implements OnInit {
 
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
-        this.modal.close(ModalResult.SAVE);
+     
+        this.leaseFormInitialization();
+        this.submitted= false;
+        this.getLeaseData();
+      
       }
       else if (res.responseCode === 404) {
         if (res.message) {

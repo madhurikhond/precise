@@ -325,6 +325,7 @@
                                 </option>
                             </select>
                         </div>
+                       
                         <div *ngIf="(submitted && editFormControls.creditReasonID.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.creditReasonID.errors?.required">
                                 Credit Reason is required</div>
@@ -343,13 +344,20 @@
                             <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditHours.errors) }"
                                 formControlName="creditHours" class="form-control">
                                 <option value="">Select Hour</option>
+                                <option value="0">0</option>
                                 <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
-                                    {{hours}} hour
+                                    {{hours}} 
                                 </option>
                             </select>
                         </div>
+
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
+                                modality is required</div>
+                        </div>
                         <div *ngIf="(submitted && editFormControls.creditHours.errors)" class="invalid-feedback">
-                            <div *ngIf="editFormControls.creditHours.errors?.required">
+                            <div class="required" *ngIf="editFormControls.creditHours.errors?.required">
                                 Credit Hour is required</div>
                         </div>
                     </div>
@@ -392,7 +400,7 @@
         <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
             class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
 
-            
+
         <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
     </div>
 </div>
