@@ -371,7 +371,7 @@ export class SchedulerPopupComponent implements OnInit {
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
-        if (res.response[0].TotalCreditHours && this.CreditDetailsList.length>0)
+        if (res.response[0].TotalCreditHours && this.CreditDetailsList.length > 0)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
         if (res.response[0].TotalLeaseHours)
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
@@ -447,7 +447,7 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
-            if (res.response) { 
+            if (res.response) {
               this.showNotificationOnSucess({
                 message: res.response.message,
                 responseCode: res.responseCode
@@ -513,7 +513,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   saveCreditInfo() {
-  
+
 
     let body = {
       'facilityId': this.FacilityID,
@@ -532,11 +532,11 @@ export class SchedulerPopupComponent implements OnInit {
 
       if (res.responseCode === 200) {
         this.showNotificationOnSucess(res);
-     
+
         this.leaseFormInitialization();
-        this.submitted= false;
+        this.submitted = false;
         this.getLeaseData();
-      
+
       }
       else if (res.responseCode === 404) {
         if (res.message) {
@@ -680,6 +680,11 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   private createForm() {
+    // $(document).keydown(function (event) {
+    //   if (event.keyCode == 27) {
+    //     this.modal.dismiss(ModalResult.CLOSE);
+    //   }
+    // });
     this.form = this.formBuilder.group(
       {
         type: [null, [Validators.required]],
@@ -709,7 +714,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   close() {
     if (this.LeaseBlockId)
-      this.modal.dismiss(ModalResult.ESC);
+      this.modal.dismiss(ModalResult.BACKDROP_CLICK);
     else
       this.modal.dismiss(ModalResult.CLOSE);
   }
@@ -726,12 +731,6 @@ export class SchedulerPopupComponent implements OnInit {
       this.isBlockOffTime = true;
     else
       this.isBlockOffTime = false;
-  }
-  cancel() {
-    if (this.LeaseBlockId)
-      this.modal.dismiss(ModalResult.ESC);
-    else
-      this.modal.dismiss(ModalResult.CLOSE);
   }
   confirmDelete() {
     const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
