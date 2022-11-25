@@ -30,7 +30,7 @@ export class LienPortalService {
       map((res: LienPortalResponse) => res)
     );
   }
-  
+
 
   GetAssignedARUnpaid(data: any, showGlobalLoader: boolean = true) {
     return this._httpService.post('LienPortal/GetAssignedARUnpaid', data, showGlobalLoader).pipe(
@@ -44,19 +44,30 @@ export class LienPortalService {
     );
   }
 
-  
+
   GetReferrerByUser(data: any, showGlobalLoader: boolean = true) {
     return this._httpService.post('LienPortal/GetReferrerByUser', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)
     );
   }
-  
+
   GetCPTGroupList(data: any, showGlobalLoader: boolean = true) {
     return this._httpService.post('LienPortal/GetCPTGroupList', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)
     );
   }
 
+  GetRetainUnpaid(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/GetRetainedUnPaid', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  GetRetainedPaid(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/GetRetainedArPaid', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
 
   successNotification(msg: string) {
     this.notificationService.showNotification({

@@ -56,85 +56,30 @@ export class AssignPaidComponent implements OnInit {
   }
 
   getAssigndPaidData(){
-    this.lienPortalService.GetAssignedARPaid(this.getfilterData).subscribe((res)=>{
-      res.result = [
-        {
-          "checkNumber": "78455645",
-          "checkDate": "11-22-2022",
-          "checkAmount": 120.23,
-          "fileName": null,
-          "checkWiseData": [
-            {
-              "batchName": "Test_Darshit_20221122_600",
-              "batchId": 1,
-              "batchWiseData": [
-                {
-                  "rad": "EllaTest",
-                  "dateRead": "09-22-1966",
-                  "patientId": "PRE605603",
-                  "lastName": "FEHRMANN",
-                  "firstName": "GARY",
-                  "dateOfBirth": "09-22-1966",
-                  "study": "MRI LUMBAR SPINE W/O CONTRAST",
-                  "dateARAssiged": "11-22-2022",
-                  "paidDate": null,
-                  "fundingCompany": "CYPRESS CARED",
-                  "executionDate": null
-                },
-                {
-                  "rad": "EllaTest",
-                  "dateRead": "09-22-1966",
-                  "patientId": "PRE605603",
-                  "lastName": "FEHRMANN",
-                  "firstName": "GARY",
-                  "dateOfBirth": "09-22-1966",
-                  "study": "MRI LUMBAR SPINE W/O CONTRAST",
-                  "dateARAssiged": "11-22-2022",
-                  "paidDate": null,
-                  "fundingCompany": "CYPRESS CARED",
-                  "executionDate": null
-                }
-              ]
-            },
-            {
-              "batchName": "Test_Darshit_20221122_6001",
-              "batchId": 1,
-              "batchWiseData": [
-                {
-                  "rad": "EllaTest",
-                  "dateRead": "09-22-1966",
-                  "patientId": "PRE605603",
-                  "lastName": "FEHRMANN",
-                  "firstName": "GARY",
-                  "dateOfBirth": "09-22-1966",
-                  "study": "MRI CERVICAL SPINE W/O CONTRAST",
-                  "dateARAssiged": "11-22-2022",
-                  "paidDate": null,
-                  "fundingCompany": "BLEDIN",
-                  "executionDate": null
-                },
-                {
-                  "rad": "EllaTest",
-                  "dateRead": "09-22-1966",
-                  "patientId": "PRE605603",
-                  "lastName": "FEHRMANN",
-                  "firstName": "GARY",
-                  "dateOfBirth": "09-22-1966",
-                  "study": "MRI CERVICAL SPINE W/O CONTRAST",
-                  "dateARAssiged": "11-22-2022",
-                  "paidDate": null,
-                  "fundingCompany": "BLEDIN",
-                  "executionDate": null
-                }
-              ]
+       try {
+        this.lienPortalService.GetAssignedARPaid(this.getfilterData).subscribe((res)=>{
+          if (res.status == 0) {
+            this.dataSource = [];
+            if(res.result.length > 0){
+              this.dataSource = res.result;
             }
-          ]
+            this.AssignARpaid = this.dataSource;
+          }
+          if (res.exception && res.exception.message) {
+            this.lienPortalService.errorNotification(res.exception.message);
+          }
+        }, (error) => {
+          if (error.message) {
+            this.lienPortalService.errorNotification(error.message);
+          }
+        })
+       } catch (error) {
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
         }
-      ]
-      this.dataSource = res.result;
-      this.AssignARpaid = this.dataSource;
-    })
-  }
+       }
+    }
+
 
 }
 
