@@ -404,10 +404,10 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-
-    if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null)) {
+    if(this.selectedModality.toUpperCase()=='CT' &&  (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == ""))
+    {
       this.notificationService.showNotification({
-        alertHeader: '',
+        alertHeader : '',
         alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
         alertType: null
       });
