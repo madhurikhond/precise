@@ -79,16 +79,30 @@ export class TemplateComponent implements OnInit {
     console.log("onChange");
   }
   onChange_body($event: any): void {
-    var data = this.ckeEvent.getQRCodeString($event);
-    if (data != null) {
-      this.myckeditor_body.instance.setData(data);
+
+    var cssText = this.myckeditor_body.instance.getSelectedHtml().$.style.cssText.split(':')[1];
+    if (cssText == ' Code128;') {
+      var selectedText = this.myckeditor_body.instance.getSelection().getSelectedText();
+      var htmlElement = this.myckeditor_body.instance.getSelectedHtml().$.innerHTML;
+      var data = this.ckeEvent.getQRCodeString($event, selectedText, htmlElement);
+      if (data != null) {
+        this.myckeditor_body.instance.setData(data);
+      }
+    } else {
+      this.myckeditor_body.instance.setData($event);
     }
-    //this.log += new Date() + "<br />";
   }
   onChange_spanishEmailBody($event: any): void {
-    var data = this.ckeEvent.getQRCodeString($event);
-    if (data != null) {
-      this.myckeditor_spanishEmailBody.instance.setData(data);
+    var cssText = this.myckeditor_spanishEmailBody.instance.getSelectedHtml().$.style.cssText.split(':')[1];
+    if (cssText == ' Code128;') {
+      var selectedText = this.myckeditor_spanishEmailBody.instance.getSelection().getSelectedText();
+      var htmlElement = this.myckeditor_spanishEmailBody.instance.getSelectedHtml().$.innerHTML;
+      var data = this.ckeEvent.getQRCodeString($event, selectedText, htmlElement);
+      if (data != null) {
+        this.myckeditor_spanishEmailBody.instance.setData(data);
+      }
+    } else {
+      this.myckeditor_spanishEmailBody.instance.setData($event);
     }
     //this.log += new Date() + "<br />";
   }

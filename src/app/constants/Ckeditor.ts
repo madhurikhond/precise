@@ -26,18 +26,17 @@ export const ckeConfig = {
 
 export class CkeEvent{
 
-  public getQRCodeString(input: string): string {
+  public getQRCodeString(input: string,selectedText: string,innerHTML: string): string {
+
     var output = null;
     try {
-      let text1 = (output == null ? input : output).split('<span style="font-family:Code128">');
-      if (text1.length == 2) {
-        let data = text1[1].split('</span>');
-        if (data.length > 1) {
-          data[0] = "<span class='ss'>"+this.textWiseQR(data[0])+"</span>";
-          text1[1] = data.join('');
-          output = text1.join('');
+      let text = innerHTML;
+      if (selectedText.length > 0) {
+          var result = "<span class='ss'>"+this.textWiseQR(selectedText)+"</span>";
+          var changedInnerHTML = innerHTML.replace(selectedText,result);
+          output = input.replace(text,changedInnerHTML);
         }
-      }
+      
     } catch (error) {
       output = null;
     }
