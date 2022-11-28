@@ -109,7 +109,7 @@
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
                     <dxi-column  cellTemplate="viewCellTemplate" [fixed]="true" dataField="Facilityname"> </dxi-column>
                     <dxi-column [width]="250"
                         [caption]="checkUndefiend('MonthLabels0')">
