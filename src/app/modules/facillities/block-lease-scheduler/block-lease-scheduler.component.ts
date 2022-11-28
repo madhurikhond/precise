@@ -44,7 +44,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   totalLeaseRecords: number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
-  selectedScheduleStatus: any = -1;
+  selectedScheduleStatus: string = '0';
   modalityList: any[] = [];
   selectedModality: any = [];
   pageNumber: number = 1;
@@ -52,9 +52,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   readonly pageSizeArray = PageSizeArray;
   setUserEsignSetting: boolean = true;
   totalRecords: number;
-  SelectedsLeaseStatus: number = -1;
+  SelectedsLeaseStatus: string = '0';
   blockLeaseGridList: [] = [];
-  selectedPaid: any = -1 ;
+  selectedPaid: any = 'ALL';
   apiUrl: any;
   fileData: SafeResourceUrl;
   AllBlockLeaseList: any = [];
@@ -144,24 +144,20 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     });
   }
   clearApplyFilter() {
-
     this.selectedParentFacility = null;
-    this.selectedFacility = 0;
+    this.selectedFacility = null;
     this.selectedModality = null;
-    this.selectedPaid = -1 ;
-    this.selectedScheduleStatus = -1;
-    this.SelectedsLeaseStatus = -1;
-    this.getAllBlockLeaseFacility(this.getApplyFilter(0, null, '', null, null, null,this.pageNumber, this.pageSize));
+    this.selectedPaid = "0";
+    this.selectedScheduleStatus = "0";
+    this.getAllBlockLeaseFacility(this.getApplyFilter('', '', '', '', '', this.pageNumber, this.pageSize));
   }
   applyFilter() {
-    let selectedFacility = this.selectedFacility ? this.selectedFacility : 0;
-    let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility : null;
+    let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
+    let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
-    let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus: null;
-    let SelectedsLeaseStatus = this.SelectedsLeaseStatus !== -1 ?this.SelectedsLeaseStatus : null
-    let paidStatus = this.selectedPaid !== -1 ?this.selectedPaid : null
-   // let paidStatus = this.selectedPaid !  == -1 ? this.selectedPaid : null;
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus,SelectedsLeaseStatus, this.pageNumber, this.pageSize));
+    let selectedScheduleCreated = this.selectedScheduleStatus ? this.selectedScheduleStatus.toString() : '';
+    let paidStatus = this.selectedPaid ? this.selectedPaid.toString() : '';
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus, this.pageNumber, this.pageSize));
   }
   convertDataTomodel() {
     var arr: any = [];
@@ -233,14 +229,13 @@ export class BlockLeaseSchedulerComponent implements OnInit {
 
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-    modality: any, schedululeCreated: any, paidStatus: any, SelectedsLeaseStatus :number,PageNumber: Number, PageSize: Number): any {
+    modality: any, schedululeCreated: any, paidStatus: any, PageNumber: Number, PageSize: Number): any {
     return {
-      'FacilityId': facilityName,
+      'facilityName': facilityName,
       'parentCompanyName': parentCompanyName,
-      'Modality': modality,
+      'modality': modality,
       'schedululeCreated': schedululeCreated,
-      'LeaseStatus' :SelectedsLeaseStatus,
-      'IsPaid': paidStatus,
+      'paidStatus': paidStatus,
       'PageNumber': PageNumber,
       'PageSize': PageSize
     }

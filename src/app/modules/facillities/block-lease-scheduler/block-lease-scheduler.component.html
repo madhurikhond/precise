@@ -17,14 +17,13 @@
                             <div class="theme-label">Facility</div>
                             <div class="input-group">
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
-                                [clearable]="false"
                                     [multiple]="false" [closeOnSelect]="false" bindValue="FacilityID"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                             <span class="ng-value-label"> {{item.FacilityName}}</span>
-                                            <!-- <span class="ng-value-icon right" (click)="clear(item)"
-                                                aria-hidden="true">×</span> -->
+                                            <span class="ng-value-icon right" (click)="clear(item)"
+                                                aria-hidden="true">×</span>
                                         </div>
                                         <div class="ng-value" *ngIf="items.length > 1">
                                             <span class="ng-value-label">{{items.length - 1}} more...</span>
@@ -57,8 +56,9 @@
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedScheduleStatus">
-                                    <option value= -1>Select</option>
-                                    <option value="1">Completed</option>
+                                    <option value="0">Select</option>
+                                    <option value="NotCompleted">Not completed</option>
+                                    <option value="Completed">Completed</option>
                                 </select>
                             </div>
                         </div>
@@ -67,9 +67,10 @@
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="SelectedsLeaseStatus">
-                                    <option value= -1 >Select</option>
-                                    <option value=0>Facility not signed</option>
-                                    <option value=1>Completed</option>
+                                    <option value="0">Select</option>
+                                    <option value="1">Both parties not signed</option>
+                                    <option value="1">Facility not signed</option>
+                                    <option value="2">Completed</option>
                                 </select>
                             </div>
                         </div>
@@ -78,9 +79,9 @@
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedPaid">
-                                    <option value= -1 >ALL</option>
-                                    <option value=1>PAID</option>
-                                    <option value=0>UNPAID</option>
+                                    <option value="ALL" selected>ALL</option>
+                                    <option value="PAID">PAID</option>
+                                    <option value="UNPAID">UNPAID</option>
 
                                 </select>
                             </div>
@@ -109,8 +110,8 @@
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
-                    <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
-                    <dxi-column  cellTemplate="viewCellTemplate" [fixed]="true" dataField="Facilityname"> </dxi-column>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxi-column cellTemplate="viewCellTemplate" dataField="Facilityname"> </dxi-column>
                     <dxi-column [width]="250"
                         [caption]="checkUndefiend('MonthLabels0')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
