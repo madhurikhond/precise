@@ -15,7 +15,7 @@
 
                         <div class="form-group autocomplete form-group1  normal-text">
                             <div class="theme-label">Facility</div>
-                            <div class="input-group">
+                            <div>
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
                                     [multiple]="false" [closeOnSelect]="false" bindValue="FacilityID"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedFacility">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Modality</div>
-                            <div class="input-group">
+                            <div>
                                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
                                     [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedModality">
@@ -106,12 +106,12 @@
         </div>
 
         <div class="cash-price-table table-responsive">
-            <div class="scheduling-facillities-table">               
+            <div class="scheduling-facillities-table">
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxi-column cellTemplate="viewCellTemplate" dataField="Facilityname"> </dxi-column>
+                    <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
+                    <dxi-column  caption="Facility" cellTemplate="viewCellTemplate" [fixed]="true" dataField="Facilityname"> </dxi-column>
                     <dxi-column [width]="250"
                         [caption]="checkUndefiend('MonthLabels0')">
                         <dxi-column [width]="125" caption="MRI" cellTemplate="getDataTemplate">
@@ -194,9 +194,7 @@
                     <div *dxTemplate="let data of 'getDataTemplate'">
                         <ul class="datagrid-list">
                             <li *ngIf="getColumnByDataField(data)[0].IsScheduledComplete != null">
-                                <img (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASECOMPLETE')"
-                                    data-toggle="modal" data-target="#all-leases-popup"
-                                    [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
+                                <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
                                     style="width: 18px;" />
                                 <span *ngIf="getColumnByDataField(data)[0].MRI != null && data.column.caption == 'MRI'"
                                     class="displayCounter">{{getColumnByDataField(data)[0].MRI}}</span>
@@ -218,8 +216,16 @@
                                     [src]="getColumnByDataField(data)[0].IsPaid==true?'assets/images/paid.png':'assets/images/unpaid.png'"
                                     style="width: 11px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign != null">
-                                <img [src]="getColumnByDataField(data)[0].IsFacilitySign==true?'assets/images/sign-lease.png':'assets/images/sign-pending.png'"
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign">
+                                <img data-toggle="modal" data-target="#all-leases-popup"
+                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
+                                    src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
+                                    style="width: 18px;" />
+                            </li>
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign">
+                                <img data-toggle="modal" data-target="#all-leases-popup"
+                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
+                                    src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 18px;" />
                             </li>
                         </ul>
@@ -266,7 +272,7 @@
                     <span>Lease signed</span>
                 </li>
                 <li>
-                    <img src="/assets/images/sign-parties.png" />
+                    <img src="/assets/images/sign-pending.png" />
                     <span>Pending facility signature</span>
                 </li>
                 <li>
@@ -293,7 +299,7 @@
     </div>
 </div>
 <div class="modal fade modal-theme modal-small" id="all-leases-popup" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"  aria-modal="true">
+    aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -321,11 +327,16 @@
 
                         <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                         <dxi-column dataField="LeaseId" caption="Lease #"></dxi-column>
-                        <dxi-column dataField="LeaseDate" caption="Lease Dates"></dxi-column>
+                        <dxi-column dataField="LeaseDate" caption="LEASE CREATION DATE"  cellTemplate="leaseDateCellTemplate"></dxi-column>
+                        <dxi-column dataField="ModalityType" caption="modality" ></dxi-column>
                         <dxi-column dataField="TotalHours" caption="Lease Hours"></dxi-column>
-                        <dxi-column dataField="PaymentStatus" caption="Payment Status"></dxi-column>
                         <dxi-column dataField="LeaseAgreement" cellTemplate="leaseAggrementTemplate"
                             caption="Lease Aggrements"></dxi-column>
+                        <div *dxTemplate="let data of 'leaseDateCellTemplate'">
+                            <ng-container *ngIf="data && data.value">
+                                {{data.value | date:dateTimeFormatCustom.Date}}
+                            </ng-container>
+                        </div>
                         <div *dxTemplate="let data of 'leaseAggrementTemplate'">
                             <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(data.data.LeaseAgreement,'')"
                                 class="link-btn fa fa-file-pdf-o" data-toggle="modal"

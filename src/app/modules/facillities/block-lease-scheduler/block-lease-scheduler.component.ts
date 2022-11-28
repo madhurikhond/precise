@@ -9,6 +9,7 @@ import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { textChangeRangeIsUnchanged } from 'typescript';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
+import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class BlockLeaseSchedulerComponent implements OnInit {
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
+  readonly dateTimeFormatCustom = DateTimeFormatCustom;
   constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService, private readonly facilityService: FacilityService, private notificationService: NotificationService, private fb: FormBuilder,
     private readonly commonMethodService: CommonMethodService,
     private readonly storageService: StorageService,
@@ -36,9 +38,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   facilityLeasesList: any = [];
   facilityID: number = 0;
   leaseMonth: any;
-  leaseYear: number = 2022;
-  modalityName: any = 'CT';
-  leaseStatus: any = 'PAID';
+  leaseYear: Number;
+  modalityName: any;
+  leaseStatus: any;
   leasePageNumber: number = 1;
   leasePageSize: number = 20;
   totalLeaseRecords: number;
@@ -171,11 +173,14 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       element['IsMriService'] = this.blockLeaseGridList[i]['IsMriService'];
       Months = this.blockLeaseGridList[i]['Months'];
       for (var j = 0; j < Months.length; j++) {
-        element[`MonthLabels${j}`] = Months[j].MonthLabels;
+        element[`MonthLabels${j}`] = Months[j].MonthLabels;      
+        
         if (Months[j].FacilityData) {
+          
           FacilityData = Months[j].FacilityData[0];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
+          element[`PaidYear${j}`] = FacilityData['PaidYear'];
           let MriTotal = 0, CtTotal = 0;
           let IsFacilityNotSign = false, IsFacilitySign = false;
           for (var data = 0; data < Months[j].FacilityData.length; data++) {
@@ -183,6 +188,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
               MriTotal += parseFloat(Months[j].FacilityData[data]['MRI']);
             if (Months[j].FacilityData[data]['CT'])
               CtTotal += parseFloat(Months[j].FacilityData[data]['CT']);
+
             if (!Months[j].FacilityData[data]['IsFacilitySign']) {
               IsFacilityNotSign = true;
             } else if (Months[j].FacilityData[data]['IsFacilitySign']) {
@@ -194,7 +200,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
-          element[`IsFacilitySign${j}`] = null;
+        //  element[`IsFacilitySign${j}`] = null;
           element[`IsScheduledComplete${j}`] = null;
           element[`IsPaid${j}`] = null;
           element[`MRI${j}`] = null;
@@ -219,6 +225,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     retArray.push({
       'MRI': column.row.data[`MRI${index}`],
       'IsFacilitySign': column.row.data[`IsFacilitySign${index}`],
+      'IsFacilityNotSign': column.row.data[`IsFacilityNotSign${index}`],      
       'IsScheduledComplete': column.row.data[`IsScheduledComplete${index}`],
       'IsPaid': column.row.data[`IsPaid${index}`],
       'CT': column.row.data[`CT${index}`],
@@ -346,6 +353,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     else
       index = (Number(Number(column.columnIndex) - 2) / 2);
     this.leaseMonth = column.row.data[`MonthLabels${index}`];
+    this.leaseYear = column.row.data[`PaidYear${index}`];    
   }
 }
 
