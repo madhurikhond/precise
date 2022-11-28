@@ -1,4 +1,5 @@
-import { Component, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit,ViewChild } from '@angular/core';
+import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
@@ -19,164 +20,18 @@ export class RetainUnpaidComponent implements OnInit {
     }
   }
 
+  @ViewChild(SignaturePad) signaturePad: SignaturePad;
+  signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
+    'minWidth': 2,
+    pecColor: 'rgb(66,133,244)',
+    backgroundcolor: 'rgb(255,255,255)',
+    canvasWidth: 750,
+    canvasHeight: 100,
+    Placeholder: 'test'
+  };
+
+
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-
-  // RetainARUnpaid =[{
-  //   Batchname:'batch name 1',
-  // },
-  // {
-  //   Batchname:'batch name 2',
-  // },
-  // {
-  //   Batchname:'batch name 3',
-  // },
-  // {
-  //   Batchname:'batch name 4',
-  // }];
-
-
-  // BatchDetailList =[{
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // },
-  // {
-  //   rad:'DR BOB',
-  //   dateread:'2/2/20',
-  //   arretained:'2/9/20',
-  //   fundingco:'PRE9991',
-  //   patientid:'PRE9991',
-  //   lastname:'Last name',
-  //   firstname:'First name',
-  //   dob:'10/25/84',
-  //   study:'MRI OF KNEE',
-  //   access:'RAM88717',
-  //   mri:'MRI',
-  //   billamount:'$600.00'
-  // }];
-
-
 
   checkBoxesMode: string;
   allMode: string;
@@ -191,7 +46,12 @@ export class RetainUnpaidComponent implements OnInit {
   currentFilter: any;
   dataSource : any = [];
   retainARUnpaid :any = [];
-  checkboxSelectedData:any;
+  checkboxSelectedData:any = [];
+  fundingCompanies = [];
+  selecteFundComp: number = 0;
+  firstName: string;
+  lastName: string;
+  radiologistSign: string;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
@@ -216,11 +76,12 @@ export class RetainUnpaidComponent implements OnInit {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
   }
 
+
   getRetainUnPaidList(){
     try {
       this.dataSource = [];
       this.lienPortalService.GetRetainUnpaid(this.getfilterData).subscribe((res)=>{
-        if(res.status == 0){
+        if(res.status == 1){
           if (res.result) {
             this.dataSource = res.result.retainedArUnPaidBatches;
           }
@@ -239,8 +100,78 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   changeCheckbox(item: any) {
-    if (item) {
-      this.checkboxSelectedData = item.selectedRowsData;
-    }
+
+    this.dataGrid.instance.expandRow((item.currentSelectedRowKeys[0]));
+      setTimeout(() => {
+        if(item) {
+          this.checkboxSelectedData = item.selectedRowsData;
+        }
+    
+        //selection
+    
+        if(item.currentSelectedRowKeys.length > 0){
+          var selectedbatchName = item.currentSelectedRowKeys[0].batchName;
+          var chkBatch = document.getElementsByName(selectedbatchName);
+          chkBatch.forEach(item => {
+            var element = <HTMLInputElement> item;
+            element.checked = true;
+          });
+        }
+    
+        //Deselection
+        
+        if(item.currentDeselectedRowKeys.length > 0){
+          var deSelectedbatchname = item.currentDeselectedRowKeys[0].batchName;
+          var chkBatch = document.getElementsByName(deSelectedbatchname);
+          this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
+          chkBatch.forEach(function(item) {
+            var element = <HTMLInputElement> item;
+            element.checked = false;
+          });
+        }
+      }, 150);
+    
+  }
+
+  drawComplete() {
+    this.radiologistSign = this.signaturePad.toDataURL();
+  }
+
+
+  clearSign(): void {
+    this.signaturePad.clear();
+    this.radiologistSign = '';
+  }
+
+  bindFundComp_DDL() {
+    this.fundingCompanies = [
+      { id: 0, name: 'Select' },
+      { id: 1, name: 'Amar' },
+      { id: 2, name: 'Akbhar' },
+      { id: 3, name: 'Anthony' },
+      { id: 4, name: 'BadkaG' },
+      { id: 5, name: 'Baave' },
+      { id: 6, name: 'samar' },
+      { id: 7, name: 'vanraj' },
+    ];
+  }
+
+  onAssignARValidation(): boolean {
+    return (
+      this.radiologistSign &&
+      this.radiologistSign != "" &&
+
+      this.checkboxSelectedData &&
+      this.checkboxSelectedData.length > 0 &&
+
+      this.selecteFundComp &&
+      this.selecteFundComp > 0 &&
+
+      this.firstName &&
+      this.firstName != "" &&
+
+      this.lastName &&
+      this.lastName != ""
+    );
   }
 }
