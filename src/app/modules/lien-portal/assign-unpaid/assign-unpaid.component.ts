@@ -63,7 +63,7 @@ export class AssignUnpaidComponent implements OnInit {
     try {
       this.dataSource = [];
       this.lienPortalService.GetAssignedARUnpaid(this.getfilterData).subscribe((result) => {
-        if (result.status == 0) {
+        if (result.status == 1) {
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
             this.AssignARUnpaid = this.dataSource;

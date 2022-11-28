@@ -70,11 +70,8 @@
                       <div class="input-group">
                           <select class="form-control" formControlName="fundingCompany">
                               <option value="">Select</option>
-                              <option value="1">Company 1</option>
-                              <option value="2">Company 2</option>
-                              <option value="3">Company 3</option>
-                              <option value="4">Company 4</option>
-                              <option value="5">Company 5</option>
+                              <option *ngFor="let item of list_FundingCompanyByUser" [value]="item.fundingCompanyName">
+                                {{item.fundingCompanyName}}</option>
                           </select>
                       </div>
                   </div>

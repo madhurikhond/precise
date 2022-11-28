@@ -61,7 +61,7 @@ export class AssignPaidComponent implements OnInit {
   getAssigndPaidData(){
        try {
         this.lienPortalService.GetAssignedARPaid(this.getfilterData).subscribe((res)=>{
-          if (res.status == 0) {
+          if (res.status == 1) {
             this.dataSource = [];
             if(res.result.length > 0){
               this.dataSource = res.result;
