@@ -21,18 +21,16 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <input type="checkbox" [(ngModel)]="selected_reminder_to_bill">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
-
                             </div>
                             <div class="info-txt">Email me a reminder to bill patients & assign studies every</div>
                             <div class="selectedDays">
                                 <div class="form-group">
                                     <ng-select [items]="days" bindLabel="name" bindValue="id" [multiple]="true"
-                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days"
-                                        (change)="onMaterialGroupChange($event)">
+                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days">
                                     </ng-select>
                                 </div>
                             </div>
@@ -54,7 +52,7 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <input type="checkbox" [(ngModel)]="selected_pdf_copy">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
@@ -82,24 +80,24 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected">
+                                        <input type="checkbox" [(ngModel)]="selected_signature">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
-
                             </div>
                             <div class="info-txt">Insert my saved signature by default</div>
                             <div class="form-group">
                                 <div class="signature-custom">
                                     <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
-                                        [(ngModel)]="dummyData" [ngModelOptions]="{ standalone : true }"
-                                        #signature="ngModel" (onEndEvent)="drawComplete()">
+                                        [(ngModel)]="radiologistSign" [ngModelOptions]="{ standalone : true }"
+                                        #signature="ngModel" (onEndEvent)="onSignatureComplete()">
                                     </signature-pad>
                                 </div>
                                 <div class="signatureBtn">
-                                    <a href="javascript:void(0)" (click)="clearSign();"
+                                    <a href="javascript:void(0)" (click)="clearSign();" [ngClass]="(radiologistSign ?'':'disabled')"
                                         class="btn btnsignature btn-clear">Clear Signature</a>
-                                    <a href="javascript:void(0)" class="btn btnsignature btn-preview">Save Signature</a>
+                                    <a href="javascript:void(0)" (click)="saveSign();" [ngClass]="(radiologistSign?'':'disabled')"
+                                    class="btn btnsignature btn-preview">Save Signature</a>
                                 </div>
                             </div>
                         </div>

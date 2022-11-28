@@ -11,9 +11,10 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
   styleUrls: ['./lien-portal.component.css']
 })
 export class LienPortalComponent implements OnInit {
- 
+
   list_CPTGroup: any = [];
   list_ReferrerByUser: any = [];
+  list_FundingCompanyByUser: any = [];
 
   filter: any;
   selectedMode: string;
@@ -40,7 +41,8 @@ export class LienPortalComponent implements OnInit {
 
     // Dropdown Binding
     this.bindCPTGroup_DDL();
-    this.bindReferrerByUser();
+    this.bindReferrerByUser_DDL();
+    this.bindFundingCompanyByUser_DDL();
 
     // Default Pending Click
     this.onPendingBillTabClicked();
@@ -55,7 +57,7 @@ export class LienPortalComponent implements OnInit {
       };
 
       this.lienPortalService.GetCPTGroupList(data).subscribe((result) => {
-        if (result.status == 0) {
+        if (result.status == 1) {
           if (result.result && result.result.length > 0) {
             this.list_CPTGroup = result.result
           }
@@ -75,7 +77,7 @@ export class LienPortalComponent implements OnInit {
     }
   }
 
-  bindReferrerByUser() {
+  bindReferrerByUser_DDL(){
     try {
       var data = {
         "loggedPartnerId": this.storageService.PartnerId,
@@ -84,9 +86,38 @@ export class LienPortalComponent implements OnInit {
       };
 
       this.lienPortalService.GetReferrerByUser(data).subscribe((result) => {
-        if (result.status == 0) {
+        if (result.status == 1) {
           if (result.result && result.result.length > 0) {
             this.list_ReferrerByUser = result.result
+          }
+        }
+        if (result.exception && result.exception.message) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
+      })
+    } catch (error) {
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
+    }
+  }
+
+  bindFundingCompanyByUser_DDL() {
+    try {
+      var data = {
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
+        "userId": this.storageService.user.UserId
+      };
+
+      this.lienPortalService.GetFundingCompanyByUser(data).subscribe((result) => {
+        if (result.status == 1) {
+          if (result.result && result.result.length > 0) {
+            this.list_FundingCompanyByUser = result.result
           }
         }
         if (result.exception && result.exception.message) {

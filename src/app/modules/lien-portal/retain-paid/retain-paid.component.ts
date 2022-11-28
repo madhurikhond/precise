@@ -62,7 +62,7 @@ export class RetainPaidComponent implements OnInit {
     try {
       this.dataSource = [];
       this.lienPortalService.GetRetainedPaid(this.getfilterData).subscribe((res)=>{
-        if(res.status == 0){
+        if(res.status == 1){
           if (res.result) {
             this.dataSource = res.result.retainedArPaidCheck;
           }
