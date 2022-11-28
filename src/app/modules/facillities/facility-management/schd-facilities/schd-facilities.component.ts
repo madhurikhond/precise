@@ -2108,6 +2108,7 @@ export class SchdFacilitiesComponent implements OnInit {
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
     this.submitted = true;
+    this.setGeneralInfoTabForm(this.generalInfoForm.value);
     if (
       this.generalInfoForm.invalid ||
       this.facilityContactDetailForm.invalid ||
@@ -3979,7 +3980,6 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   CheckSameCombinationMRI(type: string) {
-    debugger
     const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
     const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value
       ? this.modalityMriForm.controls['mri1ResourceName'].value
@@ -4109,7 +4109,6 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   CheckSameCombinationCT(type: string) {
-    debugger
     const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
     const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName']
       .value
