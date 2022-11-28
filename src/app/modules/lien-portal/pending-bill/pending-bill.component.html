@@ -3,7 +3,7 @@
     <div class="tableDataSection">
         <p class="headerBtnSection">
             <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
-            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal">BILL
+            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
         <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
@@ -55,13 +55,16 @@
                 <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
-            <div class="modal-body">
+            <form [formGroup]="assignARform">
+              <div class="modal-body">
                 <div class="modal-content">
                     <p class="stepText"> 1. Assign a funding company</p>
                     <div class="form-group">
-                        <ng-select [items]="fundingCompanies" [(ngModel)]="selecteFundComp" [ngModelOptions]="{ standalone : true }" bindLabel="name" bindValue="id" [searchable]="true"
-                             placeholder="List of AR Companies">
-                        </ng-select>
+                      <select class="form-control" formControlName="fundingCompany">
+                        <option value="">Select</option>
+                        <option *ngFor="let item of fundingCompanies" [value]="item.fundingCompanyId">
+                          {{item.fundingCompanyName}}</option>
+                    </select>
                     </div>
                     <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
                     <div class="ar-assignment-form">
@@ -69,14 +72,14 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" [(ngModel)]="firstName" placeholder="First Name">
+                                        <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" [(ngModel)]="lastName" placeholder="Last Name">
+                                        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
                                     </div>
                                 </div>
                             </div>
@@ -86,8 +89,8 @@
                                 <div class="form-group">
                                     <div class="signature-custom">
                                         <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
-                                            [(ngModel)]="radiologistSign" [ngModelOptions]="{ standalone : true }"
-                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                            formControlName="radiologistSign" [ngModelOptions]="{ standalone : true }"
+                                            (onEndEvent)="drawComplete()">
                                         </signature-pad>
                                     </div>
                                     <div class="signatureBtn">
@@ -99,14 +102,15 @@
                         </div>
                     </div>
                     <p class="note">
-                      <a href="javascript:void(0)" class="btn btnsignature btn-preview">PreviewAssignment </a>
+                      <a href="javascript:void(0)" class="btn btnsignature btn-preview">Preview Assignment </a>
                       Note:  <span>Once assigned,  the selected funding company will e-sign the assignment</span></p>
                 </div>
             </div>
+            </form>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" [ngClass]="!onAssignARValidation() ? 'disabled':''" (click)="onAssignAR()" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
+                <button type="button" [ngClass]="!assignARform.valid ? 'btn-grey disabled' : 'btn-primary'" (click)="onAssignAR()" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
             </div>
         </div>
     </div>
@@ -132,7 +136,7 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Yes, RETAIN AR</button>
+                <button type="button" class="btn btn-theme pull-right btn-sm" (click)="onRetainAR()" id="btnUpdate">Yes, RETAIN AR</button>
             </div>
         </div>
     </div>

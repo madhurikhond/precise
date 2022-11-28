@@ -30,7 +30,7 @@
                   <div class="form-group">
                       <div class="theme-label">From Date</div>
                       <div class="input-group icon-active">
-                          <dx-date-box [displayFormat]="'dd/MM/yyyy'" formControlName="dateFrom" type="date"
+                          <dx-date-box [displayFormat]="'MM/dd/yyyy'" formControlName="dateFrom" type="date"
                               [showClearButton]="true" [useMaskBehavior]="true" [placeholder]="'From Date'">
                           </dx-date-box>
                       </div>
@@ -38,7 +38,7 @@
                   <div class="form-group">
                       <div class="theme-label">To Date</div>
                       <div class="input-group icon-active">
-                          <dx-date-box [displayFormat]="'dd/MM/yyyy'" formControlName="dateTo" type="date"
+                          <dx-date-box [displayFormat]="'MM/dd/yyyy'" formControlName="dateTo" type="date"
                               [showClearButton]="true" [useMaskBehavior]="true" [placeholder]="'To date'">
                           </dx-date-box>
                       </div>
@@ -70,11 +70,8 @@
                       <div class="input-group">
                           <select class="form-control" formControlName="fundingCompany">
                               <option value="">Select</option>
-                              <option value="1">Company 1</option>
-                              <option value="2">Company 2</option>
-                              <option value="3">Company 3</option>
-                              <option value="4">Company 4</option>
-                              <option value="5">Company 5</option>
+                              <option *ngFor="let item of list_FundingCompanyByUser" [value]="item.fundingCompanyName">
+                                {{item.fundingCompanyName}}</option>
                           </select>
                       </div>
                   </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
@@ -32,7 +34,8 @@ export class AssignUnpaidComponent implements OnInit {
   dataSource: any = [];
   AssignARUnpaid: any = [];
 
-  constructor(private lienPortalService: LienPortalService, public storageService: StorageService) {
+  constructor(private lienPortalService: LienPortalService, public storageService: StorageService,
+    private commonService:CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -52,6 +55,7 @@ export class AssignUnpaidComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.ASSIGN_AND_UNPAID);
   }
 
 
@@ -59,7 +63,7 @@ export class AssignUnpaidComponent implements OnInit {
     try {
       this.dataSource = [];
       this.lienPortalService.GetAssignedARUnpaid(this.getfilterData).subscribe((result) => {
-        if (result.status == 0) {
+        if (result.status == 1) {
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
             this.AssignARUnpaid = this.dataSource;

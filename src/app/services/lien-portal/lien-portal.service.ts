@@ -64,7 +64,31 @@ export class LienPortalService {
   }
 
   GetRetainedPaid(data: any, showGlobalLoader: boolean = true){
-    return this._httpService.post('LienPortal/GetRetainedArPaid', data, showGlobalLoader).pipe(
+    return this._httpService.post('LienPortal/GetRetainedArPaidList', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  AssignARStudiesToRadiologist(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/AssignARStudiesToRadiologist', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  GetFundingCompanyByUser(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetFundingCompanyByUser', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  RetainARStudies(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/RetainARStudies', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  AddRadiologistDefaultSign(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/AddRadiologistDefaultSign', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)
     );
   }

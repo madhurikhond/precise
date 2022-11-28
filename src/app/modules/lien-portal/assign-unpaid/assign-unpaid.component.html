@@ -5,7 +5,6 @@
             <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="AssignARUnpaid"
                 [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
-                <dxo-paging [pageSize]="10"></dxo-paging>
                 <dxo-sorting mode="none"></dxo-sorting>
                 <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column>
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
@@ -37,7 +36,7 @@
             <div
                 *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
             </div>
-            
+
         </div> -->
     </div>
 </div>
