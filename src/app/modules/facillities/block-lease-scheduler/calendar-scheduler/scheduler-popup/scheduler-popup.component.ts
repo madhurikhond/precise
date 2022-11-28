@@ -367,13 +367,14 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-
+debugger
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours && this.CreditDetailsList.length > 0)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
         if (res.response[0].TotalLeaseHours)
+      //  alert('Total hours value: ' + res.response[0].TotalLeaseHours);
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
 
 
