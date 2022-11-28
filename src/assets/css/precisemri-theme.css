@@ -7060,3 +7060,6 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	line-height: 17px;
 	margin-top: 35px;
 }
+select {
+    text-transform: uppercase;
+}
