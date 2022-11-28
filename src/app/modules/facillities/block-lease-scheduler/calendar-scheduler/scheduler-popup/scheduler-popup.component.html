@@ -141,10 +141,11 @@
                     <div class="theme-label-subtitle">Modality/Resource</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
+                    <div *ngFor="let item of modalityResourcesList"  class="form-group">
                         <div class="input-group">
-                            <div class="input-group">
-                                <select #modalityGetType id="modalityGetType" class="form-control"
+                         
+                            <div *ngIf="!LeaseId" [class.disabled]="LeaseId?true:false" class="input-group">
+                                <select #modalityGetType id="modalityGetType"   class="form-control"
                                     formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
@@ -157,6 +158,12 @@
                                 </select>
 
                             </div>
+                            <div *ngIf="LeaseId">
+                          <input type="text"  class="form-control" disabled [value]="selectedModality + ' / ' + selectedResourceName "/>
+                            </div> 
+                   
+
+                           
                         </div>
                         <div *ngIf="(submitted && editFormControls.modalityType.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.modalityType.errors?.required">
@@ -166,14 +173,18 @@
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
-                        <div class="input-group">
+                        <div *ngIf="!LeaseId" class="input-group">
                             <select class="form-control" formControlName="contrastType"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.contrastType.errors) }">
                                 <option value="" selected>Select contrast Type</option>
                                 <option value='w/o'>W / O Contrast ONLY</option>
                                 <option value='w'>W / Contrast</option>
                             </select>
+ 
                         </div>
+                        <div *ngIf="LeaseId">
+                            <input type="text"  class="form-control" disabled [value]="ResourceType + ' CONTRAST' "/>
+                              </div> 
                         <div *ngIf="(submitted && editFormControls.contrastType.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.contrastType.errors?.required">
                                 Contrast Type is required</div>

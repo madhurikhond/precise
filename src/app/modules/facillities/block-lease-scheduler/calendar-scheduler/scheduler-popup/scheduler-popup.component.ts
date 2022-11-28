@@ -12,6 +12,7 @@ import {
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
 import { CommonMethodService } from '../../../../../services/common/common-method.service';
+import { AlertsRoutingModule } from 'src/app/modules/settings/RIS-settings/alerts/alerts-routing.module';
 
 declare const $: any;
 
@@ -58,7 +59,9 @@ export class SchedulerPopupComponent implements OnInit {
   FacilityTimesJSON: any = [];
   creditReasonList: any = [];
   selectedresourceId = ""; selectedModality = ""; AlreadyBlockedLeaseList: any;
+  selectedResourceName = '';
   selectedCreditReason = '';
+  ResourceType='';
   submitted: boolean = false;
   pastDate_start_date: string;
   modality_change = false;
@@ -164,14 +167,23 @@ export class SchedulerPopupComponent implements OnInit {
           //   });
           // }
         }
-
+       
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
+
         if (this.LeaseDetails != null) {
 
           this.isLeaseSigned = this.LeaseDetails['LeaseSigned'] == '0' ? false : true;
           this.FacilityID = this.LeaseDetails['FacilityId'];
           this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
+          this.ResourceType = this.LeaseDetails['Contrast'];
+          debugger
+          this.selectedResourceName=  this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality).length>0?
+           this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality)[0].Resources.filter(x=>x.INTERNALRESOURCEID==this.selectedresourceId).length>0?
+           this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality)[0].Resources.filter(x=>x.INTERNALRESOURCEID==this.selectedresourceId)[0].RESOURCENAME:'':''
+           
+        //  alert('ResName: ' +          this.selectedResourceName);
+ 
           this.LeaseId = this.LeaseDetails['leaseId'];
           this.setValidatorForleaseForm();
           if (this.LeaseId && !this.isLeaseSigned) {
@@ -408,10 +420,9 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-    if(this.selectedModality.toUpperCase()=='CT' &&  (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == ""))
-    {
+    if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
       this.notificationService.showNotification({
-        alertHeader : '',
+        alertHeader: '',
         alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
         alertType: null
       });
