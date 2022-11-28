@@ -21,6 +21,7 @@ import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { ErrorValue } from 'exceljs';
+
 declare const $: any;
 
 @Component({
@@ -37,6 +38,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenConfirmationLeaseBtn', { static: false })
   hiddenConfirmationLeaseBtn: ElementRef;
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
+  @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
   @Input() isGridDisplay: boolean = true;
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
@@ -137,6 +139,7 @@ export class SchdFacilitiesComponent implements OnInit {
   leaseIdArray: any = [];
   creditIdArray: any = [];
   apiUrl: any;
+  deleteUnusedCreditDetail: any;
 
   ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
@@ -1118,7 +1121,6 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
         this.getAllBlockLeaseCredits();
-        this.getFacilityCreditsUnUsed();
         this.getblockLeasePaymentByFacilityId(this.facilityId);
       }
     }, (err: any) => {
@@ -1495,7 +1497,7 @@ export class SchdFacilitiesComponent implements OnInit {
             this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
           }
         });
-    }  
+    }
   }
 
   getBlockLeaseCreditsByFacilityId(leaseId: string) {
@@ -3817,7 +3819,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.getBlockLeasePricing(this.facilityId);
     }
     if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab == 'LeasePaymentsUnPaid') {
-      this.getUnpaidLeases();
+      this.getUnpaidLeases(); this.getFacilityCreditsUnUsed();
     }
     if (this.defaultPopupTab == 'LeasePaymentsPaid') {
       this.getblockLeasePaymentByFacilityId(this.facilityId);
@@ -3862,10 +3864,10 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       );
   }
-  deleteUnusedCredit(e) {
+  deleteUnusedCredit() {
     var unUsedCreditId: string = '';
-    if (e.data.CreditId) {
-      unUsedCreditId = e.data.CreditId;
+    if (this.deleteUnusedCreditDetail.data.CreditId) {
+      unUsedCreditId = this.deleteUnusedCreditDetail.data.CreditId;
       let body = {
         unUsedCreditId: unUsedCreditId,
       };
@@ -3885,6 +3887,10 @@ export class SchdFacilitiesComponent implements OnInit {
           }
         });
     }
+  }
+  deleteConfirmUnusedCredit(e) {
+    this.hiddenDeleteUnusedCreditLink.nativeElement.click();
+    this.deleteUnusedCreditDetail = e;
   }
   showNotificationOnCreditDeleted(data: any) {
     this.notificationService.showNotification({
