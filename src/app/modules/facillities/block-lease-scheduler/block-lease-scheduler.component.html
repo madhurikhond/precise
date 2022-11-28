@@ -18,6 +18,7 @@
                             <div>
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
                                     [multiple]="false" [closeOnSelect]="false" bindValue="FacilityID"
+                                    [clearable]="false"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedFacility">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
@@ -56,9 +57,8 @@
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
                                     [(ngModel)]="selectedScheduleStatus">
-                                    <option value="0">Select</option>
-                                    <option value="NotCompleted">Not completed</option>
-                                    <option value="Completed">Completed</option>
+                                    <option value= -1>Select</option>
+                                    <option value="1">Completed</option>
                                 </select>
                             </div>
                         </div>
@@ -66,24 +66,23 @@
                             <div class="theme-label">Lease Status</div>
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
-                                    [(ngModel)]="SelectedsLeaseStatus">
-                                    <option value="0">Select</option>
-                                    <option value="1">Both parties not signed</option>
-                                    <option value="1">Facility not signed</option>
-                                    <option value="2">Completed</option>
-                                </select>
+                                [(ngModel)]="SelectedsLeaseStatus">
+                                <option value= -1 >Select</option>
+                                <option value=0>Facility not signed</option>
+                                <option value=1>Completed</option>
+                            </select>
                             </div>
                         </div>
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Paid Status</div>
                             <div class="input-group">
                                 <select class="form-control" [ngModelOptions]="{standalone: true}"
-                                    [(ngModel)]="selectedPaid">
-                                    <option value="ALL" selected>ALL</option>
-                                    <option value="PAID">PAID</option>
-                                    <option value="UNPAID">UNPAID</option>
+                                [(ngModel)]="selectedPaid">
+                                <option value= -1 >ALL</option>
+                                <option value=1>PAID</option>
+                                <option value=0>UNPAID</option>
 
-                                </select>
+                            </select>
                             </div>
                         </div>
                         <div class="form-action">
