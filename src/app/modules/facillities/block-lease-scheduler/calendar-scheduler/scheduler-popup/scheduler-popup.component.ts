@@ -56,12 +56,12 @@ export class SchedulerPopupComponent implements OnInit {
   TotalBlockHours: string; TotalCreditHours: string;
   TotalLeaseHours: string;
   facilityClosedDaysJSON: any = [];
-  FacilityTimesJSON: any = [];
+  FacilityTimesJSON: any = []; FacilityAutoBlockOffDays: any = [];
   creditReasonList: any = [];
   selectedresourceId = ""; selectedModality = ""; AlreadyBlockedLeaseList: any;
   selectedResourceName = '';
   selectedCreditReason = '';
-  ResourceType='';
+  ResourceType = '';
   submitted: boolean = false;
   pastDate_start_date: string;
   modality_change = false;
@@ -167,7 +167,7 @@ export class SchedulerPopupComponent implements OnInit {
           //   });
           // }
         }
-       
+
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
 
         if (this.LeaseDetails != null) {
@@ -178,12 +178,12 @@ export class SchedulerPopupComponent implements OnInit {
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.ResourceType = this.LeaseDetails['Contrast'];
           debugger
-          this.selectedResourceName=  this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality).length>0?
-           this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality)[0].Resources.filter(x=>x.INTERNALRESOURCEID==this.selectedresourceId).length>0?
-           this.modalityResourcesList.filter(x=>x.Modality==this.selectedModality)[0].Resources.filter(x=>x.INTERNALRESOURCEID==this.selectedresourceId)[0].RESOURCENAME:'':''
-           
-        //  alert('ResName: ' +          this.selectedResourceName);
- 
+          this.selectedResourceName = this.modalityResourcesList.filter(x => x.Modality == this.selectedModality).length > 0 ?
+            this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId).length > 0 ?
+              this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId)[0].RESOURCENAME : '' : ''
+
+          //  alert('ResName: ' +          this.selectedResourceName);
+
           this.LeaseId = this.LeaseDetails['leaseId'];
           this.setValidatorForleaseForm();
           if (this.LeaseId && !this.isLeaseSigned) {
@@ -379,14 +379,14 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-debugger
+      debugger
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
         if (res.response[0].TotalCreditHours && this.CreditDetailsList.length > 0)
           this.TotalCreditHours = JSON.parse(res.response[0].TotalCreditHours).TotalCreditHours;
         if (res.response[0].TotalLeaseHours)
-      //  alert('Total hours value: ' + res.response[0].TotalLeaseHours);
+          //  alert('Total hours value: ' + res.response[0].TotalLeaseHours);
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
 
 
@@ -401,7 +401,7 @@ debugger
       });
   }
   validateFacilityTimeAndClosedDays(body: any) {
-    this.blockLeaseSchedulerService.validateFacilityTimeAndClosedDays(true, body).subscribe((res) => {
+    this.blockLeaseSchedulerService.validateFacilityTimeAndClosedDays(true, body).subscribe((res) => {     
       if (res.response != null) {
         if (res.response[0].FacilityClosedDays) {
           this.facilityClosedDaysJSON = res.response[0].FacilityClosedDays;
@@ -409,7 +409,10 @@ debugger
         if (res.response[0].FacilityTimes) {
           this.FacilityTimesJSON = res.response[0].FacilityTimes;
         }
-        if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0) {
+        if (res.response[0].FacilityAutoBlockOffDays) {
+          this.FacilityAutoBlockOffDays = res.response[0].FacilityAutoBlockOffDays;
+        }
+        if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0 || this.FacilityAutoBlockOffDays.length > 0) {
           if (this.modality_change) {
             this.isValidTimeAndClosedDays = false;
             this.hiddenCheckFacilityPopupBtn.nativeElement.click();
@@ -464,12 +467,12 @@ debugger
                 message: res.response.message,
                 responseCode: res.responseCode
               });
-              this.modal.dismiss(ModalResult.OTHER);
+              this.modal.dismiss(ModalResult.SAVE);
             }
             else {
               this.showNotificationOnSucess(res);
             }
-            this.modal.dismiss(ModalResult.OTHER);
+            this.modal.dismiss(ModalResult.SAVE);
             this.commonService.sendDataBlockLeaseScheduler('true');
           }
         }, (err: any) => {
@@ -763,7 +766,7 @@ debugger
     });
   }
 
-  ClosePopup(te){
+  ClosePopup(te) {
     setTimeout(() => {
       $('body').addClass('modal-open')
     }, 500);
