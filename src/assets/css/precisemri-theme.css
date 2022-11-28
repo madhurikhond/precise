@@ -6999,7 +6999,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .section_CT{
     background-color: #684f8c !important;
 }
-.section_MRI{
+.dhx_multi_day .section_MRI{
     background-color: #0FC4A7 !important;
 }
 .addMarked{
@@ -7045,10 +7045,15 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	height: auto;
 	overflow-x: auto;
 }
+.no-spacetextarea .invalid-feedback{padding-left: 15px;}
 .cash-price-table.table-responsive .dx-datagrid-rowsview{
 	max-height: 300px;
 }
-#CalendarSchedulerWindow .dhx_cal_event >div{height: auto; word-wrap: break-word;}
+#CalendarSchedulerWindow .dhx_cal_event >div{height: auto !important;
+    word-wrap: break-word;
+    padding: 0;
+    line-height: 12px;
+    }
 
 .payment-invoice-popup{
 	z-index: 1052;
@@ -7056,7 +7061,14 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #CalendarSchedulerWindow .modal-body .dhx_scheduler_month, #CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_timeline .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_day .dhx_cal_data{
 	overflow-y: hidden;
 }
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data{overflow-y: scroll;}
 .invalid-feedback{
 	line-height: 17px;
 	margin-top: 35px;
+}
+.credit-outer {
+    width: 100%;
+}
+.scroll-up .modal-theme{
+	overflow: auto;
 }
