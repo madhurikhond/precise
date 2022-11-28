@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content scroll-up">
     <div class="modal-header">
         <h5 class="modal-title">{{FacilityName}}</h5>
         <div class="close-dismiss"></div>
@@ -303,7 +303,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="CreditDetailsList">
+                <div class="credit-outer" *ngIf="CreditDetailsList">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="table-responsive">
                             <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
@@ -391,14 +391,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row" *ngIf="isLeaseSigned">
+            <div class="row no-spacetextarea" *ngIf="isLeaseSigned">
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                     <textarea class="form-control"
                         [ngClass]="{ 'is-invalid': (submitted && editFormControls.CreditReasonText.errors) }"
                         formControlName="CreditReasonText"
                         placeholder="Reason for adding a credit (Required)"></textarea>
                 </div>
-                <div *ngIf="(submitted && editFormControls.CreditReasonText.errors)" class="invalid-feedback">
+                <div *ngIf="(submitted && editFormControls.CreditReasonText.errors)" class="invalid-feedback mt-0">
                     <div *ngIf="editFormControls.CreditReasonText.errors?.required">
                         Credit Reason Text is required</div>
                 </div>
@@ -497,14 +497,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Alert</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div class="close-dismiss" data-dismiss="modal"  (click)="ClosePopup(true)"></div>
             </div>
             <div class="modal-body">
                 <p>{{popupMessage}}</p>
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                    data-dismiss="modal">Close</a>
+                    data-dismiss="modal"  (click)="ClosePopup(true)">Close</a>
             </div>
         </div>
     </div>

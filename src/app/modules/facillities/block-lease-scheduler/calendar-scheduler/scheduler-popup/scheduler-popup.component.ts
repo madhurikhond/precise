@@ -762,6 +762,12 @@ debugger
       alertType: err.status
     });
   }
+
+  ClosePopup(te){
+    setTimeout(() => {
+      $('body').addClass('modal-open')
+    }, 500);
+  }
   get editFormControls() { return this.leaseForm.controls; }
   get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
 }
