@@ -707,17 +707,19 @@
 													<input type="text" class="form-control"
 														formControlName="defaultEmailAddress3P"
 														[ngClass]="{'is-invalid': facilityContactDetailFormControls.defaultEmailAddress3P.errors }">
-													
+
 												</div>
-											<!-- <div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required">
+												<!-- <div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required">
 												DEFAULT EMAIL ADDRESS FOR LEASE is required.
 											</div> -->
 												<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
 													class="invalid-feedback">
-													<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors">
-														DEFAULT EMAIL ADDRESS FOR LEASE must be a valid email address</div>
+													<div
+														*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors">
+														DEFAULT EMAIL ADDRESS FOR LEASE must be a valid email address
+													</div>
 												</div>
-			
+
 											</div>
 
 											<div class="form-group">
@@ -2167,7 +2169,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>														
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2192,7 +2194,7 @@
 
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2216,7 +2218,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2240,7 +2242,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2264,7 +2266,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2288,7 +2290,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -2312,7 +2314,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="checkbox-theme"><br>													
+													<div class="checkbox-theme"><br>
 													</div>
 												</div>
 											</div>
@@ -3730,8 +3732,8 @@
 															[dataSource]="fullblockLeaseAgreementMRIList"
 															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
 															<dxo-paging [enabled]="false"></dxo-paging>
-															<dxi-column dataField="LeaseId" caption="Lease #"
-																></dxi-column>
+															<dxi-column dataField="LeaseId" caption="Lease #">
+															</dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
@@ -3759,8 +3761,10 @@
 
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn" data-target = #viewFile_Doc (click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
-																	<i class="fa fa-file-pdf-o" ></i>
+																<a href="javascript:void(0)" class="link-btn"
+																	data-target=#viewFile_Doc
+																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
+																	<i class="fa fa-file-pdf-o"></i>
 																</a>
 
 															</div>
@@ -3784,8 +3788,8 @@
 														<dx-data-grid id="gridContainerLeaseAgreement_CT"
 															[dataSource]="fullblockLeaseAgreementCTList"
 															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
-															<dxi-column dataField="LeaseId" caption="Lease #"
-																></dxi-column>
+															<dxi-column dataField="LeaseId" caption="Lease #">
+															</dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
@@ -3802,7 +3806,7 @@
 															</dxi-column>
 															<div *dxTemplate="let data of 'CTRateTemplate'">
 																<p *ngIf="data.data.LeaseRatePerHour">
-																	${{data.data.LeaseRatePerHour |  number:'0.2-2'}}</p>
+																	${{data.data.LeaseRatePerHour | number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.LeaseRatePerHour"></p>
 
 															</div>
@@ -3811,8 +3815,8 @@
 																	${{data.data.totalHour | number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
 
-															</div> 
-															<div *dxTemplate="let data of 'pdfCTLinkTemplate'"> 
+															</div>
+															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
@@ -3873,7 +3877,8 @@
 												</dxi-column>
 												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
 												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
-												<dxi-column dataField="CreditId" caption="Credit #"></dxi-column>
+												<dxi-column cellTemplate="deleteCreditsTemplate" caption="Credit #">
+												</dxi-column>
 												<dxi-column dataField="Pending" caption="Applied to Lease #">
 												</dxi-column>
 												<dxi-column caption="Credit Applied By"
@@ -3884,6 +3889,17 @@
 												<div *dxTemplate="let data of 'StatusTemplate'">
 													<div *ngIf="!data.data.IsUseCredit">Not used</div>
 													<div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
+												</div>
+												<div *dxTemplate="let data of 'deleteCreditsTemplate'">
+													<div *ngIf="data.data.IsUseCredit;then content else elseContent">
+													</div>
+													<ng-template #content>{{data.data.CreditId}}</ng-template>
+													<ng-template #elseContent>{{data.data.CreditId}} &nbsp; <a (click)="
+														deleteConfirmUnusedCredit(data)" href="javascript:void(0);">
+															<img src="assets/images/no.png" width="20"
+																height="20" /></a>
+													</ng-template>
+
 												</div>
 											</dx-data-grid>
 										</div>
@@ -3948,15 +3964,16 @@
 																</dxi-column>
 																<dxi-column dataField="CT" caption="CT HOURS">
 																</dxi-column>
-																<dxi-column dataField="TotalAmount" cellTemplate="leaseTotalTemplate"
+																<dxi-column dataField="TotalAmount"
+																	cellTemplate="leaseTotalTemplate"
 																	caption="LEASE TOTAL"></dxi-column>
-																				
-															<div *dxTemplate="let data of 'leaseTotalTemplate'">
-																<p *ngIf="data.data.TotalAmount">
-																	${{data.data.TotalAmount | number:'0.2-2'}}</p>
-																<p *ngIf="!data.data.TotalAmount"></p>
 
-															</div>
+																<div *dxTemplate="let data of 'leaseTotalTemplate'">
+																	<p *ngIf="data.data.TotalAmount">
+																		${{data.data.TotalAmount | number:'0.2-2'}}</p>
+																	<p *ngIf="!data.data.TotalAmount"></p>
+
+																</div>
 															</dx-data-grid>
 														</div>
 														<div class="pagination-theme">
@@ -3987,8 +4004,6 @@
 																<dxo-load-panel [enabled]="true"></dxo-load-panel>
 																<dxo-grouping #expand [autoExpandAll]="true">
 																</dxo-grouping>
-																<dxi-column cellTemplate="deleteCreditsTemplate">
-																</dxi-column>
 																<dxi-column dataField="LeaseId" caption="LEASE #">
 																</dxi-column>
 																<dxi-column dataField="CreditId" caption="CREDIT #">
@@ -4001,10 +4016,7 @@
 																</dxi-column>
 																<dxi-column dataField="Credit Amount"
 																	caption="CREDIT AMOUNT"></dxi-column>
-																<div *dxTemplate="let data of 'deleteCreditsTemplate'">
-																	<a (click)="deleteUnusedCredit(data)"
-																		href="javascript:void(0);">Delete</a>
-																</div>
+
 															</dx-data-grid>
 														</div>
 														<div class="pagination-theme">
@@ -4143,18 +4155,15 @@
 				</div>
 
 				<div *ngIf="defaultPopupTab == 'BlockLeaseRate' || defaultPopupTab == 'Leases'">
-						
+
 					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
 						data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">insert</button>
 
-					<button type="button"
-						*ngIf="isApplyAndOkBtnVisisble"
-						class="btn btn-theme btn-sm pull-left" data-toggle="modal"
-						data-target="#blockLeasePricingUpdatePopUp">Ok</button>
+					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">Ok</button>
 
-					<button
-						*ngIf="isApplyAndOkBtnVisisble"
-						type="button" data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp"
+					<button *ngIf="isApplyAndOkBtnVisisble" type="button" data-toggle="modal"
+						data-target="#blockLeasePricingUpdatePopUp"
 						class="btn btn-border btn-sm pull-left">Apply</button>
 
 				</div>
@@ -4165,75 +4174,98 @@
 
 	</div>
 </div>
-	<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Delete</h5>
-					<div class="close-dismiss" data-dismiss="modal"></div>
-				</div>
-				<div class="modal-body">
-					<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
-				</div>
-				<div class="modal-footer">
-					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-						data-dismiss="modal">Cancel</a>
-					<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-						data-dismiss="modal">Ok</a>
-				</div>
+<div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel"  data-backdrop="static" data-keyboard="false"  aria-modal="true" style="z-index:9999999">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Alert</h5>
-					<div class="close-dismiss" data-dismiss="modal"></div>
-				</div>
-				<div class="modal-body">
-					<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE
-						TO
-						PROCEED?</p>
-				</div>
-				<div class="modal-footer">
-					<a href="javascript:void(0)" (click)="confirmationLease(false)"
-						class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
-					<a (click)="confirmationLease(true)" href="javascript:void(0)"
-						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
-				</div>
+<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true"
+	style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Alert</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE
+					TO
+					PROCEED?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" (click)="confirmationLease(false)"
+					class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+				<a (click)="confirmationLease(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Yes</a>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">ARE YOU SURE YOU WANT TO UPDATE RATE ?</h5>
-					<div class="close-dismiss" data-dismiss="modal"></div>
-				</div>
-				<div class="modal-body">
-					<p>IT WILL AFFECT ONLY UNSIGNED LEASES.</p>
-				</div>
-				<div class="modal-footer">
-					<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-						data-dismiss="modal">Cancel</a>
-					<a (click)="saveBlockLeasePricing()" href="javascript:void(0)"
-						class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Ok</a>
-				</div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">ARE YOU SURE YOU WANT TO UPDATE RATE ?</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>IT WILL AFFECT ONLY UNSIGNED LEASES.</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="saveBlockLeasePricing()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
 			</div>
 		</div>
 	</div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="deleteUnusedCreditLink" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO DELETE THIS CREDIT?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="deleteUnusedCredit()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
+			</div>
+		</div>
+	</div>
+</div>
 
-	<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
-		data-target="#deleteLink"></button>
-	<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
-		data-target="#confirmationLease"></button>
-	<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
-		data-target="#add-Edit-facility"></button>
-	<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
-	<app-document-manager-facility></app-document-manager-facility>
+<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
+	data-target="#deleteLink"></button>
+<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
+	data-target="#confirmationLease"></button>
+<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
+	data-target="#add-Edit-facility"></button>
+<button class="d-none" #hiddenDeleteUnusedCreditLink [hidden]="true" data-toggle="modal"
+	data-target="#deleteUnusedCreditLink"></button>
+<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
+<app-document-manager-facility></app-document-manager-facility>
