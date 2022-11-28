@@ -4192,12 +4192,14 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Alert</h5>
-					<div class="close-dismiss" data-dismiss="modal"></div>
+					<a href="javascript:void(0)" (click)="confirmationLease(false)"
+					class="close-dismiss" data-dismiss="modal"></a>
+				
 				</div>
 				<div class="modal-body">
-					<p>CHANGING HOURLY RATES FOR ANY MODALIITY WILL AFFECT ANY UNSIGNED LEASES. WOULD YOU STILL LIKE
-						TO
-						PROCEED?</p>
+					<p>Disabling Use Block Lease will remove all the existing blocks of the facility . Do you still want to disable it ?
+
+					</p>
 				</div>
 				<div class="modal-footer">
 					<a href="javascript:void(0)" (click)="confirmationLease(false)"
