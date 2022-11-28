@@ -32,7 +32,7 @@ export class PendingBillComponent implements OnInit {
     canvasHeight: 100,
     Placeholder: 'test'
   };
-  
+
   radiologistSign: string;
 
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
@@ -87,6 +87,7 @@ export class PendingBillComponent implements OnInit {
       this.lienPortalService.GetPendingToBill(this.getfilterData).subscribe((result) => {
         if (result.status == 0) {
           this.totalRecord = result.result.length;
+          this.dataSource = [];
           if (result.result && result.result.length > 0) {
             this.dataSource = result.result
           }

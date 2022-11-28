@@ -135,9 +135,11 @@ export class LienPortalComponent implements OnInit {
         this.filter = {
           "referrers": this.filterForm.get("readingRad").value,
           "cptGroup": this.filterForm.get("cptGroup").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
           "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value) == '' ? '' : this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
           "dateType": this.filterForm.get("dateType").value,
           "userId": this.storageService.user.UserId
         };
@@ -145,7 +147,7 @@ export class LienPortalComponent implements OnInit {
       case "assign_unpaid":
         this.filter = {
           "fundingCompany": this.filterForm.get("fundingCompany").value,
-          "isFundingCompanySigned": this.filterForm.get("fundingCoSigned").value,
+          "isFundingCompanySigned": Boolean(this.filterForm.get("fundingCoSigned").value),
           "loggedPartnerId": this.storageService.PartnerId,
           "jwtToken": this.storageService.PartnerJWTToken,
           "patientId": this.filterForm.get("patientId").value,
@@ -170,10 +172,25 @@ export class LienPortalComponent implements OnInit {
         break;
       case "retain_unpaid":
         this.filter = {
+          "userId": this.storageService.user.UserId,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateType": this.filterForm.get("dateType").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken
         };
         break;
       case "retain_paid":
         this.filter = {
+          "checkNumber": this.filterForm.get("checkNumber").value,
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "patientId": this.filterForm.get("patientId").value,
+          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
+          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
+          "dateType": this.filterForm.get("dateType").value,
+          "userId": this.storageService.user.UserId
         };
         break;
       default:
@@ -187,8 +204,8 @@ export class LienPortalComponent implements OnInit {
       patientId: '',
       readingRad: '',
       cptGroup: '',
-      dateFrom: this.convertDateFormat(new Date()),
-      dateTo: this.convertDateFormat(new Date()),
+      dateFrom: '',
+      dateTo: '',
       dateType: '',
       fundingCompany: '',
       fundingCoSigned: false,
@@ -199,8 +216,8 @@ export class LienPortalComponent implements OnInit {
   }
 
   convertDateFormat(date){
-    if(date == null){
-      return ''
+    if(date == null || date == ''){
+      return moment(new Date()).format('MM/DD/YYYY');
     }
     else{
       return moment(date).format('MM/DD/YYYY');

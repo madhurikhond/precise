@@ -1,5 +1,6 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-retain-paid',
   templateUrl: './retain-paid.component.html',
@@ -7,180 +8,16 @@ import { DxDataGridComponent } from 'devextreme-angular';
 })
 export class RetainPaidComponent implements OnInit {
 
+  getfilterData: any;
+  @Input()
+  set filterData(val: any) {
+    if (val && val != "") {
+      this.getfilterData = val;
+      this.GetRetainedArPaidList();
+    }
+  }
+
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  
-  RetainedARpaid =[{
-    checkno:'8887',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'4589',
-  },
-
-  ];
-
-
-  batchNameList=[{
-    Batchname:'batch name 1',
-  },
-  {
-    Batchname:'batch name 2',
-  },
-  {
-    Batchname:'batch name 3',
-  },
-  {
-    Batchname:'batch name 4',
-  }];
-
-  BatchDetailList =[{
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    arretained:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    mri:'MRI',
-  }];
-
-
-
 
   checkBoxesMode: string;
   allMode: string;
@@ -193,8 +30,10 @@ export class RetainPaidComponent implements OnInit {
   applyFilterTypes: any;
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
+  dataSource:any = [];
+  retainedARpaid : any = [];
 
-  constructor() { 
+  constructor(private lienPortalService : LienPortalService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -216,6 +55,28 @@ export class RetainPaidComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  GetRetainedArPaidList(){
+    try {
+      this.dataSource = [];
+      this.lienPortalService.GetRetainedPaid(this.getfilterData).subscribe((res)=>{
+        if(res.status == 0){
+          if (res.result) {
+            this.dataSource = res.result.retainedArPaidCheck;
+          }
+          this.retainedARpaid = this.dataSource;
+        }
+      },
+      (error) => {
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
+      })
+    } catch (error) {
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
+    }
+  }
 }
 
 

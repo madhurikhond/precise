@@ -6,36 +6,37 @@
         </p>
         <div class="tab-pane retainedUnpaid-section" id="RetainedARUnpaid">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="RetainARUnpaid"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainARUnpaid"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [showColumnHeaders]="false">
-                    <dxo-selection mode="single"></dxo-selection>
+                    [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
+                    <!-- <dxo-selection mode="single"></dxo-selection> -->
+                    <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"></dxo-selection>
                     <dxo-paging [pageSize]="10"></dxo-paging>
                     <dxo-sorting mode="none"></dxo-sorting>
-                    
-                    <dxi-column dataField="Batchname" caption="Batchname" alignment="center" class="batchname">
+
+                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column>
 
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                     <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                        <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
+                        <dx-data-grid [dataSource]="detail.data.retainedArUnPaidList" class="innerList" [columnAutoWidth]="true"
                             [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
                             <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                             <dxo-sorting mode="none"></dxo-sorting>
                             <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
                             </dxo-selection>
                             <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                            <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
-                            <dxi-column dataField="arretained" caption="AR Retained"></dxi-column>
-                            <dxi-column dataField="fundingco" caption="Funding CO"></dxi-column>
-                            <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
-                            <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
-                            <dxi-column dataField="firstname" caption="First Name"></dxi-column>
-                            <dxi-column dataField="dob" caption="DOB"></dxi-column>
-                            <dxi-column dataField="study" caption="Study"></dxi-column>
-                            <dxi-column dataField="access" caption="Access#"></dxi-column>
-                            <dxi-column dataField="mri" ></dxi-column>
-                            <dxi-column dataField="billamount" caption="billamount"></dxi-column>
+                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="dateArRetained" caption="AR Retained"></dxi-column>
+                            <!-- <dxi-column dataField="fundingco" caption="Funding CO"></dxi-column> -->
+                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
+                            <dxi-column dataField="studyDescription" caption="Study"></dxi-column>
+                            <dxi-column dataField="accessionNumber" caption="Access#"></dxi-column>
+                            <dxi-column dataField="cptGroup" ></dxi-column>
+                            <!-- <dxi-column dataField="billamount" caption="billamount"></dxi-column> -->
                         </dx-data-grid>
 
                     </div>
@@ -45,7 +46,7 @@
             <div
                 *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
             </div>
-            
+
         </div> -->
         </div>
     </div>
@@ -82,7 +83,7 @@
                                 <input type="text" class="form-control" placeholder="Check #">
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
