@@ -1,8 +1,10 @@
 import { Component, ElementRef, Input, OnInit,ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-retain-unpaid',
@@ -33,6 +35,7 @@ export class RetainUnpaidComponent implements OnInit {
 
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
+  assignARform: FormGroup;
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
@@ -53,7 +56,8 @@ export class RetainUnpaidComponent implements OnInit {
   lastName: string;
   radiologistSign: string;
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,private storageService:StorageService,
+    private fb: FormBuilder) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -70,10 +74,17 @@ export class RetainUnpaidComponent implements OnInit {
     ];
     this.columnResizingMode = this.resizingModes[0];
     this.currentFilter = this.applyFilterTypes[0].key;
+    this.assignARform = this.fb.group({
+      fundingCompany:['',Validators.required],
+      firstName:[this.storageService.user.FirstName,Validators.required],
+      lastName:[this.storageService.user.LastName,Validators.required],
+      radiologistSign:['',Validators.required]
+    })
   }
 
   ngOnInit(): void {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
+    this.bindFundComp_DDL();
   }
 
 
@@ -106,9 +117,9 @@ export class RetainUnpaidComponent implements OnInit {
         if(item) {
           this.checkboxSelectedData = item.selectedRowsData;
         }
-    
+
         //selection
-    
+
         if(item.currentSelectedRowKeys.length > 0){
           var selectedbatchName = item.currentSelectedRowKeys[0].batchName;
           var chkBatch = document.getElementsByName(selectedbatchName);
@@ -117,9 +128,9 @@ export class RetainUnpaidComponent implements OnInit {
             element.checked = true;
           });
         }
-    
+
         //Deselection
-        
+
         if(item.currentDeselectedRowKeys.length > 0){
           var deSelectedbatchname = item.currentDeselectedRowKeys[0].batchName;
           var chkBatch = document.getElementsByName(deSelectedbatchname);
@@ -130,48 +141,109 @@ export class RetainUnpaidComponent implements OnInit {
           });
         }
       }, 150);
-    
+
   }
 
   drawComplete() {
-    this.radiologistSign = this.signaturePad.toDataURL();
+    this.assignARform.patchValue({
+      'radiologistSign': this.signaturePad.toDataURL()
+    })
   }
 
 
   clearSign(): void {
     this.signaturePad.clear();
-    this.radiologistSign = '';
+    this.assignARform.patchValue({
+      'radiologistSign': ''
+    })
   }
 
   bindFundComp_DDL() {
-    this.fundingCompanies = [
-      { id: 0, name: 'Select' },
-      { id: 1, name: 'Amar' },
-      { id: 2, name: 'Akbhar' },
-      { id: 3, name: 'Anthony' },
-      { id: 4, name: 'BadkaG' },
-      { id: 5, name: 'Baave' },
-      { id: 6, name: 'samar' },
-      { id: 7, name: 'vanraj' },
-    ];
+    try {
+      var data = {
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
+        "userId": this.storageService.user.UserId
+      };
+
+      this.lienPortalService.GetFundingCompanyByUser(data).subscribe((result) => {
+        if (result.status == 1) {
+          if (result.result && result.result.length > 0) {
+            this.fundingCompanies = result.result
+          }
+        }
+        if (result.exception && result.exception.message) {
+          this.lienPortalService.errorNotification(result.exception.message);
+        }
+      }, (error) => {
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
+      })
+    } catch (error) {
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
+    }
   }
 
-  onAssignARValidation(): boolean {
-    return (
-      this.radiologistSign &&
-      this.radiologistSign != "" &&
+  onAssignAR() {
+    try {
+      var request = [];
+      if(this.assignARform.valid){
+      this.checkboxSelectedData.map(data =>{
+       data.retainedArUnPaidList.forEach(element => {
+        var requestData = {
+          'lienFundingId': element.lienFundingId,
+          'cptGroup': element.cptGroup,
+        }
+        request.push(requestData);
+       });
 
-      this.checkboxSelectedData &&
-      this.checkboxSelectedData.length > 0 &&
+      });
+        var assignData = {
+          request: request,
+          lienFundingMappingId: this.checkboxSelectedData[0].lienFundingMappingId,
+          radiologistSign: this.assignARform.get("radiologistSign").value,
+          firstName: this.assignARform.get("firstName").value,
+          lastName: this.assignARform.get("lastName").value,
+          fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
+          loggedPartnerId: this.storageService.PartnerId,
+          jwtToken: this.storageService.PartnerJWTToken,
+          userId: Number(this.storageService.user.UserId)
+        }
+       this.lienPortalService.MoveRetainARToAssignAR(assignData).subscribe((res)=>{
+        if(res.status == 1){
+          this.closeAssignARModal();
+          this.lienPortalService.successNotification('Studies assigned to Funding Co. Successfully');
+          this.getRetainUnPaidList();
+        }
+       },(error)=>{
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
+       })
+     }
+    } catch (error) {
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
+    }
+  }
 
-      this.selecteFundComp &&
-      this.selecteFundComp > 0 &&
+  closeAssignARModal(){
+    document.getElementById('AssignARFundingModal').setAttribute('data-dismiss','modal');
+    document.getElementById('AssignARFundingModal').click();
+   }
 
-      this.firstName &&
-      this.firstName != "" &&
-
-      this.lastName &&
-      this.lastName != ""
-    );
+   clearModalPopup(){
+    this.assignARform.reset();
+    this.signaturePad.clear();
+    this.assignARform.patchValue({
+      'fundingCompany': '',
+      'firstName': this.storageService.user.FirstName,
+      'lastName': this.storageService.user.LastName,
+      'radiologistSign':''
+    });
   }
 }

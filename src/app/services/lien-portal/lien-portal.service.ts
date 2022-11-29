@@ -88,7 +88,13 @@ export class LienPortalService {
   }
 
   AddRadiologistDefaultSign(data: any, showGlobalLoader: boolean = true) {
-    return this._httpService.post('LienPortal/AddRadiologistDefaultSign', data, showGlobalLoader).pipe(
+    return this._httpService.post('LienPortal/AddRadDefaultSign', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  MoveRetainARToAssignAR(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/MoveRetainARToAssignAR', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)
     );
   }

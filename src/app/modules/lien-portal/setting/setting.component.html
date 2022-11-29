@@ -30,7 +30,7 @@
                             <div class="selectedDays">
                                 <div class="form-group">
                                     <ng-select [items]="days" bindLabel="name" bindValue="id" [multiple]="true"
-                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days">
+                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days" [(ngModel)]="selectedValue">
                                     </ng-select>
                                 </div>
                             </div>
@@ -38,15 +38,16 @@
                             <div class="showFilter">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <select class="form-control">
-                                            <option>Show all hours in 1 hour increments</option>
-                                            <option>Show all hours in 2 hour increments</option>
-                                            <option>Show all hours in 3 hour increments</option>
-                                            <option>Show all hours in 4 hour increments</option>
+                                        <select class="form-control" #time (change)="onSelected(time.value)">
+                                            <option [value]="'12:00 AM'"> 12:00 AM</option>
+                                            <option *ngFor="let item of [].constructor(11);let i = index" [value]="i+1 +':00 AM'"> {{i+1}}:00 AM</option>
+                                            <option [value]="'12:00 PM'"> 12:00 PM</option>
+                                            <option *ngFor="let item of [].constructor(11);let j = index" [value]="j+1 +':00 AM'"> {{j+1}}:00 PM</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                            <span>PST</span>
                         </div>
                         <div class="reminder pdf-copy">
                             <div class="setting-content">
@@ -62,7 +63,7 @@
                                 parties sign it</div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Default email from user ">
+                                    <input type="text" class="form-control" placeholder="Default email from user " [(ngModel)]="defaultEmail" readonly>
                                 </div>
                             </div>
                             <div class="form-group">

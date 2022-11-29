@@ -14,5 +14,5 @@ export class AuthUser {
     UserType:string;
     FirstName:string;
     LastName:string;
+    WorkEmail:string;
   }
-  
