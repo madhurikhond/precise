@@ -31,11 +31,10 @@ export class PayInvoiceModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.createPayInvoiceForm();
-    this.setPayInvoiceForm();
+   // this.setPayInvoiceForm();
   }
   transformAmount(element){
     this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount,'$');
-
     element.target.value = this.formattedInputAmount;
   }
   createPayInvoiceForm()
@@ -55,13 +54,13 @@ export class PayInvoiceModalComponent implements OnInit {
   }
   setPayInvoiceForm()
   {
-    this.payInvoiceForm.patchValue({
-      checkAmount: new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
-    });
+    // this.payInvoiceForm.patchValue({
+    //   checkAmount: new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
+    // });
   }
   MakePayment(e)
   {   
-    var grossAmount = this.payInvoiceFormControls.checkAmount.value.replace(/[^\w ]/g, '');
+    var grossAmount = this.payInvoiceFormControls.checkAmount.value.slice(1,50);
     var data = {
       "FacilityId": this.facilityId,
       "Credits": this.selectedCreditIds,
