@@ -3889,8 +3889,8 @@ export class SchdFacilitiesComponent implements OnInit {
         .subscribe((res) => {
           if (res) {
             if (res.response.ResponseCode == 200) {
-              this.showNotificationOnCreditDeleted(res.response);
-              this.getFacilityCreditsUnUsed();
+              this.showNotificationOnCreditDeleted(res.response);    
+              this.getAllBlockLeaseCredits();
             } else {
               this.showNotificationOnCreditDeleted(res.response);
             }
