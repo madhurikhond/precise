@@ -317,7 +317,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getSchedulingFacilities();
   }
   get3pLeaseFacilityData(path: any, fileData: any) {
-    debugger;
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
@@ -1122,6 +1121,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getTagListByFacilityId(this.facilityId);
         this.getAllBlockLeaseCredits();
         this.getblockLeasePaymentByFacilityId(this.facilityId);
+        this.getUnpaidLeases();
       }
     }, (err: any) => {
       this.errorNotification(err);
