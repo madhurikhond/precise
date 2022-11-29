@@ -7,13 +7,14 @@
         <div class="tab-pane retainedUnpaid-section" id="RetainedARUnpaid">
             <div class="table-responsive">
                 <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainARUnpaid"
-                    [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
-                    <dxo-selection mode="single"></dxo-selection>
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false"    
+                (onSelectionChanged)="changeCheckbox($event)">
+                    <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                    <dxo-load-panel [enabled]="true"> </dxo-load-panel>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"></dxo-selection>
-                    <dxo-paging [pageSize]="10"></dxo-paging>
                     <dxo-sorting mode="none"></dxo-sorting>
-                   
+                    <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                    <dxo-pager [visible]="false"></dxo-pager>
                     <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column>
                     
@@ -23,7 +24,8 @@
                         <dx-data-grid [dataSource]="detail.data.retainedArUnPaidList" class="innerList" [columnAutoWidth]="true"
                             [showBorders]="true" [allowColumnResizing]="true">
                             <dxo-sorting mode="none"></dxo-sorting>
-                               
+                            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                            <dxo-load-panel [enabled]="true"> </dxo-load-panel>
                             <dxi-column dataField="accessionNumber" cellTemplate="checkboxTemplate" caption=""></dxi-column>
                             <dxi-column dataField="rad" caption="RAD"> </dxi-column>
                             <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
@@ -44,16 +46,16 @@
                             </div>
                             <!-- <dxi-column dataField="billamount" caption="billamount"></dxi-column> -->
                         </dx-data-grid>
-
                     </div>
                 </dx-data-grid>
+                <div class="pagination-theme" *ngIf="totalRecord > 0">
+                    <div
+                        *ngFor="let item of retainARUnpaid | paginate: { id:'paginate1000001', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
+                    </div>
+                    <pagination-controls id="paginate1000001" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+                </div>
             </div>
-            <!-- <div class="pagination-theme">
-            <div
-                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
-            </div>
-
-        </div> -->
+            
         </div>
     </div>
 </div>

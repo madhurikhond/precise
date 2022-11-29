@@ -25,7 +25,8 @@ export class AssignPaidComponent implements OnInit {
   allMode: string;
   pageNumber: number = 1;
   totalRecord: number = 1;
-  pageSize: number;
+  currentPageNumber: number = 1;
+  pageSize: number = 20;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
@@ -65,8 +66,9 @@ export class AssignPaidComponent implements OnInit {
             this.dataSource = [];
             if(res.result.length > 0){
               this.dataSource = res.result;
+              this.AssignARpaid = this.dataSource;
+              this.totalRecord = this.AssignARpaid.length;
             }
-            this.AssignARpaid = this.dataSource;
           }
           if (res.exception && res.exception.message) {
             this.lienPortalService.errorNotification(res.exception.message);
@@ -83,6 +85,13 @@ export class AssignPaidComponent implements OnInit {
        }
     }
 
+    onPageNumberChange(pageNumber: any) {
+      this.currentPageNumber = pageNumber;
+      if (pageNumber > 1)
+        this.pageNumber = pageNumber - 1;
+      else
+        this.pageNumber = 0;
+    }
 
 }
 

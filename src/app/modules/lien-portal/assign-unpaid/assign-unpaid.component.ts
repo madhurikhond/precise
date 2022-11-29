@@ -24,7 +24,8 @@ export class AssignUnpaidComponent implements OnInit {
   allMode: string;
   pageNumber: number = 1;
   totalRecord: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 20;
+  currentPageNumber: number = 1;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
@@ -83,6 +84,14 @@ export class AssignUnpaidComponent implements OnInit {
         this.lienPortalService.errorNotification(error.message);
       }
     }
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
   }
 
 

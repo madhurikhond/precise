@@ -6,6 +6,8 @@
                 [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-sorting mode="none"></dxo-sorting>
+                <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                 <dxo-pager [visible]="false"></dxo-pager>
                 <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column>
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
@@ -32,11 +34,11 @@
                 </div>
             </dx-data-grid>
         </div>
-        <!-- <div class="pagination-theme">
+        <div class="pagination-theme" *ngIf="totalRecord > 0">
             <div
-                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                *ngFor="let item of AssignARUnpaid | paginate: { id:'pagination1', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
             </div>
-
-        </div> -->
+            <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+        </div>
     </div>
 </div>
