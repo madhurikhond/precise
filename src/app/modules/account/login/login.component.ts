@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     private readonly notificationService: NotificationService) {
     this.loggedInUser = new BehaviorSubject<any>('');
     this.currentUser = this.loggedInUser.asObservable();
-    this.patientPortalService.refreshToken();
+    
   }
   public get currentUserValue(): any {
     return this.loggedInUser.value;
@@ -61,7 +61,14 @@ export class LoginComponent implements OnInit {
     if (this.checkIsLoggedIn()) {
       //this.router.navigate(['dashboard']);
       this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
-      this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+      if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
+      {
+        this.storageService.LastPageURL = null;
+        this.onLienPortalLogin();
+      }else{
+        this.patientPortalService.refreshToken();
+        this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
+      }
     }
     else {
       this.loginForm = this.fb.group({
@@ -109,15 +116,16 @@ export class LoginComponent implements OnInit {
       if (res) {
         this.freshLogin = 'true';
         this.storageService.setFreshLogin = this.freshLogin
-        this.storageService.settCurrentUser(res.authentication.response);
         this.storageService.JWTToken = res.token;
         this.storageService.JWTTokenRoles = res.roles;
-        this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
+        this.storageService.settCurrentUser(res.authentication.response);
         if (this.storageService.user.UserType === RADIOLOGIST_TYPE) {
           this.storageService.LastPageURL = null;
           this.lienPortalService.refreshToken();
           this.onLienPortalLogin();
         } else {
+        
+          this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
           this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
         }
 

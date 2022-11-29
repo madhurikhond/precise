@@ -1,214 +1,250 @@
-<div class="tab-section addFundingCmp-tab">
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#companyinfo"
-                (click)="onCompanyInfoTabClicked()">Company Info</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#pricing"
-                (click)="onPricingTabClicked()">Pricing</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="companyinfo">
-            <div class="company-form">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Company Name">
+<!---------------------------add funding company modal start---------------------------->
+<div class="modal fade modal-theme in modal-small" *ngIf="fundingCompanyId != undefined && fundingCompanyId != null"
+    id="AddFundingCmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <form (submit)="onSubmit()" [formGroup]="fundingCompanyForm" class="modal-dialog modal-dialog-centered"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"
+                    [innerText]="(fundingCompanyId == 0?'Add New Funding Company':'Edit Funding Company')"></h5>
+                <div class="close-dismiss" data-dismiss="modal" #modal_close></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="tab-section addFundingCmp-tab">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#companyinfo">Company Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#pricing">Pricing</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="companyinfo">
+                                <div class="company-form">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="fundingCompanyName" placeholder="Company Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="contactName" placeholder="Contact Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="address1"
+                                                        placeholder="Address 1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="contactEmail" placeholder="Contact Email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="address2"
+                                                        placeholder="Address 2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                        formControlName="contactPhone" placeholder="Contact Phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="city"
+                                                        placeholder="City">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="fax"
+                                                        placeholder="Contact Fax">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <ng-select [items]="state" bindLabel="name" bindValue="name"
+                                                        [multiple]="false" formControlName="state" class="w-100"
+                                                        [selectableGroup]="false" placeholder="Select State">
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="taxId"
+                                                        placeholder="Tax ID">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" formControlName="zip"
+                                                        placeholder="Zip">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <ng-select [items]="assignment" bindLabel="name" bindValue="name"
+                                                    [multiple]="true" groupBy="selectedAllGroup"
+                                                    formControlName="notifyAssignment" [selectableGroup]="false"
+                                                    placeholder="Notify of assignment">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="checkbox-theme pull-left">
+                                                    <input id="fundingcmp" class="styled" type="checkbox"
+                                                        formControlName="defaultCompany">
+                                                    <label for="fundingcmp" style="text-transform:capitalize;"
+                                                        class="arrow-label">Default Funding Company</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="checkbox-theme pull-left">
+                                                    <input id="isactive" class="styled" type="checkbox"
+                                                        formControlName="isActive">
+                                                    <label for="isactive" style="text-transform:capitalize;"
+                                                        class="arrow-label">Is Active</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Contact Name">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Address 1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Contact Email">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Address 2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Contact Phone">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="City">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Contact Fax">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group" >                       
-                            <div class="input-group">
-                                <select class="form-control">
-                                    <option>State</option>
-                                    <option>Ahmedabad</option>
-                                    <option>Baroda</option>
-                                    <option>Jamnagar</option>
-                                    <option>Kashmir</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Tax ID">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                    <div class="col-6">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Zip">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <ng-select [items]="assignment" bindLabel="name" bindValue="id" [multiple]="true"
-                                groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="Notify of assignment"
-                                (change)="onMaterialGroupChange($event)">
-                            </ng-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <div class="checkbox-theme pull-left">
-                                <input id="fundingcmp"  class="styled" type="checkbox">
-                                <label for="fundingcmp" style="text-transform:capitalize;" class="arrow-label">Default Funding Company</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <div class="checkbox-theme pull-left">
-                                <input id="isactive"  class="styled" type="checkbox">
-                                <label for="isactive" style="text-transform:capitalize;" class="arrow-label">Is Active</label>
+                            <div class="tab-pane fade" id="pricing">
+                                <h4 class="pricingTitle">Please enter a selling price for each type of study</h4>
+                                <p class="note">* Every row must have a selling price</p>
+                                <div class="study-table-price">
+                                    <table class="table-responsive table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Study Type</th>
+                                                <th>Sell AR Assignment Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>MRI</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MRI/W</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>$200</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MRI W/ & W/O</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CT</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CT W/</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CT W & W/O</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>XRAY 1</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="pricing">
-            <h4 class="pricingTitle">Please enter a selling price for each type of study</h4>
-            <p class="note">* Every row must have a selling price</p>
-            <div class="study-table-price">
-                <table class="table-responsive table-bordered">
-                    <thead>
-                        <tr>
-                          <th>Study Type</th>
-                          <th>Sell AR Assignment Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>MRI</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>MRI/W</td>
-                            <td>
-                                <div class="form-group">
-                                    <label>$200</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>MRI W/ & W/O</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>CT</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>CT W/</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>CT W & W/O</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>XRAY 1</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="submit" class="btn btn-theme pull-right btn-sm"
+                    id="btnUpdate">{{fundingCompanyId==0?'Add':'Save'}} Funding
+                    Company</button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
+<!--------------------------end------------------------------->

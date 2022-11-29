@@ -23,9 +23,10 @@ export class RetainPaidComponent implements OnInit {
 
   checkBoxesMode: string;
   allMode: string;
-  pageNumber: number = 1;
-  totalRecord: number = 1;
-  pageSize: number;
+  pageNumber: number = 0;
+  totalRecord: number = 0;
+  pageSize: number = 20;
+  currentPageNumber: number = 1;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
@@ -67,6 +68,7 @@ export class RetainPaidComponent implements OnInit {
             this.dataSource = res.result.retainedArPaidCheck;
           }
           this.retainedARpaid = this.dataSource;
+          this.totalRecord = this.retainedARpaid.length;
         }
       },
       (error) => {
@@ -79,6 +81,14 @@ export class RetainPaidComponent implements OnInit {
         this.lienPortalService.errorNotification(error.message);
       }
     }
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
   }
 }
 

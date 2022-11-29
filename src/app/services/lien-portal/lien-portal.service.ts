@@ -93,11 +93,30 @@ export class LienPortalService {
     );
   }
 
+  GetFundingCompanyList(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetFundingCompanyList', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  GetRadiologistFundingCompanyInfo(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetRadiologistFundingCompanyInfo', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  UpsertFundingCompanyInfo(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/UpsertFundingCompanyInfo', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
   MoveRetainARToAssignAR(data: any, showGlobalLoader: boolean = true){
     return this._httpService.post('LienPortal/MoveRetainARToAssignAR', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)
     );
   }
+
 
   successNotification(msg: string) {
     this.notificationService.showNotification({

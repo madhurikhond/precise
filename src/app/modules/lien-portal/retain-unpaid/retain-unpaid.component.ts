@@ -38,9 +38,10 @@ export class RetainUnpaidComponent implements OnInit {
   assignARform: FormGroup;
   checkBoxesMode: string;
   allMode: string;
-  pageNumber: number = 1;
-  totalRecord: number = 1;
-  pageSize: number;
+  pageNumber: number = 0;
+  totalRecord: number = 0;
+  pageSize: number = 20;
+  currentPageNumber: number = 1;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
@@ -97,6 +98,8 @@ export class RetainUnpaidComponent implements OnInit {
             this.dataSource = res.result.retainedArUnPaidBatches;
           }
           this.retainARUnpaid = this.dataSource;
+          this.totalRecord = this.retainARUnpaid.length;
+
         }
       }, (error) => {
         if (error.message) {
@@ -245,5 +248,23 @@ export class RetainUnpaidComponent implements OnInit {
       'lastName': this.storageService.user.LastName,
       'radiologistSign':''
     });
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
+    setTimeout(() => {
+      this.checkboxSelectedData.forEach(element => {
+
+        var chkBatch = document.getElementsByName(element.batchName);
+        chkBatch.forEach(item => {
+          var element = <HTMLInputElement>item;
+          element.checked = true;
+        });
+      });
+    }, 150);
   }
 }
