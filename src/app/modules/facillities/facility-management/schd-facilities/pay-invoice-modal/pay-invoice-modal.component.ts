@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { BlockLeaseSchedulerService } from '../../../../../services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NotificationService } from '../../../../../services/common/notification.service';
 import { StorageService } from '../../../../../services/common/storage.service';
-
+import { CommonModule, CurrencyPipe} from '@angular/common';
 @Component({
   selector: 'app-pay-invoice-modal',
   templateUrl: './pay-invoice-modal.component.html',
@@ -20,7 +20,11 @@ export class PayInvoiceModalComponent implements OnInit {
   payInvoiceForm:FormGroup;
   dobModel: string = '';
   currentDate = new Date();
-  constructor(private fb: FormBuilder, public modal: NgbActiveModal,
+  
+  formattedInputAmount: any;
+  inputAmount: any;
+  constructor( private currencyPipe : CurrencyPipe,
+    private fb: FormBuilder, public modal: NgbActiveModal,
     private readonly blockleasescheduler: BlockLeaseSchedulerService,
     private readonly storageService: StorageService,
     private readonly notificationService: NotificationService  ) { }
@@ -28,6 +32,11 @@ export class PayInvoiceModalComponent implements OnInit {
   ngOnInit(): void {
     this.createPayInvoiceForm();
     this.setPayInvoiceForm();
+  }
+  transformAmount(element){
+    this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount,'$');
+
+    element.target.value = this.formattedInputAmount;
   }
   createPayInvoiceForm()
   {
