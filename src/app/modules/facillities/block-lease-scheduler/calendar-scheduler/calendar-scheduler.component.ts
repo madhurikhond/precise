@@ -94,7 +94,7 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
-       // scheduler.config.hour_date = "%h:%i %a";
+        // scheduler.config.hour_date = "%h:%i %a";
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
@@ -104,7 +104,7 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.now_date = new Date();
         if (this.readOnlyCalender == true) {
             scheduler.config.readonly = true;
-        }     
+        }
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
@@ -397,7 +397,7 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     GetBlockLeaseData() {
         var userID = this.storageService.user.UserId
-        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = [];
+        this.SchedulerDayWeekMonth = []; this.forTimelineList = []; this.allClosedDays = []; this.autoBlockOffDays = [];
         this.blockLeaseSchedulerService.getBlockLeaseData(true, this.FacilityID, userID).subscribe((res) => {
             if (res.response)
                 this.isDefaultSign = res.response[0].IsDefaultEsign ? res.response[0].IsDefaultEsign : 0
@@ -413,7 +413,6 @@ export class CalendarSchedulerComponent implements OnInit {
             if (this.SchedulerDayWeekMonth) {
                 this.isDisplayApproveBtn = (this.SchedulerDayWeekMonth.filter(dta => dta.LeaseId == null).length > 0) ? false : true;
             }
-            console.log(this.autoBlockOffDays);
 
             if (forTimelineView && this.SchedulerDayWeekMonth) {
                 if (forTimelineView.length > 0) {
@@ -641,7 +640,7 @@ export class CalendarSchedulerComponent implements OnInit {
         const minutes = Number(time.match(/:(\d+)/)[1]);
         const AMPM = time.match(/\s(.*)$/)[1];
         if (AMPM == "PM" && Number(hours) < 12) hours = hours + 12;
-       // if (AMPM == "AM" && hours == 12) hours = hours - 12;
+        // if (AMPM == "AM" && hours == 12) hours = hours - 12;
         let sHours = hours.toString();
         let sMinutes = minutes.toString();
         if (hours < 10) sHours = "0" + sHours;
