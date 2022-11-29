@@ -15,7 +15,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   @ViewChild('hiddenSignPopUp', { static: false }) hiddenSignPopUp: ElementRef;
   tabId: string = 'Reasons'
   columnResizingMode: string;
-  resizingModes: string[] = ['widget', 'nextColumn'];
+  resizingModes: string[] = ['nextColumn', 'nextColumn'];
   addCreditReasonForm: FormGroup;
   creditReasonsList: any = [];
   PagecreditReasonsList: any = [];
