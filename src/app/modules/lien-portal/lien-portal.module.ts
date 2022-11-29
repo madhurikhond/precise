@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { NgbProgressbarModule, NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxProgressBarModule } from 'devextreme-angular';
 import {  DxDateBoxModule,DxCheckBoxModule,DxSelectBoxModule } from "devextreme-angular";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import {
   DxDataGridModule,
   DxBulletModule,
@@ -23,10 +23,12 @@ import { SettingComponent } from './setting/setting.component';
 import { AddFundingCompanyComponent } from './add-funding-company/add-funding-company.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { RAuthGuard } from '../core/guards/rauth.guard';
+import { LienProfileComponent } from './lien-profile/lien-profile.component';
+import { LienChangePasswordComponent } from './lien-change-password/lien-change-password.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent,LienPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent],
+  declarations: [HeaderComponent,LienPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent,LienProfileComponent,LienChangePasswordComponent],
   imports: [
     CommonModule,
     NgSelectModule,
