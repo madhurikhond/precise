@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, filter, mergeMap, tap } from 'rxjs/operators';
-import { patientrootPath, rootPath } from '../../../constants/api.constant';
+import { lienPortalrootPath, patientrootPath, rootPath } from '../../../constants/api.constant';
 import { AUTH_HEADER } from '../../../constants/route.constant';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PatientPortalURLName } from 'src/app/models/patient-response';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { LienPortalURLName } from 'src/app/models/lien-portal-response';
 
 declare const $: any;
 
@@ -19,6 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private readonly _accountService: AccountService,
     private readonly storageService: StorageService,
     private readonly patientPortalService: PatientPortalService,
+    private readonly lienPortalService: LienPortalService,
     private readonly _storageService: StorageService,
     private readonly _router: Router, private route: ActivatedRoute,
    ) {
@@ -59,6 +62,11 @@ export class AuthInterceptor implements HttpInterceptor {
       url === PatientPortalURLName.EXAM_QUESTION_FOR_CT_CR ||
       url === PatientPortalURLName.PREGNANCY_WAIVER ||
       url === PatientPortalURLName.PREGNANCY_WAIVERS) {
+        this._storageService.LastPageURL = null;
+        this.makeActive();
+      }
+      else if(url === LienPortalURLName.LIEN_PORTAL || url === LienPortalURLName.LIEN_PORTAL)
+      {
         this._storageService.LastPageURL = null;
         this.makeActive();
       }
@@ -156,6 +164,37 @@ export class AuthInterceptor implements HttpInterceptor {
       {
 
         return this.patientPortalService.GetPartnerToken()
+              .pipe(
+                mergeMap(configData => {
+                  this._storageService.PartnerJWTToken = configData.result.jwtToken;
+                  this._storageService.PartnerId = configData.result.partnerId;
+                  req.body.jwtToken = this.storageService.PartnerJWTToken;
+                  req.body.loggedPartnerId = this.storageService.PartnerId;
+                  req = req.clone({
+                    setHeaders: {
+                      [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+                    }
+                  });
+                  return next.handle(req);
+              })
+              );
+      }
+      else{
+        
+        req = req.clone({
+          setHeaders: {
+            [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+          }
+        });
+        return next.handle(req);
+      }
+    }
+    else if(req.url.includes(lienPortalrootPath))
+    {
+      if(!this.storageService.pJWTValid)
+      {
+
+        return this.lienPortalService.GetPartnerToken()
               .pipe(
                 mergeMap(configData => {
                   this._storageService.PartnerJWTToken = configData.result.jwtToken;

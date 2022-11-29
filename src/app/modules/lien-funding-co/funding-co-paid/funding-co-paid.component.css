@@ -1,0 +1,31 @@
+.PDFIcon{
+    cursor: pointer;
+}
+.PDFIcon i.fa {
+    color: #3b8beb;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.selectAction-sec {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.selectAction-Dropdown .form-group {
+    margin-bottom: 0;
+}
+.selectAction-Dropdown .input-group .form-control{
+    font-size: 13px;
+}
+
+.btn-go {
+    background: #3b8beb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    padding: 4px 9px;
+}

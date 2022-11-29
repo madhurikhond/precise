@@ -1,0 +1,182 @@
+<div class="inner-tab-content">
+    <div class="tableDataSection">
+        <p class="headerBtnSection">
+            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#AssignARFundingModal" (click)="clearModalPopup()">Assign ar to funding CO</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RecevivePaymentModal">Recevie payment for selected studies</a>
+        </p>
+        <div class="tab-pane retainedUnpaid-section" id="RetainedARUnpaid">
+            <div class="table-responsive">
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainARUnpaid"
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false"
+                (onSelectionChanged)="changeCheckbox($event)">
+                    <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                    <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                    <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple"></dxo-selection>
+                    <dxo-sorting mode="none"></dxo-sorting>
+                    <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                    <dxo-pager [visible]="false"></dxo-pager>
+                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
+                    </dxi-column>
+
+                    <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
+                    <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
+
+                        <dx-data-grid [dataSource]="detail.data.retainedArUnPaidList" class="innerList" [columnAutoWidth]="true"
+                            [showBorders]="true" [allowColumnResizing]="true">
+                            <dxo-sorting mode="none"></dxo-sorting>
+                            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                            <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                            <dxi-column dataField="accessionNumber" cellTemplate="checkboxTemplate" caption=""></dxi-column>
+                            <dxi-column dataField="rad" caption="RAD"> </dxi-column>
+                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="dateArRetained" caption="AR Retained"></dxi-column>
+                            <!-- <dxi-column dataField="fundingco" caption="Funding CO"></dxi-column> -->
+                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
+                            <dxi-column dataField="studyDescription" caption="Study"></dxi-column>
+                            <dxi-column dataField="accessionNumber" caption="Access#"></dxi-column>
+                            <dxi-column dataField="cptGroup" ></dxi-column>
+                            <div *dxTemplate="let data of 'checkboxTemplate'">
+                                <!-- <dx-check-box name="{{detail.data.batchName}}" id="{{detail.data.batchName}}" [disabled]="inDisplay"></dx-check-box> -->
+                                <ng-container>
+                                    <input type="checkbox" name="{{detail.data.batchName}}" id="{{detail.data.batchName}}" [readOnly]="true" onclick="return false">
+                                </ng-container>
+                            </div>
+                            <!-- <dxi-column dataField="billamount" caption="billamount"></dxi-column> -->
+                        </dx-data-grid>
+                    </div>
+                </dx-data-grid>
+                <div class="pagination-theme" *ngIf="totalRecord > 0">
+                    <div
+                        *ngFor="let item of retainARUnpaid | paginate: { id:'paginate1000001', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
+                    </div>
+                    <pagination-controls id="paginate1000001" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!---------------------signature modal start--------------------------->
+
+<div class="modal fade modal-theme in modal-small" id="AssignARFundingModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="assignARform">
+              <div class="modal-body">
+                <div class="modal-content">
+                    <p class="stepText"> 1. Assign a funding company</p>
+                    <div class="form-group">
+                      <select class="form-control" formControlName="fundingCompany">
+                        <option value="">Select</option>
+                        <option *ngFor="let item of fundingCompanies" [value]="item.fundingCompanyId">
+                          {{item.fundingCompanyName}}</option>
+                    </select>
+                    </div>
+                    <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                    <div class="ar-assignment-form">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="signature-custom">
+                                        <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
+                                            formControlName="radiologistSign" [ngModelOptions]="{ standalone : true }"
+                                            (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div class="signatureBtn">
+                                        <a href="javascript:void(0)" (click)="clearSign();"
+                                        class="btn btnsignature btn-clear">Clear Signature</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="note">
+                      <a href="javascript:void(0)" class="btn btnsignature btn-preview">Preview Assignment </a>
+                      Note:  <span>Once assigned,  the selected funding company will e-sign the assignment</span></p>
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="button" [ngClass]="!assignARform.valid ? 'btn-grey disabled' : 'btn-primary'" (click)="onAssignAR()" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------end-------------------------->
+
+<!---------------------Receive payment for selected studies modal start--------------------------->
+
+<div class="modal fade modal-theme in modal-small" id="RecevivePaymentModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Confirmation</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="check-form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check $</div>
+                                <input type="text" class="form-control" placeholder="Check Amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check Date </div>
+                                <input type="text" class="form-control" placeholder="Check Date">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check #</div>
+                                <input type="text" class="form-control" placeholder="Check #">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Mark As Paid</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------end-------------------------->

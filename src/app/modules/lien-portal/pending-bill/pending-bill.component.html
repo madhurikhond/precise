@@ -1,0 +1,144 @@
+<div class="inner-tab-content">
+
+    <div class="tableDataSection">
+        <p class="headerBtnSection">
+            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
+                SELECTED STUDIES & ASSIGN AR</a>
+        </p>
+        <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
+            [allowColumnReordering]="true" [showBorders]="true" (onSelectionChanged)="changeCheckbox($event)">
+            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+            <dxo-selection [selectAllMode]="allMode"  [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
+            <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+            <dxo-pager [visible]="false"></dxo-pager>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
+            </dxi-column>
+            <dxi-column dataField="rad" caption="RAD"></dxi-column>
+            <dxi-column dataField="dateRead" caption="DATE READ"></dxi-column>
+            <dxi-column dataField="patientId" caption="PATIENT ID"></dxi-column>
+            <dxi-column dataField="lastName" caption="LAST NAME"></dxi-column>
+            <dxi-column dataField="firstName" caption="FIRST NAME"></dxi-column>
+            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
+            <dxi-column dataField="dateOfStudy" caption="DOS"></dxi-column>
+            <dxi-column dataField="study" caption="STUDY"></dxi-column>
+            <dxi-column dataField="accession" caption="ACCESS#"></dxi-column>
+            <dxi-column dataField="cptGroup" caption="CPT GROUP"></dxi-column>
+
+
+            <div *dxTemplate="let data of 'facilityIdTemplate'">
+                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal" data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
+            </div>
+        </dx-data-grid>
+
+       
+            <div class="pagination-theme" *ngIf="totalRecord > 0">
+                <div
+                    *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
+                </div>
+                <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+            </div>
+      
+
+    </div>
+</div>
+
+<!---------------------signature modal start--------------------------->
+
+<div class="modal fade modal-theme in modal-small" id="signatureModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <form [formGroup]="assignARform">
+              <div class="modal-body">
+                <div class="modal-content">
+                    <p class="stepText"> 1. Assign a funding company</p>
+                    <div class="form-group">
+                      <select class="form-control" formControlName="fundingCompany">
+                        <option value="">Select</option>
+                        <option *ngFor="let item of fundingCompanies" [value]="item.fundingCompanyId">
+                          {{item.fundingCompanyName}}</option>
+                    </select>
+                    </div>
+                    <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                    <div class="ar-assignment-form">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="signature-custom">
+                                        <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
+                                            formControlName="radiologistSign" [ngModelOptions]="{ standalone : true }"
+                                            (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div class="signatureBtn">
+                                        <a href="javascript:void(0)" (click)="clearSign();"
+                                        class="btn btnsignature btn-clear">Clear Signature</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="note">
+                      <a href="javascript:void(0)" class="btn btnsignature btn-preview">Preview Assignment </a>
+                      Note:  <span>Once assigned,  the selected funding company will e-sign the assignment</span></p>
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="button" [ngClass]="!assignARform.valid ? 'btn-grey disabled' : 'btn-primary'" (click)="onAssignAR()" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Assign AR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------end-------------------------->
+
+
+<!---------------------------retained ar modal start---------------------------->
+<div class="modal fade modal-theme in modal-small" id="RetainedARModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Retain AR Confirmation</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <p class="confirmationText">Are you sure you want to retain the selected AR and not assign the AR to a funding company?</p>
+                    <p class="confirmationText">You will be required to then follow up with the attorney and patient to negotiate each bill and collect funds directly.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" data-dismiss="modal">Cancel</a>
+                <button type="button" class="btn btn-theme pull-right btn-sm" (click)="onRetainAR()" id="btnUpdate">Yes, RETAIN AR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------end------------------------------->

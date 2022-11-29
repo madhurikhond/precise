@@ -1,0 +1,44 @@
+<div class="inner-tab-content">
+
+    <div class="tab-pane assignUnpaid-section" id="AssignARUnpaid">
+        <div class="table-responsive">
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="AssignARUnpaid"
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-sorting mode="none"></dxo-sorting>
+                <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                 <dxo-pager [visible]="false"></dxo-pager>
+                <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column>
+                <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                <div *dxTemplate="let data of 'PDFIconTemplate'">
+                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                </div>
+                <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
+                <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
+                    <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList" [columnAutoWidth]="true"
+                        [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-sorting mode="none"></dxo-sorting>
+                        <dxi-column dataField="rad" caption="RAD"> </dxi-column>
+                        <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                        <dxi-column dataField="dateARAssiged" caption="AR Assigned Date"></dxi-column>
+                        <dxi-column dataField="executionDate" caption="Execution Date"></dxi-column>
+                        <dxi-column dataField="fundingCompany" caption="Funding CO"></dxi-column>
+                        <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                        <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                        <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                        <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
+                        <dxi-column dataField="study" caption="Study"></dxi-column>
+                    </dx-data-grid>
+
+                </div>
+            </dx-data-grid>
+        </div>
+        <div class="pagination-theme" *ngIf="totalRecord > 0">
+            <div
+                *ngFor="let item of AssignARUnpaid | paginate: { id:'pagination1', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
+            </div>
+            <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+        </div>
+    </div>
+</div>
