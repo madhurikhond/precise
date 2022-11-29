@@ -32,7 +32,7 @@
                                     [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors) }"
                                     (change)="changedOffDays($event)">
                                     <option value="" selected>Select Modality</option>
-                                    <option  *ngIf="modalityResourcesList.length > 0"  value="0" selected>All</option>
+                                    <option *ngIf="modalityResourcesList.length > 0" value="0" selected>All</option>
                                     <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
                                         label="{{group.Modality}}">
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
@@ -141,11 +141,10 @@
                     <div class="theme-label-subtitle">Modality/Resource</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div *ngFor="let item of modalityResourcesList"  class="form-group">
-                        <div class="input-group">
-                         
+                    <div class="form-group">
+                        <div class="input-group"> 
                             <div *ngIf="!LeaseId" [class.disabled]="LeaseId?true:false" class="input-group">
-                                <select #modalityGetType id="modalityGetType"   class="form-control"
+                                <select #modalityGetType id="modalityGetType" class="form-control"
                                     formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
@@ -155,15 +154,13 @@
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
                                             {{item.RESOURCENAME}}</option>
                                     </optgroup>
-                                </select>
-
+                                </select> 
                             </div>
                             <div *ngIf="LeaseId">
-                          <input type="text"  class="form-control" disabled [value]="selectedModality + ' / ' + selectedResourceName "/>
-                            </div> 
-                   
+                                <input type="text" class="form-control" disabled
+                                    [value]="selectedModality + ' / ' + selectedResourceName " />
+                            </div>
 
-                           
                         </div>
                         <div *ngIf="(submitted && editFormControls.modalityType.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.modalityType.errors?.required">
@@ -180,11 +177,11 @@
                                 <option value='w/o'>W / O Contrast ONLY</option>
                                 <option value='w'>W / Contrast</option>
                             </select>
- 
+
                         </div>
                         <div *ngIf="LeaseId">
-                            <input type="text"  class="form-control" disabled [value]="ResourceType + ' CONTRAST' "/>
-                              </div> 
+                            <input type="text" class="form-control" disabled [value]="ResourceType + ' CONTRAST' " />
+                        </div>
                         <div *ngIf="(submitted && editFormControls.contrastType.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.contrastType.errors?.required">
                                 Contrast Type is required</div>
@@ -336,7 +333,7 @@
                                 </option>
                             </select>
                         </div>
-                       
+
                         <div *ngIf="(submitted && editFormControls.creditReasonID.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.creditReasonID.errors?.required">
                                 Credit Reason is required</div>
@@ -357,7 +354,7 @@
                                 <option value="">Select Hour</option>
                                 <option value="0">0</option>
                                 <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
-                                    {{hours}} 
+                                    {{hours}}
                                 </option>
                             </select>
                         </div>
@@ -497,14 +494,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Alert</h5>
-                <div class="close-dismiss" data-dismiss="modal"  (click)="ClosePopup(true)"></div>
+                <div class="close-dismiss" data-dismiss="modal" (click)="ClosePopup(true)"></div>
             </div>
             <div class="modal-body">
                 <p>{{popupMessage}}</p>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                    data-dismiss="modal"  (click)="ClosePopup(true)">Close</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+                    (click)="ClosePopup(true)">Close</a>
             </div>
         </div>
     </div>

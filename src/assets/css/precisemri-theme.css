@@ -7049,7 +7049,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .cash-price-table.table-responsive .dx-datagrid-rowsview{
 	max-height: 300px;
 }
-#CalendarSchedulerWindow .dhx_cal_event >div{height: auto !important;
+#CalendarSchedulerWindow .dhx_cal_event >div{
     word-wrap: break-word;
     padding: 0;
     line-height: 12px;
