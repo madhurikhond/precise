@@ -65,7 +65,7 @@ export class PayInvoiceModalComponent implements OnInit {
       "UserId": this.storageService.user.UserId,
       "CheckDate": moment(this.currentDate).format('MM/DD/YYYY hh:mm:ss')
     }
-    this.blockleasescheduler.CreatePayments(false, data).subscribe((res) => {
+    this.blockleasescheduler.CreatePayments(true, data).subscribe((res) => {
       if (res && res.responseCode == 200) {
         this.successNotification(res);
         this.modal.dismiss(ModalResult.SAVE);
