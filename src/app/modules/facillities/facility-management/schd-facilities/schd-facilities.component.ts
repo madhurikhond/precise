@@ -1549,19 +1549,24 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
     if (!data.useBlockLease) {
+
       $('#BlockLeaseRate')
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
-      $('#gridContainerLeaseAgreement_MRI')
+      $('#LeaseAgreementMRI')
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
-      $('#gridContainerLeaseAgreement_CT')
+      $('#LeaseAgreementCT')
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
       $('#CreditandDebit')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+        $('#LeasePaymentsUnPaid')
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
@@ -1570,11 +1575,15 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
-      $('#gridContainerLeaseAgreement_MRI')
+      $('#LeaseAgreementMRI')
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
-      $('#gridContainerLeaseAgreement_CT')
+        $('#LeasePaymentsUnPaid')
+        .not('.btn')
+        .attr('disabled', false)
+        .removeClass('disabledClass');
+      $('#LeaseAgreementCT')
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
@@ -1582,6 +1591,7 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
+ 
     }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
