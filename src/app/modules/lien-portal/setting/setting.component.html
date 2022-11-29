@@ -2,21 +2,22 @@
     <app-header></app-header>
     <div class="radportal-body">
         <div class="rad-lien-setting">
-            <h3 class="lien-title"> <a  routerLink="/lien-portal"><i class="fa fa-arrow-left"></i></a> Radiologist Lien Management</h3>
+            <h3 class="lien-title"> <a routerLink="/lien-portal"><i class="fa fa-arrow-left"></i></a> Radiologist Lien
+                Management</h3>
             <div class="tab-section setting-tab">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#settings"
+                        <a class="nav-link" [ngClass]="selectedMode=='settings'?'active':''" href="javascript:;"
                             (click)="onSettingTabClicked()">Settings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#funding-company"
+                        <a class="nav-link" [ngClass]="selectedMode=='funding_company'?'active':''" href="javascript:;"
                             (click)="onFundingCompanyTabClicked()">Funding Company</a>
                     </li>
 
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="settings">
+                    <div class="tab-pane active" *ngIf="selectedMode=='settings'" id="settings">
                         <div class="reminder bill-patient">
                             <div class="setting-content">
                                 <div class="switch-sec">
@@ -94,34 +95,65 @@
                                     </signature-pad>
                                 </div>
                                 <div class="signatureBtn">
-                                    <a href="javascript:void(0)" (click)="clearSign();" [ngClass]="(radiologistSign ?'':'disabled')"
+                                    <a href="javascript:void(0)" (click)="clearSign();"
+                                        [ngClass]="(radiologistSign ?'':'disabled')"
                                         class="btn btnsignature btn-clear">Clear Signature</a>
-                                    <a href="javascript:void(0)" (click)="saveSign();" [ngClass]="(radiologistSign?'':'disabled')"
-                                    class="btn btnsignature btn-preview">Save Signature</a>
+                                    <a href="javascript:void(0)" (click)="saveSign();"
+                                        [ngClass]="(radiologistSign?'':'disabled')"
+                                        class="btn btnsignature btn-preview">Save Signature</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="funding-company">
+                    <div class="tab-pane active" *ngIf="selectedMode=='funding_company'" id="funding-company">
                         <div class="funding-cmp-content">
                             <div class="headerBtn">
-                                <a class="btn btn-common btn-preciseFunding btn-grey">Add Precise Imaging Funding Co.</a>
-                                <a class="btn btn-common btn-newFunding btn-blue" data-toggle="modal" data-target="#AddFundingCmpModal">Add new funding company</a>
+                                <!-- <a class="btn btn-common btn-preciseFunding btn-grey">Add Precise Imaging Funding
+                                    Co.</a> -->
+                                <a class="btn btn-common btn-newFunding btn-blue" (click)="openFundCompPupup()" data-toggle="modal"
+                                    data-target="#AddFundingCmpModal">Add new funding company</a>
                             </div>
                             <div class="funding-cmp-table">
-                                <dx-data-grid [dataSource]="FundingCompanyDataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                                    [allowColumnReordering]="true" [showBorders]="true">
-                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                <dx-data-grid [dataSource]="FundingCompanyDataSource" [allowColumnResizing]="true"
+                                    [columnAutoWidth]="true" [allowColumnReordering]="true" [showBorders]="true">
+
+                                    <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                                    <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                                     <dxo-sorting mode="multiple"></dxo-sorting>
-                                    <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="ActionTemplate"  caption="Action">
+                                    <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                                    <dxo-pager [visible]="false"></dxo-pager>
+                                    <dxo-sorting mode="multiple"></dxo-sorting>
+
+
+                                    <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                                        cellTemplate="ActionTemplate" caption="Action">
                                     </dxi-column>
-                                    <dxi-column dataField="fundingcmp" caption="Funding Company"></dxi-column>
-                                    <dxi-column dataField="defaultcmp" caption="Default Co."></dxi-column>
-                                    <dxi-column dataField="isactive" caption="Is Active"></dxi-column>
+                                    <dxi-column dataField="fundingCompanyName" caption="Funding Company"></dxi-column>
+
+                                    <dxi-column cellTemplate="DefaultCoTemplate" caption="Default Co."></dxi-column>
+                                    <dxi-column cellTemplate="IsActiveTemplate" caption="Is Active"></dxi-column>
+
+                                    <div *dxTemplate="let DefaultCoData of 'DefaultCoTemplate'">
+                                        {{(DefaultCoData.data ? (DefaultCoData.data.isDefaultCompany?'Yes':'No') : '')}}
+                                    </div>
+
+                                    <div *dxTemplate="let IsActiveData of 'IsActiveTemplate'">
+                                        {{(IsActiveData.data ? (IsActiveData.data.isActive?'Yes':'No') : '')}}
+                                    </div>
+
                                     <div *dxTemplate="let data of 'ActionTemplate'">
-                                        <a href="javascript:void(0)" class="editAction">Edit</a>
+                                        <a href="javascript:void(0)" *ngIf="data.data" data-toggle="modal"
+                                        data-target="#AddFundingCmpModal" (click)="openFundCompPupup(data.data.fundingCompanyId)" class="editAction">Edit</a>
                                     </div>
                                 </dx-data-grid>
+                                <div class="pagination-theme">
+                                    <div class="pagination-theme">
+                                        <div
+                                            *ngFor="let item of FundingCompanyDataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
+                                        </div>
+                                        <pagination-controls id="pagination1" (pageChange)="onFundCompPageNumberChange($event)"></pagination-controls>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,26 +163,6 @@
     </div>
 </div>
 
+<app-add-funding-company (returnSuccess)="onReturnSuccess($event)" [id]="fundingCompanyId"></app-add-funding-company>
 
-<!---------------------------add funding company modal start---------------------------->
-<div class="modal fade modal-theme in modal-small" id="AddFundingCmpModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Funding Company</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
-            </div>
-            <div class="modal-body">
-                <div class="modal-content">
-                   <app-add-funding-company></app-add-funding-company>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Add Funding Company</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--------------------------end------------------------------->
+                
