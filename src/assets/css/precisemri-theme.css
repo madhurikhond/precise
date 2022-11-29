@@ -6695,6 +6695,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
     height: 100%;
     width: 100%;
     max-width: 100% !important;
+	margin-top: 5px;
 }
 .page-working-area .table-responsive.manual-table {
     overflow: auto;
@@ -7058,13 +7059,20 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .payment-invoice-popup{
 	z-index: 1052;
 }
-#CalendarSchedulerWindow .modal-body .dhx_scheduler_month, #CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_timeline .dhx_cal_data, #CalendarSchedulerWindow .modal-body .dhx_scheduler_day .dhx_cal_data{
-	overflow-y: hidden;
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_month,#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{
+	overflow-y: hidden !Important;
 }
-#CalendarSchedulerWindow .modal-body .dhx_scheduler_week .dhx_cal_data{overflow-y: scroll;}
+#CalendarSchedulerWindow .modal-body{overflow-y: hidden;}
+
+#CalendarSchedulerWindow .modal-body .dhx_cal_data{overflow-y: scroll;
+	height: calc(100% - 300px) !IMPORTANT;
+}
 .invalid-feedback{
 	line-height: 17px;
 	margin-top: 35px;
+}
+.dx-datagrid-rowsview .dx-datagrid-content tr td .fa.fa-trash.credit-trash {
+    float: right;
 }
 select {
     text-transform: uppercase;
@@ -7075,3 +7083,5 @@ select {
 .scroll-up .modal-theme{
 	overflow: auto;
 }
+
+.theme-form .form-group signature-pad{overflow-x: hidden  !important;}
