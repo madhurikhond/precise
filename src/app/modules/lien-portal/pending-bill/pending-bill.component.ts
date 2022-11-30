@@ -5,7 +5,7 @@ import themes from 'devextreme/ui/themes';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
-import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -56,10 +56,10 @@ export class PendingBillComponent implements OnInit {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
     this.assignARform = this.fb.group({
-      fundingCompany:['',Validators.required],
-      firstName:[this.storageService.user.FirstName,Validators.required],
-      lastName:[this.storageService.user.LastName,Validators.required],
-      radiologistSign:['',Validators.required]
+      fundingCompany: ['', Validators.required],
+      firstName: [this.storageService.user.FirstName, Validators.required],
+      lastName: [this.storageService.user.LastName, Validators.required],
+      radiologistSign: ['', Validators.required]
     })
   }
 
@@ -76,9 +76,6 @@ export class PendingBillComponent implements OnInit {
       this.pageNumber = 0;
   }
 
-  onMaterialGroupChange(event) {
-  }
-
   clearSign(): void {
     this.signaturePad.clear();
     this.assignARform.patchValue({
@@ -91,28 +88,18 @@ export class PendingBillComponent implements OnInit {
   }
 
   getListingData() {
-    try {
-      this.lienPortalService.GetPendingToBill(this.getfilterData).subscribe((result) => {
-        if (result.status == 1) {
-          this.totalRecord = result.result.length;
-          this.dataSource = [];
-          if (result.result && result.result.length > 0) {
-            this.dataSource = result.result
-          }
-        }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
+    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingToBill).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        this.totalRecord = result.result.length;
+        this.dataSource = [];
+        if (result.result)
+          this.dataSource = result.result
       }
-    }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   changeCheckbox(item: any) {
@@ -122,32 +109,17 @@ export class PendingBillComponent implements OnInit {
   }
 
   bindFundComp_DDL() {
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetFundingCompanyByUser(data).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
-            this.fundingCompanies = result.result
-          }
-        }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
+    let data = {};
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanyByUser).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result)
+          this.fundingCompanies = result.result
       }
-    }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   drawComplete() {
@@ -157,96 +129,83 @@ export class PendingBillComponent implements OnInit {
   }
 
   onAssignAR() {
-    try {
-      if(this.assignARform.valid){
-      var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
-        patientId: data.patientId,
-         internalStudyId: data.internalStudyId,
-         cptGroup: data.cptGroup
-      }));
-        var assignData = {
-          request: checkboxSelectedData,
-          radiologistSign: this.assignARform.get("radiologistSign").value,
-          firstName: this.assignARform.get("firstName").value,
-          lastName: this.assignARform.get("lastName").value,
-          fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
-          loggedPartnerId: this.storageService.PartnerId,
-          jwtToken: this.storageService.PartnerJWTToken,
-          userId: Number(this.storageService.user.UserId)
-        }
-       this.lienPortalService.AssignARStudiesToRadiologist(assignData).subscribe((res)=>{
-        if(res.status == 1){
-          this.closeAssignARModal();
-          this.lienPortalService.successNotification('Studies assigned to Funding Co. Successfully');
-          this.getListingData();
-        }
-       },(error)=>{
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-       })
-     }
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
-    }
-  }
 
-  closeAssignARModal(){
-    document.getElementById('signatureModal').setAttribute('data-dismiss','modal');
-    document.getElementById('signatureModal').click();
-   }
-
-   closeRetainARModal(){
-    document.getElementById('RetainedARModal').setAttribute('data-dismiss','modal');
-    document.getElementById('RetainedARModal').click();
-   }
-
-  onRetainAR(){
-    try {
+    if (this.assignARform.valid) {
       var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
         patientId: data.patientId,
         internalStudyId: data.internalStudyId,
         cptGroup: data.cptGroup
       }));
+
       var assignData = {
         request: checkboxSelectedData,
-        radiologistSign: null,
+        radiologistSign: this.assignARform.get("radiologistSign").value,
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
-        fundingCompanyId: 0,
-        loggedPartnerId: this.storageService.PartnerId,
-        jwtToken: this.storageService.PartnerJWTToken,
-        userId: this.storageService.user.UserId
+        fundingCompanyId: Number(this.assignARform.get("fundingCompany").value)
       }
-      this.lienPortalService.RetainARStudies(assignData).subscribe((res)=>{
-        if(res.status == 1){
-          this.closeRetainARModal();
-          this.lienPortalService.successNotification('Studies Retained Successfully');
+
+      this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.AssignARStudiesToRadiologist).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.closeAssignARModal();
+          this.lienPortalService.successNotification(LienPortalStatusMessage.STUDIES_ASSIGNED_TO_FUNDING_CO);
           this.getListingData();
         }
-      },(error)=>{
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-       })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
     }
   }
 
-  clearModalPopup(){
+  closeAssignARModal() {
+    document.getElementById('signatureModal').setAttribute('data-dismiss', 'modal');
+    document.getElementById('signatureModal').click();
+  }
+
+  closeRetainARModal() {
+    document.getElementById('RetainedARModal').setAttribute('data-dismiss', 'modal');
+    document.getElementById('RetainedARModal').click();
+  }
+
+  onRetainAR() {
+
+    var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
+      patientId: data.patientId,
+      internalStudyId: data.internalStudyId,
+      cptGroup: data.cptGroup
+    }));
+
+    var assignData = {
+      request: checkboxSelectedData,
+      radiologistSign: null,
+      firstName: this.assignARform.get("firstName").value,
+      lastName: this.assignARform.get("lastName").value,
+      fundingCompanyId: 0,
+    }
+
+    this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.RetainARStudies).subscribe((res) => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        this.closeRetainARModal();
+        this.lienPortalService.successNotification(LienPortalStatusMessage.STUDIES_RETAINED_SUCCESS);
+        this.getListingData();
+      } else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
+
+  }
+
+  clearModalPopup() {
     this.assignARform.reset();
     this.signaturePad.clear();
     this.assignARform.patchValue({
       'fundingCompany': '',
-      'firstName': this.storageService.user.FirstName,
-      'lastName': this.storageService.user.LastName,
-      'radiologistSign':''
+      'firstName': (this.storageService.user.FirstName) ? this.storageService.user.FirstName : '',
+      'lastName': (this.storageService.user.LastName) ? this.storageService.user.LastName : '',
+      'radiologistSign': ''
     });
   }
-
 }

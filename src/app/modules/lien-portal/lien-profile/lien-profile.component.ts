@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { userDetail } from 'src/app/models/user-detail';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';

@@ -194,7 +194,7 @@ export class AuthInterceptor implements HttpInterceptor {
       if(!this.storageService.pJWTValid)
       {
 
-        return this.lienPortalService.GetPartnerToken()
+        return this.lienPortalService.GetLienPartnerToken()
               .pipe(
                 mergeMap(configData => {
                   this._storageService.PartnerJWTToken = configData.result.jwtToken;

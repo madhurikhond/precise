@@ -23,7 +23,7 @@ export class RAuthGuard implements CanActivate {
       var tokenExpiry = new Date(decodedToken.exp * 1000);
       var today = new Date();
       if (tokenExpiry < today) {
-        this.lienPortalService.GetPartnerToken().subscribe((res: any) => {
+        this.lienPortalService.GetLienPartnerToken().subscribe((res: any) => {
           if (res) {
             if (res.responseStatus == LienPortalResponseStatus.Success) {
               this.storageService.PartnerId = res.result.partnerId;

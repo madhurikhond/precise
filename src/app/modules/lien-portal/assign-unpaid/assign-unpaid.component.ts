@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
-import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-assign-unpaid',
@@ -35,8 +34,8 @@ export class AssignUnpaidComponent implements OnInit {
   dataSource: any = [];
   AssignARUnpaid: any = [];
 
-  constructor(private lienPortalService: LienPortalService, public storageService: StorageService,
-    private commonService:CommonMethodService) {
+  constructor(private lienPortalService: LienPortalService,
+    private commonService: CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -61,29 +60,20 @@ export class AssignUnpaidComponent implements OnInit {
 
 
   getListingData() {
-    try {
-      this.dataSource = [];
-      this.lienPortalService.GetAssignedARUnpaid(this.getfilterData).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
-            this.dataSource = result.result
-            this.AssignARUnpaid = this.dataSource;
-            this.totalRecord = result.result.length;
-          }
+    this.dataSource = [];
+    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARUnpaid).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result && result.result.length > 0) {
+          this.dataSource = result.result
+          this.AssignARUnpaid = this.dataSource;
+          this.totalRecord = result.result.length;
         }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
       }
-    }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   onPageNumberChange(pageNumber: any) {

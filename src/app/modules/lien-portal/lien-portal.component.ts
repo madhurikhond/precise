@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { StorageService } from 'src/app/services/common/storage.service';
+import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage, LienPortalTabName } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 
@@ -15,14 +15,11 @@ export class LienPortalComponent implements OnInit {
   list_CPTGroup: any = [];
   list_ReferrerByUser: any = [];
   list_FundingCompanyByUser: any = [];
-
   filter: any;
   selectedMode: string;
-
   filterForm: FormGroup;
 
   constructor(private lienPortalService: LienPortalService,
-    private storageService: StorageService,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -49,180 +46,97 @@ export class LienPortalComponent implements OnInit {
   }
 
   bindCPTGroup_DDL() {
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetCPTGroupList(data).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
+    let data = {};
+      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result) => {
+        if (result.status == LienPortalResponseStatus.Success) {
+          if (result.result) 
             this.list_CPTGroup = result.result
-          }
         }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
-    }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      });
   }
 
-  bindReferrerByUser_DDL(){
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetReferrerByUser(data).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
+  bindReferrerByUser_DDL() {
+    let data = {};
+      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetReferrerByUser).subscribe((result) => {
+        if (result.status == LienPortalResponseStatus.Success) {
+          if (result.result) 
             this.list_ReferrerByUser = result.result
-          }
         }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
-    }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      });
   }
 
   bindFundingCompanyByUser_DDL() {
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetFundingCompanyByUser(data).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
+    let data = {};
+      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanyByUser).subscribe((result) => {
+        if (result.status == LienPortalResponseStatus.Success) {
+          if (result.result) 
             this.list_FundingCompanyByUser = result.result
-          }
         }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
-    }
+        else
+            this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      });
   }
 
   onPendingBillTabClicked() {
-    this.selectedMode = "pending";
+    this.selectedMode = LienPortalTabName.PENDING;
     this.clearFilter();
   }
 
   onAssignUnpaidTabClicked() {
-    this.selectedMode = "assign_unpaid";
+    this.selectedMode = LienPortalTabName.ASSIGN_UNPAID;
     this.clearFilter();
   }
 
   onAssignPaidTabClicked() {
-    this.selectedMode = "assign_paid";
+    this.selectedMode = LienPortalTabName.ASSIGN_PAID;
     this.clearFilter();
   }
 
   onRetainedUnpaidTabClicked() {
-    this.selectedMode = "retain_unpaid";
+    this.selectedMode = LienPortalTabName.RETAIN_UNPAID;
     this.clearFilter();
   }
 
   onRetainedPaidTabClicked() {
-    this.selectedMode = "retain_paid";
+    this.selectedMode = LienPortalTabName.RETAIN_PAID;
     this.clearFilter();
   }
 
   onFilter() {
+    this.filter = {
+      "patientId": this.filterForm.controls.patientId.value,
+      "dateFrom": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateFrom.value),
+      "dateTo": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateTo.value),
+      "dateType": this.filterForm.controls.dateType.value,
+    };
+   
     switch (this.selectedMode) {
-      case "pending":
-        this.filter = {
-          "referrers": this.filterForm.get("readingRad").value,
-          "cptGroup": this.filterForm.get("cptGroup").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
-          "dateType": this.filterForm.get("dateType").value,
-          "userId": this.storageService.user.UserId
-        };
+      case LienPortalTabName.PENDING:
+        this.filter.referrers = this.filterForm.controls.readingRad.value;
+        this.filter.cptGroup = this.filterForm.controls.cptGroup.value;
         break;
-      case "assign_unpaid":
-        this.filter = {
-          "fundingCompany": this.filterForm.get("fundingCompany").value,
-          "isFundingCompanySigned": Boolean(this.filterForm.get("fundingCoSigned").value),
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
-          "dateType": this.filterForm.get("dateType").value,
-          "userId": this.storageService.user.UserId
-        };
+      case LienPortalTabName.ASSIGN_UNPAID:
+        this.filter.fundingCompany = this.filterForm.controls.fundingCompany.value;
+        this.filter.isFundingCompanySigned = Boolean(this.filterForm.controls.fundingCoSigned.value);
         break;
-      case "assign_paid":
-        this.filter = {
-          "fundingCompany": this.filterForm.get("fundingCompany").value,
-          "checkNumber": this.filterForm.get("checkNumber").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
-          "dateType": this.filterForm.get("dateType").value,
-          "userId": this.storageService.user.UserId
-        };
+      case LienPortalTabName.ASSIGN_PAID:
+        this.filter.fundingCompany = this.filterForm.controls.fundingCompany.value;
+        this.filter.checkNumber = this.filterForm.controls.checkNumber.value;
         break;
-      case "retain_unpaid":
-        this.filter = {
-          "userId": this.storageService.user.UserId,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
-          "dateType": this.filterForm.get("dateType").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken
-        };
+      case LienPortalTabName.RETAIN_UNPAID:
         break;
-      case "retain_paid":
-        this.filter = {
-          "checkNumber": this.filterForm.get("checkNumber").value,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
-          "patientId": this.filterForm.get("patientId").value,
-          "dateFrom": this.convertDateFormat(this.filterForm.get("dateFrom").value),
-          "dateTo": this.convertDateFormat(this.filterForm.get("dateTo").value),
-          "dateType": this.filterForm.get("dateType").value,
-          "userId": this.storageService.user.UserId
-        };
+      case LienPortalTabName.RETAIN_PAID:
+        this.filter.checkNumber = this.filterForm.controls.checkNumber.value;
         break;
       default:
         this.filter = undefined;
@@ -245,16 +159,6 @@ export class LienPortalComponent implements OnInit {
     });
     this.onFilter();
   }
-
-  convertDateFormat(date){
-    if(date == null || date == ''){
-      return moment(new Date()).format('MM/DD/YYYY');
-    }
-    else{
-      return moment(date).format('MM/DD/YYYY');
-    }
-  }
-
 }
 
 

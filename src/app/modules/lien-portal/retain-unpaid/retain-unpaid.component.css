@@ -29,14 +29,14 @@
     display: flex;
     justify-content: flex-end;
 }
-#RecevivePaymentModal .theme-label {
+#ReceivePaymentModal .theme-label {
     font-size: 13px;
     text-transform: capitalize;
     font-weight: 600;
     min-width: 100px;
     line-height: 30px;
 }
-#RecevivePaymentModal .modal-dialog {
+#ReceivePaymentModal .modal-dialog {
     max-width: 340px;
   }
 

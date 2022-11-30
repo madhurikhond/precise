@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { AccountService } from 'src/app/services/account.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
@@ -79,24 +80,14 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   bindState_DDL() {
-    try {
     this.accountService.getServiceStateList().subscribe((result) => {
-      if (result.response != null && result.response.length > 0) {
+      if (result.response) 
         this.state = result.response;
-      }
-      if (result.message) {
-        this.lienPortalService.errorNotification(result.message);
-      }
-    }, (error) => {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
-  } catch(error) {
-    if (error.message) {
-      this.lienPortalService.errorNotification(error.message);
-    }
-  }
 }
 
 clearFundingCompanyForm() {
@@ -119,16 +110,13 @@ clearFundingCompanyForm() {
 }
 
 bindFundingCompanyForm(){
-  try {
+
     var data = {
-      "fundingCompanyId": this.fundingCompanyId,
-      "loggedPartnerId": this.storageService.PartnerId,
-      "jwtToken": this.storageService.PartnerJWTToken,
-      "userId": this.storageService.user.UserId
+      "fundingCompanyId": this.fundingCompanyId
     };
 
-    this.lienPortalService.GetRadiologistFundingCompanyInfo(data).subscribe((result) => {
-      if (result.status == 1) {
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetRadiologistFundingCompanyInfo).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
         if (result.result) {
           let data = result.result;
           this.fundingCompanyForm.patchValue({
@@ -150,48 +138,32 @@ bindFundingCompanyForm(){
           });
         }
       }
-      if (result.exception && result.exception.message) {
-        this.lienPortalService.errorNotification(result.exception.message);
-      }
-    }, (error) => {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
-    })
-  } catch (error) {
-    if (error.message) {
-      this.lienPortalService.errorNotification(error.message);
-    }
-  }
+      else 
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    });
 }
 
 onSubmit() {
-  try {
+ 
     if (this.fundingCompanyForm.valid) {
-      this.lienPortalService.UpsertFundingCompanyInfo(this.fundingCompanyForm.value).subscribe((res) => {
-        if (res.status == 1) {
-          let message = "Funding Company Added Successfully";
+      this.lienPortalService.PostAPI(this.fundingCompanyForm.value,LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
           if (this.fundingCompanyId > 0) {
-            message = "Funding Company Updated Successfully";
+            message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
           }
           this.lienPortalService.successNotification(message);
           this.modal_close.nativeElement.click();
           this.returnSuccess.emit(true);
         }
-        if (res.exception && res.exception.message) {
-          this.lienPortalService.errorNotification(res.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
+        else 
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
     }
-  } catch (error) {
-    if (error.message) {
-      this.lienPortalService.errorNotification(error.message);
-    }
-  }
 }
 
 }

@@ -1,8 +1,9 @@
-import { Component, ElementRef, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { CommonRegex } from 'src/app/constants/commonregex';
+import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
@@ -14,6 +15,7 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 export class RetainUnpaidComponent implements OnInit {
 
   getfilterData: any;
+  readonly commonRegex = CommonRegex;
   @Input()
   set filterData(val: any) {
     if (val && val != "") {
@@ -36,6 +38,7 @@ export class RetainUnpaidComponent implements OnInit {
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   assignARform: FormGroup;
+  receivePaymentform: FormGroup;
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 0;
@@ -48,16 +51,16 @@ export class RetainUnpaidComponent implements OnInit {
   applyFilterTypes: any;
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
-  dataSource : any = [];
-  retainARUnpaid :any = [];
-  checkboxSelectedData:any = [];
+  dataSource: any = [];
+  retainARUnpaid: any = [];
+  checkboxSelectedData: any = [];
   fundingCompanies = [];
   selecteFundComp: number = 0;
   firstName: string;
   lastName: string;
   radiologistSign: string;
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,private storageService:StorageService,
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
     private fb: FormBuilder) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
@@ -76,10 +79,15 @@ export class RetainUnpaidComponent implements OnInit {
     this.columnResizingMode = this.resizingModes[0];
     this.currentFilter = this.applyFilterTypes[0].key;
     this.assignARform = this.fb.group({
-      fundingCompany:['',Validators.required],
-      firstName:[this.storageService.user.FirstName,Validators.required],
-      lastName:[this.storageService.user.LastName,Validators.required],
-      radiologistSign:['',Validators.required]
+      fundingCompany: ['', Validators.required],
+      firstName: [this.storageService.user.FirstName, Validators.required],
+      lastName: [this.storageService.user.LastName, Validators.required],
+      radiologistSign: ['', Validators.required]
+    })
+    this.receivePaymentform = this.fb.group({
+      checkAmount: ['', [Validators.required]],
+      checkDate: ['',Validators.required],
+      checkNo: ['',Validators.required],
     })
   }
 
@@ -88,62 +96,54 @@ export class RetainUnpaidComponent implements OnInit {
     this.bindFundComp_DDL();
   }
 
-
-  getRetainUnPaidList(){
-    try {
-      this.dataSource = [];
-      this.lienPortalService.GetRetainUnpaid(this.getfilterData).subscribe((res)=>{
-        if(res.status == 1){
-          if (res.result) {
-            this.dataSource = res.result.retainedArUnPaidBatches;
-          }
+  getRetainUnPaidList() {
+    this.dataSource = [];
+    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetRetainedUnPaid).subscribe((res) => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        if (res.result) {
+          this.dataSource = res.result.retainedArUnPaidBatches;
           this.retainARUnpaid = this.dataSource;
           this.totalRecord = this.retainARUnpaid.length;
-
         }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
       }
-    }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   changeCheckbox(item: any) {
 
     this.dataGrid.instance.expandRow((item.currentSelectedRowKeys[0]));
-      setTimeout(() => {
-        if(item) {
-          this.checkboxSelectedData = item.selectedRowsData;
-        }
+    setTimeout(() => {
+      if (item) {
+        this.checkboxSelectedData = item.selectedRowsData;
+      }
 
-        //selection
+      //selection
 
-        if(item.currentSelectedRowKeys.length > 0){
-          var selectedbatchName = item.currentSelectedRowKeys[0].batchName;
-          var chkBatch = document.getElementsByName(selectedbatchName);
-          chkBatch.forEach(item => {
-            var element = <HTMLInputElement> item;
-            element.checked = true;
-          });
-        }
+      if (item.currentSelectedRowKeys.length > 0) {
+        var selectedbatchName = item.currentSelectedRowKeys[0].batchName;
+        var chkBatch = document.getElementsByName(selectedbatchName);
+        chkBatch.forEach(item => {
+          var element = <HTMLInputElement>item;
+          element.checked = true;
+        });
+      }
 
-        //Deselection
+      //Deselection
 
-        if(item.currentDeselectedRowKeys.length > 0){
-          var deSelectedbatchname = item.currentDeselectedRowKeys[0].batchName;
-          var chkBatch = document.getElementsByName(deSelectedbatchname);
-          this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
-          chkBatch.forEach(function(item) {
-            var element = <HTMLInputElement> item;
-            element.checked = false;
-          });
-        }
-      }, 150);
+      if (item.currentDeselectedRowKeys.length > 0) {
+        var deSelectedbatchname = item.currentDeselectedRowKeys[0].batchName;
+        var chkBatch = document.getElementsByName(deSelectedbatchname);
+        this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
+        chkBatch.forEach(function (item) {
+          var element = <HTMLInputElement>item;
+          element.checked = false;
+        });
+      }
+    }, 150);
 
   }
 
@@ -162,91 +162,102 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   bindFundComp_DDL() {
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetFundingCompanyByUser(data).subscribe((result) => {
-        if (result.status == 1) {
-          if (result.result && result.result.length > 0) {
-            this.fundingCompanies = result.result
-          }
-        }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
+    let data = {};
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanyByUser).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result)
+          this.fundingCompanies = result.result
       }
-    }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
-  onAssignAR() {
-    try {
-      var request = [];
-      if(this.assignARform.valid){
-      this.checkboxSelectedData.map(data =>{
-       data.retainedArUnPaidList.forEach(element => {
-        var requestData = {
-          'lienFundingId': element.lienFundingId,
-          'cptGroup': element.cptGroup,
-        }
-        request.push(requestData);
-       });
-
-      });
-        var assignData = {
-          request: request,
-          lienFundingMappingId: this.checkboxSelectedData[0].lienFundingMappingId,
-          radiologistSign: this.assignARform.get("radiologistSign").value,
-          firstName: this.assignARform.get("firstName").value,
-          lastName: this.assignARform.get("lastName").value,
-          fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
-          loggedPartnerId: this.storageService.PartnerId,
-          jwtToken: this.storageService.PartnerJWTToken,
-          userId: Number(this.storageService.user.UserId)
-        }
-       this.lienPortalService.MoveRetainARToAssignAR(assignData).subscribe((res)=>{
-        if(res.status == 1){
-          this.closeAssignARModal();
-          this.lienPortalService.successNotification('Studies assigned to Funding Co. Successfully');
+  onMarkAsPaid() {
+    if (this.receivePaymentform.valid) {
+      var assignData = {
+        batchId: this.checkboxSelectedData[0].lienFundingMappingId,
+        checkAmount: parseInt(this.receivePaymentform.controls.checkAmount.value),
+        checkDate: this.lienPortalService.convertDateFormat(this.receivePaymentform.controls.checkDate.value),
+        checkNumber: this.receivePaymentform.controls.checkNo.value,
+      }
+      this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.ReceivePaymentForSelectStudy).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.closeReceivePaymentModal();
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
           this.getRetainUnPaidList();
         }
-       },(error)=>{
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-       })
-     }
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
+    }
+  }
+  onAssignAR() {
+
+    var request = [];
+    if (this.assignARform.valid) {
+      this.checkboxSelectedData.map(data => {
+        data.retainedArUnPaidList.forEach(element => {
+          var requestData = {
+            'lienFundingId': element.lienFundingId,
+            'cptGroup': element.cptGroup,
+          }
+          request.push(requestData);
+        });
+      });
+
+      var assignData = {
+        request: request,
+        lienFundingMappingId: this.checkboxSelectedData[0].lienFundingMappingId,
+        radiologistSign: this.assignARform.get("radiologistSign").value,
+        firstName: this.assignARform.get("firstName").value,
+        lastName: this.assignARform.get("lastName").value,
+        fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
       }
+
+      this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MoveRetainARToAssignAR).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.closeAssignARModal();
+          this.lienPortalService.successNotification(LienPortalStatusMessage.STUDIES_ASSIGNED_TO_FUNDING_CO);
+          this.getRetainUnPaidList();
+        }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
     }
   }
 
-  closeAssignARModal(){
-    document.getElementById('AssignARFundingModal').setAttribute('data-dismiss','modal');
+  closeAssignARModal() {
+    document.getElementById('AssignARFundingModal').setAttribute('data-dismiss', 'modal');
     document.getElementById('AssignARFundingModal').click();
-   }
+  }
 
-   clearModalPopup(){
+  closeReceivePaymentModal() {
+    document.getElementById('ReceivePaymentModal').setAttribute('data-dismiss', 'modal');
+    document.getElementById('ReceivePaymentModal').click();
+  }
+
+  clearModalPopup() {
     this.assignARform.reset();
+    this.receivePaymentform.reset();
     this.signaturePad.clear();
     this.assignARform.patchValue({
       'fundingCompany': '',
-      'firstName': this.storageService.user.FirstName,
-      'lastName': this.storageService.user.LastName,
-      'radiologistSign':''
+      'firstName': (this.storageService.user.FirstName) ? this.storageService.user.FirstName : '',
+      'lastName': (this.storageService.user.LastName) ? this.storageService.user.LastName : '',
+      'radiologistSign': ''
+    });
+
+    this.assignARform.patchValue({
+      'checkAmount': '',
+      'checkDate': '',
+      'checkNo': '',
     });
   }
 
@@ -266,5 +277,14 @@ export class RetainUnpaidComponent implements OnInit {
         });
       });
     }, 150);
+  }
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
   }
 }

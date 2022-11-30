@@ -1,6 +1,6 @@
-import { Component, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalPageTitleOption } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
@@ -10,10 +10,10 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 })
 export class AssignPaidComponent implements OnInit {
 
-  getfilterData:any;
+  getfilterData: any;
   @Input()
   set filterData(val: any) {
-    if(val && val != ""){
+    if (val && val != "") {
       this.getfilterData = val;
       this.getAssigndPaidData();
     }
@@ -34,9 +34,9 @@ export class AssignPaidComponent implements OnInit {
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
   dataSource: any = [];
-  AssignARpaid:any = [];
+  AssignARpaid: any = [];
 
-  constructor(private lienPortalService : LienPortalService,private commonService: CommonMethodService) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -59,39 +59,30 @@ export class AssignPaidComponent implements OnInit {
     this.commonService.setTitle(LienPortalPageTitleOption.ASSIGN_AND_PAID);
   }
 
-  getAssigndPaidData(){
-       try {
-        this.lienPortalService.GetAssignedARPaid(this.getfilterData).subscribe((res)=>{
-          if (res.status == 1) {
-            this.dataSource = [];
-            if(res.result.length > 0){
-              this.dataSource = res.result;
-              this.AssignARpaid = this.dataSource;
-              this.totalRecord = this.AssignARpaid.length;
-            }
-          }
-          if (res.exception && res.exception.message) {
-            this.lienPortalService.errorNotification(res.exception.message);
-          }
-        }, (error) => {
-          if (error.message) {
-            this.lienPortalService.errorNotification(error.message);
-          }
-        })
-       } catch (error) {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
+  getAssigndPaidData() {
+    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARPaid).subscribe((res) => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        this.dataSource = [];
+        if (res.result) {
+          this.dataSource = res.result;
+          this.AssignARpaid = this.dataSource;
+          this.totalRecord = this.AssignARpaid.length;
         }
-       }
-    }
-
-    onPageNumberChange(pageNumber: any) {
-      this.currentPageNumber = pageNumber;
-      if (pageNumber > 1)
-        this.pageNumber = pageNumber - 1;
+      }
       else
-        this.pageNumber = 0;
-    }
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
+  }
 
 }
 

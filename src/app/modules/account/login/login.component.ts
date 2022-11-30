@@ -121,7 +121,7 @@ export class LoginComponent implements OnInit {
         this.storageService.settCurrentUser(res.authentication.response);
         if (this.storageService.user.UserType === RADIOLOGIST_TYPE) {
           this.storageService.LastPageURL = null;
-          this.lienPortalService.refreshToken();
+          this.lienPortalService.refreshLienToken();
           this.onLienPortalLogin();
         } else {
         

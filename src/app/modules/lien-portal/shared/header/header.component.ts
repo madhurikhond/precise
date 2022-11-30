@@ -10,23 +10,15 @@ import { StorageService } from 'src/app/services/common/storage.service';
 })
 export class HeaderComponent implements OnInit {
 
+  username: any = '';
+
   constructor(private readonly _storageService: StorageService,
     private readonly _router: Router,
-    private readonly _commonMethodService: CommonMethodService) { }
+    private readonly _commonMethodService: CommonMethodService) { 
+      this.username = this._storageService.user.FirstName;
+    }
 
-  data: any = '';
-  username: any = '';
-  list: any = [];
-
-
-  ngOnInit(): void {
-    this.getUser();
-  }
-
-  getUser() {
-    this.data = this._storageService.user;
-    this.username = this.data.FirstName;
-  }
+  ngOnInit(): void {}
 
   logOut() {
     this._commonMethodService.clearAllSubjects();

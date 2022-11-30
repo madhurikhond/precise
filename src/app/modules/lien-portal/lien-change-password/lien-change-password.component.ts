@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, RequiredValidator, PatternValidator } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ValidationErrors, ValidatorFn, AbstractControl } from '@angular/forms';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
@@ -80,7 +80,7 @@ export class LienChangePasswordComponent implements OnInit {
 
   changePassword(body: any) {
     this.myprofileService.updatePassword(true, body.currentPassword, body.newPassword, body.userId).subscribe((res) => {
-      if (res.response != null) {
+      if (res.response) {
         this.showNotification(res);
       }
       else {
@@ -129,9 +129,7 @@ export class CustomValidators {
       if (!control.value) {
         return null;
       }
-
       const valid = regex.test(control.value);
-
       return valid ? null : error;
     };
   }

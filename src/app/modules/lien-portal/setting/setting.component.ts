@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
@@ -28,8 +29,8 @@ export class SettingComponent implements OnInit {
   radiologistSign: string;
 
   FundingCompanyDataSource = [];
-  defaultEmail:any;
-  selectedValue:any;
+  defaultEmail: any;
+  selectedValue: any;
 
   totalRecord: number = 0;
   pageNumber: number = 0;
@@ -42,12 +43,11 @@ export class SettingComponent implements OnInit {
     private storageService: StorageService) { }
 
   ngOnInit(): void {
+   
     this.getDaysData();
     this.onSettingTabClicked();
     this.defaultEmail = this.storageService.user.WorkEmail;
   }
-
-
 
   onFundingCompanyTabClicked() {
     this.bindFundComp_list();
@@ -55,40 +55,24 @@ export class SettingComponent implements OnInit {
   }
 
   bindFundComp_list() {
-    try {
-      var data = {
-        "loggedPartnerId": this.storageService.PartnerId,
-        "jwtToken": this.storageService.PartnerJWTToken,
-        "userId": this.storageService.user.UserId
-      };
-
-      this.lienPortalService.GetFundingCompanyList(data).subscribe((result) => {
-        if (result.status == 1) {
-
-          this.FundingCompanyDataSource = [];
+    let data = {};
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanyList).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result) {
+           this.FundingCompanyDataSource = [];
           this.totalRecord = 0;
           this.pageNumber = 0;
           this.currentPageNumber = 1;
 
+          this.FundingCompanyDataSource = result.result
           this.totalRecord = result.result.length;
-          if (result.result && result.result.length > 0) {
-            this.FundingCompanyDataSource = result.result
-          }
         }
-        if (result.exception && result.exception.message) {
-          this.lienPortalService.errorNotification(result.exception.message);
-        }
-      }, (error) => {
-        if (error.message) {
-          this.lienPortalService.errorNotification(error.message);
-        }
-      })
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
       }
-    }
-
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    });
   }
 
   onFundCompPageNumberChange(pageNumber: any) {
@@ -124,43 +108,26 @@ export class SettingComponent implements OnInit {
   }
 
   saveSign() {
-    try {
-      if (this.radiologistSign) {
-        var data = {
-          "defaultSign": this.radiologistSign,
-          "loggedPartnerId": this.storageService.PartnerId,
-          "jwtToken": this.storageService.PartnerJWTToken,
-          "userId": Number(this.storageService.user.UserId)
-        };
+    if (this.radiologistSign) {
+      var data = {
+        "defaultSign": this.radiologistSign
+      };
 
-        this.lienPortalService.AddRadiologistDefaultSign(data).subscribe((result) => {
-          // console.log(result);
-          if (result.status == 1) {
-            this.lienPortalService.successNotification('Signature Updated Successfully');
-          }
-          if (result.exception && result.exception.message) {
-            this.lienPortalService.errorNotification(result.exception.message);
-          }
-        }, (error) => {
-          if (error.message) {
-            this.lienPortalService.errorNotification(error.message);
-          }
-        })
-      }
-    } catch (error) {
-      if (error.message) {
-        this.lienPortalService.errorNotification(error.message);
-      }
+      this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.AddRadDefaultSign).subscribe((result) => {
+        if (result.status == LienPortalResponseStatus.Success) {
+          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+        }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
     }
   }
 
   onSignatureComplete() {
     this.radiologistSign = this.signaturePad.toDataURL();
-  }
-
-
-    onSelected(time){
-
   }
 
   openFundCompPupup(fundingCompanyId: number = 0) {
