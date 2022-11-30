@@ -323,6 +323,11 @@ export class SchdFacilitiesComponent implements OnInit {
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
+  closePDF()
+  {
+    debugger
+    $('#viewFile_Doc').hide();
+  }
   getActiveEpicUsers() {
     this.EpicUserList = [];
     this.facilityService.getActiveEpicUsers(true).subscribe(
@@ -1368,7 +1373,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.CreditDebitList = [];
     this.pageSize = 20;
     this.facilityService
-      .getAllBlockLeaseCredits(true, this.pageNumber, this.pageSize)
+      .getAllBlockLeaseCredits(true, this.facilityId, this.pageNumber, this.pageSize)
       .subscribe(
         (res) => {
           if (res.response != null && res.response.length > 0) {

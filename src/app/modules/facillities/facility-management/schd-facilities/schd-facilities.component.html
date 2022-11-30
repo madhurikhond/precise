@@ -3762,7 +3762,7 @@
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
-																	data-target=#viewFile_Doc
+																	data-target="#viewFile_Doc"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
@@ -3850,7 +3850,7 @@
 											<div class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title">Agreement</h5>
-													<div class="close-dismiss" data-dismiss="modal"></div>
+													<a href="javascript:void(0)" (click)="closePDF()" class="close-dismiss"></a>
 												</div>
 												<div class="modal-body" *ngIf="fileData">
 													<iframe width="100%" height="100%" frameBorder="0"

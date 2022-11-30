@@ -377,8 +377,8 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
       map((res:ApiResponse) => res)
     );
   }
-  getAllBlockLeaseCredits(showGlobalLoader : boolean = true ,pageNumber:any,pageSize:any){
-    return this._httpService.get(`BlockLeaseScheduler/GetAllBlockLeaseCredits?PageNo=${pageNumber}&pageSize=${pageSize}`, showGlobalLoader).pipe(
+  getAllBlockLeaseCredits(showGlobalLoader : boolean = true ,facilityId:Number,pageNumber:any,pageSize:any){
+    return this._httpService.get(`BlockLeaseScheduler/GetAllBlockLeaseCredits?PageNo=${pageNumber}&pageSize=${pageSize}&facilityId=${facilityId}`, showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }
