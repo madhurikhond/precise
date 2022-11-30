@@ -7085,3 +7085,10 @@ select {
 }
 
 .theme-form .form-group signature-pad{overflow-x: hidden  !important;}
+
+/* .cs-action-credit .dx-datagrid-table tbody tr td:nth-child(1){width:40px!important; min-width: 30px!important; 
+    max-width: 30px!important;} */
+
+	.slwidth option{width: 100px!important;}
+
+	

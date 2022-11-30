@@ -30,14 +30,13 @@
                             </a>
                           </div>
                         </div>
-                        <div class="table-responsive" class="action-credit">
+                        <div class="table-responsive" class="action-credit cs-action-credit">
                           <dx-data-grid id="gridContainer" [dataSource]="PagecreditReasonsList"
-                                        [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
-                                        [columnResizingMode]="columnResizingMode" [columnMinWidth]="30" keyExpr="ID"
+                                        [allowColumnResizing]="true" [columnAutoWidth]="true"  keyExpr="ID"
                                         [showBorders]="true">
                             <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
                             <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                            <dxi-column dataField="ID"  caption="Action" [allowFiltering]="false" [width]="30"
+                            <dxi-column dataField="ID"  caption="Action" [allowFiltering]="false" [width]="100"
                                         [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
                             </dxi-column>
                             <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
