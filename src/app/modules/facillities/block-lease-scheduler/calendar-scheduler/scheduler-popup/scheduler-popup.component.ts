@@ -72,7 +72,7 @@ export class SchedulerPopupComponent implements OnInit {
   blockLeasePricingList: any = [];
   MriPrice: any = [];
   CtPrice: any = [];
-
+  IsFacilityDetailsPopUpOpen: boolean = false;
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -82,7 +82,8 @@ export class SchedulerPopupComponent implements OnInit {
     private facilityService: FacilityService,
     private modalService: NgbModal,
     private readonly commonService: CommonMethodService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private common: CommonMethodService
   ) { }
 
   ngOnInit(): void {
@@ -104,7 +105,16 @@ export class SchedulerPopupComponent implements OnInit {
       }
     }
     document.getElementById('deleteBtn').style.display = 'none';
-
+    this.common.isFacilityDetailsPopUp.subscribe((value: any) => {
+      if (value) {
+        if (this.IsFacilityDetailsPopUpOpen) {
+          this.IsFacilityDetailsPopUpOpen = !this.IsFacilityDetailsPopUpOpen;
+          setTimeout(() => {
+            document.body.className += ' modal-open';
+          }, 1000);
+        }     
+      }
+    })
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
@@ -319,6 +329,7 @@ export class SchedulerPopupComponent implements OnInit {
       isShowSchedulingTab: true
     }
     this.facilityService.sendDataToschdFacilitiesWin(body);
+    this.IsFacilityDetailsPopUpOpen = true;
     //this.modal.dismiss(ModalResult.CLOSE);
   }
   MatchFacilityHours() {

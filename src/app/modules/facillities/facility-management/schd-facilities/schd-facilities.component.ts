@@ -183,7 +183,7 @@ export class SchdFacilitiesComponent implements OnInit {
     private readonly blockleasescheduler: BlockLeaseSchedulerService,
     private modalService: NgbModal,
     private sanitizer: DomSanitizer,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
   ) {
     this.commonMethodService.setTitle('Scheduling Facility');
 
@@ -4275,5 +4275,9 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   get facilityPolicyFormControls() {
     return this.facilityPoliciesForm.controls;
+  }
+  CloseAddEditModal() {
+    this.hiddenAddEditPopUpItem.nativeElement.click();
+    this.commonMethodService.OpenFacilityDetailsModel('true');
   }
 }

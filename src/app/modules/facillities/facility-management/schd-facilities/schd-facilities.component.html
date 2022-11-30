@@ -4139,7 +4139,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-border-gray btn-sm pull-right" (click)="CloseAddEditModal()">Close</button>
 
 				<div *ngIf="defaultPopupTab != 'BlockLeaseRate' && defaultPopupTab != 'Leases'">
 					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
