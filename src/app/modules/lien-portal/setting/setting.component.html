@@ -22,7 +22,7 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected_reminder_to_bill">
+                                        <input type="checkbox" [(ngModel)]="isEmailReminder" (change)="changeStatus()">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
@@ -31,7 +31,7 @@
                             <div class="selectedDays">
                                 <div class="form-group">
                                     <ng-select [items]="days" bindLabel="name" bindValue="id" [multiple]="true"
-                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days" [(ngModel)]="selectedValue">
+                                        groupBy="selectedAllGroup" [selectableGroup]="false" placeholder="List of Days" [(ngModel)]="selectedDays" [readonly]="isReadonly">
                                     </ng-select>
                                 </div>
                             </div>
@@ -39,11 +39,8 @@
                             <div class="showFilter">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <select class="form-control" #time (change)="onSelected(time.value)">
-                                            <option [value]="'12:00 AM'"> 12:00 AM</option>
-                                            <option *ngFor="let item of [].constructor(11);let i = index" [value]="i+1 +':00 AM'"> {{i+1}}:00 AM</option>
-                                            <option [value]="'12:00 PM'"> 12:00 PM</option>
-                                            <option *ngFor="let item of [].constructor(11);let j = index" [value]="j+1 +':00 AM'"> {{j+1}}:00 PM</option>
+                                        <select class="form-control" #timeDropDown (change)="onSelected(timeDropDown.value)" [disabled]="isReadonly">
+                                            <option *ngFor="let item of time"  [value]="item.timeValue" [selected]="item.timeValue == selectedTimeToReminder">{{item.timeValue}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -54,7 +51,7 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected_pdf_copy">
+                                        <input type="checkbox" [(ngModel)]="isEmailSendCopy">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
@@ -69,12 +66,12 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="addl' email to send file to">
+                                    <input type="text" class="form-control" placeholder="addl' email to send file to" [(ngModel)]="firstEmail">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="addl' email to send file to">
+                                    <input type="text" class="form-control" placeholder="addl' email to send file to" [(ngModel)]="secondEmail">
                                 </div>
                             </div>
                         </div>
@@ -82,7 +79,7 @@
                             <div class="setting-content">
                                 <div class="switch-sec">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" [(ngModel)]="selected_signature">
+                                        <input type="checkbox" [(ngModel)]="isDefaultSignature">
                                         <div class="slider"></div>
                                     </label>
                                 </div>
@@ -97,10 +94,8 @@
                                 </div>
                                 <div class="signatureBtn">
                                     <a href="javascript:void(0)" (click)="clearSign();"
-                                        [ngClass]="(radiologistSign ?'':'disabled')"
                                         class="btn btnsignature btn-clear">Clear Signature</a>
                                     <a href="javascript:void(0)" (click)="saveSign();"
-                                        [ngClass]="(radiologistSign?'':'disabled')"
                                         class="btn btnsignature btn-preview">Save Signature</a>
                                 </div>
                             </div>
@@ -159,6 +154,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="theme-panel-footer">
+                  <a href="javascript:void(0)" class="btn btn-theme" (click)="saveSettings()">Save</a>
+                  <a class="btn btn-border" routerLink="/lien-portal">Cancel</a>
+              </div>
             </div>
         </div>
     </div>

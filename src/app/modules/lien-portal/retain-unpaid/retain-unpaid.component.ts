@@ -56,6 +56,8 @@ export class RetainUnpaidComponent implements OnInit {
   firstName: string;
   lastName: string;
   radiologistSign: string;
+  isDefaultSignature: boolean;
+  defaultSignature: any;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,private storageService:StorageService,
     private fb: FormBuilder) {
@@ -85,7 +87,10 @@ export class RetainUnpaidComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
+    this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
     this.bindFundComp_DDL();
+    if(this.isDefaultSignature)
+      this.GetRadDefaultSign();
   }
 
 
@@ -153,6 +158,55 @@ export class RetainUnpaidComponent implements OnInit {
     })
   }
 
+  previewAssignment(){
+    if(Number(this.assignARform.get("fundingCompany").value)){
+      var retainSelectedData = [];
+      this.checkboxSelectedData.map(data =>{
+        data.retainedArUnPaidList.forEach(element => {
+         var selectedData = {
+          "patientId": element.patientId,
+          "patientName": this.storageService.user.FirstName + this.storageService.user.LastName,
+          "dateOfStudy": element.dateRead,
+          "studyDescription": element.studyDescription,
+          "cptGroup": element.cptGroup
+         }
+         retainSelectedData.push(selectedData);
+        });
+       });
+      var request = {
+          "pdfPreview": retainSelectedData,
+          "radFirstName": this.storageService.user.FirstName,
+          "radLastName": this.storageService.user.LastName,
+          "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "userId": this.storageService.user.UserId
+      }
+      this.lienPortalService.AssignARPreviewAssignment(request).subscribe((res)=>{
+        if(res.status == 1){
+          this.lienPortalService.FilePreview(res.result);
+        }
+      })
+    }
+    else{
+      this.lienPortalService.errorNotification('Please select a funding company!');
+    }
+  }
+
+  GetRadDefaultSign(){
+    var data = {
+      "loggedPartnerId": this.storageService.PartnerId,
+      "jwtToken": this.storageService.PartnerJWTToken,
+      "userId": this.storageService.user.UserId
+    }
+    this.lienPortalService.GetRadDefaultSign(data).subscribe((res)=>{
+      if (res.status == 1){
+        this.defaultSignature = res.result.defaultSign
+      }
+    },(error)=>{
+      this.lienPortalService.errorNotification(error.message);
+    })
+  }
 
   clearSign(): void {
     this.signaturePad.clear();
@@ -248,6 +302,7 @@ export class RetainUnpaidComponent implements OnInit {
       'lastName': this.storageService.user.LastName,
       'radiologistSign':''
     });
+    this.signaturePad.fromDataURL(this.defaultSignature);
   }
 
   onPageNumberChange(pageNumber: any) {

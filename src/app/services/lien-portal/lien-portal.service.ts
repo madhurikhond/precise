@@ -12,6 +12,8 @@ import { StorageService } from '../common/storage.service';
 })
 export class LienPortalService {
 
+  isDefaultSignature :boolean = false;
+
   constructor(private readonly _httpService: HttpLienPortalRequestService,
     private readonly notificationService: NotificationService,
     public storageService: StorageService) { }
@@ -117,6 +119,29 @@ export class LienPortalService {
     );
   }
 
+  GetRadiologistSettings(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/GetRadiologistSettings', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  AddRadiologistSetting(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/AddRadiologistSetting', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  GetRadDefaultSign(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/GetRadDefaultSign', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
+  AssignARPreviewAssignment(data: any, showGlobalLoader: boolean = true){
+    return this._httpService.post('LienPortal/AssignARPreviewAssignment', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
 
   successNotification(msg: string) {
     this.notificationService.showNotification({
@@ -162,5 +187,21 @@ export class LienPortalService {
         this.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }
     );
+  }
+
+  _base64ToArrayBuffer(base64:any) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  FilePreview(data){
+    let ArrayBuff = this._base64ToArrayBuffer(data);
+    let file = new Blob([ArrayBuff], { type: 'application/pdf' });
+    window.open(URL.createObjectURL(file), '_blank');
   }
 }

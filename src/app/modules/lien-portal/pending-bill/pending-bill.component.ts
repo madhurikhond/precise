@@ -48,7 +48,8 @@ export class PendingBillComponent implements OnInit {
   pageSize: number = 20;
   fundingCompanies = [];
   checkboxSelectedData: any = [];
-
+  isDefaultSignature :boolean;
+  defaultSignature : any;
 
   constructor(private lienPortalService: LienPortalService,
     private commonService: CommonMethodService, private storageService: StorageService,
@@ -66,6 +67,7 @@ export class PendingBillComponent implements OnInit {
   ngOnInit(): void {
     this.commonService.setTitle(LienPortalPageTitleOption.PENDING_TO_BILL);
     this.bindFundComp_DDL();
+    this.GetRadiologistSettings();
   }
 
   onPageNumberChange(pageNumber: any) {
@@ -148,6 +150,50 @@ export class PendingBillComponent implements OnInit {
         this.lienPortalService.errorNotification(error.message);
       }
     }
+  }
+
+  previewAssignment(){
+    if(Number(this.assignARform.get("fundingCompany").value)){
+      var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
+        patientId: data.patientId,
+        patientName: this.storageService.user.FirstName + this.storageService.user.LastName,
+        dateOfStudy: data.dateOfStudy,
+        studyDescription:data.study,
+         cptGroup: data.cptGroup
+      }));
+      var request = {
+          "pdfPreview": checkboxSelectedData,
+          "radFirstName": this.storageService.user.FirstName,
+          "radLastName": this.storageService.user.LastName,
+          "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
+          "loggedPartnerId": this.storageService.PartnerId,
+          "jwtToken": this.storageService.PartnerJWTToken,
+          "userId": this.storageService.user.UserId
+      }
+      this.lienPortalService.AssignARPreviewAssignment(request).subscribe((res)=>{
+        if(res.status == 1){
+          this.lienPortalService.FilePreview(res.result);
+        }
+      })
+    }
+    else{
+      this.lienPortalService.errorNotification('Please select a funding company!');
+    }
+  }
+
+  GetRadDefaultSign(){
+    var data = {
+      "loggedPartnerId": this.storageService.PartnerId,
+      "jwtToken": this.storageService.PartnerJWTToken,
+      "userId": this.storageService.user.UserId
+    }
+    this.lienPortalService.GetRadDefaultSign(data).subscribe((res)=>{
+      if (res.status == 1){
+        this.defaultSignature = res.result.defaultSign;
+      }
+    },(error)=>{
+      this.lienPortalService.errorNotification(error.message);
+    })
   }
 
   drawComplete() {
@@ -247,6 +293,34 @@ export class PendingBillComponent implements OnInit {
       'lastName': this.storageService.user.LastName,
       'radiologistSign':''
     });
+    this.signaturePad.fromDataURL(this.defaultSignature);
   }
+
+  GetRadiologistSettings(){
+    try {
+      var request = {
+        "loggedPartnerId": this.storageService.PartnerId,
+        "jwtToken": this.storageService.PartnerJWTToken,
+        "userId": this.storageService.user.UserId
+      }
+      this.lienPortalService.GetRadiologistSettings(request).subscribe((res)=>{
+        if (res.status == 1){
+          var data = res.result;
+          this.lienPortalService.isDefaultSignature = data.isDefaultSignature;
+          if(this.lienPortalService.isDefaultSignature)
+            this.GetRadDefaultSign();
+        }
+      },(error)=>{
+        if (error.message) {
+          this.lienPortalService.errorNotification(error.message);
+        }
+      })
+    } catch (error) {
+      if (error.message) {
+        this.lienPortalService.errorNotification(error.message);
+      }
+    }
+  }
+
 
 }
