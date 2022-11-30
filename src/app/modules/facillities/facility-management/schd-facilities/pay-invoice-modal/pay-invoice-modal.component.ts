@@ -16,6 +16,8 @@ export class PayInvoiceModalComponent implements OnInit {
   @Input() AmountDetails: any;
   @Input() selectedleases: any;
   @Input() selectedCreditIds: any;
+  @Input() TotalCreditsAmount: any;
+  @Input() TotalLeasesAmount: any;
   @Input() facilityId: any;
   ModalResult = ModalResult;
   payInvoiceForm:FormGroup;
@@ -33,6 +35,7 @@ export class PayInvoiceModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.createPayInvoiceForm();
+    this.formattedInputAmount = this.AmountDetails.TotalAmount;
    // this.setPayInvoiceForm();
   }
   transformAmount(element){
@@ -83,8 +86,8 @@ export class PayInvoiceModalComponent implements OnInit {
       "Leases": this.selectedleases,
       "CheckNumber": this.payInvoiceForm.value.checkId,
       "CheckAmount": grossAmount,
-      "TotalCreditsAmount": this.AmountDetails.TotalCreditsAmount,
-      "TotalLeasesAmount": this.AmountDetails.TotalLeasesAmount,
+      "TotalCreditsAmount": this.TotalCreditsAmount,
+      "TotalLeasesAmount": this.TotalLeasesAmount,
       "UserId": this.storageService.user.UserId,
       "CheckDate": moment(this.currentDate).format('MM/DD/YYYY hh:mm:ss')
     }
