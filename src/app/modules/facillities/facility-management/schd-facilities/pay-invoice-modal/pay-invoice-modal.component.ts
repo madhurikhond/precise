@@ -6,6 +6,7 @@ import { BlockLeaseSchedulerService } from '../../../../../services/block-lease-
 import { NotificationService } from '../../../../../services/common/notification.service';
 import { StorageService } from '../../../../../services/common/storage.service';
 import { CommonModule, CurrencyPipe} from '@angular/common';
+import { parse } from 'path';
 @Component({
   selector: 'app-pay-invoice-modal',
   templateUrl: './pay-invoice-modal.component.html',
@@ -23,6 +24,7 @@ export class PayInvoiceModalComponent implements OnInit {
   
   formattedInputAmount: any;
   inputAmount: any;
+  strAmount: string='';
   constructor( private currencyPipe : CurrencyPipe,
     private fb: FormBuilder, public modal: NgbActiveModal,
     private readonly blockleasescheduler: BlockLeaseSchedulerService,
@@ -34,9 +36,22 @@ export class PayInvoiceModalComponent implements OnInit {
    // this.setPayInvoiceForm();
   }
   transformAmount(element){
+    debugger
+    if(this.formattedInputAmount.length>0 && this.formattedInputAmount.slice(0,1) =='$' )
+    {
+   // alert('Amount: ' + this.formattedInputAmount.slice(1,50).toString().replace(/,/g, ""));
+       this.formattedInputAmount = this.formattedInputAmount.slice(1,50).toString().replace(/,/g, "");
+       this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount,'$');
+    element.target.value = this.formattedInputAmount;
+    }
+   else{ 
     this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount,'$');
     element.target.value = this.formattedInputAmount;
+   }
+    
+    
   }
+
   createPayInvoiceForm()
   {
     this.payInvoiceForm = this.fb.group({
