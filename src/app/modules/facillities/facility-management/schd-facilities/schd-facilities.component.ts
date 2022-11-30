@@ -57,6 +57,7 @@ export class SchdFacilitiesComponent implements OnInit {
   public parentPolicy: string = ''; ////  For Policies Tab
   searchText: string;
   facilityParentList: any[] = [];
+  selectedCreditPayment: any = []; selectedLeasePayment: any = [];
   userType: number;
   facilityList: any = [];
   facilityDetail: any = [];
@@ -323,8 +324,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
-  closePDF()
-  {
+  closePDF() {
     debugger
     $('#viewFile_Doc').hide();
   }
@@ -1571,7 +1571,7 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
-        $('#LeasePaymentsUnPaid')
+      $('#LeasePaymentsUnPaid')
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
@@ -1584,7 +1584,7 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
-        $('#LeasePaymentsUnPaid')
+      $('#LeasePaymentsUnPaid')
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
@@ -1596,7 +1596,7 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
- 
+
     }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
@@ -3894,7 +3894,7 @@ export class SchdFacilitiesComponent implements OnInit {
         .subscribe((res) => {
           if (res) {
             if (res.response.ResponseCode == 200) {
-              this.showNotificationOnCreditDeleted(res.response);    
+              this.showNotificationOnCreditDeleted(res.response);
               this.getAllBlockLeaseCredits();
             } else {
               this.showNotificationOnCreditDeleted(res.response);
@@ -3947,11 +3947,11 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onSelectionChangedLease(el) {
     var leaseID: any = [];
+    this.selectedleaseArray = el.selectedRowsData;
     if (el.selectedRowsData.length !== 0) {
       this.btnActive = 1;
       el.selectedRowsData.forEach((i) => {
         leaseID.push(i.LeaseId);
-        this.selectedleaseArray.push(i);
       });
       this.leaseIdArray = leaseID;
     } else {
@@ -3960,6 +3960,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onSelectionChangedCredit(ec) {
     var CreditID: any = [];
+    this.selectedCreditPayment = ec.selectedRowsData;
     if (ec.selectedRowsData.length !== 0) {
       ec.selectedRowsData.forEach((i) => {
         CreditID.push(i.CreditId);
@@ -3968,11 +3969,20 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   UnpaidButtonClick(e) {
+    var TotalLease = 0, TotalCredit = 0;
+    for (let i = 0; i < this.selectedleaseArray.length; i++) {
+      TotalLease += this.selectedleaseArray[i].TotalAmount;
+    }
+    for (let i = 0; i < this.selectedCreditPayment.length; i++) {
+      TotalCredit += this.selectedCreditPayment[i]['Credit Amount'];
+    }
     var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
     var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';
     var data = {
       "LeaseId": leaseIdListTemp,
-      "CreditId": creditIdListTemp
+      "CreditId": creditIdListTemp,
+      "LeaseAmount": TotalLease,
+      "CreditAmount": TotalCredit
     }
     this.blockleasescheduler.getTotalAmountToPay(true, JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
       if (res.response[0].TotalAmount >= 0) {
@@ -3980,6 +3990,8 @@ export class SchdFacilitiesComponent implements OnInit {
         modalRef.componentInstance.AmountDetails = res.response[0];
         modalRef.componentInstance.selectedleases = this.selectedleaseArray;
         modalRef.componentInstance.selectedCreditIds = creditIdListTemp;
+        modalRef.componentInstance.TotalCreditsAmount = TotalCredit;
+        modalRef.componentInstance.TotalLeasesAmount = TotalLease;
         modalRef.componentInstance.facilityId = this.facilityId;
         modalRef.result.then(
           (result) => {
@@ -3997,9 +4009,7 @@ export class SchdFacilitiesComponent implements OnInit {
         );
       }
     });
-
   }
-
   CheckSameCombinationMRI(type: string) {
     const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
     const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value
