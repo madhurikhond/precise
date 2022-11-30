@@ -59,6 +59,8 @@ export class RetainUnpaidComponent implements OnInit {
   firstName: string;
   lastName: string;
   radiologistSign: string;
+  isDefaultSignature: boolean;
+  defaultSignature: any;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
     private fb: FormBuilder) {
@@ -93,7 +95,10 @@ export class RetainUnpaidComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
+    this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
     this.bindFundComp_DDL();
+    if(this.isDefaultSignature)
+      this.GetRadDefaultSign();
   }
 
   getRetainUnPaidList() {
@@ -153,6 +158,51 @@ export class RetainUnpaidComponent implements OnInit {
     })
   }
 
+  previewAssignment(){
+    if(Number(this.assignARform.get("fundingCompany").value)){
+      var retainSelectedData = [];
+      this.checkboxSelectedData.map(data =>{
+        data.retainedArUnPaidList.forEach(element => {
+         var selectedData = {
+          "patientId": element.patientId,
+          "patientName": this.storageService.user.FirstName + this.storageService.user.LastName,
+          "dateOfStudy": element.dateRead,
+          "studyDescription": element.studyDescription,
+          "cptGroup": element.cptGroup
+         }
+         retainSelectedData.push(selectedData);
+        });
+       });
+      var request = {
+          "pdfPreview": retainSelectedData,
+          "radFirstName": this.storageService.user.FirstName,
+          "radLastName": this.storageService.user.LastName,
+          "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
+      }
+      this.lienPortalService.PostAPI(request,LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res)=>{
+        if(res.status == LienPortalResponseStatus.Success){
+          this.lienPortalService.FilePreview(res.result);
+        }
+        else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
+    }
+    else{
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.FUNDING_COMPANY_REQUIRED);
+    }
+  }
+
+  GetRadDefaultSign(){
+    let data = {};
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetRadDefaultSign).subscribe((res)=>{
+      if (res.status == LienPortalResponseStatus.Success)
+        this.defaultSignature = res.result.defaultSign
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    },()=>{
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
+  }
 
   clearSign(): void {
     this.signaturePad.clear();
@@ -259,6 +309,8 @@ export class RetainUnpaidComponent implements OnInit {
       'checkDate': '',
       'checkNo': '',
     });
+    this.signaturePad.fromDataURL(this.defaultSignature);
+    this.drawComplete();
   }
 
   onPageNumberChange(pageNumber: any) {

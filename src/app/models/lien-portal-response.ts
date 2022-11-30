@@ -14,7 +14,9 @@ export enum LienPortalStatusMessage {
   STUDIES_ASSIGNED_TO_FUNDING_CO = 'Studies assigned to Funding Co. Successfully.',
   STUDIES_RETAINED_SUCCESS = 'Studies Retained Successfully.',
   SIGNATURE_UPDATED_SUCCESS = 'Signature Updated Successfully.',
-  PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.'
+  PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.',
+  SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
+  FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.'
 }
 
 export enum LienPortalURLName{
@@ -66,6 +68,7 @@ export enum LienPortalAPIEndpoint {
   GetRetainedUnPaid = APIURL.LIEN_PORTAL + "GetRetainedUnPaid",
   GetRetainedArPaidList = APIURL.LIEN_PORTAL + "GetRetainedArPaidList",
   MoveRetainARToAssignAR = APIURL.LIEN_PORTAL + "MoveRetainARToAssignAR",
+  AssignARPreviewAssignment = APIURL.LIEN_PORTAL + "AssignARPreviewAssignment",
   ReceivePaymentForSelectStudy = APIURL.LIEN_PORTAL + "ReceivePaymentForSelectStudy",
 
   //RadiologistSetting
@@ -77,4 +80,5 @@ export enum LienPortalAPIEndpoint {
   GetRadiologistSettings = APIURL.LIEN_PORTAL + "GetRadiologistSettings",
   GetPreciseMriFundingCompanyInfo = APIURL.LIEN_PORTAL + "GetPreciseMriFundingCompanyInfo",
   GetRadiologistFundingCompanyInfo = APIURL.LIEN_PORTAL + "GetRadiologistFundingCompanyInfo",
+  GetRadDefaultSign = APIURL.LIEN_PORTAL + "GetRadDefaultSign",
 }

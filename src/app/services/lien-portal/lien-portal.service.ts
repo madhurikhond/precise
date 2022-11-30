@@ -13,6 +13,8 @@ import * as moment from 'moment';
 })
 export class LienPortalService {
 
+  isDefaultSignature :boolean = false;
+
   constructor(private readonly _httpService: HttpLienPortalRequestService,
     private readonly notificationService: NotificationService,
     public storageService: StorageService) { }
@@ -36,7 +38,7 @@ export class LienPortalService {
       this.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }
   }
-  
+
   successNotification(msg: string) {
     this.notificationService.showNotification({
       alertHeader: 'Success',
@@ -85,5 +87,21 @@ export class LienPortalService {
         this.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }
     );
+  }
+
+  _base64ToArrayBuffer(base64:any) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  FilePreview(data){
+    let ArrayBuff = this._base64ToArrayBuffer(data);
+    let file = new Blob([ArrayBuff], { type: 'application/pdf' });
+    window.open(URL.createObjectURL(file), '_blank');
   }
 }

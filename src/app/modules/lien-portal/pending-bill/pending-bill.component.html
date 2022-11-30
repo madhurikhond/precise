@@ -33,14 +33,14 @@
             </div>
         </dx-data-grid>
 
-       
+
             <div class="pagination-theme" *ngIf="totalRecord > 0">
                 <div
                     *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
                 </div>
                 <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
             </div>
-      
+
 
     </div>
 </div>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <p class="note">
-                      <a href="javascript:void(0)" class="btn btnsignature btn-preview">Preview Assignment </a>
+                      <a href="javascript:void(0)" class="btn btnsignature btn-preview" (click)="previewAssignment()">Preview Assignment </a>
                       Note:  <span>Once assigned,  the selected funding company will e-sign the assignment</span></p>
                 </div>
             </div>
