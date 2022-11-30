@@ -325,8 +325,8 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   closePDF()
   {
-    debugger
-    $('#viewFile_Doc').hide();
+  //  debugger
+  //  $('#viewFile_Doc').hide();
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
@@ -1559,14 +1559,14 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', true)
         .addClass('disabledClass');
-      $('#LeaseAgreementMRI')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
-      $('#LeaseAgreementCT')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
+      // $('#LeaseAgreementMRI')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+      // $('#LeaseAgreementCT')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
       $('#CreditandDebit')
         .not('.btn')
         .attr('disabled', true)
@@ -1580,18 +1580,18 @@ export class SchdFacilitiesComponent implements OnInit {
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
-      $('#LeaseAgreementMRI')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#LeaseAgreementMRI')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
         $('#LeasePaymentsUnPaid')
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
-      $('#LeaseAgreementCT')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#LeaseAgreementCT')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
       $('#CreditandDebit')
         .not('.btn')
         .attr('disabled', false)
@@ -3947,11 +3947,11 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onSelectionChangedLease(el) {
     var leaseID: any = [];
+    this.selectedleaseArray=el.selectedRowsData;
     if (el.selectedRowsData.length !== 0) {
       this.btnActive = 1;
       el.selectedRowsData.forEach((i) => {
-        leaseID.push(i.LeaseId);
-        this.selectedleaseArray.push(i);
+        leaseID.push(i.LeaseId); 
       });
       this.leaseIdArray = leaseID;
     } else {
@@ -3988,6 +3988,7 @@ export class SchdFacilitiesComponent implements OnInit {
           (reason) => {
             if (reason == 5) {
               this.getUnpaidLeases();
+              this.getFacilityCreditsUnUsed();
               modalRef.close();
             }
             else {

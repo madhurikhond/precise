@@ -142,10 +142,10 @@ export class SchedulerPopupComponent implements OnInit {
       });
     }
     if (this.mode == 'month') {
-      // this.leaseForm.patchValue({
-      //   start_time: null,
-      //   end_time: null
-      // })
+      this.leaseForm.patchValue({
+      //  start_time: null,
+        end_time: new Date("1/1/2019 12:05:00 AM")
+      })
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,

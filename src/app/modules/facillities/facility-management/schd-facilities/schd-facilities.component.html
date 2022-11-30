@@ -3879,7 +3879,7 @@
 												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
 												<dxi-column cellTemplate="deleteCreditsTemplate" caption="Credit #">
 												</dxi-column>
-												<dxi-column dataField="Pending" caption="Applied to Lease #">
+												<dxi-column dataField="AppliedToPayement" caption="Applied to Payment #">
 												</dxi-column>
 												<dxi-column caption="Credit Applied By"
 													cellTemplate="creditApliedTemplate"></dxi-column>
@@ -4022,7 +4022,14 @@
 																<dxi-column dataField="ModalityType" caption="MODALITY">
 																</dxi-column>
 																<dxi-column dataField="Credit Amount"
-																	caption="CREDIT AMOUNT"></dxi-column>
+																	caption="CREDIT AMOUNT" cellTemplate="creditTotalTemplate"></dxi-column>
+
+																	<div *dxTemplate="let data of 'creditTotalTemplate'">
+																		<p *ngIf="data.data['Credit Amount']">
+																			${{data.data['Credit Amount'] | number:'0.2-2'}}</p>
+																		<p *ngIf="!data.data['Credit Amount']"></p>
+	
+																	</div>
 
 															</dx-data-grid>
 														</div>
