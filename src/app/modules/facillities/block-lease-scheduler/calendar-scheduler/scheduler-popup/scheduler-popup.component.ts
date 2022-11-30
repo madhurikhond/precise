@@ -168,10 +168,10 @@ export class SchedulerPopupComponent implements OnInit {
           this.selectedModality = this.LeaseDetails['ModalityType'];
           this.selectedresourceId = this.LeaseDetails['ResourceId'];
           this.ResourceType = this.LeaseDetails['Contrast'];
-          this.selectedResourceName = this.modalityResourcesList.filter(x => x.Modality == this.selectedModality).length > 0 ?
-            this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId).length > 0 ?
-              this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId)[0].RESOURCENAME : '' : ''
-
+          // this.selectedResourceName = this.modalityResourcesList.filter(x => x.Modality == this.selectedModality).length > 0 ?
+          //   this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId).length > 0 ?
+          //     this.modalityResourcesList.filter(x => x.Modality == this.selectedModality)[0].Resources.filter(x => x.INTERNALRESOURCEID == this.selectedresourceId)[0].RESOURCENAME : '' : ''
+          this.selectedResourceName = this.LeaseDetails['RESOURCENAME'];
           this.LeaseId = this.LeaseDetails['leaseId'];
           this.setValidatorForleaseForm();
           if (this.LeaseId && !this.isLeaseSigned) {
