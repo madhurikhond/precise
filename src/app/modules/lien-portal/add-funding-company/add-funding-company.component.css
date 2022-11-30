@@ -5,9 +5,15 @@
 .tab-section .nav-tabs .nav-link:hover {
     border-top: 1px solid #dee2e6;
 }
+
 .study-table-price .table-responsive.table-bordered {
     border: none;
 }
+/* 
+ng-select.form-control.ng-invalid.ng-touched>.ng-select-container,
+input.form-control.ng-invalid.ng-touched {
+    border: 1px solid red !important;
+} */
 
 .study-table-price table thead tr th {
     padding: 6px 12px;
@@ -30,6 +36,7 @@
 .study-table-price table tbody tr td .form-group {
     margin-bottom: 0;
 }
+
 .pricingTitle {
     font-size: 16px;
     text-transform: capitalize;
@@ -44,10 +51,12 @@
     margin-bottom: 8px;
     font-style: italic;
 }
+
 .study-table-price table tbody tr td .form-group input.form-control {
     text-align: center;
     height: 28px;
 }
-.study-table-price table tbody tr td .form-group label{
+
+.study-table-price table tbody tr td .form-group label {
     margin-bottom: 0;
 }

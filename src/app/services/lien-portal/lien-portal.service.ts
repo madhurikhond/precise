@@ -105,6 +105,12 @@ export class LienPortalService {
     );
   }
 
+  GetPreciseMriFundingCompanyInfo(data: any, showGlobalLoader: boolean = true) {
+    return this._httpService.post('LienPortal/GetPreciseMriFundingCompanyInfo', data, showGlobalLoader).pipe(
+      map((res: LienPortalResponse) => res)
+    );
+  }
+
   UpsertFundingCompanyInfo(data: any, showGlobalLoader: boolean = true) {
     return this._httpService.post('LienPortal/UpsertFundingCompanyInfo', data, showGlobalLoader).pipe(
       map((res: LienPortalResponse) => res)

@@ -164,5 +164,5 @@
     </div>
 </div>
 
-<app-add-funding-company (returnSuccess)="onReturnSuccess($event)" [id]="fundingCompanyId"></app-add-funding-company>
+<app-add-funding-company *ngIf="fundingCompanyId != undefined" (returnSuccess)="onReturnSuccess($event)" [id]="fundingCompanyId"></app-add-funding-company>
 
