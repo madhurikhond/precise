@@ -310,7 +310,7 @@
                                 <dxo-paging [enabled]="false"></dxo-paging>
                                 <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
                                 <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
-                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description">
+                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description" >
                                 </dxi-column>
                                 <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
                             </dx-data-grid>
@@ -325,7 +325,7 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group">
-                            <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
+                            <select class="slwidth" [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
                                 formControlName="creditReasonID" class="form-control">
                                 <option value="" selected>Select</option>
                                 <option *ngFor="let group of creditReasonList" value={{group.ID}}>
