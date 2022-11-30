@@ -46,7 +46,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   totalLeaseRecords: number;
   selectedFacility: any;
   scheduleStatusList: any[] = [];
-  selectedScheduleStatus:  any =-1;
+  selectedScheduleStatus: any = -1;
   modalityList: any[] = [];
   selectedModality: any = [];
   pageNumber: number = 1;
@@ -54,9 +54,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   readonly pageSizeArray = PageSizeArray;
   setUserEsignSetting: boolean = true;
   totalRecords: number;
-  SelectedsLeaseStatus: any =-1;
+  SelectedsLeaseStatus: any = -1;
   blockLeaseGridList: [] = [];
-  selectedPaid:  any =-1;
+  selectedPaid: any = -1;
   apiUrl: any;
   fileData: SafeResourceUrl;
   AllBlockLeaseList: any = [];
@@ -80,7 +80,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   getFacilityParentList() {
     this.facilityParentList = [];
     this.facilityList = [];
-    this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {      
+    this.blockLeaseSchedulerService.getDashboardFacilityDropDownData(true, this.selectedParentFacility).subscribe((res) => {
       if (res.response != null && res.response.length > 0) {
         this.facilityList = res.response[0].Facilities;
       }
@@ -150,21 +150,21 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.selectedParentFacility = null;
     this.selectedFacility = 0;
     this.selectedModality = null;
-    this.selectedPaid = -1 ;
+    this.selectedPaid = -1;
     this.selectedScheduleStatus = -1;
     this.SelectedsLeaseStatus = -1;
-    this.getAllBlockLeaseFacility(this.getApplyFilter(0, null, '', null, null, null,this.pageNumber, this.pageSize));
+    this.getAllBlockLeaseFacility(this.getApplyFilter(0, null, '', null, null, null, this.pageNumber, this.pageSize));
   }
 
   applyFilter() {
     let selectedFacility = this.selectedFacility ? this.selectedFacility : 0;
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility : null;
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
-    let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus: null;
-    let SelectedsLeaseStatus = this.SelectedsLeaseStatus !== -1 ?this.SelectedsLeaseStatus : null
-    let paidStatus = this.selectedPaid !== -1 ?this.selectedPaid : null
-   // let paidStatus = this.selectedPaid !  == -1 ? this.selectedPaid : null;
-    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus,SelectedsLeaseStatus, this.pageNumber, this.pageSize));
+    let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus : null;
+    let SelectedsLeaseStatus = this.SelectedsLeaseStatus !== -1 ? this.SelectedsLeaseStatus : null
+    let paidStatus = this.selectedPaid !== -1 ? this.selectedPaid : null
+    // let paidStatus = this.selectedPaid !  == -1 ? this.selectedPaid : null;
+    this.getAllBlockLeaseFacility(this.getApplyFilter(selectedFacility, selectedParentFacility, selectedModality, selectedScheduleCreated, paidStatus, SelectedsLeaseStatus, this.pageNumber, this.pageSize));
   }
   convertDataTomodel() {
     var arr: any = [];
@@ -178,14 +178,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       element['IsMriService'] = this.blockLeaseGridList[i]['IsMriService'];
       Months = this.blockLeaseGridList[i]['Months'];
       for (var j = 0; j < Months.length; j++) {
-        element[`MonthLabels${j}`] = Months[j].MonthLabels;      
-        
+        element[`MonthLabels${j}`] = Months[j].MonthLabels;
+
         if (Months[j].FacilityData) {
-          
+
           FacilityData = Months[j].FacilityData[0];
           element[`IsScheduledComplete${j}`] = FacilityData['IsScheduledComplete'];
           element[`IsPaid${j}`] = FacilityData['IsPaid'];
+          element[`IsUnpaid${j}`] = FacilityData['IsUnpaid'];
           element[`PaidYear${j}`] = FacilityData['PaidYear'];
+
           let MriTotal = 0, CtTotal = 0;
           let IsFacilityNotSign = false, IsFacilitySign = false;
           for (var data = 0; data < Months[j].FacilityData.length; data++) {
@@ -205,9 +207,10 @@ export class BlockLeaseSchedulerComponent implements OnInit {
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
-        //  element[`IsFacilitySign${j}`] = null;
+          //  element[`IsFacilitySign${j}`] = null;
           element[`IsScheduledComplete${j}`] = null;
           element[`IsPaid${j}`] = null;
+          element[`IsUnpaid${j}`] = null;
           element[`MRI${j}`] = null;
           element[`CT${j}`] = null;
           element[`IsFacilitySign${j}`] = null;
@@ -217,7 +220,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       arr.push(element);
       element = {};
     }
-    this.AllBlockLeaseList = arr;    
+    this.AllBlockLeaseList = arr;
   }
 
   getColumnByDataField(column: any) {
@@ -230,29 +233,31 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     retArray.push({
       'MRI': column.row.data[`MRI${index}`],
       'IsFacilitySign': column.row.data[`IsFacilitySign${index}`],
-      'IsFacilityNotSign': column.row.data[`IsFacilityNotSign${index}`],      
+      'IsFacilityNotSign': column.row.data[`IsFacilityNotSign${index}`],
       'IsScheduledComplete': column.row.data[`IsScheduledComplete${index}`],
       'IsPaid': column.row.data[`IsPaid${index}`],
       'CT': column.row.data[`CT${index}`],
       'IsCtService': column.row.data['IsCtService'],
-      'IsMriService': column.row.data['IsMriService']
-    })   
+      'IsMriService': column.row.data['IsMriService'],
+      'IsUnpaid': column.row.data[`IsUnpaid${index}`]
+    })
+
     return retArray
 
   }
   getApplyFilter(facilityName: any, parentCompanyName: any,
-		modality: any, schedululeCreated: any, paidStatus: any, SelectedsLeaseStatus :number,PageNumber: Number, PageSize: Number): any {
-		return {
-		  'FacilityId': facilityName,
-		  'parentCompanyName': parentCompanyName,
-		  'Modality': modality,
-		  'schedululeCreated': schedululeCreated,
-		  'LeaseStatus' :SelectedsLeaseStatus,
-		  'IsPaid': paidStatus,
-		  'PageNumber': PageNumber,
-		  'PageSize': PageSize
-		}
-	  }
+    modality: any, schedululeCreated: any, paidStatus: any, SelectedsLeaseStatus: number, PageNumber: Number, PageSize: Number): any {
+    return {
+      'FacilityId': facilityName,
+      'parentCompanyName': parentCompanyName,
+      'Modality': modality,
+      'schedululeCreated': schedululeCreated,
+      'LeaseStatus': SelectedsLeaseStatus,
+      'IsPaid': paidStatus,
+      'PageNumber': PageNumber,
+      'PageSize': PageSize
+    }
+  }
   changed(FacilityParentID: any) {
     this.selectedParentFacility = FacilityParentID.FacilityParentID;
     this.getFacilityParentList();
@@ -263,7 +268,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
         this.blockLeaseGridList = [];
         if (res.response != null) {
           this.totalRecords = res.response[0].totalRecords;
-          this.blockLeaseGridList = res.response;         
+          this.blockLeaseGridList = res.response;
           this.convertDataTomodel();
         }
         else {
@@ -359,7 +364,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     else
       index = (Number(Number(column.columnIndex) - 2) / 2);
     this.leaseMonth = column.row.data[`MonthLabels${index}`];
-    this.leaseYear = column.row.data[`PaidYear${index}`];    
+    this.leaseYear = column.row.data[`PaidYear${index}`];
   }
 }
 
