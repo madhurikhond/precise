@@ -3957,8 +3957,9 @@
 																</dxo-grouping>
 																<dxi-column dataField="LeaseId" caption="LEASE #">
 																</dxi-column>
-																<dxi-column dataField="MonthLabel" caption="MONTH">
+																<dxi-column dataField="MonthLabel" cellTemplate="monthTemplate" caption="MONTH">
 																</dxi-column>
+
 																<dxi-column dataField="MRI" caption="MRI HOURS">
 																</dxi-column>
 																<dxi-column dataField="CT" caption="CT HOURS">
@@ -3971,6 +3972,13 @@
 																	<p *ngIf="data.data.TotalAmount">
 																		${{data.data.TotalAmount | number:'0.2-2'}}</p>
 																	<p *ngIf="!data.data.TotalAmount"></p>
+
+																</div>
+																<div *dxTemplate="let data of 'monthTemplate'">
+																	<p>
+																		<span>{{data.data.MonthLabel}} </span><span>{{data.data.PaidYear}}</span>
+																	</p>
+																
 
 																</div>
 															</dx-data-grid>
