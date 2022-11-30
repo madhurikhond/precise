@@ -1368,7 +1368,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.CreditDebitList = [];
     this.pageSize = 20;
     this.facilityService
-      .getAllBlockLeaseCredits(true, this.pageNumber, this.pageSize)
+      .getAllBlockLeaseCredits(true, this.facilityId, this.pageNumber, this.pageSize)
       .subscribe(
         (res) => {
           if (res.response != null && res.response.length > 0) {
