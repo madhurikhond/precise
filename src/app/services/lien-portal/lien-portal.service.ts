@@ -36,7 +36,7 @@ export class LienPortalService {
       this.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }
   }
- 
+  
   successNotification(msg: string) {
     this.notificationService.showNotification({
       alertHeader: 'Success',

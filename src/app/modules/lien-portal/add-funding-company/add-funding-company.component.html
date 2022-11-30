@@ -1,7 +1,7 @@
 <!---------------------------add funding company modal start---------------------------->
 <div class="modal fade modal-theme in modal-small" *ngIf="fundingCompanyId != undefined && fundingCompanyId != null"
     id="AddFundingCmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <form (submit)="onSubmit()" [formGroup]="fundingCompanyForm" class="modal-dialog modal-dialog-centered"
+    <form (ngSubmit)="onSubmit()" [formGroup]="fundingCompanyForm" class="modal-dialog modal-dialog-centered"
         role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -26,17 +26,36 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control"
-                                                        formControlName="fundingCompanyName" placeholder="Company Name">
+                                                        formControlName="fundingCompanyName"
+                                                        placeholder="Company Name*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['fundingCompanyName'].invalid && 
+                                                        fundingCompanyForm.controls['fundingCompanyName'].touched
+                                                        && fundingCompanyForm.controls['fundingCompanyName'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['fundingCompanyName'].errors.required">
+                                                        Company Name is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control"
-                                                        formControlName="contactName" placeholder="Contact Name">
+                                                        formControlName="contactName" placeholder="Contact Name*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['contactName'].invalid && 
+                                                        fundingCompanyForm.controls['contactName'].touched 
+                                                        && fundingCompanyForm.controls['contactName'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['contactName'].errors.required">
+                                                        Contact Name is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -44,17 +63,39 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="address1"
-                                                        placeholder="Address 1">
+                                                        placeholder="Address 1*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['address1'].invalid && 
+                                                        fundingCompanyForm.controls['address1'].touched 
+                                                        && fundingCompanyForm.controls['address1'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['address1'].errors.required">
+                                                        Address 1 is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control"
-                                                        formControlName="contactEmail" placeholder="Contact Email">
+                                                        formControlName="contactEmail" placeholder="Contact Email*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['contactEmail'].invalid && 
+                                                        fundingCompanyForm.controls['contactEmail'].touched 
+                                                        && fundingCompanyForm.controls['contactEmail'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['contactEmail'].errors.required">
+                                                        Contact Email is required.
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['contactEmail'].errors.pattern">
+                                                        Please provide a valid Contact Email.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,7 +103,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="address2"
                                                         placeholder="Address 2">
                                                 </div>
@@ -70,9 +111,22 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control"
-                                                        formControlName="contactPhone" placeholder="Contact Phone">
+                                                        formControlName="contactPhone" placeholder="Contact Phone*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid && 
+                                                        fundingCompanyForm.controls['contactPhone'].touched 
+                                                        && fundingCompanyForm.controls['contactPhone'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['contactPhone'].errors.required">
+                                                        Contact Phone is required.
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['contactPhone'].errors.pattern">
+                                                        Please enter a valid Contact Phone.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,37 +134,74 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="city"
-                                                        placeholder="City">
+                                                        placeholder="City*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['city'].invalid && 
+                                                        fundingCompanyForm.controls['city'].touched 
+                                                        && fundingCompanyForm.controls['city'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['city'].errors.required">
+                                                        City is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="fax"
                                                         placeholder="Contact Fax">
                                                 </div>
+                                                <div *ngIf="fundingCompanyForm.controls['fax'].invalid && 
+                                                        fundingCompanyForm.controls['fax'].touched 
+                                                        && fundingCompanyForm.controls['fax'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['fax'].errors.pattern">
+                                                        Please enter a valid Contact Fax.
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
-                                                    <ng-select [items]="state" bindLabel="name" bindValue="name"
-                                                        [multiple]="false" formControlName="state" class="w-100"
-                                                        [selectableGroup]="false" placeholder="Select State">
+                                                <div class="input-group validation-tooltip">
+                                                    <ng-select [items]="state" bindLabel="abbreviation"
+                                                        bindValue="abbreviation" [multiple]="false"
+                                                        formControlName="state" class="w-100" [selectableGroup]="false"
+                                                        placeholder="State*">
                                                     </ng-select>
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['state'].invalid && 
+                                                        fundingCompanyForm.controls['state'].touched 
+                                                        && fundingCompanyForm.controls['state'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['state'].errors.required">
+                                                        State is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="taxId"
-                                                        placeholder="Tax ID">
+                                                        placeholder="Tax ID*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['taxId'].invalid && 
+                                                        fundingCompanyForm.controls['taxId'].touched 
+                                                        && fundingCompanyForm.controls['taxId'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['taxId'].errors.required">
+                                                        Tax ID is required.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,19 +210,40 @@
 
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <div class="input-group">
+                                                <div class="input-group validation-tooltip">
                                                     <input type="text" class="form-control" formControlName="zip"
-                                                        placeholder="Zip">
+                                                        placeholder="Zip*">
+                                                </div>
+                                                <div *ngIf="fundingCompanyForm.controls['zip'].invalid && 
+                                                        fundingCompanyForm.controls['zip'].touched 
+                                                        && fundingCompanyForm.controls['zip'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['zip'].errors.required">
+                                                        Zip is required.
+                                                    </small>
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['zip'].errors.minLength">
+                                                        Please enter the valid Zip code.
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <ng-select [items]="assignment" bindLabel="name" bindValue="name"
+                                                <ng-select [items]="assignment" bindLabel="text" bindValue="value"
                                                     [multiple]="true" groupBy="selectedAllGroup"
                                                     formControlName="notifyAssignment" [selectableGroup]="false"
                                                     placeholder="Notify of assignment">
                                                 </ng-select>
+                                            </div>
+                                            <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid && 
+                                            fundingCompanyForm.controls['notifyAssignment'].touched
+                                            && fundingCompanyForm.controls['notifyAssignment'].errors" class="tooltiptext">
+                                                <small class="error text-danger"
+                                                    *ngIf="fundingCompanyForm.controls['notifyAssignment'].errors.required">
+                                                    Notify of assignment is required.
+                                                </small>
                                             </div>
                                         </div>
                                     </div>
@@ -139,8 +251,8 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <div class="checkbox-theme pull-left">
-                                                    <input id="fundingcmp" class="styled" type="checkbox"
-                                                        formControlName="defaultCompany">
+                                                    <input id="fundingcmp" class="styled" (change)="onDefaultComapny()"
+                                                        type="checkbox" formControlName="defaultCompany">
                                                     <label for="fundingcmp" style="text-transform:capitalize;"
                                                         class="arrow-label">Default Funding Company</label>
                                                 </div>
@@ -241,6 +353,7 @@
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
                 <button type="submit" class="btn btn-theme pull-right btn-sm"
+                    [ngClass]="!fundingCompanyForm.valid ? 'btn-grey disabled' : 'btn-primary'"
                     id="btnUpdate">{{fundingCompanyId==0?'Add':'Save'}} Funding
                     Company</button>
             </div>
