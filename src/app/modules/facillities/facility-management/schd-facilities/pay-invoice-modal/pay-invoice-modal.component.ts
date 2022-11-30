@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { BlockLeaseSchedulerService } from '../../../../../services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NotificationService } from '../../../../../services/common/notification.service';
 import { StorageService } from '../../../../../services/common/storage.service';
-
+import { CommonModule, CurrencyPipe} from '@angular/common';
 @Component({
   selector: 'app-pay-invoice-modal',
   templateUrl: './pay-invoice-modal.component.html',
@@ -20,14 +20,22 @@ export class PayInvoiceModalComponent implements OnInit {
   payInvoiceForm:FormGroup;
   dobModel: string = '';
   currentDate = new Date();
-  constructor(private fb: FormBuilder, public modal: NgbActiveModal,
+  
+  formattedInputAmount: any;
+  inputAmount: any;
+  constructor( private currencyPipe : CurrencyPipe,
+    private fb: FormBuilder, public modal: NgbActiveModal,
     private readonly blockleasescheduler: BlockLeaseSchedulerService,
     private readonly storageService: StorageService,
     private readonly notificationService: NotificationService  ) { }
 
   ngOnInit(): void {
     this.createPayInvoiceForm();
-    this.setPayInvoiceForm();
+   // this.setPayInvoiceForm();
+  }
+  transformAmount(element){
+    this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount,'$');
+    element.target.value = this.formattedInputAmount;
   }
   createPayInvoiceForm()
   {
@@ -46,13 +54,13 @@ export class PayInvoiceModalComponent implements OnInit {
   }
   setPayInvoiceForm()
   {
-    this.payInvoiceForm.patchValue({
-      checkAmount: new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
-    });
+    // this.payInvoiceForm.patchValue({
+    //   checkAmount: new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(this.AmountDetails.TotalAmount)
+    // });
   }
   MakePayment(e)
   {   
-    var grossAmount = this.payInvoiceFormControls.checkAmount.value.replace(/[^\w ]/g, '');
+    var grossAmount = this.payInvoiceFormControls.checkAmount.value.slice(1,50);
     var data = {
       "FacilityId": this.facilityId,
       "Credits": this.selectedCreditIds,
