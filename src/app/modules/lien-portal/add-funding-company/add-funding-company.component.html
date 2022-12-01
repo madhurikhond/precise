@@ -16,7 +16,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#companyinfo">Company Info</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" *ngIf="fundingCompanyId > 0">
                                 <a class="nav-link" data-toggle="tab" href="#pricing">Pricing</a>
                             </li>
                         </ul>
@@ -232,18 +232,19 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <ng-select [items]="assignment" bindLabel="text" bindValue="value"
-                                                    [multiple]="true" groupBy="selectedAllGroup"
+                                                    [multiple]="true" groupBy="selectedAllGroup" [readonly]="isNotify_readonly"
                                                     formControlName="notifyAssignment" [selectableGroup]="false"
                                                     placeholder="Notify of assignment">
                                                 </ng-select>
-                                            </div>
-                                            <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid && 
+                                                <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid && 
                                             fundingCompanyForm.controls['notifyAssignment'].touched
-                                            && fundingCompanyForm.controls['notifyAssignment'].errors" class="tooltiptext">
-                                                <small class="error text-danger"
-                                                    *ngIf="fundingCompanyForm.controls['notifyAssignment'].errors.required">
-                                                    Notify of assignment is required.
-                                                </small>
+                                            && fundingCompanyForm.controls['notifyAssignment'].errors"
+                                                    class="tooltiptext">
+                                                    <small class="error text-danger"
+                                                        *ngIf="fundingCompanyForm.controls['notifyAssignment'].errors.required">
+                                                        Notify of assignment is required.
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -251,7 +252,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <div class="checkbox-theme pull-left">
-                                                    <input id="fundingcmp" class="styled" (change)="onDefaultComapny()"
+                                                    <input id="fundingcmp" class="styled" (change)="onDefaultCompanyChanged()"
                                                         type="checkbox" formControlName="defaultCompany">
                                                     <label for="fundingcmp" style="text-transform:capitalize;"
                                                         class="arrow-label">Default Funding Company</label>
@@ -285,6 +286,46 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr>
+                                                <td>MRI</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MRI/W</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>$200</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>MRI W/ & W/O</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CT</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CT W/</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>MRI</td>
                                                 <td>

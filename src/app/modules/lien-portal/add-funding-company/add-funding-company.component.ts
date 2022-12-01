@@ -13,21 +13,16 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 })
 export class AddFundingCompanyComponent implements OnInit {
   fundingCompanyId: number = 0;
-  @Input()
-  set id(val: any) {
-    if (val != undefined && val != null) {
-      this.fundingCompanyId = val;
-      this.onLoad();
-    }
-  }
-
   @Output() returnSuccess = new EventEmitter<Boolean>();
 
   @ViewChild("modal_close") modal_close: ElementRef
   assignment = [];
   state = [];
+  list_pricing = [];
   fundingCompanyForm: FormGroup;
-  readonly commonRegex = CommonRegex;
+  private editData: any = [];
+  private readonly commonRegex = CommonRegex;
+  isNotify_readonly: Boolean = false;
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
     private readonly accountService: AccountService,
@@ -56,17 +51,20 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bindAssignment_DDL();
     this.bindState_DDL();
   }
 
-  onLoad(): void {
-    this.fundingCompanyForm.markAsUntouched();
-    this.fundingCompanyForm.patchValue({ fundingCompanyId: this.fundingCompanyId });
-    if (this.fundingCompanyId > 0) {
-      this.bindFundingCompanyForm();
-    } else {
-      this.clearFundingCompanyForm();
+  onLoad(val): void {
+    if (val != undefined && val != null) {
+      this.fundingCompanyId = val;
+      this.fundingCompanyForm.markAsUntouched();
+      this.fundingCompanyForm.patchValue({ fundingCompanyId: this.fundingCompanyId });
+      if (this.fundingCompanyId > 0) {
+        this.bindFundingCompanyForm();
+        this.bindPricingList();
+      } else {
+        this.clearFundingCompanyForm();
+      }
     }
   }
 
@@ -74,24 +72,18 @@ export class AddFundingCompanyComponent implements OnInit {
 
   onPricingTabClicked() { }
 
-  bindAssignment_DDL() {
-    this.assignment = [
-      { value: 'email', text: 'Email' }
-    ];
-  }
-
-  bindState_DDL() {
+  private bindState_DDL() {
     this.accountService.getServiceStateList().subscribe((result) => {
-      if (result.response) 
+      if (result.response)
         this.state = result.response;
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
-}
+  }
 
-  clearFundingCompanyForm() {
+  private clearFundingCompanyForm() {
     this.fundingCompanyForm.patchValue({
       fundingCompanyName: '',
       contactName: '',
@@ -108,128 +100,133 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: '',
       notifyAssignment: []
     });
+    this.setVarDefaultCompany(false)
   }
 
-  bindFundingCompanyForm() {
-      var data = {
-        "fundingCompanyId": this.fundingCompanyId,
-      };
+  private bindFundingCompanyForm() {
+    var data = {
+      "fundingCompanyId": this.fundingCompanyId,
+    };
 
-      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetRadiologistFundingCompanyInfo).subscribe((result) => {
-        if (result.status == LienPortalResponseStatus.Success) {
-          if (result.result) {
-            let data = result.result;
-          
-            this.fundingCompanyForm.patchValue({
-              fundingCompanyId: data.fundingCompanyId,
-              fundingCompanyName: data.fundingCompanyName,
-              contactName: data.contactName,
-              contactEmail: data.contactEmail,
-              contactPhone: data.phoneNumber,
-              address1: data.address1,
-              address2: data.address2,
-              city: data.city,
-              state: data.state,
-              zip: data.zip,
-              taxId: data.taxId,
-              isActive: data.isActiveBroker,
-              defaultCompany: data.defaultCompany,
-              fax: data.mainFax,
-              notifyAssignment: data.notify
-            });
-
-            let defaultCompany = this.fundingCompanyForm.get("defaultCompany").value;
-            if (defaultCompany) {
-              this.assignment = [
-                { value: 'Email', text: 'Email' },
-                { value: 'RadFlow API', text: 'RadFlow API' }
-              ];
-            } else {
-              this.assignment = [
-                { value: 'email', text: 'Email' },
-              ];
-            }
-          }
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetRadiologistFundingCompanyInfo).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result) {
+          let data = result.result;
+          this.editData = data;
+          this.fillForm(data);
         }
-      else 
+      }
+      else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     });
-}
+  }
 
-  bindDefaultFundingCompany() {
+  private bindDefaultFundingCompany() {
     let data = {};
-      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetPreciseMriFundingCompanyInfo).subscribe((result) => {
-        if (result.status == LienPortalResponseStatus.Success) {
-          if (result.result) {
-            let data = result.result;
-            this.fundingCompanyForm.patchValue({
-              fundingCompanyId: data.fundingCompanyId,
-              fundingCompanyName: data.fundingCompanyName,
-              contactName: data.contactName,
-              contactEmail: data.contactEmail,
-              contactPhone: data.phoneNumber,
-              address1: data.address1,
-              address2: data.address2,
-              city: data.city,
-              state: data.state,
-              zip: data.zip,
-              taxId: data.taxId,
-              isActive: data.isActiveBroker,
-              fax: data.mainFax,
-              notifyAssignment: data.notify
-            });
-          }
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetPreciseMriFundingCompanyInfo).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result) {
+          var data = result.result;
+          data.fundingCompanyId = this.fundingCompanyId;
+          this.fillForm(data);
         }
-        else
+      }
+      else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-      }, () => {
-          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        
-      })
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+
+    })
+  }
+
+  private fillForm(data: any) {
+    this.fundingCompanyForm.patchValue({
+      fundingCompanyId: data.fundingCompanyId,
+      fundingCompanyName: data.fundingCompanyName,
+      contactName: data.contactName,
+      contactEmail: data.contactEmail,
+      contactPhone: data.phoneNumber,
+      address1: data.address1,
+      address2: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      taxId: data.taxId,
+      isActive: data.isActiveBroker,
+      defaultCompany: data.defaultCompany,
+      fax: data.mainFax,
+      notifyAssignment: data.notify
+    });
+    this.setVarDefaultCompany(data.defaultCompany)
   }
 
   onSubmit() {
-   
+
     this.fundingCompanyForm.markAllAsTouched();
     if (this.fundingCompanyForm.valid) {
-        this.lienPortalService.PostAPI(this.fundingCompanyForm.value,LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
-          if (res.status == LienPortalResponseStatus.Success) {
-            let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
-            if (this.fundingCompanyId > 0) {
-              message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
-            }
-            this.lienPortalService.successNotification(message);
-            this.modal_close.nativeElement.click();
-            this.returnSuccess.emit(true);
+      this.lienPortalService.PostAPI(this.fundingCompanyForm.value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
+          if (this.fundingCompanyId > 0) {
+            message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
           }
-          else
-            this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        }, () => {
+          this.lienPortalService.successNotification(message);
+          this.modal_close.nativeElement.click();
+          this.returnSuccess.emit(true);
+        }
+        else
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        })
-      }
-   
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
+    }
+
   }
 
-  onDefaultComapny() {
+  onDefaultCompanyChanged() {
     let defaultCompany = this.fundingCompanyForm.get("defaultCompany").value;
+    if (defaultCompany) {
+      this.bindDefaultFundingCompany();
+    } else {
+      if (this.fundingCompanyId > 0) {
+        let data = this.editData;
+        data.defaultCompany = defaultCompany;
+        this.fillForm(data);
+      } else {
+        this.clearFundingCompanyForm();
+      }
+    }
+  }
+
+  private setVarDefaultCompany(defaultCompany) {
     if (defaultCompany) {
       this.assignment = [
         { value: 'Email', text: 'Email' },
         { value: 'RadFlow API', text: 'RadFlow API' }
       ];
-      this.bindDefaultFundingCompany();
+      this.isNotify_readonly = true;
     } else {
       this.assignment = [
-        { value: 'email', text: 'Email' },
+        { value: 'Email', text: 'Email' },
       ];
-      if (this.fundingCompanyId > 0) {
-        this.bindFundingCompanyForm();
-      } else {
-        this.clearFundingCompanyForm();
-      }
+      this.isNotify_readonly = false;
     }
+  }
+
+  private bindPricingList() {
+    let data = {};
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        if (result.result)
+          this.list_pricing = result.result
+        console.log(this.list_pricing);
+      }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    });
   }
 }

@@ -5,6 +5,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { AddFundingCompanyComponent } from '../add-funding-company/add-funding-company.component';
 
 @Component({
   selector: 'app-setting',
@@ -14,6 +15,7 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 export class SettingComponent implements OnInit {
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+  @ViewChild(AddFundingCompanyComponent) fundingCompanyComponent: AddFundingCompanyComponent;
 
   selectedMode: string = 'settings';
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
@@ -41,7 +43,6 @@ export class SettingComponent implements OnInit {
   pageSize: number = 20;
   currentPageNumber: number = 1;
 
-  fundingCompanyId: number;
   isReadonly: boolean;
 
   constructor(private lienPortalService: LienPortalService,
@@ -170,12 +171,11 @@ export class SettingComponent implements OnInit {
   }
 
   openFundCompPupup(fundingCompanyId: number = 0) {
-    this.fundingCompanyId = fundingCompanyId;
+    this.fundingCompanyComponent.onLoad(fundingCompanyId);
   }
 
   onReturnSuccess(isSuccess: any) {
     if (isSuccess) {
-      this.fundingCompanyId = undefined;
       this.bindFundComp_list();
     }
   }
