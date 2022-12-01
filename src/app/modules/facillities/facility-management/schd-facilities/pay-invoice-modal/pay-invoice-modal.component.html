@@ -18,15 +18,15 @@
                     <div class="form-group">
                         <div class="theme-label">Check Date</div>
                         <div class="input-group icon-active">
-                            <dx-date-box #dob type="date" dateSerializationFormat="MM/dd/yyyy" [showClearButton]="true"
-                                [useMaskBehavior]="true" [(ngModel)]="dobModel"  [(value)]="currentDate"  >
+                            <dx-date-box #dob type="date" disabled  [displayFormat]="dateTimeFormatCustom.Date" [showClearButton]="false"
+                                [useMaskBehavior]="true"   formControlName="checkDate"  [(value)]="currentDate"  >
                             </dx-date-box>
                         </div>
                     </div>  
                     <div class="form-group">
                         <div class="theme-label">Check Amount</div>
                         <div class="input-group">
-                             <input type="text" (blur)="transformAmount($event)" [(ngModel)]="formattedInputAmount" class="form-control"   appInputSpaceTrim 
+                             <input type="text" (change)="transformAmount($event)" appTwoDigitDecimaNumber [(ngModel)]="formattedInputAmount" class="form-control"   appInputSpaceTrim 
                                 formControlName="checkAmount" >
                         </div>
                     </div>  
