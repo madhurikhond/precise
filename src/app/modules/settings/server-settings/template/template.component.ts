@@ -44,6 +44,7 @@ export class TemplateComponent implements OnInit {
   showFilterRow: boolean;
   applyFilterTypes: any = [{ key: 'auto', name: 'Immediately' }, { key: 'onClick', name: 'On Button Click' }];
   currentFilter: any;
+  isUseText : any ; 
   showHeaderFilter: boolean;
   readonly pageSizeArray = PageSizeArray;
   constructor(private fb: FormBuilder,
@@ -67,7 +68,8 @@ export class TemplateComponent implements OnInit {
       subject: [''],
       body: ['', [Validators.required]],
       spanishCheckMark: [''],
-      spanishEmailBody: ['']
+      spanishEmailBody: [''],
+      isUseText : ['']
     });
   }
   onPageSizeChange(event) {
@@ -112,7 +114,13 @@ export class TemplateComponent implements OnInit {
     console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
-
+  onChangeBodyType(event): any {
+    let isUseText = event.currentTarget.checked;
+    this.editTemplateForm.patchValue({
+      isUseText: isUseText
+    });
+    this.isUseText = isUseText ;
+  }
   getEmailTemplates() {
     this.settingsService.getEmailTemplates(this.pageNumber, this.pageSize, true).subscribe((res) => {
       var data: any = res;
@@ -174,8 +182,10 @@ export class TemplateComponent implements OnInit {
         subject: res.response.emailSubject,
         title: res.response.emailTitle,
         spanishCheckMark: res.response.spanishCheckMark,
-        spanishEmailBody: res.response.spanishEmailBody
+        spanishEmailBody: res.response.spanishEmailBody,
+        isUseText : res.response.isUseText 
       })
+      this.isUseText = res.response.isUseText
     },
       (err: any) => {
         this.notificationService.showNotification({
@@ -207,7 +217,8 @@ export class TemplateComponent implements OnInit {
       'emailSubject': this.edtForm.subject.value,
       'emailBody': this.edtForm.body.value,
       'spanishEmailBody': this.edtForm.spanishEmailBody.value,
-      'spanishCheckMark': this.edtForm.spanishCheckMark.value
+      'spanishCheckMark': this.edtForm.spanishCheckMark.value,
+      'isUseText' : this.edtForm.isUseText.value,
     }
     this.settingsService.updateEmailTemplate(true, body).subscribe((res) => {
 
