@@ -159,7 +159,7 @@
                                 <div class="form-group">
                                     <div
                                         [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
-                                        <signature-pad id="signature-pad" ngDefaultControl
+                                        <signature-pad id="signature-pad"  #signature ngDefaultControl
                                             [options]="signaturePadOptions" [(ngModel)]="model.signature"
                                             [ngModelOptions]="{ standalone : true }"
                                             [ngClass]="{ 'is-invalid': frmCal.submitted && model.signature=='' }"
@@ -273,7 +273,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                           <div class="form-group">
                             <div [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
-                              <signature-pad id="signature-pad-approveaddesign" ngDefaultControl
+                              <signature-pad id="signature-pad-approveaddesign" #approveAddEsignModel ngDefaultControl
                                              [options]="signaturePadOptions" [(ngModel)]="approveAddEsignModel.signature"
                                              [ngModelOptions]="{ standalone : true }"
                                              [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsign.signature=='' }"

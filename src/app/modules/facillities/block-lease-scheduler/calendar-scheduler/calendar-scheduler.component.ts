@@ -33,8 +33,8 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
-    @ViewChild(SignaturePad) signaturePad: SignaturePad;
-    @ViewChild(SignaturePad) signaturePadapproveAddEsignModel: SignaturePad;
+    @ViewChild('signature') signaturePad: SignaturePad;
+    @ViewChild('approveAddEsignModel') signaturePadapproveAddEsignModel: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
