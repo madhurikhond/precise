@@ -30,8 +30,7 @@ export class AddFundingCompanyComponent implements OnInit {
   readonly commonRegex = CommonRegex;
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
-    private readonly accountService: AccountService,
-    private storageService: StorageService) {
+    private readonly accountService: AccountService) {
 
     this.fundingCompanyForm = this.fb.group({
       fundingCompanyId: [0],
@@ -48,10 +47,7 @@ export class AddFundingCompanyComponent implements OnInit {
       isActive: [false, Validators.required],
       defaultCompany: [false, Validators.required],
       fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      notifyAssignment: [[], Validators.required],
-      loggedPartnerId: [this.storageService.PartnerId],
-      jwtToken: [this.storageService.PartnerJWTToken],
-      userId: [this.storageService.user.UserId]
+      notifyAssignment: [[], Validators.required]
     });
   }
 
@@ -82,7 +78,7 @@ export class AddFundingCompanyComponent implements OnInit {
 
   bindState_DDL() {
     this.accountService.getServiceStateList().subscribe((result) => {
-      if (result.response) 
+      if (result.response)
         this.state = result.response;
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -119,7 +115,7 @@ export class AddFundingCompanyComponent implements OnInit {
         if (result.status == LienPortalResponseStatus.Success) {
           if (result.result) {
             let data = result.result;
-          
+
             this.fundingCompanyForm.patchValue({
               fundingCompanyId: data.fundingCompanyId,
               fundingCompanyName: data.fundingCompanyName,
@@ -151,7 +147,7 @@ export class AddFundingCompanyComponent implements OnInit {
             }
           }
         }
-      else 
+      else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -186,12 +182,12 @@ export class AddFundingCompanyComponent implements OnInit {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        
+
       })
   }
 
   onSubmit() {
-   
+
     this.fundingCompanyForm.markAllAsTouched();
     if (this.fundingCompanyForm.valid) {
         this.lienPortalService.PostAPI(this.fundingCompanyForm.value,LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
@@ -210,7 +206,7 @@ export class AddFundingCompanyComponent implements OnInit {
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
         })
       }
-   
+
   }
 
   onDefaultComapny() {

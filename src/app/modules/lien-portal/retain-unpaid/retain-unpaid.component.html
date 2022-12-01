@@ -72,7 +72,7 @@
 
 <!---------------------signature modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small" id="AssignARFundingModal" tabindex="-1" role="dialog"
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="AssignARFundingModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -128,10 +128,6 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="note">
-                            <a href="javascript:void(0)" class="btn btnsignature btn-preview">Preview Assignment </a>
-                            Note: <span>Once assigned, the selected funding company will e-sign the assignment</span>
-                        </p>
                     </div>
                     <p class="note">
                       <a href="javascript:void(0)" class="btn btnsignature btn-preview" (click)="previewAssignment()">Preview Assignment </a>
@@ -152,7 +148,7 @@
 
 <!---------------------Receive payment for selected studies modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small" id="ReceivePaymentModal" tabindex="-1" role="dialog"
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="ReceivePaymentModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
 

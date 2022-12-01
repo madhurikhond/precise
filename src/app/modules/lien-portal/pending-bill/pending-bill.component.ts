@@ -152,18 +152,6 @@ export class PendingBillComponent implements OnInit {
     }
   }
 
-  GetRadDefaultSign() {
-    let data = {};
-    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetRadDefaultSign).subscribe((res) => {
-      if (res.status == LienPortalResponseStatus.Success)
-        this.defaultSignature = res.result.defaultSign;
-      else
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    }, () => {
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    })
-  }
-
   drawComplete() {
     this.assignARform.patchValue({
       'radiologistSign': this.signaturePad.toDataURL()
@@ -247,7 +235,7 @@ export class PendingBillComponent implements OnInit {
       'lastName': this.storageService.user.LastName,
       'radiologistSign': ''
     });
-    this.signaturePad.fromDataURL(this.defaultSignature);
+    this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
     this.drawComplete();
   }
 
@@ -259,7 +247,8 @@ export class PendingBillComponent implements OnInit {
         var data = res.result;
         this.lienPortalService.isDefaultSignature = data.isDefaultSignature;
         if (this.lienPortalService.isDefaultSignature)
-          this.GetRadDefaultSign();
+          this.defaultSignature = data.defaultSign.defaultSign == null ? '' : data.defaultSign.defaultSign;
+          this.lienPortalService.defaultSignature = this.defaultSignature;
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);

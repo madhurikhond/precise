@@ -14,6 +14,7 @@ import * as moment from 'moment';
 export class LienPortalService {
 
   isDefaultSignature :boolean = false;
+  defaultSignature : string;
 
   constructor(private readonly _httpService: HttpLienPortalRequestService,
     private readonly notificationService: NotificationService,
@@ -74,7 +75,7 @@ export class LienPortalService {
   refreshLienToken() {
     this.GetLienPartnerToken().subscribe((res: any) => {
       if (res) {
-        if (res.responseStatus == LienPortalResponseStatus.Success) {
+        if (res.status == LienPortalResponseStatus.Success) {
           this.storageService.PartnerId = res.result.partnerId;
           this.storageService.PartnerJWTToken = res.result.jwtToken;
         }

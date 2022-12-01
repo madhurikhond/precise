@@ -98,7 +98,7 @@ export class RetainUnpaidComponent implements OnInit {
     this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
     this.bindFundComp_DDL();
     if(this.isDefaultSignature)
-      this.GetRadDefaultSign();
+     this.defaultSignature = this.lienPortalService.defaultSignature
   }
 
   getRetainUnPaidList() {
@@ -190,18 +190,6 @@ export class RetainUnpaidComponent implements OnInit {
     else{
       this.lienPortalService.errorNotification(LienPortalStatusMessage.FUNDING_COMPANY_REQUIRED);
     }
-  }
-
-  GetRadDefaultSign(){
-    let data = {};
-    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetRadDefaultSign).subscribe((res)=>{
-      if (res.status == LienPortalResponseStatus.Success)
-        this.defaultSignature = res.result.defaultSign
-      else
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    },()=>{
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    })
   }
 
   clearSign(): void {

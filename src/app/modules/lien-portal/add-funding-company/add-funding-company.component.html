@@ -1,5 +1,5 @@
 <!---------------------------add funding company modal start---------------------------->
-<div class="modal fade modal-theme in modal-small" *ngIf="fundingCompanyId != undefined && fundingCompanyId != null"
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" *ngIf="fundingCompanyId != undefined && fundingCompanyId != null"
     id="AddFundingCmpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <form (ngSubmit)="onSubmit()" [formGroup]="fundingCompanyForm" class="modal-dialog modal-dialog-centered"
         role="document">
@@ -31,7 +31,7 @@
                                                         formControlName="fundingCompanyName"
                                                         placeholder="Company Name*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['fundingCompanyName'].invalid && 
+                                                <div *ngIf="fundingCompanyForm.controls['fundingCompanyName'].invalid &&
                                                         fundingCompanyForm.controls['fundingCompanyName'].touched
                                                         && fundingCompanyForm.controls['fundingCompanyName'].errors"
                                                     class="tooltiptext">
@@ -48,8 +48,8 @@
                                                     <input type="text" class="form-control"
                                                         formControlName="contactName" placeholder="Contact Name*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['contactName'].invalid && 
-                                                        fundingCompanyForm.controls['contactName'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['contactName'].invalid &&
+                                                        fundingCompanyForm.controls['contactName'].touched
                                                         && fundingCompanyForm.controls['contactName'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -67,8 +67,8 @@
                                                     <input type="text" class="form-control" formControlName="address1"
                                                         placeholder="Address 1*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['address1'].invalid && 
-                                                        fundingCompanyForm.controls['address1'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['address1'].invalid &&
+                                                        fundingCompanyForm.controls['address1'].touched
                                                         && fundingCompanyForm.controls['address1'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -84,8 +84,8 @@
                                                     <input type="text" class="form-control"
                                                         formControlName="contactEmail" placeholder="Contact Email*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['contactEmail'].invalid && 
-                                                        fundingCompanyForm.controls['contactEmail'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['contactEmail'].invalid &&
+                                                        fundingCompanyForm.controls['contactEmail'].touched
                                                         && fundingCompanyForm.controls['contactEmail'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -115,8 +115,8 @@
                                                     <input type="text" class="form-control"
                                                         formControlName="contactPhone" placeholder="Contact Phone*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid && 
-                                                        fundingCompanyForm.controls['contactPhone'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid &&
+                                                        fundingCompanyForm.controls['contactPhone'].touched
                                                         && fundingCompanyForm.controls['contactPhone'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -138,8 +138,8 @@
                                                     <input type="text" class="form-control" formControlName="city"
                                                         placeholder="City*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['city'].invalid && 
-                                                        fundingCompanyForm.controls['city'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['city'].invalid &&
+                                                        fundingCompanyForm.controls['city'].touched
                                                         && fundingCompanyForm.controls['city'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -155,8 +155,8 @@
                                                     <input type="text" class="form-control" formControlName="fax"
                                                         placeholder="Contact Fax">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['fax'].invalid && 
-                                                        fundingCompanyForm.controls['fax'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['fax'].invalid &&
+                                                        fundingCompanyForm.controls['fax'].touched
                                                         && fundingCompanyForm.controls['fax'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -177,8 +177,8 @@
                                                         placeholder="State*">
                                                     </ng-select>
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['state'].invalid && 
-                                                        fundingCompanyForm.controls['state'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['state'].invalid &&
+                                                        fundingCompanyForm.controls['state'].touched
                                                         && fundingCompanyForm.controls['state'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -194,8 +194,8 @@
                                                     <input type="text" class="form-control" formControlName="taxId"
                                                         placeholder="Tax ID*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['taxId'].invalid && 
-                                                        fundingCompanyForm.controls['taxId'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['taxId'].invalid &&
+                                                        fundingCompanyForm.controls['taxId'].touched
                                                         && fundingCompanyForm.controls['taxId'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -214,8 +214,8 @@
                                                     <input type="text" class="form-control" formControlName="zip"
                                                         placeholder="Zip*">
                                                 </div>
-                                                <div *ngIf="fundingCompanyForm.controls['zip'].invalid && 
-                                                        fundingCompanyForm.controls['zip'].touched 
+                                                <div *ngIf="fundingCompanyForm.controls['zip'].invalid &&
+                                                        fundingCompanyForm.controls['zip'].touched
                                                         && fundingCompanyForm.controls['zip'].errors"
                                                     class="tooltiptext">
                                                     <small class="error text-danger"
@@ -237,7 +237,7 @@
                                                     placeholder="Notify of assignment">
                                                 </ng-select>
                                             </div>
-                                            <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid && 
+                                            <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid &&
                                             fundingCompanyForm.controls['notifyAssignment'].touched
                                             && fundingCompanyForm.controls['notifyAssignment'].errors" class="tooltiptext">
                                                 <small class="error text-danger"
