@@ -232,6 +232,12 @@ export class SchdFacilitiesComponent implements OnInit {
     this.createTagForm();
     this.createGeneralPoliciesForm();
     this.getFacilityParentList();
+    this.CheckSameCombinationMRI('Type1');
+    this.CheckSameCombinationMRI('Type2');
+    this.CheckSameCombinationMRI('Type3');
+    this.CheckSameCombinationCT('Type1');
+    this.CheckSameCombinationCT('Type2');
+    this.CheckSameCombinationCT('Type3');
 
     // this.ckeConfig = {
     //   allowedContent: false,
@@ -4064,11 +4070,12 @@ export class SchdFacilitiesComponent implements OnInit {
           Mri2ResourceName != '' ||
           Mri1ResourceName != '')
       ) {
-        if (Dictionary.Type1 == Dictionary.Type2) {
+        if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
           this.modalityMriForm.patchValue({
             ['mri2ResourceName']: 0,
           });
+          this.MRIDuplicateTypeResourceNotification();
 
         } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
@@ -4112,18 +4119,20 @@ export class SchdFacilitiesComponent implements OnInit {
           Mri2ResourceName != '' ||
           Mri1ResourceName != '')
       ) {
-        if (Dictionary.Type2 == Dictionary.Type3) {
+        if (Dictionary.Type2 == Dictionary.Type3 && parseInt(Mri2ResourceName) == parseInt(Mri3ResourceName)) {
           this.modalityMriForm.controls['mri2type'].setValue(null);
 
           this.modalityMriForm.patchValue({
             ['mri2ResourceName']: 0,
           });
-        } else if (Dictionary.Type1 == Dictionary.Type3) {
+          this.MRIDuplicateTypeResourceNotification();
+        } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)) {
           this.modalityMriForm.controls['mri3type'].setValue(null);
 
           this.modalityMriForm.patchValue({
             ['mri3ResourceName']: 0,
           });
+          this.MRIDuplicateTypeResourceNotification();
         }
       }
     }
@@ -4139,6 +4148,20 @@ export class SchdFacilitiesComponent implements OnInit {
     this.notificationService.showNotification({
       alertHeader: 'Duplicate CT Resource Name',
       alertMessage: 'Selection of duplicate CT resource name is not allowed.',
+      alertType: 404,
+    });
+  }
+  MRIDuplicateTypeResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate MRI Type and Resource Name',
+      alertMessage: 'Selection of duplicate MRI Type, Resource name is not allowed.',
+      alertType: 404,
+    });
+  }
+  CTDuplicateMakeResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate CT Make and Resource Name',
+      alertMessage: 'Selection of duplicate CT  Make,Resource name is not allowed.',
       alertType: 404,
     });
   }
@@ -4194,15 +4217,17 @@ export class SchdFacilitiesComponent implements OnInit {
           Ct2ResourceName != '' ||
           Ct3ResourceName != '')
       ) {
-        if (Dictionary.Type1 == Dictionary.Type2) {
+        if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.patchValue({
             ['ct2ResourceName']: 0,
           });
+          this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
-        } else if (Dictionary.Type1 == Dictionary.Type3) {
+        } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Ct1ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+          this.CTDuplicateMakeResourceNotification();
         }
       }
     }
@@ -4215,15 +4240,17 @@ export class SchdFacilitiesComponent implements OnInit {
           Ct2ResourceName != '' ||
           Ct3ResourceName != '')
       ) {
-        if (Dictionary.Type1 == Dictionary.Type2) {
+        if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.patchValue({
             ['ct2ResourceName']: 0,
           });
+          this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
-        } else if (Dictionary.Type2 == Dictionary.Type3) {
+        } else if (Dictionary.Type2 == Dictionary.Type3 && parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+          this.CTDuplicateMakeResourceNotification();
         }
       }
     }
@@ -4236,17 +4263,19 @@ export class SchdFacilitiesComponent implements OnInit {
           Ct2ResourceName != '' ||
           Ct3ResourceName != '')
       ) {
-        if (Dictionary.Type2 == Dictionary.Type3) {
+        if (Dictionary.Type2 == Dictionary.Type3 && parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue(null);
           this.modalityCtForm.patchValue({
             ['ct2ResourceName']: 0,
           });
+          this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
-        } else if (Dictionary.Type1 == Dictionary.Type3) {
+        } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Ct1ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue(null);
           this.modalityCtForm.patchValue({
             ['ct3ResourceName']: 0,
           });
+          this.CTDuplicateMakeResourceNotification();
           // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
         }
       }
