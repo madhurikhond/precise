@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { AccountService } from 'src/app/services/account.service';
@@ -18,11 +18,13 @@ export class AddFundingCompanyComponent implements OnInit {
   @ViewChild("modal_close") modal_close: ElementRef
   assignment = [];
   state = [];
-  list_pricing = [];
+  cptGroupList:any;
   fundingCompanyForm: FormGroup;
+  fundingCompanyPriceForm: FormGroup;
   private editData: any = [];
   private readonly commonRegex = CommonRegex;
   isNotify_readonly: Boolean = false;
+
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
     private readonly accountService: AccountService) {
@@ -32,12 +34,12 @@ export class AddFundingCompanyComponent implements OnInit {
       fundingCompanyName: ['', Validators.required],
       contactName: ['', Validators.required],
       contactEmail: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      contactPhone: ['', [Validators.required, Validators.pattern(this.commonRegex.PhoneRegex)]],
+      contactPhone: ['', [Validators.required,Validators.minLength(10), Validators.pattern(this.commonRegex.PhoneRegex)]],
       address1: ['', Validators.required],
       address2: [''],
       city: ['', Validators.required],
       state: [null, Validators.required],
-      zip: [null, [Validators.required, Validators.minLength(5)]],
+      zip: [null, [Validators.required, Validators.minLength(5),,Validators.pattern(/([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}/)]],
       taxId: ['', Validators.required],
       isActive: [false, Validators.required],
       defaultCompany: [false, Validators.required],
@@ -56,8 +58,8 @@ export class AddFundingCompanyComponent implements OnInit {
       this.fundingCompanyForm.markAsUntouched();
       this.fundingCompanyForm.patchValue({ fundingCompanyId: this.fundingCompanyId });
       if (this.fundingCompanyId > 0) {
+        this.GetFundingCompanySellPrice(this.fundingCompanyId);
         this.bindFundingCompanyForm();
-        this.bindPricingList();
       } else {
         this.clearFundingCompanyForm();
       }
@@ -158,16 +160,31 @@ export class AddFundingCompanyComponent implements OnInit {
     this.setVarDefaultCompany(data.defaultCompany)
   }
 
+  mapGroupPrice(data){
+    var obj = [];
+    Object.keys(data).forEach(element => {
+      obj.push({
+        "groupId": Number(element),
+        "sellPrice": Number(this.fundingCompanyPriceForm.get(element.toString()).value)
+      });
+     });
+     return obj;
+  }
+
   onSubmit() {
 
     this.fundingCompanyForm.markAllAsTouched();
-    if (this.fundingCompanyForm.valid) {
-      this.lienPortalService.PostAPI(this.fundingCompanyForm.value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+    if(this.fundingCompanyId > 0)
+    {
+      if(this.fundingCompanyForm.valid && this.fundingCompanyPriceForm.valid)
+      {
+        var request = {
+          "fundingCompanyId": this.fundingCompanyId,
+          "groupPrice": this.mapGroupPrice(this.fundingCompanyPriceForm.value)
+        }
+      this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AddFundingCompanySellPrice).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
-          if (this.fundingCompanyId > 0) {
-            message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
-          }
+          let message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
           this.lienPortalService.successNotification(message);
           this.modal_close.nativeElement.click();
           this.returnSuccess.emit(true);
@@ -177,6 +194,29 @@ export class AddFundingCompanyComponent implements OnInit {
       }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
+      }
+      else
+      {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.FILLOUT_REQUIRED_REQUIRED_FIELDS);
+      }
+    }
+    else
+    {
+      if (this.fundingCompanyForm.valid) {
+        this.lienPortalService.PostAPI(this.fundingCompanyForm.value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+          if (res.status == LienPortalResponseStatus.Success) {
+            let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
+
+            this.lienPortalService.successNotification(message);
+            this.modal_close.nativeElement.click();
+            this.returnSuccess.emit(true);
+          }
+          else
+            this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+        }, () => {
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+        })
+      }
     }
 
   }
@@ -211,18 +251,67 @@ export class AddFundingCompanyComponent implements OnInit {
     }
   }
 
-  private bindPricingList() {
-    let data = {};
-    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result) => {
+  GetFundingCompanySellPrice(fundingCompanyId){
+    let data = {
+      'fundingCompanyId' : fundingCompanyId
+    }
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySellPrice).subscribe((result)=>{
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result)
-          this.list_pricing = result.result
-        console.log(this.list_pricing);
+        if(result.result.fundingCompanySellPrices.length == 0){
+          this.GetCPTGroupList();
+        }else{
+          this.cptGroupList = result.result.fundingCompanySellPrices;
+          this.setGroupIdSellPrice();
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    });
+    })
   }
+
+  GetCPTGroupList(){
+    let data ={};
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result)=>{
+      if (result.status == LienPortalResponseStatus.Success) {
+        console.log(result);
+        this.cptGroupList = result.result;
+        this.setGroupIdSellPrice();
+        this.cptGroupList = this.cptGroupList.filter((value)=>{
+          value.price = 0;
+          return value;
+        })
+      }
+    })
+  }
+
+  setGroupIdSellPrice() {
+
+    let form = {};
+    var formData = [];
+    this.cptGroupList.forEach(element => {
+      formData.push({
+        "groupId": element.groupId,
+        "price":(element.price)?element.price : ''
+      });
+    });
+
+    for(let i=0;i<formData.length;i++)
+    {
+      form[formData[i].groupId] = new FormControl(formData[i].price,[Validators.required]);
+    }
+    this.fundingCompanyPriceForm = new FormGroup(form);
+  }
+
+  // numberOnly(event): boolean {
+  //   const charCode = event.keyCode;
+  //   console.log(this.fundingCompanyPriceForm);
+  //   if (charCode > 31 && (charCode <= 48 || charCode > 57)) {
+  //     return false;
+  //   }
+  //   return true;
+
+  // }
+
 }

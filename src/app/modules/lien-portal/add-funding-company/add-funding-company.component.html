@@ -14,7 +14,7 @@
                     <div class="tab-section addFundingCmp-tab">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#companyinfo">Company Info</a>
+                                <a class="nav-link" data-toggle="tab" href="#companyinfo">Company Info</a>
                             </li>
                             <li class="nav-item" *ngIf="fundingCompanyId > 0">
                                 <a class="nav-link" data-toggle="tab" href="#pricing">Pricing</a>
@@ -112,8 +112,8 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="input-group validation-tooltip">
-                                                    <input type="text" class="form-control"
-                                                        formControlName="contactPhone" placeholder="Contact Phone*">
+                                                  <input type="text" class="form-control" maxlength="14"  mask="(000) 000-0000"
+                                                  formControlName="contactPhone" placeholder="Contact Phone*">
                                                 </div>
                                                 <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid &&
                                                         fundingCompanyForm.controls['contactPhone'].touched
@@ -173,7 +173,7 @@
                                                 <div class="input-group validation-tooltip">
                                                     <ng-select [items]="state" bindLabel="abbreviation"
                                                         bindValue="abbreviation" [multiple]="false"
-                                                        formControlName="state" class="w-100" [selectableGroup]="false"
+                                                        formControlName="state" class="w-100 funding-state" [selectableGroup]="false"
                                                         placeholder="State*">
                                                     </ng-select>
                                                 </div>
@@ -211,8 +211,8 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="input-group validation-tooltip">
-                                                    <input type="text" class="form-control" formControlName="zip"
-                                                        placeholder="Zip*">
+                                                  <input type="text" class="form-control" formControlName="zip" minlength="5" maxlength="5"
+                                                  placeholder="Zip*" mask="00000">
                                                 </div>
                                                 <div *ngIf="fundingCompanyForm.controls['zip'].invalid &&
                                                         fundingCompanyForm.controls['zip'].touched
@@ -223,20 +223,21 @@
                                                         Zip is required.
                                                     </small>
                                                     <small class="error text-danger"
-                                                        *ngIf="fundingCompanyForm.controls['zip'].errors.minLength">
+                                                        *ngIf="fundingCompanyForm.controls['zip'].errors.minLength || fundingCompanyForm.controls['zip'].errors.pattern">
                                                         Please enter the valid Zip code.
                                                     </small>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <div class="form-group">
-                                                <ng-select [items]="assignment" bindLabel="text" bindValue="value"
-                                                    [multiple]="true" groupBy="selectedAllGroup" [readonly]="isNotify_readonly"
-                                                    formControlName="notifyAssignment" [selectableGroup]="false"
-                                                    placeholder="Notify of assignment">
-                                                </ng-select>
-                                            </div>
+                                          <div class="input-group validation-tooltip">
+                                            <ng-select [items]="assignment" bindLabel="text" bindValue="value"
+                                                [multiple]="true" groupBy="selectedAllGroup" class="w-100 funding-notify-assignment"
+                                                [readonly]="isNotify_readonly"
+                                                formControlName="notifyAssignment" [selectableGroup]="false"
+                                                placeholder="Notify of assignment*">
+                                            </ng-select>
+                                        </div>
                                             <div *ngIf="fundingCompanyForm.controls['notifyAssignment'].invalid &&
                                             fundingCompanyForm.controls['notifyAssignment'].touched
                                             && fundingCompanyForm.controls['notifyAssignment'].errors"
@@ -246,7 +247,7 @@
                                                         Notify of assignment is required.
                                                     </small>
                                                 </div>
-                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="row">
@@ -266,7 +267,7 @@
                                             <div class="form-group">
                                                 <div class="checkbox-theme pull-left">
                                                     <input id="isactive" class="styled" type="checkbox"
-                                                        formControlName="isActive">
+                                                        formControlName="isActive" [attr.disabled]="isNotify_readonly ? true : null">
                                                     <label for="isactive" style="text-transform:capitalize;"
                                                         class="arrow-label">Is Active</label>
                                                 </div>
@@ -286,100 +287,13 @@
                                                 <th>Sell AR Assignment Price</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>MRI</td>
+                                        <tbody [formGroup]="fundingCompanyPriceForm">
+                                            <tr *ngFor="let item of cptGroupList">
+                                                <td>{{item.groupName}}</td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MRI/W</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <label>$200</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MRI W/ & W/O</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>CT</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>CT W/</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MRI</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MRI/W</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <label>$200</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>MRI W/ & W/O</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>CT</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>CT W/</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>CT W & W/O</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>XRAY 1</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}">
+                                                        <!-- <label *ngIf="item.price >0">{{item.price}}</label> -->
                                                     </div>
                                                 </td>
                                             </tr>
