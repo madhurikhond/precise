@@ -9,9 +9,9 @@ export const environment = {
   //onlyDomain: `https://radlogix.radflow360.com/`,
   //baseUrl: `http://192.168.1.23:81/api`,
   // baseUrl: `https://dev-precise.radflow360.com/API/api`,
- //baseUrl: `https://dev-precise.radflow360.com/api/api`,
- baseUrl: `https://temp-staging.radflow360.com/API/api`,
-  //  baseUrl: `http://localhost:64465/api`,
+  //baseUrl: `https://dev-precise.radflow360.com/api/api`,
+  //baseUrl: `https://temp-staging.radflow360.com/API/api`,
+  baseUrl: `http://localhost:64465/api`,
   currentVersion: `1`,
 };
 
