@@ -304,13 +304,13 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="table-responsive">
                             <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
-                                [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                                 [wordWrapEnabled]="true" 
                                 [showBorders]="true">
                                 <dxo-state-storing [enabled]="true"></dxo-state-storing>
                                 <dxo-paging [enabled]="false"></dxo-paging>
                                 <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
                                 <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
-                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description" >
+                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description"  width="300">
                                 </dxi-column>
                                 <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
                             </dx-data-grid>
