@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { BlockLeaseSchedulerService } from '../../../../../services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NotificationService } from '../../../../../services/common/notification.service';
 import { StorageService } from '../../../../../services/common/storage.service';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { parse } from 'path';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 @Component({
@@ -29,7 +29,7 @@ export class PayInvoiceModalComponent implements OnInit {
   inputAmount: any;
   strAmount: string = '';
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
-  constructor(private currencyPipe: CurrencyPipe,
+  constructor(private decimalPipe: DecimalPipe,
     private fb: FormBuilder, public modal: NgbActiveModal,
     private readonly blockleasescheduler: BlockLeaseSchedulerService,
     private readonly storageService: StorageService,
@@ -37,21 +37,11 @@ export class PayInvoiceModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.createPayInvoiceForm();
-    this.formattedInputAmount = this.currencyPipe.transform(this.AmountDetails.TotalAmount, '$');
+    this.formattedInputAmount = this.decimalPipe.transform(this.AmountDetails.TotalAmount, '0.2-2');
     // this.setPayInvoiceForm();
   }
-  transformAmount(element) {
-    if (this.formattedInputAmount.length > 0 && this.formattedInputAmount.slice(0, 1) == '$') {
-      this.formattedInputAmount = this.formattedInputAmount.slice(1, 50).toString().replace(/,/g, "");
-      this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount, '$');
-      element.target.value = this.formattedInputAmount;
-    }
-    else {
-      this.formattedInputAmount = this.currencyPipe.transform(this.formattedInputAmount, '$');
-      element.target.value = this.formattedInputAmount;
-    }
-
-
+  transformAmount(element) { 
+     //  this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
   }
 
   createPayInvoiceForm() {
