@@ -4014,6 +4014,14 @@ export class SchdFacilitiesComponent implements OnInit {
           }
         );
       }
+      else{
+
+        this.notificationService.showNotification({
+          alertHeader: 'Error',
+          alertMessage: 'Pay invoice amount should be greater than or equal to 0',
+          alertType: 400,
+        });  
+      }
     });
   }
   CheckSameCombinationMRI(type: string) {
