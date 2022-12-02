@@ -7092,3 +7092,5 @@ select {
 	.slwidth option{width: 100px!important;}
 
 	
+
+	.modal{overflow: auto;}
