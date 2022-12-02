@@ -1486,7 +1486,14 @@ export class SchdFacilitiesComponent implements OnInit {
       });
   }
 
+  // selectionChangedPaid(e) {
+  //   debugger;
+  //   e.component.collapseAll(-1);
+  //   e.component.expandRow(e.currentSelectedRowKeys[0]);
+  // }
+
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
+    paymentMapping.component.collapseAll(-1);
     if (paymentMapping.isExpanded) {
       let PaymentId = '';
       if (paymentMapping.data === undefined) {
@@ -1500,16 +1507,18 @@ export class SchdFacilitiesComponent implements OnInit {
         .subscribe((res) => {
           if (res.response != null) {
             this.blockLeasePaymentMappingList = res.response;
-            this.getBlockLeaseCreditsByFacilityId(res.response[0].Lease);
+            this.getBlockLeaseCreditsByFacilityId(paymentMapping.data.PaymentTXN);
+            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);  
+            paymentMapping.component.expandRow(key);  
           }
         });
-    }
+      }
   }
 
-  getBlockLeaseCreditsByFacilityId(leaseId: string) {
+  getBlockLeaseCreditsByFacilityId(transactionNumber: string) {
     this.blockLeaseCreditList = [];
     this.facilityService
-      .GetBlockLeaseCreditsByFacilityId(true, leaseId.toString())
+      .GetBlockLeaseCreditsByFacilityId(true, transactionNumber.toString())
       .subscribe((res) => {
         if (res.response != null) {
           this.blockLeaseCreditList = res.response;
