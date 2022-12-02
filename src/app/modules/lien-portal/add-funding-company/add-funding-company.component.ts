@@ -15,7 +15,8 @@ export class AddFundingCompanyComponent implements OnInit {
   fundingCompanyId: number = 0;
   @Output() returnSuccess = new EventEmitter<Boolean>();
 
-  @ViewChild("modal_close") modal_close: ElementRef
+  @ViewChild("modal_close") modal_close: ElementRef;
+  defaultSelectedTab: string = 'company-info';
   assignment = [];
   state = [];
   cptGroupList:any;
@@ -34,12 +35,12 @@ export class AddFundingCompanyComponent implements OnInit {
       fundingCompanyName: ['', Validators.required],
       contactName: ['', Validators.required],
       contactEmail: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      contactPhone: ['', [Validators.required,Validators.minLength(10), Validators.pattern(this.commonRegex.PhoneRegex)]],
+      contactPhone: ['', [Validators.required,Validators.minLength(10)]],
       address1: ['', Validators.required],
       address2: [''],
       city: ['', Validators.required],
       state: [null, Validators.required],
-      zip: [null, [Validators.required, Validators.minLength(5),,Validators.pattern(/([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}/)]],
+      zip: [null, [Validators.required, Validators.minLength(5),Validators.pattern(/([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}/)]],
       taxId: ['', Validators.required],
       isActive: [false, Validators.required],
       defaultCompany: [false, Validators.required],
@@ -53,6 +54,7 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   onLoad(val): void {
+    this.defaultSelectedTab = 'company-info';
     if (val != undefined && val != null) {
       this.fundingCompanyId = val;
       this.fundingCompanyForm.markAsUntouched();
@@ -98,7 +100,7 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: '',
       notifyAssignment: []
     });
-    this.setVarDefaultCompany(false)
+    this.setVarDefaultCompany(this.fundingCompanyForm.value)
   }
 
   private bindFundingCompanyForm() {
@@ -140,6 +142,7 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   private fillForm(data: any) {
+    data = this.setVarDefaultCompany(data);
     this.fundingCompanyForm.patchValue({
       fundingCompanyId: data.fundingCompanyId,
       fundingCompanyName: data.fundingCompanyName,
@@ -157,7 +160,8 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: data.mainFax,
       notifyAssignment: data.notify
     });
-    this.setVarDefaultCompany(data.defaultCompany)
+    
+    
   }
 
   mapGroupPrice(data){
@@ -165,7 +169,7 @@ export class AddFundingCompanyComponent implements OnInit {
     Object.keys(data).forEach(element => {
       obj.push({
         "groupId": Number(element),
-        "sellPrice": Number(this.fundingCompanyPriceForm.get(element.toString()).value)
+        "sellPrice": parseFloat(this.fundingCompanyPriceForm.get(element.toString()).value)
       });
      });
      return obj;
@@ -185,9 +189,7 @@ export class AddFundingCompanyComponent implements OnInit {
       this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AddFundingCompanySellPrice).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           let message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
-          this.lienPortalService.successNotification(message);
-          this.modal_close.nativeElement.click();
-          this.returnSuccess.emit(true);
+          this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
         }
         else
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -203,22 +205,25 @@ export class AddFundingCompanyComponent implements OnInit {
     else
     {
       if (this.fundingCompanyForm.valid) {
-        this.lienPortalService.PostAPI(this.fundingCompanyForm.value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
-          if (res.status == LienPortalResponseStatus.Success) {
-            let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
-
-            this.lienPortalService.successNotification(message);
-            this.modal_close.nativeElement.click();
-            this.returnSuccess.emit(true);
-          }
-          else
-            this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        }, () => {
-          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-        })
+        let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
+        this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
       }
     }
 
+  }
+
+  saveFundingCompanyData(value:any,message){
+    this.lienPortalService.PostAPI(value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        this.lienPortalService.successNotification(message);
+        this.modal_close.nativeElement.click();
+        this.returnSuccess.emit(true);
+      }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   onDefaultCompanyChanged() {
@@ -229,6 +234,7 @@ export class AddFundingCompanyComponent implements OnInit {
       if (this.fundingCompanyId > 0) {
         let data = this.editData;
         data.defaultCompany = defaultCompany;
+        data.notify = ['Email'];
         this.fillForm(data);
       } else {
         this.clearFundingCompanyForm();
@@ -236,19 +242,22 @@ export class AddFundingCompanyComponent implements OnInit {
     }
   }
 
-  private setVarDefaultCompany(defaultCompany) {
-    if (defaultCompany) {
+  private setVarDefaultCompany(data) {
+    if (data.defaultCompany) {
+      data.notify = ['Email','RadFlow API'];
       this.assignment = [
         { value: 'Email', text: 'Email' },
         { value: 'RadFlow API', text: 'RadFlow API' }
       ];
       this.isNotify_readonly = true;
     } else {
+      data.notify = ['Email'];
       this.assignment = [
         { value: 'Email', text: 'Email' },
       ];
       this.isNotify_readonly = false;
     }
+    return data;
   }
 
   GetFundingCompanySellPrice(fundingCompanyId){
@@ -304,14 +313,20 @@ export class AddFundingCompanyComponent implements OnInit {
     this.fundingCompanyPriceForm = new FormGroup(form);
   }
 
-  // numberOnly(event): boolean {
-  //   const charCode = event.keyCode;
-  //   console.log(this.fundingCompanyPriceForm);
-  //   if (charCode > 31 && (charCode <= 48 || charCode > 57)) {
-  //     return false;
-  //   }
-  //   return true;
+  getInputData(data,id){
+    if(data)
+      if(!((data.target.value).match('^[1-9][0-9]*$')))
+      if(data.target.value.length == 1)  
+        this.fundingCompanyPriceForm.controls[id].setValue('');
+      else
+      {
+        var newStr = data.target.value.replace(data.data, '');
+        (Number(data.data) || data.data == '.')? this.fundingCompanyPriceForm.controls[id].setValue(data.target.value) : this.fundingCompanyPriceForm.controls[id].setValue(newStr);
+      }
+    }
 
-  // }
-
+    onClickCompanyInfo(selectedTab){
+      this.defaultSelectedTab = selectedTab;
+    }
+  
 }

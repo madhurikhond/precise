@@ -14,14 +14,14 @@
                     <div class="tab-section addFundingCmp-tab">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#companyinfo">Company Info</a>
+                                <a class="nav-link" [ngClass]="defaultSelectedTab =='company-info'?'active':''" data-toggle="tab" href="#companyinfo" (click)="onClickCompanyInfo('company-info')">Company Info</a>
                             </li>
                             <li class="nav-item" *ngIf="fundingCompanyId > 0">
-                                <a class="nav-link" data-toggle="tab" href="#pricing">Pricing</a>
+                                <a class="nav-link" [ngClass]="defaultSelectedTab =='pricing'?'active':''" data-toggle="tab" href="#pricing" (click)="onClickCompanyInfo('pricing')">Pricing</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="companyinfo">
+                            <div class="tab-pane active" *ngIf="defaultSelectedTab=='company-info'" id="companyinfo">
                                 <div class="company-form">
                                     <div class="row">
                                         <div class="col-6">
@@ -112,7 +112,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="input-group validation-tooltip">
-                                                  <input type="text" class="form-control" maxlength="14"  mask="(000) 000-0000"
+                                                  <input type="text" class="form-control" maxlength="17" 
                                                   formControlName="contactPhone" placeholder="Contact Phone*">
                                                 </div>
                                                 <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid &&
@@ -276,7 +276,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="pricing">
+                            <div class="tab-pane active" *ngIf="defaultSelectedTab=='pricing'" id="pricing">
                                 <h4 class="pricingTitle">Please enter a selling price for each type of study</h4>
                                 <p class="note">* Every row must have a selling price</p>
                                 <div class="study-table-price">
@@ -292,8 +292,7 @@
                                                 <td>{{item.groupName}}</td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}">
-                                                        <!-- <label *ngIf="item.price >0">{{item.price}}</label> -->
+                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}" (input)="getInputData($event,item.groupId)">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -308,8 +307,7 @@
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="submit" class="btn btn-theme pull-right btn-sm"
-                    [ngClass]="!fundingCompanyForm.valid ? 'btn-grey disabled' : 'btn-primary'"
+                <button type="submit" class="btn btn-theme pull-right btn-sm btn-primary"
                     id="btnUpdate">{{fundingCompanyId==0?'Add':'Save'}} Funding
                     Company</button>
             </div>

@@ -34,7 +34,8 @@ export class RetainUnpaidComponent implements OnInit {
     Placeholder: 'test'
   };
 
-
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closePaymentBtn') closePaymentBtn: ElementRef;
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   assignARform: FormGroup;
@@ -272,13 +273,11 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   closeAssignARModal() {
-    document.getElementById('AssignARFundingModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('AssignARFundingModal').click();
+    this.closeBtn.nativeElement.click();
   }
 
   closeReceivePaymentModal() {
-    document.getElementById('ReceivePaymentModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('ReceivePaymentModal').click();
+    this.closePaymentBtn.nativeElement.click();
   }
 
   clearModalPopup() {
@@ -297,8 +296,12 @@ export class RetainUnpaidComponent implements OnInit {
       'checkDate': '',
       'checkNo': '',
     });
-    this.signaturePad.fromDataURL(this.defaultSignature);
-    this.drawComplete();
+
+    if (this.lienPortalService.isDefaultSignature)
+    {
+      this.signaturePad.fromDataURL(this.defaultSignature);
+      this.drawComplete();
+    }
   }
 
   onPageNumberChange(pageNumber: any) {

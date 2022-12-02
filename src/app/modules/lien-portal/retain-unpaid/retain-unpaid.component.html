@@ -78,7 +78,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div class="close-dismiss" data-dismiss="modal" #closeBtn></div>
             </div>
             <form [formGroup]="assignARform">
                 <div class="modal-body">
@@ -156,7 +156,7 @@
             <form [formGroup]="receivePaymentform">
                 <div class="modal-header">
                     <h5 class="modal-title">Payment Confirmation</h5>
-                    <div class="close-dismiss" data-dismiss="modal"></div>
+                    <div class="close-dismiss" data-dismiss="modal" #closePaymentBtn></div>
                 </div>
                 <div class="modal-body">
                     <div class="modal-content">

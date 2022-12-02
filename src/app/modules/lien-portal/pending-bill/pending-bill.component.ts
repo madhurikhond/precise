@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
@@ -16,6 +16,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class PendingBillComponent implements OnInit {
 
   getfilterData: any;
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closeAssignBtn') closeAssignBtn: ElementRef;
   @Input()
   set filterData(val: any) {
     if (val && val != "") {
@@ -190,17 +192,15 @@ export class PendingBillComponent implements OnInit {
   }
 
   closeAssignARModal() {
-    document.getElementById('signatureModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('signatureModal').click();
+    this.closeAssignBtn.nativeElement.click();
   }
 
   closeRetainARModal() {
-    document.getElementById('RetainedARModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('RetainedARModal').click();
+    this.closeBtn.nativeElement.click();
   }
 
   onRetainAR() {
-
+   
     var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
       patientId: data.patientId,
       internalStudyId: data.internalStudyId,
@@ -235,8 +235,11 @@ export class PendingBillComponent implements OnInit {
       'lastName': this.storageService.user.LastName,
       'radiologistSign': ''
     });
-    this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
-    this.drawComplete();
+    if (this.lienPortalService.isDefaultSignature)
+    {
+      this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
+      this.drawComplete();
+    }
   }
 
   GetRadiologistSettings() {
@@ -247,8 +250,12 @@ export class PendingBillComponent implements OnInit {
         var data = res.result;
         this.lienPortalService.isDefaultSignature = data.isDefaultSignature;
         if (this.lienPortalService.isDefaultSignature)
+        {
           this.defaultSignature = data.defaultSign.defaultSign == null ? '' : data.defaultSign.defaultSign;
           this.lienPortalService.defaultSignature = this.defaultSignature;
+        }
+        else
+          this.assignARform.controls.radiologistSign.setValue('');
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
