@@ -55,7 +55,7 @@
     right: 0;
     bottom: 0;
     background-color: #939393;
-    transition: 1s;
+    /* transition: 0.20s; */
     border-radius: 50px;
 
 }
@@ -68,7 +68,7 @@
     background-color: #ffffff;
     left: 5px;
     bottom: 3px;
-    transition: 1s;
+    /* transition: 0.20s; */
     border-radius: 50px;
 }
 /**************end*******************/
