@@ -3840,6 +3840,9 @@ export class SchdFacilitiesComponent implements OnInit {
     if (this.defaultPopupTab == 'LeasePaymentsPaid') {
       this.getblockLeasePaymentByFacilityId(this.facilityId);
     }
+    if (this.defaultPopupTab == 'Credit/Debit') {
+      this.getAllBlockLeaseCredits();
+    }
   }
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({

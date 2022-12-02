@@ -34,7 +34,7 @@ export class CalendarSchedulerComponent implements OnInit {
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
     @ViewChild('signature') signaturePad: SignaturePad;
-    @ViewChild('approveAddEsignModel') signaturePadapproveAddEsignModel: SignaturePad;
+    @ViewChild('approveAddEsignModelx') signaturePadapproveAddEsignModel: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
@@ -490,6 +490,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.model.signature = '';
     }
     clearSignApproveAddEsign(): void {
+        debugger
         this.signaturePadapproveAddEsignModel.clear();
         this.approveAddEsignModel.signature = '';
     }
@@ -621,7 +622,11 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
-                    this.errorNotification(res.message);
+                    this.notificationService.showNotification({
+                        alertHeader: 'Error',
+                        alertMessage: res.response.message?res.response.message:res.response,
+                        alertType: 400
+                    }) 
                 }
             }
         }, (err: any) => {
