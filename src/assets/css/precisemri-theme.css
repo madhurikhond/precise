@@ -7091,4 +7091,9 @@ select {
 
 	.slwidth option{width: 100px!important;}
 
+	#gridContainerBlockLeasePaymentList .dx-gridbase-container table tbody .dx-scrollable-scroll-content {
+		display: none!important;
+		opacity: 0!important;
+	}
+
 	
