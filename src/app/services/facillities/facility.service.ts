@@ -399,8 +399,8 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
     );
   }
 
-  GetBlockLeaseCreditsByFacilityId(showGlobalLoader : boolean = true,leaseId:string){
-    return this._httpService.get(`BlockLeasePayment/GetBlockLeaseCredits?leaseId=${leaseId}`,showGlobalLoader).pipe(
+  GetBlockLeaseCreditsByFacilityId(showGlobalLoader : boolean = true,transactionNumber:string){
+    return this._httpService.get(`BlockLeasePayment/GetBlockLeaseCredits?transactionNumber=${transactionNumber}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }
