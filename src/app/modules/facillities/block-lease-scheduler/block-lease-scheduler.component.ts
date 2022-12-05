@@ -314,12 +314,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   selectAllModalityDdl() {
     return [
-      { value: 'MRI,', ModalityName: 'MRI' },
-      { value: 'MRI,W', ModalityName: 'MRI w/ contrast' },
-      { value: 'MRI,W/O', ModalityName: 'MRI w/o contrast' },
-      { value: 'CT,', ModalityName: 'CT' },
-      { value: 'CT,w/', ModalityName: 'CT w/ contrast' },
-      { value: 'CT,W/O', ModalityName: 'CT w/o contrast' },           
+      { value: '0', ModalityName: 'MRI' },    
+      { value: '1', ModalityName: 'CT' },             
     ];
   }
   pageChanged(event) {

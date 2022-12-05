@@ -37,7 +37,7 @@
                             <div class="theme-label">Modality</div>
                             <div>
                                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
-                                    [closeOnSelect]="false" bindValue="value"
+                                    [closeOnSelect]="false" bindValue="ModalityName"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedModality">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
