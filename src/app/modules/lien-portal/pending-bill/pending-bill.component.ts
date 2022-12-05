@@ -131,7 +131,7 @@ export class PendingBillComponent implements OnInit {
     if (Number(this.assignARform.get("fundingCompany").value)) {
       var checkboxSelectedData = this.checkboxSelectedData.map(data => ({
         patientId: data.patientId,
-        patientName: this.storageService.user.FirstName + this.storageService.user.LastName,
+        patientName: data.firstName + ' ' + data.lastName,
         dateOfStudy: data.dateOfStudy,
         studyDescription: data.study,
         cptGroup: data.cptGroup

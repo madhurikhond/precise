@@ -35,7 +35,7 @@ export class AddFundingCompanyComponent implements OnInit {
       fundingCompanyName: ['', Validators.required],
       contactName: ['', Validators.required],
       contactEmail: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      contactPhone: ['', [Validators.required,Validators.minLength(10)]],
+      contactPhone: ['', [Validators.required,Validators.pattern(/^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{4}( ?x([0-9]{3}))?$/)]],
       address1: ['', Validators.required],
       address2: [''],
       city: ['', Validators.required],
@@ -143,6 +143,7 @@ export class AddFundingCompanyComponent implements OnInit {
 
   private fillForm(data: any) {
     data = this.setVarDefaultCompany(data);
+    data.phoneNumber.replace('(', '').replace(')', '').replace(' ', '-').replace('-x', ' x');
     this.fundingCompanyForm.patchValue({
       fundingCompanyId: data.fundingCompanyId,
       fundingCompanyName: data.fundingCompanyName,
@@ -213,6 +214,7 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   saveFundingCompanyData(value:any,message){
+    value.contactPhone = value.contactPhone.replace('(', '').replace(')', '').replace(' ', '-').replace('-x', ' x');
     this.lienPortalService.PostAPI(value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
         this.lienPortalService.successNotification(message);
