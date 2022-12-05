@@ -32,22 +32,19 @@
                                     </ng-template>
                                 </ng-select>
                             </div>
-                        </div>
+                        </div>                        
                         <div class="form-group autocomplete form-group1">
                             <div class="theme-label">Modality</div>
                             <div>
                                 <ng-select [items]="modalityList" placeholder="Select" bindLabel="ModalityName"
-                                    [multiple]="true" [closeOnSelect]="false" bindValue="ModalityName"
+                                    [closeOnSelect]="false" bindValue="value"
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedModality">
                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
                                             <span class="ng-value-label"> {{item.ModalityName}}</span>
                                             <span class="ng-value-icon right" (click)="clear(item)"
                                                 aria-hidden="true">×</span>
-                                        </div>
-                                        <div class="ng-value" *ngIf="items.length > 1">
-                                            <span class="ng-value-label">{{items.length - 1}} more...</span>
-                                        </div>
+                                        </div>                                      
                                     </ng-template>
                                 </ng-select>
                             </div>

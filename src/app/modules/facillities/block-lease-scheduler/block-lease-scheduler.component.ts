@@ -73,7 +73,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     // }
     // this.AllBlockLeaseList = arr;   
     this.getFacilityParentList();
-    this.getModalityList();
+    this.modalityList = this.selectAllModalityDdl();
+    //this.getModalityList();
     this.getScheduleStatusList();
     this.applyFilter();
   }
@@ -135,16 +136,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     }
     this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
   }
-  getModalityList() {
-    this.modalityList = [];
-    this.facilityService.getMasterModalities(true).subscribe((res) => {
-      if (res.response != null) {
-        this.modalityList = res.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
-  }
+  // getModalityList() {
+  //   this.modalityList = [];
+  //   this.facilityService.getMasterModalities(true).subscribe((res) => {
+  //     if (res.response != null) {
+  //       this.modalityList = res.response;
+  //     }
+  //   }, (err: any) => {
+  //     this.errorNotification(err);
+  //   });
+  // }
   clearApplyFilter() {
 
     this.selectedParentFacility = null;
@@ -310,6 +311,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     }, (err: any) => {
       this.errorNotification(err);
     });
+  }
+  selectAllModalityDdl() {
+    return [
+      { value: 'MRI,', ModalityName: 'MRI' },
+      { value: 'MRI,W', ModalityName: 'MRI w/ contrast' },
+      { value: 'MRI,W/O', ModalityName: 'MRI w/o contrast' },
+      { value: 'CT,', ModalityName: 'CT' },
+      { value: 'CT,w/', ModalityName: 'CT w/ contrast' },
+      { value: 'CT,W/O', ModalityName: 'CT w/o contrast' },           
+    ];
   }
   pageChanged(event) {
     this.leasePageNumber = event;
