@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <div class="theme-label">Check Amount</div>
                         <div class="input-group">
-                             <input type="text" (change)="transformAmount($event)" appTwoDigitDecimaNumber [(ngModel)]="formattedInputAmount" class="form-control"   appInputSpaceTrim 
+                             <input type="number" (change)="transformAmount($event)"   [(ngModel)]="formattedInputAmount" [attr.maxlength]="'7'"  class="form-control number" 
                                 formControlName="checkAmount" >
                         </div>
                     </div>  

@@ -355,6 +355,10 @@ export class SchedulerPopupComponent implements OnInit {
             this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
             this.isValidAlreadyBlockedLease = false;
           }
+          else{
+            this.isValidAlreadyBlockedLease = true;
+            this.validateFacilityTimeAndClosedDays(body);
+          }
         } else {
           this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
         }
@@ -402,6 +406,9 @@ export class SchedulerPopupComponent implements OnInit {
   validateFacilityTimeAndClosedDays(body: any) {
     this.blockLeaseSchedulerService.validateFacilityTimeAndClosedDays(true, body).subscribe((res) => {
       if (res.response != null) {
+        this.facilityClosedDaysJSON=[];
+        this.FacilityTimesJSON=[];
+        this.FacilityAutoBlockOffDays=[];
         if (res.response[0].FacilityClosedDays) {
           this.facilityClosedDaysJSON = res.response[0].FacilityClosedDays;
         }
@@ -412,7 +419,7 @@ export class SchedulerPopupComponent implements OnInit {
           this.FacilityAutoBlockOffDays = res.response[0].FacilityAutoBlockOffDays;
         }
         if (this.facilityClosedDaysJSON.length > 0 || this.FacilityTimesJSON.length > 0 || this.FacilityAutoBlockOffDays.length > 0) {
-          if (this.modality_change) {
+          if (this.modality_change || this.LeaseBlockId) {
             this.isValidTimeAndClosedDays = false;
             this.hiddenCheckFacilityPopupBtn.nativeElement.click();
           }

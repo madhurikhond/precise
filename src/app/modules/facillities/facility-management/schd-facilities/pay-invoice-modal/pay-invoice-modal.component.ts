@@ -64,7 +64,7 @@ export class PayInvoiceModalComponent implements OnInit {
     // });
   }
   MakePayment(e) {
-    var grossAmount = this.payInvoiceFormControls.checkAmount.value.replace('$', '')// this.payInvoiceFormControls.checkAmount.value.slice(1,50);
+    var grossAmount = this.payInvoiceFormControls.checkAmount.value//.replace('$', '')// this.payInvoiceFormControls.checkAmount.value.slice(1,50);
     var data = {
       "FacilityId": this.facilityId,
       "Credits": this.selectedCreditIds,
