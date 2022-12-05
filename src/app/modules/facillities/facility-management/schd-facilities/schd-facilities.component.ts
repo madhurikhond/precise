@@ -21,6 +21,7 @@ import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { ErrorValue } from 'exceljs';
+import { invalid } from 'moment';
 
 declare const $: any;
 
@@ -151,7 +152,7 @@ export class SchdFacilitiesComponent implements OnInit {
   paymentMapping: any = [];
 
   selectedleaseArray: any = [];
-
+  isResourceMandatory: boolean=false;
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -2140,6 +2141,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
+
     this.submitted = true;
     this.setGeneralInfoTabForm(this.generalInfoForm.value);
     if (
@@ -2150,6 +2152,36 @@ export class SchdFacilitiesComponent implements OnInit {
     ) {
       this.modalValue = '';
       return;
+    }
+debugger
+    if(this.modalityMriFormControls.mri1type.value != null && this.modalityMriFormControls.mri1ResourceName.value == "0")
+    {  
+      
+     // this.modalityMriForm.invalid;
+      this.isResourceMandatory= true;
+   //   this.modalityMriForm.controls['mri1ResourceName'].invalid;
+   this.modalityMriForm.controls['mri1ResourceName'].errors;
+   this.modalityMriFormControls.controls['mri1ResourceName'].errors;
+     this.modalityMriForm.controls['mri1ResourceName'].setValidators(Validators.required);
+
+     this.modalityMriForm.controls['mri1ResourceName'].updateValueAndValidity();
+   
+     this.MRIDuplicateTypeResourceNotification();
+     return;
+    }
+    if(this.modalityCtFormControls.ct1make.value != null && this.modalityCtFormControls.ct1ResourceName.value == "0")
+    {
+      this.isResourceMandatory= true;
+     // this.modalityCtFormControls.controls['ct1ResourceName'].invalid;
+     this.modalityCtFormControls.controls['ct1ResourceName'].errors;
+     this.modalityCtForm.controls['ct1ResourceName'].errors;
+  this.modalityCtFormControls.controls['ct1ResourceName'].setValidators(Validators.required);
+  this.modalityCtForm.controls['ct1ResourceName'].setValidators(Validators.required);
+  this.modalityCtForm.controls['ct1ResourceName'].updateValueAndValidity();
+    // this.modalityCtFormControls.controls['ct1ResourceName'].updateValueAndValidity();
+   // this.modalityCtFormControls.ct1ResourceName.setValidators(Validators.required);
+     this.CTDuplicateMakeResourceNotification();
+     return;
     }
     let body = {
       ///// General Tab Form Controls
@@ -4173,15 +4205,15 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   MRIDuplicateTypeResourceNotification() {
     this.notificationService.showNotification({
-      alertHeader: 'Duplicate MRI Type and Resource Name',
-      alertMessage: 'Selection of duplicate MRI Type, Resource name is not allowed.',
+      alertHeader: 'Error',
+      alertMessage: 'MRI Resource name is required',
       alertType: 404,
     });
   }
   CTDuplicateMakeResourceNotification() {
     this.notificationService.showNotification({
-      alertHeader: 'Duplicate CT Make and Resource Name',
-      alertMessage: 'Selection of duplicate CT  Make,Resource name is not allowed.',
+      alertHeader: 'Error',
+      alertMessage: 'CT Resource name is required',
       alertType: 404,
     });
   }
