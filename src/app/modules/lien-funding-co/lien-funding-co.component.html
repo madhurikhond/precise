@@ -1,111 +1,103 @@
 <div class="main-page-body lien-funding-co">
-        <div class="inner-page-body">
-            <div class="filter-sec search-field search-field-theme">
-                <div class="theme-form">
-                    <div class="filter-title-setting-sec">
-                        <div class="theme-label-title">By Patient Details</div>
-                        <div class="setting">
-                            <a  routerLink="/lien-funding-co-setting"><i class="fa fa-cog"></i></a>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">Patient ID</div>
-                        <div class="input-group">
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group" *ngIf="readingread">
-                        <div class="theme-label">Reading Rad</div>
-                        <div class="input-group">
-                            <select class="form-control">
-                                <option>Today</option>
-                                <option>Yesterday</option>
-                                <option>Last 7 Days</option>
-                                <option>Last 14 Days</option>
-                                <option>Last 30 Days</option>
-                                <option>Last 60 Days</option>
-                                <option>Last 90 Days</option>
-                                <option>Last 180 Days</option>
-                                <option>Last 365 Days</option>
-                                <option>Year To Date</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">From Date</div>
-                        <div class="input-group icon-active">
-                            <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
-                                [useMaskBehavior]="true">
-                            </dx-date-box>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">To Date</div>
-                        <div class="input-group icon-active">
-                            <dx-date-box [displayFormat]="'dd/MM/yyyy'" type="date" [showClearButton]="true"
-                                [useMaskBehavior]="true">
-                            </dx-date-box>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="theme-label">Date Type</div>
-                        <div class="input-group">
-                            <select class="form-control">
-                                <option>Type 1</option>
-                                <option>Type 2</option>
-                                <option>Type 3</option>
-                                <option>Type 4</option>
-                                <option>Type 5</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" *ngIf="batch" >
-                       <div class="theme-label">Batch #</div>
-                       <div class="input-group">
-                           <input type="text" class="form-control">
-                       </div>
-                   </div>
-                    <div class="form-group" *ngIf="check">
-                       <div class="theme-label">Check</div>
-                       <div class="input-group">
-                           <input type="text" class="form-control">
-                       </div>
-                   </div>
-                   
-                    <div class="form-action">
-                        <a href="javascript:void(0)" class="btn btn-theme">SEARCH</a>
-                        <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">CLEAR</a>
+    <div class="inner-page-body">
+        <form (submit)="onFilter()" [formGroup]="filterForm" class="filter-sec search-field search-field-theme">
+            <div class="theme-form">
+                <div class="filter-title-setting-sec">
+                    <div class="theme-label-title">By Patient Details</div>
+                    <div class="setting">
+                        <a routerLink="/lien-funding-co-setting"><i class="fa fa-cog"></i></a>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="theme-label">Patient ID</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="patientId" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Reading Rad</div>
+                    <div class="input-group">
+                        <select formControlName="readingRad" class="form-control">
+                            <option value="">Select</option>
+                            <option *ngFor="let item of list_ReferrerByUser" [value]="item.referrerName">
+                                {{item.referrerName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">From Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="'MM/dd/yyyy'" formControlName="dateFrom" type="date"
+                            [showClearButton]="true" [useMaskBehavior]="true" [placeholder]="'From Date'">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">To Date</div>
+                    <div class="input-group icon-active">
+                        <dx-date-box [displayFormat]="'MM/dd/yyyy'" formControlName="dateTo" type="date"
+                            [showClearButton]="true" [useMaskBehavior]="true" [placeholder]="'To date'">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="theme-label">Date Type</div>
+                    <div class="input-group">
+                        <select class="form-control" formControlName="dateType">
+                            <option value="">Select</option>
+                            <option value="birthDate">Date Of Birth</option>
+                            <option value="dateRead">Date Of Read</option>
+                            <option value="studyDate">Date Of Study</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="selectedMode == lienFundingCoTabName.UNPAID || 
+                    selectedMode == lienFundingCoTabName.PAID">
+                    <div class="theme-label">Batch #</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="batch" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="selectedMode == lienFundingCoTabName.PAID">
+                    <div class="theme-label">Check</div>
+                    <div class="input-group">
+                        <input type="text" formControlName="check" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-action">
+                    <button type="submit" class="btn btn-theme">SEARCH</button>
+                    <a href="javascript:void(0)" class="btn btn-border" (click)="clearFilter()">CLEAR</a>
+                </div>
             </div>
-            <div class="tab-section">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#pending-signature"
-                            (click)="onPendingSignatureTabClicked()">Pending Signature</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#FundingCounpaid" (click)="onFundingCoUnpaidTabClicked()">Unpaid</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#FundingCopaid" (click)="onFundingCoPaidTabClicked()">Paid</a>
-                    </li>
-                   
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="pending-signature" >
-                        <app-pending-signature></app-pending-signature>
-                    </div>
-                    <div class="tab-pane fade" id="FundingCounpaid">
-                        <app-funding-co-unpaid></app-funding-co-unpaid>
-                    </div>
-                    <div class="tab-pane fade" id="FundingCopaid">
-                        <app-funding-co-paid></app-funding-co-paid>
-                     </div>
-                    
+        </form>
+        <div class="tab-section">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="(selectedMode == lienFundingCoTabName.PENDING?'active':'')"
+                        href="javascript:;" (click)="onTabClicked(lienFundingCoTabName.PENDING)">Pending Signature</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="(selectedMode == lienFundingCoTabName.UNPAID?'active':'')"
+                        href="javascript:;" (click)="onTabClicked(lienFundingCoTabName.UNPAID)">Unpaid</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="(selectedMode == lienFundingCoTabName.PAID?'active':'')"
+                        href="javascript:;" (click)="onTabClicked(lienFundingCoTabName.PAID)">Paid</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" *ngIf="selectedMode == lienFundingCoTabName.PENDING">
+                    <app-pending-signature [filterData]="filter"></app-pending-signature>
+                </div>
+                <div class="tab-pane active" *ngIf="selectedMode == lienFundingCoTabName.UNPAID">
+                    <app-funding-co-unpaid [filterData]="filter"></app-funding-co-unpaid>
+                </div>
+                <div class="tab-pane active" *ngIf="selectedMode == lienFundingCoTabName.PAID">
+                    <app-funding-co-paid [filterData]="filter"></app-funding-co-paid>
                 </div>
             </div>
         </div>
-
+    </div>
 </div>

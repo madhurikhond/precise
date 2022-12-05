@@ -55,6 +55,12 @@ export enum LienPortalTabName {
   RETAIN_PAID = "retain_paid"
 }
 
+export enum LienFundingCoTabName {
+  PENDING = 'pending',
+  UNPAID = "unpaid",
+  PAID = "paid",
+}
+
 export enum LienPortalAPIEndpoint {
 
   // Radiologist
@@ -83,4 +89,8 @@ export enum LienPortalAPIEndpoint {
   GetRadiologistFundingCompanyInfo = APIURL.LIEN_PORTAL + "GetRadiologistFundingCompanyInfo",
   GetRadDefaultSign = APIURL.LIEN_PORTAL + "GetRadDefaultSign",
   GetFundingCompanySellPrice = APIURL.LIEN_PORTAL + "GetFundingCompanySellPrice",
+
+  //Funding Company
+  GetPendingSignature = APIURL.LIEN_PORTAL + "GetPendingSignature",
+
 }

@@ -1,50 +1,63 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
-        <p class="headerBtnSection">
-            <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#SignatureModal">Sign & Execute Selected Assigned AR </a>
-        </p>
+        <div class="row">
+            <div class="col-md-6 pt-2">
+                <label>
+                    <input type="checkbox" name="" id="">
+                    Select All
+                </label>
+            </div>
+            <div class="col-md-6">
+                <p class="headerBtnSection">
+                    <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#SignatureModal">
+                        Sign & Execute Selected Assigned AR </a>
+                </p>
+            </div>
+        </div>
         <div class="tab-pane pendingsignature-section" id="PendingSignature">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="PendingSignature"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
                     [showColumnHeaders]="false">
                     <dxo-selection mode="single"></dxo-selection>
-                    <dxo-paging [pageSize]="10"></dxo-paging>
+                    <dxo-paging [pageSize]="pageSize"></dxo-paging>
                     <dxo-sorting mode="none"></dxo-sorting>
-                    
-                    <dxi-column dataField="Batchname" caption="Batchname" alignment="center" class="batchname">
+                    <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                    </dxo-selection>
+                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column>
 
                     <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
-                <div *dxTemplate="let data of 'PDFIconTemplate'">
-                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
-                </div>
+                    <div *dxTemplate="let data of 'PDFIconTemplate'">
+                        <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                    </div>
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                     <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                        <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
-                            [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                        <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
+                            [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
+                            [allowColumnResizing]="true">
                             <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                             <dxo-sorting mode="none"></dxo-sorting>
-                            <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
-                            </dxo-selection>
-                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="readingIconTemplate">
+
+                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                                cellTemplate="readingIconTemplate">
                             </dxi-column>
                             <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                            <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
-                            <dxi-column dataField="datearassign" caption="Date AR Assigned"></dxi-column>
-                            <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
-                            <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
-                            <dxi-column dataField="firstname" caption="First Name"></dxi-column>
-                            <dxi-column dataField="dob" caption="DOB"></dxi-column>
+                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="arAssignedDate" caption="Date AR Assigned"></dxi-column>
+                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
                             <dxi-column dataField="study" caption="Study"></dxi-column>
                             <dxi-column dataField="accession" caption="Accession"></dxi-column>
-                            <dxi-column dataField="cptgroup" caption="CPT Group"></dxi-column>
-                            <dxi-column dataField="arprice" caption="AR Price"></dxi-column>
+                            <dxi-column dataField="cptGroup" caption="CPT Group"></dxi-column>
+                            <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                             <div *dxTemplate="let data of 'readingIconTemplate'">
-                                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
+                                <a href="javascript:void(0)" class="single-action fa fa-file-text-o"
+                                    data-toggle="modal"></a>
                             </div>
                         </dx-data-grid>
-
                     </div>
                 </dx-data-grid>
             </div>
@@ -60,8 +73,8 @@
 
 <!---------------------signature modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small LienFundingCoSignature" id="SignatureModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in modal-small LienFundingCoSignature" id="SignatureModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -70,8 +83,8 @@
             </div>
             <div class="modal-body">
                 <div class="modal-content">
-                   
-                    <p class="innerTitle">Sign & execute the AR assignment agreement  </p>
+
+                    <p class="innerTitle">Sign & execute the AR assignment agreement </p>
                     <div class="ar-assignment-form">
                         <div class="row">
                             <div class="col-6">
@@ -111,7 +124,8 @@
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Sign & Execute Assignment</button>
+                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Sign & Execute
+                    Assignment</button>
             </div>
         </div>
     </div>
