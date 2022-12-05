@@ -34,7 +34,8 @@ export class RetainUnpaidComponent implements OnInit {
     Placeholder: 'test'
   };
 
-
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('closePaymentBtn') closePaymentBtn: ElementRef;
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   assignARform: FormGroup;
@@ -98,7 +99,7 @@ export class RetainUnpaidComponent implements OnInit {
     this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
     this.bindFundComp_DDL();
     if(this.isDefaultSignature)
-      this.GetRadDefaultSign();
+     this.defaultSignature = this.lienPortalService.defaultSignature
   }
 
   getRetainUnPaidList() {
@@ -192,18 +193,6 @@ export class RetainUnpaidComponent implements OnInit {
     }
   }
 
-  GetRadDefaultSign(){
-    let data = {};
-    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetRadDefaultSign).subscribe((res)=>{
-      if (res.status == LienPortalResponseStatus.Success)
-        this.defaultSignature = res.result.defaultSign
-      else
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    },()=>{
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    })
-  }
-
   clearSign(): void {
     this.signaturePad.clear();
     this.assignARform.patchValue({
@@ -284,13 +273,11 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   closeAssignARModal() {
-    document.getElementById('AssignARFundingModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('AssignARFundingModal').click();
+    this.closeBtn.nativeElement.click();
   }
 
   closeReceivePaymentModal() {
-    document.getElementById('ReceivePaymentModal').setAttribute('data-dismiss', 'modal');
-    document.getElementById('ReceivePaymentModal').click();
+    this.closePaymentBtn.nativeElement.click();
   }
 
   clearModalPopup() {
@@ -309,8 +296,12 @@ export class RetainUnpaidComponent implements OnInit {
       'checkDate': '',
       'checkNo': '',
     });
-    this.signaturePad.fromDataURL(this.defaultSignature);
-    this.drawComplete();
+
+    if (this.lienPortalService.isDefaultSignature)
+    {
+      this.signaturePad.fromDataURL(this.defaultSignature);
+      this.drawComplete();
+    }
   }
 
   onPageNumberChange(pageNumber: any) {

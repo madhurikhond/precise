@@ -16,7 +16,8 @@ export enum LienPortalStatusMessage {
   SIGNATURE_UPDATED_SUCCESS = 'Signature Updated Successfully.',
   PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.',
   SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
-  FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.'
+  FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.',
+  FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.'
 }
 
 export enum LienPortalURLName{
@@ -87,6 +88,7 @@ export enum LienPortalAPIEndpoint {
   GetPreciseMriFundingCompanyInfo = APIURL.LIEN_PORTAL + "GetPreciseMriFundingCompanyInfo",
   GetRadiologistFundingCompanyInfo = APIURL.LIEN_PORTAL + "GetRadiologistFundingCompanyInfo",
   GetRadDefaultSign = APIURL.LIEN_PORTAL + "GetRadDefaultSign",
+  GetFundingCompanySellPrice = APIURL.LIEN_PORTAL + "GetFundingCompanySellPrice",
 
   //Funding Company
   GetPendingSignature = APIURL.LIEN_PORTAL + "GetPendingSignature",

@@ -54,7 +54,6 @@ export class SettingComponent implements OnInit {
     this.getTimeData();
     this.onSettingTabClicked();
     this.GetRadiologistSettings();
-    this.GetRadDefaultSign();
     this.defaultEmail = this.storageService.user.WorkEmail ? this.storageService.user.WorkEmail : '';
   }
 
@@ -143,10 +142,10 @@ export class SettingComponent implements OnInit {
   clearSign(): void {
     this.signaturePad.clear();
     this.radiologistSign = '';
+    this.signaturePad.fromDataURL(this.radiologistSign);
   }
 
   saveSign() {
-    if (this.radiologistSign) {
       var data = {
         "defaultSign": this.radiologistSign
       };
@@ -159,13 +158,12 @@ export class SettingComponent implements OnInit {
       }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
-    }
   }
 
   onSignatureComplete() {
     this.radiologistSign = this.signaturePad.toDataURL();
   }
-  
+
   onSelected(time) {
     this.selectedTimeToReminder = time;
   }
@@ -197,10 +195,11 @@ export class SettingComponent implements OnInit {
         this.selectedDays = data.emailReminders.dayOfWeek;
         this.selectedTimeToReminder = data.emailReminders.timeOfDay;
         this.defaultEmail = data.emailSendCopies[0];
-        if (data.emailReminders.length > 1)
+        if (data.emailSendCopies.length > 1)
           this.firstEmail = data.emailSendCopies[1]
         if (data.emailSendCopies.length > 1)
           this.secondEmail = data.emailSendCopies[2]
+        this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
       } else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -212,18 +211,6 @@ export class SettingComponent implements OnInit {
     this.AddRadiologistSetting();
   }
 
-  GetRadDefaultSign() {
-    let data = {};
-    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetRadDefaultSign).subscribe((res) => {
-      if (res.status == LienPortalResponseStatus.Success) {
-        this.signaturePad.fromDataURL(res.result.defaultSign);
-      }
-      else
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    }, () => {
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    })
-  }
 
   AddRadiologistSetting() {
 
@@ -248,7 +235,6 @@ export class SettingComponent implements OnInit {
       if (res.status == LienPortalResponseStatus.Success) {
         this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
         this.GetRadiologistSettings();
-        this.GetRadDefaultSign();
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);

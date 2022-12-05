@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { AccountService } from 'src/app/services/account.service';
@@ -15,38 +15,37 @@ export class AddFundingCompanyComponent implements OnInit {
   fundingCompanyId: number = 0;
   @Output() returnSuccess = new EventEmitter<Boolean>();
 
-  @ViewChild("modal_close") modal_close: ElementRef
+  @ViewChild("modal_close") modal_close: ElementRef;
+  defaultSelectedTab: string = 'company-info';
   assignment = [];
   state = [];
-  list_pricing = [];
+  cptGroupList:any;
   fundingCompanyForm: FormGroup;
+  fundingCompanyPriceForm: FormGroup;
   private editData: any = [];
   private readonly commonRegex = CommonRegex;
   isNotify_readonly: Boolean = false;
+
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
-    private readonly accountService: AccountService,
-    private storageService: StorageService) {
+    private readonly accountService: AccountService) {
 
     this.fundingCompanyForm = this.fb.group({
       fundingCompanyId: [0],
       fundingCompanyName: ['', Validators.required],
       contactName: ['', Validators.required],
       contactEmail: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
-      contactPhone: ['', [Validators.required, Validators.pattern(this.commonRegex.PhoneRegex)]],
+      contactPhone: ['', [Validators.required,Validators.minLength(10)]],
       address1: ['', Validators.required],
       address2: [''],
       city: ['', Validators.required],
       state: [null, Validators.required],
-      zip: [null, [Validators.required, Validators.minLength(5)]],
+      zip: [null, [Validators.required, Validators.minLength(5),Validators.pattern(/([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}/)]],
       taxId: ['', Validators.required],
       isActive: [false, Validators.required],
       defaultCompany: [false, Validators.required],
       fax: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      notifyAssignment: [[], Validators.required],
-      loggedPartnerId: [this.storageService.PartnerId],
-      jwtToken: [this.storageService.PartnerJWTToken],
-      userId: [this.storageService.user.UserId]
+      notifyAssignment: [[], Validators.required]
     });
   }
 
@@ -55,13 +54,14 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   onLoad(val): void {
+    this.defaultSelectedTab = 'company-info';
     if (val != undefined && val != null) {
       this.fundingCompanyId = val;
       this.fundingCompanyForm.markAsUntouched();
       this.fundingCompanyForm.patchValue({ fundingCompanyId: this.fundingCompanyId });
       if (this.fundingCompanyId > 0) {
+        this.GetFundingCompanySellPrice(this.fundingCompanyId);
         this.bindFundingCompanyForm();
-        this.bindPricingList();
       } else {
         this.clearFundingCompanyForm();
       }
@@ -100,7 +100,7 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: '',
       notifyAssignment: []
     });
-    this.setVarDefaultCompany(false)
+    this.setVarDefaultCompany(this.fundingCompanyForm.value)
   }
 
   private bindFundingCompanyForm() {
@@ -142,6 +142,7 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   private fillForm(data: any) {
+    data = this.setVarDefaultCompany(data);
     this.fundingCompanyForm.patchValue({
       fundingCompanyId: data.fundingCompanyId,
       fundingCompanyName: data.fundingCompanyName,
@@ -159,30 +160,70 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: data.mainFax,
       notifyAssignment: data.notify
     });
-    this.setVarDefaultCompany(data.defaultCompany)
+    
+    
+  }
+
+  mapGroupPrice(data){
+    var obj = [];
+    Object.keys(data).forEach(element => {
+      obj.push({
+        "groupId": Number(element),
+        "sellPrice": parseFloat(this.fundingCompanyPriceForm.get(element.toString()).value)
+      });
+     });
+     return obj;
   }
 
   onSubmit() {
 
     this.fundingCompanyForm.markAllAsTouched();
-    if (this.fundingCompanyForm.valid) {
-      this.lienPortalService.PostAPI(this.fundingCompanyForm.value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+    if(this.fundingCompanyId > 0)
+    {
+      if(this.fundingCompanyForm.valid && this.fundingCompanyPriceForm.valid)
+      {
+        var request = {
+          "fundingCompanyId": this.fundingCompanyId,
+          "groupPrice": this.mapGroupPrice(this.fundingCompanyPriceForm.value)
+        }
+      this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AddFundingCompanySellPrice).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
-          if (this.fundingCompanyId > 0) {
-            message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
-          }
-          this.lienPortalService.successNotification(message);
-          this.modal_close.nativeElement.click();
-          this.returnSuccess.emit(true);
+          let message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
+          this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
         }
         else
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
+      }
+      else
+      {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.FILLOUT_REQUIRED_REQUIRED_FIELDS);
+      }
+    }
+    else
+    {
+      if (this.fundingCompanyForm.valid) {
+        let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
+        this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
+      }
     }
 
+  }
+
+  saveFundingCompanyData(value:any,message){
+    this.lienPortalService.PostAPI(value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        this.lienPortalService.successNotification(message);
+        this.modal_close.nativeElement.click();
+        this.returnSuccess.emit(true);
+      }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
   onDefaultCompanyChanged() {
@@ -193,6 +234,7 @@ export class AddFundingCompanyComponent implements OnInit {
       if (this.fundingCompanyId > 0) {
         let data = this.editData;
         data.defaultCompany = defaultCompany;
+        data.notify = ['Email'];
         this.fillForm(data);
       } else {
         this.clearFundingCompanyForm();
@@ -200,33 +242,91 @@ export class AddFundingCompanyComponent implements OnInit {
     }
   }
 
-  private setVarDefaultCompany(defaultCompany) {
-    if (defaultCompany) {
+  private setVarDefaultCompany(data) {
+    if (data.defaultCompany) {
+      data.notify = ['Email','RadFlow API'];
       this.assignment = [
         { value: 'Email', text: 'Email' },
         { value: 'RadFlow API', text: 'RadFlow API' }
       ];
       this.isNotify_readonly = true;
     } else {
+      data.notify = ['Email'];
       this.assignment = [
         { value: 'Email', text: 'Email' },
       ];
       this.isNotify_readonly = false;
     }
+    return data;
   }
 
-  private bindPricingList() {
-    let data = {};
-    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result) => {
+  GetFundingCompanySellPrice(fundingCompanyId){
+    let data = {
+      'fundingCompanyId' : fundingCompanyId
+    }
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySellPrice).subscribe((result)=>{
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result)
-          this.list_pricing = result.result
-        console.log(this.list_pricing);
+        if(result.result.fundingCompanySellPrices.length == 0){
+          this.GetCPTGroupList();
+        }else{
+          this.cptGroupList = result.result.fundingCompanySellPrices;
+          this.setGroupIdSellPrice();
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    });
+    })
   }
+
+  GetCPTGroupList(){
+    let data ={};
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result)=>{
+      if (result.status == LienPortalResponseStatus.Success) {
+        console.log(result);
+        this.cptGroupList = result.result;
+        this.setGroupIdSellPrice();
+        this.cptGroupList = this.cptGroupList.filter((value)=>{
+          value.price = 0;
+          return value;
+        })
+      }
+    })
+  }
+
+  setGroupIdSellPrice() {
+
+    let form = {};
+    var formData = [];
+    this.cptGroupList.forEach(element => {
+      formData.push({
+        "groupId": element.groupId,
+        "price":(element.price)?element.price : ''
+      });
+    });
+
+    for(let i=0;i<formData.length;i++)
+    {
+      form[formData[i].groupId] = new FormControl(formData[i].price,[Validators.required]);
+    }
+    this.fundingCompanyPriceForm = new FormGroup(form);
+  }
+
+  getInputData(data,id){
+    if(data)
+      if(!((data.target.value).match('^[1-9][0-9]*$')))
+      if(data.target.value.length == 1)  
+        this.fundingCompanyPriceForm.controls[id].setValue('');
+      else
+      {
+        var newStr = data.target.value.replace(data.data, '');
+        (Number(data.data) || data.data == '.')? this.fundingCompanyPriceForm.controls[id].setValue(data.target.value) : this.fundingCompanyPriceForm.controls[id].setValue(newStr);
+      }
+    }
+
+    onClickCompanyInfo(selectedTab){
+      this.defaultSelectedTab = selectedTab;
+    }
+  
 }
