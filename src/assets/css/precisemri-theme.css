@@ -7067,6 +7067,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #CalendarSchedulerWindow .modal-body .dhx_cal_data{overflow-y: scroll;
 	height: calc(100% - 300px) !IMPORTANT;
 }
+.CalendarTooltip{  z-index: 10000 !important }
 .invalid-feedback{
 	line-height: 17px;
 	margin-top: 35px;
