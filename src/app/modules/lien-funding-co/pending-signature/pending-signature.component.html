@@ -2,14 +2,16 @@
     <div class="tableDataSection">
         <div class="row">
             <div class="col-md-6 pt-2">
-                <label>
-                    <input type="checkbox" name="" id="">
+                <label *ngIf="dataSource.length > 0">
+                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
             </div>
             <div class="col-md-6">
                 <p class="headerBtnSection">
-                    <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#SignatureModal">
+                    <a class="btn btn-common btn-assignAR btn-blue"
+                        [ngClass]="selectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
+                        data-target="#SignatureModal">
                         Sign & Execute Selected Assigned AR </a>
                 </p>
             </div>
@@ -18,8 +20,7 @@
             <div class="table-responsive">
                 <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [showColumnHeaders]="false">
-                    <dxo-selection mode="single"></dxo-selection>
+                    (onSelectionChanged)="onSelectCheckbox($event)" [showColumnHeaders]="false">
                     <dxo-paging [pageSize]="pageSize"></dxo-paging>
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
@@ -27,7 +28,7 @@
                     <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column>
 
-                    <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                    <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                     <div *dxTemplate="let data of 'PDFIconTemplate'">
                         <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                     </div>
@@ -73,13 +74,13 @@
 
 <!---------------------signature modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small LienFundingCoSignature" id="SignatureModal" tabindex="-1"
-    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade modal-theme in modal-small LienFundingCoSignature" data-backdrop="static" data-keyboard="false"
+    id="SignatureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <form class="modal-dialog modal-dialog-centered" (submit)="onSubmitSignature()" [formGroup]="signatureForm" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR TO THE FOLLOWING FUNDING COMPANY</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div class="close-dismiss" (click)="clearSignatureForm()" data-dismiss="modal" #modal_close></div>
             </div>
             <div class="modal-body">
                 <div class="modal-content">
@@ -90,14 +91,16 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="First Name">
+                                        <input type="text" class="form-control" formControlName="firstName"
+                                            placeholder="First Name">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Last Name">
+                                        <input type="text" class="form-control" formControlName="lastName"
+                                            placeholder="Last Name">
                                     </div>
                                 </div>
                             </div>
@@ -107,8 +110,7 @@
                                 <div class="form-group">
                                     <div class="signature-custom">
                                         <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
-                                            [(ngModel)]="dummyData" [ngModelOptions]="{ standalone : true }"
-                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                            formControlName="fundingCompanySign" (onEndEvent)="signatureCompleted()">
                                         </signature-pad>
                                     </div>
                                     <div class="signatureBtn">
@@ -122,13 +124,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" (click)="clearSignatureForm()"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Sign & Execute
-                    Assignment</button>
+                <button type="submit" class="btn btn-theme pull-right btn-sm" [ngClass]="signatureForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Sign & Execute Assignment</button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <!--------------------end-------------------------->

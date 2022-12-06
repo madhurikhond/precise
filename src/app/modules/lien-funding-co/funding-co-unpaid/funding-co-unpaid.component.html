@@ -1,45 +1,59 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
-        <p class="headerBtnSection">
-            <a class="btn btn-common btn-assignAR btn-blue" data-toggle="modal" data-target="#SelectedBatches">Pay For Selected Assigned Batches </a>
-        </p>
+        <div class="row">
+            <div class="col-md-6 pt-2">
+                <label *ngIf="dataSource.length > 0">
+                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
+                    Select All
+                </label>
+            </div>
+            <div class="col-md-6">
+                <p class="headerBtnSection">
+                    <a class="btn btn-common btn-assignAR btn-blue"
+                        [ngClass]="selectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
+                        data-target="#SelectedBatches">Pay For Selected Assigned Batches </a>
+                </p>
+            </div>
+        </div>
         <div class="tab-pane fundingcoUnpaid-section" id="FundingCoUnpaid">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="FundingCoUnpaid"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [showColumnHeaders]="false">
-                    <dxo-selection mode="single"></dxo-selection>
-                    <dxo-paging [pageSize]="10"></dxo-paging>
+                    (onSelectionChanged)="onSelectCheckbox($event)" [showColumnHeaders]="false">
+                    <dxo-paging [pageSize]="pageSize"></dxo-paging>
                     <dxo-sorting mode="none"></dxo-sorting>
-                    
-                    <dxi-column dataField="Batchname" caption="Batchname" alignment="center" class="batchname">
+                    <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                    </dxo-selection>
+                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column>
 
-                    <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
-                <div *dxTemplate="let data of 'PDFIconTemplate'">
-                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
-                </div>
+                    <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                    <div *dxTemplate="let data of 'PDFIconTemplate'">
+                        <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                    </div>
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                     <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                        <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
-                            [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                        <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
+                            [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
+                            [allowColumnResizing]="true">
                             <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                             <dxo-sorting mode="none"></dxo-sorting>
-                            <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
-                            </dxo-selection>
-                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="readingIconTemplate">
+
+                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                                cellTemplate="readingIconTemplate">
                             </dxi-column>
                             <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                            <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
-                            <dxi-column dataField="datearassign" caption="Date AR Assigned"></dxi-column>
-                            <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
-                            <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
-                            <dxi-column dataField="firstname" caption="First Name"></dxi-column>
-                            <dxi-column dataField="dob" caption="DOB"></dxi-column>
+                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="dateARAssigned" caption="Date AR Assigned"></dxi-column>
+                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
                             <dxi-column dataField="study" caption="Study"></dxi-column>
-                            <dxi-column dataField="arprice" caption="AR Price"></dxi-column>
+                            <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                             <div *dxTemplate="let data of 'readingIconTemplate'">
-                                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
+                                <a href="javascript:void(0)" class="single-action fa  fa-file-text-o"
+                                    data-toggle="modal"></a>
                             </div>
                         </dx-data-grid>
 
@@ -47,57 +61,61 @@
                 </dx-data-grid>
             </div>
             <!-- <div class="pagination-theme">
-            <div
-                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
-            </div>
-            
-        </div> -->
+                <div *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+                </div>
+            </div> -->
         </div>
     </div>
 </div>
 
 <!---------------------Pay for selected batches--------------------------->
 
-.<div class="modal fade modal-theme in modal-small" id="SelectedBatches" tabindex="-1" role="dialog"
-aria-labelledby="exampleModalLabel" aria-modal="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Payment Confirmation</h5>
-            <div class="close-dismiss" data-dismiss="modal"></div>
-        </div>
-        <div class="modal-body">
-            <div class="modal-content">
-                <div class="check-form">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="theme-label">Total For Check</div>
-                            <label class="totlaPayAmt">$5,000.91</label>
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="SelectedBatches"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <form class="modal-dialog modal-dialog-centered" (submit)="onSubmitPayment()" [formGroup]="paymentForm"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Confirmation</h5>
+                <div class="close-dismiss" (click)="clearPaymentForm()" data-dismiss="modal" #modal_close></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="check-form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Total For Check</div>
+                                <label class="totlaPayAmt">{{paymentForm.get("checkAmount").value
+                                    | currency:'INR':'symbol-narrow'}}</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="theme-label">Check Date </div>
-                            <input type="text" class="form-control" placeholder="Check Date">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check Date </div>
+                                <dx-date-box class="form-control" [displayFormat]="'MM/dd/yyyy'"
+                                    formControlName="checkDate" type="date" [showClearButton]="true"
+                                    [useMaskBehavior]="true">
+                                </dx-date-box>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="theme-label">Check #</div>
-                            <input type="text" class="form-control" placeholder="Check #">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check #</div>
+                                <input type="text" class="form-control" formControlName="checkNumber"
+                                    placeholder="Check #">
+                            </div>
                         </div>
+
                     </div>
-                    
                 </div>
             </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="clearPaymentForm()" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="submit" class="btn btn-theme pull-right btn-sm" [ngClass]="paymentForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Pay</button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
-                data-dismiss="modal">Cancel</a>
-            <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Pay</button>
-        </div>
-    </div>
-</div>
+    </form>
 </div>
 
 
