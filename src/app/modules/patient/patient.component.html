@@ -683,12 +683,11 @@
                                     <span class="ng-value-label">{{items.length - 1}} more...</span>
                                 </div>
                             </ng-template>
-                        </ng-select>
-                        {{isSelectAll}}
+                        </ng-select>                       
                         <div class="checkbox-theme">
                             <input class="form-control" id = "barcodes" [(ngModel)]="isSelectAll"
                                    type="checkbox">
-                            <label for="barcodes" class="arrow-label">Do not read Barcodes</label>
+                            <label for="barcodes" class="arrow-label">Select All</label>
                           </div>
 
                         <!-- <select class="form-search" #mySelect (change)='onChangeSavedSearch($event)' 
