@@ -1086,7 +1086,7 @@
 															<td>
 																<select class="form-control" formControlName="mri1type"
 																	(change)="CheckSameCombinationMRI('Type1')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
 																	<option value="Stand Up">Stand Up</option>
@@ -1170,7 +1170,7 @@
 																		<select #mri1ResourceName
 																			(change)="updateResourceName(mri1ResourceName.value,'mri',1);CheckSameCombinationMRI('Resource1')"
 																			formControlName="mri1ResourceName"
-																			[ngClass]="{ 'is-invalid': (isResourceMandatory=== true  && modalityMriForm.controls['mri1ResourceName'].errors) }"
+																			[ngClass]="{ 'is-invalid': (isResourceMRI1Mandatory === true  && modalityMriForm.controls['mri1ResourceName'].errors) }"
 																			class="form-control">
 																			<option value=0>Select Resource Name
 																			</option>
@@ -1181,11 +1181,11 @@
 																			</option>
 																		</select>
 																	</div>
-																	<div *ngIf="(isResourceMandatory=== true && modalityMriForm.controls['mri1ResourceName'].errors)"
+																	<div *ngIf="(isResourceMRI1Mandatory === true && modalityMriForm.controls['mri1ResourceName'].errors)"
 																		class="invalid-feedback">
 																		<div
 																			*ngIf="modalityMriForm.controls['mri1ResourceName'].errors?.required">
-																			MRI Resource name is required</div>
+																			Resource name is required</div>
 																	</div>
 																</div>
 
@@ -1197,7 +1197,7 @@
 															<td>
 																<select class="form-control" formControlName="mri2type"
 																	(change)="CheckSameCombinationMRI('Type2')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
 																	<option value="Stand Up">Stand Up</option>
@@ -1276,17 +1276,31 @@
 																</select>
 															</td>
 															<td>
-																<select #mri2ResourceName
-																	(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
-																	formControlName="mri2ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+
+																<div class="form-group">
+																	<div class="input-group">
+																		<select #mri2ResourceName
+																			(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
+																			formControlName="mri2ResourceName"
+																			[ngClass]="{ 'is-invalid': (isResourceMRI2Mandatory == true  && modalityMriForm.controls['mri2ResourceName'].errors) }"
+																			class="form-control">
+																			<option value=0>Select Resource Name
+																			</option>
+																			<option
+																				*ngFor="let item of ResourceNameList"
+																				value={{item.INTERNALRESOURCEID}}>
+																				{{item.RESOURCENAME}}
+																			</option>
+																		</select>
+																	</div>
+																	<div *ngIf="(isResourceMRI2Mandatory == true && modalityMriForm.controls['mri2ResourceName'].errors)"
+																		class="invalid-feedback">
+																		<div
+																			*ngIf="modalityMriForm.controls['mri2ResourceName'].errors?.required">
+																			Resource name is required</div>
+																	</div>
+																</div>
+
 															</td>
 														</tr>
 														<tr>
@@ -1294,7 +1308,7 @@
 															<td>
 																<select class="form-control" formControlName="mri3type"
 																	(change)="CheckSameCombinationMRI('Type3')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
 																	<option value="Stand Up">Stand Up</option>
@@ -1373,17 +1387,30 @@
 																</select>
 															</td>
 															<td>
-																<select #mri3ResourceName
-																	(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
-																	formControlName="mri3ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<div class="input-group">
+																		<select #mri3ResourceName
+																			(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
+																			formControlName="mri3ResourceName"
+																			[ngClass]="{ 'is-invalid': (isResourceMRI3Mandatory == true  && modalityMriForm.controls['mri3ResourceName'].errors) }"
+																			class="form-control">
+																			<option value=0>Select Resource Name
+																			</option>
+																			<option
+																				*ngFor="let item of ResourceNameList"
+																				value={{item.INTERNALRESOURCEID}}>
+																				{{item.RESOURCENAME}}
+																			</option>
+																		</select>
+																	</div>
+																	<div *ngIf="(isResourceMRI3Mandatory == true && modalityMriForm.controls['mri3ResourceName'].errors)"
+																		class="invalid-feedback">
+																		<div
+																			*ngIf="modalityMriForm.controls['mri3ResourceName'].errors?.required">
+																			Resource name is required</div>
+																	</div>
+																</div>
+															
 															</td>
 														</tr>
 													</tbody>
@@ -1418,7 +1445,7 @@
 															<td>
 																<select class="form-control" formControlName="ct1make"
 																	(change)="CheckSameCombinationCT('Type1')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
 																	<option value="Hitachi">Hitachi</option>
@@ -1487,7 +1514,7 @@
 																		<select #ct1ResourceName
 																			(change)="updateResourceName(ct1ResourceName.value,'ct',1);CheckSameCombinationCT('Resource1')"
 																			formControlName="ct1ResourceName"
-																			[ngClass]="{ 'is-invalid': (isResourceMandatory=== true  && modalityCtForm.controls['ct1ResourceName'].errors) }"
+																			[ngClass]="{ 'is-invalid': (isResourceCT1Mandatory == true  && modalityCtForm.controls['ct1ResourceName'].errors) }"
 																			class="form-control">
 																			<option value=0>Select Resource Name
 																			</option>
@@ -1498,11 +1525,11 @@
 																			</option>
 																		</select>
 																	</div>
-																	<div *ngIf="(isResourceMandatory=== true && modalityCtForm.controls['ct1ResourceName'].errors)"
+																	<div *ngIf="(isResourceCT1Mandatory == true && modalityCtForm.controls['ct1ResourceName'].errors)"
 																		class="invalid-feedback">
 																		<div
 																			*ngIf="modalityCtForm.controls['ct1ResourceName'].errors?.required">
-																			CT Resource name is required</div>
+																			Resource name is required</div>
 																	</div>
 																</div>
 
@@ -1514,7 +1541,7 @@
 															<td>
 																<select class="form-control" formControlName="ct2make"
 																	(change)="CheckSameCombinationCT('Type2')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
 																	<option value="Hitachi">Hitachi</option>
@@ -1578,17 +1605,30 @@
 																</select>
 															</td>
 															<td>
-																<select #ct2ResourceName
-																	(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
-																	formControlName="ct2ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<div class="input-group">
+																		<select #ct2ResourceName
+																			(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
+																			formControlName="ct2ResourceName"
+																			[ngClass]="{ 'is-invalid': (isResourceCT2Mandatory == true  && modalityCtForm.controls['ct2ResourceName'].errors) }"
+																			class="form-control">
+																			<option value=0>Select Resource Name
+																			</option>
+																			<option
+																				*ngFor="let item of ResourceNameList"
+																				value={{item.INTERNALRESOURCEID}}>
+																				{{item.RESOURCENAME}}
+																			</option>
+																		</select>
+																	</div>
+																	<div *ngIf="(isResourceCT2Mandatory == true && modalityCtForm.controls['ct2ResourceName'].errors)"
+																		class="invalid-feedback">
+																		<div
+																			*ngIf="modalityCtForm.controls['ct2ResourceName'].errors?.required">
+																			Resource name is required</div>
+																	</div>
+																</div>
+																
 															</td>
 														</tr>
 														<tr>
@@ -1596,7 +1636,7 @@
 															<td>
 																<select class="form-control" formControlName="ct3make"
 																	(change)="CheckSameCombinationCT('Type3')">
-																	<option></option>
+																	<option value="0">-select-</option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
 																	<option value="Hitachi">Hitachi</option>
@@ -1660,17 +1700,30 @@
 																</select>
 															</td>
 															<td>
-																<select #ct3ResourceName
-																	(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
-																	formControlName="ct3ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<div class="input-group">
+																		<select #ct3ResourceName
+																			(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
+																			formControlName="ct3ResourceName"
+																			[ngClass]="{ 'is-invalid': (isResourceCT3Mandatory == true  && modalityCtForm.controls['ct3ResourceName'].errors) }"
+																			class="form-control">
+																			<option value=0>Select Resource Name
+																			</option>
+																			<option
+																				*ngFor="let item of ResourceNameList"
+																				value={{item.INTERNALRESOURCEID}}>
+																				{{item.RESOURCENAME}}
+																			</option>
+																		</select>
+																	</div>
+																	<div *ngIf="(isResourceCT3Mandatory == true && modalityCtForm.controls['ct3ResourceName'].errors)"
+																		class="invalid-feedback">
+																		<div
+																			*ngIf="modalityCtForm.controls['ct3ResourceName'].errors?.required">
+																			Resource name is required</div>
+																	</div>
+																</div>
+															
 															</td>
 														</tr>
 													</tbody>
