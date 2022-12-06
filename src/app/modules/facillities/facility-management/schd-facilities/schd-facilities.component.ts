@@ -149,7 +149,9 @@ export class SchdFacilitiesComponent implements OnInit {
   blockLeasePaymentMappingList: any;
   blockLeaseCreditList: [] = [];
   paymentMapping: any = [];
-
+  pageNumberOfPaid: number = 1;
+  pageSizeOfPaid: number = 5;
+  totalRecordpaid: number = 1;
   selectedleaseArray: any = [];
 
   //   config = {
@@ -1467,30 +1469,32 @@ export class SchdFacilitiesComponent implements OnInit {
 
   getblockLeasePaymentByFacilityId(facilityId: number) {
     this.blockLeasePaymentList = [];
-    this.pageNumber = 1;
     this.facilityService
       .GetblockLeasePaymentByFacilityId(
         true,
         facilityId.toString(),
-        this.pageNumber,
-        this.pageSize
+        this.pageNumberOfPaid,
+        this.pageSizeOfPaid
       )
       .subscribe((res) => {
         if (res.response != null) {
-          console.log(res.response);
+          console.log(res);
           this.blockLeasePaymentList = res.response;
           if (this.blockLeasePaymentList.length > 0) {
+            this.totalRecordpaid = res.totalRecords;
             this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
+          }else {
+            this.totalRecordpaid = 1;
+            this.blockLeasePaymentList = [];
           }
         }
       });
   }
 
-  // selectionChangedPaid(e) {
-  //   debugger;
-  //   e.component.collapseAll(-1);
-  //   e.component.expandRow(e.currentSelectedRowKeys[0]);
-  // }
+  onPageNumberChangePaid(event) {
+    this.pageNumberOfPaid = event;
+    this.getblockLeasePaymentByFacilityId(this.facilityId);
+  }
 
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
     paymentMapping.component.collapseAll(-1);
@@ -3872,12 +3876,10 @@ export class SchdFacilitiesComponent implements OnInit {
       pageSize: this.pageSizeOfUnusdCredits,
     };
 
-    this.blockleasescheduler
-      .getFacilityCreditsUnUsed(
+    this.blockleasescheduler.getFacilityCreditsUnUsed(
         true,
         JSON.stringify(JSON.stringify(data)).toString()
-      )
-      .subscribe(
+      ).subscribe(
         (res) => {
           if (res.response != null && res.response.length > 0) {
             this.UnusedCreditsList = res.response;
