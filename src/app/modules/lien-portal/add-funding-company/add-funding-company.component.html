@@ -112,7 +112,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <div class="input-group validation-tooltip">
-                                                  <input type="text" class="form-control" maxlength="17"
+                                                  <input type="text" class="form-control" maxlength="19" appPhoneMask
                                                   formControlName="contactPhone" placeholder="Contact Phone*">
                                                 </div>
                                                 <div *ngIf="fundingCompanyForm.controls['contactPhone'].invalid &&
@@ -292,7 +292,7 @@
                                                 <td>{{item.groupName}}</td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}" (input)="getInputData($event,item.groupId)">
+                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}" maxlength="12" (input)="getInputData($event,item.groupId)">
                                                     </div>
                                                 </td>
                                             </tr>

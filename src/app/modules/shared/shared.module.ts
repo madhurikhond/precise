@@ -58,6 +58,7 @@ import { DocumentManagerFacilityComponent } from '../facillities/facility-manage
 import { InputSpaceTrimDirective } from './directives/input-space-trim.directive';
 import { TrimWhiteSpaceDirective } from './directives/trim-white-space.directive';
 import { FormControlName } from '@angular/forms';
+import { PhoneMaskDirective } from './directives/phone-mask.directive';
 //export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -68,7 +69,7 @@ const maskConfig: Partial<IConfig> = {
     ReferrerDetailComponent, PhoneNumberFormatePipe, RequestSearchDetailComponent,
     TaskManagementComponent, SaveSearchComponent, DocumentManagerComponent, FileuploadDirective,
     ProgressComponent, SendDocumentComponent, CreateAlertComponent, NegativeSignRemovePipe,
-    CurrencyInputDirective, DocumentReferralAndFundingcoComponent, InvalidTabHighlightDirective,
+    CurrencyInputDirective, DocumentReferralAndFundingcoComponent, InvalidTabHighlightDirective,PhoneMaskDirective,
     InvalidControlTabContainerDirective, FilterPipe,PrescreeningSmallWindowComponent,PrescreengridComponent,DocumentManagerFacilityComponent,
     BrokerComponent, OnlyNumbersDirective, OnlyNumbersWithoutCommaDirective, DwtComponent  ,  CallbackPipe,SchdFacilitiesComponent,
     SafeurlPipe,
@@ -132,6 +133,7 @@ const maskConfig: Partial<IConfig> = {
     NgxDaterangepickerMd,
     NegativeSignRemovePipe,
     CurrencyInputDirective,
+    PhoneMaskDirective,
     DocumentReferralAndFundingcoComponent,
     InvalidTabHighlightDirective,
     InvalidControlTabContainerDirective,

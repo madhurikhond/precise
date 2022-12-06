@@ -143,7 +143,7 @@ export class AddFundingCompanyComponent implements OnInit {
 
   private fillForm(data: any) {
     data = this.setVarDefaultCompany(data);
-    data.phoneNumber.replace('(', '').replace(')', '').replace(' ', '-').replace('-x', ' x');
+    data.phoneNumber = data.phoneNumber.replace('- x',' x');
     this.fundingCompanyForm.patchValue({
       fundingCompanyId: data.fundingCompanyId,
       fundingCompanyName: data.fundingCompanyName,
@@ -214,6 +214,12 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   saveFundingCompanyData(value:any,message){
+    var contactSeprator = value.contactPhone.split(" x");
+    if(contactSeprator[1])
+    {
+      if(contactSeprator[1].length == 0)
+        value.contactPhone = value.contactPhone.replace(' x', '');  
+    }
     value.contactPhone = value.contactPhone.replace('(', '').replace(')', '').replace(' ', '-').replace('-x', ' x');
     this.lienPortalService.PostAPI(value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
@@ -323,7 +329,7 @@ export class AddFundingCompanyComponent implements OnInit {
       else
       {
         var newStr = data.target.value.replace(data.data, '');
-        (Number(data.data) || data.data == '.')? this.fundingCompanyPriceForm.controls[id].setValue(data.target.value) : this.fundingCompanyPriceForm.controls[id].setValue(newStr);
+        (Number(data.data) || data.data == '.' || data.data == '0')? this.fundingCompanyPriceForm.controls[id].setValue(data.target.value) : this.fundingCompanyPriceForm.controls[id].setValue(newStr);
       }
     }
 
