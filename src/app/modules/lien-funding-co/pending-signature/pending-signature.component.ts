@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { StorageService } from 'src/app/services/common/storage.service';
 
 @Component({
   selector: 'app-pending-signature',
@@ -13,6 +14,8 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 })
 export class PendingSignatureComponent implements OnInit {
 
+  isSelectAll: boolean = false;
+  selectedData: any = [];
   getfilterData: any;
   @Input()
   set filterData(val: any) {
@@ -24,8 +27,9 @@ export class PendingSignatureComponent implements OnInit {
 
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
+  @ViewChild("modal_close") modal_close: ElementRef;
 
-  signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
+  signaturePadOptions: Object = {
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
     backgroundcolor: 'rgb(255,255,255)',
@@ -34,20 +38,26 @@ export class PendingSignatureComponent implements OnInit {
     Placeholder: 'test'
   };
 
-  dataSource:any = [];
+  dataSource: any = [];
 
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
   totalRecord: number = 0;
   pageSize: number = 10;
-  selectedCityIds: string[];
-  dummyData: string;
+  signatureForm: FormGroup;
 
-  constructor(private lienPortalService: LienPortalService) {
+  constructor(private lienPortalService: LienPortalService,
+    private fb: FormBuilder,
+    private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
 
+    this.signatureForm = this.fb.group({
+      firstName: [this.storageService.user.FirstName, Validators.required],
+      lastName: [this.storageService.user.LastName, Validators.required],
+      fundingCompanySign: ['', Validators.required]
+    })
   }
 
   ngOnInit(): void {
@@ -55,9 +65,9 @@ export class PendingSignatureComponent implements OnInit {
 
   getListingData() {
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
+      this.totalRecord = result.result.length;
+      this.dataSource = [];
       if (result.status == LienPortalResponseStatus.Success) {
-        this.totalRecord = result.result.length;
-        this.dataSource = [];
         if (result.result)
           this.dataSource = result.result
       }
@@ -68,23 +78,60 @@ export class PendingSignatureComponent implements OnInit {
     })
   }
 
-
-  onPageNumberChange(pageNumber: any) {
-    this.pageNumber = pageNumber;
-  }
-  onMaterialGroupChange(event) {
-    console.log(event);
-  }
-
   clearSign(): void {
     this.signaturePad.clear();
-    this.dummyData = '';
+    this.signatureForm.patchValue({ fundingCompanySign: '' });
   }
 
-
-  drawComplete() {
-    this.dummyData = this.signaturePad.toDataURL();
+  signatureCompleted() {
+    this.signatureForm.patchValue({ fundingCompanySign: this.signaturePad.toDataURL() });
   }
 
+  onSelectAll(isChecked) {
+    if (isChecked)
+      this.dataGrid.instance.selectAll();
+    else
+      this.dataGrid.instance.deselectAll();
+  }
+
+  onSelectCheckbox($event) {
+    this.selectedData = $event.selectedRowsData;
+
+    // if (this.dataGrid.instance.totalCount() > 1) {
+    //   if ($event.currentSelectedRowKeys.length == 1)
+    //     this.dataGrid.instance.expandRow(($event.currentSelectedRowKeys[0]));
+    //   else if ($event.currentDeselectedRowKeys.length == 1)
+    //     this.dataGrid.instance.collapseRow(($event.currentDeselectedRowKeys[0]));
+    // }
+
+    if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
+      this.isSelectAll = true;
+    else if ($event.selectedRowsData.length == 0)
+      this.isSelectAll = false;
+  }
+
+  clearSignatureForm() {
+    this.signatureForm.patchValue({
+      fundingCompanySign: ''
+    });
+  }
+
+  onSubmitSignature() {
+    if (this.signatureForm.valid && this.selectedData.length > 0) {
+      var data = this.signatureForm.value;
+      data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
+      this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+          this.getListingData();
+          this.modal_close.nativeElement.click();
+        }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      });
+    }
+  }
 
 }

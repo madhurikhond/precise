@@ -92,5 +92,8 @@ export enum LienPortalAPIEndpoint {
 
   //Funding Company
   GetPendingSignature = APIURL.LIEN_PORTAL + "GetPendingSignature",
+  GetFundingCompanyUnpaidList = APIURL.LIEN_PORTAL + "GetFundingCompanyUnpaidList",
+  SaveFundingCompany = APIURL.LIEN_PORTAL + "SaveFundingCompany",
+  LienPayment = APIURL.LIEN_PORTAL + "LienPayment",
 
 }
