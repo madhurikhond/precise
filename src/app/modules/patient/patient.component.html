@@ -684,6 +684,13 @@
                                 </div>
                             </ng-template>
                         </ng-select>
+                        {{isSelectAll}}
+                        <div class="checkbox-theme">
+                            <input class="form-control" id = "barcodes" [(ngModel)]="isSelectAll"
+                                   type="checkbox">
+                            <label for="barcodes" class="arrow-label">Do not read Barcodes</label>
+                          </div>
+
                         <!-- <select class="form-search" #mySelect (change)='onChangeSavedSearch($event)' 
                             *ngIf="savedSearchList">
                             <option value="0" selected disabled>Work List</option>
@@ -692,6 +699,7 @@
                             </option>
                         </select> -->
                     </div>
+                  
                     <div class="precisemri-search patient-precisemri-search" *ngIf="!IsPatientActionHide">
                         <ng-select class="form-search" [items]="ddlvalue" bindLabel="Text" [clearable]="false"
                             [searchable]="false" [(ngModel)]="ddlCurrentText" bindValue="Text"
@@ -712,9 +720,34 @@
                                 {{ddlvalue[i].Text}}
                             </option>
                         </select> -->
+
                         <button type="button" class="search" [disabled]="this.ddlCurrentValue==0?true:false"
                             [ngStyle]="{'background-color': (this.ddlCurrentValue==0) ? '#bfbfbf' : '#3b8beb'}"
                             (click)="goButtonClick()">Go</button>
+                    </div>
+                    <div class="precisemri-search patient-precisemri-search">
+                        <ng-select class="form-search" [items]="ddlAllColumns" bindLabel="Text" [clearable]="false"
+                            [searchable]="false" (change)="onChangeSelectedColumn($event)"
+                            [(ngModel)]="ddlCurrentSelectedColumnText" placeholder="Select column" bindValue="Text">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <span class="ng-value-label"> {{item.Text}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+
+                            </ng-template>
+                        </ng-select>
+
+                        <ng-select class="form-search" [items]="ddlSortingOrder" bindLabel="Text" [clearable]="false"
+                            [searchable]="false" (change)="onChangeSortingOrder($event)"
+                            [(ngModel)]="ddlSelectedSortingOrderText" placeholder="Select column" bindValue="Text">
+                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                    <span class="ng-value-label"> {{item.Text}}</span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
                     </div>
                     <div class="precisemri-search page-select">
                         <div class="theme-label">Page Size</div>
@@ -791,7 +824,8 @@
                 <dxi-column caption="Funding Co." cellTemplate="FundingCoCellTemplate" tabindex="2"></dxi-column>
                 <dxi-column caption="REFERRING PHYSICIAN" cellTemplate="ReferringPhysicianCellTemplate" tabindex="2">
                 </dxi-column>
-                <dxi-column dataField="READINGPHYSICIAN"caption="READING PHYSICIAN"cellTemplate="ReadingPhysicianCellTemplate" tabindex="2" ></dxi-column>
+                <dxi-column dataField="READINGPHYSICIAN" caption="READING PHYSICIAN"
+                    cellTemplate="ReadingPhysicianCellTemplate" tabindex="2"></dxi-column>
                 <dxi-column dataField="STATUS" caption="STATUS"></dxi-column>
                 <dxi-column dataField="PRIORITYNAME" caption="PRIORITY"></dxi-column>
                 <dxi-column dataField="SCHEDULEDMODALITY" caption="MODALITY"></dxi-column>
@@ -999,7 +1033,7 @@
 </div>
 
 <!-- Generate Patient Portal Link -->
-<div class="modal fade modal-theme " id="openLinkModal1"  role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade modal-theme " id="openLinkModal1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -1027,7 +1061,7 @@
                     </div>
                 </form>
             </div>
-        
+
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
                     data-dismiss="modal">Close</a>
@@ -1055,8 +1089,8 @@
 </div>
 
 
-<div class="modal fade modal-theme in" id="Logs" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in" id="Logs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

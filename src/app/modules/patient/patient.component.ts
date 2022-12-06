@@ -136,8 +136,14 @@ export class PatientComponent implements OnInit {
   checkBoxesMode: string;
   ddlvalue = [];
   billingHeaderTitle: any = '';
-  ddlCurrentValue: string = '0';
+  ddlCurrentValue: string = '0';  
+  ddlCurrentSelectedColumnValue: string = 'PATIENTID';
+  ddlCurrentSelectedColumnText: string = 'PATIENT ID';
   ddlCurrentText: string = 'Select an Action';
+  ddlSelectedSortingOrderText: string = 'ascending';
+  ddlSelectedSortingOrderValue: string = 'asc';
+  ddlAllColumns:any=[];
+  ddlSortingOrder:any=[];
   filterValue: any = [];
   fileList: any = [];
   LastSearchRecordList = [];
@@ -159,6 +165,7 @@ export class PatientComponent implements OnInit {
   Phoneparam: any;
   accessionnumberparam: any;
   patientidparam: any;
+  isSelectAll: boolean = false
   readonly commonRegex = CommonRegex;
 
   constructor(private fb: FormBuilder, private readonly patientService: PatientService, private readonly notificationService: NotificationService,
@@ -195,7 +202,7 @@ export class PatientComponent implements OnInit {
     this.getScheduledModality();
     this.getMarketingUser();
     this.getStatusNames();
-    this.ddlvalue = this.selectAnActionDdl();
+    this.ddlvalue = this.selectAnActionDdl();   
     this.getAllSavedSearchList();
     this.PatientActionShowHide();
     this.createPatientBillingDetailForm();
@@ -209,6 +216,11 @@ export class PatientComponent implements OnInit {
       this.pageSize = 50;
       this.applyFilter(true);
     }
+    setTimeout(() => {
+      this.ddlAllColumns = this.getAllcolumns();
+      this.ddlSortingOrder = this.getSortingOrder()
+    }, 200);
+    
     //this.getLogs();
 
   }
@@ -320,7 +332,7 @@ export class PatientComponent implements OnInit {
   columnChooserClick(e: any): void {
     $('.dx-overlay-content').toggle();
     this.gridPatient.first.columnChooser.mode = 'select';
-    this.gridPatient.first.instance.showColumnChooser();
+    this.gridPatient.first.instance.showColumnChooser();  
     var columnChooserView = this.gridPatient.first.instance.getView('columnChooserView');
     if (!columnChooserView._popupContainer) {
       columnChooserView._initializePopupContainer();
@@ -334,6 +346,22 @@ export class PatientComponent implements OnInit {
     columnChooserView._popupContainer.option('dragEnabled', false)
     columnChooserView._popupContainer.option('position', { of: e.element, my: 'right top', at: 'right top', offset: '0 50' });
   }
+  getAllcolumns(){
+   return this.gridPatient.first.instance.option("columns").filter(a=>a.dataField).map(item=>({value: item.dataField,Text: item.caption}))
+  }
+  getSortingOrder(){
+    return [      
+      { value: 'asc', Text: 'Ascending' },
+      { value: 'desc', Text: 'Descending' }]
+   }
+   onChangeSelectedColumn(index){
+      this.ddlCurrentSelectedColumnValue = index.value;
+      this.ddlCurrentSelectedColumnText = index.Text;
+   }
+   onChangeSortingOrder(index){
+    this.ddlSelectedSortingOrderValue = index.value;
+    this.ddlSelectedSortingOrderText = index.Text;
+ }
 
   selectAnActionDdl() {
     return [
@@ -815,7 +843,9 @@ export class PatientComponent implements OnInit {
       'brokerId': brokerId,
       'facilityId': facilityId,
       'facilityParentId': facilityParentId,
-      'referrelId': referrelId
+      'referrelId': referrelId,
+      'SortingColumn':this.ddlCurrentSelectedColumnValue,
+      'SortingOrder':this.ddlSelectedSortingOrderValue
     }
     this.filterBody = body;
     if (isSearchBtn) {
