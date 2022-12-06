@@ -1,10 +1,12 @@
 import { ThrowStmt } from '@angular/compiler';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { threadId } from 'worker_threads';
 import { AddFundingCompanyComponent } from '../add-funding-company/add-funding-company.component';
 
 @Component({
@@ -192,8 +194,13 @@ export class SettingComponent implements OnInit {
         this.isEmailReminder = data.isEmailReminder;
         this.isEmailSendCopy = data.isEmailSendCopy;
         this.isDefaultSignature = data.isDefaultSignature;
-        this.selectedDays = data.emailReminders.dayOfWeek;
-        this.selectedTimeToReminder = data.emailReminders.timeOfDay;
+        if(data.emailReminders){
+          this.selectedDays = (data.emailReminders.dayOfWeek) ? data.emailReminders.dayOfWeek : [];
+          this.selectedTimeToReminder = (data.emailReminders.timeOfDay) ? data.emailReminders.timeOfDay : '12:00 AM';
+        }else{
+          this.selectedDays = [];
+          this.selectedTimeToReminder = '12:00 AM';
+        }
         this.defaultEmail = data.emailSendCopies[0];
         if (data.emailSendCopies.length > 1)
           this.firstEmail = data.emailSendCopies[1]
@@ -208,38 +215,43 @@ export class SettingComponent implements OnInit {
   }
 
   saveSettings() {
-    this.AddRadiologistSetting();
+    if(!this.isEmailReminder){
+      this.AddRadiologistSetting();
+    }
+    else if(this.selectedDays.length != 0 && this.selectedTimeToReminder != ''){
+      this.AddRadiologistSetting();
+    }else{
+      this.lienPortalService.errorNotification('Please add Days and time for Email reminder')
+    }
   }
 
 
   AddRadiologistSetting() {
-
-    var requestEmailReminders = {
-      'dayOfWeek': this.selectedDays,
-      'timeOfDay': this.selectedTimeToReminder,
-    }
-    var requestEmailSendCopies = [];
-    requestEmailSendCopies.push(this.defaultEmail);
-    if (this.firstEmail)
-      requestEmailSendCopies.push(this.firstEmail);
-    if (this.secondEmail)
-      requestEmailSendCopies.push(this.secondEmail);
-    var requestData = {
-      "isEmailReminder": this.isEmailReminder,
-      "isEmailSendCopy": this.isEmailSendCopy,
-      "isDefaultSignature": this.isDefaultSignature,
-      "emailReminders": requestEmailReminders,
-      "emailSendCopies": requestEmailSendCopies
-    }
-    this.lienPortalService.PostAPI(requestData, LienPortalAPIEndpoint.AddRadiologistSetting).subscribe((res) => {
-      if (res.status == LienPortalResponseStatus.Success) {
-        this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
-        this.GetRadiologistSettings();
+      var requestEmailReminders = {
+        'dayOfWeek': this.selectedDays,
+        'timeOfDay': this.selectedTimeToReminder,
       }
-      else
+      var requestEmailSendCopies = [];
+      requestEmailSendCopies.push(this.defaultEmail);
+      if (this.firstEmail)
+        requestEmailSendCopies.push(this.firstEmail);
+      if (this.secondEmail)
+        requestEmailSendCopies.push(this.secondEmail);
+      var requestData = {
+        "isEmailReminder": this.isEmailReminder,
+        "isEmailSendCopy": this.isEmailSendCopy,
+        "isDefaultSignature": this.isDefaultSignature,
+        "emailReminders": requestEmailReminders,
+        "emailSendCopies": requestEmailSendCopies
+      }
+      this.lienPortalService.PostAPI(requestData, LienPortalAPIEndpoint.AddRadiologistSetting).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
+        }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    }, () => {
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    })
-  }
+      })
+ }
 }

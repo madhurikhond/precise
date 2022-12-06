@@ -19,60 +19,62 @@
     </div>
     <div class="tab-pane fundingcopaid-section" id="FundingCoPaid">
         <div class="table-responsive">
-            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="FundingCoPaid"
-                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
-                <dxo-selection mode="single"></dxo-selection>
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="fundingCoPaid"
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
+                <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+                </dxo-selection>
                 <dxo-paging [pageSize]="10"></dxo-paging>
                 <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column dataField="checkno" caption="Checkno"></dxi-column>
-                <dxi-column dataField="pdffile" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                <dxi-column dataField="checkNumber" caption="Checkno"></dxi-column>
+                <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
                     <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                 </div>
                 <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
                 <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
-                    <dx-data-grid [dataSource]="batchNameList" class="innerList" [columnAutoWidth]="true"
+                    <dx-data-grid [dataSource]="detail.data.paymentWiseData" class="innerList" [columnAutoWidth]="true"
                         [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
-                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling> 
+                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
-                        <dxi-column dataField="Batchname" caption="Batchname"> </dxi-column>
+                        <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
                         <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                            <dx-data-grid [dataSource]="BatchDetailList" class="innerList" [columnAutoWidth]="true"
+                            <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList" [columnAutoWidth]="true"
                                 [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
                                 <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                                 <dxo-sorting mode="none"></dxo-sorting>
                                 <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="readingIconTemplate"></dxi-column>
                                 <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                                <dxi-column dataField="dateread" caption="Date Read"></dxi-column>
-                                <dxi-column dataField="executeddate" caption="Executed Date"></dxi-column>
-                                <dxi-column dataField="paiddate" caption="Paid Date"></dxi-column>
-                                <dxi-column dataField="patientid" caption="Patient ID"></dxi-column>
-                                <dxi-column dataField="lastname" caption="Last Name"></dxi-column>
-                                <dxi-column dataField="firstname" caption="First Name"></dxi-column>
-                                <dxi-column dataField="dob" caption="DOB"></dxi-column>
+                                <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
+                                <dxi-column dataField="executionDate" caption="Executed Date"></dxi-column>
+                                <dxi-column dataField="paidDate" caption="Paid Date"></dxi-column>
+                                <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
+                                <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+                                <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+                                <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
                                 <dxi-column dataField="study" caption="Study"></dxi-column>
                                 <dxi-column dataField="access" caption="Access#"></dxi-column>
-                                <dxi-column dataField="cptgroup" caption="CPT Group"></dxi-column>
-                                <dxi-column dataField="arprice" caption="AR Price"></dxi-column>
+                                <dxi-column dataField="cptGroup" caption="CPT Group"></dxi-column>
+                                <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                                 <div *dxTemplate="let data of 'readingIconTemplate'">
                                     <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
                                 </div>
                             </dx-data-grid>
-        
+
                         </div>
                     </dx-data-grid>
 
                 </div>
             </dx-data-grid>
         </div>
-        <!-- <div class="pagination-theme">
-            <div
-                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
-            </div>
-            
-        </div> -->
+        <div class="pagination-theme" *ngIf="totalRecord > 0">
+          <div
+              *ngFor="let item of AssignARpaid | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
+          </div>
+          <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
+      </div>
     </div>
 </div>
 

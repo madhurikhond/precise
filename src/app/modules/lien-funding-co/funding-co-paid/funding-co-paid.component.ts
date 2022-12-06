@@ -1,5 +1,7 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-funding-co-paid',
   templateUrl: './funding-co-paid.component.html',
@@ -7,205 +9,34 @@ import { DxDataGridComponent } from 'devextreme-angular';
 })
 export class FundingCoPaidComponent implements OnInit {
 
-  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  
-  FundingCoPaid =[{
-    checkno:'8887',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'8889',
-  },
-  {
-    checkno:'4589',
-  },
-
-  ];
-
-
-  batchNameList=[{
-    Batchname:'batch name 1',
-  },
-  {
-    Batchname:'batch name 2',
-  },
-  {
-    Batchname:'batch name 3',
-  },
-  {
-    Batchname:'batch name 4',
-  }];
-
-  BatchDetailList =[{
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
-  },
-  {
-    rad:'DR BOB',
-    dateread:'2/2/20',
-    executeddate:'2/9/20',
-    paiddate:'2/9/20',
-    fundingco:'PRE9991',
-    patientid:'PRE9991',
-    lastname:'Last name',
-    firstname:'First name',
-    dob:'10/25/84',
-    study:'MRI OF KNEE',
-    access:'RAM007998',
-    cptgroup:'MRI',
-    arprice:'$500.00',
+  getfilterData: any;
+  @Input()
+  set filterData(val: any) {
+    if (val && val != null) {
+      this.getfilterData = val;
+      this.getFundingCoPaidList();
+    }
   }
-  ];
 
-
-
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
   totalRecord: number = 1;
-  pageSize: number;
+  currentPageNumber: number = 1;
+  pageSize: number = 20;
   columnResizingMode: string;
   showFilterRow: boolean;
   showHeaderFilter: boolean;
   applyFilterTypes: any;
   resizingModes: string[] = ['widget', 'nextColumn'];
   currentFilter: any;
+  dataSource : any = [];
+  fundingCoPaid : any = [];
+  checkboxSelectedData: any;
 
-  constructor() { 
+  constructor(private lienPortalService : LienPortalService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -225,8 +56,28 @@ export class FundingCoPaidComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getFundingCoPaidList();
+  }
+
+  getFundingCoPaidList(){
+    this.lienPortalService.PostAPI(this.getfilterData,LienPortalAPIEndpoint.GetFundingCompanyPaidList).subscribe(res=>{
+      if(res.status == LienPortalResponseStatus.Success){
+        this.dataSource = [];
+        var data = res.result;
+        this.dataSource = data;
+        this.fundingCoPaid = this.dataSource;
+        this.totalRecord = this.fundingCoPaid.length;
+      }else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
+  }
+
+  changeCheckbox(item: any) {
+      if (item) {
+        this.checkboxSelectedData = item.selectedRowsData;
+      }
   }
 
 }
-
-

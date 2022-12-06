@@ -67,7 +67,7 @@ export enum LienPortalAPIEndpoint {
   GetPendingToBill = APIURL.LIEN_PORTAL + "GetPendingToBill",
   GetReferrerByUser = APIURL.LIEN_PORTAL + "GetReferrerByUser",
   GetCPTGroupList = APIURL.LIEN_PORTAL + "GetCPTGroupList",
-  GetAssignedARUnpaid = APIURL.LIEN_PORTAL + "GetAssignedARUnpaid",
+  GetAssignedARUnpaid = APIURL.LIEN_PORTAL + "GetAssignedARUnpaidRequest",
   GetAssignedARPaid = APIURL.LIEN_PORTAL + "GetAssignedARPaid",
   GetFundingCompanyByUser = APIURL.LIEN_PORTAL + "GetFundingCompanyByUser",
   AssignARStudiesToRadiologist = APIURL.LIEN_PORTAL + "AssignARStudiesToRadiologist",
@@ -92,5 +92,9 @@ export enum LienPortalAPIEndpoint {
 
   //Funding Company
   GetPendingSignature = APIURL.LIEN_PORTAL + "GetPendingSignature",
+  GetFundingCompanyPaidList = APIURL.LIEN_PORTAL + "GetFundingCompanyPaidList",
 
+  //Funding Company Setting
+  AddFundingUserSetting = APIURL.LIEN_PORTAL + "AddFundingUserSetting",
+  GetFundingCompanySetting = APIURL.LIEN_PORTAL + "GetFundingCompanySetting",
 }

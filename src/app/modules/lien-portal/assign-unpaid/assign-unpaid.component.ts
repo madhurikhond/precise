@@ -63,7 +63,7 @@ export class AssignUnpaidComponent implements OnInit {
     this.dataSource = [];
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARUnpaid).subscribe((result) => {
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result && result.result.length > 0) {
+        if (result.result) {
           this.dataSource = result.result
           this.AssignARUnpaid = this.dataSource;
           this.totalRecord = result.result.length;
