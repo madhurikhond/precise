@@ -209,7 +209,7 @@
                     data-dismiss="modal">Cancel</a>
                 <a (click)="approveAllParentToLease(true)" hrefTo="javascript:void(0)"
                     class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
-                <a href="javascript:void(0)" (click)="clearEsignData()" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
+                <a href="javascript:void(0)"  data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
                     class="btn btn-theme pull-left btn-sm">No</a>
             </div>
         </div>
@@ -221,7 +221,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
+                <a href="javascript:void()" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
             </div>
 
             <form name="form" (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
