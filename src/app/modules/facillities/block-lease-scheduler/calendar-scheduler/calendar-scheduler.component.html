@@ -104,7 +104,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div #modaldismiss2 class="close-dismiss" data-dismiss="modal"></div>
+                <a href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
+                <!-- <div #modaldismiss2 class="close-dismiss" data-dismiss="modal"></div> -->
             </div>
 
 
@@ -220,7 +221,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
+                <a href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
             </div>
 
             <form name="form" (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
@@ -272,15 +273,16 @@
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                           <div class="form-group">
-                            <div [ngClass]="{'signature-pad-group':!approveAddEsignModel.signature, 'signature-pad-group remove':approveAddEsignModel.signature}">
-                              <signature-pad id="signature-pad-approveaddesign" ngDefaultControl
-                                             [options]="signaturePadOptions" #approveAddEsignModelx [(ngModel)]="approveAddEsignModel.signature"
+                        
+                            <div [ngClass]="{'signature-pad-group':approveAddEsignModel.signapprove=='', 'signature-pad-group remove':approveAddEsignModel.signapprove!=''}">
+                              <signature-pad id="signature-pad-approveaddesign" #signaturePadApprove ngDefaultControl
+                                             [options]="signaturePadOptions"  [(ngModel)]="approveAddEsignModel.signapprove"
                                              [ngModelOptions]="{ standalone : true }"
-                                             [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignModel.signature=='' }"
-                                             #signature="ngModel" (onEndEvent)="drawCompleteapproveAddEsign()">
+                                             [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignModel.signapprove=='' }"
+                                             #signaturePadApprove="ngModel" (onEndEvent)="drawCompleteapproveAddEsign()">
                               </signature-pad>
                             </div>
-                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignModel.signature==''" class="invalid-feedback">
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignModel.signapprove==''" class="invalid-feedback">
                               <div>signature is required</div>
                             </div>
                           </div>
@@ -292,8 +294,8 @@
                 </div>
 
                 <div class="modal-footer"> 
-                    <button type="submit" style="float: left;" [disabled]="(approveAddEsignModel.signature =='') ? true:false"
-                        [ngStyle]="{'background-color': ((approveAddEsignModel.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                    <button type="submit" style="float: left;" [disabled]="(approveAddEsignModel.signapprove =='') ? true:false"
+                        [ngStyle]="{'background-color': ((approveAddEsignModel.signapprove !='')) ? '#3b8beb' : '#bfbfbf'}"
                         class="btn btn-theme btn-sm pull-left">Approve</button>
 
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
