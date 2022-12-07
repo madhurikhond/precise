@@ -948,7 +948,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="MriServices" type="checkbox"
-															formControlName="mriservice">
+															formControlName="mriservice" (change)="onChangeService('mri')">
 														<label for="MriServices" class="arrow-label">MRI</label>
 													</div>
 												</div>
@@ -957,7 +957,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="CtServices" type="checkbox"
-															formControlName="ctservice">
+															formControlName="ctservice" (change)="onChangeService('ct')">
 														<label for="CtServices" class="arrow-label">CT</label>
 													</div>
 												</div>
