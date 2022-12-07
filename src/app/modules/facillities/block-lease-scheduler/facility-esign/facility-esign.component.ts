@@ -125,7 +125,7 @@ export class FacilityEsignComponent implements OnInit {
   successNotification(data: any) {
     this.notificationService.showNotification({
       alertHeader: 'Success',
-      alertMessage: data.Message,
+      alertMessage: data.message,
       alertType: data.responseCode
     });
   }
