@@ -3973,21 +3973,21 @@ export class SchdFacilitiesComponent implements OnInit {
       this.btnActive = 1;
       el.selectedRowsData.forEach((i) => {
         leaseID.push(i.LeaseId);
-      });
-      this.leaseIdArray = leaseID;
+      });      
     } else {
       this.btnActive = 0;
     }
+    this.leaseIdArray = leaseID;
   }
   onSelectionChangedCredit(ec) {
-    var CreditID: any = [];
+    var CreditID: any = [];    
     this.selectedCreditPayment = ec.selectedRowsData;
     if (ec.selectedRowsData.length !== 0) {
       ec.selectedRowsData.forEach((i) => {
         CreditID.push(i.CreditId);
-      });
-      this.creditIdArray = CreditID;
+      });      
     }
+    this.creditIdArray = CreditID;
   }
   UnpaidButtonClick(e) {
     var TotalLease = 0, TotalCredit = 0;
