@@ -40,15 +40,17 @@ export class PayInvoiceModalComponent implements OnInit {
     this.formattedInputAmount = this.decimalPipe.transform(this.AmountDetails.TotalAmount, '0.2-2');
     // this.setPayInvoiceForm();
   }
-  transformAmount(element) { 
-     //  this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
+  transformAmount(element) {
+    //  this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
+    if (!isNaN(this.formattedInputAmount))
+      this.formattedInputAmount = Number(this.formattedInputAmount).toLocaleString();
   }
 
   createPayInvoiceForm() {
     this.payInvoiceForm = this.fb.group({
       checkId: ['', [Validators.required]],
-        checkDate:[this.currentDate,[Validators.required]],
-      checkAmount: ['', [Validators.required]]
+      checkDate: [this.currentDate, [Validators.required]],
+      checkAmount: ['', [Validators.required, Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
     });
   }
   close() {
@@ -81,6 +83,8 @@ export class PayInvoiceModalComponent implements OnInit {
       if (res && res.responseCode == 200) {
         this.successNotification(res);
         this.modal.dismiss(ModalResult.SAVE);
+      } else {
+        this.errorNotification(res);
       }
     });
   }
@@ -100,6 +104,13 @@ export class PayInvoiceModalComponent implements OnInit {
       alertHeader: 'Success',
       alertMessage: data.message,
       alertType: data.responseCode
+    });
+  }
+  errorNotification(err: any) {
+    this.notificationService.showNotification({
+      alertHeader: err.statusText,
+      alertMessage: err.message,
+      alertType: err.status,
     });
   }
   // delete() {
