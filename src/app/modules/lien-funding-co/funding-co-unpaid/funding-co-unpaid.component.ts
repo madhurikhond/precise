@@ -15,6 +15,7 @@ export class FundingCoUnpaidComponent implements OnInit {
   isSelectAll: boolean = false;
   selectedData: any = [];
   getfilterData: any;
+  defaultCheckDate = new Date();
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
@@ -42,7 +43,7 @@ export class FundingCoUnpaidComponent implements OnInit {
 
     this.paymentForm = this.fb.group({
       checkDate: [""],
-      checkNumber: ["", Validators.required],
+      checkNumber: [this.defaultCheckDate, Validators.required],
       checkAmount: [0, Validators.required]
     })
   }
@@ -106,7 +107,7 @@ export class FundingCoUnpaidComponent implements OnInit {
   clearPaymentForm() {
     this.paymentForm.patchValue({
       checkNumber: '',
-      checkDate: ''
+      checkDate: this.defaultCheckDate
     });
   }
 
