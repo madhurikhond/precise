@@ -322,7 +322,10 @@ export class CalendarSchedulerComponent implements OnInit {
             });
         }
     }
-
+    clearEsignData()
+    {
+        this.signConfirm(false);
+    }
     openConfirm(id: number) {
         const event = scheduler.getEvent(id);
         if (event.LeaseBlockId != undefined) {
@@ -512,6 +515,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.approveAddEsignModel.signature = this.signaturePadapproveAddEsignModel.toDataURL();
     }
     signConfirm(isConfirmSign: boolean) {
+        debugger
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
