@@ -1735,6 +1735,10 @@ export class SchdFacilitiesComponent implements OnInit {
 
       mrinotes: data.mrinotes,
     });
+
+    this.CheckSameCombinationMRI('Type1');
+    this.CheckSameCombinationMRI('Type2');
+    this.CheckSameCombinationMRI('Type3');
   }
   setModalityCtTabForm(data: any) {
     this.modalityCtForm.patchValue({
@@ -2144,7 +2148,8 @@ export class SchdFacilitiesComponent implements OnInit {
       this.generalInfoForm.invalid ||
       this.facilityContactDetailForm.invalid ||
       this.facilityIntakeForm.invalid ||
-      this.facilityPoliciesForm.invalid
+      this.facilityPoliciesForm.invalid||
+      this.modalityMriForm.invalid
     ) {
       this.modalValue = '';
       return;
@@ -4149,6 +4154,27 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       }
     }
+    if(Mri1Type){
+      this.modalityMriForm.get('mri1ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri1ResourceName').clearValidators()
+    }
+    if(Mri2Type){
+      this.modalityMriForm.get('mri2ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri2ResourceName').clearValidators()
+    }
+    if(Mri3Type){
+      this.modalityMriForm.get('mri3ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri3ResourceName').clearValidators()
+    }
+    this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
+    this.modalityMriForm.get('mri2ResourceName').updateValueAndValidity();
+    this.modalityMriForm.get('mri3ResourceName').updateValueAndValidity();
   }
   MRIDuplicateResourceNotification() {
     this.notificationService.showNotification({
@@ -4273,6 +4299,28 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       }
     }
+
+    if(Ct1Type){
+      this.modalityCtForm.get('ct1ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct1ResourceName').clearValidators()
+    }
+    if(Ct2Type){
+      this.modalityCtForm.get('ct2ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct2ResourceName').clearValidators()
+    }
+    if(Ct3Type){
+      this.modalityCtForm.get('ct3ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct3ResourceName').clearValidators()
+    }
+    this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
+    this.modalityCtForm.get('ct2ResourceName').updateValueAndValidity();
+    this.modalityCtForm.get('ct3ResourceName').updateValueAndValidity();
   }
 
   get generalInfoFormControls() {

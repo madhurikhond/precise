@@ -155,7 +155,7 @@ export class CreditReasonsSettingComponent implements OnInit {
           this.esignList = res.response;
           this.notificationService.showNotification({
             alertHeader: 'Success',
-            alertMessage: res.message,
+            alertMessage:  res.response[0].Message,
             alertType: res.responseCode
           })
         }

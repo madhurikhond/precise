@@ -1165,17 +1165,25 @@
 																</select>
 															</td>
 															<td>
-																<select #mri1ResourceName
-																	(change)="updateResourceName(mri1ResourceName.value,'mri',1);CheckSameCombinationMRI('Resource1')"
-																	formControlName="mri1ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #mri1ResourceName
+																		(change)="updateResourceName(mri1ResourceName.value,'mri',1);CheckSameCombinationMRI('Resource1')"
+																		formControlName="mri1ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri1ResourceName.errors) }">
+																		<option value="">Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri1ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 														<tr>
@@ -1262,17 +1270,26 @@
 																</select>
 															</td>
 															<td>
-																<select #mri2ResourceName
-																	(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
-																	formControlName="mri2ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #mri2ResourceName
+																		(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
+																		formControlName="mri2ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri2ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri2ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 														<tr>
@@ -1359,17 +1376,26 @@
 																</select>
 															</td>
 															<td>
-																<select #mri3ResourceName
-																	(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
-																	formControlName="mri3ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #mri3ResourceName
+																		(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
+																		formControlName="mri3ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri3ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri3ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 													</tbody>
@@ -1468,33 +1494,43 @@
 																</select>
 															</td>
 															<td>
-																<select #ct1ResourceName
-																	(change)="updateResourceName(ct1ResourceName.value,'ct',1);CheckSameCombinationCT('Resource1')"
-																	formControlName="ct1ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #ct1ResourceName
+																		(change)="updateResourceName(ct1ResourceName.value,'ct',1);CheckSameCombinationCT('Resource1')"
+																		formControlName="ct1ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct1ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct1ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 														<tr>
 															<td>2</td>
-															<td>
-																<select class="form-control" formControlName="ct2make"
-																	(change)="CheckSameCombinationCT('Type2')">
-																	<option></option>
-																	<option value="GE">GE</option>
-																	<option value="Fonar">Fonar</option>
-																	<option value="Hitachi">Hitachi</option>
-																	<option value="Phillips">Phillips</option>
-																	<option value="Siemens">Siemens</option>
-																	<option value="Toshiba">Toshiba</option>
-																	<option value="Other">Other</option>
-																</select>
+															<td> 
+																	<select class="form-control"
+																		formControlName="ct2make"
+																		(change)="CheckSameCombinationCT('Type2')">
+																		<option></option>
+																		<option value="GE">GE</option>
+																		<option value="Fonar">Fonar</option>
+																		<option value="Hitachi">Hitachi</option>
+																		<option value="Phillips">Phillips</option>
+																		<option value="Siemens">Siemens</option>
+																		<option value="Toshiba">Toshiba</option>
+																		<option value="Other">Other</option>
+																	</select>
 															</td>
 															<td>
 																<select class="form-control"
@@ -1550,17 +1586,26 @@
 																</select>
 															</td>
 															<td>
-																<select #ct2ResourceName
-																	(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
-																	formControlName="ct2ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #ct2ResourceName
+																		(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
+																		formControlName="ct2ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct2ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct2ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 														<tr>
@@ -1632,17 +1677,26 @@
 																</select>
 															</td>
 															<td>
-																<select #ct3ResourceName
-																	(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
-																	formControlName="ct3ResourceName"
-																	class="form-control">
-																	<option value=0>Select Resource Name
-																	</option>
-																	<option *ngFor="let item of ResourceNameList"
-																		value={{item.INTERNALRESOURCEID}}>
-																		{{item.RESOURCENAME}}
-																	</option>
-																</select>
+																<div class="form-group">
+																	<select #ct3ResourceName
+																		(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
+																		formControlName="ct3ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct3ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct3ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 													</tbody>
@@ -3226,7 +3280,8 @@
 												<dxo-editing mode="cell" [allowUpdating]="allowUpdatingPrice">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="modType" caption="TYPE" [allowEditing]="false">
 												</dxi-column>
 												<dxi-column dataField="priceTier" caption="PRICE TIER"></dxi-column>
@@ -3252,7 +3307,8 @@
 												<dxi-column dataField="service" caption="SERVICE" [visible]="false">
 												</dxi-column>
 												<dxi-column dataField="isReadOnly" caption="ISREADONLY"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="overridePrice" caption="OVERRIDEPRICE"
 													[visible]="false"></dxi-column>
 											</dx-data-grid>
@@ -3277,7 +3333,8 @@
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
 												<dxi-column dataField="facilityId" caption="facilityId"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="type" caption="TYPE" [allowFixing]="true"
 													alignment="center"></dxi-column>
 												<dxi-column dataField="oldGlobalPrice" caption="OLD GLOBAL PRICE"
@@ -3299,7 +3356,8 @@
 												<dxi-column dataField="lastEffectiveDate" caption="LAST EFFECTIVE DATE"
 													alignment="center" dataType="date" format="shortDate"></dxi-column>
 												<dxi-column dataField="priceTier" caption="PRICE TIER"
-													alignment="center"></dxi-column>
+													alignment="center">
+												</dxi-column>
 											</dx-data-grid>
 										</div>
 									</div>
@@ -3696,7 +3754,8 @@
 												<dxo-editing mode="cell" [allowUpdating]="true">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="Modality" caption="TYPE" [allowEditing]="false">
 												</dxi-column>
 												<dxi-column dataField="LeaseRatePerHour" caption="Lease Rate/ hr">
@@ -3850,7 +3909,8 @@
 											<div class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title">Agreement</h5>
-													<a href="javascript:void(0)" (click)="closePDF()" data-dismiss="modal" class="close-dismiss" ></a>
+													<a href="javascript:void(0)" (click)="closePDF()"
+														data-dismiss="modal" class="close-dismiss"></a>
 												</div>
 												<div class="modal-body" *ngIf="fileData">
 													<iframe width="100%" height="100%" frameBorder="0"
@@ -3879,16 +3939,18 @@
 												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
 												<dxi-column cellTemplate="deleteCreditsTemplate" caption="Credit #">
 												</dxi-column>
-												<dxi-column dataField="AppliedToPayement" caption="Applied to Payment #">
+												<dxi-column dataField="AppliedToPayement"
+													caption="Applied to Payment #">
 												</dxi-column>
 												<dxi-column caption="Credit Applied By"
-													cellTemplate="creditApliedTemplate"></dxi-column>
+													cellTemplate="creditApliedTemplate">
+												</dxi-column>
 												<div *dxTemplate="let data of 'creditApliedTemplate'">
 													{{data.data.FIRSTNAME +" "+data.data.LASTNAME}}
 												</div>
 												<div *dxTemplate="let data of 'StatusTemplate'">
 													<div *ngIf="!data.data.IsUseCredit">Not used</div>
-													<div *ngIf="data.data.IsUseCredit">Applied to Leased</div>
+													<div *ngIf="data.data.IsUseCredit">Applied to Lease</div>
 												</div>
 												<div *dxTemplate="let data of 'deleteCreditsTemplate'">
 													<div *ngIf="data.data.IsUseCredit;then content else elseContent">
@@ -3957,7 +4019,8 @@
 																</dxo-grouping>
 																<dxi-column dataField="LeaseId" caption="LEASE #">
 																</dxi-column>
-																<dxi-column dataField="MonthLabel" cellTemplate="monthTemplate" caption="MONTH">
+																<dxi-column dataField="MonthLabel"
+																	cellTemplate="monthTemplate" caption="MONTH">
 																</dxi-column>
 
 																<dxi-column dataField="MRI" caption="MRI HOURS">
@@ -3966,7 +4029,8 @@
 																</dxi-column>
 																<dxi-column dataField="TotalAmount"
 																	cellTemplate="leaseTotalTemplate"
-																	caption="LEASE TOTAL"></dxi-column>
+																	caption="LEASE TOTAL">
+																</dxi-column>
 
 																<div *dxTemplate="let data of 'leaseTotalTemplate'">
 																	<p *ngIf="data.data.TotalAmount">
@@ -3976,9 +4040,10 @@
 																</div>
 																<div *dxTemplate="let data of 'monthTemplate'">
 																	<p>
-																		<span>{{data.data.MonthLabel}} </span><span>{{data.data.PaidYear}}</span>
+																		<span>{{data.data.MonthLabel}}
+																		</span><span>{{data.data.PaidYear}}</span>
 																	</p>
-																
+
 
 																</div>
 															</dx-data-grid>
@@ -4009,7 +4074,7 @@
 																<dxo-sorting mode="multiple"></dxo-sorting>
 																<dxo-paging [enabled]="false"></dxo-paging>
 																<dxo-load-panel [enabled]="true"></dxo-load-panel>
-																<dxo-grouping  #expand [autoExpandAll]="true">
+																<dxo-grouping #expand [autoExpandAll]="true">
 																</dxo-grouping>
 																<dxi-column dataField="LeaseId" caption="LEASE #">
 																</dxi-column>
@@ -4018,18 +4083,21 @@
 																<dxi-column dataField="CREDIT REASON"
 																	caption="CREDIT REASON"></dxi-column>
 																<dxi-column dataField="Credit time"
-																	caption="CREDIT TIME"></dxi-column>
+																	caption="CREDIT TIME">
+																</dxi-column>
 																<dxi-column dataField="ModalityType" caption="MODALITY">
 																</dxi-column>
 																<dxi-column dataField="Credit Amount"
-																	caption="CREDIT AMOUNT" cellTemplate="creditTotalTemplate"></dxi-column>
+																	caption="CREDIT AMOUNT"
+																	cellTemplate="creditTotalTemplate"></dxi-column>
 
-																	<div *dxTemplate="let data of 'creditTotalTemplate'">
-																		<p *ngIf="data.data['Credit Amount']">
-																			${{data.data['Credit Amount'] | number:'0.2-2'}}</p>
-																		<p *ngIf="!data.data['Credit Amount']"></p>
-	
-																	</div>
+																<div *dxTemplate="let data of 'creditTotalTemplate'">
+																	<p *ngIf="data.data['Credit Amount']">
+																		${{data.data['Credit Amount'] | number:'0.2-2'}}
+																	</p>
+																	<p *ngIf="!data.data['Credit Amount']"></p>
+
+																</div>
 
 															</dx-data-grid>
 														</div>
@@ -4063,11 +4131,14 @@
 																<dxi-column dataField="PaymentId" caption="PaymentId"
 																	[visible]="false"></dxi-column>
 																<dxi-column dataField="PaymentTXN"
-																	caption="PAYMENT TXN"></dxi-column>
+																	caption="PAYMENT TXN">
+																</dxi-column>
 																<dxi-column dataField="DateCreated"
-																	caption="DATE CREATED"></dxi-column>
-																<dxi-column dataField="paidMonth" 
-																	caption="Lease Months"></dxi-column>
+																	caption="DATE CREATED">
+																</dxi-column>
+																<dxi-column dataField="paidMonth"
+																	caption="Lease Months">
+																</dxi-column>
 																<dxi-column dataField="CheckNo" caption="CHECK #">
 																</dxi-column>
 																<dxi-column dataField="CheckDate" caption="CHECK DATE"
@@ -4103,7 +4174,8 @@
 																		<dxi-column dataField="MRIHours"
 																			caption="MRI Hours"></dxi-column>
 																		<dxi-column dataField="CtHours"
-																			caption="CT Hours"></dxi-column>
+																			caption="CT Hours">
+																		</dxi-column>
 																		<dxi-column dataField="LeaseTotal"
 																			caption="Lease Total" dataType="number"
 																			format="currency"></dxi-column>
@@ -4119,7 +4191,8 @@
 																		<dxi-column dataField="Lease" caption="Lease #">
 																		</dxi-column>
 																		<dxi-column dataField="Credit"
-																			caption="Credit #"></dxi-column>
+																			caption="Credit #">
+																		</dxi-column>
 																		<dxi-column dataField="CreditReason"
 																			caption="Credit Reason"></dxi-column>
 																		<dxi-column dataField="CreditTime"
@@ -4157,7 +4230,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-border-gray btn-sm pull-right" (click)="CloseAddEditModal()">Close</button>
+				<button type="button" class="btn btn-border-gray btn-sm pull-right"
+					(click)="CloseAddEditModal()">Close</button>
 
 				<div *ngIf="defaultPopupTab != 'BlockLeaseRate' && defaultPopupTab != 'Leases'">
 					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
@@ -4219,10 +4293,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Alert</h5>
-				<div class="close-dismiss" data-dismiss="modal" (click)="confirmationLease(false)" ></div>
+				<div class="close-dismiss" data-dismiss="modal" (click)="confirmationLease(false)"></div>
 			</div>
 			<div class="modal-body">
-				<p>Disabling Use Block Lease will remove all the existing blocks of the facility . Do you still want to disable it ?</p>
+				<p>Disabling Use Block Lease will remove all the existing blocks of the facility . Do you still want to
+					disable it ?</p>
 			</div>
 			<div class="modal-footer">
 				<a href="javascript:void(0)" (click)="confirmationLease(false)"
