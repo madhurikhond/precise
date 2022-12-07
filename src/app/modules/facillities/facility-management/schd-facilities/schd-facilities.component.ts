@@ -150,7 +150,7 @@ export class SchdFacilitiesComponent implements OnInit {
   blockLeaseCreditList: [] = [];
   paymentMapping: any = [];
   pageNumberOfPaid: number = 1;
-  pageSizeOfPaid: number = 5;
+  pageSizeOfPaid: number = 20;
   totalRecordpaid: number = 1;
   selectedleaseArray: any = [];
 

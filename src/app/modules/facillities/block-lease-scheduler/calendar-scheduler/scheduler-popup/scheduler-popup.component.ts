@@ -603,7 +603,7 @@ export class SchedulerPopupComponent implements OnInit {
         });
         this.dateTimeValidationMsg = "End date should be greater than Start date";
         this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-      } else if (Date.parse(end_date.toDateString()) == Date.parse(start_date.toDateString()) && ((this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+      } else if (((this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')))) {
         this.leaseBlockOffForm.patchValue({
           end_time: null
         });
@@ -638,7 +638,7 @@ export class SchedulerPopupComponent implements OnInit {
         });
         this.dateTimeValidationMsg = "End date should be greater than Start date";
         this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
-      } else if (Date.parse(end_date.toDateString()) == Date.parse(start_date.toDateString()) && ((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
+      } else if (((this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US'))) <= this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')))) {
         this.leaseForm.patchValue({
           end_time: null
         });
