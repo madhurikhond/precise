@@ -260,6 +260,16 @@ sendDataToEsignrequestWindow(EsignAgreeCheck:any): void {
       map((res:ApiResponse) => res)
     );
   }
+  getPatientDataForExportAllToExcel(showGlobalLoader : boolean = true ,body:any){
+    return this._httpService.post('Patient/GetPatientDataForExportAllToExcel',body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  updateActionOnPatientForAll(showGlobalLoader : boolean = true ,body:any,Condition:Number){
+    return this._httpService.post('Patient/UpdateActionOnPatientForAll?Condition='+Condition,body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 
 
   downloadFile(data, filename='data') {

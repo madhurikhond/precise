@@ -62,8 +62,8 @@ export class PatientComponent implements OnInit {
   g: any = 20;
   h: any = 20;
   selectedRows: any = [];
-  patientPortalLink:any;
-  DomainURL : string;
+  patientPortalLink: any;
+  DomainURL: string;
   Issubmitted: boolean = false;
   isColumnVisible: boolean = false;
   GenerateEsignLinkList: any = [];
@@ -121,7 +121,7 @@ export class PatientComponent implements OnInit {
   totalRecordAppLog: number = 1;
   pageNumberLogs: number = 1;
   patientBillingDetailForm: FormGroup;
-  FormGroupName:FormGroup;
+  FormGroupName: FormGroup;
   patientID: any;
   BillingData: any;
   logsPageTitle: any = '';
@@ -136,14 +136,14 @@ export class PatientComponent implements OnInit {
   checkBoxesMode: string;
   ddlvalue = [];
   billingHeaderTitle: any = '';
-  ddlCurrentValue: string = '0';  
+  ddlCurrentValue: string = '0';
   ddlCurrentSelectedColumnValue: string = 'PATIENTID';
   ddlCurrentSelectedColumnText: string = 'PATIENT ID';
   ddlCurrentText: string = 'Select an Action';
   ddlSelectedSortingOrderText: string = 'ascending';
   ddlSelectedSortingOrderValue: string = 'asc';
-  ddlAllColumns:any=[];
-  ddlSortingOrder:any=[];
+  ddlAllColumns: any = [];
+  ddlSortingOrder: any = [];
   filterValue: any = [];
   fileList: any = [];
   LastSearchRecordList = [];
@@ -171,11 +171,11 @@ export class PatientComponent implements OnInit {
   constructor(private fb: FormBuilder, private readonly patientService: PatientService, private readonly notificationService: NotificationService,
     private readonly _commonMethodService: CommonMethodService//,public datepipe:DatePipe
     , private readonly storageService: StorageService,
-    private readonly patientPortalService : PatientPortalService,
+    private readonly patientPortalService: PatientPortalService,
     private commonService: CommonMethodService,
     private datePipe: DatePipe, private route: ActivatedRoute,
-    private readonly referrersService :  ReferrersService,
-    private readonly brokerService : BrokerService,
+    private readonly referrersService: ReferrersService,
+    private readonly brokerService: BrokerService,
   ) {
     this.route.queryParamMap.subscribe((params: any) => {
       this.Phoneparam = params.params.Phone;
@@ -202,7 +202,7 @@ export class PatientComponent implements OnInit {
     this.getScheduledModality();
     this.getMarketingUser();
     this.getStatusNames();
-    this.ddlvalue = this.selectAnActionDdl();   
+    this.ddlvalue = this.selectAnActionDdl();
     this.getAllSavedSearchList();
     this.PatientActionShowHide();
     this.createPatientBillingDetailForm();
@@ -220,7 +220,7 @@ export class PatientComponent implements OnInit {
       this.ddlAllColumns = this.getAllcolumns();
       this.ddlSortingOrder = this.getSortingOrder()
     }, 200);
-    
+
     //this.getLogs();
 
   }
@@ -332,7 +332,7 @@ export class PatientComponent implements OnInit {
   columnChooserClick(e: any): void {
     $('.dx-overlay-content').toggle();
     this.gridPatient.first.columnChooser.mode = 'select';
-    this.gridPatient.first.instance.showColumnChooser();  
+    this.gridPatient.first.instance.showColumnChooser();
     var columnChooserView = this.gridPatient.first.instance.getView('columnChooserView');
     if (!columnChooserView._popupContainer) {
       columnChooserView._initializePopupContainer();
@@ -346,22 +346,22 @@ export class PatientComponent implements OnInit {
     columnChooserView._popupContainer.option('dragEnabled', false)
     columnChooserView._popupContainer.option('position', { of: e.element, my: 'right top', at: 'right top', offset: '0 50' });
   }
-  getAllcolumns(){
-   return this.gridPatient.first.instance.option("columns").filter(a=>a.dataField).map(item=>({value: item.dataField,Text: item.caption}))
+  getAllcolumns() {
+    return this.gridPatient.first.instance.option("columns").filter(a => a.dataField).map(item => ({ value: item.dataField, Text: item.caption }))
   }
-  getSortingOrder(){
-    return [      
+  getSortingOrder() {
+    return [
       { value: 'asc', Text: 'Ascending' },
       { value: 'desc', Text: 'Descending' }]
-   }
-   onChangeSelectedColumn(index){
-      this.ddlCurrentSelectedColumnValue = index.value;
-      this.ddlCurrentSelectedColumnText = index.Text;
-   }
-   onChangeSortingOrder(index){
+  }
+  onChangeSelectedColumn(index) {
+    this.ddlCurrentSelectedColumnValue = index.value;
+    this.ddlCurrentSelectedColumnText = index.Text;
+  }
+  onChangeSortingOrder(index) {
     this.ddlSelectedSortingOrderValue = index.value;
     this.ddlSelectedSortingOrderText = index.Text;
- }
+  }
 
   selectAnActionDdl() {
     return [
@@ -373,7 +373,7 @@ export class PatientComponent implements OnInit {
       { value: '5', Text: 'Not Ready To Bill' },
       { value: '6', Text: 'Gross Receipts' },
       { value: '7', Text: 'Generate e-Sign Link' },
-      { value: '34', Text: 'Generate Patient Portal Link'},
+      { value: '34', Text: 'Generate Patient Portal Link' },
       { value: '8', Text: 'Generate PI TC & P PI Lien' },
       { value: '9', Text: 'Generate PI TC Lien' },
       { value: '10', Text: 'Generate PI P Lien' },
@@ -440,7 +440,7 @@ export class PatientComponent implements OnInit {
   }
 
   getPatientDetailById(e: any) {
-    
+
     let body = {
       'patientID': e.data.PATIENTID,
       'internalPatientId': e.data.INTERNALPATIENTID,
@@ -803,7 +803,7 @@ export class PatientComponent implements OnInit {
       this.InsertLastSearchRecord()
     }
 
-    
+
     let brokerId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.BrokerId : ''
     let facilityId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityID : '';
     let facilityParentId = this.storageService.user?.UserType !== '' && this.storageService.user.UserType.toLowerCase() !== 'precise imaging employee' && this.storageService.user.UserType.toLowerCase() !== 'admin' ? this.storageService.user.FacilityParentID : '';
@@ -844,8 +844,8 @@ export class PatientComponent implements OnInit {
       'facilityId': facilityId,
       'facilityParentId': facilityParentId,
       'referrelId': referrelId,
-      'SortingColumn':this.ddlCurrentSelectedColumnValue,
-      'SortingOrder':this.ddlSelectedSortingOrderValue
+      'SortingColumn': this.ddlCurrentSelectedColumnValue,
+      'SortingOrder': this.ddlSelectedSortingOrderValue
     }
     this.filterBody = body;
     if (isSearchBtn) {
@@ -854,7 +854,7 @@ export class PatientComponent implements OnInit {
     this.patientService.getPatientData(true, body, this.pageNumber, this.pageSize).subscribe((res) => {
 
       if (res.response != null && res.response.length > 0) {
-        
+
         this.patientGridList = res.response;
         this.totalRecord = res.totalRecords;
         this.dataGrid.instance.refresh();
@@ -931,9 +931,27 @@ export class PatientComponent implements OnInit {
     //this.applyFilter();
   }
   onExporting() {
-    let element = document.getElementById('patient-grid-container');
-    let instance = DataGrid.getInstance(element) as DataGrid;
-    this.commonService.onExporting(instance, 'Patient')
+    if (this.isSelectAll) {
+      this.patientService.getPatientDataForExportAllToExcel(true, this.filterBody).subscribe((res) => {
+        console.log(res.response);
+        // if (res.response != null && res.response.length > 0) {  
+        //   this.patientGridList = res.response;
+        //   this.totalRecord = res.totalRecords;
+        //   this.dataGrid.instance.refresh();
+        // }
+        // else {
+        //   this.patientGridList = [];
+        //   this.totalRecord = 1;
+        // }
+      },
+        (err: any) => {
+          this.error(err);
+        });
+    } else {
+      let element = document.getElementById('patient-grid-container');
+      let instance = DataGrid.getInstance(element) as DataGrid;
+      this.commonService.onExporting(instance, 'Patient')
+    }
   }
 
   saveGridSetting() {
@@ -999,7 +1017,7 @@ export class PatientComponent implements OnInit {
   }
 
   selectionChanged(data: any) {
-    
+
     this.selectedRows = [];
     this.checkedData = data.selectedRowsData;
     this.selectedInternalPatientId = data.selectedRowKeys[0] ? data.selectedRowKeys[0].INTERNALPATIENTID : '';
@@ -1028,7 +1046,7 @@ export class PatientComponent implements OnInit {
 
   goButtonClick() {
 
-    
+
     if (this.ddlCurrentValue == '2')//'Save Grid'
     {
       let setting = { ...this.filterBody };
@@ -1048,7 +1066,7 @@ export class PatientComponent implements OnInit {
       this.saveGridSetting();
       return;
     }
-    if (this.checkedData == 0) {
+    if (this.checkedData == 0 && !this.isSelectAll) {
       this.notificationService.showNotification({
         alertHeader: null,
         alertMessage: 'No studies are selected',
@@ -1141,7 +1159,7 @@ export class PatientComponent implements OnInit {
       }
       else if (this.ddlCurrentValue == '7') {
         //  Generate e-Sign Link
-        
+
         for (let i = 0; i < this.checkedData.length; i++) {
           const results = this.checkedPatientIdInternalStudyid.filter(pt => {
             return pt.PATIENTIDEXPORT === this.checkedData[i].PATIENTID && pt.InternalStudyId === this.checkedData[i].Internalstudyid;
@@ -1383,38 +1401,42 @@ export class PatientComponent implements OnInit {
       //18- Tech ASL Signed
       //19- Tech ASL Not Signed
       {
-        this.checkedPatientIdInternalStudyid = [];
-        for (let i = 0; i < this.checkedData.length; i++) {
-          this.checkedPatientIdInternalStudyid.push({
-            PATIENTID: this.checkedData[i].PATIENTID,
-            InternalStudyId: this.checkedData[i].Internalstudyid,
-            Condition: this.ddlCurrentValue,
-            AttorneyBillingId: this.checkedData[i].AttorneyBillingId,
-            Userid: this.storageService.user.UserId
-          });
-        }
-        let data = {
-          'parameter': JSON.stringify(this.checkedPatientIdInternalStudyid)
-        }
-        this.patientService.getReadyToBill(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+        if (this.isSelectAll) {
+          this.updateActionOnPatientForSelectAll();
+        } else {
           this.checkedPatientIdInternalStudyid = [];
-          if (res.response != null) {
-
-            this.notificationService.showNotification({
-              alertHeader: 'Success',
-              alertMessage: res.response[0].Result,
-              alertType: res.responseCode
+          for (let i = 0; i < this.checkedData.length; i++) {
+            this.checkedPatientIdInternalStudyid.push({
+              PATIENTID: this.checkedData[i].PATIENTID,
+              InternalStudyId: this.checkedData[i].Internalstudyid,
+              Condition: this.ddlCurrentValue,
+              AttorneyBillingId: this.checkedData[i].AttorneyBillingId,
+              Userid: this.storageService.user.UserId
             });
-            this.applyFilter();
-            $('.dx-command-select[role="columnheader"]').find('.dx-select-checkbox[aria-checked="mixed"').trigger('click')
-            $('.dx-command-select[role="columnheader"]').find('.dx-select-checkbox[aria-checked="true"').trigger('click')
-          } else {
-            this.error(res);
           }
-        },
-          (err: any) => {
-            this.error(err);
-          });
+          let data = {
+            'parameter': JSON.stringify(this.checkedPatientIdInternalStudyid)
+          }
+          this.patientService.getReadyToBill(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+            this.checkedPatientIdInternalStudyid = [];
+            if (res.response != null) {
+
+              this.notificationService.showNotification({
+                alertHeader: 'Success',
+                alertMessage: res.response[0].Result,
+                alertType: res.responseCode
+              });
+              this.applyFilter();
+              $('.dx-command-select[role="columnheader"]').find('.dx-select-checkbox[aria-checked="mixed"').trigger('click')
+              $('.dx-command-select[role="columnheader"]').find('.dx-select-checkbox[aria-checked="true"').trigger('click')
+            } else {
+              this.error(res);
+            }
+          },
+            (err: any) => {
+              this.error(err);
+            });
+        }
 
       }
       else if (this.ddlCurrentValue == '14' || this.ddlCurrentValue == '15' || this.ddlCurrentValue == '16' || this.ddlCurrentValue == '17' ||
@@ -1422,44 +1444,49 @@ export class PatientComponent implements OnInit {
         this.ddlCurrentValue == '22' || this.ddlCurrentValue == '23' || this.ddlCurrentValue == '24' || this.ddlCurrentValue == '25' ||
         this.ddlCurrentValue == '26' || this.ddlCurrentValue == '31' || this.ddlCurrentValue == '32') {
 
-        let internalStudyIds = '';
-        let internalPatientIds = '';
-        let actionOrderNo = this.ddlCurrentValue;
-        for (let i = 0; i < this.checkedData.length; i++) {
-          // this.checkedPatientIdInternalStudyid.push({
-          // InternalStudyId: this.checkedData[i].Internalstudyid,
-          // })
-          if (i < this.checkedData.length - 1) {
-            internalPatientIds += this.checkedData[i].INTERNALPATIENTID + ',';
-            internalStudyIds += this.checkedData[i].Internalstudyid + ',';
+        if ((this.ddlCurrentValue == '18' || this.ddlCurrentValue == '19' || this.ddlCurrentValue == '20' || this.ddlCurrentValue == '21' ||
+          this.ddlCurrentValue == '22' || this.ddlCurrentValue == '23' || this.ddlCurrentValue == '24' || this.ddlCurrentValue == '25') && this.isSelectAll) {
+          this.updateActionOnPatientForSelectAll();
+        } else {
+          let internalStudyIds = '';
+          let internalPatientIds = '';
+          let actionOrderNo = this.ddlCurrentValue;
+          for (let i = 0; i < this.checkedData.length; i++) {
+            // this.checkedPatientIdInternalStudyid.push({
+            // InternalStudyId: this.checkedData[i].Internalstudyid,
+            // })
+            if (i < this.checkedData.length - 1) {
+              internalPatientIds += this.checkedData[i].INTERNALPATIENTID + ',';
+              internalStudyIds += this.checkedData[i].Internalstudyid + ',';
+            }
+            else {
+              internalPatientIds += this.checkedData[i].INTERNALPATIENTID;
+              internalStudyIds += this.checkedData[i].Internalstudyid;
+            }
           }
-          else {
-            internalPatientIds += this.checkedData[i].INTERNALPATIENTID;
-            internalStudyIds += this.checkedData[i].Internalstudyid;
+          let data = {
+            'internalStudyIds': internalStudyIds,
+            'internalPatientIds': internalPatientIds,
+            'actionOrderNo': actionOrderNo
           }
-        }
-        let data = {
-          'internalStudyIds': internalStudyIds,
-          'internalPatientIds': internalPatientIds,
-          'actionOrderNo': actionOrderNo
-        }
-        this.patientService.updateActionOnSelect(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
-          this.checkedPatientIdInternalStudyid = [];
-          if (res.response != null) {
-            // this.success(res.response[0].result);
-            // console.log(res.response[0].result);
+          this.patientService.updateActionOnSelect(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+            this.checkedPatientIdInternalStudyid = [];
+            if (res.response != null) {
+              // this.success(res.response[0].result);
+              // console.log(res.response[0].result);
 
-            this.notificationService.showNotification({
-              alertHeader: 'Success',
-              alertMessage: res.response[0].Result,
-              alertType: res.responseCode
-            });
-            this.applyFilter();
-          } else {
-            this.error(res);
+              this.notificationService.showNotification({
+                alertHeader: 'Success',
+                alertMessage: res.response[0].Result,
+                alertType: res.responseCode
+              });
+              this.applyFilter();
+            } else {
+              this.error(res);
 
-          }
-        })
+            }
+          })
+        }
       }
       else if (this.ddlCurrentValue == '33') {//Do Not Send SMS
         let msg = '';
@@ -1605,8 +1632,8 @@ export class PatientComponent implements OnInit {
           'domainUrl': this.DomainURL
         }
         this.patientPortalService.getPatientPortalLink(patientdata).subscribe((res) => {
-        this.patientPortalLink = res.result;
-        this.hiddenShowopenLinkPopUpPatient.nativeElement.click();
+          this.patientPortalLink = res.result;
+          this.hiddenShowopenLinkPopUpPatient.nativeElement.click();
         },
           (err: any) => {
             this.error(err);
@@ -1636,6 +1663,23 @@ export class PatientComponent implements OnInit {
       // }
 
     }
+  }
+  updateActionOnPatientForSelectAll() {
+    this.patientService.updateActionOnPatientForAll(true, this.filterBody, Number(this.ddlCurrentValue)).subscribe((res) => {
+      console.log(res.response);
+      // if (res.response != null && res.response.length > 0) {  
+      //   this.patientGridList = res.response;
+      //   this.totalRecord = res.totalRecords;
+      //   this.dataGrid.instance.refresh();
+      // }
+      // else {
+      //   this.patientGridList = [];
+      //   this.totalRecord = 1;
+      // }
+    },
+      (err: any) => {
+        this.error(err);
+      });
   }
   showDocManager(e: any) {
 
@@ -1681,7 +1725,7 @@ export class PatientComponent implements OnInit {
   }
 
   lastSearchPatch(event) {
-    
+
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
     let a = stringInput.patientID;
@@ -1727,7 +1771,7 @@ export class PatientComponent implements OnInit {
   }
 
   InsertLastSearchRecord() {
-    
+
     let body = {
       'id': 0,
       'isSelected': 0,
@@ -1765,7 +1809,7 @@ export class PatientComponent implements OnInit {
   }
 
   GetLastSearchRecord() {
-    
+
     this.patientService.GetLastSearchRecord(true).subscribe((res) => {
       this.LastSearchRecordList = res.response
       if (this.LastSearchRecordList == null) {
@@ -1824,7 +1868,7 @@ export class PatientComponent implements OnInit {
   }
 
   onChangeSavedSearch(event) {
-    
+
     //this.clearFilter();
     let stringInput = JSON.parse(event.PageSettings);
     this.clearFilter(false);
@@ -1926,26 +1970,25 @@ export class PatientComponent implements OnInit {
     }
   }
 
-ValidateMultiSelectTextLength(id, a)
-  {
-    a =this._commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
+  ValidateMultiSelectTextLength(id, a) {
+    a = this._commonMethodService.ValidateMultiSelectTextLength(id, a);
+    return a;
   }
   copyToClipboard(currentPageUrl) {
-    
-     navigator.clipboard.writeText(currentPageUrl).catch(() => {
+
+    navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
-     this.notificationService.showToaster({
-       alertHeader: '',
+    this.notificationService.showToaster({
+      alertHeader: '',
       alertMessage: currentPageUrl,
-       alertType: null
-     });
+      alertType: null
+    });
   }
-  getReferrerDetailById(referrerName: any, referrerId: any,isPoliciesTab:any) {
-    
-      if (referrerId) {
-      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab' : true};
+  getReferrerDetailById(referrerName: any, referrerId: any, isPoliciesTab: any) {
+
+    if (referrerId) {
+      let body = { 'title': referrerName, 'referrerId': referrerId, 'isPoliciesTab': true };
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
@@ -1956,16 +1999,16 @@ ValidateMultiSelectTextLength(id, a)
     }
   }
   getReferringPhyDetailById(referringPhysician: string, ReferringPhyId: any) {
-    
+
     if (ReferringPhyId) {
-      let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab' : true};
+      let body = { 'title': referringPhysician, 'referrerId': ReferringPhyId, 'isPoliciesTab': true };
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
   getReadingPhysicianById(readingPhysician: string, RadlogistId: any) {
-    
+
     if (RadlogistId) {
-      let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab' : true};
+      let body = { 'title': readingPhysician, 'referrerId': RadlogistId, 'isPoliciesTab': true };
       this.referrersService.sendDataToReferrerDetailWindowFromOrderedSchedular(body);
     }
   }
