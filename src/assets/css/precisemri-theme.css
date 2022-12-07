@@ -7103,3 +7103,9 @@ select {
 
 	.modal{overflow: auto;}
 
+
+	.ms-lf-col{padding-left: 30px;}
+	@media (max-width: 990px) {
+		.ms-lf-col{padding-left: 10px!important;}
+		
+	}
