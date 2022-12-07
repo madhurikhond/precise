@@ -45,9 +45,9 @@ export class CreditReasonsSettingComponent implements OnInit {
   ngOnInit(): void {
     this.tabId = 'Reasons';
     this.columnResizingMode = this.resizingModes[0];
-     this.getDocumentsTypes();
-     this.getEsignData();
-     this.creditReasonFormInitialize();
+    this.getCreditReasonsList();
+    this.getEsignData();
+    this.creditReasonFormInitialize();
   }
   creditReasonFormInitialize() {
     this.addCreditReasonForm = this.fb.group({
@@ -58,7 +58,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   updateTabId(tabName: string, val: boolean) {
     this.tabId = tabName;
   }
-  getDocumentsTypes() {
+  getCreditReasonsList() {
     let body = {
       Operation: 5
     }
@@ -70,11 +70,9 @@ export class CreditReasonsSettingComponent implements OnInit {
         this.PagecreditReasonsList = this.paginate(this.creditReasonsList, this.pageSize, this.pageNumber);
       }
       else {
-        this.notificationService.showNotification({
-          alertHeader: data.statusText,
-          alertMessage: data.message,
-          alertType: data.responseCode
-        });
+        this.creditReasonsList = [];
+        this.totalcreditReasonsList = 0;
+        this.PagecreditReasonsList = 1;
       }
     },
       (err: any) => {
@@ -155,7 +153,7 @@ export class CreditReasonsSettingComponent implements OnInit {
           this.esignList = res.response;
           this.notificationService.showNotification({
             alertHeader: 'Success',
-            alertMessage:  res.response[0].Message,
+            alertMessage: res.response[0].Message,
             alertType: res.responseCode
           })
         }
@@ -280,7 +278,7 @@ export class CreditReasonsSettingComponent implements OnInit {
           alertType: res.responseCode
         })
       }
-      this.getDocumentsTypes();
+      this.getCreditReasonsList();
     },
       (err: any) => {
         this.notificationService.showNotification({
@@ -296,6 +294,6 @@ export class CreditReasonsSettingComponent implements OnInit {
     this.PagecreditReasonsList = this.paginate(this.creditReasonsList, this.pageSize, this.pageNumber);
   }
   paginate(array, page_size, page_number) {
-  return array.slice((page_number - 1) * page_size, page_number * page_size);
-}
+    return array.slice((page_number - 1) * page_size, page_number * page_size);
+  }
 }
