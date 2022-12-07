@@ -4055,10 +4055,9 @@
 																[allowColumnResizing]="true"
 																[columnResizingMode]="columnResizingMode"
 																[columnAutoWidth]="true">
+																<dxo-paging [enabled]="false"></dxo-paging>
 																<dxo-selection mode="single"></dxo-selection>
-																<dxo-paging [pageSize]="10"></dxo-paging>
 																<dxo-sorting mode="none"></dxo-sorting>
-																<!-- <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling> -->
 																<dxi-column dataField="facilityId" caption="facilityId"
 																	[visible]="false"></dxi-column>
 																<dxi-column dataField="PaymentId" caption="PaymentId"
@@ -4140,9 +4139,11 @@
 														</div>
 														<div class="pagination-theme">
 															<div
-																*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+																*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginationpaid', itemsPerPage: pageSizeOfPaid, currentPage: pageNumberOfPaid, totalItems:totalRecordpaid }">
 															</div>
-															<!-- <pagination-controls id="paginate2" (pageChange)="pageChanged($event)"></pagination-controls> -->
+															<pagination-controls id="paginationpaid"
+																(pageChange)="onPageNumberChangePaid($event)">
+															</pagination-controls>
 														</div>
 													</div>
 												</div>
