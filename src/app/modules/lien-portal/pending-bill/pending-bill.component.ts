@@ -94,10 +94,12 @@ export class PendingBillComponent implements OnInit {
   getListingData() {
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingToBill).subscribe((result) => {
       if (result.status == LienPortalResponseStatus.Success) {
-        this.totalRecord = result.result.length;
+        this.totalRecord = 0;
         this.dataSource = [];
-        if (result.result)
-          this.dataSource = result.result
+        if (result.result){
+          this.dataSource = result.result;
+          this.totalRecord = result.result.length;
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -174,7 +176,8 @@ export class PendingBillComponent implements OnInit {
         radiologistSign: this.assignARform.get("radiologistSign").value,
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
-        fundingCompanyId: Number(this.assignARform.get("fundingCompany").value)
+        fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
+        baseUrl:window.location.origin
       }
 
       this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.AssignARStudiesToRadiologist).subscribe((res) => {

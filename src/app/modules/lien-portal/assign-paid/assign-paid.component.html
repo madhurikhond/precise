@@ -46,7 +46,7 @@
         </div>
         <div class="pagination-theme" *ngIf="totalRecord > 0">
             <div
-                *ngFor="let item of AssignARpaid | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
+                *ngFor="let item of AssignARpaid | paginate: { id:'pagination1', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
             </div>
             <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
         </div>

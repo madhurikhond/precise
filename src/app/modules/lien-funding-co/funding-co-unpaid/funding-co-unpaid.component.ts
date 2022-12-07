@@ -30,9 +30,10 @@ export class FundingCoUnpaidComponent implements OnInit {
 
   checkBoxesMode: string;
   allMode: string;
-  pageNumber: number = 1;
+  pageNumber: number = 0;
   totalRecord: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 20;
+  currentPageNumber = 1;
   paymentForm: FormGroup;
 
   constructor(private fb: FormBuilder, private lienPortalService: LienPortalService) {
@@ -57,6 +58,10 @@ export class FundingCoUnpaidComponent implements OnInit {
       if (result.status == LienPortalResponseStatus.Success) {
         if (result.result)
           this.dataSource = result.result;
+          this.totalRecord = this.dataSource.length;
+          this.dataSource.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -123,5 +128,14 @@ export class FundingCoUnpaidComponent implements OnInit {
       });
     }
   }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
+  }
+
 
 }

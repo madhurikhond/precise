@@ -8,6 +8,7 @@ const USER = 'user';
 const JWT_TOKEN = 'jwt_t';
 const PARTNER_ID = 'p_id';
 const PARTNER_JWT_Token = 'p_jwt_t';
+const LIEN_JWT_Token = 'l_jwt_t';
 const PATIENT_LANGUAGE = 'lang';
 const PATIENT_STUDY = 'p_study';
 const PATIENT_PREGNANCY = 'p_pregnancy';
@@ -42,6 +43,11 @@ export class StorageService {
   clearAll() {
     localStorage.removeItem(USER);
     localStorage.removeItem(JWT_TOKEN);
+    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(LIEN_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
+    localStorage.removeItem(LIEN_TIMEOUT);
+    localStorage.removeItem(PATIENT_TIMEOUT);
   }
   public set setFreshLogin(isfreshlogin) {
     localStorage.setItem(FRESH_LOGIN, isfreshlogin);
@@ -118,6 +124,10 @@ export class StorageService {
     localStorage.setItem(PARTNER_JWT_Token, jwtToken);
   }
 
+  public set LienJWTToken(jwtToken: string) {
+    localStorage.setItem(LIEN_JWT_Token, jwtToken);
+  }
+
   setPatientLanguage(language: string) {
     if(language === LanguageOption.ES)
       this.fullLanguageName = 'spanish';
@@ -144,6 +154,10 @@ export class StorageService {
 
   public get PartnerJWTToken(): string {
     return localStorage.getItem(PARTNER_JWT_Token);
+  }
+
+  public get LienJWTToken(): string {
+    return localStorage.getItem(LIEN_JWT_Token);
   }
 
   public get LastPageURL(): string {
@@ -182,7 +196,7 @@ export class StorageService {
 
   LogoutLienPortal()
   {
-    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(LIEN_JWT_Token);
     localStorage.removeItem(PARTNER_ID);
     localStorage.removeItem(LIEN_TIMEOUT);
     localStorage.clear();
@@ -237,6 +251,22 @@ export class StorageService {
     var token = this.PartnerJWTToken;
     if (token != null && token != undefined) {
       var decodedToken = this._tokenservice.getDecodedAccessToken(this.PartnerJWTToken);
+      var tokenExpiry = new Date(decodedToken.exp * 1000);
+      var today = new Date();
+      if (tokenExpiry < today) {
+        return false;
+      }
+      else{
+        return true;
+      }
+    }else
+      return false;
+  }  
+
+  public get L_JWTValid():boolean {
+    var token = this.LienJWTToken;
+    if (token != null && token != undefined) {
+      var decodedToken = this._tokenservice.getDecodedAccessToken(this.LienJWTToken);
       var tokenExpiry = new Date(decodedToken.exp * 1000);
       var today = new Date();
       if (tokenExpiry < today) {

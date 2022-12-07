@@ -191,19 +191,19 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     else if(req.url.includes(lienPortalrootPath))
     {
-      if(!this.storageService.pJWTValid)
+      if(!this.storageService.L_JWTValid)
       {
 
         return this.lienPortalService.GetLienPartnerToken()
               .pipe(
                 mergeMap(configData => {
-                  this._storageService.PartnerJWTToken = configData.result.jwtToken;
+                  this._storageService.LienJWTToken = configData.result.jwtToken;
                   this._storageService.PartnerId = configData.result.partnerId;
-                  req.body.jwtToken = this.storageService.PartnerJWTToken;
+                  req.body.jwtToken = this.storageService.LienJWTToken;
                   req.body.loggedPartnerId = this.storageService.PartnerId;
                   req = req.clone({
                     setHeaders: {
-                      [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+                      [AUTH_HEADER]: `Bearer ${this._storageService.LienJWTToken}`
                     }
                   });
                   return next.handle(req);
@@ -214,7 +214,7 @@ export class AuthInterceptor implements HttpInterceptor {
         
         req = req.clone({
           setHeaders: {
-            [AUTH_HEADER]: `Bearer ${this._storageService.PartnerJWTToken}`
+            [AUTH_HEADER]: `Bearer ${this._storageService.LienJWTToken}`
           }
         });
         return next.handle(req);

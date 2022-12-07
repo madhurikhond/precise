@@ -22,7 +22,7 @@ export class AssignUnpaidComponent implements OnInit {
   checkBoxesMode: string;
   allMode: string;
   pageNumber: number = 1;
-  totalRecord: number = 1;
+  totalRecord: number = 0;
   pageSize: number = 20;
   currentPageNumber: number = 1;
   columnResizingMode: string;

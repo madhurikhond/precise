@@ -15,6 +15,7 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 export class RetainUnpaidComponent implements OnInit {
 
   getfilterData: any;
+  defaultCheckDate: Date = new Date();
   readonly commonRegex = CommonRegex;
   @Input()
   set filterData(val: any) {
@@ -89,7 +90,7 @@ export class RetainUnpaidComponent implements OnInit {
     })
     this.receivePaymentform = this.fb.group({
       checkAmount: ['', [Validators.required]],
-      checkDate: ['',Validators.required],
+      checkDate: [this.defaultCheckDate,Validators.required],
       checkNo: ['',Validators.required],
     })
   }
@@ -110,6 +111,9 @@ export class RetainUnpaidComponent implements OnInit {
           this.dataSource = res.result.retainedArUnPaidBatches;
           this.retainARUnpaid = this.dataSource;
           this.totalRecord = this.retainARUnpaid.length;
+          this.retainARUnpaid.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
         }
       }
       else
@@ -222,7 +226,7 @@ export class RetainUnpaidComponent implements OnInit {
         checkDate: this.lienPortalService.convertDateFormat(this.receivePaymentform.controls.checkDate.value),
         checkNumber: this.receivePaymentform.controls.checkNo.value,
       }
-      this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.ReceivePaymentForSelectStudy).subscribe((res) => {
+      this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MarkRetainBatchPaid).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.closeReceivePaymentModal();
           this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
@@ -256,6 +260,7 @@ export class RetainUnpaidComponent implements OnInit {
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
         fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
+        baseUrl:window.location.origin
       }
 
       this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MoveRetainARToAssignAR).subscribe((res) => {
@@ -293,7 +298,7 @@ export class RetainUnpaidComponent implements OnInit {
 
     this.assignARform.patchValue({
       'checkAmount': '',
-      'checkDate': '',
+      'checkDate': this.defaultCheckDate,
       'checkNo': '',
     });
 

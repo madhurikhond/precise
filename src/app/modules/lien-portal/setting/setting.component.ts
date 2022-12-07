@@ -96,7 +96,15 @@ export class SettingComponent implements OnInit {
 
 
   onSettingTabClicked() {
+    if(this.selectedMode == 'funding_company')
+    {
+      this.getDaysData();
+      this.getTimeData();
+      this.GetRadiologistSettings();
+      this.defaultEmail = this.storageService.user.WorkEmail ? this.storageService.user.WorkEmail : '';
+    }
     this.selectedMode = 'settings';
+    
   }
 
   getDaysData() {

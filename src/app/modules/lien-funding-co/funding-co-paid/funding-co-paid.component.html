@@ -1,30 +1,40 @@
 <div class="inner-tab-content">
-    <div class="headerBtnSection">
-       <div class="selectAction-sec">
-            <div class="selectAction-Dropdown">
-                <div class="form-group">
-                    <div class="input-group">
-                        <select class="form-control">
-                            <option>Select Action</option>
-                            <option>Cancel & Remove</option>
-                            <option>Edit Payment Info</option>
-                        </select>
+     <div class="row pt-2">
+            <div class="col-md-6">
+                <label *ngIf="dataSource.length > 0">
+                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
+                    Select All
+                </label>
+            </div>
+            <div class="col-md-6 headerBtnSection">
+                <div class="selectAction-sec">
+                <div class="selectAction-Dropdown">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option>Select Action</option>
+                                <option>Cancel & Remove</option>
+                                <option>Edit Payment Info</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="ationPerformBtn">
-                <button class="btn btn-go" data-toggle="modal" data-target="#paidActionModal">Go</button>
+                <div class="ationPerformBtn">
+                    <button class="btn btn-go" data-toggle="modal" data-target="#paidActionModal">Go</button>
+                </div>
             </div>
         </div>
     </div>
     <div class="tab-pane fundingcopaid-section" id="FundingCoPaid">
         <div class="table-responsive">
             <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="fundingCoPaid"
-                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
+                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false"
+                (onSelectionChanged)="changeCheckbox($event)">
                 <dxo-load-panel [enabled]="true"> </dxo-load-panel>
                 <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
                 </dxo-selection>
-                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                <dxo-pager [visible]="false"></dxo-pager>
                 <dxo-sorting mode="none"></dxo-sorting>
 
                 <dxi-column dataField="checkNumber" caption="Checkno"></dxi-column>
@@ -35,17 +45,20 @@
                 <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
                 <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
                     <dx-data-grid [dataSource]="detail.data.paymentWiseData" class="innerList" [columnAutoWidth]="true"
-                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
+                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"
+                        [showColumnHeaders]="false">
                         <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
                         <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
                         <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                            <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList" [columnAutoWidth]="true"
-                                [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                            <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
+                                [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
+                                [allowColumnResizing]="true">
                                 <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                                 <dxo-sorting mode="none"></dxo-sorting>
-                                <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="readingIconTemplate"></dxi-column>
+                                <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                                    cellTemplate="readingIconTemplate"></dxi-column>
                                 <dxi-column dataField="rad" caption="RAD"> </dxi-column>
                                 <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
                                 <dxi-column dataField="executionDate" caption="Executed Date"></dxi-column>
@@ -59,7 +72,8 @@
                                 <dxi-column dataField="cptGroup" caption="CPT Group"></dxi-column>
                                 <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                                 <div *dxTemplate="let data of 'readingIconTemplate'">
-                                    <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"></a>
+                                    <a href="javascript:void(0)" class="single-action fa  fa-file-text-o"
+                                        data-toggle="modal"></a>
                                 </div>
                             </dx-data-grid>
 
@@ -69,12 +83,15 @@
                 </div>
             </dx-data-grid>
         </div>
-        <div class="pagination-theme" *ngIf="totalRecord > 0">
-          <div
-              *ngFor="let item of AssignARpaid | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord }">
-          </div>
-          <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
-      </div>
+        <div class="pagination-theme" *ngIf="this.totalRecord>0">
+            <div class="pagination-theme">
+                <div
+                    *ngFor="let item of AssignARpaid | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
+                </div>
+                <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -88,12 +105,15 @@
             </div>
             <div class="modal-body">
                 <div class="modal-content">
-                    <p class="confirmationText">This will remove the entire payment. Are you sure you want to continue?</p>
-                    <p class="confirmationText">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES. VOID ANY NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
+                    <p class="confirmationText">This will remove the entire payment. Are you sure you want to continue?
+                    </p>
+                    <p class="confirmationText">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES. VOID ANY
+                        NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" data-dismiss="modal">Cancel</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
                 <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate">Yes</button>
             </div>
         </div>

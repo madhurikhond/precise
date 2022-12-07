@@ -15,6 +15,7 @@ import { CommonRegex } from 'src/app/constants/commonregex';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
 import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
+import { LienPortalURLName } from 'src/app/models/lien-portal-response';
 
 
 declare const $: any;
@@ -67,6 +68,7 @@ export class LoginComponent implements OnInit {
         this.onLienPortalLogin();
       }else{
         this.patientPortalService.refreshToken();
+        this.lienPortalService.refreshLienToken();
         this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
       }
     }
@@ -124,7 +126,8 @@ export class LoginComponent implements OnInit {
           this.lienPortalService.refreshLienToken();
           this.onLienPortalLogin();
         } else {
-        
+          if(this.storageService.LastPageURL == LienPortalURLName.LIEN_PORTAL || this.storageService.LastPageURL == LienPortalURLName.LIEN_PORTAL_SETTINGS)
+            this.storageService.LastPageURL = '';
           this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
           this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);
         }

@@ -21,8 +21,10 @@ export class FundingCoPaidComponent implements OnInit {
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   checkBoxesMode: string;
+  selectedData: any = [];
+  isSelectAll: boolean = false;
   allMode: string;
-  pageNumber: number = 1;
+  pageNumber: number = 0;
   totalRecord: number = 1;
   currentPageNumber: number = 1;
   pageSize: number = 20;
@@ -67,6 +69,9 @@ export class FundingCoPaidComponent implements OnInit {
         this.dataSource = data;
         this.fundingCoPaid = this.dataSource;
         this.totalRecord = this.fundingCoPaid.length;
+        this.fundingCoPaid.forEach(element => {
+          this.dataGrid.instance.collapseRow(element);
+        });
       }else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -74,10 +79,28 @@ export class FundingCoPaidComponent implements OnInit {
     })
   }
 
-  changeCheckbox(item: any) {
-      if (item) {
-        this.checkboxSelectedData = item.selectedRowsData;
-      }
+  onSelectAll(isChecked) {
+    if (isChecked)
+      this.dataGrid.instance.selectAll();
+    else
+      this.dataGrid.instance.deselectAll();
   }
+
+  changeCheckbox($event: any) {
+    this.selectedData = $event.selectedRowsData;
+    if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
+      this.isSelectAll = true;
+    else if ($event.selectedRowsData.length == 0)
+      this.isSelectAll = false;
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
+  }
+
 
 }

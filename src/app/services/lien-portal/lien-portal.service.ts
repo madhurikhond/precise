@@ -77,7 +77,7 @@ export class LienPortalService {
       if (res) {
         if (res.status == LienPortalResponseStatus.Success) {
           this.storageService.PartnerId = res.result.partnerId;
-          this.storageService.PartnerJWTToken = res.result.jwtToken;
+          this.storageService.LienJWTToken = res.result.jwtToken;
         }
       }
       else {

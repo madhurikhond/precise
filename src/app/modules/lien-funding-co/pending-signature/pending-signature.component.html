@@ -21,7 +21,8 @@
                 <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
                     (onSelectionChanged)="onSelectCheckbox($event)" [showColumnHeaders]="false">
-                    <dxo-paging [pageSize]="pageSize"></dxo-paging>
+                    <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                    <dxo-pager [visible]="false"></dxo-pager>
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
                     </dxo-selection>
@@ -62,12 +63,15 @@
                     </div>
                 </dx-data-grid>
             </div>
-            <!-- <div class="pagination-theme">
-            <div
-                *ngFor="let item of blockLeasePaymentList | paginate: { id:'paginate2', itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecords }">
+            <div class="pagination-theme" *ngIf="this.totalRecord>0">
+                <div class="pagination-theme">
+                    <div
+                        *ngFor="let item of dataSource | paginate: { id: 'pagination1' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
+                    </div>
+                    <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)">
+                    </pagination-controls>
+                </div>
             </div>
-            
-        </div> -->
         </div>
     </div>
 </div>

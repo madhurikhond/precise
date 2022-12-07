@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 import { LienPortalResponseStatus, LienPortalURL } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { TokenService } from 'src/app/services/common/token.service';
@@ -17,19 +18,36 @@ export class RAuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.currentUrl = state.url;
-    var token = this.storageService.PartnerJWTToken;
-    if (token != null && token != undefined) {
-      var decodedToken = this.tokenService.getDecodedAccessToken(this.storageService.PartnerJWTToken);
-      var tokenExpiry = new Date(decodedToken.exp * 1000);
-      var today = new Date();
-      if (tokenExpiry < today) {
-        this.lienPortalService.GetLienPartnerToken().subscribe((res: any) => {
-          if (res) {
-            if (res.responseStatus == LienPortalResponseStatus.Success) {
-              this.storageService.PartnerId = res.result.partnerId;
-              this.storageService.PartnerJWTToken = res.result.jwtToken;
-              if (this.isPageRefresh()) {
-                if (this.isUserLoggedIn()) {
+    var token = this.storageService.LienJWTToken;
+    if (this.storageService.user) {
+      if (this.storageService.user.UserType != RADIOLOGIST_TYPE) {
+        this.router.navigate(['unauthorize-access'], {
+          replaceUrl: true,
+        });
+        return false;
+      }
+      
+      if (token != null && token != undefined) {
+        var decodedToken = this.tokenService.getDecodedAccessToken(this.storageService.LienJWTToken);
+        var tokenExpiry = new Date(decodedToken.exp * 1000);
+        var today = new Date();
+        if (tokenExpiry < today) {
+          this.lienPortalService.GetLienPartnerToken().subscribe((res: any) => {
+            if (res) {
+              if (res.responseStatus == LienPortalResponseStatus.Success) {
+                this.storageService.PartnerId = res.result.partnerId;
+                this.storageService.LienJWTToken = res.result.jwtToken;
+                if (this.isPageRefresh()) {
+                  if (this.isUserLoggedIn()) {
+                    return true;
+                  }
+                  else {
+                    this.router.navigate(['login']);
+                    return false;
+                  }
+                }
+                if (this.globalUserLogin()) {
+                  this.router.navigate([this.currentUrl]);
                   return true;
                 }
                 else {
@@ -37,29 +55,28 @@ export class RAuthGuard implements CanActivate {
                   return false;
                 }
               }
-              if (this.globalUserLogin()) {
-                this.router.navigate([this.currentUrl]);
-                return true;
-              }
               else {
                 this.router.navigate(['login']);
                 return false;
               }
+            }
+          },
+            (err: any) => {
+              this.router.navigate(['login']);
+              return false;
+            })
+        }
+        else {
+          if (this.isPageRefresh()) {
+            if (this.isUserLoggedIn()) {
+              return true;
             }
             else {
               this.router.navigate(['login']);
               return false;
             }
           }
-        },
-          (err: any) => {
-            this.router.navigate(['login']);
-            return false;
-          })
-      }
-      else {
-        if (this.isPageRefresh()) {
-          if (this.isUserLoggedIn()) {
+          if (this.globalUserLogin()) {
             return true;
           }
           else {
@@ -67,21 +84,17 @@ export class RAuthGuard implements CanActivate {
             return false;
           }
         }
-        if (this.globalUserLogin()) {
-          return true;
-        }
-        else {
-          this.router.navigate(['login']);
-          return false;
-        }
       }
-    }
-    else {
+      else {
+        this.router.navigate(['login']);
+        return false;
+      }
+
+      return true;
+    } else {
       this.router.navigate(['login']);
       return false;
     }
-
-    return true;
   }
 
   private isPageRefresh(): boolean {

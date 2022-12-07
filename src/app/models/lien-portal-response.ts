@@ -76,7 +76,7 @@ export enum LienPortalAPIEndpoint {
   GetRetainedArPaidList = APIURL.LIEN_PORTAL + "GetRetainedArPaidList",
   MoveRetainARToAssignAR = APIURL.LIEN_PORTAL + "MoveRetainARToAssignAR",
   AssignARPreviewAssignment = APIURL.LIEN_PORTAL + "AssignARPreviewAssignment",
-  ReceivePaymentForSelectStudy = APIURL.LIEN_PORTAL + "ReceivePaymentForSelectStudy",
+  MarkRetainBatchPaid = APIURL.LIEN_PORTAL + "MarkRetainBatchPaid",
 
   //RadiologistSetting
   UpsertFundingCompanyInfo = APIURL.LIEN_PORTAL + "UpsertFundingCompanyInfo",

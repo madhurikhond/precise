@@ -48,9 +48,7 @@
                       <div class="input-group">
                           <select class="form-control" formControlName="dateType">
                               <option value="">Select</option>
-                              <option value="birthDate">Date Of Birth</option>
-                              <option value="dateRead">Date Of Read</option>
-                              <option value="studyDate">Date Of Study</option>
+                              <option *ngFor="let item of dateType" [value]="item.val">{{item.text}}
                           </select>
                       </div>
                   </div>

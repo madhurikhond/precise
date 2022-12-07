@@ -42,9 +42,10 @@ export class PendingSignatureComponent implements OnInit {
 
   checkBoxesMode: string;
   allMode: string;
-  pageNumber: number = 1;
+  pageNumber: number = 0;
   totalRecord: number = 0;
-  pageSize: number = 10;
+  currentPageNumber: number = 1;
+  pageSize: number = 20;
   signatureForm: FormGroup;
 
   constructor(private lienPortalService: LienPortalService,
@@ -56,7 +57,8 @@ export class PendingSignatureComponent implements OnInit {
     this.signatureForm = this.fb.group({
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
-      fundingCompanySign: ['', Validators.required]
+      fundingCompanySign: ['', Validators.required],
+      baseUrl:[window.location.origin]
     })
   }
 
@@ -69,7 +71,11 @@ export class PendingSignatureComponent implements OnInit {
       this.dataSource = [];
       if (result.status == LienPortalResponseStatus.Success) {
         if (result.result)
-          this.dataSource = result.result
+          this.dataSource = result.result;
+          this.totalRecord = this.dataSource.length;
+          this.dataSource.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -96,14 +102,6 @@ export class PendingSignatureComponent implements OnInit {
 
   onSelectCheckbox($event) {
     this.selectedData = $event.selectedRowsData;
-
-    // if (this.dataGrid.instance.totalCount() > 1) {
-    //   if ($event.currentSelectedRowKeys.length == 1)
-    //     this.dataGrid.instance.expandRow(($event.currentSelectedRowKeys[0]));
-    //   else if ($event.currentDeselectedRowKeys.length == 1)
-    //     this.dataGrid.instance.collapseRow(($event.currentDeselectedRowKeys[0]));
-    // }
-
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
       this.isSelectAll = true;
     else if ($event.selectedRowsData.length == 0)
@@ -132,6 +130,14 @@ export class PendingSignatureComponent implements OnInit {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       });
     }
+  }
+
+  onPageNumberChange(pageNumber: any) {
+    this.currentPageNumber = pageNumber;
+    if (pageNumber > 1)
+      this.pageNumber = pageNumber - 1;
+    else
+      this.pageNumber = 0;
   }
 
 }

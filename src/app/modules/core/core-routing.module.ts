@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FundingCoSettingComponent } from '../lien-funding-co/funding-co-setting/funding-co-setting.component';
-import { PatientComponent } from '../patient/patient.component';
-import { PrescreengridComponent } from '../shared/components/prescreening-small-window/prescreengrid/prescreengrid.component';
 import { CoreComponent } from './core.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -26,8 +24,8 @@ const routes: Routes = [
       { path: 'auto-route-v2', loadChildren: () => import('../auto-route-v2/auto-route-v2.module').then(m => m.AutoRouteV2Module), canActivate: [AuthGuard] },
       { path: 'rad-portal', loadChildren: () => import('../reading-rad-portal/reading-rad-portal.module').then(m => m.ReadingRadPortalModule), canActivate: [AuthGuard] },
       { path: 'lien-management', loadChildren: () => import('../lien-management/lien-management.module').then(m => m.LienManagementModule), canActivate: [AuthGuard] },
-      { path: 'lien-funding-co', loadChildren: () => import('../lien-funding-co/lien-funding-co.module').then(m => m.LienFundingCoModule) },
-      { path: 'lien-funding-co-setting', component: FundingCoSettingComponent},
+      { path: 'lien-funding-co', loadChildren: () => import('../lien-funding-co/lien-funding-co.module').then(m => m.LienFundingCoModule), canActivate: [AuthGuard] },
+      { path: 'lien-funding-co-setting', component: FundingCoSettingComponent, canActivate: [AuthGuard]},
       { path: 'shared', loadChildren: () => import('../shared/shared.module').then(m => m.SharedModule)},
     ]
   },

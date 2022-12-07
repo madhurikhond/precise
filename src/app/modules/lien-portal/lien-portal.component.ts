@@ -18,6 +18,8 @@ export class LienPortalComponent implements OnInit {
   filter: any;
   selectedMode: string;
   filterForm: FormGroup;
+  dateType:any = [];
+
 
   constructor(private lienPortalService: LienPortalService,
     private fb: FormBuilder) { }
@@ -36,6 +38,11 @@ export class LienPortalComponent implements OnInit {
       checkNumber: [''],
     });
 
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'studyDate',text:'Date Of Study'}
+    ]
     // Dropdown Binding
     this.bindCPTGroup_DDL();
     this.bindReferrerByUser_DDL();
@@ -89,26 +96,54 @@ export class LienPortalComponent implements OnInit {
 
   onPendingBillTabClicked() {
     this.selectedMode = LienPortalTabName.PENDING;
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'studyDate',text:'Date Of Study'}
+    ]
     this.clearFilter();
   }
 
   onAssignUnpaidTabClicked() {
     this.selectedMode = LienPortalTabName.ASSIGN_UNPAID;
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'assignedDate',text:'AR Assigned Date'},
+      {val:'executeDate',text:'Execution Date'}
+    ]
     this.clearFilter();
   }
 
   onAssignPaidTabClicked() {
     this.selectedMode = LienPortalTabName.ASSIGN_PAID;
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'assignedDate',text:'AR Assigned Date'},
+      {val:'executeDate',text:'Execution Date'}
+    ]
     this.clearFilter();
   }
 
   onRetainedUnpaidTabClicked() {
     this.selectedMode = LienPortalTabName.RETAIN_UNPAID;
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'retainDate',text:'AR Retained'}
+    ]
     this.clearFilter();
   }
 
   onRetainedPaidTabClicked() {
     this.selectedMode = LienPortalTabName.RETAIN_PAID;
+    this.dateType = [
+      {val:'birthDate',text:'Date Of Birth'},
+      {val:'dateRead',text:'Date Of Read'},
+      {val:'retainDate',text:'AR Retained'},
+      {val:'paidDate',text:'Paid Date'}
+    ]
     this.clearFilter();
   }
 

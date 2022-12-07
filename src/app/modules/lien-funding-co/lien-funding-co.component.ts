@@ -15,6 +15,7 @@ export class LienFundingCoComponent implements OnInit {
   selectedMode:string;
   filter: any;
   filterForm: FormGroup;
+  dateType:any = [];
 
   public readonly lienFundingCoTabName = LienFundingCoTabName;
   constructor(private lienPortalService: LienPortalService,
@@ -52,11 +53,28 @@ export class LienFundingCoComponent implements OnInit {
 
     switch (this.selectedMode) {
       case LienFundingCoTabName.PENDING:
+        this.dateType = [
+          {val:'birthDate',text:'Date Of Birth'},
+          {val:'dateRead',text:'Date Of Read'},
+          {val:'assignedDate',text:'Date AR Assigned'}
+        ]
         break;
       case LienFundingCoTabName.UNPAID:
+        this.dateType = [
+          {val:'birthDate',text:'Date Of Birth'},
+          {val:'dateRead',text:'Date Of Read'},
+          {val:'assignedDate',text:'Date AR Assigned'}
+        ]
         this.filter.batch = this.filterForm.controls.batch.value;
         break;
       case LienFundingCoTabName.PAID:
+        this.dateType = [
+          {val:'birthDate',text:'Date Of Birth'},
+          {val:'dateRead',text:'Date Of Read'},
+          {val:'assignedDate',text:'Date AR Assigned'},
+          {val:'executeDate',text:'Execution Date'},
+          {val:'paidDate',text:'Paid Date'}
+        ]
         this.filter.batch = this.filterForm.controls.batch.value;
         this.filter.check = this.filterForm.controls.check.value;
         break;
