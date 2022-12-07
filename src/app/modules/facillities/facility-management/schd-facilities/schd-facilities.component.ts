@@ -621,9 +621,9 @@ export class SchdFacilitiesComponent implements OnInit {
       mriwFlexandEXT: [''],
       mrI2WFlexandEXT: [''],
       mrI3WFlexandEXT: [''],
-      mri1ResourceName: [null],
-      mri2ResourceName: [null],
-      mri3ResourceName: [null],
+      mri1ResourceName: [null, Validators.required],
+      mri2ResourceName: [null, Validators.required],
+      mri3ResourceName: [null, Validators.required],
     });
   }
   createModalityCtTabForm() {
@@ -650,9 +650,9 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3breast: [''],
       ctnotes: [''],
 
-      ct1ResourceName: [null],
-      ct2ResourceName: [null],
-      ct3ResourceName: [null],
+      ct1ResourceName: [null, Validators.required],
+      ct2ResourceName: [null, Validators.required],
+      ct3ResourceName: [null, Validators.required],
     });
   }
   createModalityExceptionsTabForm() {
@@ -2147,7 +2147,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.isResourceCT1Mandatory = false;
     this.isResourceCT2Mandatory = false;
     this.isResourceCT3Mandatory = false;
-    debugger
     if (  this.modalityMriForm.controls['mri1type'].value !=="0" && (parseInt(this.modalityMriForm.controls['mri1ResourceName'].value) === 0  || this.modalityMriForm.controls['mri1ResourceName'].value === null) ) {
       this.isResourceMRI1Mandatory = true;
       this.modalityMriForm.controls['mri1ResourceName'].errors;
@@ -2159,10 +2158,11 @@ export class SchdFacilitiesComponent implements OnInit {
      this.modalityMriForm.patchValue({STATUS: 'INVALID'});
      this.modalityMriForm.controls['mri1ResourceName'].patchValue({STATUS: 'INVALID'});
       this.MRIDuplicateTypeResourceNotification();
-      return;
+      return false;
     }
 
     if (  this.modalityMriForm.controls['mri2type'].value !=="0"  && (parseInt(this.modalityMriForm.controls['mri2ResourceName'].value) === 0  || this.modalityMriForm.controls['mri2ResourceName'].value === null)) {
+     
       this.isResourceMRI2Mandatory = true;
       this.modalityMriForm.controls['mri2ResourceName'].errors;
       this.modalityMriForm.controls['mri2ResourceName'].setValidators(Validators.required);
@@ -2172,11 +2172,13 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityMriForm.patchValue({STATUS: 'INVALID'});
       this.modalityMriForm.controls['mri2ResourceName'].patchValue({STATUS: 'INVALID'});
       this.MRIDuplicateTypeResourceNotification();
-      return;
+      return false;
     }
 
     if ( this.modalityMriForm.controls['mri3type'].value !=="0"  && (parseInt(this.modalityMriForm.controls['mri3ResourceName'].value) ===0 || this.modalityMriForm.controls['mri3ResourceName'].value === null)) {
+     
       this.isResourceMRI2Mandatory = true;
+     // this.modalityMriForm.patchValue({ mri3ResourceName : null  });
       this.modalityMriForm.controls['mri3ResourceName'].errors;
       this.modalityMriForm.controls['mri3ResourceName'].setValidators(Validators.required);
       this.modalityMriFormControls.mri3ResourceName.setValidators(Validators.required);
@@ -2185,7 +2187,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityMriForm.patchValue({STATUS: 'INVALID'});
       this.modalityMriForm.controls['mri3ResourceName'].patchValue({STATUS: 'INVALID'});
       this.MRIDuplicateTypeResourceNotification();
-      return;
+      return false;
     }
     if ( this.modalityCtForm.controls['ct1make'].value !=="0" && (  this.modalityCtForm.controls['ct1ResourceName'].value == "0" || this.modalityCtForm.controls['ct1ResourceName'].value === null )) {
       this.isResourceCT1Mandatory = true;
@@ -2197,7 +2199,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityCtForm.patchValue({STATUS: 'INVALID'});
       this.CTDuplicateMakeResourceNotification();
       this.modalityCtForm.controls['ct1ResourceName'].patchValue({STATUS: 'INVALID'});
-      return;
+      return false;
     }
     if ( this.modalityCtForm.controls['ct2make'].value !=="0" && (this.modalityCtForm.controls['ct2ResourceName'].value == "0" || this.modalityCtForm.controls['ct2ResourceName'].value === null)) {
       this.isResourceCT2Mandatory = true;
@@ -2210,7 +2212,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityCtForm.controls['ct2ResourceName'].patchValue({STATUS: 'INVALID'});
       this.CTDuplicateMakeResourceNotification();
      
-      return;
+      return false;
     }
     if ( this.modalityCtForm.controls['ct3make'].value !=="0"  && (this.modalityCtForm.controls['ct3ResourceName'].value == "0" || this.modalityCtForm.controls['ct3ResourceName'].value === null)) {
       this.isResourceCT3Mandatory = true;
@@ -2223,16 +2225,102 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityCtForm.controls['ct3ResourceName'].patchValue({STATUS: 'INVALID'});
       this.CTDuplicateMakeResourceNotification();
       
-      return;
+      return false;
     }
-
+    return true
   }
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
  
-    this.submitted = true;
-    debugger
-    this.checkResourceNameMandatoryByTypeMake();
+    this.isResourceMRI1Mandatory = false;
+    this.isResourceMRI2Mandatory= false;
+    this.isResourceMRI3Mandatory = false;
+    this.isResourceCT1Mandatory = false;
+    this.isResourceCT2Mandatory = false;
+    this.isResourceCT3Mandatory = false;
+    if (  this.modalityMriForm.controls['mri1type'].value !=="0" && (parseInt(this.modalityMriForm.controls['mri1ResourceName'].value) === 0  || this.modalityMriForm.controls['mri1ResourceName'].value === null) ) {
+      this.isResourceMRI1Mandatory = true;
+      this.modalityMriForm.controls['mri1ResourceName'].errors;
+      this.modalityMriForm.controls['mri1ResourceName'].setValidators(Validators.required);
+      this.modalityMriFormControls.mri1ResourceName.setValidators(Validators.required);
+      this.modalityMriForm.controls['mri1ResourceName'].updateValueAndValidity();
+      this.tabClick('MRI');
+     // this.modalityMriForm.controls['mri1ResourceName'].status['VALID']=false;
+     this.modalityMriForm.patchValue({STATUS: 'INVALID'});
+     this.modalityMriForm.controls['mri1ResourceName'].patchValue({STATUS: 'INVALID'});
+      this.MRIDuplicateTypeResourceNotification();
+      return false;
+    }
+
+    if (  this.modalityMriForm.controls['mri2type'].value !=="0"  && (parseInt(this.modalityMriForm.controls['mri2ResourceName'].value) === 0  || this.modalityMriForm.controls['mri2ResourceName'].value === null)) {
+     
+      this.isResourceMRI2Mandatory = true;
+      this.modalityMriForm.controls['mri2ResourceName'].errors;
+      this.modalityMriForm.controls['mri2ResourceName'].setValidators(Validators.required);
+      this.modalityMriFormControls.mri2ResourceName.setValidators(Validators.required);
+      this.modalityMriForm.controls['mri2ResourceName'].updateValueAndValidity();
+      this.tabClick('MRI');
+      this.modalityMriForm.patchValue({STATUS: 'INVALID'});
+      this.modalityMriForm.controls['mri2ResourceName'].patchValue({STATUS: 'INVALID'});
+      this.MRIDuplicateTypeResourceNotification();
+      return false;
+    }
+
+    if ( this.modalityMriForm.controls['mri3type'].value !=="0"  && (parseInt(this.modalityMriForm.controls['mri3ResourceName'].value) ===0 || this.modalityMriForm.controls['mri3ResourceName'].value === null)) {
+     
+      this.isResourceMRI2Mandatory = true;
+      this.modalityMriForm.patchValue({ mri3ResourceName : null  })
+      this.modalityMriForm.controls['mri3ResourceName'].errors;
+      this.modalityMriForm.controls['mri3ResourceName'].setValidators(Validators.required);
+      this.modalityMriFormControls.mri3ResourceName.setValidators(Validators.required);
+      this.modalityMriForm.controls['mri3ResourceName'].updateValueAndValidity();
+      this.tabClick('MRI');
+      this.modalityMriForm.patchValue({STATUS: 'INVALID'});
+     // this.modalityMriForm.controls['mri3ResourceName'].patchValue({STATUS: 'INVALID'});
+    
+      this.MRIDuplicateTypeResourceNotification();
+      return false;
+    }
+    if ( this.modalityCtForm.controls['ct1make'].value !=="0" && (  this.modalityCtForm.controls['ct1ResourceName'].value == "0" || this.modalityCtForm.controls['ct1ResourceName'].value === null )) {
+      this.isResourceCT1Mandatory = true;
+      this.modalityCtForm.controls['ct1ResourceName'].errors;
+      this.modalityCtFormControls.ct1ResourceName.setValidators(Validators.required);
+      this.modalityCtForm.controls['ct1ResourceName'].setValidators(Validators.required);
+      this.modalityCtForm.controls['ct1ResourceName'].updateValueAndValidity();
+      this.tabClick('CT');
+      this.modalityCtForm.patchValue({STATUS: 'INVALID'});
+      this.CTDuplicateMakeResourceNotification();
+      this.modalityCtForm.controls['ct1ResourceName'].patchValue({STATUS: 'INVALID'});
+      return false;
+    }
+    if ( this.modalityCtForm.controls['ct2make'].value !=="0" && (this.modalityCtForm.controls['ct2ResourceName'].value == "0" || this.modalityCtForm.controls['ct2ResourceName'].value === null)) {
+      this.isResourceCT2Mandatory = true;
+      this.modalityCtForm.controls['ct2ResourceName'].errors;
+      this.modalityCtFormControls.ct2ResourceName.setValidators(Validators.required);
+      this.modalityCtForm.controls['ct2ResourceName'].setValidators(Validators.required);
+      this.modalityCtForm.controls['ct2ResourceName'].updateValueAndValidity();
+      this.tabClick('CT');
+      this.modalityCtForm.patchValue({STATUS: 'INVALID'});
+      this.modalityCtForm.controls['ct2ResourceName'].patchValue({STATUS: 'INVALID'});
+      this.CTDuplicateMakeResourceNotification();
+     
+      return false;
+    }
+    if ( this.modalityCtForm.controls['ct3make'].value !=="0"  && (this.modalityCtForm.controls['ct3ResourceName'].value == "0" || this.modalityCtForm.controls['ct3ResourceName'].value === null)) {
+      this.isResourceCT3Mandatory = true;
+      this.modalityCtForm.controls['ct3ResourceName'].errors;
+      this.modalityCtFormControls.ct3ResourceName.setValidators(Validators.required);
+      this.modalityCtForm.controls['ct3ResourceName'].setValidators(Validators.required);
+      this.modalityCtForm.controls['ct3ResourceName'].updateValueAndValidity();
+      this.tabClick('CT');
+      this.modalityCtForm.patchValue({STATUS: 'INVALID'});
+      this.modalityCtForm.controls['ct3ResourceName'].patchValue({STATUS: 'INVALID'});
+      this.CTDuplicateMakeResourceNotification();
+      
+      return false;
+    }
+
+    // console.log ( this.checkResourceNameMandatoryByTypeMake() ); 
     this.setGeneralInfoTabForm(this.generalInfoForm.value);
 
     if(   this.generalInfoForm.invalid ||
@@ -4151,21 +4239,21 @@ export class SchdFacilitiesComponent implements OnInit {
 
     if (parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)) {
       this.modalityMriForm.patchValue({
-        ['mri2ResourceName']: 0,
+        ['mri2ResourceName']: null,
       });
       this.MRIDuplicateResourceNotification();
 
     }
     if (parseInt(Mri2ResourceName) == parseInt(Mri3ResourceName)) {
       this.modalityMriForm.patchValue({
-        ['mri3ResourceName']: 0,
+        ['mri3ResourceName']: null,
       });
       this.MRIDuplicateResourceNotification();
 
     }
     if (parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)) {
       this.modalityMriForm.patchValue({
-        ['mri3ResourceName']: 0,
+        ['mri3ResourceName']: null,
       });
       this.MRIDuplicateResourceNotification();
 
@@ -4191,14 +4279,14 @@ export class SchdFacilitiesComponent implements OnInit {
         if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)) {
           this.modalityMriForm.controls['mri2type'].setValue("0");
           this.modalityMriForm.patchValue({
-            ['mri2ResourceName']: 0,
+            ['mri2ResourceName']: null,
           });
           this.MRIDuplicateTypeResourceNotification();
 
         } else if (Dictionary.Type1 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue("0");
           this.modalityMriForm.patchValue({
-            ['mri3ResourceName']: 0,
+            ['mri3ResourceName']: null,
           });
 
         }
@@ -4217,12 +4305,12 @@ export class SchdFacilitiesComponent implements OnInit {
           this.modalityMriForm.controls['mri2type'].setValue("0");
 
           this.modalityMriForm.patchValue({
-            ['mri2ResourceName']: 0,
+            ['mri2ResourceName']: null,
           });
         } else if (Dictionary.Type2 == Dictionary.Type3) {
           this.modalityMriForm.controls['mri3type'].setValue("0");
           this.modalityMriForm.patchValue({
-            ['mri3ResourceName']: 0,
+            ['mri3ResourceName']: null,
           });
 
         }
@@ -4241,14 +4329,14 @@ export class SchdFacilitiesComponent implements OnInit {
           this.modalityMriForm.controls['mri2type'].setValue("0");
 
           this.modalityMriForm.patchValue({
-            ['mri2ResourceName']: 0,
+            ['mri2ResourceName']: null,
           });
           this.MRIDuplicateTypeResourceNotification();
         } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)) {
           this.modalityMriForm.controls['mri3type'].setValue("0");
 
           this.modalityMriForm.patchValue({
-            ['mri3ResourceName']: 0,
+            ['mri3ResourceName']: null,
           });
           this.MRIDuplicateTypeResourceNotification();
         }
@@ -4302,21 +4390,21 @@ export class SchdFacilitiesComponent implements OnInit {
 
     if (parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
       this.modalityCtForm.patchValue({
-        ['ct2ResourceName']: 0,
+        ['ct2ResourceName']: null,
       });
       this.CTDuplicateResourceNotification();
 
     }
     if (parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
       this.modalityCtForm.patchValue({
-        ['ct3ResourceName']: 0,
+        ['ct3ResourceName']: null,
       });
       this.CTDuplicateResourceNotification();
 
     }
     if (parseInt(Ct3ResourceName) == parseInt(Ct1ResourceName)) {
       this.modalityCtForm.patchValue({
-        ['ct3ResourceName']: 0,
+        ['ct3ResourceName']: null,
       });
       this.CTDuplicateResourceNotification();
 
@@ -4341,14 +4429,14 @@ export class SchdFacilitiesComponent implements OnInit {
         if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct2ResourceName']: 0,
+            ['ct2ResourceName']: null,
           });
           this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
         } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Ct1ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct3ResourceName']: 0,
+            ['ct3ResourceName']: null,
           });
     
           this.CTDuplicateMakeResourceNotification();
@@ -4367,14 +4455,14 @@ export class SchdFacilitiesComponent implements OnInit {
         if (Dictionary.Type1 == Dictionary.Type2 && parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct2ResourceName']: 0,
+            ['ct2ResourceName']: null,
           });
           this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
         } else if (Dictionary.Type2 == Dictionary.Type3 && parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct3ResourceName']: 0,
+            ['ct3ResourceName']: null,
           });
          // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
           this.CTDuplicateMakeResourceNotification();
@@ -4393,14 +4481,14 @@ export class SchdFacilitiesComponent implements OnInit {
         if (Dictionary.Type2 == Dictionary.Type3 && parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct2make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct2ResourceName']: 0,
+            ['ct2ResourceName']: null,
           });
           this.CTDuplicateMakeResourceNotification();
           //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
         } else if (Dictionary.Type1 == Dictionary.Type3 && parseInt(Ct1ResourceName) == parseInt(Ct3ResourceName)) {
           this.modalityCtForm.controls['ct3make'].setValue("0");
           this.modalityCtForm.patchValue({
-            ['ct3ResourceName']: 0,
+            ['ct3ResourceName']: null,
           });
           this.CTDuplicateMakeResourceNotification();
           // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
