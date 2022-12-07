@@ -44,7 +44,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   leasePageNumber: number = 1;
   leasePageSize: number = 20;
   totalLeaseRecords: number;
-  selectedFacility: any;
+  selectedFacility: any=[];
   scheduleStatusList: any[] = [];
   selectedScheduleStatus: any = -1;
   modalityList: any[] = [];
@@ -147,9 +147,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   //   });
   // }
   clearApplyFilter() {
-
+    this.selectedFacility = null;
     this.selectedParentFacility = null;
-    this.selectedFacility = 0;
     this.selectedModality = null;
     this.selectedPaid = -1;
     this.selectedScheduleStatus = -1;
