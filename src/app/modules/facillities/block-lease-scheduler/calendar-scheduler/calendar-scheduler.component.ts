@@ -33,8 +33,8 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
-    @ViewChild('signature') signaturePad: SignaturePad;
-    @ViewChild('approveAddEsignModelx') signaturePadapproveAddEsignModel: SignaturePad;
+    @ViewChild(SignaturePad) signaturePad: SignaturePad;
+    @ViewChild(SignaturePad) signaturePadapproveAddEsignModel: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
@@ -93,8 +93,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     schedulerLoad() {
         scheduler.skin = 'material';
-        scheduler.config.xml_date = '%Y-%m-%d';
-        // scheduler.config.hour_date = "%h:%i %a";
+        scheduler.config.xml_date = '%Y-%m-%d';        
+        scheduler.config.drag_move = false;       
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
@@ -115,6 +115,7 @@ export class CalendarSchedulerComponent implements OnInit {
             serialize: true,
             year_view: true,
             agenda_view: true,
+            tooltip: true
         });
         scheduler.date.timeline_start = scheduler.date.week_start;
         scheduler.plugins({
@@ -128,6 +129,13 @@ export class CalendarSchedulerComponent implements OnInit {
             if (event.ModalityType) // if event has subject property then special class should be assigned
                 css += "section_" + event.ModalityType;
             return css; // default return
+        };
+        scheduler.dhtmlXTooltip.config.className = 'dhtmlXTooltip tooltip CalendarTooltip';
+        scheduler.templates.tooltip_text = function (start, end, ev) {
+            let eventText = (ev.text) ? `<b>${(ev.text)}</b><br/>` : '';
+            return eventText + "<b>Start date:</b> " +
+                scheduler.templates.tooltip_date_format(start) +
+                "<br/><b>End date:</b> " + scheduler.templates.tooltip_date_format(end);
         };
         scheduler.serverList("sections", this.forTimelineList);
         scheduler.createTimelineView({
@@ -186,6 +194,10 @@ export class CalendarSchedulerComponent implements OnInit {
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
+
+            console.log(event.start_date);
+            console.log(event.end_date);
+
             event.end_date = new Date(event.end_date - 1);
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
@@ -490,7 +502,6 @@ export class CalendarSchedulerComponent implements OnInit {
         this.model.signature = '';
     }
     clearSignApproveAddEsign(): void {
-        debugger
         this.signaturePadapproveAddEsignModel.clear();
         this.approveAddEsignModel.signature = '';
     }
@@ -622,11 +633,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
-                    this.notificationService.showNotification({
-                        alertHeader: 'Error',
-                        alertMessage: res.response.message?res.response.message:res.response,
-                        alertType: 400
-                    }) 
+                    this.errorNotification(res.message);
                 }
             }
         }, (err: any) => {
