@@ -34,7 +34,7 @@ export class FundingCoSettingComponent implements OnInit {
   constructor(private lienPortalService:LienPortalService) { }
 
   ngOnInit(): void {
-    this.getFundingCompanSettings();
+    this.getFundingCompanySettings();
   }
 
   clearSign(): void {
@@ -46,7 +46,7 @@ export class FundingCoSettingComponent implements OnInit {
     this.defaultSignature = this.signaturePad.toDataURL();
   }
 
-  getFundingCompanSettings(){
+  getFundingCompanySettings(){
     var data = {};
     this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res=>{
       if(res.status == LienPortalResponseStatus.Success){
@@ -76,7 +76,6 @@ export class FundingCoSettingComponent implements OnInit {
     this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.AddFundingUserSetting).subscribe(res=>{
       if(res.status == LienPortalResponseStatus.Success){
         this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
-        this.getFundingCompanSettings();
       }else
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -84,4 +83,19 @@ export class FundingCoSettingComponent implements OnInit {
     })
   }
 
+
+  saveSign() {
+    var data = {
+      "defaultSign": this.defaultSignature
+    };
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.AddRadDefaultSign).subscribe((result) => {
+      if (result.status == LienPortalResponseStatus.Success) {
+        this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+      }
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
+}
 }

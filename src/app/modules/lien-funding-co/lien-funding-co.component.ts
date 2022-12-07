@@ -47,7 +47,7 @@ export class LienFundingCoComponent implements OnInit {
       "dateFrom": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateFrom.value),
       "dateTo": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateTo.value),
       "dateType": this.filterForm.controls.dateType.value,
-      "referrers": this.filterForm.controls.readingRad.value,
+      "radiologist": this.filterForm.controls.readingRad.value,
     };
 
     switch (this.selectedMode) {
@@ -58,7 +58,7 @@ export class LienFundingCoComponent implements OnInit {
         break;
       case LienFundingCoTabName.PAID:
         this.filter.batch = this.filterForm.controls.batch.value;
-        this.filter.check = this.filterForm.controls.check.value;
+        this.filter.checkNumber = this.filterForm.controls.check.value;
         break;
       default:
         this.filter = undefined;
@@ -78,10 +78,10 @@ export class LienFundingCoComponent implements OnInit {
     });
     this.onFilter();
   }
-  
+
   private bindReferrerByUser_DDL() {
     let data = {};
-    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetReferrerByUser).subscribe((result) => {
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetRadiologistUser).subscribe((result) => {
       if (result.status == LienPortalResponseStatus.Success) {
         if (result.result)
           this.list_ReferrerByUser = result.result

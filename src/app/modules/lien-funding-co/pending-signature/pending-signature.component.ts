@@ -46,6 +46,8 @@ export class PendingSignatureComponent implements OnInit {
   totalRecord: number = 0;
   pageSize: number = 10;
   signatureForm: FormGroup;
+  isDefaultSignature: boolean;
+  defaultSignature: string;
 
   constructor(private lienPortalService: LienPortalService,
     private fb: FormBuilder,
@@ -61,6 +63,7 @@ export class PendingSignatureComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getFundingCompanySetting();
   }
 
   getListingData() {
@@ -81,6 +84,7 @@ export class PendingSignatureComponent implements OnInit {
   clearSign(): void {
     this.signaturePad.clear();
     this.signatureForm.patchValue({ fundingCompanySign: '' });
+    this.signaturePad.fromDataURL(this.defaultSignature);
   }
 
   signatureCompleted() {
@@ -132,6 +136,23 @@ export class PendingSignatureComponent implements OnInit {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       });
     }
+  }
+
+  getFundingCompanySetting(){
+    var data = {};
+    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res=>{
+      if(res.status == LienPortalResponseStatus.Success){
+        // console.log(res);
+        var data = res.result;
+        this.isDefaultSignature = data.isDefaultSignature;
+        if(data.defaultSign.defaultSign)
+        this.defaultSignature = data.defaultSign.defaultSign;
+          this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+      } else
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    },() => {
+      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    })
   }
 
 }
