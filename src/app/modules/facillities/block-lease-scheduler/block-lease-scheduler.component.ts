@@ -157,7 +157,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   applyFilter() {
-    let selectedFacility = this.selectedFacility ? this.selectedFacility : 0;
+    let selectedFacility = this.selectedFacility!= 0 ? this.selectedFacility : 0;
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility : null;
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus : null;
