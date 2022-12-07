@@ -209,7 +209,7 @@
                     data-dismiss="modal">Cancel</a>
                 <a (click)="approveAllParentToLease(true)" hrefTo="javascript:void(0)"
                     class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
-                <a href="javascript:void(0)" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
+                <a href="javascript:void(0)" (click)="clearEsignData()" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
                     class="btn btn-theme pull-left btn-sm">No</a>
             </div>
         </div>
