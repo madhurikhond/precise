@@ -441,9 +441,9 @@
             <div class="modal-header">
                 <h5 class="modal-title">Alert</h5>
                 <div class="close-dismiss" data-dismiss="modal"></div>
-            </div>
+            </div>          
             <div class="modal-body">
-                <p *ngIf="AlreadyBlockedLeaseList;else isDateValid">
+                <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
                     <span *ngIf="isBlockOffTime">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
                         BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
                         ALREADY LEASE
