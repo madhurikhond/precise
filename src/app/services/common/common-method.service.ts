@@ -54,6 +54,10 @@ export class CommonMethodService {
   private observeFlag = new BehaviorSubject('');
   getObserveFlag = this.observeFlag.asObservable();
 
+  private leaseSave = new Subject<any>();
+  leaseSaveObserver = this.leaseSave.asObservable();
+  private FacilityDetailsPopUp = new BehaviorSubject('');
+  isFacilityDetailsPopUp = this.FacilityDetailsPopUp.asObservable();
   constructor(private _titleService: Title, private readonly _httpService: HttpService) {
     this.preScreeningUser.next(null)
     this.viewerRecords.next(null)
@@ -252,5 +256,11 @@ export class CommonMethodService {
       a =insideCellElement.length-1;
     }
     return a;
+  }
+  sendDataBlockLeaseScheduler(data: any) {
+    this.leaseSave.next(data);
+  }
+  OpenFacilityDetailsModel(data: any) {
+    this.FacilityDetailsPopUp.next(data);
   }
 }

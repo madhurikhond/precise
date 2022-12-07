@@ -15,7 +15,7 @@ export class FacilityService {
   @Output() filterFrontDesk = new EventEmitter<any>();
   @Output() filterRadFlowFacilityBilling = new EventEmitter<any>();
   @Output() docManagerFacility= new EventEmitter<any>();
-
+  sendDataToFacilityDetail: EventEmitter<any> = new EventEmitter<any>();
   private searchTextBox = new Subject<string>();
   private userTypeDropDown = new Subject<number>();
   actionDropDown: EventEmitter<string>  = new EventEmitter<string>();
@@ -61,6 +61,9 @@ export class FacilityService {
   {
    this.actionDropDown.emit(actionValue);
   }
+  sendDataToPatientFacilityWindow(body: any): void {
+    this.sendDataToFacilityDetail.emit(body);
+  }
  getFacilityList(showGlobalLoader : boolean = true,body:any){
   return this._httpService.post('Facility/GetFacilityList',body, showGlobalLoader).pipe(
     map((res:ApiResponse) => res)
@@ -78,6 +81,11 @@ getFacilityById(showGlobalLoader : boolean = true,facilityId:any){
 //   );
 // }
 
+getResourceDropDownData(showGlobalLoader : boolean = true,FacilityId:any){
+  return this._httpService.get(`BlockLeaseScheduler/GetFacilityResourceDropDownData?FacilityId=${FacilityId}`,showGlobalLoader).pipe(
+    map((res:ApiResponse) => res)
+  );
+}
 getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number){
     return this._httpService.get(`Facility/GetFacilityParentById/` + facilityParentId ,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
@@ -350,6 +358,44 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
   }  
   PendingQbInvForRadFlow(showGlobalLoader : boolean = true,filterBody:any,pageNumber:number,pageSize:number){
     return this._httpService.post(`Facility/PendingQbInv?pageNumber=${pageNumber}&pageSize=${pageSize}`,filterBody,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  
+  addUpdateFacilityClosedDays(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post('Facility/AddUpdateFacilityClosedDays',body, showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getBlockLeasePricing(showGlobalLoader : boolean = true,body:any){
+    return this._httpService.post('BlockLeaseScheduler/ManageLeaseFacilityPricing/',body,showGlobalLoader,true).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getAllBlockLeaseCredits(showGlobalLoader : boolean = true ,facilityId:Number,pageNumber:any,pageSize:any){
+    return this._httpService.get(`BlockLeaseScheduler/GetAllBlockLeaseCredits?PageNo=${pageNumber}&pageSize=${pageSize}&facilityId=${facilityId}`, showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  getLeaseAgreementsByFacilityId(showGlobalLoader : boolean = true ,body:any){
+    return this._httpService.post('BlockLeaseScheduler/GetLeaseAgreementsByFacilityId/',body,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
+  GetblockLeasePaymentByFacilityId(showGlobalLoader : boolean = true,facilityId:string, pageNumber:number,pageSize:number){
+    return this._httpService.get(`BlockLeasePayment/GetBlockLeasepayment?facilityId=${facilityId}&pageNumber=${pageNumber}&pageSize=${pageSize}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+  GetLeasePaymentMappingByFacilityId(showGlobalLoader : boolean = true,paymentId:string){
+    return this._httpService.get(`BlockLeasePayment/GetLeasePaymentMapping?paymentId=${paymentId}`,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
+
+  GetBlockLeaseCreditsByFacilityId(showGlobalLoader : boolean = true,transactionNumber:string){
+    return this._httpService.get(`BlockLeasePayment/GetBlockLeaseCredits?transactionNumber=${transactionNumber}`,showGlobalLoader).pipe(
       map((res:ApiResponse) => res)
     );
   }

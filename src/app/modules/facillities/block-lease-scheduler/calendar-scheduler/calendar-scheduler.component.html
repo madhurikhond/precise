@@ -1,0 +1,309 @@
+<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="CalendarSchedulerWindow"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true" style="padding-left:5.99219px;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{FacilityName}} - scheduler
+                </h5>
+                <div #modaldismissscheduler class="close-dismiss" (click)="resetDate()" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <div #scheduler_here class="dhx_cal_container" style="width: 100%; height:100vh">
+                    <div class="dhx_cal_navline">
+
+                        <div class="dhx_cal_prev_button">&nbsp;</div>
+                        <div class="dhx_cal_next_button">&nbsp;</div>
+                        <div class="dhx_cal_today_button"></div>
+                        <div class="dhx_cal_date"></div>
+                        <div class="dhx_cal_tab" name="timeline_tab"></div>
+                        <div class="dhx_cal_tab" name="day_tab"></div>
+                        <div class="dhx_cal_tab" name="week_tab"></div>
+                        <div class="dhx_cal_tab" name="month_tab"></div>
+                        <!--- HERE -->
+
+                        <!-- <div class="dhx_minical_icon" style="margin-left: 101px;" id="dhx_minical_icon"
+                            (click)="show_minical()">&nbsp;</div> -->
+
+                        <!--- end HERE -->
+
+
+                    </div>
+                    <div class="dhx_cal_header"></div>
+                    <div class="dhx_cal_data"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div [hidden]="readOnlyCalender">
+                    <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" *ngIf="approveGoToNext" class="btn btn-theme pull-left"
+                    (click)="ApprovedGoNext()">APPROVE & GO TO THE NEXT FACILITY <b> ({{FACILITY_NAME}} )</b></a>
+                 <a href="javascript:void(0)"  [class.disabled]="isDisplayApproveBtn" *ngIf="approveAllCheckForButton" data-target="#approveLeasePopup1"
+                       data-toggle="modal" class="btn btn-theme  pull-left" style="background: green;"><b>APPROVE ALL Parent </b>
+                    <b>( {{ ParentCompanyName }} )</b> <b>  FACILITIES & SEND LEASE AGREEMENT</b>
+                    </a>
+                <a href="javascript:void(0)" [class.disabled]="isDisplayApproveBtn" data-target="#approveLeasePopup" data-toggle="modal"
+                    class="btn btn-theme  pull-left">Approve & send lease
+                    agreement to facility</a>
+                </div>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" #closebtn id="closebtn"
+                    data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="approveLeasePopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>DO YOU WANT TO LEASE BLOCK with use default sign?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="confirmBlockToLease(true)" data-target="#validatedefaultsign" hrefTo="javascript:void(0)"
+                    class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" data-target="#addEsign" data-toggle="modal"
+                    class="btn btn-border pull-left btn-sm">No</a>
+                    
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" id="validatedefaultsign" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>No default Sign Found </p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">CLOSE</a>
+                <!-- <a  hrefTo="javascript:void(0)"
+                    class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" data-target="#addEsign" data-toggle="modal"
+                    class="btn btn-theme pull-left btn-sm">No</a> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" #addEsign id="addEsign" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SIGN</h5>
+                <div #modaldismiss2 class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+
+
+            <form name="form" (ngSubmit)="frmCal.form.valid && submitSign(true)" class="theme-form" #frmCal="ngForm"
+                novalidate>
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Title</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="Title" [(ngModel)]="model.Title"
+                                            #Title="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && Title.invalid }" required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && Title.invalid" class="invalid-feedback">
+                                        <div *ngIf="Title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">First Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="firstName"
+                                            [(ngModel)]="model.firstName" #firstName="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && firstName.invalid }"
+                                            required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && firstName.invalid" class="invalid-feedback">
+                                        <div *ngIf="firstName.errors.required">First Name is required</div>
+                                    </div>
+                                </div>
+                            </div> <br>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div class="theme-label">Last Name</div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="lastName"
+                                            [(ngModel)]="model.lastName" #lastName="ngModel"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && lastName.invalid }"
+                                            required />
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && lastName.invalid" class="invalid-feedback">
+                                        <div *ngIf="lastName.errors.required">Last Name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <div
+                                        [ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+                                        <signature-pad id="signature-pad"  #signature ngDefaultControl
+                                            [options]="signaturePadOptions" [(ngModel)]="model.signature"
+                                            [ngModelOptions]="{ standalone : true }"
+                                            [ngClass]="{ 'is-invalid': frmCal.submitted && model.signature=='' }"
+                                            #signature="ngModel" (onEndEvent)="drawComplete()">
+                                        </signature-pad>
+                                    </div>
+                                    <div *ngIf="frmCal.submitted && model.signature==''" class="invalid-feedback">
+                                        <div>signature is required</div>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
+                                    class="btn btn-theme btn-sm">Clear Signature</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">Approve</button>
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                        #closeBtn (click)="signConfirm(false)">Close</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="approveLeasePopup1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>DO YOU WANT TO LEASE BLOCK with use default sign?</p>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="submit" style="float: left;" [disabled]="(model.signature =='') ? true:false"
+                    [ngStyle]="{'background-color': ((model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                    class="btn btn-theme btn-sm pull-left">Approve</button>
+                <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                    #closeBtn (click)="signConfirm(false)">Close</a>-->
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="approveAllParentToLease(true)" hrefTo="javascript:void(0)"
+                    class="btn btn-theme pull-left btn-sm" data-dismiss="modal">Yes</a>
+                <a href="javascript:void(0)" data-dismiss="modal" data-target="#approveAddEsign" data-toggle="modal"
+                    class="btn btn-border pull-left btn-sm">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" #approveAddEsign id="approveAddEsign" data-backdrop="static"
+    data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SIGN</h5>
+                <div #modaldismiss1 class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+
+            <form name="form" (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
+                class="theme-form" novalidate>
+                <div class="modal-body">
+                    <div class="modal-body-inner">
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">Title</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="Title" [(ngModel)]="approveAddEsignModel.Title"
+                                     #approveAddEsignTitle="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignTitle.invalid }" required />
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignTitle.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignTitle.errors.required">Title is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <br />
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">First Name</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="firstName"
+                                     [(ngModel)]="approveAddEsignModel.firstName" #approveAddEsignfirstName="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignfirstName.invalid }"
+                                     required />
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignfirstName.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignfirstName.errors.required">First Name is required</div>
+                            </div>
+                          </div>
+                        </div> <br>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div class="theme-label">Last Name</div>
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="lastName"
+                                     [(ngModel)]="approveAddEsignModel.lastName" #approveAddEsignlastName="ngModel"
+                                     [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignlastName.invalid }"
+                                     required />
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignlastName.invalid" class="invalid-feedback">
+                              <div *ngIf="approveAddEsignlastName.errors.required">Last Name is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                          <div class="form-group">
+                            <div [ngClass]="{'signature-pad-group':!approveAddEsignModel.signature, 'signature-pad-group remove':approveAddEsignModel.signature}">
+                              <signature-pad id="signature-pad-approveaddesign" ngDefaultControl
+                                             [options]="signaturePadOptions" #approveAddEsignModelx [(ngModel)]="approveAddEsignModel.signature"
+                                             [ngModelOptions]="{ standalone : true }"
+                                             [ngClass]="{ 'is-invalid': approveAddEsignFrom.submitted && approveAddEsignModel.signature=='' }"
+                                             #signature="ngModel" (onEndEvent)="drawCompleteapproveAddEsign()">
+                              </signature-pad>
+                            </div>
+                            <div *ngIf="approveAddEsignFrom.submitted && approveAddEsignModel.signature==''" class="invalid-feedback">
+                              <div>signature is required</div>
+                            </div>
+                          </div>
+                          <a href="javascript:void(0)" (click)="clearSignApproveAddEsign();" style="background-color: gray;"
+                             class="btn btn-theme btn-sm">Clear Signature</a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer"> 
+                    <button type="submit" style="float: left;" [disabled]="(approveAddEsignModel.signature =='') ? true:false"
+                        [ngStyle]="{'background-color': ((approveAddEsignModel.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+                        class="btn btn-theme btn-sm pull-left">Approve</button>
+
+                    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+                        #closeBtn (click)="signConfirm(false)">Close</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<button class="d-none" #validatedefaultsign [hidden]="true" data-toggle="modal"
+		data-target="#validatedefaultsign"></button>
+<app-schd-facilities [isGridDisplay]="false"></app-schd-facilities>

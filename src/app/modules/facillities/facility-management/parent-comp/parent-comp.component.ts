@@ -49,24 +49,24 @@ export class ParentCompComponent implements OnInit {
   pageSize: number;
   isShowColumnWithNoData = true;
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
-  readonly pageSizeArray=PageSizeArray;
+  readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
-  readonly commonRegex=CommonRegex;
+  readonly commonRegex = CommonRegex;
 
   name = 'ng2-ckeditor';
-  documentTabHide :boolean = false;
+  documentTabHide: boolean = false;
   isPopUpInEditMode: boolean = false;
   sendDataDocManager: any;
-  FacilityParentName:string='';
+  FacilityParentName: string = '';
   //ckeConfig: CKEDITOR.config;
-  ckeConfig:any;
+  ckeConfig: any;
   mycontent: string;
   log: string = '';
   constructor(private readonly facilityService: FacilityService, private fb: FormBuilder, private notificationService: NotificationService,
     private commonMethodService: CommonMethodService, private readonly storageService: StorageService) {
   }
   ngOnInit(): void {
-    this.pageSize= this.pageSizeArray.filter(x=>x.IsSelected).length>0? this.pageSizeArray.filter(x=>x.IsSelected)[0].value:this.pageSizeArray[0].value;
+    this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
     this.commonMethodService.setTitle('Parent Comp.');
     this.createParentCompanyDetailTabForm();
     this.createModalityServiceTabForm();
@@ -125,7 +125,7 @@ export class ParentCompComponent implements OnInit {
   onChange($event: any): void {
     //this.log += new Date() + "<br />";
   }
-  
+
   onPaste($event: any): void {
     //this.log += new Date() + "<br />";
   }
@@ -209,6 +209,9 @@ export class ParentCompComponent implements OnInit {
       BillingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       BillingPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       BillingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      DefaultEmailAddress3P: ['', [Validators.required, Validators.pattern(this.commonRegex.EmailRegex)]],
+      EmailAddress13P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      EmailAddress23P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]]
     });
   }
   createModalityServiceTabForm() {
@@ -256,7 +259,7 @@ export class ParentCompComponent implements OnInit {
       MRI3Sedation: [''],
       MRI3Breast: [''],
     });
-  }                        
+  }
   createModalityCtForm() {
     this.modalityCtForm = this.fb.group({
       CT1Make: [''],
@@ -308,7 +311,7 @@ export class ParentCompComponent implements OnInit {
         this.isInsertButtonVisible = false;
         this.isOkAndApplyButtonVisible = true;
         this.parentPolicy = res.response.ParentPolicy;
-        this.FacilityParentName=res.response.FacilityParentName;
+        this.FacilityParentName = res.response.FacilityParentName;
         this.setParentCompanyDetailForm(res);
         this.setModalityServiceForm(res);
         this.setModalityMriForm(res);
@@ -348,6 +351,9 @@ export class ParentCompComponent implements OnInit {
       BillingEmail: res.response.BillingEmail,
       BillingPhone: res.response.BillingPhone,
       BillingFax: res.response.BillingFax,
+      DefaultEmailAddress3P: res.response.DefaultEmailAddress3P,
+      EmailAddress13P: res.response.EmailAddress13P,
+      EmailAddress23P: res.response.EmailAddress23P
     });
   }
   setModalityServiceForm(res: any) {
@@ -422,7 +428,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityCurrentPricing() {
-    
+
     this.FacilityParentCurrentPricingList = [];
     this.facilityService.getFacilityParentPricing(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -433,7 +439,7 @@ export class ParentCompComponent implements OnInit {
     });
   }
   getFacilityHistoryPricing() {
-   
+
     this.FacilityParentPricingHistoryList = [];
     this.facilityService.getFacilityParentPricingHistory(true, this.facilityParentId).subscribe((res) => {
       if (res.response != null) {
@@ -452,7 +458,7 @@ export class ParentCompComponent implements OnInit {
     this.title = event.row.data.facilityParentName;
     this.isPopUpInEditMode = true;
     this.getFacilityParentById();
-    this.documentTabHide= false;
+    this.documentTabHide = false;
   }
   setvalueFalse() {
     this.facilityParentId = null;
@@ -554,7 +560,7 @@ export class ParentCompComponent implements OnInit {
       'mri2breast': this.modalityMriFormControl.MRI2Breast.value,
 
       'mri3type': this.modalityMriFormControl.MRI3Type.value,
-      
+
       'mri3strength': this.modalityMriFormControl.MRI3Strength.value,
       'mri3make': this.modalityMriFormControl.MRI3Make.value,
       'mri3weight': this.modalityMriFormControl.MRI3Weight.value,
@@ -603,7 +609,7 @@ export class ParentCompComponent implements OnInit {
 
   updateParentFacilityById() {
 
-    
+
     this.submitted = true;
     this.modalValue = 'modal';
     if (this.parentCompanyDetailForm.invalid) {
@@ -747,9 +753,9 @@ export class ParentCompComponent implements OnInit {
       this.errorNotification(err);
     });
   }
-  customizeText(cellInfo){
-    return cellInfo.valueText.replace("USD", "$");  
-   }
+  customizeText(cellInfo) {
+    return cellInfo.valueText.replace("USD", "$");
+  }
   onExporting() {
 
     let element = document.getElementById('parent-Facility-grid-container');

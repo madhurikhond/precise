@@ -9,12 +9,13 @@ import { DxAutocompleteModule, DxButtonModule } from 'devextreme-angular';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { DxFileManagerModule, DxPopupModule } from 'devextreme-angular';
 import { DxTreeViewModule,DxListModule, DxContextMenuModule } from 'devextreme-angular';
+import { PayInvoiceModalComponent } from './schd-facilities/pay-invoice-modal/pay-invoice-modal.component';
 
 // const maskConfig: Partial<IConfig> = {
 //   validation: false,
 // };
 @NgModule({
-  declarations: [ ParentCompComponent,FacilityManagementComponent],
+  declarations: [ ParentCompComponent,FacilityManagementComponent,PayInvoiceModalComponent],
   imports: [
     CKEditorModule,
     SharedModule,
