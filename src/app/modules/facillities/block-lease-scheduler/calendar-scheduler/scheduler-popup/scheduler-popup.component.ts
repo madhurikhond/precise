@@ -509,23 +509,21 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           debugger
-          if (res.responseCode == 200) {
+          if (res.responseCode == 200 && res.response.responseCode != 404  ) {
             if (res.response) {
               this.showNotificationOnSucess({
                 message: res.response.message,
                 responseCode: res.responseCode
               });
-
-
             }
             else {
               this.showNotificationOnSucess(res);
             }
             this.modal.dismiss(ModalResult.SAVE);
           }
-          else if(res.responseCode === 404 )
+          else if(res.response.responseCode == 404 )
           {
-            this.errorNotification(res.message);
+            this.errorNotification(res.response);
           }
         }, (err: any) => {
           this.errorNotification(err);
