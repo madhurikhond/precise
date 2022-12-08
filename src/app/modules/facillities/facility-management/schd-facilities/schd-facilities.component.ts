@@ -21,6 +21,8 @@ import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { ErrorValue } from 'exceljs';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { IfStmt } from '@angular/compiler';
 
 declare const $: any;
 
@@ -31,6 +33,7 @@ declare const $: any;
   providers: [DatePipe],
 })
 export class SchdFacilitiesComponent implements OnInit {
+  @ViewChild('dxDataGrid') dataGrid: DxDataGridComponent;
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false })
   hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef })
@@ -1479,13 +1482,12 @@ export class SchdFacilitiesComponent implements OnInit {
         if (res.response != null) {
           console.log(res);
           this.blockLeasePaymentList = res.response;
-          if (this.blockLeasePaymentList.length > 0) {
-            this.totalRecordpaid = res.totalRecords;
-            this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
-          } else {
-            this.totalRecordpaid = 1;
-            this.blockLeasePaymentList = [];
-          }
+          this.blockLeasePaymentList.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
+          // if (this.blockLeasePaymentList.length > 0) {
+          //   this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
+          // }
         }
       });
   }
@@ -1496,7 +1498,10 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
-    paymentMapping.component.collapseAll(-1);
+    if(paymentMapping.isExpanded)
+    {
+     paymentMapping.component.collapseAll(-1);
+    }
     if (paymentMapping.isExpanded) {
       let PaymentId = '';
       if (paymentMapping.data === undefined) {

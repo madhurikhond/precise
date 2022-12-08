@@ -4116,7 +4116,7 @@
 													[ngClass]="defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'">
 													<div>
 														<div class="table-responsive">
-															<dx-data-grid #grid id="gridContainerBlockLeasePaymentList"
+															<dx-data-grid #dxDataGrid id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
 																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
