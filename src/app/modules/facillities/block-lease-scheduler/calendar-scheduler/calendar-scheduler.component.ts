@@ -31,6 +31,8 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
     @ViewChild("modaldismiss2", { static: true }) modaldismiss2: ElementRef;
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
+    @ViewChild('closeEsignPopup') closeEsignPopup;
+    @ViewChild('closeApproveEsignPopup') closeApproveEsignPopup;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
     approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signapprove: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
@@ -64,6 +66,9 @@ export class CalendarSchedulerComponent implements OnInit {
 
     latestStartDate: any = "";
     latestSchedulerMode: string = "";
+    IsEsignModalHide:  boolean = false;
+    IsApproveEsignModalHide: boolean = false;
+ 
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -560,8 +565,9 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: 200
                     })
                     this.signConfirm(false);
-                    this.modaldismiss2.nativeElement.click();
-                    this.modaldismissscheduler.nativeElement.click();
+                    this.IsEsignModalHide=true;
+                    // this.f.nativeElement.click();
+                    // this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
@@ -586,8 +592,10 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserFirstName': this.model.firstName,
                 'PreciseUserLastName': this.model.lastName,
             }
-
-            this.confirmBlockToLease(false, data)
+        
+            this.confirmBlockToLease(false, data);
+            
+            this.closeEsignPopup.nativeElement.click();
             this.f.submitted = false;
         }
     }
@@ -606,8 +614,10 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserLastName': this.approveAddEsignModel.lastName,
                 'PreciseSignature': this.approveAddEsignModel.signapprove,
             }
-
-            this.approveAllParentToLease(false, data)
+  
+ 
+            this.approveAllParentToLease(false, data);
+            this.closeApproveEsignPopup.nativeElement.click();
             this.ff.submitted = false;
         }
     }
@@ -640,8 +650,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: res.response.ResponseCode
                     })
                     this.signConfirm(false);
-                    this.modaldismiss1.nativeElement.click();
-                    this.modaldismissscheduler.nativeElement.click();
+    
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {

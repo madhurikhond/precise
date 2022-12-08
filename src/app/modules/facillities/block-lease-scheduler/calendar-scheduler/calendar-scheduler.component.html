@@ -98,18 +98,18 @@
     </div>
 </div>
 
-<div class="modal fade modal-theme modal-small" #addEsign id="addEsign" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modal-theme modal-small"  #addEsign id="addEsign" data-backdrop="static" data-keyboard="false"
     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <a href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
+                <a #closeEsignPopup href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
                 <!-- <div #modaldismiss2 class="close-dismiss" data-dismiss="modal"></div> -->
             </div>
 
 
-            <form name="form" (ngSubmit)="frmCal.form.valid && submitSign(true)" class="theme-form" #frmCal="ngForm"
+            <form name="form"  (ngSubmit)="frmCal.form.valid && submitSign(true)" class="theme-form" #frmCal="ngForm"
                 novalidate>
                 <div class="modal-body">
                     <div class="modal-body-inner">
@@ -188,7 +188,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-theme in modal-small" id="approveLeasePopup1" tabindex="-1" role="dialog"
+<div class="modal fade modal-theme in modal-small"  id="approveLeasePopup1" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -215,16 +215,16 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-theme modal-small" #approveAddEsign id="approveAddEsign" data-backdrop="static"
+<div class="modal fade modal-theme modal-small"   #approveAddEsign id="approveAddEsign" data-backdrop="static"
     data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN</h5>
-                <a href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
+                <a #closeApproveEsignPopup href="javascript:void(0)" (click)="clearEsignData()" class="close-dismiss" data-dismiss="modal"></a>
             </div>
 
-            <form name="form" (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
+            <form name="form"  (ngSubmit)="approveAddEsignFrom.form.valid && ApproveSubmitSign(true)" #approveAddEsignFrom="ngForm"
                 class="theme-form" novalidate>
                 <div class="modal-body">
                     <div class="modal-body-inner">
