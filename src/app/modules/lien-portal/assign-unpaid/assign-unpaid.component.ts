@@ -67,6 +67,9 @@ export class AssignUnpaidComponent implements OnInit {
           this.dataSource = result.result
           this.AssignARUnpaid = this.dataSource;
           this.totalRecord = result.result.length;
+          this.AssignARUnpaid.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
         }
       }
       else
@@ -82,6 +85,11 @@ export class AssignUnpaidComponent implements OnInit {
       this.pageNumber = pageNumber - 1;
     else
       this.pageNumber = 0;
+  }
+
+  downloadPDF(data) {
+    if(data.fileName)
+      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
   }
 
 

@@ -18,7 +18,7 @@
                         <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
                         <dxi-column dataField="batchName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                         <div *dxTemplate="let data of 'PDFIconTemplate'">
-                          <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                          <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                       </div>
                         <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">

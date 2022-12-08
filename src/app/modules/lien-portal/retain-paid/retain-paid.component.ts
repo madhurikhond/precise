@@ -67,6 +67,9 @@ export class RetainPaidComponent implements OnInit {
           this.dataSource = res.result.retainedArPaidCheck;
           this.retainedARpaid = this.dataSource;
           this.totalRecord = this.retainedARpaid.length;
+          this.retainedARpaid.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
         }
       }
       else

@@ -105,4 +105,19 @@ export class LienPortalService {
     let file = new Blob([ArrayBuff], { type: 'application/pdf' });
     window.open(URL.createObjectURL(file), '_blank');
   }
+
+  downloadFile(fileName, fileData) {
+    var source;
+    let fileExtension = fileName.split('.').pop();
+    const link = document.createElement('a');
+    if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
+      source = 'data:image/' + fileExtension + ';base64,' + fileData;
+    }
+    else if (fileName.match(/.(pdf)$/i)) {
+      source = 'data:application/pdf;base64,' + fileData;
+    }
+    link.href = source;
+    link.download = `${fileName}`
+    link.click();
+  }
 }

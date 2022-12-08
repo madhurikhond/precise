@@ -208,11 +208,13 @@ export class SettingComponent implements OnInit {
         }else{
           this.selectedDays = [];
           this.selectedTimeToReminder = '12:00 AM';
+        
         }
-        this.defaultEmail = data.emailSendCopies[0];
-        if (data.emailSendCopies.length > 1)
+        if (data.emailSendCopies.length == 1)
+          this.defaultEmail = data.emailSendCopies[0];
+        if (data.emailSendCopies.length == 2)
           this.firstEmail = data.emailSendCopies[1]
-        if (data.emailSendCopies.length > 1)
+        if (data.emailSendCopies.length == 3)
           this.secondEmail = data.emailSendCopies[2]
         this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
       } else

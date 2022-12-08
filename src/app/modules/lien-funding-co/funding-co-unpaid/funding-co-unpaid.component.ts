@@ -5,6 +5,7 @@ import themes from 'devextreme/ui/themes';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 
 @Component({
   selector: 'app-funding-co-unpaid',
@@ -37,13 +38,13 @@ export class FundingCoUnpaidComponent implements OnInit {
   currentPageNumber = 1;
   paymentForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService) {
+  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService,private commonService: CommonMethodService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
 
     this.paymentForm = this.fb.group({
-      checkDate: [""],
-      checkNumber: [this.defaultCheckDate, Validators.required],
+      checkDate: [this.defaultCheckDate,Validators.required],
+      checkNumber: ['', Validators.required],
       checkAmount: [0, Validators.required]
     })
   }
@@ -138,5 +139,12 @@ export class FundingCoUnpaidComponent implements OnInit {
       this.pageNumber = 0;
   }
 
+  downloadPDF(data) {
+    if(data.fileName)
+      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+  }
 
+  showDocManager(patientId: any) {
+    this.commonService.sendDataToDocumentManager(patientId);
+  }
 }

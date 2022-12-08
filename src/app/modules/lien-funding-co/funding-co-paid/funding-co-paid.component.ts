@@ -1,6 +1,7 @@
 import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-funding-co-paid',
@@ -38,7 +39,7 @@ export class FundingCoPaidComponent implements OnInit {
   fundingCoPaid : any = [];
   checkboxSelectedData: any;
 
-  constructor(private lienPortalService : LienPortalService) {
+  constructor(private lienPortalService : LienPortalService,private commonService:CommonMethodService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -102,5 +103,12 @@ export class FundingCoPaidComponent implements OnInit {
       this.pageNumber = 0;
   }
 
+  downloadPDF(data) {
+    if(data.fileName)
+      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+  }
 
+  showDocManager(patientId: any) {
+    this.commonService.sendDataToDocumentManager(patientId);
+  }
 }

@@ -6,6 +6,7 @@ import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessag
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 
 @Component({
   selector: 'app-pending-signature',
@@ -51,7 +52,7 @@ export class PendingSignatureComponent implements OnInit {
   defaultSignature: string;
 
   constructor(private lienPortalService: LienPortalService,
-    private fb: FormBuilder,
+    private fb: FormBuilder,private commonService: CommonMethodService,
     private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
@@ -140,7 +141,6 @@ export class PendingSignatureComponent implements OnInit {
     var data = {};
     this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res=>{
       if(res.status == LienPortalResponseStatus.Success){
-        // console.log(res);
         var data = res.result;
         this.isDefaultSignature = data.isDefaultSignature;
         if(data.defaultSign.defaultSign)
@@ -153,12 +153,39 @@ export class PendingSignatureComponent implements OnInit {
     })
   }
 
+  clearModalPopup() {
+    this.signatureForm.reset();
+    this.signaturePad.clear();
+    this.signatureForm.patchValue({
+      firstName: this.storageService.user.FirstName,
+      lastName: this.storageService.user.LastName,
+      fundingCompanySign: '',
+      baseUrl:[window.location.origin]
+    });
+    if (this.isDefaultSignature)
+    {
+      this.signaturePad.fromDataURL(this.defaultSignature);
+      this.signatureForm.patchValue({
+        fundingCompanySign: this.signaturePad.toDataURL(),
+      })
+    }
+  }
+
   onPageNumberChange(pageNumber: any) {
     this.currentPageNumber = pageNumber;
     if (pageNumber > 1)
       this.pageNumber = pageNumber - 1;
     else
       this.pageNumber = 0;
+  }
+
+  showDocManager(patientId: any) {
+    this.commonService.sendDataToDocumentManager(patientId);
+  }
+
+  downloadPDF(data) {
+    if(data.fileName)
+      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
   }
 
 }

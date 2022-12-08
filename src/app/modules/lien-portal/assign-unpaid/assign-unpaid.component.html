@@ -8,10 +8,11 @@
                 <dxo-sorting mode="none"></dxo-sorting>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                  <dxo-pager [visible]="false"></dxo-pager>
+                 <dxo-sorting mode="none"></dxo-sorting>
                 <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column>
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
-                    <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                    <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                 </div>
                 <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                 <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">

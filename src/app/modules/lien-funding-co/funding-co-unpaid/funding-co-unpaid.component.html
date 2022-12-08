@@ -30,7 +30,7 @@
 
                     <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                     <div *dxTemplate="let data of 'PDFIconTemplate'">
-                        <a class="PDFIcon"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                        <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                     </div>
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                     <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
@@ -54,7 +54,7 @@
                             <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                             <div *dxTemplate="let data of 'readingIconTemplate'">
                                 <a href="javascript:void(0)" class="single-action fa  fa-file-text-o"
-                                    data-toggle="modal"></a>
+                                data-toggle="modal" data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
                             </div>
                         </dx-data-grid>
 

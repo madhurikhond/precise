@@ -67,6 +67,9 @@ export class AssignPaidComponent implements OnInit {
           this.dataSource = res.result;
           this.AssignARpaid = this.dataSource;
           this.totalRecord = this.AssignARpaid.length;
+          this.AssignARpaid.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
         }
       }
       else
@@ -82,6 +85,11 @@ export class AssignPaidComponent implements OnInit {
       this.pageNumber = pageNumber - 1;
     else
       this.pageNumber = 0;
+  }
+
+  downloadPDF(data) {
+    if(data.fileName)
+      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
   }
 
 }
