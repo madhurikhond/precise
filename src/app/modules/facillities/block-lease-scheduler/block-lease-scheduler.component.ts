@@ -202,8 +202,20 @@ export class BlockLeaseSchedulerComponent implements OnInit {
               IsFacilitySign = true;
             }
           }
-          element[`MRI${j}`] = Math.trunc(MriTotal);
-          element[`CT${j}`] = Math.trunc(CtTotal);
+
+          if(MriTotal.toString().split(".")[1] > '51'){
+            element[`MRI${j}`] = Math.ceil(MriTotal);
+          }else{
+            element[`MRI${j}`] = Math.floor(MriTotal);
+          }
+          if(CtTotal.toString().split(".")[1] > '51'){
+            element[`CT${j}`] = Math.ceil(CtTotal);
+          }else{
+            element[`CT${j}`] = Math.floor(CtTotal);
+          }
+
+         // element[`MRI${j}`] = Math.trunc(MriTotal);
+          //element[`CT${j}`] = Math.trunc(CtTotal);
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {
