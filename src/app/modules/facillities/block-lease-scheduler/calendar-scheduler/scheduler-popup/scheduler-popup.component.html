@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_date')"
-                                formControlName="start_date" type="date"
+                                formControlName="start_date" type="date" onkeydown="return false"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors) }">
                             </dx-date-box>
                         </div>
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_time')"
-                                onkeydown="disableIt(event)" formControlName="start_time" class="form-control"
+                                onkeydown="return false" formControlName="start_time" class="form-control"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_date')"
-                                onkeydown="disableIt(event)" formControlName="end_date" type="date"
+                                onkeydown="return false" formControlName="end_date" type="date"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors) }">
                             </dx-date-box>
                         </div>
@@ -108,7 +108,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_time')"
-                                formControlName="end_time" class="form-control"
+                                formControlName="end_time" class="form-control" onkeydown="return false"
                                 [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
                     <div class="form-group">
-                        <div class="input-group"> 
+                        <div class="input-group">
                             <div *ngIf="!LeaseId" [class.disabled]="LeaseId?true:false" class="input-group">
                                 <select #modalityGetType id="modalityGetType" class="form-control"
                                     formControlName="modalityType"
@@ -154,7 +154,7 @@
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
                                             {{item.RESOURCENAME}}</option>
                                     </optgroup>
-                                </select> 
+                                </select>
                             </div>
                             <div *ngIf="LeaseId">
                                 <input type="text" class="form-control" disabled
@@ -204,10 +204,9 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
-                                dateSerializationFormat="MM-dd-yyyy"
-                                (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date"
-                                type="date"
+                                [displayFormat]="dateTimeFormatCustom.Date" dateSerializationFormat="MM-dd-yyyy"
+                                onkeydown="return false" (onValueChanged)="handleValueChange($event,'start_date')"
+                                formControlName="start_date" type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_date.errors) }">
                             </dx-date-box>
                         </div>
@@ -221,7 +220,7 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="disableIt(event)"
+                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="return false"
                                 formControlName="start_time" class="form-control"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
@@ -249,9 +248,8 @@
                     <div class="form-group">
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
-                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
-                                dateSerializationFormat="MM-dd-yyyy"
-                                (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="disableIt(event)"
+                                [displayFormat]="dateTimeFormatCustom.Date" dateSerializationFormat="MM-dd-yyyy"
+                                (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="return false"
                                 formControlName="end_date" type="date"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
                             </dx-date-box>
@@ -267,7 +265,7 @@
                         <div class="input-group icon-active">
                             <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
                                 (onValueChanged)="handleValueChange($event,'end_time')" formControlName="end_time"
-                                class="form-control"
+                                class="form-control" onkeydown="return false"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_time.errors) }"
                                 type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
@@ -304,13 +302,13 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="table-responsive">
                             <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
-                                 [wordWrapEnabled]="true" 
-                                [showBorders]="true">
+                                [wordWrapEnabled]="true" [showBorders]="true">
                                 <dxo-state-storing [enabled]="true"></dxo-state-storing>
                                 <dxo-paging [enabled]="false"></dxo-paging>
                                 <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
                                 <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
-                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description"  width="300">
+                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description"
+                                    width="300">
                                 </dxi-column>
                                 <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
                             </dx-data-grid>
@@ -325,7 +323,8 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="slwidth" [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
+                            <select class="slwidth"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
                                 formControlName="creditReasonID" class="form-control">
                                 <option value="" selected>Select</option>
                                 <option *ngFor="let group of creditReasonList" value={{group.ID}}>
@@ -441,7 +440,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Alert</h5>
                 <div class="close-dismiss" data-dismiss="modal"></div>
-            </div>          
+            </div>
             <div class="modal-body">
                 <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
                     <span *ngIf="isBlockOffTime">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
