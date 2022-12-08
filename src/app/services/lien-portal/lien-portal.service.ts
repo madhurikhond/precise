@@ -30,7 +30,7 @@ export class LienPortalService {
   PostAPI(data: any, method: LienPortalAPIEndpoint, showGlobalLoader: boolean = true) {
     try {
       data.loggedPartnerId = this.storageService.PartnerId;
-      data.jwtToken = this.storageService.PartnerJWTToken;
+      data.jwtToken = this.storageService.LienJWTToken;
       data.userId = parseInt(this.storageService.user.UserId);
       return this._httpService.post(method.toString(), data, showGlobalLoader).pipe(
         map((res: LienPortalResponse) => res)
@@ -68,9 +68,10 @@ export class LienPortalService {
     this.storageService.LogoutLienPortal();
   }
 
-  convertDateFormat(date){
-    return date ? moment(date).format('MM/DD/YYYY') : moment(new Date()).format('MM/DD/YYYY');
+  convertDateFormat(date, isDefaultDate = false) {
+    return date ? moment(date).format('MM/DD/YYYY') : isDefaultDate ? moment(new Date()).format('MM/DD/YYYY') : '';
   }
+
 
   refreshLienToken() {
     this.GetLienPartnerToken().subscribe((res: any) => {

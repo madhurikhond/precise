@@ -90,9 +90,10 @@ export class RetainUnpaidComponent implements OnInit {
     })
     this.receivePaymentform = this.fb.group({
       checkAmount: ['', [Validators.required]],
-      checkDate: [this.defaultCheckDate,Validators.required],
+      checkDate: ['',Validators.required],
       checkNo: ['',Validators.required],
     })
+    this.defaultCheckDate = new Date();
   }
 
   ngOnInit(): void {
@@ -298,9 +299,11 @@ export class RetainUnpaidComponent implements OnInit {
 
     this.assignARform.patchValue({
       'checkAmount': '',
-      'checkDate': this.defaultCheckDate,
+      'checkDate': '',
       'checkNo': '',
     });
+
+    this.defaultCheckDate = new Date();
 
     if (this.lienPortalService.isDefaultSignature)
     {

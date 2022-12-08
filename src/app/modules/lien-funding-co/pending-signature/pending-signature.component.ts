@@ -61,7 +61,7 @@ export class PendingSignatureComponent implements OnInit {
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
       fundingCompanySign: ['', Validators.required],
-      baseUrl:[window.location.origin]
+      baseUrl:window.location.origin
     })
   }
 
@@ -160,7 +160,7 @@ export class PendingSignatureComponent implements OnInit {
       firstName: this.storageService.user.FirstName,
       lastName: this.storageService.user.LastName,
       fundingCompanySign: '',
-      baseUrl:[window.location.origin]
+      baseUrl:window.location.origin
     });
     if (this.isDefaultSignature)
     {

@@ -10,6 +10,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ReferrersService } from 'src/app/services/referrers.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 
 
 export type EditUserFormValue = {
@@ -88,6 +89,8 @@ export class UsersComponent implements OnInit {
   userTypeList: any = [];
   FacilityDeptroleList: any = [];
   subscription: any;
+  radiologistList: any = [];
+  allReferrersList: any = [];
   selectedReferrerList: any = [];
   selectedFacilityList: any = [];
   selectedParentFacilityList: any = [];
@@ -298,7 +301,7 @@ export class UsersComponent implements OnInit {
       this.getUsers(this.topSearchText, this.search_isactive);
   }
   search(){
-    
+
     this.pageNumber = 1;
     this.searchUserMgt()
   }
@@ -343,6 +346,10 @@ export class UsersComponent implements OnInit {
         this.departmentList = data.response.department;
         this.roleGroupList = data.response.roleGroup;
         this.userTypeList = data.response.userType;
+        this.allReferrersList = this.referrerList;
+        this.radiologistList = this.referrerList.filter(value => {
+          return value.PlayerType != null && value.PlayerType.split(',').filter(check => { return Number(check.trim()) == 0; }).length > 0;
+        });
       }
       else {
         this.notificationService.showNotification({
@@ -384,7 +391,7 @@ export class UsersComponent implements OnInit {
     this.referrerList = []
   }
   getUsers(topSearchText, status) {
-   
+
     this.settingService.getUsers(true, topSearchText, status, this.pageNumber, this.pageSize).subscribe((res) => {
       var data: any = res;
       this.userList = []
@@ -442,14 +449,15 @@ export class UsersComponent implements OnInit {
     this.settingService.getUserById(true, userId).subscribe((res) => {
       var data: any = res;
       if (data.response != null) {
+        this.selectedUserTypeList = data.response.USERTYPE;
+        this.selectedReferrerList = (data.response.Referrers != null) ? data.response.Referrers.map(function (a) { return a.ReferrerID; }) : null;
+        this.onUserTypeWiseReferrers();
         this.fullName = data.response.FIRSTNAME + ' ' + data.response.LASTNAME;
         this.userType = data.response.USERTYPE;
-        this.selectedReferrerList = (data.response.Referrers != null) ? data.response.Referrers.map(function (a) { return a.ReferrerID; }) : null;
         this.selectedBrokerList = (data.response.Brokers != null) ? data.response.Brokers.map(function (a) { return a.BrokerID; }) : null;
         this.selectedFacilityList = (data.response.Facilities != null) ? data.response.Facilities.map(function (a) { return a.FacilityID; }) : null;
         this.selectedParentFacilityList = (data.response.ParentFacilities != null) ? data.response.ParentFacilities.map(function (a) { return a.FacilityParentID; }) : null;
         this.selectedDepartmentList = Number((data.response.DepartmentId != null) ? data.response.DepartmentId : null);
-        this.selectedUserTypeList = data.response.USERTYPE;
         this.selectedRoleGroupList = data.response.GroupName;
         this.selectedFacilityDeptroleList = (data.response.FacilityDepartment != null) ? data.response.FacilityDepartment.map(function (a) { return a.FacilityDId; }) : null;
 
@@ -505,5 +513,22 @@ export class UsersComponent implements OnInit {
   {
     a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
   return a;
+  }
+
+  onUserTypeWiseReferrers() {
+    if (this.selectedUserTypeList == RADIOLOGIST_TYPE) {
+      this.referrerList = this.radiologistList;
+      var isRadiologistSelected = false;
+      if(this.selectedReferrerList){
+        this.selectedReferrerList.forEach(element => {
+          if(this.radiologistList.some(e => e.ReferrerID == element))
+            isRadiologistSelected = true;
+          });
+      }
+      if(!isRadiologistSelected) this.selectedReferrerList = [];
+
+    } else {
+      this.referrerList = this.allReferrersList;
+    }
   }
 }

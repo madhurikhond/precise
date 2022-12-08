@@ -40,6 +40,7 @@ export class LienFundingCoComponent implements OnInit {
   onTabClicked(selectedMode) {
     this.selectedMode = selectedMode;
     this.clearFilter();
+    this.bindDateType_list();
   }
 
   onFilter() {
@@ -51,6 +52,23 @@ export class LienFundingCoComponent implements OnInit {
       "radiologist": this.filterForm.controls.readingRad.value,
     };
 
+    switch (this.selectedMode) {
+      case LienFundingCoTabName.PENDING:
+        break;
+      case LienFundingCoTabName.UNPAID:
+        this.filter.batch = this.filterForm.controls.batch.value;
+        break;
+      case LienFundingCoTabName.PAID:
+        this.filter.batch = this.filterForm.controls.batch.value;
+        this.filter.checkNumber = this.filterForm.controls.check.value;
+        break;
+      default:
+        this.filter = undefined;
+        break;
+    }
+  }
+
+  bindDateType_list() {
     switch (this.selectedMode) {
       case LienFundingCoTabName.PENDING:
         this.dateType = [
@@ -65,7 +83,6 @@ export class LienFundingCoComponent implements OnInit {
           {val:'dateRead',text:'Date Of Read'},
           {val:'assignedDate',text:'Date AR Assigned'}
         ]
-        this.filter.batch = this.filterForm.controls.batch.value;
         break;
       case LienFundingCoTabName.PAID:
         this.dateType = [
@@ -75,8 +92,6 @@ export class LienFundingCoComponent implements OnInit {
           {val:'executeDate',text:'Execution Date'},
           {val:'paidDate',text:'Paid Date'}
         ]
-        this.filter.batch = this.filterForm.controls.batch.value;
-        this.filter.checkNumber = this.filterForm.controls.check.value;
         break;
       default:
         this.filter = undefined;

@@ -56,7 +56,7 @@ export class LienPortalComponent implements OnInit {
     let data = {};
       this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result) => {
         if (result.status == LienPortalResponseStatus.Success) {
-          if (result.result) 
+          if (result.result)
             this.list_CPTGroup = result.result
         }
         else
@@ -70,7 +70,7 @@ export class LienPortalComponent implements OnInit {
     let data = {};
       this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetReferrerByUser).subscribe((result) => {
         if (result.status == LienPortalResponseStatus.Success) {
-          if (result.result) 
+          if (result.result)
             this.list_ReferrerByUser = result.result
         }
         else
@@ -84,7 +84,7 @@ export class LienPortalComponent implements OnInit {
     let data = {};
       this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanyByUser).subscribe((result) => {
         if (result.status == LienPortalResponseStatus.Success) {
-          if (result.result) 
+          if (result.result)
             this.list_FundingCompanyByUser = result.result
         }
         else
@@ -121,7 +121,8 @@ export class LienPortalComponent implements OnInit {
       {val:'birthDate',text:'Date Of Birth'},
       {val:'dateRead',text:'Date Of Read'},
       {val:'assignedDate',text:'AR Assigned Date'},
-      {val:'executeDate',text:'Execution Date'}
+      {val:'executeDate',text:'Execution Date'},
+      {val:'paidDate',text:'Paid Date'}
     ]
     this.clearFilter();
   }
@@ -154,7 +155,7 @@ export class LienPortalComponent implements OnInit {
       "dateTo": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateTo.value),
       "dateType": this.filterForm.controls.dateType.value,
     };
-   
+
     switch (this.selectedMode) {
       case LienPortalTabName.PENDING:
         this.filter.referrers = this.filterForm.controls.readingRad.value;
@@ -166,7 +167,7 @@ export class LienPortalComponent implements OnInit {
         break;
       case LienPortalTabName.ASSIGN_PAID:
         this.filter.fundingCompany = this.filterForm.controls.fundingCompany.value;
-        this.filter.checkNumber = this.filterForm.controls.checkNumber.value;
+        this.filter.checkNumber = this.filterForm.controls.check.value;
         break;
       case LienPortalTabName.RETAIN_UNPAID:
         break;

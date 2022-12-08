@@ -235,7 +235,7 @@
                                                             id="user-isactive" type="checkbox">
                                                         <label for="user-isactive" class="arrow-label">Is Active</label>
                                                     </div>
-                                                    <!-- <div class="form-group">                                                        
+                                                    <!-- <div class="form-group">
                                                         <div class="input-group icon-active">
                                                             <input type="text" class="form-control" id="exiled-date">
                                                             <i class="fa-right-icon fa fa-calendar"></i>
@@ -537,7 +537,7 @@
                                         <div class="form-group autocomplete">
                                             <div class="theme-label">User Type</div>
                                             <div class="input-group">
-                                                <select class="form-control" formControlName="userType"
+                                                <select class="form-control" formControlName="userType" (change)="onUserTypeWiseReferrers()"
                                                     [ngClass]="{ 'is-invalid': submitted && editForm.userType.errors }"
                                                     [(ngModel)]="selectedUserTypeList">
                                                     <option value="">Select</option>
@@ -656,7 +656,7 @@
                                             <div class="input-group">
                                                 <ng-select [items]="facilityList" placeholder="Select"
                                                     bindLabel="FacilityName" formControlName="assignFacilityID"
-                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)" 
+                                                    [(ngModel)]="selectedFacilityList" [multiple]="true" id="id114" (add)="a3=ValidateMultiSelectTextLength('id114',a3)"
                                                     [closeOnSelect]="false" [loading]="showDropdownLoader"
                                                     bindValue="FacilityID">
                                                     <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
