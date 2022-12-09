@@ -311,6 +311,18 @@
                                     width="300">
                                 </dxi-column>
                                 <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
+
+                                <dxi-column cellTemplate="statusCellTemplate" caption="Status">
+                                </dxi-column>
+                                <div *dxTemplate="let data of 'statusCellTemplate'">
+                                    <div *ngIf="data.data.IsUseCredit == true">
+                                        <span>used</span>
+                                    </div>
+                                    <div *ngIf="data.data.IsUseCredit == false">
+                                        <span>unused</span>
+                                    </div>
+
+                                </div>
                             </dx-data-grid>
                         </div>
                     </div>
