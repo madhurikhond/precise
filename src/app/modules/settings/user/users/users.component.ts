@@ -520,13 +520,12 @@ export class UsersComponent implements OnInit {
       this.referrerList = this.radiologistList;
       var isRadiologistSelected = false;
       if(this.selectedReferrerList){
-        this.selectedReferrerList.forEach(element => {
-          if(this.radiologistList.some(e => e.ReferrerID == element))
-            isRadiologistSelected = true;
-          });
+        this.selectedReferrerList.forEach(referrer => {
+          var found = this.referrerList.map(element=>element.ReferrerID).includes(referrer); 
+            (found) ? isRadiologistSelected = true : this.selectedReferrerList.pop(referrer);
+        });
       }
       if(!isRadiologistSelected) this.selectedReferrerList = [];
-
     } else {
       this.referrerList = this.allReferrersList;
     }

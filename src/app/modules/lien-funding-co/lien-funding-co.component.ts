@@ -88,7 +88,6 @@ export class LienFundingCoComponent implements OnInit {
         this.dateType = [
           {val:'birthDate',text:'Date Of Birth'},
           {val:'dateRead',text:'Date Of Read'},
-          {val:'assignedDate',text:'Date AR Assigned'},
           {val:'executeDate',text:'Execution Date'},
           {val:'paidDate',text:'Paid Date'}
         ]
