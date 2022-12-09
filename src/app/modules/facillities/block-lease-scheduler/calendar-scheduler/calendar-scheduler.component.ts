@@ -66,9 +66,9 @@ export class CalendarSchedulerComponent implements OnInit {
 
     latestStartDate: any = "";
     latestSchedulerMode: string = "";
-    IsEsignModalHide:  boolean = false;
+    IsEsignModalHide: boolean = false;
     IsApproveEsignModalHide: boolean = false;
- 
+
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -98,8 +98,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     schedulerLoad() {
         scheduler.skin = 'material';
-        scheduler.config.xml_date = '%Y-%m-%d';        
-        scheduler.config.drag_move = false;       
+        scheduler.config.xml_date = '%Y-%m-%d';
+        scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
@@ -323,10 +323,6 @@ export class CalendarSchedulerComponent implements OnInit {
             });
         }
     }
-    clearEsignData()
-    {
-        this.signConfirm(false);
-    }
     openConfirm(id: number) {
         const event = scheduler.getEvent(id);
         if (event.LeaseBlockId != undefined) {
@@ -501,24 +497,26 @@ export class CalendarSchedulerComponent implements OnInit {
             this.approveAllCheckForButton = true;
         }
     }
-    clearEsignData():void{
+    clearEsignData(): void {
+        this.signConfirm(false);
+
         this.clearSign();
         this.clearSignApproveAddEsign();
-        this.model.firstName='';
-        this.model.lastName='';
-        this.model.Title='';
-        this.approveAddEsignModel.firstName='';
-        this.approveAddEsignModel.lastName='';
-        this.approveAddEsignModel.Title='';
+        this.model.firstName = '';
+        this.model.lastName = '';
+        this.model.Title = '';
+        this.approveAddEsignModel.firstName = '';
+        this.approveAddEsignModel.lastName = '';
+        this.approveAddEsignModel.Title = '';
     }
     clearSign(): void {
-        this.signaturePad.clear();   
+        this.signaturePad.clear();
         this.model.signature = '';
     }
     clearSignApproveAddEsign(): void {
         this.signaturePadapproveAddEsignModel.clear();
         this.approveAddEsignModel.signapprove = '';
-       
+
     }
 
     drawComplete() {
@@ -565,7 +563,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: 200
                     })
                     this.signConfirm(false);
-                    this.IsEsignModalHide=true;
+                    this.IsEsignModalHide = true;
                     // this.f.nativeElement.click();
                     // this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
@@ -592,9 +590,9 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserFirstName': this.model.firstName,
                 'PreciseUserLastName': this.model.lastName,
             }
-        
+
             this.confirmBlockToLease(false, data);
-            
+
             this.closeEsignPopup.nativeElement.click();
             this.f.submitted = false;
         }
@@ -614,8 +612,8 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserLastName': this.approveAddEsignModel.lastName,
                 'PreciseSignature': this.approveAddEsignModel.signapprove,
             }
-  
- 
+
+
             this.approveAllParentToLease(false, data);
             this.closeApproveEsignPopup.nativeElement.click();
             this.ff.submitted = false;
@@ -650,7 +648,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: res.response.ResponseCode
                     })
                     this.signConfirm(false);
-    
+
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
