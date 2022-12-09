@@ -18,6 +18,7 @@ import { CommonRegex } from 'src/app/constants/commonregex';
 import { ReferrersService } from 'src/app/services/referrers.service';
 import { BrokerService } from 'src/app/services/broker.service';
 import { PatientPortalService } from 'src/app/services/patient-portal/patient.portal.service';
+import { saveAs } from 'file-saver';
 
 
 declare const $: any;
@@ -932,25 +933,14 @@ export class PatientComponent implements OnInit {
   }
   onExporting() {
     if (this.isSelectAll) {
-      this.patientService.getPatientDataForExportAllToExcel(true, this.filterBody).subscribe((res) => {
-        console.log(res.response);
-        // if (res.response != null && res.response.length > 0) {  
-        //   this.patientGridList = res.response;
-        //   this.totalRecord = res.totalRecords;
-        //   this.dataGrid.instance.refresh();
-        // }
-        // else {
-        //   this.patientGridList = [];
-        //   this.totalRecord = 1;
-        // }
-      },
-        (err: any) => {
-          this.error(err);
-        });
+      this.patientService.getPatientDataForExportAllToExcel(true, this.filterBody).subscribe(blob => {
+        saveAs(blob, 'Patient.xlsx');
+      }, error => {
+      });
     } else {
       let element = document.getElementById('patient-grid-container');
       let instance = DataGrid.getInstance(element) as DataGrid;
-      this.commonService.onExporting(instance, 'Patient')
+      this.commonService.onExporting(instance, 'Patient');
     }
   }
 
