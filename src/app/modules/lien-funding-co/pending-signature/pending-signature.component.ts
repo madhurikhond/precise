@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
@@ -13,15 +13,15 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
   templateUrl: './pending-signature.component.html',
   styleUrls: ['./pending-signature.component.css']
 })
-export class PendingSignatureComponent implements OnInit {
+export class PendingSignatureComponent {
 
-  isSelectAll: boolean = false;
+  isSelectedAll: boolean = false;
   selectedData: any = [];
-  getfilterData: any;
+  getFilterData: any;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
-      this.getfilterData = val;
+      this.getFilterData = val;
       this.getListingData();
     }
   }
@@ -52,34 +52,31 @@ export class PendingSignatureComponent implements OnInit {
   defaultSignature: string;
 
   constructor(private lienPortalService: LienPortalService,
-    private fb: FormBuilder,private commonService: CommonMethodService,
+    private fb: FormBuilder, private commonService: CommonMethodService,
     private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
-
+    this.getFundingCompanySetting();
     this.signatureForm = this.fb.group({
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
       fundingCompanySign: ['', Validators.required],
-      baseUrl:window.location.origin
+      baseUrl: window.location.origin
     })
   }
 
-  ngOnInit(): void {
-    this.getFundingCompanySetting();
-  }
-
-  getListingData() {
-    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
-      this.totalRecord = result.result.length;
+  private getListingData() {
+    this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
+      this.totalRecord = 0;
       this.dataSource = [];
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result)
+        if (result.result) {
+          this.totalRecord = result.result.length;
           this.dataSource = result.result;
-          this.totalRecord = this.dataSource.length;
           this.dataSource.forEach(element => {
             this.dataGrid.instance.collapseRow(element);
           });
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -108,9 +105,9 @@ export class PendingSignatureComponent implements OnInit {
   onSelectCheckbox($event) {
     this.selectedData = $event.selectedRowsData;
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
-      this.isSelectAll = true;
+      this.isSelectedAll = true;
     else if ($event.selectedRowsData.length == 0)
-      this.isSelectAll = false;
+      this.isSelectedAll = false;
   }
 
   clearSignatureForm() {
@@ -137,18 +134,23 @@ export class PendingSignatureComponent implements OnInit {
     }
   }
 
-  getFundingCompanySetting(){
+  private getFundingCompanySetting() {
     var data = {};
-    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res=>{
-      if(res.status == LienPortalResponseStatus.Success){
-        var data = res.result;
-        this.isDefaultSignature = data.isDefaultSignature;
-        if(data.defaultSign.defaultSign)
-        this.defaultSignature = data.defaultSign.defaultSign;
-          this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        if (res.result) {
+          var data = res.result;
+          this.isDefaultSignature = data.isDefaultSignature;
+          if (data.defaultSign) {
+            if (data.defaultSign.defaultSign) {
+              this.defaultSignature = data.defaultSign.defaultSign;
+              this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+            }
+          }
+        }
       } else
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    },() => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
   }
@@ -160,10 +162,9 @@ export class PendingSignatureComponent implements OnInit {
       firstName: this.storageService.user.FirstName,
       lastName: this.storageService.user.LastName,
       fundingCompanySign: '',
-      baseUrl:window.location.origin
+      baseUrl: window.location.origin
     });
-    if (this.isDefaultSignature)
-    {
+    if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
       this.signatureForm.patchValue({
         fundingCompanySign: this.signaturePad.toDataURL(),
@@ -184,8 +185,8 @@ export class PendingSignatureComponent implements OnInit {
   }
 
   downloadPDF(data) {
-    if(data.fileName)
-      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+    if (data.fileName)
+      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
   }
 
 }

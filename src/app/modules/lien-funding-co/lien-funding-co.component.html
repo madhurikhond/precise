@@ -18,7 +18,7 @@
                     <div class="theme-label">Reading Rad</div>
                     <div class="input-group">
                         <select formControlName="readingRad" class="form-control">
-                            <option value="">Select</option>
+                            <option [value]="null">Select</option>
                             <option *ngFor="let item of list_ReferrerByUser" [value]="item.radiologistId">
                                 {{item.radiologist}}</option>
                         </select>
@@ -44,7 +44,7 @@
                     <div class="theme-label">Date Type</div>
                     <div class="input-group">
                         <select class="form-control" formControlName="dateType">
-                            <option value="">Select</option>
+                            <option [value]="null">Select</option>
                             <option *ngFor="let item of dateType" [value]="item.val">{{item.text}}
                         </select>
                     </div>

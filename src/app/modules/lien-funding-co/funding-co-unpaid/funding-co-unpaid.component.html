@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6 pt-2">
                 <label *ngIf="dataSource.length > 0">
-                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
+                    <input type="checkbox" [(ngModel)]="isSelectedAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
             </div>

@@ -1,26 +1,26 @@
 <div class="inner-tab-content">
-     <div class="row pt-2">
-            <div class="col-md-6">
-                <label *ngIf="dataSource.length > 0">
-                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
-                    Select All
-                </label>
-            </div>
-            <div class="col-md-6 headerBtnSection">
-                <div class="selectAction-sec">
+    <div class="row pt-2">
+        <div class="col-md-6">
+            <label *ngIf="dataSource.length > 0">
+                <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
+                Select All
+            </label>
+        </div>
+        <div class="col-md-6 headerBtnSection">
+            <div class="selectAction-sec">
                 <div class="selectAction-Dropdown">
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="form-control">
-                                <option>Select Action</option>
-                                <option>Cancel & Remove</option>
-                                <option>Edit Payment Info</option>
+                            <select class="form-control" [(ngModel)]="selectedAction">
+                                <option value="">Select Action</option>
+                                <option [value]="_actionDropdown.remove">Cancel & Remove</option>
+                                <option [value]="_actionDropdown.edit_payment">Edit Payment Info</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="ationPerformBtn">
-                    <button class="btn btn-go" data-toggle="modal" data-target="#paidActionModal">Go</button>
+                    <a href="javascript:;" class="btn btn-common btn-assignAR btn-blue" [ngClass]="selectedAction != '' ? 'btn-primary':'btn-grey disabled'" (click)="onAction()">Go</a>
                 </div>
             </div>
         </div>
@@ -73,7 +73,8 @@
                                 <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                                 <div *dxTemplate="let data of 'readingIconTemplate'">
                                     <a href="javascript:void(0)" class="single-action fa  fa-file-text-o"
-                                    data-toggle="modal" data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
+                                        data-toggle="modal" data-target="#docManager"
+                                        (click)="showDocManager(data.data.patientId)"></a>
                                 </div>
                             </dx-data-grid>
 
@@ -95,13 +96,14 @@
     </div>
 </div>
 
-<div class="modal fade modal-theme in modal-small" id="paidActionModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" [id]="_actionDropdown.remove"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Alert</h5>
-                <div class="close-dismiss" data-dismiss="modal"></div>
+                <div class="close-dismiss" data-dismiss="modal" #modal_remove_close></div>
             </div>
             <div class="modal-body">
                 <div class="modal-content">
@@ -118,4 +120,56 @@
             </div>
         </div>
     </div>
+</div>
+
+<a class="d-none" data-toggle="modal" [attr.data-target]="'#' + selectedAction"
+    #modal_open></a>
+
+<div class="modal fade modal-theme in modal-small my-modal" data-backdrop="static" data-keyboard="false" [id]="_actionDropdown.edit_payment"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <form class="modal-dialog modal-dialog-centered" (submit)="onSubmitPayment()" [formGroup]="paymentForm"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Confirmation</h5>
+                <div class="close-dismiss" (click)="clearPaymentForm()" data-dismiss="modal" #modal_edit_payment_close></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="check-form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Total For Check</div>
+                                <label class="totlaPayAmt">{{paymentForm.get("checkAmount").value
+                                    | currency:'INR':'symbol-narrow'}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check Date </div>
+                                <dx-date-box class="form-control" [displayFormat]="'MM/dd/yyyy'"
+                                    formControlName="checkDate" type="date" [showClearButton]="true"
+                                    [useMaskBehavior]="true">
+                                </dx-date-box>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="theme-label">Check #</div>
+                                <input type="text" class="form-control" formControlName="checkNumber"
+                                    placeholder="Check #">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" (click)="clearPaymentForm()" class="btn btn-border-gray pull-left btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <button type="submit" class="btn btn-theme pull-right btn-sm"
+                    [ngClass]="paymentForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Payment Update</button>
+            </div>
+        </div>
+    </form>
 </div>

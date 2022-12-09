@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
@@ -12,15 +12,15 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
   templateUrl: './funding-co-unpaid.component.html',
   styleUrls: ['./funding-co-unpaid.component.css']
 })
-export class FundingCoUnpaidComponent implements OnInit {
-  isSelectAll: boolean = false;
+export class FundingCoUnpaidComponent {
+  isSelectedAll: boolean = false;
   selectedData: any = [];
-  getfilterData: any;
+  getFilterData: any;
   defaultCheckDate = new Date();
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
-      this.getfilterData = val;
+      this.getFilterData = val;
       this.getListingData();
     }
   }
@@ -38,32 +38,30 @@ export class FundingCoUnpaidComponent implements OnInit {
   currentPageNumber = 1;
   paymentForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService,private commonService: CommonMethodService) {
+  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
 
     this.paymentForm = this.fb.group({
-      checkDate: [this.defaultCheckDate,Validators.required],
+      checkDate: [this.defaultCheckDate, Validators.required],
       checkNumber: ['', Validators.required],
       checkAmount: [0, Validators.required]
     })
   }
 
-  ngOnInit(): void {
-  }
-
-  getListingData() {
-    this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetFundingCompanyUnpaidList).subscribe((result) => {
-      this.totalRecord = result.result.length;
+  private getListingData() {
+    this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetFundingCompanyUnpaidList).subscribe((result) => {
+      this.totalRecord = 0;
       this.dataSource = [];
       this.dataGrid.instance.deselectAll();
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result)
+        if (result.result) {
           this.dataSource = result.result;
           this.totalRecord = this.dataSource.length;
           this.dataSource.forEach(element => {
             this.dataGrid.instance.collapseRow(element);
           });
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -92,17 +90,10 @@ export class FundingCoUnpaidComponent implements OnInit {
     }
     this.paymentForm.patchValue({ checkAmount: amount })
 
-    // if (this.dataGrid.instance.totalCount() > 1) {
-    //   if ($event.currentSelectedRowKeys.length == 1)
-    //     this.dataGrid.instance.expandRow(($event.currentSelectedRowKeys[0]));
-    //   else if ($event.currentDeselectedRowKeys.length == 1)
-    //     this.dataGrid.instance.collapseRow(($event.currentDeselectedRowKeys[0]));
-    // }
-
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
-      this.isSelectAll = true;
+      this.isSelectedAll = true;
     else if ($event.selectedRowsData.length == 0)
-      this.isSelectAll = false;
+      this.isSelectedAll = false;
   }
 
   clearPaymentForm() {
@@ -140,8 +131,8 @@ export class FundingCoUnpaidComponent implements OnInit {
   }
 
   downloadPDF(data) {
-    if(data.fileName)
-      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+    if (data.fileName)
+      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
   }
 
   showDocManager(patientId: any) {

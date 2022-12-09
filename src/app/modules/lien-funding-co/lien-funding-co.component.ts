@@ -12,10 +12,10 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 export class LienFundingCoComponent implements OnInit {
 
   list_ReferrerByUser: any = [];
-  selectedMode:string;
+  selectedMode: string;
   filter: any;
   filterForm: FormGroup;
-  dateType:any = [];
+  dateType: any = [];
 
   public readonly lienFundingCoTabName = LienFundingCoTabName;
   constructor(private lienPortalService: LienPortalService,
@@ -69,46 +69,23 @@ export class LienFundingCoComponent implements OnInit {
   }
 
   bindDateType_list() {
-    switch (this.selectedMode) {
-      case LienFundingCoTabName.PENDING:
-        this.dateType = [
-          {val:'birthDate',text:'Date Of Birth'},
-          {val:'dateRead',text:'Date Of Read'},
-          {val:'assignedDate',text:'Date AR Assigned'}
-        ]
-        break;
-      case LienFundingCoTabName.UNPAID:
-        this.dateType = [
-          {val:'birthDate',text:'Date Of Birth'},
-          {val:'dateRead',text:'Date Of Read'},
-          {val:'assignedDate',text:'Date AR Assigned'}
-        ]
-        break;
-      case LienFundingCoTabName.PAID:
-        this.dateType = [
-          {val:'birthDate',text:'Date Of Birth'},
-          {val:'dateRead',text:'Date Of Read'},
-          {val:'assignedDate',text:'Date AR Assigned'},
-          {val:'executeDate',text:'Execution Date'},
-          {val:'paidDate',text:'Paid Date'}
-        ]
-        break;
-      default:
-        this.filter = undefined;
-        break;
+    this.dateType = [
+      { val: 'birthDate', text: 'Date Of Birth' },
+      { val: 'dateRead', text: 'Date Of Read' },
+      { val: 'assignedDate', text: 'Date AR Assigned' }
+    ];
+
+    if (this.selectedMode == LienFundingCoTabName.PAID) {
+      var dateType_paid = [
+        { val: 'executeDate', text: 'Execution Date' },
+        { val: 'paidDate', text: 'Paid Date' }
+      ];
+      this.dateType = this.dateType.concat(dateType_paid);
     }
   }
 
   clearFilter() {
-    this.filterForm.patchValue({
-      patientId: '',
-      readingRad: '',
-      dateFrom: '',
-      dateTo: '',
-      dateType: '',
-      batch: '',
-      check: '',
-    });
+    this.filterForm.reset();
     this.onFilter();
   }
 
