@@ -31,10 +31,12 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
     @ViewChild("modaldismiss2", { static: true }) modaldismiss2: ElementRef;
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
+    @ViewChild('closeEsignPopup') closeEsignPopup;
+    @ViewChild('closeApproveEsignPopup') closeApproveEsignPopup;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
-    approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
+    approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signapprove: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
-    @ViewChild(SignaturePad) signaturePadapproveAddEsignModel: SignaturePad;
+    @ViewChild('signaturePadApprove') signaturePadapproveAddEsignModel: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
@@ -64,6 +66,9 @@ export class CalendarSchedulerComponent implements OnInit {
 
     latestStartDate: any = "";
     latestSchedulerMode: string = "";
+    IsEsignModalHide:  boolean = false;
+    IsApproveEsignModalHide: boolean = false;
+ 
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -500,19 +505,31 @@ export class CalendarSchedulerComponent implements OnInit {
             this.approveAllCheckForButton = true;
         }
     }
+    clearEsignData():void{
+        this.clearSign();
+        this.clearSignApproveAddEsign();
+        this.model.firstName='';
+        this.model.lastName='';
+        this.model.Title='';
+        this.approveAddEsignModel.firstName='';
+        this.approveAddEsignModel.lastName='';
+        this.approveAddEsignModel.Title='';
+    }
     clearSign(): void {
-        this.signaturePad.clear();
+        this.signaturePad.clear();   
         this.model.signature = '';
     }
     clearSignApproveAddEsign(): void {
         this.signaturePadapproveAddEsignModel.clear();
-        this.approveAddEsignModel.signature = '';
+        this.approveAddEsignModel.signapprove = '';
+       
     }
+
     drawComplete() {
         this.model.signature = this.signaturePad.toDataURL();
     }
     drawCompleteapproveAddEsign() {
-        this.approveAddEsignModel.signature = this.signaturePadapproveAddEsignModel.toDataURL();
+        this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
     signConfirm(isConfirmSign: boolean) {
         debugger
@@ -525,8 +542,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     approveAddEsignModelConfirm(isConfirmSign: boolean) {
         this.ff.resetForm();
-        this.signaturePad.clear();
-        this.approveAddEsignModel.signature = '';
+        this.signaturePadapproveAddEsignModel.clear();
+        this.approveAddEsignModel.signapprove = '';
         this.approveAddEsignModel.firstName = '';
         this.approveAddEsignModel.lastName = '';
         this.approveAddEsignModel.Title = '';
@@ -552,8 +569,9 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: 200
                     })
                     this.signConfirm(false);
-                    this.modaldismiss2.nativeElement.click();
-                    this.modaldismissscheduler.nativeElement.click();
+                    this.IsEsignModalHide=true;
+                    // this.f.nativeElement.click();
+                    // this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
@@ -578,28 +596,32 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserFirstName': this.model.firstName,
                 'PreciseUserLastName': this.model.lastName,
             }
-
-            this.confirmBlockToLease(false, data)
+        
+            this.confirmBlockToLease(false, data);
+            
+            this.closeEsignPopup.nativeElement.click();
             this.f.submitted = false;
         }
     }
 
     ApproveSubmitSign(isItemSign: boolean) {
-        if (this.approveAddEsignModel.signature == '') {
+        if (this.approveAddEsignModel.signapprove == '') {
             return;
         }
         if (this.ff.valid) {
             let data = {
                 'FacilityID': this.FacilityID,
                 'UserId': this.storageService.user.UserId,
-                'DefaultSign': this.approveAddEsignModel.signature ?? 0,
+                'DefaultSign': this.approveAddEsignModel.signapprove ?? 0,
                 'PreciseUserTitle': this.approveAddEsignModel.Title,
                 'PreciseUserFirstName': this.approveAddEsignModel.firstName,
                 'PreciseUserLastName': this.approveAddEsignModel.lastName,
-                'PreciseSignature': this.approveAddEsignModel.signature,
+                'PreciseSignature': this.approveAddEsignModel.signapprove,
             }
-
-            this.approveAllParentToLease(false, data)
+  
+ 
+            this.approveAllParentToLease(false, data);
+            this.closeApproveEsignPopup.nativeElement.click();
             this.ff.submitted = false;
         }
     }
@@ -632,8 +654,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: res.response.ResponseCode
                     })
                     this.signConfirm(false);
-                    this.modaldismiss1.nativeElement.click();
-                    this.modaldismissscheduler.nativeElement.click();
+    
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
