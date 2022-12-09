@@ -3844,13 +3844,14 @@
 
 
 									<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"
+									
 										data-keyboard="false" tabindex="-1" role="dialog"
 										aria-labelledby="exampleModalLabel" aria-modal="true">
 										<div class="modal-dialog modal-dialog-centered" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title">Agreement</h5>
-													<a href="javascript:void(0)" (click)="closePDF()" data-dismiss="modal" class="close-dismiss" ></a>
+													<a href="javascript:void(0)" (click)="closePDF()" class="close-dismiss" ></a>
 												</div>
 												<div class="modal-body" *ngIf="fileData">
 													<iframe width="100%" height="100%" frameBorder="0"
@@ -3864,7 +3865,7 @@
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
-										<div class="table-responsive">
+										<div class="table-responsive" id="DivContainerCreditandDebit112" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
 												[columnAutoWidth]="true" [allowColumnReordering]="false"
 												[dataSource]="CreditDebitList" [showBorders]="true">
@@ -3933,6 +3934,7 @@
 												<div class="tab-pane" id="LeasePaymentsUnPaid"
 													[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'">
 													<button type="button" class="btn btn-theme"
+													[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
 														[disabled]="btnActive==0?true:false"
 														(click)="UnpaidButtonClick($event)"
 														[ngStyle]="{'background-color':(btnActive==0)? '#bfbfbf' : '#3b8beb'}">Pay
@@ -3940,7 +3942,7 @@
 													<!------------------ Unpaid lease Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Leases</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -3996,7 +3998,7 @@
 													<!------------------ Unpaid Credits Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Credits</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit11" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"

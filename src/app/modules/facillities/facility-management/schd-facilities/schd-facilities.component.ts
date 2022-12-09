@@ -42,6 +42,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @Input() isGridDisplay: boolean = true;
   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
+  disableCheckbox:any
   modalityServiceForm: FormGroup;
   modalityMriForm: FormGroup;
   modalityCtForm: FormGroup;
@@ -320,6 +321,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getSchedulingFacilities();
   }
   get3pLeaseFacilityData(path: any, fileData: any) {
+  
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
@@ -327,10 +329,11 @@ export class SchdFacilitiesComponent implements OnInit {
     this.hiddenViewFile.nativeElement.click();
   }
   closePDF()
+ 
   {
-  //  debugger
-  //  $('#viewFile_Doc').hide();
+    // this.displayStyle = "none";
   }
+  
   getActiveEpicUsers() {
     this.EpicUserList = [];
     this.facilityService.getActiveEpicUsers(true).subscribe(
@@ -1565,10 +1568,12 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   setGeneralInfoTabForm(data: any) {
+  this.disableCheckbox = data.useBlockLease;
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
+ 
     if (!data.useBlockLease) {
-
+      this.GetUnpaidLeasesList = [];
       $('#BlockLeaseRate')
         .not('.btn')
         .attr('disabled', true)
@@ -1581,14 +1586,15 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', true)
       //   .addClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
-      $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+     
+      // $('#LeasePaymentsUnPaid')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
     } else {
       $('#BlockLeaseRate')
         .not('.btn')
@@ -1598,18 +1604,18 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-        $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+        // $('#LeasePaymentsUnPaid')
+        // .not('.btn')
+        // .attr('disabled', false)
+        // .removeClass('disabledClass');
       // $('#LeaseAgreementCT')
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
 
     }
     this.generalInfoForm.patchValue({
