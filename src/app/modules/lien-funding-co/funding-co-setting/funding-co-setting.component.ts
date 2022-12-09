@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
@@ -19,7 +19,7 @@ export class FundingCoSettingComponent implements OnInit {
     backgroundcolor: 'rgb(255,255,255)',
     canvasWidth: 500,
     canvasHeight: 100,
-    Placeholder:'test'
+    Placeholder: 'test'
   };
   pageNumber: number = 1;
   totalRecord: number = 1;
@@ -27,11 +27,11 @@ export class FundingCoSettingComponent implements OnInit {
   isDefaultNamesEnable: boolean = true;
   isPendingTaskEnable: boolean = true;
   isDefaultSignature: boolean = true;
-  defaultSignature: string ;
+  defaultSignature: string;
 
 
 
-  constructor(private lienPortalService:LienPortalService) { }
+  constructor(private lienPortalService: LienPortalService) { }
 
   ngOnInit(): void {
     this.getFundingCompanySettings();
@@ -46,25 +46,29 @@ export class FundingCoSettingComponent implements OnInit {
     this.defaultSignature = this.signaturePad.toDataURL();
   }
 
-  getFundingCompanySettings(){
+  getFundingCompanySettings() {
     var data = {};
-    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res=>{
-      if(res.status == LienPortalResponseStatus.Success){
-        // console.log(res);
-        var data = res.result;
-        this.isDefaultNamesEnable = data.isDefaultNamesEnable;
-        this.isPendingTaskEnable = data.isPendingTaskEnable;
-        this.isDefaultSignature = data.isDefaultSignature;
-        if(data.defaultSign.defaultSign)
-          this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanySetting).subscribe(res => {
+      if (res.status == LienPortalResponseStatus.Success) {
+        if (res.result) {
+          var data = res.result;
+          this.isDefaultNamesEnable = data.isDefaultNamesEnable;
+          this.isPendingTaskEnable = data.isPendingTaskEnable;
+          this.isDefaultSignature = data.isDefaultSignature;
+          if (data.defaultSign)
+          {
+            if (data.defaultSign.defaultSign)
+              this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+          }
+        }
       } else
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-    },() => {
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+    }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
   }
 
-  saveSettings(){
+  saveSettings() {
     var data = {
       "isDefaultNamesEnable": this.isDefaultNamesEnable,
       "isPendingTaskEnable": this.isPendingTaskEnable,
@@ -73,11 +77,11 @@ export class FundingCoSettingComponent implements OnInit {
         "defaultSign": this.defaultSignature
       },
     }
-    this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.AddFundingUserSetting).subscribe(res=>{
-      if(res.status == LienPortalResponseStatus.Success){
+    this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.AddFundingUserSetting).subscribe(res => {
+      if (res.status == LienPortalResponseStatus.Success)
         this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
-      }else
-      this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      else
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
@@ -89,13 +93,12 @@ export class FundingCoSettingComponent implements OnInit {
       "defaultSign": this.defaultSignature
     };
     this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.AddRadDefaultSign).subscribe((result) => {
-      if (result.status == LienPortalResponseStatus.Success) {
+      if (result.status == LienPortalResponseStatus.Success)
         this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
-      }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
-}
+  }
 }

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6 pt-2">
                 <label *ngIf="dataSource.length > 0">
-                    <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
+                    <input type="checkbox" [(ngModel)]="isSelectedAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
             </div>
@@ -56,8 +56,8 @@
                             <dxi-column dataField="cptGroup" caption="CPT Group"></dxi-column>
                             <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
                             <div *dxTemplate="let data of 'readingIconTemplate'">
-                                <a href="javascript:void(0)" class="single-action fa fa-file-text-o"
-                                data-toggle="modal" data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
+                                <a href="javascript:void(0)" class="single-action fa fa-file-text-o" data-toggle="modal"
+                                    data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
                             </div>
                         </dx-data-grid>
                     </div>
@@ -80,7 +80,8 @@
 
 <div class="modal fade modal-theme in modal-small LienFundingCoSignature" data-backdrop="static" data-keyboard="false"
     id="SignatureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <form class="modal-dialog modal-dialog-centered" (submit)="onSubmitSignature()" [formGroup]="signatureForm" role="document">
+    <form class="modal-dialog modal-dialog-centered" (submit)="onSubmitSignature()" [formGroup]="signatureForm"
+        role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR TO THE FOLLOWING FUNDING COMPANY</h5>
@@ -130,7 +131,9 @@
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm" (click)="clearSignatureForm()"
                     data-dismiss="modal">Cancel</a>
-                <button type="submit" class="btn btn-theme pull-right btn-sm" [ngClass]="signatureForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Sign & Execute Assignment</button>
+                <button type="submit" class="btn btn-theme pull-right btn-sm"
+                    [ngClass]="signatureForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Sign & Execute
+                    Assignment</button>
             </div>
         </div>
     </form>

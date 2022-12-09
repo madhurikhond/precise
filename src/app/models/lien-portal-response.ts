@@ -17,6 +17,7 @@ export enum LienPortalStatusMessage {
   PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.',
   SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
   FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.',
+  FUNDING_COMPANY_PAID_RECORD = 'Please Select a Paid Record.',
   FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.'
 }
 

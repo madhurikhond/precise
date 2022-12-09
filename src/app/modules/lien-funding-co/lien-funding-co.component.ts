@@ -12,10 +12,10 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 export class LienFundingCoComponent implements OnInit {
 
   list_ReferrerByUser: any = [];
-  selectedMode:string;
+  selectedMode: string;
   filter: any;
   filterForm: FormGroup;
-  dateType:any = [];
+  dateType: any = [];
 
   public readonly lienFundingCoTabName = LienFundingCoTabName;
   constructor(private lienPortalService: LienPortalService,
@@ -99,15 +99,7 @@ export class LienFundingCoComponent implements OnInit {
   }
 
   clearFilter() {
-    this.filterForm.patchValue({
-      patientId: '',
-      readingRad: '',
-      dateFrom: '',
-      dateTo: '',
-      dateType: '',
-      batch: '',
-      check: '',
-    });
+    this.filterForm.reset();
     this.onFilter();
   }
 
