@@ -272,9 +272,10 @@ export class CreditReasonsSettingComponent implements OnInit {
     }
     this.blockLeaseSchedulerService.addUpdateBlockLeaseCreditReason(true, data).subscribe((res) => {
       if (res) {
+        debugger
         this.notificationService.showNotification({
           alertHeader: 'Success',
-          alertMessage: res.message,
+          alertMessage: res.response[0].Message,
           alertType: res.responseCode
         })
       }
