@@ -138,6 +138,7 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.dhtmlXTooltip.config.className = 'dhtmlXTooltip tooltip CalendarTooltip';
         scheduler.templates.tooltip_text = function (start, end, ev) {
             let eventText = (ev.text) ? `<b>${(ev.text)}</b><br/>` : '';
+            eventText += `<b> Modality:</b> ${(ev.ModalityType)}<br/>`;
             return eventText + "<b>Start date:</b> " +
                 scheduler.templates.tooltip_date_format(start) +
                 "<br/><b>End date:</b> " + scheduler.templates.tooltip_date_format(end);
