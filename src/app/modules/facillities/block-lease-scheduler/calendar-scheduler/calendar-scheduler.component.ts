@@ -178,8 +178,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         return;
                     }
                     // and move all selected events by the same value                   
-                    var event = scheduler.getEvent(selectedId);
-                    console.log(initialDates[selectedId]);
+                    var event = scheduler.getEvent(selectedId);                  
                     event.start_date = new Date(initialDates[selectedId].start_date.valueOf() + shift);
                     event.end_date = new Date(initialDates[selectedId].end_date.valueOf() + shift);
                     // call udpateEvent in order to repaint connected events
@@ -526,8 +525,7 @@ export class CalendarSchedulerComponent implements OnInit {
     drawCompleteapproveAddEsign() {
         this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
-    signConfirm(isConfirmSign: boolean) {
-        debugger
+    signConfirm(isConfirmSign: boolean) {        
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
