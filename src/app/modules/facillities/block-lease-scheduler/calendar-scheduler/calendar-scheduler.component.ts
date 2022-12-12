@@ -627,6 +627,7 @@ export class CalendarSchedulerComponent implements OnInit {
         });
     }
     approveAllParentToLease(defaultSign: boolean, body: any = '') {
+        debugger
         if (this.isDefaultSign == 0 && body === '' && defaultSign) {
             this.validatedefaultsign.nativeElement.click();
             return;
@@ -639,19 +640,19 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
             if (res.response) {
-                if (res.responseCode === 200) {
-
+                debugger
+                if (res.responseCode == 200 || res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
-                        alertMessage: res.response.message,
-                        alertType: res.response.ResponseCode
+                        alertMessage: res.response.message ? res.response.message : res.response,
+                        alertType: 200
                     })
-                    this.signConfirm(false);
+                    this.approveAddEsignModelConfirm(false);
 
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
-                    this.errorNotification(res.message);
+                    this.errorNotification(res);
                 }
             }
         }, (err: any) => {
