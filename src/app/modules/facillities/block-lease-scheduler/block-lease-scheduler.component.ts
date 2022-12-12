@@ -203,12 +203,12 @@ export class BlockLeaseSchedulerComponent implements OnInit {
             }
           }
 
-          if(MriTotal.toString().split(".")[1] > '51'){
+          if(MriTotal.toString().split(".")[1] > '49'){
             element[`MRI${j}`] = Math.ceil(MriTotal);
           }else{
             element[`MRI${j}`] = Math.floor(MriTotal);
           }
-          if(CtTotal.toString().split(".")[1] > '51'){
+          if(CtTotal.toString().split(".")[1] > '49'){
             element[`CT${j}`] = Math.ceil(CtTotal);
           }else{
             element[`CT${j}`] = Math.floor(CtTotal);

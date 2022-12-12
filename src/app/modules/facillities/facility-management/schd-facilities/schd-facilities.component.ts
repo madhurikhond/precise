@@ -44,6 +44,7 @@ export class SchdFacilitiesComponent implements OnInit {
   @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
   @Input() isGridDisplay: boolean = true;
   generalInfoForm: FormGroup;
+  displayStyle :any;
   facilityContactDetailForm: FormGroup;
   modalityServiceForm: FormGroup;
   modalityMriForm: FormGroup;
@@ -323,15 +324,11 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getSchedulingFacilities();
   }
   get3pLeaseFacilityData(path: any, fileData: any) {
-    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
-  }
-  closePDF() {
-    //  debugger
-    //  $('#viewFile_Doc').hide();
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
