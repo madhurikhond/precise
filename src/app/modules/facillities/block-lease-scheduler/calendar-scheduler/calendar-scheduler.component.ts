@@ -592,7 +592,6 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
             this.confirmBlockToLease(false, data);
-
             this.closeEsignPopup.nativeElement.click();   
             this.f.submitted = false;
         }
@@ -615,8 +614,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
 
             this.approveAllParentToLease(false, data);
-            this.closeApproveEsignPopup.nativeElement.click();
-         
+            this.closeApproveEsignPopup.nativeElement.click();       
             this.ff.submitted = false;
         }
     }
@@ -629,7 +627,6 @@ export class CalendarSchedulerComponent implements OnInit {
         });
     }
     approveAllParentToLease(defaultSign: boolean, body: any = '') {
-        debugger
         if (this.isDefaultSign == 0 && body === '' && defaultSign) {
             this.validatedefaultsign.nativeElement.click();
             return;
@@ -651,8 +648,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                     this.approveAddEsignModelConfirm(false);
                     this.modaldismissscheduler.nativeElement.click();
-                    this.commonService.sendDataBlockLeaseScheduler('true');
-                   
+                    this.commonService.sendDataBlockLeaseScheduler('true');                  
                 }
                 else {
                     this.errorNotification(res);
