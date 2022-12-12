@@ -564,7 +564,8 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.signConfirm(false);
                     this.IsEsignModalHide = true;
                     // this.f.nativeElement.click();
-                    // this.modaldismissscheduler.nativeElement.click();
+                    debugger
+                     this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
@@ -592,7 +593,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
             this.confirmBlockToLease(false, data);
 
-            this.closeEsignPopup.nativeElement.click();
+            this.closeEsignPopup.nativeElement.click();   
             this.f.submitted = false;
         }
     }
@@ -615,6 +616,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
             this.approveAllParentToLease(false, data);
             this.closeApproveEsignPopup.nativeElement.click();
+         
             this.ff.submitted = false;
         }
     }
@@ -640,7 +642,7 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
             if (res.response) {
-                debugger
+               
                 if (res.responseCode == 200 || res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
@@ -648,8 +650,9 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: 200
                     })
                     this.approveAddEsignModelConfirm(false);
-
+                    this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
+                   
                 }
                 else {
                     this.errorNotification(res);
@@ -658,8 +661,6 @@ export class CalendarSchedulerComponent implements OnInit {
         }, (err: any) => {
             this.errorNotification(err);
         });
-
-
 
     }
     getTwentyFourHourTime(time) {
