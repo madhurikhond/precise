@@ -648,7 +648,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertMessage: res.response.message ? res.response.message : res.response,
                         alertType: 200
                     })
-                    this.ApproveSubmitSign(false);
+                    this.approveAddEsignModelConfirm(false);
 
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
