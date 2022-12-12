@@ -324,16 +324,11 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getSchedulingFacilities();
   }
   get3pLeaseFacilityData(path: any, fileData: any) {
-    this.displayStyle = "block";
+
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
-  }
-  closePDF() {
-    this.displayStyle = "none";
-    $(".modal-backdrop" ).remove();
-    $(".mat-typography" ).remove('style').remove('modal-open');
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
