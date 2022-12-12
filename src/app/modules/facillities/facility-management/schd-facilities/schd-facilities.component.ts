@@ -2981,7 +2981,31 @@ export class SchdFacilitiesComponent implements OnInit {
       alertType: 400,
     });
   }
-
+  onCellUpdating(currentRowData) {
+    let Body = {
+      'FID': currentRowData.key.facilityId,
+      'Type': currentRowData.key.modType,
+      'IsReadOnly': currentRowData.key.isReadOnly,
+      'CurrentGlobal': currentRowData.key.currentGlobal ?? 0,
+      'CurrentTech': currentRowData.key.currentTech ?? 0,
+      'PricingCutOff': currentRowData.key.pricingCutOff,
+      'NewGlobal': currentRowData.key.newGlobal ?? 0,
+      'NewTech': currentRowData.key.newTech ?? 0,
+      'PriceTier': currentRowData.key.priceTier,
+      'IsCopyPrice': !currentRowData.key.isCopyPrice
+    }
+    this.facilityService.AddCopyPrice(true, Body).subscribe((res) => {
+      if (res.response != null && res.responseCode === 200) {
+        this.showNotificationOnSucess(res);
+        this.reLoadAllFacility();
+      }
+      else {
+        this.showNotificationOnFailure(res);
+      }
+    }, (err) => {
+      // this.errorNotification(err);
+    });
+  }
   customizeText(cellInfo) {
     return cellInfo.valueText.replace('USD', '$');
   }
