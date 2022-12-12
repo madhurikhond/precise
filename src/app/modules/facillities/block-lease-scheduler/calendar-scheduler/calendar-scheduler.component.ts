@@ -99,8 +99,6 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
-        scheduler.config.hour_date="%h:%i %A";
-		scheduler.xy.scale_width = 70;
         scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
@@ -145,6 +143,10 @@ export class CalendarSchedulerComponent implements OnInit {
                 scheduler.templates.tooltip_date_format(start) +
                 "<br/><b>End date:</b> " + scheduler.templates.tooltip_date_format(end);
         };
+        scheduler.templates.tooltip_date_format=function (date){
+            var formatFunc = scheduler.date.date_to_str("%m/%d/%y %h:%i %A");
+            return formatFunc(date);
+        }
         scheduler.serverList("sections", this.forTimelineList);
         scheduler.createTimelineView({
             name: "timeline",
@@ -178,7 +180,8 @@ export class CalendarSchedulerComponent implements OnInit {
                         return;
                     }
                     // and move all selected events by the same value                   
-                    var event = scheduler.getEvent(selectedId);                  
+                    var event = scheduler.getEvent(selectedId);
+                    console.log(initialDates[selectedId]);
                     event.start_date = new Date(initialDates[selectedId].start_date.valueOf() + shift);
                     event.end_date = new Date(initialDates[selectedId].end_date.valueOf() + shift);
                     // call udpateEvent in order to repaint connected events
@@ -188,8 +191,10 @@ export class CalendarSchedulerComponent implements OnInit {
             return true;
         });
 
-        scheduler.templates.day_date = function(date)
-        { return scheduler.date.date_to_str("%m/%d/%y")(date); };
+        // scheduler._click.buttons.delete = (id: number) => {
+        //     //lease signed 
+        //     this.openConfirm(id);
+        // };
 
         scheduler.date.timeline_start = scheduler.date.day_start;
 
@@ -525,7 +530,8 @@ export class CalendarSchedulerComponent implements OnInit {
     drawCompleteapproveAddEsign() {
         this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
-    signConfirm(isConfirmSign: boolean) {        
+    signConfirm(isConfirmSign: boolean) {
+        debugger
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
