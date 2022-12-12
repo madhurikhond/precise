@@ -109,12 +109,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="checkbox-theme">
+                                    <div class="form-group">
+                                        <input class="form-control" formControlName="isUseText" id="usetext"
+                                            (change)="onChangeBodyType($event)" type="checkbox">
+                                        <label for="usetext" class="arrow-label">IS USE TEXT</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="isUseText" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                 <div class="cke-editor-group">
                                     <div class="theme-label">Body</div>
-                                    <ckeditor #myckeditor_body 
-                                        formControlName="body" name="body" required [config]="CkeConfig"
-                                        (paste)="onPaste($event)" id="email-editor" (change)="onChange_body($event)">
+                                    <!--              MRIDULA MALHOTRA                  -->
+                                    <div class="input-group">
+                                        <textarea formControlName="body" class="form-control"> </textarea>
+                                    </div>
+
+                                    <div *ngIf="submitted && edtForm.body" class="tooltiptext text-right">
+                                        <small class="error text-danger" *ngIf="edtForm.body.invalid">Email body is
+                                            required</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="!isUseText" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="cke-editor-group">
+                                    <div class="theme-label">Body</div>
+                                    <ckeditor #myckeditor_body formControlName="body" name="body" required
+                                        [config]="CkeConfig" (paste)="onPaste($event)" id="email-editor"
+                                        (change)="onChange_body($event)">
                                     </ckeditor>
                                     <!-- <ckeditor [editor]="Editor" formControlName="body">
                                         <textarea class="form-control" id="email-editor" cols="30" rows="10" formControlName="body" required></textarea>
@@ -125,12 +150,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                           
+                            <div *ngIf="isUseText" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                 <div class="cke-editor-group">
                                     <div class="theme-label">Spanish Body</div>
-                                    <ckeditor #myckeditor_spanishEmailBody 
-                                        formControlName="spanishEmailBody" name="spanishEmailBody" required id="spanish-editor" 
-                                        [config]="CkeConfig" (paste)="onPaste($event)" (change)="onChange_spanishEmailBody($event)">
+                                    <!--              MRIDULA MALHOTRA                  -->
+                                    <div  class="input-group">
+                                        <textarea formControlName="spanishEmailBody" class="form-control textAreaHeight"> </textarea>
+                                    </div>
+
+                                    <div *ngIf="submitted && edtForm.spanishEmailBody" class="tooltiptext text-right">
+                                        <small class="error text-danger"
+                                            *ngIf="edtForm.spanishEmailBody.invalid">Spanish Email body is
+                                            required</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="!isUseText" class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="cke-editor-group">
+                                    <div class="theme-label">Spanish Body</div>
+                                    <ckeditor #myckeditor_spanishEmailBody formControlName="spanishEmailBody"
+                                        name="spanishEmailBody" required id="spanish-editor" [config]="CkeConfig"
+                                        (paste)="onPaste($event)" (change)="onChange_spanishEmailBody($event)">
                                     </ckeditor>
                                     <!-- <ckeditor [editor]="Editor" formControlName="spanishEmailBody">
                                         <textarea class="form-control" id="spanish-editor" cols="30" rows="10" formControlName="spanishEmailBody" required></textarea>
