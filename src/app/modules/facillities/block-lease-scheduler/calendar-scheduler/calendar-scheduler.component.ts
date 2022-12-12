@@ -99,6 +99,8 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
+        scheduler.config.hour_date="%h:%i %A";
+		scheduler.xy.scale_width = 70;
         scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
@@ -176,8 +178,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         return;
                     }
                     // and move all selected events by the same value                   
-                    var event = scheduler.getEvent(selectedId);
-                    console.log(initialDates[selectedId]);
+                    var event = scheduler.getEvent(selectedId);                  
                     event.start_date = new Date(initialDates[selectedId].start_date.valueOf() + shift);
                     event.end_date = new Date(initialDates[selectedId].end_date.valueOf() + shift);
                     // call udpateEvent in order to repaint connected events
@@ -187,10 +188,8 @@ export class CalendarSchedulerComponent implements OnInit {
             return true;
         });
 
-        // scheduler._click.buttons.delete = (id: number) => {
-        //     //lease signed 
-        //     this.openConfirm(id);
-        // };
+        scheduler.templates.day_date = function(date)
+        { return scheduler.date.date_to_str("%m/%d/%y")(date); };
 
         scheduler.date.timeline_start = scheduler.date.day_start;
 
@@ -526,8 +525,7 @@ export class CalendarSchedulerComponent implements OnInit {
     drawCompleteapproveAddEsign() {
         this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
-    signConfirm(isConfirmSign: boolean) {
-        debugger
+    signConfirm(isConfirmSign: boolean) {        
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
