@@ -4038,7 +4038,7 @@ export class SchdFacilitiesComponent implements OnInit {
 
         this.notificationService.showNotification({
           alertHeader: 'Error',
-          alertMessage: 'Pay invoice amount should be greater than or equal to 0',
+          alertMessage: 'Selected credit duration should not be greater than lease duration.',
           alertType: 400,
         });
       }
