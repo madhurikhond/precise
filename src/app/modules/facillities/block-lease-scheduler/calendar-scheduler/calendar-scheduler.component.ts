@@ -107,9 +107,14 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.icons_select = ['icon_details'];
         // scheduler.config.first_hour = 7;
         scheduler.config.now_date = new Date();
-        if (this.readOnlyCalender == true) {
-            scheduler.config.readonly = true;
-        }
+        // if (this.readOnlyCalender == true) {
+        //     scheduler.config.readonly = true;
+        // }
+        scheduler.attachEvent("onViewChange",
+            function (mode) {
+                if (mode == "timeline" || this.readOnlyCalender == true) { scheduler.config.readonly = true; }
+                else { scheduler.config.readonly = false; }
+            });
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
