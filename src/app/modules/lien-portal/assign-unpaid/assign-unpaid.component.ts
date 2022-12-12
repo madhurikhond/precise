@@ -12,6 +12,8 @@ export class AssignUnpaidComponent implements OnInit {
   getfilterData: any;
   @Input()
   set filterData(val: any) {
+    this.AssignARUnpaid = [];
+    this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
       this.getListingData();

@@ -19,6 +19,8 @@ export class RetainUnpaidComponent implements OnInit {
   readonly commonRegex = CommonRegex;
   @Input()
   set filterData(val: any) {
+    this.retainARUnpaid = [];
+    this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
       this.getRetainUnPaidList();

@@ -121,6 +121,11 @@ export class FundingCoPaidComponent {
     }
 
     if (this.selectedAction != "" && this.selectedData != 0)
+      this.paymentForm.patchValue({
+        checkAmount : this.selectedData[0].checkAmount,
+        checkDate : this.selectedData[0].checkDate,
+        checkNumber : this.selectedData[0].checkNumber
+      });
       this.modal_open.nativeElement.click();
   }
 
@@ -135,20 +140,44 @@ export class FundingCoPaidComponent {
 
   onSubmitPayment() {
     if (this.paymentForm.valid && this.selectedData.length > 0) {
-      var data = this.paymentForm.value;
-      data.checkDate = this.lienPortalService.convertDateFormat(data.checkDate);
-      data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
-      this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.LienPayment).subscribe((res) => {
+      var data = {
+        "paymentId": this.selectedData[0].paymentId,
+        "checkAmount": Number(this.paymentForm.get('checkAmount').value),
+        "checkNumber": this.paymentForm.get('checkNumber').value,
+        "checkDate": this.lienPortalService.convertDateFormat(this.paymentForm.get('checkDate').value),
+      }
+      this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.EditPaymentInformation).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_DELETED_SUCCESS);
           this.getFundingCoPaidList();
           this.modal_edit_payment_close.nativeElement.click();
+          this.selectedAction = "";
         }
         else
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       });
+    }
+  }
+
+  removePayment(){
+    if(this.selectedData.length > 0){
+      var data = {
+        'paymentId': this.selectedData[0].paymentId
+      };
+      this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.RemovePayment).subscribe((res)=>{
+        if (res.status == LienPortalResponseStatus.Success) {
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.getFundingCoPaidList();
+          this.modal_remove_close.nativeElement.click();
+          this.selectedAction = "";
+        }
+        else
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      },()=>{
+        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+      })
     }
   }
 }

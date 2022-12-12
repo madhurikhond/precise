@@ -18,7 +18,8 @@ export enum LienPortalStatusMessage {
   SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
   FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.',
   FUNDING_COMPANY_PAID_RECORD = 'Please Select a Paid Record.',
-  FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.'
+  FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.',
+  PAYMENT_DELETED_SUCCESS = 'Payment Removed Successfully.'
 }
 
 export enum LienPortalURLName{
@@ -98,6 +99,8 @@ export enum LienPortalAPIEndpoint {
   LienPayment = APIURL.LIEN_PORTAL + "LienPayment",
   GetFundingCompanyPaidList = APIURL.LIEN_PORTAL + "GetFundingCompanyPaidList",
   GetRadiologistUser = APIURL.LIEN_PORTAL + "GetRadiologistUser",
+  RemovePayment = APIURL.LIEN_PORTAL + "RemovePayment",
+  EditPaymentInformation = APIURL.LIEN_PORTAL + "EditPaymentInformation",
 
   //Funding Company Setting
   AddFundingUserSetting = APIURL.LIEN_PORTAL + "AddFundingUserSetting",

@@ -13,6 +13,8 @@ export class AssignPaidComponent implements OnInit {
   getfilterData: any;
   @Input()
   set filterData(val: any) {
+    this.AssignARpaid = [];
+    this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
       this.getAssigndPaidData();

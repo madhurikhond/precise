@@ -13,6 +13,8 @@ export class RetainPaidComponent implements OnInit {
   getfilterData: any;
   @Input()
   set filterData(val: any) {
+    this.retainedARpaid = [];
+    this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
       this.GetRetainedArPaidList();
