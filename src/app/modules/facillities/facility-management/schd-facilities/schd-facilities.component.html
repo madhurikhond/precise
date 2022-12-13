@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<div *dxTemplate="let data of 'facilityIdTemplate'">
-				<a href="javascript:void(0)" (click)="getFacilityDetail(data)"
+				<a href="javascript:void(0)" (click)="getFacilityDetail(data.data.facilityId)"
 					class="single-action fa fa-pencil-square-o" data-toggle="modal"
 					data-target="#add-Edit-facility"></a>
 			</div>
