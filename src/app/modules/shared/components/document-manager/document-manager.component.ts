@@ -331,12 +331,13 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
         // }
       }
       if (text == 'Download Selected') {
+        debugger
         let fileExtension = this.selectedFileNames.split('.').pop();
         if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
                   this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
                 }
                 else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-                  this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+                  this.selectedFileBase64String = 'data:application/pdf;base64|' + this.path;
                 }
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
       }
@@ -888,9 +889,9 @@ debugger
     else if (type == 'Download Selected') {
       paths = this.selectedFileItems.map(m => m.filePath);
     }
-    paths.forEach(res => {
-      IdString = paths + "|"
-    })
+    paths.forEach(function (value) {
+      IdString=IdString+"|"+value;
+    }); 
     this.documentmanagerService.getFilesByKeys(true, JSON.stringify(IdString)).subscribe((res) => {
       if (res.response != null) {
         this.downloadAllBasePath = res.response
