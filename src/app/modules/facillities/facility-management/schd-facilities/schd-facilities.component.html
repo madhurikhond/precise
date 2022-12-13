@@ -3905,7 +3905,7 @@
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
-										<div class="table-responsive">
+										<div class="table-responsive" id="DivContainerCreditandDebit112" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
 												[columnAutoWidth]="true" [allowColumnReordering]="false"
 												[dataSource]="CreditDebitList" [showBorders]="true">
@@ -3976,6 +3976,7 @@
 												<div class="tab-pane" id="LeasePaymentsUnPaid"
 													[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'">
 													<button type="button" class="btn btn-theme"
+													[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
 														[disabled]="btnActive==0?true:false"
 														(click)="UnpaidButtonClick($event)"
 														[ngStyle]="{'background-color':(btnActive==0)? '#bfbfbf' : '#3b8beb'}">Pay
@@ -3983,7 +3984,7 @@
 													<!------------------ Unpaid lease Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Leases</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -4042,7 +4043,7 @@
 													<!------------------ Unpaid Credits Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Credits</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit11" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
