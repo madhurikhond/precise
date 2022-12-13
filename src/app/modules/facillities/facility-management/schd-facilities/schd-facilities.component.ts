@@ -16,6 +16,9 @@ import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.
 import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
+import { ErrorValue } from 'exceljs';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { IfStmt } from '@angular/compiler';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
 declare const $: any;
@@ -27,6 +30,7 @@ declare const $: any;
   providers: [DatePipe],
 })
 export class SchdFacilitiesComponent implements OnInit {
+  @ViewChild('dxDataGrid') dataGrid: DxDataGridComponent;
   @ViewChild('hiddenDeleteTagPopUpButton', { static: false })
   hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef })
@@ -35,10 +39,14 @@ export class SchdFacilitiesComponent implements OnInit {
   hiddenConfirmationLeaseBtn: ElementRef;
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
+  @Input() isGridDisplay: boolean = true;
+  generalInfoForm: FormGroup;
+  displayStyle :any;
   @Input() isGridDisplay: boolean = true; 
    a1:any=20;
    generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
+  disableCheckbox:any
   modalityServiceForm: FormGroup;
   modalityMriForm: FormGroup;
   modalityCtForm: FormGroup;
@@ -319,17 +327,18 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getSchedulingFacilities();
   }
   get3pLeaseFacilityData(path: any, fileData: any) {
-    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
     fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
   closePDF()
+ 
   {
-  //  debugger
-  //  $('#viewFile_Doc').hide();
+    // this.displayStyle = "none";
   }
+  
   getActiveEpicUsers() {
     this.EpicUserList = [];
     this.facilityService.getActiveEpicUsers(true).subscribe(
@@ -1332,13 +1341,12 @@ export class SchdFacilitiesComponent implements OnInit {
         if (res.response != null) {
           console.log(res);
           this.blockLeasePaymentList = res.response;
-          if (this.blockLeasePaymentList.length > 0) {
-            this.totalRecordpaid = res.totalRecords;
-            this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
-          }else {
-            this.totalRecordpaid = 1;
-            this.blockLeasePaymentList = [];
-          }
+          this.blockLeasePaymentList.forEach(element => {
+            this.dataGrid.instance.collapseRow(element);
+          });
+          // if (this.blockLeasePaymentList.length > 0) {
+          //   this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
+          // }
         }
       });
   }
@@ -1349,7 +1357,10 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
-    paymentMapping.component.collapseAll(-1);
+    if(paymentMapping.isExpanded)
+    {
+     paymentMapping.component.collapseAll(-1);
+    }
     if (paymentMapping.isExpanded) {
       let PaymentId = '';
       if (paymentMapping.data === undefined) {
@@ -1364,11 +1375,11 @@ export class SchdFacilitiesComponent implements OnInit {
           if (res.response != null) {
             this.blockLeasePaymentMappingList = res.response;
             this.getBlockLeaseCreditsByFacilityId(paymentMapping.data.PaymentTXN);
-            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);  
-            paymentMapping.component.expandRow(key);  
+            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);
+            paymentMapping.component.expandRow(key);
           }
         });
-      }
+    }
   }
 
   getBlockLeaseCreditsByFacilityId(transactionNumber: string) {
@@ -1417,10 +1428,12 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   setGeneralInfoTabForm(data: any) {
+  this.disableCheckbox = data.useBlockLease;
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
+ 
     if (!data.useBlockLease) {
-
+      this.GetUnpaidLeasesList = [];
       $('#BlockLeaseRate')
         .not('.btn')
         .attr('disabled', true)
@@ -1433,14 +1446,15 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', true)
       //   .addClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
-      $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+     
+      // $('#LeasePaymentsUnPaid')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
     } else {
       $('#BlockLeaseRate')
         .not('.btn')
@@ -1450,18 +1464,18 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-        $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+        // $('#LeasePaymentsUnPaid')
+        // .not('.btn')
+        // .attr('disabled', false)
+        // .removeClass('disabledClass');
       // $('#LeaseAgreementCT')
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
 
     }
     this.generalInfoForm.patchValue({
@@ -1591,6 +1605,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.CheckSameCombinationMRI('Type1');
     this.CheckSameCombinationMRI('Type2');
     this.CheckSameCombinationMRI('Type3');
+    this.CheckSameCombinationCT('Type1');
+    this.CheckSameCombinationCT('Type2');
+    this.CheckSameCombinationCT('Type3');
   }
   setModalityCtTabForm(data: any) {
     this.modalityCtForm.patchValue({
@@ -1993,7 +2010,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.generalInfoForm.invalid ||
       this.facilityContactDetailForm.invalid ||
       this.facilityIntakeForm.invalid ||
-      this.facilityPoliciesForm.invalid||
+      this.facilityPoliciesForm.invalid ||
       this.modalityMriForm.invalid
     ) {
       this.modalValue = '';
@@ -3018,22 +3035,22 @@ export class SchdFacilitiesComponent implements OnInit {
     };
 
     this.blockleasescheduler.getFacilityCreditsUnUsed(
-        true,
-        JSON.stringify(JSON.stringify(data)).toString()
-      ).subscribe(
-        (res) => {
-          if (res.response != null && res.response.length > 0) {
-            this.UnusedCreditsList = res.response;
-            this.totalRecordunUsedCredits = res.response[0].TotalRecords;
-          } else {
-            this.totalRecordunUsedCredits = 1;
-            this.UnusedCreditsList = [];
-          }
-        },
-        (err: any) => {
-          this.errorNotification(err);
+      true,
+      JSON.stringify(JSON.stringify(data)).toString()
+    ).subscribe(
+      (res) => {
+        if (res.response != null && res.response.length > 0) {
+          this.UnusedCreditsList = res.response;
+          this.totalRecordunUsedCredits = res.response[0].TotalRecords;
+        } else {
+          this.totalRecordunUsedCredits = 1;
+          this.UnusedCreditsList = [];
         }
-      );
+      },
+      (err: any) => {
+        this.errorNotification(err);
+      }
+    );
   }
   deleteUnusedCredit() {
     var unUsedCreditId: string = '';
@@ -3105,15 +3122,15 @@ export class SchdFacilitiesComponent implements OnInit {
     var leaseID: any = [];
     this.selectedleaseArray = el.selectedRowsData;
     if (el.selectedRowsData.length !== 0) {
-    this.selectedleaseArray = el.selectedRowsData;
+      this.selectedleaseArray = el.selectedRowsData;
       this.btnActive = 1;
       el.selectedRowsData.forEach((i) => {
         leaseID.push(i.LeaseId);
       });
-      this.leaseIdArray = leaseID;
     } else {
       this.btnActive = 0;
     }
+    this.leaseIdArray = leaseID;
   }
   onSelectionChangedCredit(ec) {
     var CreditID: any = [];
@@ -3122,8 +3139,8 @@ export class SchdFacilitiesComponent implements OnInit {
       ec.selectedRowsData.forEach((i) => {
         CreditID.push(i.CreditId);
       });
-      this.creditIdArray = CreditID;
     }
+    this.creditIdArray = CreditID;
   }
   UnpaidButtonClick(e) {
     var TotalLease = 0, TotalCredit = 0;
@@ -3166,13 +3183,13 @@ export class SchdFacilitiesComponent implements OnInit {
           }
         );
       }
-      else{
+      else {
 
         this.notificationService.showNotification({
           alertHeader: 'Error',
-          alertMessage: 'Pay invoice amount should be greater than or equal to 0',
+          alertMessage: 'Selected credit duration should not be greater than lease duration.',
           alertType: 400,
-        });  
+        });
       }
     });
   }
@@ -3290,22 +3307,22 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       }
     }
-    if(Mri1Type){
+    if (this.modalityServiceFormControls.mriservice.value && Mri1Type) {
       this.modalityMriForm.get('mri1ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri1ResourceName').clearValidators()
     }
-    if(Mri2Type){
+    if (this.modalityServiceFormControls.mriservice.value && Mri2Type) {
       this.modalityMriForm.get('mri2ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri2ResourceName').clearValidators()
     }
-    if(Mri3Type){
+    if (this.modalityServiceFormControls.mriservice.value && Mri3Type) {
       this.modalityMriForm.get('mri3ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri3ResourceName').clearValidators()
     }
     this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
@@ -3436,22 +3453,22 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
 
-    if(Ct1Type){
+    if (this.modalityServiceFormControls.ctservice.value && Ct1Type) {
       this.modalityCtForm.get('ct1ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct1ResourceName').clearValidators()
     }
-    if(Ct2Type){
+    if (this.modalityServiceFormControls.ctservice.value && Ct2Type) {
       this.modalityCtForm.get('ct2ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct2ResourceName').clearValidators()
     }
-    if(Ct3Type){
+    if (this.modalityServiceFormControls.ctservice.value && Ct3Type) {
       this.modalityCtForm.get('ct3ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct3ResourceName').clearValidators()
     }
     this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
@@ -3503,5 +3520,17 @@ export class SchdFacilitiesComponent implements OnInit {
   {
     a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
   return a;
+  }
+  onChangeService(type) {
+    if (type == 'mri') {
+      this.CheckSameCombinationMRI('Type1');
+      this.CheckSameCombinationMRI('Type2');
+      this.CheckSameCombinationMRI('Type3');
+    }
+    else {
+      this.CheckSameCombinationCT('Type1');
+      this.CheckSameCombinationCT('Type2');
+      this.CheckSameCombinationCT('Type3');
+    }
   }
 }

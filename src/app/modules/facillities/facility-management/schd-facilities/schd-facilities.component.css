@@ -17,6 +17,9 @@
     cursor: pointer;
     color: #3b8beb;
    }
+   .enableClass{
+    pointer-events: all !important;
+   }
 
 
  

@@ -508,19 +508,22 @@ export class SchedulerPopupComponent implements OnInit {
           'resourceId': this.selectedresourceId
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
-          if (res.responseCode == 200) {
+          debugger
+          if (res.responseCode == 200 && res.response.responseCode != 404  ) {
             if (res.response) {
               this.showNotificationOnSucess({
                 message: res.response.message,
                 responseCode: res.responseCode
               });
-
-
             }
             else {
               this.showNotificationOnSucess(res);
             }
             this.modal.dismiss(ModalResult.SAVE);
+          }
+          else if(res.response.responseCode == 404 )
+          {
+            this.errorNotification(res.response);
           }
         }, (err: any) => {
           this.errorNotification(err);
@@ -592,6 +595,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   }
   handleBlockOffDaysChange(e: any, from: string) {   
+    
     this.AlreadyBlockedLeaseList = []; 
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
