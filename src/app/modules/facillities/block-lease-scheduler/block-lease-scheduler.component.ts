@@ -157,7 +157,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   applyFilter() {
-    let selectedFacility = this.selectedFacility!= 0 ? this.selectedFacility : 0;
+    let selectedFacility = this.selectedFacility!= 0 && this.selectedFacility!=null ? this.selectedFacility : 0;
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility : null;
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus : null;
@@ -202,8 +202,20 @@ export class BlockLeaseSchedulerComponent implements OnInit {
               IsFacilitySign = true;
             }
           }
-          element[`MRI${j}`] = Math.trunc(MriTotal);
-          element[`CT${j}`] = Math.trunc(CtTotal);
+
+          if(MriTotal.toString().split(".")[1] > '49'){
+            element[`MRI${j}`] = Math.ceil(MriTotal);
+          }else{
+            element[`MRI${j}`] = Math.floor(MriTotal);
+          }
+          if(CtTotal.toString().split(".")[1] > '49'){
+            element[`CT${j}`] = Math.ceil(CtTotal);
+          }else{
+            element[`CT${j}`] = Math.floor(CtTotal);
+          }
+
+         // element[`MRI${j}`] = Math.trunc(MriTotal);
+          //element[`CT${j}`] = Math.trunc(CtTotal);
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
         } else {

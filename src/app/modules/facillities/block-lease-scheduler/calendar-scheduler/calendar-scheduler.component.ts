@@ -31,10 +31,12 @@ export class CalendarSchedulerComponent implements OnInit {
     @ViewChild("modaldismiss1", { static: true }) modaldismiss1: ElementRef;
     @ViewChild("modaldismiss2", { static: true }) modaldismiss2: ElementRef;
     @ViewChild("modaldismissscheduler", { static: true }) modaldismissscheduler: ElementRef;
+    @ViewChild('closeEsignPopup') closeEsignPopup;
+    @ViewChild('closeApproveEsignPopup') closeApproveEsignPopup;
     model: any = { firstName: '', lastName: '', Title: '', signature: '' };
-    approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signature: '' };
+    approveAddEsignModel: any = { firstName: '', lastName: '', Title: '', signapprove: '' };
     @ViewChild(SignaturePad) signaturePad: SignaturePad;
-    @ViewChild(SignaturePad) signaturePadapproveAddEsignModel: SignaturePad;
+    @ViewChild('signaturePadApprove') signaturePadapproveAddEsignModel: SignaturePad;
     signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
         'minWidth': 2,
         pecColor: 'rgb(66,133,244)',
@@ -64,6 +66,9 @@ export class CalendarSchedulerComponent implements OnInit {
 
     latestStartDate: any = "";
     latestSchedulerMode: string = "";
+    IsEsignModalHide: boolean = false;
+    IsApproveEsignModalHide: boolean = false;
+
     constructor(private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
         private notificationService: NotificationService, private modalService: NgbModal,
         private readonly storageService: StorageService, private datePipe: DatePipe,
@@ -93,8 +98,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     schedulerLoad() {
         scheduler.skin = 'material';
-        scheduler.config.xml_date = '%Y-%m-%d';        
-        scheduler.config.drag_move = false;       
+        scheduler.config.xml_date = '%Y-%m-%d';
+        scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dblclick = true;
@@ -102,9 +107,14 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.config.icons_select = ['icon_details'];
         // scheduler.config.first_hour = 7;
         scheduler.config.now_date = new Date();
-        if (this.readOnlyCalender == true) {
-            scheduler.config.readonly = true;
-        }
+        // if (this.readOnlyCalender == true) {
+        //     scheduler.config.readonly = true;
+        // }
+        scheduler.attachEvent("onViewChange",
+            function (mode) {
+                if (mode == "timeline" || this.readOnlyCalender == true) { scheduler.config.readonly = true; }
+                else { scheduler.config.readonly = false; }
+            });
         var d = new Date(Date());
         d.setMonth(d.getMonth() - 1);
         scheduler.plugins({
@@ -133,10 +143,15 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.dhtmlXTooltip.config.className = 'dhtmlXTooltip tooltip CalendarTooltip';
         scheduler.templates.tooltip_text = function (start, end, ev) {
             let eventText = (ev.text) ? `<b>${(ev.text)}</b><br/>` : '';
+            eventText += `<b> Modality:</b> ${(ev.ModalityType)}/ ${(ev.RESOURCENAME)}<br/>`;
             return eventText + "<b>Start date:</b> " +
                 scheduler.templates.tooltip_date_format(start) +
                 "<br/><b>End date:</b> " + scheduler.templates.tooltip_date_format(end);
         };
+        scheduler.templates.tooltip_date_format=function (date){
+            var formatFunc = scheduler.date.date_to_str("%m/%d/%y %h:%i %A");
+            return formatFunc(date);
+        }
         scheduler.serverList("sections", this.forTimelineList);
         scheduler.createTimelineView({
             name: "timeline",
@@ -194,11 +209,7 @@ export class CalendarSchedulerComponent implements OnInit {
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
-
-            console.log(event.start_date);
-            console.log(event.end_date);
-
-            event.end_date = new Date(event.end_date - 1);
+            //event.end_date = new Date(event.end_date - 1);
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = false;
@@ -322,7 +333,6 @@ export class CalendarSchedulerComponent implements OnInit {
             });
         }
     }
-
     openConfirm(id: number) {
         const event = scheduler.getEvent(id);
         if (event.LeaseBlockId != undefined) {
@@ -497,21 +507,36 @@ export class CalendarSchedulerComponent implements OnInit {
             this.approveAllCheckForButton = true;
         }
     }
+    clearEsignData(): void {
+        this.signConfirm(false);
+
+        this.clearSign();
+        this.clearSignApproveAddEsign();
+        this.model.firstName = '';
+        this.model.lastName = '';
+        this.model.Title = '';
+        this.approveAddEsignModel.firstName = '';
+        this.approveAddEsignModel.lastName = '';
+        this.approveAddEsignModel.Title = '';
+    }
     clearSign(): void {
         this.signaturePad.clear();
         this.model.signature = '';
     }
     clearSignApproveAddEsign(): void {
         this.signaturePadapproveAddEsignModel.clear();
-        this.approveAddEsignModel.signature = '';
+        this.approveAddEsignModel.signapprove = '';
+
     }
+
     drawComplete() {
         this.model.signature = this.signaturePad.toDataURL();
     }
     drawCompleteapproveAddEsign() {
-        this.approveAddEsignModel.signature = this.signaturePadapproveAddEsignModel.toDataURL();
+        this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
     signConfirm(isConfirmSign: boolean) {
+        debugger
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
@@ -521,8 +546,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     approveAddEsignModelConfirm(isConfirmSign: boolean) {
         this.ff.resetForm();
-        this.signaturePad.clear();
-        this.approveAddEsignModel.signature = '';
+        this.signaturePadapproveAddEsignModel.clear();
+        this.approveAddEsignModel.signapprove = '';
         this.approveAddEsignModel.firstName = '';
         this.approveAddEsignModel.lastName = '';
         this.approveAddEsignModel.Title = '';
@@ -548,8 +573,10 @@ export class CalendarSchedulerComponent implements OnInit {
                         alertType: 200
                     })
                     this.signConfirm(false);
-                    this.modaldismiss2.nativeElement.click();
-                    this.modaldismissscheduler.nativeElement.click();
+                    this.IsEsignModalHide = true;
+                    // this.f.nativeElement.click();
+                    debugger
+                     this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
@@ -575,27 +602,30 @@ export class CalendarSchedulerComponent implements OnInit {
                 'PreciseUserLastName': this.model.lastName,
             }
 
-            this.confirmBlockToLease(false, data)
+            this.confirmBlockToLease(false, data);
+            this.closeEsignPopup.nativeElement.click();   
             this.f.submitted = false;
         }
     }
 
     ApproveSubmitSign(isItemSign: boolean) {
-        if (this.approveAddEsignModel.signature == '') {
+        if (this.approveAddEsignModel.signapprove == '') {
             return;
         }
         if (this.ff.valid) {
             let data = {
                 'FacilityID': this.FacilityID,
                 'UserId': this.storageService.user.UserId,
-                'DefaultSign': this.approveAddEsignModel.signature ?? 0,
+                'DefaultSign': this.approveAddEsignModel.signapprove ?? 0,
                 'PreciseUserTitle': this.approveAddEsignModel.Title,
                 'PreciseUserFirstName': this.approveAddEsignModel.firstName,
                 'PreciseUserLastName': this.approveAddEsignModel.lastName,
-                'PreciseSignature': this.approveAddEsignModel.signature,
+                'PreciseSignature': this.approveAddEsignModel.signapprove,
             }
 
-            this.approveAllParentToLease(false, data)
+
+            this.approveAllParentToLease(false, data);
+            this.closeApproveEsignPopup.nativeElement.click();       
             this.ff.submitted = false;
         }
     }
@@ -620,27 +650,24 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
             if (res.response) {
-                if (res.responseCode === 200) {
-
+               
+                if (res.responseCode == 200 || res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
-                        alertMessage: res.response.message,
-                        alertType: res.response.ResponseCode
+                        alertMessage: res.response.message ? res.response.message : res.response,
+                        alertType: 200
                     })
-                    this.signConfirm(false);
-                    this.modaldismiss1.nativeElement.click();
+                    this.approveAddEsignModelConfirm(false);
                     this.modaldismissscheduler.nativeElement.click();
-                    this.commonService.sendDataBlockLeaseScheduler('true');
+                    this.commonService.sendDataBlockLeaseScheduler('true');                  
                 }
                 else {
-                    this.errorNotification(res.message);
+                    this.errorNotification(res);
                 }
             }
         }, (err: any) => {
             this.errorNotification(err);
         });
-
-
 
     }
     getTwentyFourHourTime(time) {

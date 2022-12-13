@@ -30,10 +30,13 @@
                             <input type="text" (change)="transformAmount($event)" [(ngModel)]="formattedInputAmount"
                                 class="form-control number" formControlName="checkAmount"
                                 [ngClass]="{ 'is-invalid': payInvoiceFormControls.checkAmount.errors }">
-                        </div>
+                        </div>                        
                         <div *ngIf="payInvoiceFormControls.checkAmount.errors" class="invalid-feedback">
-                            <div *ngIf="payInvoiceFormControls.checkAmount.errors">
+                            <div *ngIf="payInvoiceFormControls.checkAmount.errors?.pattern">
                                 check amount must be a valid number.</div>
+                            <div *ngIf="payInvoiceFormControls.checkAmount.errors.maxlength && !payInvoiceFormControls.checkAmount.errors?.pattern">
+                                check amount should be maximum 9 characters</div>
+                           
                         </div>
                     </div>
                 </div>
