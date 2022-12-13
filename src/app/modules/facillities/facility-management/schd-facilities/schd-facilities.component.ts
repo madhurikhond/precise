@@ -9,21 +9,35 @@ import DataGrid from 'devextreme/ui/data_grid';
 import { PageSizeArray } from 'src/app/constants/pageNumber';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
+import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PayInvoiceModalComponent } from './pay-invoice-modal/pay-invoice-modal.component';
+import { environment } from '../../../../../environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
+declare const $: any;
 
 @Component({
   selector: 'app-schd-facilities',
   templateUrl: './schd-facilities.component.html',
   styleUrls: ['./schd-facilities.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class SchdFacilitiesComponent implements OnInit {
-  @ViewChild('hiddenDeleteTagPopUpButton', { static: false }) hiddenDeleteTagPopUpButton: ElementRef;
-  @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef }) hiddenAddEditPopUpItem: ElementRef;
-  @Input() isGridDisplay: boolean = true
-  a1:any=20;
-  generalInfoForm: FormGroup;
+  @ViewChild('hiddenDeleteTagPopUpButton', { static: false })
+  hiddenDeleteTagPopUpButton: ElementRef;
+  @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef })
+  hiddenAddEditPopUpItem: ElementRef;
+  @ViewChild('hiddenConfirmationLeaseBtn', { static: false })
+  hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
+  @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
+  @Input() isGridDisplay: boolean = true; 
+   a1:any=20;
+   generalInfoForm: FormGroup;
   facilityContactDetailForm: FormGroup;
   modalityServiceForm: FormGroup;
   modalityMriForm: FormGroup;
@@ -41,6 +55,7 @@ export class SchdFacilitiesComponent implements OnInit {
   public parentPolicy: string = '' ////  For Policies Tab
   searchText: string;
   facilityParentList: any[] = [];
+  selectedCreditPayment: any = []; selectedLeasePayment: any = [];
   userType: number;
   facilityList: any = [];
   facilityDetail: any = [];
@@ -54,6 +69,7 @@ export class SchdFacilitiesComponent implements OnInit {
   allMode: string;
   checkBoxesMode: string;
   selectedItemKeys: any[] = [];
+  eventBlockLeasePricingData: any[] = [];
   facilityName: string = '';
   facilityNoteList: any = [];
   facilityId: number;
@@ -65,6 +81,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityTagList: any = [];
   TagList: any = [];
   EpicUserList: any = [];
+  ResourceNameList: any = [];
   selectedEpicUserList: any = [];
   noteBtnDisabled: boolean = true;
   tagBtnDisabled: boolean = true;
@@ -72,7 +89,20 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityParentCompanyList: any = [];
   parentDropDownModel: string = '';
   facilityPricingList: any = [];
+  blockLeasePricingList: any = [];
+  blockLeaseAgreementMRIList: any = [];
+  fullblockLeaseAgreementMRIList: any = [];
+  blockLeaseAgreementCTList: any = [];
+  fullblockLeaseAgreementCTList: any = [];
+  CreditDebitList: any = [];
+  UnusedCreditsList: any = [];
+  GetUnpaidLeasesList: any = [];
+  pageSizeOfUnusdCredits: number = 20;
+  pageSizeOfUnpaidLeases: number = 20;
+  pageNumberOfUnpaidLeases: number = 1;
+  pageNumberOfUnusedCredits: number = 1;
   facilityPricingHistoryList: any = [];
+  updatedResourceName: any = [];
   submitted: boolean = false;
   modalValue: string = 'modal';
   isPopUpInEditMode: boolean = false;
@@ -84,9 +114,17 @@ export class SchdFacilitiesComponent implements OnInit {
   deleteTagId: number;
   tagNameList = [];
   totalRecords: number = 1;
+  totalRecordUnpaidLeases: number = 1;
+  totalRecordBlockLeaseCredits: number = 1;
+  totalRecordunUsedCredits: number = 1;
   pageNumber: number = 1;
   pageSize: number;
+  MRIPageNumber: number = 1;
+  MRIpageSize: number = 20;
+  totalrecordsFull_MRI: number = 1;
+  totalrecordsFull_CT: number = 1;
   submiited: boolean = false;
+  fileData: SafeResourceUrl;
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   sendDataDocManager: any;
   allowUpdatingPrice: boolean = false;
@@ -96,10 +134,25 @@ export class SchdFacilitiesComponent implements OnInit {
   ckConfig: any;
   mycontent: string;
   log: string = '';
+  btnActive: number = 0;
+  leaseIdArray: any = [];
+  creditIdArray: any = [];
+  apiUrl: any;
+  deleteUnusedCreditDetail: any;
+
+  ConfirmationLeaseCheckedFrom: string = '';
   readonly pageSizeArray = PageSizeArray;
   readonly CkeConfig = ckeConfig;
-  selectedRows: any = [];
+  blockLeasePaymentList: any = [];
+  blockLeasePaymentMappingList: any;
+  blockLeaseCreditList: [] = [];
+  paymentMapping: any = [];
+  pageNumberOfPaid: number = 1;
+  pageSizeOfPaid: number = 20;
+  totalRecordpaid: number = 1;
+  selectedleaseArray: any = [];  selectedRows: any = [];
   readonly commonRegex=CommonRegex;
+
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -123,23 +176,45 @@ export class SchdFacilitiesComponent implements OnInit {
   //     removeButtons: 'Subscript,Superscript,Anchor,Source,Table',
   //     format_tags: 'p;h1;h2;h3;pre;div'
   //  }
-  constructor(private datePipe: DatePipe, private fb: FormBuilder, private readonly facilityService: FacilityService,
-    
-    private notificationService: NotificationService, private readonly commonMethodService: CommonMethodService,
-    private readonly storageService: StorageService) {
-    this.commonMethodService.setTitle('Sheduling-Facility');
-    facilityService.sendDataToschdFacilities.subscribe(res => {
-     
-      if (res.row) {
+  constructor(
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private readonly facilityService: FacilityService,
+    private notificationService: NotificationService,
+    private readonly commonMethodService: CommonMethodService,
+    private readonly blockleasescheduler: BlockLeaseSchedulerService,
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer,
+    private readonly storageService: StorageService,
+  ) {
+    this.commonMethodService.setTitle('Scheduling Facility');
+
+    facilityService.sendDataToFacilityDetail.subscribe(res => {
+      if (res) {
         this.isGridDisplay = false;
-        this.getFacilityDetail(res.row);
+        if (res.facilityId) {
+          this.getFacilityDetail(res.facilityId);
+          this.defaultPopupTab = res.type;
+        }
+      }
+    });
+    facilityService.sendDataToschdFacilities.subscribe((res) => {
+      if (res.FacilityID) {
+        this.isGridDisplay = false;
+        this.getFacilityDetail(res.FacilityID);
+        if (res.isShowSchedulingTab) {
+          this.defaultPopupTab = 'Scheduling Details';
+        }
         this.hiddenAddEditPopUpItem.nativeElement.click();
       }
-    });;
+    });
   }
 
   ngOnInit(): void {
-    this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
+    this.pageSize =
+      this.pageSizeArray.filter((x) => x.IsSelected).length > 0
+        ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
+        : this.pageSizeArray[0].value;
     this.getActiveEpicUsers();
     this.getAllTagList();
     this.getSchedulingFacilityLevel();
@@ -170,33 +245,36 @@ export class SchdFacilitiesComponent implements OnInit {
       allowedContent: false,
       forcePasteAsPlainText: true,
       readOnly: true,
-      removePlugins: 'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
-      removeButtons: 'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
+      removePlugins:
+        'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
+      removeButtons:
+        'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
     };
 
-
     let lastSearchBody = {
-      'searchText': '',
-      'isActive': 0,
-      'tabName': 'Schd. Facilities',
-      'userId': this.storageService.user.UserId,
-      'clear': 2
-    }
+      searchText: '',
+      isActive: 0,
+      tabName: 'Schd. Facilities',
+      userId: this.storageService.user.UserId,
+      clear: 2,
+    };
     this.getFacilityLastFilterRecord(lastSearchBody);
 
     this.facilityService.filterResult.subscribe((res: any) => {
-
       this.searchText = res.searchText;
       this.userType = parseInt(res.userTypeText);
       this.pageNumber = 1;
-      this.pageSize = this.pageSizeArray.filter(x => x.IsSelected).length > 0 ? this.pageSizeArray.filter(x => x.IsSelected)[0].value : this.pageSizeArray[0].value;
+      this.pageSize =
+        this.pageSizeArray.filter((x) => x.IsSelected).length > 0
+          ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
+          : this.pageSizeArray[0].value;
       let lastSearchBody = {
-        'searchText': this.searchText,
-        'isActive': this.userType,
-        'tabName': 'Schd. Facilities',
-        'userId': this.storageService.user.UserId,
-        'clear': 0,
-      }
+        searchText: this.searchText,
+        isActive: this.userType,
+        tabName: 'Schd. Facilities',
+        userId: this.storageService.user.UserId,
+        clear: 0,
+      };
       this.getFacilityLastFilterRecord(lastSearchBody);
     });
     this.facilityService.clearClickedEvent.subscribe((res: string) => {
@@ -204,29 +282,35 @@ export class SchdFacilitiesComponent implements OnInit {
         this.searchText = '';
         this.userType = 1;
         let lastSearchBody = {
-          'searchText': '',
-          'isActive': 1,
-          'tabName': 'Schd. Facilities',
-          'userId': this.storageService.user.UserId,
-          'clear': 1
-        }
+          searchText: '',
+          isActive: 1,
+          tabName: 'Schd. Facilities',
+          userId: this.storageService.user.UserId,
+          clear: 1,
+        };
         this.getFacilityLastFilterRecord(lastSearchBody);
       }
     });
     this.facilityService.actionDropDown.subscribe((actionValue: any) => {
-      if (actionValue == this.facilityService.actionDropDownEnum.ExportFacilitiesToExcel) {
+      if (
+        actionValue ==
+        this.facilityService.actionDropDownEnum.ExportFacilitiesToExcel
+      ) {
         this.onExporting();
-      }
-      else if (actionValue == this.facilityService.actionDropDownEnum.DuplicateFacility) {
+      } else if (
+        actionValue == this.facilityService.actionDropDownEnum.DuplicateFacility
+      ) {
         this.createDuplicateFacility();
       }
     });
   }
   onChange($event: any): void {
+    console.log('onChange');
     //this.log += new Date() + "<br />";
   }
 
   onPaste($event: any): void {
+    console.log('onPaste');
     //this.log += new Date() + "<br />";
   }
   onPageSizeChange(event) {
@@ -234,63 +318,89 @@ export class SchdFacilitiesComponent implements OnInit {
     this.pageNumber = 1;
     this.getSchedulingFacilities();
   }
+  get3pLeaseFacilityData(path: any, fileData: any) {
+    this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
+    fileData = this.apiUrl + 'BlockLeaseScheduler/OpenAgreement?path=' + path;
+    this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
+    this.hiddenViewFile.nativeElement.click();
+  }
+  closePDF()
+  {
+  //  debugger
+  //  $('#viewFile_Doc').hide();
+  }
   getActiveEpicUsers() {
     this.EpicUserList = [];
-    this.facilityService.getActiveEpicUsers(true).subscribe((userRes) => {
-      if (userRes.response !== null) {
-        this.EpicUserList = userRes.response;
+    this.facilityService.getActiveEpicUsers(true).subscribe(
+      (userRes) => {
+        if (userRes.response !== null) {
+          this.EpicUserList = userRes.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getAllTagList() {
-
-    this.facilityService.getAllTagList(true).subscribe((TagRes) => {
-      if (TagRes.response !== null) {
-        this.TagList = TagRes.response;
-        this.tagNameList = [...new Set(this.TagList.map(item => item.tagName.toUpperCase()))];
+    //Id:0, facilityId:11, recorceId, modality, modalityType:
+    this.facilityService.getAllTagList(true).subscribe(
+      (TagRes) => {
+        if (TagRes.response !== null) {
+          this.TagList = TagRes.response;
+          this.tagNameList = [
+            ...new Set(this.TagList.map((item) => item.tagName.toUpperCase())),
+          ];
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getSchedulingFacilityLevel() {
     this.schedulingFacilityLevelList = [];
-    this.facilityService.getSchedulingFacilityLevel(true).subscribe((res) => {
-
-      if (res.response != null) {
-        this.schedulingFacilityLevelList = res.response;
+    this.facilityService.getSchedulingFacilityLevel(true).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.schedulingFacilityLevelList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   getFacilityParentNames() {
     this.facilityParentCompanyList = [];
-    this.facilityService.getFacilityParentNames(true).subscribe((res) => {
-
-      if (res.response != null) {
-        this.facilityParentCompanyList = res.response;
+    this.facilityService.getFacilityParentNames(true).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.facilityParentCompanyList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   setGridSetting() {
     this.allMode = 'page';
-    this.checkBoxesMode = 'always'
+    this.checkBoxesMode = 'always';
     this.showFilterRow = true;
     this.showHeaderFilter = false;
-    this.applyFilterTypes = [{
-      key: 'auto',
-      name: 'Immediately'
-    }, {
-      key: 'onClick',
-      name: 'On Button Click'
-    }];
+    this.applyFilterTypes = [
+      {
+        key: 'auto',
+        name: 'Immediately',
+      },
+      {
+        key: 'onClick',
+        name: 'On Button Click',
+      },
+    ];
     this.columnResizingMode = this.resizingModes[0];
     this.currentFilter = this.applyFilterTypes[0].key;
   }
@@ -309,6 +419,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: [''],
       isActive: [''],
       doNotScheduleFacility: [''],
+      useBlockLease: [''],
       facilityMile: [''],
       priceWeight: [''],
       latitude: [''],
@@ -348,7 +459,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-
+      defaultEmailAddress3P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      emailAddress13P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      emailAddress23P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       imagesContact: [''],
       imagesEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       imagesOfficePhone: ['', [Validators.minLength(10)]],
@@ -409,6 +522,9 @@ export class SchdFacilitiesComponent implements OnInit {
       mriwFlexandEXT: [''],
       mrI2WFlexandEXT: [''],
       mrI3WFlexandEXT: [''],
+      mri1ResourceName: [null],
+      mri2ResourceName: [null],
+      mri3ResourceName: [null],
     });
   }
   createModalityCtTabForm() {
@@ -434,6 +550,10 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3sedation: [''],
       ct3breast: [''],
       ctnotes: [''],
+
+      ct1ResourceName: [null],
+      ct2ResourceName: [null],
+      ct3ResourceName: [null],
     });
   }
   createModalityExceptionsTabForm() {
@@ -520,6 +640,13 @@ export class SchdFacilitiesComponent implements OnInit {
       shedulingSatOpenTo: [''],
       shedulingSatOpenFrom2: [''],
       shedulingSatOpenTo2: [''],
+      sundayschedulingIsClosed: [false],
+      mondayschedulingIsClosed: [false],
+      tuesdayschedulingIsClosed: [false],
+      wednesdayschedulingIsClosed: [false],
+      thursdayschedulingIsClosed: [false],
+      fridayschedulingIsClosed: [false],
+      saturdayschedulingIsClosed: [false],
 
       ///// MRI
       sunOpenFrom: [''],
@@ -550,6 +677,13 @@ export class SchdFacilitiesComponent implements OnInit {
       satOpenTo: [''],
       satOpenFrom2: [''],
       satOpenTo2: [''],
+      sundaymriIsClosed: [false],
+      mondaymriIsClosed: [false],
+      tuesdaymriIsClosed: [false],
+      wednesdaymriIsClosed: [false],
+      thursdaymriIsClosed: [false],
+      fridaymriIsClosed: [false],
+      saturdaymriIsClosed: [false],
 
       ///////// CT
       ctSunOpenFrom: [''],
@@ -580,6 +714,13 @@ export class SchdFacilitiesComponent implements OnInit {
       ctSatOpenTo: [''],
       ctSatOpenFrom2: [''],
       ctSatOpenTo2: [''],
+      sundayctIsClosed: [false],
+      mondayctIsClosed: [false],
+      tuesdayctIsClosed: [false],
+      wednesdayctIsClosed: [false],
+      thursdayctIsClosed: [false],
+      fridayctIsClosed: [false],
+      saturdayctIsClosed: [false],
 
       ///////// Xray
       sunXrayFrom: [''],
@@ -613,19 +754,25 @@ export class SchdFacilitiesComponent implements OnInit {
       parking: [''],
       preArrivalTime: [''],
       xrayWalkIn: [''],
-
+      sundayxrayIsClosed: [false],
+      mondayxrayIsClosed: [false],
+      tuesdayxrayIsClosed: [false],
+      wednesdayxrayIsClosed: [false],
+      thursdayxrayIsClosed: [false],
+      fridayxrayIsClosed: [false],
+      saturdayxrayIsClosed: [false],
     });
   }
   createNotesTabForm() {
     this.facilityNotesForm = this.fb.group({
-      Note: ['']
+      Note: [''],
     });
   }
   createGeneralPoliciesForm() {
     this.facilityPoliciesForm = this.fb.group({
-      facilityPolicy: ['',],
-      parentPolicy: ['',]
-    })
+      facilityPolicy: [''],
+      parentPolicy: [''],
+    });
   }
   createParentCompanyTabForm() {
     this.facilityParentCompanyForm = this.fb.group({
@@ -677,7 +824,6 @@ export class SchdFacilitiesComponent implements OnInit {
       isRxnotification: [''],
       isPrescreening: [''],
       userList: [''],
-
     });
   }
   createTagForm() {
@@ -686,31 +832,50 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   getFacilityLastFilterRecord(body: any) {
-    this.facilityService.getFacilitySearchData(true, body).subscribe((res) => {
-      if (res.response != null) {
-        this.searchText = res.response[0].searchText;
-        this.userType = res.response[0].isActive;
-        this.facilityService.updateSearchText(this.searchText);
-        this.facilityService.updateDropDown(this.userType);
-        this.getSchedulingFacilities();
+    this.facilityService.getFacilitySearchData(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.searchText = res.response[0].searchText;
+          this.userType = res.response[0].isActive;
+          this.facilityService.updateSearchText(this.searchText);
+          this.facilityService.updateDropDown(this.userType);
+          this.getSchedulingFacilities();
+        } else {
+          this.searchText = '';
+          this.userType = 1;
+          this.facilityService.updateSearchText(this.searchText);
+          this.facilityService.updateDropDown(this.userType);
+          this.getSchedulingFacilities();
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-      else {
-        this.searchText = '';
-        this.userType = 1;
-        this.facilityService.updateSearchText(this.searchText);
-        this.facilityService.updateDropDown(this.userType);
-        this.getSchedulingFacilities();
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
 
   pageChanged(event) {
     this.pageNumber = event;
-    this.getSchedulingFacilities()
+    this.getSchedulingFacilities();
   }
-
+  AddUpdateIsClosedDays(Day: string, Modality: string, event: any) {
+    let body = {
+      FacilityId: this.facilityId,
+      Modality: Modality,
+      Day: Day,
+      IsClosed: event.target.checked,
+    };
+    this.facilityService.addUpdateFacilityClosedDays(true, body).subscribe(
+      (res) => {
+        if (res.response != null) {
+          this.showNotificationOnSucess(res);
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
+      }
+    );
+  }
   getSchedulingFacilities() {
 
     let body = { 'isActive': this.userType, 'pageSize': this.pageSize, 'pageNumber': this.pageNumber, 'searchText': this.searchText }
@@ -726,63 +891,80 @@ export class SchdFacilitiesComponent implements OnInit {
         this.totalRecords = 1;
         this.facilityList = [];
       }
-    }, (err: any) => {
-      this.errorNotification(err);
     });
   }
+
+  getFacilityResourceDropDownData() {
+    this.facilityService
+      .getResourceDropDownData(true, this.facilityId)
+      .subscribe(
+        (res) => {
+          if (res.response != null) {
+            this.ResourceNameList = res.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
+  }
+
   // common Error Method
   errorNotification(err: any) {
     this.notificationService.showNotification({
       alertHeader: err.statusText,
       alertMessage: err.message,
-      alertType: err.status
+      alertType: err.status,
     });
   }
   showNotificationOnSucess(data: any) {
-   
-      this.notificationService.showNotification({
-        alertHeader: 'Success',
-        alertMessage: data.message,
-        alertType: data.responseCode
-      });
-    
-   
+    this.notificationService.showNotification({
+      alertHeader: 'Success',
+      alertMessage: data.message,
+      alertType: data.responseCode,
+    });
   }
   showNotificationOnFailure(data: any) {
-  
-      this.notificationService.showNotification({
-        alertHeader: 'Fail',
-        alertMessage: data.message,
-        alertType: data.responseCode
-      });
-    
-   
+    this.notificationService.showNotification({
+      alertHeader: 'Fail',
+      alertMessage: data.message,
+      alertType: data.responseCode,
+    });
   }
 
   selectionChanged(data: any) {
     this.selectedItemKeys = data.selectedRowKeys;
   }
-  getFacilityDetail(row: any) {
+  getFacilityDetail(facilityId: any) {
     this.resetFacilityForm();
-    this.facilityId = row.data.facilityId;
+    this.facilityId = facilityId;
     this.isPopUpInEditMode = true;
     this.getFacilityDetailById();
+    this.getFacilityResourceDropDownData();
   }
   getFacilityDetailById() {
-
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
-    //this.isFacilityAnalyticsTabVisible=true; 
+    //this.isFacilityAnalyticsTabVisible=true;
     this.isApplyAndOkBtnVisisble = true;
     this.isInsertBtnVisisble = false;
     this.facilityDetail = [];
     this.facilityPolicy = '';
     this.parentPolicy = '';
+    this.updatedResourceName = [];
 
     this.facilityService.getFacilityById(true, this.facilityId).subscribe((res) => {
       if (res.response[0] != null) {
         this.facilityDetail = res.response[0];
+        if (JSON.parse(res.response[0].facilitycloseddaysJSON)) {
+          this.updateFacilityCloseddays(JSON.parse(res.response[0].facilitycloseddaysJSON));
+        }
+        if (JSON.parse(res.response[0].facilityResourceJson)) {
+          setTimeout(() => {
+            this.updateFacilityResources(JSON.parse(res.response[0].facilityResourceJson));
+          }, 200);
+        }
         this.SetPolicyForm(this.facilityDetail);
         this.setGeneralInfoTabForm(this.facilityDetail);
         this.setFacilityContactDetailTabForm(this.facilityDetail);
@@ -797,61 +979,491 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getFacilityPricingHistory(this.facilityId);
         this.getFacilityNotes(this.facilityId);
         this.getTagListByFacilityId(this.facilityId);
+        this.getAllBlockLeaseCredits();
+        this.getblockLeasePaymentByFacilityId(this.facilityId);
+        this.getUnpaidLeases();
       }
     }, (err: any) => {
       this.errorNotification(err);
     });
   }
   senddocManagerFacility() {
-      this.sendDataDocManager = {
+    this.sendDataDocManager = {
       facilityId: this.facilityId,
       facilityName: this.facilityDetail.facilityName,
-      from: 'Facility'
-    }
+      from: 'Facility',
+    };
     this.facilityService.getdocManagerFacility(this.sendDataDocManager);
-  
+  }
+  updateResourceName(ResourceId: Number, Modality, ModalitiyType) {
+
+    //alert('Respource Id:' + ResourceId);
+    var data = this.updatedResourceName.filter(x => x.Modality == Modality && x.ModalitiyType == ModalitiyType);
+    if (data.length > 0)
+      data[0].ResourceId = ResourceId;
+    else {
+      if (Modality == 'ct') {
+        var test = this.modalityCtForm.controls["ct1ResourceName"].value;
+        //alert('CT Test ' + test);
+        if (
+          (this.modalityCtForm.controls['ct1ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct2ResourceName'].value !=
+            ResourceId) ||
+          (this.modalityCtForm.controls['ct1ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct3ResourceName'].value !=
+            ResourceId) ||
+          (this.modalityCtForm.controls['ct3ResourceName'].value !=
+            ResourceId &&
+            this.modalityCtForm.controls['ct2ResourceName'].value != ResourceId)
+        ) {
+          this.updatedResourceName.push({
+            ID: 0,
+            ResourceId: ResourceId,
+            FacilityId: this.facilityId,
+            UserId: this.storageService.user.UserId,
+            Modality: Modality,
+            ModalitiyType: ModalitiyType,
+          });
+        }
+      } else {
+        var test = this.modalityMriForm.controls['mri1ResourceName'].value;
+        //alert('MRI Test ' + test);
+        if (
+          (this.modalityMriForm.controls['mri1ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri2ResourceName'].value !=
+            ResourceId) ||
+          (this.modalityMriForm.controls['mri1ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri3ResourceName'].value !=
+            ResourceId) ||
+          (this.modalityMriForm.controls['mri3ResourceName'].value !=
+            ResourceId &&
+            this.modalityMriForm.controls['mri2ResourceName'].value !=
+            ResourceId)
+        ) {
+          this.updatedResourceName.push({
+            ID: 0,
+            ResourceId: ResourceId,
+            FacilityId: this.facilityId,
+            UserId: this.storageService.user.UserId,
+            Modality: Modality,
+            ModalitiyType: ModalitiyType,
+          });
+        }
+      }
+    }
+  }
+  updateFacilityResources(arrayResources: any) {
+    let getOnlyModality = arrayResources
+      .map((item) => item.Modality)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    if (getOnlyModality) {
+      getOnlyModality.forEach((Modality) => {
+        let getModalitiyType = arrayResources
+          .filter((arr) => arr.Modality == Modality)
+          .map((arr) => arr.ModalitiyType);
+        getModalitiyType.forEach((ModalitiyType) => {
+          let getAllId = arrayResources.filter(
+            (data) =>
+              data.Modality == Modality && data.ModalitiyType == ModalitiyType
+          )[0];
+          let controlName = `${Modality.toLowerCase()}${ModalitiyType}ResourceName`;
+          if (Modality.toLowerCase() == 'mri') {
+            this.updatedResourceName.push({
+              ID: getAllId.ID,
+              FacilityId: this.facilityId,
+              UserId: this.storageService.user.UserId,
+              ResourceId: getAllId.ResourceId,
+              Modality: 'mri',
+              ModalitiyType: ModalitiyType,
+            });
+
+            this.modalityMriForm.patchValue({
+              [controlName]: getAllId.ResourceId,
+            });
+          } else if (Modality.toLowerCase() == 'ct') {
+            this.updatedResourceName.push({
+              ID: getAllId.ID,
+              FacilityId: this.facilityId,
+              UserId: this.storageService.user.UserId,
+              ResourceId: getAllId.ResourceId,
+              Modality: 'ct',
+              ModalitiyType: ModalitiyType,
+            });
+            this.modalityCtForm.patchValue({
+              [controlName]: getAllId.ResourceId,
+            });
+          }
+        });
+      });
+    }
   }
 
+  updateFacilityCloseddays(arrayUpdate: any) {
+    let getOnlyModality = arrayUpdate
+      .map((item) => item.Modality)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    let getOnlyWeek = arrayUpdate
+      .map((item) => item.Day)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    if (getOnlyModality && getOnlyWeek) {
+      getOnlyModality.forEach((Modality) => {
+        let getOnlyWeekN = arrayUpdate
+          .filter((arr) => arr.Modality == Modality)
+          .map((arr) => arr.Day);
+        getOnlyWeekN.forEach((Day) => {
+          let isClosed = arrayUpdate.filter(
+            (data) => data.Modality == Modality && data.Day == Day
+          )[0].IsClosed;
+          let controlName = `${Day}${Modality}IsClosed`;
+          this.facilitySchedulingDetailForm.patchValue({
+            [controlName]: isClosed,
+          });
+        });
+      });
+    }
+  }
 
   getFacilityNotes(facilityId: number) {
     this.facilityNoteList = [];
-    this.facilityService.getAllFacilityNotesByFacililityId(true, facilityId).subscribe((notesRes) => {
-      if (notesRes.response != null) {
-        this.facilityNoteList = notesRes.response;
-      }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    this.facilityService
+      .getAllFacilityNotesByFacililityId(true, facilityId)
+      .subscribe(
+        (notesRes) => {
+          if (notesRes.response != null) {
+            this.facilityNoteList = notesRes.response;
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
   }
   getFacilityPricing(facilityId: number) {
     this.facilityPricingList = [];
-    this.facilityService.getFacilityPricing(true, facilityId).subscribe((res) => {
+    this.facilityService
+      .getFacilityPricing(true, facilityId)
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.facilityPricingList = res.response;
+        }
+      });
+  }
+  checkForLease(event: any, from: string) {
+    this.ConfirmationLeaseCheckedFrom = from;
+    if (!event.target.checked) {
+      this.hiddenConfirmationLeaseBtn.nativeElement.click();
+    }
+  }
+  confirmationLease(checked: boolean) {
+    if (!checked) {
+      if (this.ConfirmationLeaseCheckedFrom == 'isActive') {
+        this.generalInfoForm.patchValue({
+          isActive: true,
+        });
+      } else {
+        this.generalInfoForm.patchValue({
+          useBlockLease: true,
+        });
+      }
+    }
+  }
+  getLeaseAgreementsByFacilityId(facilityId: number) {
+    this.blockLeaseAgreementMRIList = [];
+    let body: any;
+    if (
+      this.defaultPopupTab == 'LeaseAgreements' ||
+      this.defaultPopupTab == 'LeaseAgreement_MRI'
+    ) {
+      body = { FacilityID: facilityId, Modality: 'MRI' };
+    } else {
+      body = { FacilityID: facilityId, Modality: 'CT' };
+    }
+    this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
       if (res.response != null) {
-        this.facilityPricingList = res.response;
+        if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
+          this.blockLeaseAgreementMRIList = res.response;
+          this.fullblockLeaseAgreementMRIList = this.blockLeaseAgreementMRIList.slice(0, this.MRIpageSize);
+          this.totalrecordsFull_MRI = res.response[0].TotalRecords;
+        }
+        else {
+          this.blockLeaseAgreementCTList = res.response;
+          this.totalrecordsFull_CT = res.response[0].TotalRecords;
+          this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(0, this.MRIpageSize);
+        }
+
       }
     });
+  }
+  onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
+    this.MRIPageNumber = pageNumber;
+    if (type == 'MRI') {
+      this.fullblockLeaseAgreementMRIList =
+        this.blockLeaseAgreementMRIList.slice(
+          (this.MRIPageNumber - 1) * this.MRIpageSize,
+          (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+        );
+    } else {
+      this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(
+        (this.MRIPageNumber - 1) * this.MRIpageSize,
+        (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+      );
+    }
+  }
+  getBlockLeasePricing(facilityId: number) {
+    this.blockLeasePricingList = [];
+    let body = [{ FacilityID: facilityId, Operation: 5 }];
+    this.facilityService.getBlockLeasePricing(true, body).subscribe((res) => {
+      if (res.response != null) {
+        console.log(this.getBlockLeasePricing);
+        this.blockLeasePricingList = res.response;
+      }
+    });
+  }
+
+  getAllBlockLeaseCredits() {
+    this.CreditDebitList = [];
+    this.pageSize = 20;
+    this.facilityService
+      .getAllBlockLeaseCredits(true, this.facilityId, this.pageNumber, this.pageSize)
+      .subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.CreditDebitList = res.response;
+            this.totalRecordBlockLeaseCredits = res.response[0].TotalRecords;
+          } else {
+            this.totalRecords = 1;
+            this.CreditDebitList = [];
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
+  }
+  onPageNumberChange(pageNumber: any) {
+    this.pageNumber = pageNumber;
+    this.getAllBlockLeaseCredits();
+  }
+  onRowUpdated(e) {
+    this.eventBlockLeasePricingData = e;
+  }
+  saveBlockLeasePricing() {
+    this.submitted = true;
+    console.log(this.eventBlockLeasePricingData);
+    if (this.eventBlockLeasePricingData['data']) {
+      let body = {
+        ID: this.eventBlockLeasePricingData['data'].ID,
+        FacilityID: this.facilityId,
+        Modality: this.eventBlockLeasePricingData['data'].Modality,
+        LeaseRatePerHour:
+          this.eventBlockLeasePricingData['data'].LeaseRatePerHour,
+        ContrastCostPerUnit:
+          this.eventBlockLeasePricingData['data'].ContrastCostPerUnit,
+        Operation: 2,
+      };
+      for (var i = 0; i < this.blockLeasePricingList.length; i++) {
+        this.blockLeasePricingList[i]['Operation'] = 2;
+      }
+      this.facilityService
+        .getBlockLeasePricing(true, this.blockLeasePricingList)
+        .subscribe(
+          (res) => {
+            if (res.response != null) {
+              this.blockLeasePricingList = res.response;
+              this.showNotificationOnSucess({
+                message: res.response.message,
+                responseCode: res.responseCode
+              });
+            }
+
+            if (this.isApplyAndOkBtnVisisble) {
+              this.updateFacility(true);
+            }
+            else if (this.isInsertBtnVisisble) {
+              this.addFacility();
+            }
+
+
+          },
+          (err: any) => {
+            this.errorNotification(err);
+          }
+        );
+    }
   }
   getFacilityPricingHistory(facilityId: number) {
     this.facilityPricingHistoryList = [];
-    this.facilityService.getFacilityPricingHistory(true, facilityId).subscribe((res) => {
-      if (res.response != null) {
-        this.facilityPricingHistoryList = res.response;
-      }
-    });
+    this.facilityService
+      .getFacilityPricingHistory(true, facilityId)
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.facilityPricingHistoryList = res.response;
+        }
+      });
   }
   getTagListByFacilityId(facilityId: number) {
     this.facilityTagList = [];
-    this.facilityService.getTagListByFacilityId(true, facilityId).subscribe((tagRes) => {
-      if (tagRes.response != null) {
-        this.facilityTagList = tagRes.response;
+    this.facilityService.getTagListByFacilityId(true, facilityId).subscribe(
+      (tagRes) => {
+        if (tagRes.response != null) {
+          this.facilityTagList = tagRes.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
+
+  getblockLeasePaymentByFacilityId(facilityId: number) {
+    this.blockLeasePaymentList = [];
+    this.facilityService
+      .GetblockLeasePaymentByFacilityId(
+        true,
+        facilityId.toString(),
+        this.pageNumberOfPaid,
+        this.pageSizeOfPaid
+      )
+      .subscribe((res) => {
+        if (res.response != null) {
+          console.log(res);
+          this.blockLeasePaymentList = res.response;
+          if (this.blockLeasePaymentList.length > 0) {
+            this.totalRecordpaid = res.totalRecords;
+            this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
+          }else {
+            this.totalRecordpaid = 1;
+            this.blockLeasePaymentList = [];
+          }
+        }
+      });
+  }
+
+  onPageNumberChangePaid(event) {
+    this.pageNumberOfPaid = event;
+    this.getblockLeasePaymentByFacilityId(this.facilityId);
+  }
+
+  getLeasePaymentMappingByFacilityId(paymentMapping: any) {
+    paymentMapping.component.collapseAll(-1);
+    if (paymentMapping.isExpanded) {
+      let PaymentId = '';
+      if (paymentMapping.data === undefined) {
+        PaymentId = paymentMapping.PaymentId;
+      }
+      else {
+        PaymentId = paymentMapping.data.PaymentId;
+      }
+      this.facilityService
+        .GetLeasePaymentMappingByFacilityId(true, PaymentId)
+        .subscribe((res) => {
+          if (res.response != null) {
+            this.blockLeasePaymentMappingList = res.response;
+            this.getBlockLeaseCreditsByFacilityId(paymentMapping.data.PaymentTXN);
+            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);  
+            paymentMapping.component.expandRow(key);  
+          }
+        });
+      }
+  }
+
+  getBlockLeaseCreditsByFacilityId(transactionNumber: string) {
+    this.blockLeaseCreditList = [];
+    this.facilityService
+      .GetBlockLeaseCreditsByFacilityId(true, transactionNumber.toString())
+      .subscribe((res) => {
+        if (res.response != null) {
+          this.blockLeaseCreditList = res.response;
+        }
+      });
+  }
+
+
+  _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+
+  downloadFile(fileData) {
+    if (fileData.data.FileDetail != null || fileData.data.FileDetail != undefined) {
+      var data = fileData.data.FileDetail.FileBytes;
+      var fileName = fileData.data.FileDetail.FileName;
+      var pdfData = this._base64ToArrayBuffer(data);
+      var file = new Blob([pdfData], { type: 'application/pdf' });
+      var fileUrl = URL.createObjectURL(file);
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.href = fileUrl;
+      a.target = '_blank';
+      a.click();
+    } else {
+      var notification = {
+        alertType: ResponseStatusCode.NotFound,
+        alertHeader: 'Error',
+        alertMessage: 'Not Found'
+      }
+      this.notificationService.showNotification(notification)
+    }
+  }
+
   setGeneralInfoTabForm(data: any) {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
+    if (!data.useBlockLease) {
+
+      $('#BlockLeaseRate')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+      // $('#LeaseAgreementMRI')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+      // $('#LeaseAgreementCT')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+      $('#CreditandDebit')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+      $('#LeasePaymentsUnPaid')
+        .not('.btn')
+        .attr('disabled', true)
+        .addClass('disabledClass');
+    } else {
+      $('#BlockLeaseRate')
+        .not('.btn')
+        .attr('disabled', false)
+        .removeClass('disabledClass');
+      // $('#LeaseAgreementMRI')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
+        $('#LeasePaymentsUnPaid')
+        .not('.btn')
+        .attr('disabled', false)
+        .removeClass('disabledClass');
+      // $('#LeaseAgreementCT')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
+      $('#CreditandDebit')
+        .not('.btn')
+        .attr('disabled', false)
+        .removeClass('disabledClass');
+
+    }
     this.generalInfoForm.patchValue({
       facilityId: data.facilityId,
       facilityName: data.facilityName,
@@ -865,6 +1477,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: data.overridePrice,
       isActive: data.isActive,
       doNotScheduleFacility: data.doNotScheduleFacility,
+      useBlockLease: data.useBlockLease,
       facilityMile: data.facilityMile,
       priceWeight: data.priceWeight,
       latitude: data.latitude,
@@ -873,12 +1486,10 @@ export class SchdFacilitiesComponent implements OnInit {
       previousFacilityName1: data.previousFacilityName1,
       previousFacilityName2: data.previousFacilityName2,
       schedulingLevel: data.schedulingLevel,
-      schedFacilityTaxID: data.schedFacilityTaxID
+      schedFacilityTaxID: data.schedFacilityTaxID,
     });
-    if (data.overridePrice)
-      this.allowUpdatingPrice = true;
-    else
-      this.allowUpdatingPrice = false;
+    if (data.overridePrice) this.allowUpdatingPrice = true;
+    else this.allowUpdatingPrice = false;
   }
   setFacilityContactDetailTabForm(data: any) {
     this.facilityContactDetailForm.patchValue({
@@ -909,6 +1520,9 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: data.schedulingCellPhone,
       schedulingHomePhone: data.schedulingHomePhone,
       schedulingFax: data.schedulingFax,
+      defaultEmailAddress3P: data.defaultEmailAddress3P,
+      emailAddress13P: data.emailAddress13P,
+      emailAddress23P: data.emailAddress23P,
 
       imagesContact: data.imagesContact,
       imagesEmail: data.imagesEmail,
@@ -938,7 +1552,7 @@ export class SchdFacilitiesComponent implements OnInit {
       xrayService: data.xrayService,
       MyElogramService: data.MyElogramService,
       dexaService: data.dexaService,
-      ctArthroService: data.ctArthroService
+      ctArthroService: data.ctArthroService,
     });
   }
   setModalityMriTabForm(data: any) {
@@ -950,6 +1564,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri1contrast: data.mri1contrast,
       mri1sedation: data.mri1sedation,
       mri1breast: data.mri1breast,
+
       mri2type: data.mri2type,
       mri2strength: data.mri2strength,
       mri2make: data.mri2make,
@@ -957,6 +1572,7 @@ export class SchdFacilitiesComponent implements OnInit {
       mri2contrast: data.mri2contrast,
       mri2sedation: data.mri2sedation,
       mri2breast: data.mri2breast,
+
       mri3type: data.mri3type,
       mri3strength: data.mri3strength,
       mri3make: data.mri3make,
@@ -964,11 +1580,17 @@ export class SchdFacilitiesComponent implements OnInit {
       mri3contrast: data.mri3contrast,
       mri3sedation: data.mri3sedation,
       mri3breast: data.mri3breast,
+
       mriwFlexandEXT: data.mriwFlexandEXT,
       mrI2WFlexandEXT: data.mrI2WFlexandEXT,
       mrI3WFlexandEXT: data.mrI3WFlexandEXT,
+
       mrinotes: data.mrinotes,
     });
+
+    this.CheckSameCombinationMRI('Type1');
+    this.CheckSameCombinationMRI('Type2');
+    this.CheckSameCombinationMRI('Type3');
   }
   setModalityCtTabForm(data: any) {
     this.modalityCtForm.patchValue({
@@ -992,6 +1614,7 @@ export class SchdFacilitiesComponent implements OnInit {
       ct3contrast: data.ct3contrast,
       ct3sedation: data.ct3sedation,
       ct3breast: data.ct3breast,
+
       ctnotes: data.ctnotes
     });
   }
@@ -1193,14 +1816,13 @@ export class SchdFacilitiesComponent implements OnInit {
       parking: data.parking,
       preArrivalTime: data.preArrivalTime,
       xrayWalkIn: data.xrayWalkIn,
-
     });
   }
 
   SetPolicyForm(data: any) {
     this.facilityPoliciesForm.patchValue({
       facilityPolicy: data.facilityPolicy,
-      parentPolicy: data.parentPolicy
+      parentPolicy: data.parentPolicy,
     });
   }
 
@@ -1208,7 +1830,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.selectedEpicUserList = null;
 
     if (data.userList != null && data.userList != '') {
-      this.selectedEpicUserList = data.userList.split(',').map(function (item) { return item.trim(); });
+      this.selectedEpicUserList = data.userList.split(',').map(function (item) {
+        return item.trim();
+      });
     }
     this.isIntakeScreeningAndWaiverVisible = data.isPacketDocOnly;
     this.isIntakeFaxVisible = data.IsFaxIntakePacket;
@@ -1233,7 +1857,6 @@ export class SchdFacilitiesComponent implements OnInit {
       isElecScreenForm: data.isElecScreenForm,
       isRxnotification: data.isRxnotification,
       isPrescreening: data.isPrescreening,
-
     });
   }
   addNote(isNoteButtonClick: boolean) {
@@ -1313,8 +1936,7 @@ export class SchdFacilitiesComponent implements OnInit {
   onTagChange(tagVal: any) {
     if (tagVal) {
       this.tagBtnDisabled = false;
-    }
-    else {
+    } else {
       this.tagBtnDisabled = true;
     }
   }
@@ -1340,7 +1962,6 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   checkNotes(noteText: string) {
-
     if (noteText.trim() === '') {
       this.noteBtnDisabled = true;
       return;
@@ -1353,18 +1974,28 @@ export class SchdFacilitiesComponent implements OnInit {
 
   getFacilityParentList() {
     this.facilityParentList = [];
-    this.facilityService.getFacilityParentNames(true).subscribe((res) => {
-      if (res.response !== null) {
-        this.facilityParentList = res.response;
+    this.facilityService.getFacilityParentNames(true).subscribe(
+      (res) => {
+        if (res.response !== null) {
+          this.facilityParentList = res.response;
+        }
+      },
+      (err: any) => {
+        this.errorNotification(err);
       }
-    }, (err: any) => {
-      this.errorNotification(err);
-    });
+    );
   }
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
     this.submitted = true;
-    if (this.generalInfoForm.invalid || this.facilityContactDetailForm.invalid || this.facilityIntakeForm.invalid || this.facilityPoliciesForm.invalid) {
+    this.setGeneralInfoTabForm(this.generalInfoForm.value);
+    if (
+      this.generalInfoForm.invalid ||
+      this.facilityContactDetailForm.invalid ||
+      this.facilityIntakeForm.invalid ||
+      this.facilityPoliciesForm.invalid||
+      this.modalityMriForm.invalid
+    ) {
       this.modalValue = '';
       return;
     }
@@ -1382,14 +2013,19 @@ export class SchdFacilitiesComponent implements OnInit {
       lacounty: this.generalInfoFormControls.lacounty.value,
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
-      doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      doNotScheduleFacility:
+        this.generalInfoFormControls.doNotScheduleFacility.value,
+      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
       longitude: this.generalInfoFormControls.longitude.value,
-      previousFacilityName: this.generalInfoFormControls.previousFacilityName.value,
-      previousFacilityName1: this.generalInfoFormControls.previousFacilityName1.value,
-      previousFacilityName2: this.generalInfoFormControls.previousFacilityName2.value,
+      previousFacilityName:
+        this.generalInfoFormControls.previousFacilityName.value,
+      previousFacilityName1:
+        this.generalInfoFormControls.previousFacilityName1.value,
+      previousFacilityName2:
+        this.generalInfoFormControls.previousFacilityName2.value,
       schedFacilityTaxID: this.generalInfoFormControls.schedFacilityTaxID.value,
 
       //// Contact Detail Tab Form Controls
@@ -1736,7 +2372,6 @@ export class SchdFacilitiesComponent implements OnInit {
     }
 
     this.facilityService.updateFacility(true, body).subscribe((res) => {
-      
       if (res.response != null) {
         this.showNotificationOnSucess(res);
         if (this.facilityNotesFormControls.Note.value != null && this.facilityNotesFormControls.Note.value.toString().trim() != '') {
@@ -1757,11 +2392,14 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   addFacility() {
-
-
     this.modalValue = 'modal';
     this.submitted = true;
-    if (this.generalInfoForm.invalid || this.facilityContactDetailForm.invalid || this.facilityIntakeForm.invalid || this.facilityPoliciesForm.invalid) {
+    if (
+      this.generalInfoForm.invalid ||
+      this.facilityContactDetailForm.invalid ||
+      this.facilityIntakeForm.invalid ||
+      this.facilityPoliciesForm.invalid
+    ) {
       this.modalValue = '';
       return;
     }
@@ -1780,7 +2418,9 @@ export class SchdFacilitiesComponent implements OnInit {
       lacounty: this.generalInfoFormControls.lacounty.value,
       overridePrice: this.generalInfoFormControls.overridePrice.value,
       isActive: this.generalInfoFormControls.isActive.value,
-      doNotScheduleFacility: this.generalInfoFormControls.doNotScheduleFacility.value,
+      doNotScheduleFacility:
+        this.generalInfoFormControls.doNotScheduleFacility.value,
+      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -2172,6 +2812,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentPolicy = '';
     this.isPopUpInEditMode = false;
     this.facilityPoliciesForm.reset();
+    this.blockLeasePaymentList = [];
+    this.blockLeasePaymentMappingList = [];
+    this.blockLeaseCreditList = [];
   }
   reLoadAllFacility() {
     this.getSchedulingFacilities();
@@ -2306,16 +2949,38 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
+    if (
+      this.defaultPopupTab == 'LeaseAgreements' ||
+      this.defaultPopupTab == 'LeaseAgreement_MRI' ||
+      this.defaultPopupTab == 'LeaseAgreement_CT'
+    ) {
+      this.MRIPageNumber = 1;
+      this.MRIpageSize = 20;
+      this.getLeaseAgreementsByFacilityId(this.facilityId);
+    }
+    if (
+      this.defaultPopupTab == 'BlockLeaseRate' ||
+      this.defaultPopupTab == 'Leases'
+    ) {
+      this.getBlockLeasePricing(this.facilityId);
+    }
+    if (this.defaultPopupTab == 'LeasePayments' || this.defaultPopupTab == 'LeasePaymentsUnPaid') {
+      this.getUnpaidLeases(); this.getFacilityCreditsUnUsed();
+    }
+    if (this.defaultPopupTab == 'LeasePaymentsPaid') {
+      this.getblockLeasePaymentByFacilityId(this.facilityId);
+    }
+    if (this.defaultPopupTab == 'Credit/Debit') {
+      this.getAllBlockLeaseCredits();
+    }
   }
-
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({
       alertHeader: msg,
       alertMessage: '',
-      alertType: 400
+      alertType: 400,
     });
   }
-
   onCellUpdating(currentRowData) {
     let Body = {
       'FID': currentRowData.key.facilityId,
@@ -2341,31 +3006,502 @@ export class SchdFacilitiesComponent implements OnInit {
       // this.errorNotification(err);
     });
   }
-
   customizeText(cellInfo) {
-    return cellInfo.valueText.replace("USD", "$");
+    return cellInfo.valueText.replace('USD', '$');
   }
 
+  getFacilityCreditsUnUsed() {
+    var data = {
+      FacilityId: this.facilityId,
+      pageNo: this.pageNumberOfUnusedCredits,
+      pageSize: this.pageSizeOfUnusdCredits,
+    };
 
+    this.blockleasescheduler.getFacilityCreditsUnUsed(
+        true,
+        JSON.stringify(JSON.stringify(data)).toString()
+      ).subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.UnusedCreditsList = res.response;
+            this.totalRecordunUsedCredits = res.response[0].TotalRecords;
+          } else {
+            this.totalRecordunUsedCredits = 1;
+            this.UnusedCreditsList = [];
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
+  }
+  deleteUnusedCredit() {
+    var unUsedCreditId: string = '';
+    if (this.deleteUnusedCreditDetail.data.CreditId) {
+      unUsedCreditId = this.deleteUnusedCreditDetail.data.CreditId;
+      let body = {
+        unUsedCreditId: unUsedCreditId,
+      };
+      this.blockleasescheduler
+        .deleteUnusedCreditByCreditId(
+          true,
+          JSON.stringify(JSON.stringify(body)).toString()
+        )
+        .subscribe((res) => {
+          if (res) {
+            if (res.response.ResponseCode == 200) {
+              this.showNotificationOnCreditDeleted(res.response);
+              this.getAllBlockLeaseCredits();
+            } else {
+              this.showNotificationOnCreditDeleted(res.response);
+            }
+          }
+        });
+    }
+  }
+  deleteConfirmUnusedCredit(e) {
+    this.hiddenDeleteUnusedCreditLink.nativeElement.click();
+    this.deleteUnusedCreditDetail = e;
+  }
+  showNotificationOnCreditDeleted(data: any) {
+    this.notificationService.showNotification({
+      alertHeader: data.Message,
+      alertMessage: '',
+      alertType: data.ResponseCode,
+    });
+  }
+  onPageNumberChangeunUsedcredits(pageNumber: any) {
+    this.pageNumberOfUnusedCredits = pageNumber;
+    this.getFacilityCreditsUnUsed();
+  }
+  getUnpaidLeases() {
+    var data = {
+      FacilityId: this.facilityId,
+      PageNumber: this.pageNumberOfUnpaidLeases,
+      PageSize: this.pageSizeOfUnpaidLeases,
+    };
+    this.blockleasescheduler
+      .getUnpaidLeases(true, JSON.stringify(JSON.stringify(data)).toString())
+      .subscribe(
+        (res) => {
+          if (res.response != null && res.response.length > 0) {
+            this.GetUnpaidLeasesList = res.response;
+            this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
+          } else {
+            this.totalRecordUnpaidLeases = 1;
+            this.GetUnpaidLeasesList = [];
+          }
+        },
+        (err: any) => {
+          this.errorNotification(err);
+        }
+      );
+  }
+  onPageNumberChangeUnpaidLesaes(pageNumber: any) {
+    this.pageNumberOfUnpaidLeases = pageNumber;
+    this.getUnpaidLeases();
+  }
+  onSelectionChangedLease(el) {
+    var leaseID: any = [];
+    this.selectedleaseArray = el.selectedRowsData;
+    if (el.selectedRowsData.length !== 0) {
+    this.selectedleaseArray = el.selectedRowsData;
+      this.btnActive = 1;
+      el.selectedRowsData.forEach((i) => {
+        leaseID.push(i.LeaseId);
+      });
+      this.leaseIdArray = leaseID;
+    } else {
+      this.btnActive = 0;
+    }
+  }
+  onSelectionChangedCredit(ec) {
+    var CreditID: any = [];
+    this.selectedCreditPayment = ec.selectedRowsData;
+    if (ec.selectedRowsData.length !== 0) {
+      ec.selectedRowsData.forEach((i) => {
+        CreditID.push(i.CreditId);
+      });
+      this.creditIdArray = CreditID;
+    }
+  }
+  UnpaidButtonClick(e) {
+    var TotalLease = 0, TotalCredit = 0;
+    for (let i = 0; i < this.selectedleaseArray.length; i++) {
+      TotalLease += this.selectedleaseArray[i].TotalAmount;
+    }
+    for (let i = 0; i < this.selectedCreditPayment.length; i++) {
+      TotalCredit += this.selectedCreditPayment[i]['Credit Amount'];
+    }
+    var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
+    var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';
+    var data = {
+      "LeaseId": leaseIdListTemp,
+      "CreditId": creditIdListTemp,
+      "LeaseAmount": TotalLease,
+      "CreditAmount": TotalCredit
+    }
+    this.blockleasescheduler.getTotalAmountToPay(true, JSON.stringify(JSON.stringify(data)).toString()).subscribe((res) => {
+      if (res.response[0].TotalAmount >= 0) {
+        const modalRef = this.modalService.open(PayInvoiceModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small payment-invoice-popup' });
+        modalRef.componentInstance.AmountDetails = res.response[0];
+        modalRef.componentInstance.selectedleases = this.selectedleaseArray;
+        modalRef.componentInstance.selectedCreditIds = creditIdListTemp;
+        modalRef.componentInstance.TotalCreditsAmount = TotalCredit;
+        modalRef.componentInstance.TotalLeasesAmount = TotalLease;
+        modalRef.componentInstance.facilityId = this.facilityId;
+        modalRef.result.then(
+          (result) => {
+            modalRef.close();
+          },
+          (reason) => {
+            if (reason == 5) {
+              this.getUnpaidLeases();
+              this.getFacilityCreditsUnUsed();
+              modalRef.close();
+            }
+            else {
+              // this.unSuccessNotification(reason);
+            }
+          }
+        );
+      }
+      else{
 
-  get generalInfoFormControls() { return this.generalInfoForm.controls; }
-  get facilityContactDetailFormControls() { return this.facilityContactDetailForm.controls; }
-  get modalityServiceFormControls() { return this.modalityServiceForm.controls; }
-  get modalityMriFormControls() { return this.modalityMriForm.controls; }
-  get modalityCtFormControls() { return this.modalityCtForm.controls; }
-  get modalityExceptionsFormControls() { return this.modalityExceptionsForm.controls; }
-  get facilitySchedulingDetailFormControls() { return this.facilitySchedulingDetailForm.controls; }
-  get facilityNotesFormControls() { return this.facilityNotesForm.controls; }
-  get facilityParentCompanyFormControls() { return this.facilityParentCompanyForm.controls; }
-  get facilityIntakeFormControls() { return this.facilityIntakeForm.controls; }
-  get facilityTagFormControls() { return this.facilityTagForm.controls; }
-  get facilityPolicyFormControls() { return this.facilityPoliciesForm.controls; }
+        this.notificationService.showNotification({
+          alertHeader: 'Error',
+          alertMessage: 'Pay invoice amount should be greater than or equal to 0',
+          alertType: 400,
+        });  
+      }
+    });
+  }
+  CheckSameCombinationMRI(type: string) {
+    const Mri1Type = this.modalityMriForm.controls['mri1type'].value;
+    const Mri1ResourceName = this.modalityMriForm.controls['mri1ResourceName'].value
+      ? this.modalityMriForm.controls['mri1ResourceName'].value
+      : '';
+    const Mri2Type = this.modalityMriForm.controls['mri2type'].value;
+    const Mri2ResourceName = this.modalityMriForm.controls['mri2ResourceName']
+      .value
+      ? this.modalityMriForm.controls['mri2ResourceName'].value
+      : '';
+    const Mri3Type = this.modalityMriForm.controls['mri3type'].value;
+    const Mri3ResourceName = this.modalityMriForm.controls['mri3ResourceName']
+      .value
+      ? this.modalityMriForm.controls['mri3ResourceName'].value
+      : '';
 
-  ValidateMultiSelectTextLength(id, a)
+    if (parseInt(Mri1ResourceName) == parseInt(Mri2ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri2ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
+    if (parseInt(Mri2ResourceName) == parseInt(Mri3ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri3ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
+    if (parseInt(Mri1ResourceName) == parseInt(Mri3ResourceName)) {
+      this.modalityMriForm.patchValue({
+        ['mri3ResourceName']: 0,
+      });
+      this.MRIDuplicateResourceNotification();
+
+    }
+    var Dictionary = {
+      Type1: Mri1Type + ' ' + Mri1ResourceName,
+      Type2: Mri2Type + ' ' + Mri2ResourceName,
+      Type3: Mri3Type + ' ' + Mri3ResourceName,
+    };
+    if (type == 'Type1' || type == 'Resource1') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+          this.modalityMriForm.patchValue({
+            ['mri2ResourceName']: 0,
+          });
+
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.patchValue({
+            ['mri3ResourceName']: 0,
+          });
+
+        }
+      }
+    }
+    if (type == 'Type2' || type == 'Resource2') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+
+          this.modalityMriForm.patchValue({
+            ['mri2ResourceName']: 0,
+          });
+        } else if (Dictionary.Type2 == Dictionary.Type3) {
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+          this.modalityMriForm.patchValue({
+            ['mri3ResourceName']: 0,
+          });
+
+        }
+      }
+    }
+    if (type == 'Type3' || type == 'Resource3') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Mri3ResourceName != '' ||
+          Mri2ResourceName != '' ||
+          Mri1ResourceName != '')
+      ) {
+        if (Dictionary.Type2 == Dictionary.Type3) {
+          this.modalityMriForm.controls['mri2type'].setValue(null);
+
+          this.modalityMriForm.patchValue({
+            ['mri2ResourceName']: 0,
+          });
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
+          this.modalityMriForm.controls['mri3type'].setValue(null);
+
+          this.modalityMriForm.patchValue({
+            ['mri3ResourceName']: 0,
+          });
+        }
+      }
+    }
+    if(Mri1Type){
+      this.modalityMriForm.get('mri1ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri1ResourceName').clearValidators()
+    }
+    if(Mri2Type){
+      this.modalityMriForm.get('mri2ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri2ResourceName').clearValidators()
+    }
+    if(Mri3Type){
+      this.modalityMriForm.get('mri3ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityMriForm.get('mri3ResourceName').clearValidators()
+    }
+    this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
+    this.modalityMriForm.get('mri2ResourceName').updateValueAndValidity();
+    this.modalityMriForm.get('mri3ResourceName').updateValueAndValidity();
+  }
+  MRIDuplicateResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate MRI Resource Name',
+      alertMessage: 'Selection of duplicate MRI resource name is not allowed.',
+      alertType: 404,
+    });
+  }
+  CTDuplicateResourceNotification() {
+    this.notificationService.showNotification({
+      alertHeader: 'Duplicate CT Resource Name',
+      alertMessage: 'Selection of duplicate CT resource name is not allowed.',
+      alertType: 404,
+    });
+  }
+  CheckSameCombinationCT(type: string) {
+    const Ct1Type = this.modalityCtForm.controls['ct1make'].value;
+    const Ct1ResourceName = this.modalityCtForm.controls['ct1ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct1ResourceName'].value
+      : '';
+    const Ct2Type = this.modalityCtForm.controls['ct2make'].value;
+    const Ct2ResourceName = this.modalityCtForm.controls['ct2ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct2ResourceName'].value
+      : '';
+    const Ct3Type = this.modalityCtForm.controls['ct3make'].value;
+    const Ct3ResourceName = this.modalityCtForm.controls['ct3ResourceName']
+      .value
+      ? this.modalityCtForm.controls['ct3ResourceName'].value
+      : '';
+
+    if (parseInt(Ct1ResourceName) == parseInt(Ct2ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct2ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
+    if (parseInt(Ct2ResourceName) == parseInt(Ct3ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct3ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
+    if (parseInt(Ct3ResourceName) == parseInt(Ct1ResourceName)) {
+      this.modalityCtForm.patchValue({
+        ['ct3ResourceName']: 0,
+      });
+      this.CTDuplicateResourceNotification();
+
+    }
+    var Dictionary = {
+      Type1: Ct1Type + ' ' + Ct1ResourceName,
+      Type2: Ct2Type + ' ' + Ct2ResourceName,
+      Type3: Ct3Type + ' ' + Ct3ResourceName,
+    };
+    if (type == 'Type1' || type == 'Resource1') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.patchValue({
+            ['ct2ResourceName']: 0,
+          });
+          //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+        }
+      }
+    }
+    if (type == 'Type2' || type == 'Resource2') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type1 == Dictionary.Type2) {
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.patchValue({
+            ['ct2ResourceName']: 0,
+          });
+          //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
+        } else if (Dictionary.Type2 == Dictionary.Type3) {
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+        }
+      }
+    }
+    if (type == 'Type3' || type == 'Resource3') {
+      if (
+        (Dictionary.Type1 == Dictionary.Type2 ||
+          Dictionary.Type2 == Dictionary.Type3 ||
+          Dictionary.Type1 == Dictionary.Type3) &&
+        (Ct1ResourceName != '' ||
+          Ct2ResourceName != '' ||
+          Ct3ResourceName != '')
+      ) {
+        if (Dictionary.Type2 == Dictionary.Type3) {
+          this.modalityCtForm.controls['ct2make'].setValue(null);
+          this.modalityCtForm.patchValue({
+            ['ct2ResourceName']: 0,
+          });
+          //this.modalityCtForm.controls['ct2ResourceName'].setValue(0);
+        } else if (Dictionary.Type1 == Dictionary.Type3) {
+          this.modalityCtForm.controls['ct3make'].setValue(null);
+          this.modalityCtForm.patchValue({
+            ['ct3ResourceName']: 0,
+          });
+          // this.modalityCtForm.controls['ct3ResourceName'].setValue(0);
+        }
+      }
+    }
+
+    if(Ct1Type){
+      this.modalityCtForm.get('ct1ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct1ResourceName').clearValidators()
+    }
+    if(Ct2Type){
+      this.modalityCtForm.get('ct2ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct2ResourceName').clearValidators()
+    }
+    if(Ct3Type){
+      this.modalityCtForm.get('ct3ResourceName').setValidators([Validators.required, Validators.min(1)])
+    }
+    else{
+      this.modalityCtForm.get('ct3ResourceName').clearValidators()
+    }
+    this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
+    this.modalityCtForm.get('ct2ResourceName').updateValueAndValidity();
+    this.modalityCtForm.get('ct3ResourceName').updateValueAndValidity();
+  }
+
+  get generalInfoFormControls() {
+    return this.generalInfoForm.controls;
+  }
+  get facilityContactDetailFormControls() {
+    return this.facilityContactDetailForm.controls;
+  }
+  get modalityServiceFormControls() {
+    return this.modalityServiceForm.controls;
+  }
+  get modalityMriFormControls() {
+    return this.modalityMriForm.controls;
+  }
+  get modalityCtFormControls() {
+    return this.modalityCtForm.controls;
+  }
+  get modalityExceptionsFormControls() {
+    return this.modalityExceptionsForm.controls;
+  }
+  get facilitySchedulingDetailFormControls() {
+    return this.facilitySchedulingDetailForm.controls;
+  }
+  get facilityNotesFormControls() {
+    return this.facilityNotesForm.controls;
+  }
+  get facilityParentCompanyFormControls() {
+    return this.facilityParentCompanyForm.controls;
+  }
+  get facilityIntakeFormControls() {
+    return this.facilityIntakeForm.controls;
+  }
+  get facilityTagFormControls() {
+    return this.facilityTagForm.controls;
+  }
+  get facilityPolicyFormControls() {
+    return this.facilityPoliciesForm.controls;
+  }
+  CloseAddEditModal() {
+    this.hiddenAddEditPopUpItem.nativeElement.click();
+    this.commonMethodService.OpenFacilityDetailsModel('true');
+  }
+   ValidateMultiSelectTextLength(id, a)
   {
     a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
   return a;
   }
-  
 }
-

@@ -13,7 +13,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard,RoleGuard] },
       { path: 'settings', loadChildren: () => import('./../settings/settings.module').then(m => m.SettingsModule), canActivate: [AuthGuard] },
       { path: 'funding-companies', loadChildren: () => import('../borker/broker.module').then(m => m.BrokerModule), canActivate: [AuthGuard,RoleGuard] },
-      { path: 'facilities', loadChildren: () => import('../facillities/facillities.module').then(m => m.FacillitiesModule), canActivate: [AuthGuard] },
+   //   { path: 'facilities', loadChildren: () => import('../facillities/facillities.module').then(m => m.FacillitiesModule), canActivate: [AuthGuard] },
       { path: 'referrers', loadChildren: () => import('../referrers/referrers.module').then(m => m.ReferrersModule), canActivate: [AuthGuard, RoleGuard] },
       { path: 'pi', loadChildren: () => import('../pi/pi.module').then(m => m.PiModule), canActivate: [AuthGuard] },
       { path: 'bi', loadChildren: () => import('../bi/bi.module').then(m => m.BiModule), canActivate: [AuthGuard] },

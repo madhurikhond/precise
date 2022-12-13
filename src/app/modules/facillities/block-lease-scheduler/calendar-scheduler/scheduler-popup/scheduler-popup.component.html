@@ -1,0 +1,516 @@
+<div class="modal-content scroll-up">
+    <div class="modal-header">
+        <h5 class="modal-title">{{FacilityName}}</h5>
+        <div class="close-dismiss"></div>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <div class="modal-body">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="!LeaseBlockId">
+            <div class="radio-theme">
+                <input class="form-control" name="ScheduleType" id="BlockTime" type="radio"
+                    (change)="changeScheduleType($event.target.value)" value="true" checked="checked">
+                <label for="BlockTime">Block time</label>
+            </div>
+            <div class="radio-theme">
+                <input class="form-control" name="ScheduleType" id="BlockOff"
+                    (change)="changeScheduleType($event.target.value)" value="false" type="radio">
+                <label for="BlockOff">Block off Days</label>
+            </div>
+        </div>
+        <form *ngIf="!isBlockOffTime" [formGroup]="leaseBlockOffForm" class="theme-form" novalidate>
+
+            <div class="row">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Modality/Resource</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group">
+                                <select #modalityGetOffDays id="modalityGetOffDays" class="form-control"
+                                    formControlName="modalityType"
+                                    [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors) }"
+                                    (change)="changedOffDays($event)">
+                                    <option value="" selected>Select Modality</option>
+                                    <option *ngIf="modalityResourcesList.length > 0" value="0" selected>All</option>
+                                    <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
+                                        label="{{group.Modality}}">
+                                        <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
+                                            {{item.RESOURCENAME}}</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
+                                modality is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Lease Time Starts</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_date')"
+                                formControlName="start_date" type="date"
+                                [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors) }">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_date.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.start_date.errors?.required">
+                                Start date is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'start_time')"
+                                onkeydown="disableIt(event)" formControlName="start_time" class="form-control"
+                                [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors) }"
+                                type="time" pickerType="list" [interval]="5">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.start_time.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.start_time.errors?.required">
+                                Start time is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Lease Time Ends</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_date')"
+                                onkeydown="disableIt(event)" formControlName="end_date" type="date"
+                                [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors) }">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_date.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.end_date.errors?.required">
+                                End date is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box (onValueChanged)="handleBlockOffDaysChange($event,'end_time')"
+                                formControlName="end_time" class="form-control"
+                                [ngClass]="{ 'is-invalid': (BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors) }"
+                                type="time" pickerType="list" [interval]="5">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.end_time.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.end_time.errors?.required">
+                                End time is required</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+
+
+
+        <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form" novalidate>
+            <div class="row">
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle"><a class="link-btn" (click)="senddatatoschd_facilities()">Facility
+                            Details</a></div>
+                </div>
+            </div>
+            <div class="row" [class.disabled]="LeaseId?true:false">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Modality/Resource</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group"> 
+                            <div *ngIf="!LeaseId" [class.disabled]="LeaseId?true:false" class="input-group">
+                                <select #modalityGetType id="modalityGetType" class="form-control"
+                                    formControlName="modalityType"
+                                    [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
+                                    (change)="changed($event)">
+                                    <option value="" selected>Select Modality</option>
+                                    <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
+                                        label="{{group.Modality}}">
+                                        <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
+                                            {{item.RESOURCENAME}}</option>
+                                    </optgroup>
+                                </select> 
+                            </div>
+                            <div *ngIf="LeaseId">
+                                <input type="text" class="form-control" disabled
+                                    [value]="selectedModality + ' / ' + selectedResourceName " />
+                            </div>
+
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.modalityType.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.modalityType.errors?.required">
+                                modality is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div *ngIf="!LeaseId" class="input-group">
+                            <select class="form-control" formControlName="contrastType"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.contrastType.errors) }">
+                                <option value="" selected>Select contrast Type</option>
+                                <option value='w/o'>W / O Contrast ONLY</option>
+                                <option value='w'>W / Contrast</option>
+                            </select>
+
+                        </div>
+                        <div *ngIf="LeaseId">
+                            <input type="text" class="form-control" disabled [value]="ResourceType + ' CONTRAST' " />
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.contrastType.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.contrastType.errors?.required">
+                                Contrast Type is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="TotalLeaseHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            Total Lease Hour(s) :<br> {{TotalLeaseHours}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" [class.disabled]="LeaseId?true:false">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Lease Time Starts</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
+                                dateSerializationFormat="MM-dd-yyyy"
+                                (onValueChanged)="handleValueChange($event,'start_date')" formControlName="start_date"
+                                type="date"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_date.errors) }">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.start_date.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.start_date.errors?.required">
+                                Start date is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="disableIt(event)"
+                                formControlName="start_time" class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
+                                type="time" pickerType="list" [interval]="5">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.start_time.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.start_time.errors?.required">
+                                Start time is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="TotalBlockHours" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            Current blocked Hour(s) :<br> {{TotalBlockHours}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" [class.disabled]="LeaseId?true:false">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Lease Time Ends</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                                [displayFormat]="dateTimeFormatCustom.Date" [useMaskBehavior]="true"
+                                dateSerializationFormat="MM-dd-yyyy"
+                                (onValueChanged)="handleValueChange($event,'end_date')" onkeydown="disableIt(event)"
+                                formControlName="end_date" type="date"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_date.errors) }">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.end_date.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.end_date.errors?.required">
+                                End date is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                                (onValueChanged)="handleValueChange($event,'end_time')" formControlName="end_time"
+                                class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_time.errors) }"
+                                type="time" pickerType="list" [interval]="5">
+                            </dx-date-box>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.end_time.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.end_time.errors?.required">
+                                End time is required</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-title">Credits</div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Credit Hours Available: 4 hours 13 minutes &#123;Show how
+                        many credits care available once they specify the resource and contrast&#125;</div>
+                </div>
+            </div>           -->
+            <div class="row" *ngIf="isLeaseSigned">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-title">Credits</div>
+                </div>
+                <div *ngIf="TotalCreditHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            Total Credit Hour(s) :<br> {{TotalCreditHours}}
+                        </div>
+                    </div>
+                </div>
+                <div class="credit-outer" *ngIf="CreditDetailsList">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive">
+                            <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
+                                 [wordWrapEnabled]="true" 
+                                [showBorders]="true">
+                                <dxo-state-storing [enabled]="true"></dxo-state-storing>
+                                <dxo-paging [enabled]="false"></dxo-paging>
+                                <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+                                <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
+                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description"  width="300">
+                                </dxi-column>
+                                <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
+                            </dx-data-grid>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Credit Reason</div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select class="slwidth" [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
+                                formControlName="creditReasonID" class="form-control">
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let group of creditReasonList" value={{group.ID}}>
+                                    {{group.ReasonText}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngIf="(submitted && editFormControls.creditReasonID.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.creditReasonID.errors?.required">
+                                Credit Reason is required</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="isLeaseSigned">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                    <div class="theme-label-subtitle">Credits to Add</div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditHours.errors) }"
+                                formControlName="creditHours" class="form-control">
+                                <option value="">Select Hour</option>
+                                <option value="0">0</option>
+                                <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
+                                    {{hours}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                            class="invalid-feedback">
+                            <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
+                                modality is required</div>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.creditHours.errors)" class="invalid-feedback">
+                            <div class="required" *ngIf="editFormControls.creditHours.errors?.required">
+                                Credit Hour is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditMinutes.errors) }"
+                                formControlName="creditMinutes" class="form-control">
+                                <option value="">Select Minute</option>
+                                <option *ngFor="let min of minutesList" value={{min}}>
+                                    {{min}}
+                                </option>
+                            </select>
+                        </div>
+                        <div *ngIf="(submitted && editFormControls.creditMinutes.errors)" class="invalid-feedback">
+                            <div *ngIf="editFormControls.creditMinutes.errors?.required">
+                                Credit Minute is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-spacetextarea" *ngIf="isLeaseSigned">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                    <textarea class="form-control"
+                        [ngClass]="{ 'is-invalid': (submitted && editFormControls.CreditReasonText.errors) }"
+                        formControlName="CreditReasonText"
+                        placeholder="Reason for adding a credit (Required)"></textarea>
+                </div>
+                <div *ngIf="(submitted && editFormControls.CreditReasonText.errors)" class="invalid-feedback mt-0">
+                    <div *ngIf="editFormControls.CreditReasonText.errors?.required">
+                        Credit Reason Text is required</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button #deleteBtn id="deleteBtn" (click)="confirmDelete()"
+            class="btn btn-border-clear btn-sm pull-left">Delete</button>
+        <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
+            class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
+
+
+        <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
+    </div>
+</div>
+
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkFacilityPopup" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>FACILITY IS EITHER CLOSED OR HAVE LESS SCHEDULING HOURS ON SOME OF THE DAYS SELECTED IN BLOCK LEASE
+                    DURATION. DO YOU STILL WANT TO LEASE THIS BLOCK?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    data-dismiss="modal">Cancel</a>
+                <a (click)="confirmFacilityPopup()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkAlreadyBlockedLeasePopup"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>          
+            <div class="modal-body">
+                <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
+                    <span *ngIf="isBlockOffTime">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
+                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        ALREADY LEASE
+                        BLOCKED :</span>
+                    <span *ngIf="!isBlockOffTime">YOU CAN NOT BLOCK OFF SOME OF THE DATES SELECTED IN
+                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        ALREADY BLOCKED OFF :</span>
+                </p>
+                <ng-template #isDateValid>{{dateTimeValidationMsg}}</ng-template>
+                <table>
+                    <tbody>
+                        <tr *ngFor="let template of AlreadyBlockedLeaseList">
+                            <td><b>{{template.leasedate}}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="pastDateConfirm" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>You have selected past date. do you want to continue</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                    (click)="confirmPastDate(false)" data-dismiss="modal">No</a>
+                <a (click)="confirmPastDate(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-theme modal-small" id="greaterCreditTimePopUp" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal" (click)="ClosePopup(true)"></div>
+            </div>
+            <div class="modal-body">
+                <p>{{popupMessage}}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
+                    (click)="ClosePopup(true)">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="d-none" #hiddengreaterCreditTimePopUp [hidden]="true" data-toggle="modal"
+    data-target="#greaterCreditTimePopUp"></button>
+<button class="d-none" #hiddenCheckFacilityPopupBtn [hidden]="true" data-toggle="modal"
+    data-target="#checkFacilityPopup"></button>
+<button class="d-none" #hiddencheckAlreadyBlockedLeasePopup [hidden]="true" data-toggle="modal"
+    data-target="#checkAlreadyBlockedLeasePopup"></button>
+<button class="d-none" #hiddenpastDateConfirm [hidden]="true" data-toggle="modal"
+    data-target="#pastDateConfirm"></button>

@@ -24,7 +24,8 @@ body {
      height: 8px;
 }
 .required {
-	color: red;
+  color: red;
+  font-size: 11px;
 }
 a,
 a:hover,
@@ -199,7 +200,7 @@ button {
 	position: relative;
 	cursor: pointer;
 	margin-bottom: 0px;
-	line-height: 20px; 
+	line-height: 20px;
 	font-size: 13px;
 	color: #000000;
 	width: auto;
@@ -1682,7 +1683,6 @@ button {
 	height: 100%;
 	width: 100%;
 	text-transform: uppercase;
-	/* overflow-x: hidden; */
 }
 .page-area.full-menu-active .page-working-area {
 	width: calc(100% - 180px);
@@ -3574,6 +3574,8 @@ button {
 	padding: 6px 10px;
 	text-transform: uppercase;
 	font-size: 14px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 .modal-backdrop.in {
 	opacity: .8 !important;
@@ -4386,6 +4388,8 @@ textarea.form-control {
 	text-transform: uppercase;
 	margin-top: 5px;
 	margin-bottom: 10px;
+	letter-spacing: -.2px;
+
 }
 .action {
 	width: 100%;
@@ -5354,6 +5358,7 @@ textarea.form-control {
 	position: absolute;
   }
   #patient-Detail-Window .patient-subs-table tr .ng-dropdown-panel-items {max-height: 70px !important;width: 100%;}
+.search-field-theme .form-group1.normal-text .ng-option span{white-space: normal; display: block; line-height: 15px; padding: 2px 0px;}
 .input-label-title {
 	width: 100%;
 	position: relative;
@@ -6714,6 +6719,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
     height: 100%;
     width: 100%;
     max-width: 100% !important;
+	margin-top: 5px;
 }
 .page-working-area .table-responsive.manual-table {
     overflow: auto;
@@ -6739,6 +6745,18 @@ tree-node:last-child > .tree-node > .tree-children::after {
 }
 .dx-datagrid-rowsview .dx-datagrid-content tr td .fa-pencil-square-o {
     font-size: 16px;
+}
+.dx-datagrid-rowsview ul.datagrid-list{
+	margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.dx-datagrid-rowsview ul.datagrid-list li{
+	display: inline-block;
+	padding-right: 8px;
+}
+.dx-datagrid-rowsview ul.datagrid-list li:last-child{
+	padding-right: 0px;
 }
 .modal-theme .modal-body .tab-section .tab-content .tab-pane .table-responsive #appointmentLogGridContainer, .modal-theme .modal-body .table-responsive #appointmentLogGridContainer {
     max-height: 450px;
@@ -6778,10 +6796,10 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #add-reps-details .dx-datagrid-rowsview .dx-datagrid-content tr:nth-child(odd) td .table-responsive.copy-service-popup .table-theme {
     background: #fff;
 }
-#patient-Detail-Window, #create-alert, #alertDetailModal, #susbErrorMsgPopUp, #add-edit-record{
+#patient-Detail-Window, #create-alert, #alertDetailModal, #ReferrerDetailWindow, #susbErrorMsgPopUp, #add-edit-record{
     z-index: 1051;
 }
-#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #ReferrerDetailWindow, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
+#viewFile, #viewFile_Doc, #docManagerRefFundingCo, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
 	z-index: 1052;
 }
 #viewFileFundingCo, #uploadFilePopUpFundingCo, #send-documents, #deleteItemConfirmPopUpFundingCo, #RenamePopUpFundingCo{
@@ -6890,10 +6908,6 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .referrers-grouping .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
     display: block !important;
 }
-/* #edit-user .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
-	display: block !important;
-
-} */
 .timePickerSlack{
 	position: relative;
 }
@@ -7177,3 +7191,185 @@ ngb-modal-window.modal{
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled{
 	font-weight: bold;
 }
+/* Block Scheduler Page */
+
+.block-scheduler-page .search-field .theme-form{
+	width: auto;
+}
+.block-scheduler-page .search-field .action-menu{
+	width: auto;
+	float: right;
+}
+.block-scheduler-page .cash-price-table .table-theme tr td{
+	text-align: left;
+}
+.cash-price-table .table-theme tr td .td-list span ul{
+	list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.cash-price-table .table-theme tr td .td-list span li{
+	display: inline-block;
+	margin-right: 20px;
+	position: relative;
+}
+.cash-price-table .table-theme tr td .td-list span li strong{
+	position: absolute;
+	top: 0px;
+	right: -9px;
+	background-color: #e61610;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 6px;
+    line-height: normal;
+}
+.cash-price-table .table-theme tr td .td-list span li:last-child{
+	padding-right: 0px;
+}
+.cash-price-list{
+	float: left;
+	width: 100%;
+	margin-top: 30px;
+}
+.cash-price-list ul{
+	margin: 0px 30px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+.cash-price-list li{
+	display: flex;
+	margin-bottom: 15px;
+}
+.cash-price-list li img{
+	display: inline-block;
+	width: 18px;
+	height: 20px;
+	margin-right: 15px;
+}
+.cash-price-list li span{
+	display: inline-block;
+	font-size: 13px;
+}
+.block-scheduler-popup .block-scheduler-theme-label-title{
+	color: #14a010;
+}
+.block-scheduler-popup .theme-label-subtitle a{
+	text-decoration: underline !important;
+}
+.block-scheduler-popup .alert{
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+}
+.section_CT{
+    background-color: #684f8c !important;
+}
+.dhx_multi_day .section_MRI{
+    background-color: #0FC4A7 !important;
+}
+.addMarked{
+	background-color: #6c758cc2;
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+  }
+  .dhx_scheduler_month .dhx_marked_timespan { 
+    display: block;
+  }
+  .displayCounter {
+	font-size: 9px;
+    line-height: 18px;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 700;
+    position: absolute;
+    background: #e74c3b;
+    border-radius: 50%;
+    top: -8px;
+    left: 8px;
+    padding: 0px 3px;
+    height: 20px;
+    width: 20px;
+}
+.dhx_scale_holder_now{
+	background-color: #fff !important;
+} 
+.dhx_cal_cover{
+	display: none;
+}
+#add-Edit-facility{
+	z-index: 1051;
+}
+.scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list{
+	margin: 8px 0px 0px;
+}
+.scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list li{
+	position: relative;
+	padding-right: 10px;
+}
+.cash-price-table.table-responsive{
+	height: auto;
+	overflow-x: auto;
+}
+.no-spacetextarea .invalid-feedback{padding-left: 15px;}
+.cash-price-table.table-responsive .dx-datagrid-rowsview{
+	max-height: 300px;
+}
+#CalendarSchedulerWindow .dhx_cal_event >div{
+    word-wrap: break-word;
+    padding: 0;
+    line-height: 12px;
+    }
+
+.payment-invoice-popup{
+	z-index: 1052;
+}
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_month,#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{
+	overflow-y: hidden !Important;
+}
+#CalendarSchedulerWindow .modal-body{overflow-y: hidden;}
+
+#CalendarSchedulerWindow .modal-body .dhx_cal_data{overflow-y: scroll;
+	height: calc(100% - 300px) !IMPORTANT;
+}
+.CalendarTooltip{  z-index: 1050 !important }
+.invalid-feedback{
+	line-height: 17px;
+	margin-top: 35px;
+}
+.dx-datagrid-rowsview .dx-datagrid-content tr td .fa.fa-trash.credit-trash {
+    float: right;
+}
+select {
+    text-transform: uppercase;
+}
+.credit-outer {
+    width: 100%;
+}
+.scroll-up .modal-theme{
+	overflow: auto;
+}
+
+.theme-form .form-group signature-pad{overflow-x: hidden  !important;}
+
+/* .cs-action-credit .dx-datagrid-table tbody tr td:nth-child(1){width:40px!important; min-width: 30px!important; 
+    max-width: 30px!important;} */
+
+	.slwidth option{width: 100px!important;}
+
+	#gridContainerBlockLeasePaymentList .dx-gridbase-container table tbody .dx-scrollable-scroll-content {
+		display: none!important;
+		opacity: 0!important;
+	}
+
+	
+
+	.modal{overflow: auto;}
+
+
+	.ms-lf-col{padding-left: 30px;}
+	@media (max-width: 990px) {
+		.ms-lf-col{padding-left: 10px!important;}
+		
+	}
+

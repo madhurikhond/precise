@@ -1,0 +1,6 @@
+.link-btn {
+    color: #3b8beb;
+    text-decoration: underline !important;
+    cursor: pointer;
+  }
+  .disabled{ pointer-events: none }

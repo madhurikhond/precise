@@ -455,6 +455,57 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="DefaultEmailAddress3P"
+                                                        class="form-control"
+                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.DefaultEmailAddress3P.errors) }">
+                                                    <div *ngIf="(submitted && pcForm.DefaultEmailAddress3P.errors)"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="pcForm.DefaultEmailAddress3P.errors?.required ">
+                                                            DEFAULT EMAIL ADDRESS FOR LEASE is required
+                                                        </div>
+                                                        <div *ngIf="pcForm.DefaultEmailAddress3P.errors.pattern">DEFAULT EMAIL ADDRESS FOR LEASE
+                                                            must be a valid
+                                                            email address
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label"> EMAIL ADDRESS-1 FOR LEASE</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="EmailAddress13P"
+                                                        class="form-control"
+                                                        [ngClass]="{'is-invalid': (submitted && pcForm.EmailAddress13P.errors)}">
+                                                    <div *ngIf="submitted && pcForm.EmailAddress13P .errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="pcForm.EmailAddress13P.errors">EMAIL ADDRESS-1 FOR LEASE must be a valid
+                                                            email address
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="theme-label">EMAIL ADDRESS-2 FOR LEASE</div>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="EmailAddress23P"
+                                                        class="form-control"
+                                                        [ngClass]="{'is-invalid':(submitted && pcForm.EmailAddress23P.errors)}">
+                                                    <div *ngIf="submitted && pcForm.EmailAddress23P .errors"
+                                                        class="invalid-feedback">EMAIL ADDRESS-2 FOR LEASE must be a valid
+                                                        email address</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
