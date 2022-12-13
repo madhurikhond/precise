@@ -943,7 +943,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="MriServices" type="checkbox"
-															formControlName="mriservice">
+															formControlName="mriservice" (change)="onChangeService('mri')">
 														<label for="MriServices" class="arrow-label">MRI</label>
 													</div>
 												</div>
@@ -952,7 +952,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="CtServices" type="checkbox"
-															formControlName="ctservice">
+															formControlName="ctservice" (change)="onChangeService('ct')">
 														<label for="CtServices" class="arrow-label">CT</label>
 													</div>
 												</div>
@@ -3806,6 +3806,7 @@
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
+																data-toggle="modal"
 																	data-target="#viewFile_Doc"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
@@ -3884,32 +3885,12 @@
 										</div>
 									</div>
 
-
-
-
-									<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"
-										data-keyboard="false" tabindex="-1" role="dialog"
-										aria-labelledby="exampleModalLabel" aria-modal="true">
-										<div class="modal-dialog modal-dialog-centered" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Agreement</h5>
-													<a href="javascript:void(0)" (click)="closePDF()"
-														data-dismiss="modal" class="close-dismiss"></a>
-												</div>
-												<div class="modal-body" *ngIf="fileData">
-													<iframe width="100%" height="100%" frameBorder="0"
-														[src]="fileData"></iframe>
-												</div>
-											</div>
-										</div>
-									</div>
-
+								
 
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
-										<div class="table-responsive">
+										<div class="table-responsive" id="DivContainerCreditandDebit112" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
 												[columnAutoWidth]="true" [allowColumnReordering]="false"
 												[dataSource]="CreditDebitList" [showBorders]="true">
@@ -3980,6 +3961,7 @@
 												<div class="tab-pane" id="LeasePaymentsUnPaid"
 													[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'">
 													<button type="button" class="btn btn-theme"
+													[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
 														[disabled]="btnActive==0?true:false"
 														(click)="UnpaidButtonClick($event)"
 														[ngStyle]="{'background-color':(btnActive==0)? '#bfbfbf' : '#3b8beb'}">Pay
@@ -3987,7 +3969,7 @@
 													<!------------------ Unpaid lease Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Leases</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -4046,7 +4028,7 @@
 													<!------------------ Unpaid Credits Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Credits</div>
-														<div class="table-responsive">
+														<div class="table-responsive" id="DivContainerCreditandDebit11" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -4101,7 +4083,7 @@
 													[ngClass]="defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'">
 													<div>
 														<div class="table-responsive">
-															<dx-data-grid #grid id="gridContainerBlockLeasePaymentList"
+															<dx-data-grid #dxDataGrid id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
 																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
@@ -4249,6 +4231,24 @@
 
 
 </div>
+
+<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
+data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title">Agreement</h5>
+			<div class="close-dismiss" data-dismiss="modal"></div>
+		</div>
+		<div class="modal-body" *ngIf="fileData">
+			<iframe width="100%" height="100%" frameBorder="0"
+				[src]="fileData"></iframe>
+		</div>
+	</div>
+</div>
+</div>
+
 <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
 	<div class="modal-dialog modal-dialog-centered" role="document">

@@ -18,7 +18,7 @@
                             <div>
                                 <ng-select [items]="facilityList" placeholder="Select" bindLabel="FacilityName"
                                      [closeOnSelect]="false" bindValue="FacilityID" [multiple]="false"
-                                    [clearable]="false"
+                                    
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedFacility">
                                     <!-- <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                                         <div class="ng-value" *ngFor="let item of items | slice:0:1">
