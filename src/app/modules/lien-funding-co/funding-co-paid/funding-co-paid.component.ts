@@ -120,13 +120,14 @@ export class FundingCoPaidComponent {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.FUNDING_COMPANY_PAID_RECORD);
     }
 
-    if (this.selectedAction != "" && this.selectedData != 0)
+    if (this.selectedAction != "" && this.selectedData != 0){
       this.paymentForm.patchValue({
         checkAmount : this.selectedData[0].checkAmount,
         checkDate : this.selectedData[0].checkDate,
         checkNumber : this.selectedData[0].checkNumber
       });
       this.modal_open.nativeElement.click();
+    }
   }
 
   clearPaymentForm() {
