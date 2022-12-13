@@ -3684,9 +3684,11 @@ button {
 	line-height: 30px;
 }
 .page-top-action .patient-precisemri-search .form-search {
-    width: 275px;
+    width: 118px;
     padding: 0;
 }
+.cs-wt-pt-ser  .form-search {width: 150px!important;}
+.page-top-action .precisemri-search.page-select select.form-search{min-width: 68px!IMPORTANT;}
 .precisemri-search ng-select.form-search .ng-select-container {
 	height: 30px;
 	line-height: 26px;
@@ -7365,6 +7367,8 @@ select {
 	
 
 	.modal{overflow: auto;}
+
+	.op-cs-txtarea textarea{min-height: 200px;}
 
 
 	.ms-lf-col{padding-left: 30px;}
