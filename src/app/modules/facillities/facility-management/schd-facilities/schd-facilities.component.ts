@@ -2372,8 +2372,9 @@ export class SchdFacilitiesComponent implements OnInit {
       // facilityPolicy:this.facilityPolicy!=null?this.facilityPolicy.toString():'',
       // parentPolicy:this.parentPolicy!=null?this.parentPolicy.toString():''
       facilityPolicy: this.facilityPolicyFormControls.facilityPolicy.value,
-      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value
+      parentPolicy: this.facilityPolicyFormControls.parentPolicy.value,
       /// For Tag Tab we are using Different API
+      FacilityResourceJson: JSON.stringify(this.updatedResourceName),
 
     }
 
