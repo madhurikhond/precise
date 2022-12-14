@@ -88,16 +88,29 @@ export class PayInvoiceModalComponent implements OnInit {
       }
     });
   }
-  keyPressAlphaNumeric(event) {
-
-    var inp = String.fromCharCode(event.keyCode);
-
-    if (/[a-zA-Z0-9]/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
+  keyPressAlphaNumeric(e) {
+debugger
+var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
     }
+
+    e.preventDefault();
+    return false;
+    // var inp = String.fromCharCode(event.keyCode);
+    // //Validators.pattern('[-_a-zA-Z0-9]*')]
+    // if (/[a-zA-Z0-9]/.test(inp)) {
+    //   return true;
+    // } else {
+    //   event.preventDefault();
+    //   return false;
+    // }
+  }
+
+  onPaste(e) {
+    e.preventDefault();
+    return false;
   }
   successNotification(data: any) {
     this.notificationService.showNotification({
