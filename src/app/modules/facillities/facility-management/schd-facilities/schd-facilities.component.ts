@@ -35,12 +35,12 @@ export class SchdFacilitiesComponent implements OnInit {
   hiddenConfirmationLeaseBtn: ElementRef;
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
-  @Input() isGridDisplay: boolean = true; 
-   a1:any=20;
-   generalInfoForm: FormGroup;
-   displayStyle :any;
+  @Input() isGridDisplay: boolean = true;
+  a1: any = 20;
+  generalInfoForm: FormGroup;
+  displayStyle: any;
   facilityContactDetailForm: FormGroup;
-  disableCheckbox:any
+  disableCheckbox: any
   modalityServiceForm: FormGroup;
   modalityMriForm: FormGroup;
   modalityCtForm: FormGroup;
@@ -152,8 +152,8 @@ export class SchdFacilitiesComponent implements OnInit {
   pageNumberOfPaid: number = 1;
   pageSizeOfPaid: number = 20;
   totalRecordpaid: number = 1;
-  selectedleaseArray: any = [];  selectedRows: any = [];
-  readonly commonRegex=CommonRegex;
+  selectedleaseArray: any = []; selectedRows: any = [];
+  readonly commonRegex = CommonRegex;
 
   //   config = {
   //     uiColor: '#ffffff',
@@ -327,10 +327,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.fileData = this.sanitizer.bypassSecurityTrustResourceUrl(fileData);
     this.hiddenViewFile.nativeElement.click();
   }
-  closePDF()
-  {
-  //  debugger
-  //  $('#viewFile_Doc').hide();
+  closePDF() {
+    //  debugger
+    //  $('#viewFile_Doc').hide();
   }
   getActiveEpicUsers() {
     this.EpicUserList = [];
@@ -435,21 +434,21 @@ export class SchdFacilitiesComponent implements OnInit {
   createFacilityDetailTabForm() {
     this.facilityContactDetailForm = this.fb.group({
       itsupportContact: [''],
-      itsupportEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      itsupportEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       itsupportOfficePhone: ['', [Validators.minLength(10)]],
       itsupportCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       itsupportHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       itsupportFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       reportsContact: [''],
-      reportsEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      reportsEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       reportsOfficePhone: ['', [Validators.minLength(10)]],
       reportsCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       reportsHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       reportsFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       statusCheckContact: [''],
-      statusCheckEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      statusCheckEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       statusCheckOfficePhone: ['', [Validators.minLength(10)]],
       statusCheckCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       statusCheckHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
@@ -472,7 +471,7 @@ export class SchdFacilitiesComponent implements OnInit {
       imagesFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
 
       billingContact: [''],
-      billingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      billingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       billingOfficePhone: ['', [Validators.minLength(10)]],
       billingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       billingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
@@ -816,11 +815,11 @@ export class SchdFacilitiesComponent implements OnInit {
       intakeFax4: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       intakeFax5: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       isEmailIntakePacket: [''],
-      intakeEmail1: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail2: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail3: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail4: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
-      intakeEmail5: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex )]],
+      intakeEmail1: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      intakeEmail2: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      intakeEmail3: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      intakeEmail4: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      intakeEmail5: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       isElectricIntake: [''],
       isElecScreenForm: [''],
       isRxnotification: [''],
@@ -1337,7 +1336,7 @@ export class SchdFacilitiesComponent implements OnInit {
           if (this.blockLeasePaymentList.length > 0) {
             this.totalRecordpaid = res.totalRecords;
             this.getLeasePaymentMappingByFacilityId(this.blockLeasePaymentList[0]);
-          }else {
+          } else {
             this.totalRecordpaid = 1;
             this.blockLeasePaymentList = [];
           }
@@ -1366,11 +1365,11 @@ export class SchdFacilitiesComponent implements OnInit {
           if (res.response != null) {
             this.blockLeasePaymentMappingList = res.response;
             this.getBlockLeaseCreditsByFacilityId(paymentMapping.data.PaymentTXN);
-            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);  
-            paymentMapping.component.expandRow(key);  
+            var key = paymentMapping.component.getKeyByRowIndex(paymentMapping.dataIndex);
+            paymentMapping.component.expandRow(key);
           }
         });
-      }
+    }
   }
 
   getBlockLeaseCreditsByFacilityId(transactionNumber: string) {
@@ -1453,7 +1452,7 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-        $('#LeasePaymentsUnPaid')
+      $('#LeasePaymentsUnPaid')
         .not('.btn')
         .attr('disabled', false)
         .removeClass('disabledClass');
@@ -1872,7 +1871,7 @@ export class SchdFacilitiesComponent implements OnInit {
         'facilityId': this.facilityId,
         'note': this.facilityNotesFormControls.Note.value,
         'username': this.storageService.user.FullName,
-        'timestamp': this.datePipe.transform(new Date(),this.dateTimeFormatCustom.DateTime)
+        'timestamp': this.datePipe.transform(new Date(), this.dateTimeFormatCustom.DateTime)
       }
       this.facilityNotesFormControls.Note.setValue('');
       this.facilityService.addFacilityNote(true, body).subscribe((res) => {
@@ -1999,7 +1998,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.generalInfoForm.invalid ||
       this.facilityContactDetailForm.invalid ||
       this.facilityIntakeForm.invalid ||
-      this.facilityPoliciesForm.invalid||
+      this.facilityPoliciesForm.invalid ||
       this.modalityMriForm.invalid
     ) {
       this.modalValue = '';
@@ -2063,6 +2062,13 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
       schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
       schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
+
+      defaultEmailAddress3P:
+        this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P:
+        this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P:
+        this.facilityContactDetailFormControls.emailAddress23P.value,
 
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
@@ -2466,7 +2472,12 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: this.facilityContactDetailFormControls.schedulingCellPhone.value != null ? this.facilityContactDetailFormControls.schedulingCellPhone.value.replace(/\D+/g, '') : '',
       schedulingHomePhone: this.facilityContactDetailFormControls.schedulingHomePhone.value != null ? this.facilityContactDetailFormControls.schedulingHomePhone.value.replace(/\D+/g, '') : '',
       schedulingFax: this.facilityContactDetailFormControls.schedulingFax.value != null ? this.facilityContactDetailFormControls.schedulingFax.value.replace(/\D+/g, '') : '',
-
+      defaultEmailAddress3P:
+        this.facilityContactDetailFormControls.defaultEmailAddress3P.value,
+      emailAddress13P:
+        this.facilityContactDetailFormControls.emailAddress13P.value,
+      emailAddress23P:
+        this.facilityContactDetailFormControls.emailAddress23P.value,
       imagesContact: this.facilityContactDetailFormControls.imagesContact.value,
       imagesEmail: this.facilityContactDetailFormControls.imagesEmail.value,
       imagesOfficePhone: this.facilityContactDetailFormControls.imagesOfficePhone.value != null ? this.facilityContactDetailFormControls.imagesOfficePhone.value.replace(/\D+/g, '') : '',
@@ -3025,22 +3036,22 @@ export class SchdFacilitiesComponent implements OnInit {
     };
 
     this.blockleasescheduler.getFacilityCreditsUnUsed(
-        true,
-        JSON.stringify(JSON.stringify(data)).toString()
-      ).subscribe(
-        (res) => {
-          if (res.response != null && res.response.length > 0) {
-            this.UnusedCreditsList = res.response;
-            this.totalRecordunUsedCredits = res.response[0].TotalRecords;
-          } else {
-            this.totalRecordunUsedCredits = 1;
-            this.UnusedCreditsList = [];
-          }
-        },
-        (err: any) => {
-          this.errorNotification(err);
+      true,
+      JSON.stringify(JSON.stringify(data)).toString()
+    ).subscribe(
+      (res) => {
+        if (res.response != null && res.response.length > 0) {
+          this.UnusedCreditsList = res.response;
+          this.totalRecordunUsedCredits = res.response[0].TotalRecords;
+        } else {
+          this.totalRecordunUsedCredits = 1;
+          this.UnusedCreditsList = [];
         }
-      );
+      },
+      (err: any) => {
+        this.errorNotification(err);
+      }
+    );
   }
   deleteUnusedCredit() {
     var unUsedCreditId: string = '';
@@ -3112,7 +3123,7 @@ export class SchdFacilitiesComponent implements OnInit {
     var leaseID: any = [];
     this.selectedleaseArray = el.selectedRowsData;
     if (el.selectedRowsData.length !== 0) {
-    this.selectedleaseArray = el.selectedRowsData;
+      this.selectedleaseArray = el.selectedRowsData;
       this.btnActive = 1;
       el.selectedRowsData.forEach((i) => {
         leaseID.push(i.LeaseId);
@@ -3173,13 +3184,13 @@ export class SchdFacilitiesComponent implements OnInit {
           }
         );
       }
-      else{
+      else {
 
         this.notificationService.showNotification({
           alertHeader: 'Error',
           alertMessage: 'Pay invoice amount should be greater than or equal to 0',
           alertType: 400,
-        });  
+        });
       }
     });
   }
@@ -3297,22 +3308,22 @@ export class SchdFacilitiesComponent implements OnInit {
         }
       }
     }
-    if(Mri1Type){
+    if (Mri1Type) {
       this.modalityMriForm.get('mri1ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri1ResourceName').clearValidators()
     }
-    if(Mri2Type){
+    if (Mri2Type) {
       this.modalityMriForm.get('mri2ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri2ResourceName').clearValidators()
     }
-    if(Mri3Type){
+    if (Mri3Type) {
       this.modalityMriForm.get('mri3ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityMriForm.get('mri3ResourceName').clearValidators()
     }
     this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
@@ -3443,22 +3454,22 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
 
-    if(Ct1Type){
+    if (Ct1Type) {
       this.modalityCtForm.get('ct1ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct1ResourceName').clearValidators()
     }
-    if(Ct2Type){
+    if (Ct2Type) {
       this.modalityCtForm.get('ct2ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct2ResourceName').clearValidators()
     }
-    if(Ct3Type){
+    if (Ct3Type) {
       this.modalityCtForm.get('ct3ResourceName').setValidators([Validators.required, Validators.min(1)])
     }
-    else{
+    else {
       this.modalityCtForm.get('ct3ResourceName').clearValidators()
     }
     this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
@@ -3506,10 +3517,9 @@ export class SchdFacilitiesComponent implements OnInit {
     this.hiddenAddEditPopUpItem.nativeElement.click();
     this.commonMethodService.OpenFacilityDetailsModel('true');
   }
-   ValidateMultiSelectTextLength(id, a)
-  {
-    a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
-  return a;
+  ValidateMultiSelectTextLength(id, a) {
+    a = this.commonMethodService.ValidateMultiSelectTextLength(id, a);
+    return a;
   }
   onChangeService(type) {
     if (type == 'mri') {
