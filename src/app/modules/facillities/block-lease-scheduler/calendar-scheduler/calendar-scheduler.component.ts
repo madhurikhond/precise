@@ -99,6 +99,8 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
+        scheduler.config.hour_date="%h:%i %A";
+		scheduler.xy.scale_width = 70;
         scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
