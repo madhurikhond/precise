@@ -7002,7 +7002,19 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .section_CT{
     background-color: #684f8c !important;
 }
-.dhx_multi_day .section_MRI{
+.section_MRI{
+    background-color: #0FC4A7 !important;
+}
+
+.dhx_cal_event.section_CT div{
+	background-color: #684f8c !important;
+	color: black !important;
+}
+.dhx_cal_event.section_MRI div{
+	background-color: #0FC4A7 !important;
+	color: black !important;
+}
+.dhx_multi_day.section_MRI{
     background-color: #0FC4A7 !important;
 }
 .addMarked{
