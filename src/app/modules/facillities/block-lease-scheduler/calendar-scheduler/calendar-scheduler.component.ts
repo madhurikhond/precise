@@ -566,7 +566,7 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.approveAndSendLeaseToFacility(true, body).subscribe((res) => {
             if (res.response) {
-                if (res.responseCode == 200 || res.response.ResponseCode == 200) {
+                if (res.responseCode == 200 && res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
                         alertMessage: res.response.message ? res.response.message : res.response,
@@ -574,13 +574,15 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                     this.signConfirm(false);
                     this.IsEsignModalHide = true;
-                    // this.f.nativeElement.click();
-                    debugger
                      this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
-                    this.errorNotification(res);
+                    this.notificationService.showNotification({
+                        alertHeader: 'Error',
+                        alertMessage: res.response.message ? res.response.message : res.response,
+                        alertType: 400
+                    })
                 }
             }
         }, (err: any) => {
