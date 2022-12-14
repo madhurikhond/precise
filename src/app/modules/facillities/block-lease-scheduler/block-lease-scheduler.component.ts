@@ -44,7 +44,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   leasePageNumber: number = 1;
   leasePageSize: number = 20;
   totalLeaseRecords: number;
-  selectedFacility: any=[];
+  selectedFacility: any = [];
   scheduleStatusList: any[] = [];
   selectedScheduleStatus: any = -1;
   modalityList: any[] = [];
@@ -157,7 +157,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   applyFilter() {
-    let selectedFacility = this.selectedFacility!= 0 && this.selectedFacility!=null ? this.selectedFacility : 0;
+    let selectedFacility = this.selectedFacility != 0 && this.selectedFacility != null ? this.selectedFacility : 0;
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility : null;
     let selectedModality = this.selectedModality ? this.selectedModality.toString() : '';
     let selectedScheduleCreated = this.selectedScheduleStatus !== -1 ? this.selectedScheduleStatus : null;
@@ -203,18 +203,18 @@ export class BlockLeaseSchedulerComponent implements OnInit {
             }
           }
 
-          if(MriTotal.toString().split(".")[1] > '49'){
+          if (MriTotal.toString().split(".")[1] > '49') {
             element[`MRI${j}`] = Math.ceil(MriTotal);
-          }else{
+          } else {
             element[`MRI${j}`] = Math.floor(MriTotal);
           }
-          if(CtTotal.toString().split(".")[1] > '49'){
+          if (CtTotal.toString().split(".")[1] > '49') {
             element[`CT${j}`] = Math.ceil(CtTotal);
-          }else{
+          } else {
             element[`CT${j}`] = Math.floor(CtTotal);
           }
 
-         // element[`MRI${j}`] = Math.trunc(MriTotal);
+          // element[`MRI${j}`] = Math.trunc(MriTotal);
           //element[`CT${j}`] = Math.trunc(CtTotal);
           element[`IsFacilitySign${j}`] = IsFacilitySign;
           element[`IsFacilityNotSign${j}`] = IsFacilityNotSign;
@@ -263,7 +263,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
       'FacilityId': facilityName,
       'parentCompanyName': parentCompanyName,
       'Modality': modality,
-      'schedululeCreated': schedululeCreated,
+      'ScheduleStatus': schedululeCreated,
       'LeaseStatus': SelectedsLeaseStatus,
       'IsPaid': paidStatus,
       'PageNumber': PageNumber,
@@ -286,6 +286,7 @@ export class BlockLeaseSchedulerComponent implements OnInit {
         else {
           this.blockLeaseGridList = [];
           this.totalRecords = 1;
+          this.AllBlockLeaseList = []
         }
       });
     }, 500);
@@ -325,8 +326,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
   selectAllModalityDdl() {
     return [
-      { value: '0', ModalityName: 'MRI' },    
-      { value: '1', ModalityName: 'CT' },             
+      { value: '0', ModalityName: 'MRI' },
+      { value: '1', ModalityName: 'CT' },
     ];
   }
   pageChanged(event) {
