@@ -1428,10 +1428,10 @@ export class SchdFacilitiesComponent implements OnInit {
           (res) => {
             if (res.response != null) {
               this.blockLeasePricingList = res.response;
-              this.showNotificationOnSucess({
-                message: res.response.message,
-                responseCode: res.responseCode
-              });
+              // this.showNotificationOnSucess({
+              //   message: res.response.message,
+              //   responseCode: res.responseCode
+              // });
             }
 
             if (this.isApplyAndOkBtnVisisble) {
