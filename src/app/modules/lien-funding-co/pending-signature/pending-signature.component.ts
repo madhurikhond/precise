@@ -7,6 +7,7 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-pending-signature',
@@ -18,6 +19,8 @@ export class PendingSignatureComponent {
   isSelectedAll: boolean = false;
   selectedData: any = [];
   getFilterData: any;
+  permission : any;
+  index = 0;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
@@ -56,10 +59,11 @@ export class PendingSignatureComponent {
     private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
+    this.setPermisstion();
     this.getFundingCompanySetting();
     this.signatureForm = this.fb.group({
-      firstName: [this.storageService.user.FirstName, Validators.required],
-      lastName: [this.storageService.user.LastName, Validators.required],
+      firstName: [(this.permission &&  this.permission.IsAdd === 'true' )? this.storageService.user.FirstName : '', Validators.required],
+      lastName: [(this.permission &&  this.permission.IsAdd === 'true') ? this.storageService.user.LastName : '', Validators.required],
       fundingCompanySign: ['', Validators.required],
       baseUrl: window.location.origin
     })
@@ -140,12 +144,16 @@ export class PendingSignatureComponent {
       if (res.status == LienPortalResponseStatus.Success) {
         if (res.result) {
           var data = res.result;
-          this.isDefaultSignature = data.isDefaultSignature;
-          if (data.defaultSign) {
-            if (data.defaultSign.defaultSign) {
-              this.defaultSignature = data.defaultSign.defaultSign;
-              this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+          if(this.permission && this.permission.IsAdd === 'true'){
+            this.isDefaultSignature = data.isDefaultSignature;
+            if (data.defaultSign) {
+              if (data.defaultSign.defaultSign) {
+                this.defaultSignature = data.defaultSign.defaultSign;
+                this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+              }
             }
+          }else{
+            this.isDefaultSignature = false;
           }
         }
       } else
@@ -159,8 +167,8 @@ export class PendingSignatureComponent {
     this.signatureForm.reset();
     this.signaturePad.clear();
     this.signatureForm.patchValue({
-      firstName: this.storageService.user.FirstName,
-      lastName: this.storageService.user.LastName,
+      firstName: (this.permission && this.permission.IsAdd === 'true') ? this.storageService.user.FirstName : '',
+      lastName: (this.permission &&  this.permission.IsAdd === 'true') ? this.storageService.user.LastName : '',
       fundingCompanySign: '',
       baseUrl: window.location.origin
     });
@@ -189,4 +197,11 @@ export class PendingSignatureComponent {
       this.lienPortalService.downloadFile(data.fileName, data.fileByte);
   }
 
+  setPermisstion() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children)
+        this.permission = permission.Children[this.index];
+    }
+  }
 }

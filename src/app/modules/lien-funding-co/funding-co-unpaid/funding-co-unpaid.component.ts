@@ -6,6 +6,7 @@ import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessag
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { StorageService } from 'src/app/services/common/storage.service';
 
 @Component({
   selector: 'app-funding-co-unpaid',
@@ -17,11 +18,14 @@ export class FundingCoUnpaidComponent {
   selectedData: any = [];
   getFilterData: any;
   defaultCheckDate = new Date();
+  permission : any;
+  index = 1;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
       this.getFilterData = val;
       this.getListingData();
+      this.setPermisstion();
     }
   }
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
@@ -38,7 +42,8 @@ export class FundingCoUnpaidComponent {
   currentPageNumber = 1;
   paymentForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
+  constructor(private fb: FormBuilder, private lienPortalService: LienPortalService, private commonService: CommonMethodService,
+    private storageService : StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
 
@@ -137,5 +142,13 @@ export class FundingCoUnpaidComponent {
 
   showDocManager(patientId: any) {
     this.commonService.sendDataToDocumentManager(patientId);
+  }
+
+  setPermisstion() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children)
+        this.permission = permission.Children[this.index];
+    }
   }
 }
