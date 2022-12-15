@@ -49,7 +49,7 @@
                                                         <input type="text" class="form-control"
                                                             [ngClass]="{ 'is-invalid': (isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors) }"
                                                             formControlName="lastNameCnr">
-                                                    </div>                                                             
+                                                    </div>
                                                 </ng-template>
                                                 <div *ngIf="(isrequestDetailFormSubmitted && requestDetailFormControls.lastNameCnr.errors)"
                                                     class="tooltiptext text-right"> <small class="error text-danger pull-right"
@@ -87,7 +87,7 @@
                                                 <div class="input-group icon-active"
                                                     *ngIf="requestDetailForm.value.patientId; else dispayBirthDate">
                                                     <!-- <input type="date" class="form-control" id="dobadd" formControlName="birthDate" disabled> -->
-                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" class="form-control" 
+                                                    <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" class="form-control"
                                                         type="date" [max]="maxDate" formControlName="birthDate">
                                                     </dx-date-box>
                                                     <!-- <dx-date-box formControlName="birthDate" type="date"
@@ -99,7 +99,7 @@
                                                         <!-- <input type="text" class="form-control" formControlName = "birthDateCnr" > -->
                                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="birthDateCnr" type="date"
                                                             [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
+
                                                     </div>
                                                 </ng-template>
                                                 <div *ngIf="( isrequestDetailFormSubmitted) && requestDetailFormControls.birthDate.errors"
@@ -211,7 +211,7 @@
                                                         <ng-select [items]="requestAndProvidedTypeList" placeholder="Select"
                                                             bindLabel="Name" [multiple]="true" id="id124" (add)="a1=ValidateMultiSelectTextLength('id124',a1)" [closeOnSelect]="false"
                                                             bindValue="Name" [(ngModel)]="selectedRequestedTypeList"
-                                                            [ngClass]="{ 'is-invalid': (RequestedTypeList.errors && ( isrequestDetailFormSubmitted)) }"
+                                                            [ngClass]="(RequestedTypeList.errors && ( isrequestDetailFormSubmitted))? 'is-invalid': ''"
                                                             [ngModelOptions]="{standalone: true}"
                                                             #RequestedTypeList="ngModel" required>
                                                             <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -284,7 +284,7 @@
                                                         <!-- <input type="date" class="form-control" formControlName="dateRequested" disabled> -->
                                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateRequested" type="date"
                                                             [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                           
+
                                                         <!-- <dx-date-box formControlName="dateRequested" type="date" [showClearButton]="true" [useMaskBehavior]="true" displayFormat="shortdate" dateSerializationFormat="yyyy-mm-dd"></dx-date-box> -->
                                                     </div>
                                                 </div>
@@ -296,8 +296,8 @@
                                                         <!-- <input type="date" class="form-control" formControlName="dateEntered" disabled>  -->
                                                         <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dateEntered" type="date"
                                                             [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                            
-                        
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -658,8 +658,8 @@
                                                     <!-- <input class="form-control" type="date" formControlName="check1Date"> -->
                                                     <dx-date-box formControlName="check1Date" type="date"
                                                         [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
-                                                   
+
+
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -778,8 +778,8 @@
                                                     <!-- <input class="form-control" type="date" formControlName="check3Date"> -->
                                                     <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="check3Date" type="date"
                                                         [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                      
-                                                  
+
+
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -838,8 +838,8 @@
                                                     <!-- <input class="form-control" type="date" formControlName="check4Date"> -->
                                                     <dx-date-box  [displayFormat]="dateTimeFormatCustom.Date"formControlName="check4Date" type="date"
                                                         [showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-                                                       
-                                                   
+
+
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
@@ -898,7 +898,7 @@
                                                     <!-- <input class="form-control" type="date" formControlName="check5Date"> -->
                                                     <dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="check5Date" type="date"
                                                         [showClearButton]="true" [useMaskBehavior]="true">
-                                                      
+
                                                     </dx-date-box>
                                                 </td>
                                                 <td>
@@ -940,7 +940,7 @@
                                 <div class="note-list" *ngIf="notesListForNotesTab">
                                     <!-- <div class="note-list-inner"  *ngFor="let note of notesListForNotesTab;">
                                         <div class="name">{{note.Username}} {{note.Timestamp | date: 'MM/dd/yyyy h:mm:ss a'}}</div>
-                                        <p>{{note.SubsNote}}</p>								
+                                        <p>{{note.SubsNote}}</p>
                                     </div> -->
                                     <ng-container *ngIf="notesListForNotesTab?.length > 0">
                                         <div class="note-list-inner" *ngFor="let note of notesListForNotesTab;">

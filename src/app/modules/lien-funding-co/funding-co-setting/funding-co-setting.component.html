@@ -1,0 +1,77 @@
+<div class="main-page-body lien-funding-co">
+    <div class="inner-page-body">
+      <div class="rad-lien-setting">
+          <h3 class="lien-title"> <a  routerLink="/lien-funding-co"><i class="fa fa-arrow-left"></i></a> Funding Company AR Management</h3>
+          <div class="tab-section setting-tab">
+              <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#settings">Settings</a>
+                  </li>
+              </ul>
+              <div class="tab-content">
+                  <div class="tab-pane active" id="settings">
+                        <div class="reminder ar-assignment">
+                          <div class="setting-content">
+                              <div class="switch-sec">
+                                  <label class="toggle-switch">
+                                      <input type="checkbox" [(ngModel)]="isDefaultNamesEnable">
+                                      <div class="slider"></div>
+                                  </label>
+                              </div>
+
+                          </div>
+                          <div class="info-txt">Insert my first and last name by default for executing an AR assignment agreement</div>
+
+                        </div>
+                        <div class="reminder pending-task">
+                          <div class="setting-content">
+                              <div class="switch-sec">
+                                  <label class="toggle-switch">
+                                      <input type="checkbox" [(ngModel)]="isPendingTaskEnable">
+                                      <div class="slider"></div>
+                                  </label>
+                              </div>
+
+                          </div>
+                          <div class="info-txt">Create a pending task for me to sign & execute Pending AR from a rad once they assign to Precise Imaging</div>
+
+                        </div>
+
+                      <div class="reminder signature">
+                          <div class="setting-content">
+                              <div class="switch-sec">
+                                  <label class="toggle-switch">
+                                      <input type="checkbox" [(ngModel)]="isDefaultSignature">
+                                      <div class="slider"></div>
+                                  </label>
+                              </div>
+
+                          </div>
+                          <div class="info-txt">Insert my saved signature by default</div>
+                          <div class="form-group">
+                              <div class="signature-custom">
+                                  <signature-pad [options]="signaturePadOptions" name="signature" ngDefaultControl
+                                      [(ngModel)]="defaultSignature" [ngModelOptions]="{ standalone : true }"
+                                      #signature="ngModel" (onEndEvent)="onSignatureComplete()">
+                                  </signature-pad>
+                              </div>
+                              <div class="signatureBtn">
+                                  <a href="javascript:void(0)" (click)="clearSign();"
+                                      class="btn btnsignature btn-clear">Clear Signature</a>
+                                  <a href="javascript:void(0)" (click)="saveSign();"
+                                        class="btn btnsignature btn-preview">Save Signature</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="theme-panel-footer">
+                    <a href="javascript:void(0)" class="btn btn-theme" (click)="saveSettings()">Save</a>
+                    <a class="btn btn-border" routerLink="/lien-funding-co">Cancel</a>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+

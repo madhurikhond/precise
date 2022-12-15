@@ -80,7 +80,7 @@
                                     </dxi-file-selection-item>
                                     <dxi-item name="refresh" [visible]="false"></dxi-item>
                                 </dxo-toolbar>
-                                <dxo-context-menu>
+                                <dxo-context-menu *ngIf="isRadioLogist">
                                     <dxi-item text="Open" beginGroup="true"></dxi-item>
                                     <dxi-item text="Delete" beginGroup="true"></dxi-item>
                                     <dxi-item text="Rename" beginGroup="true"></dxi-item>

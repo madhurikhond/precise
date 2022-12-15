@@ -1,0 +1,78 @@
+.btn-common {
+    font-size: 14px;
+    min-width: auto;
+    height: 30px;
+    line-height: 28px;
+    padding: 0px 15px;
+    margin-right: 0;
+    background: #3b8beb;
+    border-radius: 6px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+}
+.btn-retainedAR{
+    margin-right:16px;
+}
+.btn-grey{
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+.btn-common:hover{
+    background: #ffffff;
+    color: #3b8beb;
+}
+.btn-common.btn-grey:hover{
+    background: #ffffff;
+    color: #7e7e7e;
+}
+.headerBtnSection {
+    display: flex;
+    justify-content: flex-end;
+}
+#ReceivePaymentModal .theme-label {
+    font-size: 13px;
+    text-transform: capitalize;
+    font-weight: 600;
+    min-width: 100px;
+    line-height: 30px;
+}
+#ReceivePaymentModal .modal-dialog {
+    max-width: 340px;
+  }
+
+  .signature-custom {
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 6px;
+}
+.btnsignature {
+    border: 1px solid #eee;
+    color: #000;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 24px;
+}
+.btn-clear {
+    margin-left: auto;
+}
+.btn-preview{
+color: #2269be;
+border-color: #2269be;
+font-style: normal !important;
+}
+.signatureBtn{
+    display: flex;
+    margin-top: 16px;
+}
+.note {
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #000;
+    line-height: 24px;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.note span {
+    font-weight: 400;
+}

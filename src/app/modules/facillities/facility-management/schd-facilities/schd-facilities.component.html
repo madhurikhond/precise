@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<div *dxTemplate="let data of 'facilityIdTemplate'">
-				<a href="javascript:void(0)" (click)="getFacilityDetail(data)"
+				<a href="javascript:void(0)" (click)="getFacilityDetail(data.data.facilityId)"
 					class="single-action fa fa-pencil-square-o" data-toggle="modal"
 					data-target="#add-Edit-facility"></a>
 			</div>
@@ -158,6 +158,11 @@
 								[ngClass]="{'active': defaultPopupTab === 'Scheduling Details'}" data-toggle="tab"
 								href="#edit-gscheduling-details">
 								Scheduling Details</a>
+						</li>
+						<li class="nav-item"> <a class="nav-link" (click)="tabClick('Leases')"
+								[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid'}"
+								data-toggle="tab" href="#editLeases">
+								Block Lease</a>
 						</li>
 						<li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link" (click)="tabClick('Notes')"
 								[ngClass]="{'active': defaultPopupTab === 'Notes'}" data-toggle="tab"
@@ -294,7 +299,8 @@
 											<label for="editinfo2" class="arrow-label">Override Facility Prices</label>
 										</div>
 										<div class="checkbox-theme">
-											<input class="form-control" formControlName="isActive" type="checkbox">
+											<input class="form-control" (change)="checkForLease($event,'isActive')"
+												formControlName="isActive" type="checkbox">
 											<label for="editinfo4" class="arrow-label">Active</label>
 										</div>
 										<div class="checkbox-theme">
@@ -302,6 +308,11 @@
 												type="checkbox">
 											<label for="editinfo5" class="arrow-label">Do not schedule this
 												facility</label>
+										</div>
+										<div class="checkbox-theme">
+											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"
+												formControlName="useBlockLease" type="checkbox">
+											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
 										<div class="form-group">
 											<div class="theme-label">Facility mile</div>
@@ -684,6 +695,56 @@
 														fax number must be 10 numbers</div>
 												</div>
 											</div>
+
+											<div class="form-group">
+												<div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="defaultEmailAddress3P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.defaultEmailAddress3P.errors }">
+
+												</div>
+												<!-- <div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required">
+												DEFAULT EMAIL ADDRESS FOR LEASE is required.
+											</div> -->
+												<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors">
+														DEFAULT EMAIL ADDRESS FOR LEASE must be a valid email address
+													</div>
+												</div>
+
+											</div>
+
+											<div class="form-group">
+												<div class="theme-label">EMAIL ADDRESS 1 FOR LEASE</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="emailAddress13P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.emailAddress13P.errors">
+														EMAIL ADDRESS 1 FOR LEASE must be a valid email address</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="theme-label">EMAIL ADDRESS 2 FOR LEASE</div>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														formControlName="emailAddress23P"
+														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress23P.errors }">
+												</div>
+												<div *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
+													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.emailAddress23P.errors">
+														EMAIL ADDRESS 2 FOR LEASE must be a valid email address</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
@@ -882,7 +943,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="MriServices" type="checkbox"
-															formControlName="mriservice">
+															formControlName="mriservice" (change)="onChangeService('mri')">
 														<label for="MriServices" class="arrow-label">MRI</label>
 													</div>
 												</div>
@@ -891,7 +952,7 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="CtServices" type="checkbox"
-															formControlName="ctservice">
+															formControlName="ctservice" (change)="onChangeService('ct')">
 														<label for="CtServices" class="arrow-label">CT</label>
 													</div>
 												</div>
@@ -1011,13 +1072,15 @@
 															<th width="100">Incl. Flex & Ext</th>
 															<th width="100">Sedation</th>
 															<th width="100">Breast</th>
+															<th width="100">Resource Name </th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="mri1type">
+																<select class="form-control" formControlName="mri1type"
+																	(change)="CheckSameCombinationMRI('Type1')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1096,11 +1159,33 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<div class="form-group">
+																	<select #mri1ResourceName
+																		(change)="updateResourceName(mri1ResourceName.value,'mri',1);CheckSameCombinationMRI('Resource1')"
+																		formControlName="mri1ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri1ResourceName.errors) }">
+																		<option value="">Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri1ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 														<tr>
 															<td>2</td>
 															<td>
-																<select class="form-control" formControlName="mri2type">
+																<select class="form-control" formControlName="mri2type"
+																	(change)="CheckSameCombinationMRI('Type2')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1179,11 +1264,34 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<div class="form-group">
+																	<select #mri2ResourceName
+																		(change)="updateResourceName(mri2ResourceName.value,'mri',2);CheckSameCombinationMRI('Resource2')"
+																		formControlName="mri2ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri2ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri2ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="mri3type">
+																<select class="form-control" formControlName="mri3type"
+																	(change)="CheckSameCombinationMRI('Type3')">
 																	<option></option>
 																	<option value="Open">Open</option>
 																	<option value="Closed">Closed</option>
@@ -1262,6 +1370,28 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<div class="form-group">
+																	<select #mri3ResourceName
+																		(change)="updateResourceName(mri3ResourceName.value,'mri',3);CheckSameCombinationMRI('Resource3')"
+																		formControlName="mri3ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityMriFormControls.mri3ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityMriFormControls.mri3ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 													</tbody>
 												</table>
@@ -1286,13 +1416,15 @@
 															<th width="100">Contrast</th>
 															<th width="100">Sedation</th>
 															<th width="100">Breast</th>
+															<th width="100">Resource Name </th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
 															<td>1</td>
 															<td>
-																<select class="form-control" formControlName="ct1make">
+																<select class="form-control" formControlName="ct1make"
+																	(change)="CheckSameCombinationCT('Type1')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1356,20 +1488,44 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<div class="form-group">
+																	<select #ct1ResourceName
+																		(change)="updateResourceName(ct1ResourceName.value,'ct',1);CheckSameCombinationCT('Resource1')"
+																		formControlName="ct1ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct1ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct1ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 														<tr>
 															<td>2</td>
-															<td>
-																<select class="form-control" formControlName="ct2make">
-																	<option></option>
-																	<option value="GE">GE</option>
-																	<option value="Fonar">Fonar</option>
-																	<option value="Hitachi">Hitachi</option>
-																	<option value="Phillips">Phillips</option>
-																	<option value="Siemens">Siemens</option>
-																	<option value="Toshiba">Toshiba</option>
-																	<option value="Other">Other</option>
-																</select>
+															<td> 
+																	<select class="form-control"
+																		formControlName="ct2make"
+																		(change)="CheckSameCombinationCT('Type2')">
+																		<option></option>
+																		<option value="GE">GE</option>
+																		<option value="Fonar">Fonar</option>
+																		<option value="Hitachi">Hitachi</option>
+																		<option value="Phillips">Phillips</option>
+																		<option value="Siemens">Siemens</option>
+																		<option value="Toshiba">Toshiba</option>
+																		<option value="Other">Other</option>
+																	</select>
 															</td>
 															<td>
 																<select class="form-control"
@@ -1424,11 +1580,34 @@
 																	<option value="No">No</option>
 																</select>
 															</td>
+															<td>
+																<div class="form-group">
+																	<select #ct2ResourceName
+																		(change)="updateResourceName(ct2ResourceName.value,'ct',2);CheckSameCombinationCT('Resource2')"
+																		formControlName="ct2ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct2ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct2ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 														<tr>
 															<td>3</td>
 															<td>
-																<select class="form-control" formControlName="ct3make">
+																<select class="form-control" formControlName="ct3make"
+																	(change)="CheckSameCombinationCT('Type3')">
 																	<option></option>
 																	<option value="GE">GE</option>
 																	<option value="Fonar">Fonar</option>
@@ -1491,6 +1670,28 @@
 																	<option value="Yes">Yes</option>
 																	<option value="No">No</option>
 																</select>
+															</td>
+															<td>
+																<div class="form-group">
+																	<select #ct3ResourceName
+																		(change)="updateResourceName(ct3ResourceName.value,'ct',3);CheckSameCombinationCT('Resource3')"
+																		formControlName="ct3ResourceName"
+																		class="form-control"
+																		[ngClass]="{ 'is-invalid': (submitted && modalityCtFormControls.ct3ResourceName.errors) }">
+																		>
+																		<option value=0>Select Resource Name
+																		</option>
+																		<option *ngFor="let item of ResourceNameList"
+																			value={{item.INTERNALRESOURCEID}}>
+																			{{item.RESOURCENAME}}
+																		</option>
+																	</select>
+																	<div *ngIf="(submitted && modalityCtFormControls.ct3ResourceName.errors)"
+																		class="invalid-feedback">
+																		<div>
+																			Resource name is required</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 													</tbody>
@@ -1986,7 +2187,8 @@
 													<div class="theme-label-title">Scheduling Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div [class.disabled]="facilitySchedulingDetailFormControls.sundayschedulingIsClosed.value"
+														class="form-group time-group">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2005,9 +2207,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayschedulingIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2026,9 +2231,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayschedulingIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2047,9 +2255,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayschedulingIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2068,9 +2279,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayschedulingIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2089,9 +2303,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayschedulingIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2110,9 +2327,12 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayschedulingIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2131,6 +2351,8 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme"><br>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2142,7 +2364,8 @@
 													<div class="theme-label-title">MRI Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundaymriIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2159,9 +2382,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','mri',$event)"
+															formControlName="sundaymriIsClosed" type="checkbox">
+														<label for="sundaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondaymriIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2178,9 +2409,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','mri',$event)"
+															formControlName="mondaymriIsClosed" type="checkbox">
+														<label for="mondaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdaymriIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2197,9 +2436,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','mri',$event)"
+															formControlName="tuesdaymriIsClosed" type="checkbox">
+														<label for="tuesdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdaymriIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2216,9 +2463,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','mri',$event)"
+															formControlName="wednesdaymriIsClosed" type="checkbox">
+														<label for="wednesdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdaymriIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2235,9 +2490,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','mri',$event)"
+															formControlName="thursdaymriIsClosed" type="checkbox">
+														<label for="thursdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridaymriIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2254,9 +2517,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','mri',$event)"
+															formControlName="fridaymriIsClosed" type="checkbox">
+														<label for="fridaymriIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdaymriIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2273,6 +2544,13 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','mri',$event)"
+															formControlName="saturdaymriIsClosed" type="checkbox">
+														<label for="saturdaymriIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2284,7 +2562,8 @@
 													<div class="theme-label-title">CT Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundayctIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2301,9 +2580,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','ct',$event)"
+															formControlName="sundayctIsClosed" type="checkbox">
+														<label for="sundayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayctIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2320,9 +2607,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','ct',$event)"
+															formControlName="mondayctIsClosed" type="checkbox">
+														<label for="mondayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayctIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2339,9 +2634,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','ct',$event)"
+															formControlName="tuesdayctIsClosed" type="checkbox">
+														<label for="tuesdayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayctIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2358,9 +2661,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','ct',$event)"
+															formControlName="wednesdayctIsClosed" type="checkbox">
+														<label for="wednesdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayctIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2377,9 +2688,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','ct',$event)"
+															formControlName="thursdayctIsClosed" type="checkbox">
+														<label for="thursdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayctIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2396,9 +2715,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','ct',$event)"
+															formControlName="fridayctIsClosed" type="checkbox">
+														<label for="fridayctIsClosed" class="arrow-label">Closed entire
+															day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayctIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2415,6 +2742,13 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','ct',$event)"
+															formControlName="saturdayctIsClosed" type="checkbox">
+														<label for="saturdayctIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -2426,7 +2760,8 @@
 													<div class="theme-label-title">XRAY Hours</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.sundayxrayIsClosed.value">
 														<div class="theme-label">Sunday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2443,9 +2778,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('sunday','xray',$event)"
+															formControlName="sundayxrayIsClosed" type="checkbox">
+														<label for="sundayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.mondayxrayIsClosed.value">
 														<div class="theme-label">Monday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2462,9 +2805,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('monday','xray',$event)"
+															formControlName="mondayxrayIsClosed" type="checkbox">
+														<label for="mondayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.tuesdayxrayIsClosed.value">
 														<div class="theme-label">Tuesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2481,9 +2832,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('tuesday','xray',$event)"
+															formControlName="tuesdayxrayIsClosed" type="checkbox">
+														<label for="tuesdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.wednesdayxrayIsClosed.value">
 														<div class="theme-label">Wednesday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2500,9 +2859,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('wednesday','xray',$event)"
+															formControlName="wednesdayxrayIsClosed" type="checkbox">
+														<label for="wednesdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.thursdayxrayIsClosed.value">
 														<div class="theme-label">Thursday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2519,9 +2886,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('thursday','xray',$event)"
+															formControlName="thursdayxrayIsClosed" type="checkbox">
+														<label for="thursdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.fridayxrayIsClosed.value">
 														<div class="theme-label">Friday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2538,9 +2913,17 @@
 															</div>
 														</div>
 													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('friday','xray',$event)"
+															formControlName="fridayxrayIsClosed" type="checkbox">
+														<label for="fridayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
+													</div>
 												</div>
 												<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-													<div class="form-group time-group">
+													<div class="form-group time-group"
+														[class.disabled]="facilitySchedulingDetailFormControls.saturdayxrayIsClosed.value">
 														<div class="theme-label">Saturday</div>
 														<div class="time-group-list">
 															<div class="timelist">
@@ -2556,6 +2939,13 @@
 																	formControlName="satXrayTo2">
 															</div>
 														</div>
+													</div>
+													<div class="checkbox-theme">
+														<input class="form-control"
+															(click)="AddUpdateIsClosedDays('saturday','xray',$event)"
+															formControlName="saturdayxrayIsClosed" type="checkbox">
+														<label for="saturdayxrayIsClosed" class="arrow-label">Closed
+															entire day</label>
 													</div>
 												</div>
 											</div>
@@ -2875,7 +3265,8 @@
 												<dxo-editing mode="cell" [allowUpdating]="allowUpdatingPrice">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="modType" caption="TYPE" [allowEditing]="false">
 												</dxi-column>
 												<dxi-column dataField="priceTier" caption="PRICE TIER"></dxi-column>
@@ -2901,7 +3292,8 @@
 												<dxi-column dataField="service" caption="SERVICE" [visible]="false">
 												</dxi-column>
 												<dxi-column dataField="isReadOnly" caption="ISREADONLY"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="overridePrice" caption="OVERRIDEPRICE"
 													[visible]="false"></dxi-column>
 											</dx-data-grid>
@@ -2926,7 +3318,8 @@
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
 												<dxi-column dataField="facilityId" caption="facilityId"
-													[visible]="false"></dxi-column>
+													[visible]="false">
+												</dxi-column>
 												<dxi-column dataField="type" caption="TYPE" [allowFixing]="true"
 													alignment="center"></dxi-column>
 												<dxi-column dataField="oldGlobalPrice" caption="OLD GLOBAL PRICE"
@@ -2948,7 +3341,8 @@
 												<dxi-column dataField="lastEffectiveDate" caption="LAST EFFECTIVE DATE"
 													alignment="center" dataType="date" format="shortDate"></dxi-column>
 												<dxi-column dataField="priceTier" caption="PRICE TIER"
-													alignment="center"></dxi-column>
+													alignment="center">
+												</dxi-column>
 											</dx-data-grid>
 										</div>
 									</div>
@@ -3307,23 +3701,554 @@
 							</div>
 
 						</div>
+						<div class="tab-pane"
+							[ngClass]="defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid'  || defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'"
+							id="editLeases">
+							<div class="tab-section">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('BlockLeaseRate')"
+											[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' }"
+											data-toggle="tab" href="#BlockLeaseRate">Block Lease Rate</a>
+									</li>
+									<li class="nav-item"> <a class="nav-link" (click)="tabClick('LeaseAgreements')"
+											[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI'}"
+											data-toggle="tab" href="#LeaseAgreements">Lease agreements</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" (click)="tabClick('Credit/Debit')"
+											[ngClass]="{'active': defaultPopupTab === 'Credit/Debit'}" data-toggle="tab"
+											href="#CreditandDebit">Credit/Debit</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" (click)="tabClick('LeasePayments')"
+											[ngClass]="{'active': defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid'}"
+											data-toggle="tab" href="#leasePayment">Lease Payments</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'Leases'  ? 'active show' : 'fade'"
+										id="BlockLeaseRate">
+
+										<!-- <div class="page-top-action"> <a href="javascript:void(0)" class="btn btn-theme"
+												data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">Save
+												Changes</a>
+										</div> -->
+										<div class="table-responsive">
+											<dx-data-grid id="gridContainerBlockLeasePricing"
+												[dataSource]="blockLeasePricingList"
+												(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+												<dxo-editing mode="cell" [allowUpdating]="true">
+												</dxo-editing>
+												<dxi-column dataField="facilityId" caption="facilityId"
+													[visible]="false">
+												</dxi-column>
+												<dxi-column dataField="Modality" caption="TYPE" [allowEditing]="false">
+												</dxi-column>
+												<dxi-column dataField="LeaseRatePerHour" caption="Lease Rate/ hr">
+												</dxi-column>
+												<dxi-column dataField="ContrastCostPerUnit"
+													caption="Contrast Cost per Unit">
+												</dxi-column>
+											</dx-data-grid>
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
+										id="LeaseAgreements">
+										<div class="tab-section">
+											<ul class="nav nav-tabs">
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeaseAgreement_MRI')"
+														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' }"
+														data-toggle="tab" href="#LeaseAgreementMRI">MRI</a>
+												</li>
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeaseAgreement_CT')"
+														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreement_CT'}"
+														data-toggle="tab" href="#LeaseAgreementCT">CT</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane"
+													[ngClass]="defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreements'  ? 'active show' : 'fade'"
+													id="LeaseAgreementMRI">
+													<div class="table-responsive">
+														<dx-data-grid id="gridContainerLeaseAgreement_MRI"
+															[dataSource]="fullblockLeaseAgreementMRIList"
+															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+															<dxo-paging [enabled]="false"></dxo-paging>
+															<dxi-column dataField="LeaseId" caption="Lease #">
+															</dxi-column>
+															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
+																[allowEditing]="false">
+															</dxi-column>
+															<dxi-column dataField="TotalLeaseHours" caption="MRI Hours">
+															</dxi-column>
+															<dxi-column dataField="LeaseRatePerHour"
+																cellTemplate="MriRateTemplate" caption="MRI Rate">
+															</dxi-column>
+															<dxi-column dataField="totalHour"
+																cellTemplate="TotalHourTemplate" caption="Total">
+															</dxi-column>
+															<dxi-column caption="Aggrement"
+																cellTemplate="pdfMRILinkTemplate">
+															</dxi-column>
+															<div *dxTemplate="let data of 'MriRateTemplate'">
+																<p *ngIf="data.data.LeaseRatePerHour">
+																	${{data.data.LeaseRatePerHour| number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+
+															</div>
+															<div *dxTemplate="let data of 'TotalHourTemplate'">
+																<p *ngIf="data.data.totalHour">
+																	${{data.data.totalHour | number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.totalHour"></p>
+
+															</div>
+															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
+																<a href="javascript:void(0)" class="link-btn"
+																data-toggle="modal"
+																	data-target="#viewFile_Doc"
+																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
+																	<i class="fa fa-file-pdf-o"></i>
+																</a>
+
+															</div>
+														</dx-data-grid>
+													</div>
+													<div class="pagination-theme">
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of fullblockLeaseAgreementMRIList | paginate: { id: 'pagination_MRI' , itemsPerPage: MRIpageSize, currentPage: MRIPageNumber, totalItems:totalrecordsFull_MRI}">
+															</div>
+															<pagination-controls id="pagination_MRI"
+																(pageChange)="onPageNumberChangedLeaseAgreements($event,'MRI')">
+															</pagination-controls>
+														</div>
+													</div>
+												</div>
+												<div class="tab-pane"
+													[ngClass]="defaultPopupTab === 'LeaseAgreement_CT'  ? 'active show' : 'fade'"
+													id="LeaseAgreementCT">
+													<div class="table-responsive">
+														<dx-data-grid id="gridContainerLeaseAgreement_CT"
+															[dataSource]="fullblockLeaseAgreementCTList"
+															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+															<dxi-column dataField="LeaseId" caption="Lease #">
+															</dxi-column>
+															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
+																[allowEditing]="false">
+															</dxi-column>
+															<dxi-column dataField="TotalLeaseHours" caption="CT Hours">
+															</dxi-column>
+															<dxi-column dataField="LeaseRatePerHour" caption="CT Rate"
+																cellTemplate="CTRateTemplate">
+															</dxi-column>
+															<dxi-column dataField="totalHour" caption="Total"
+																cellTemplate="TotalCTHourTemplate">
+															</dxi-column>
+															<dxi-column caption="Aggrement"
+																cellTemplate="pdfCTLinkTemplate">
+															</dxi-column>
+															<div *dxTemplate="let data of 'CTRateTemplate'">
+																<p *ngIf="data.data.LeaseRatePerHour">
+																	${{data.data.LeaseRatePerHour | number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+
+															</div>
+															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
+																<p *ngIf="data.data.totalHour">
+																	${{data.data.totalHour | number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.totalHour"></p>
+
+															</div>
+															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
+																<a href="javascript:void(0)" class="link-btn"
+																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
+																	<i class="fa fa-file-pdf-o"></i>
+																</a>
+
+															</div>
+														</dx-data-grid>
+													</div>
+													<div class="pagination-theme">
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of fullblockLeaseAgreementCTList | paginate: { id: 'pagination_CT' , itemsPerPage: MRIpageSize, currentPage: MRIPageNumber, totalItems:totalrecordsFull_CT}">
+															</div>
+															<pagination-controls id="pagination_CT"
+																(pageChange)="onPageNumberChangedLeaseAgreements($event,'CT')">
+															</pagination-controls>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								
+
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
+										id="CreditandDebit">
+										<div class="table-responsive" id="DivContainerCreditandDebit112" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
+												[columnAutoWidth]="true" [allowColumnReordering]="false"
+												[dataSource]="CreditDebitList" [showBorders]="true">
+												<dxo-sorting mode="multiple"></dxo-sorting>
+												<dxo-paging [enabled]="false"></dxo-paging>
+												<dxo-load-panel [enabled]="true"></dxo-load-panel>
+												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+												<dxi-column dataField="Credit time" caption="Credit Time"></dxi-column>
+												<dxi-column dataField="LeaseTime" caption="Original Leased Time">
+												</dxi-column>
+												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
+												<dxi-column caption="Status" cellTemplate="StatusTemplate"></dxi-column>
+												<dxi-column cellTemplate="deleteCreditsTemplate" caption="Credit #">
+												</dxi-column>
+												<dxi-column dataField="AppliedToPayement"
+													caption="Applied to Payment #">
+												</dxi-column>
+												<dxi-column caption="Credit Applied By"
+													cellTemplate="creditApliedTemplate">
+												</dxi-column>
+												<div *dxTemplate="let data of 'creditApliedTemplate'">
+													{{data.data.FIRSTNAME +" "+data.data.LASTNAME}}
+												</div>
+												<div *dxTemplate="let data of 'StatusTemplate'">
+													<div *ngIf="!data.data.IsUseCredit">Not used</div>
+													<div *ngIf="data.data.IsUseCredit">Applied to Lease</div>
+												</div>
+												<div *dxTemplate="let data of 'deleteCreditsTemplate'">
+													<div *ngIf="data.data.IsUseCredit;then content else elseContent">
+													</div>
+													<ng-template #content>{{data.data.CreditId}}</ng-template>
+													<ng-template #elseContent>{{data.data.CreditId}} &nbsp; <a (click)="
+														deleteConfirmUnusedCredit(data)" href="javascript:void(0);">
+															<i class="fa fa-trash credit-trash"></i></a>
+													</ng-template>
+
+												</div>
+											</dx-data-grid>
+										</div>
+										<div class="pagination-theme">
+											<div class="pagination-theme">
+												<div
+													*ngFor="let item of CreditDebitList | paginate: { id: 'pagination1108' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalRecordBlockLeaseCredits}">
+												</div>
+												<pagination-controls id="pagination1108"
+													(pageChange)="onPageNumberChange($event)"></pagination-controls>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane"
+										[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' || defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'"
+										id="leasePayment">
+										<div class="tab-section">
+											<ul class="nav nav-tabs">
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeasePaymentsUnPaid')"
+														[ngClass]="{'active': defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid'}"
+														data-toggle="tab" href="#LeasePaymentsUnPaid">Unpaid</a>
+												</li>
+												<li class="nav-item"> <a class="nav-link"
+														(click)="tabClick('LeasePaymentsPaid')"
+														[ngClass]="{'active': defaultPopupTab === 'LeasePaymentsPaid'}"
+														data-toggle="tab" href="#LeasePaymentPaid">paid</a>
+												</li>
+											</ul>
+											<div class="tab-content">
+												<!-- [ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'" -->
+												<div class="tab-pane" id="LeasePaymentsUnPaid"
+													[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'">
+													<button type="button" class="btn btn-theme"
+													[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
+														[disabled]="btnActive==0?true:false"
+														(click)="UnpaidButtonClick($event)"
+														[ngStyle]="{'background-color':(btnActive==0)? '#bfbfbf' : '#3b8beb'}">Pay
+														Invoice</button>
+													<!------------------ Unpaid lease Grid Starts------------------>
+													<div>
+														<div class="theme-label-title">Leases</div>
+														<div class="table-responsive" id="DivContainerCreditandDebit" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+															<dx-data-grid id="gridContainerCreditandDebit"
+																[allowColumnResizing]="true" [columnAutoWidth]="true"
+																[allowColumnReordering]="false"
+																[dataSource]="GetUnpaidLeasesList" [showBorders]="true"
+																(onSelectionChanged)="onSelectionChangedLease($event)">
+																<dxo-selection [selectAllMode]="allMode"
+																	[showCheckBoxesMode]="checkBoxesMode"
+																	mode="multiple">
+																</dxo-selection>
+																<dxo-sorting mode="multiple"></dxo-sorting>
+																<dxo-paging [enabled]="false"></dxo-paging>
+																<dxo-load-panel [enabled]="true"></dxo-load-panel>
+																<dxo-grouping #expand [autoExpandAll]="true">
+																</dxo-grouping>
+																<dxi-column dataField="LeaseId" caption="LEASE #">
+																</dxi-column>
+																<dxi-column dataField="MonthLabel"
+																	cellTemplate="monthTemplate" caption="MONTH">
+																</dxi-column>
+
+																<dxi-column dataField="MRI" caption="MRI HOURS">
+																</dxi-column>
+																<dxi-column dataField="CT" caption="CT HOURS">
+																</dxi-column>
+																<dxi-column dataField="TotalAmount"
+																	cellTemplate="leaseTotalTemplate"
+																	caption="LEASE TOTAL">
+																</dxi-column>
+
+																<div *dxTemplate="let data of 'leaseTotalTemplate'">
+																	<p *ngIf="data.data.TotalAmount">
+																		${{data.data.TotalAmount | number:'0.2-2'}}</p>
+																	<p *ngIf="!data.data.TotalAmount"></p>
+
+																</div>
+																<div *dxTemplate="let data of 'monthTemplate'">
+																	<p>
+																		<span>{{data.data.MonthLabel}}
+																		</span><span>{{data.data.PaidYear}}</span>
+																	</p>
+
+
+																</div>
+															</dx-data-grid>
+														</div>
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1002' , itemsPerPage: pageSizeOfUnpaidLeases, currentPage: pageNumberOfUnpaidLeases, totalItems:totalRecordUnpaidLeases}">
+															</div>
+															<pagination-controls id="pagination1002"
+																(pageChange)="onPageNumberChangeUnpaidLesaes($event)">
+															</pagination-controls>
+														</div>
+													</div>
+													<!------------------ Unpaid lease Grid Ends------------------>
+													<!------------------ Unpaid Credits Grid Starts------------------>
+													<div>
+														<div class="theme-label-title">Credits</div>
+														<div class="table-responsive" id="DivContainerCreditandDebit11" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+															<dx-data-grid id="gridContainerCreditandDebit"
+																[allowColumnResizing]="true" [columnAutoWidth]="true"
+																[allowColumnReordering]="false"
+																[dataSource]="UnusedCreditsList" [showBorders]="true"
+																(onSelectionChanged)="onSelectionChangedCredit($event)">
+																<dxo-selection [selectAllMode]="allMode"
+																	[showCheckBoxesMode]="checkBoxesMode"
+																	mode="multiple">
+																</dxo-selection>
+																<dxo-sorting mode="multiple"></dxo-sorting>
+																<dxo-paging [enabled]="false"></dxo-paging>
+																<dxo-load-panel [enabled]="true"></dxo-load-panel>
+																<dxo-grouping #expand [autoExpandAll]="true">
+																</dxo-grouping>
+																<dxi-column dataField="LeaseId" caption="LEASE #">
+																</dxi-column>
+																<dxi-column dataField="CreditId" caption="CREDIT #">
+																</dxi-column>
+																<dxi-column dataField="CREDIT REASON"
+																	caption="CREDIT REASON"></dxi-column>
+																<dxi-column dataField="Credit time"
+																	caption="CREDIT TIME">
+																</dxi-column>
+																<dxi-column dataField="ModalityType" caption="MODALITY">
+																</dxi-column>
+																<dxi-column dataField="Credit Amount"
+																	caption="CREDIT AMOUNT"
+																	cellTemplate="creditTotalTemplate"></dxi-column>
+
+																<div *dxTemplate="let data of 'creditTotalTemplate'">
+																	<p *ngIf="data.data['Credit Amount']">
+																		${{data.data['Credit Amount'] | number:'0.2-2'}}
+																	</p>
+																	<p *ngIf="!data.data['Credit Amount']"></p>
+
+																</div>
+
+															</dx-data-grid>
+														</div>
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of UnusedCreditsList | paginate: { id: 'pagination1009' , itemsPerPage: pageSizeOfUnusdCredits, currentPage: pageNumberOfUnusedCredits, totalItems:totalRecordunUsedCredits}">
+															</div>
+															<pagination-controls id="pagination1009"
+																(pageChange)="onPageNumberChangeunUsedcredits($event)">
+															</pagination-controls>
+														</div>
+													</div>
+													<!------------------ Unpaid Credits Grid Ends------------------>
+												</div>
+												<div class="tab-pane" id="LeasePaymentPaid"
+													[ngClass]="defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'">
+													<div>
+														<div class="table-responsive">
+															<dx-data-grid #dxDataGrid id="gridContainerBlockLeasePaymentList"
+																[dataSource]="blockLeasePaymentList"
+																[showBorders]="true"
+																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
+																[allowColumnResizing]="true"
+																[columnResizingMode]="columnResizingMode"
+																[columnAutoWidth]="true">
+																<dxo-paging [enabled]="false"></dxo-paging>
+																<dxo-selection mode="single"></dxo-selection>
+																<dxo-sorting mode="none"></dxo-sorting>
+																<dxi-column dataField="facilityId" caption="facilityId"
+																	[visible]="false"></dxi-column>
+																<dxi-column dataField="PaymentId" caption="PaymentId"
+																	[visible]="false"></dxi-column>
+																<dxi-column dataField="PaymentTXN"
+																	caption="PAYMENT TXN">
+																</dxi-column>
+																<dxi-column dataField="DateCreated"
+																	caption="DATE CREATED">
+																</dxi-column>
+																<dxi-column dataField="paidMonth"
+																	caption="Lease Months">
+																</dxi-column>
+																<dxi-column dataField="CheckNo" caption="CHECK #">
+																</dxi-column>
+																<dxi-column dataField="CheckDate" caption="CHECK DATE"
+																	[width]="200"> </dxi-column>
+																<dxi-column dataField="CheckAmount"
+																	caption="CHECK AMOUNT" dataType="number"
+																	format="currency"></dxi-column>
+																<dxi-column dataField="FileDetail "
+																	caption="VIEW PDF PAYMENT DETAILS"
+																	cellTemplate="cellTemplate">
+																	<div *dxTemplate="let data of 'cellTemplate'">
+																		<a class="PDFIcon"
+																			(click)="downloadFile(data)"><i
+																				class="fa fa-file-pdf-o PDFIcon"></i></a>
+																	</div>
+																</dxi-column>
+																<dxo-master-detail [enabled]="true"
+																	template="productDetail"></dxo-master-detail>
+																<div *dxTemplate="let detail of 'productDetail'">
+																	<dx-data-grid
+																		[dataSource]="blockLeasePaymentMappingList"
+																		[columnAutoWidth]="true" [showBorders]="true"
+																		[repaintChangesOnly]="true"
+																		[allowColumnResizing]="true"
+																		style="Max-height:150px">
+																		<dxo-scrolling columnRenderingMode="virtual">
+																		</dxo-scrolling>
+																		<dxo-sorting mode="none"></dxo-sorting>
+																		<dxi-column dataField="Lease" caption="LEASE #">
+																		</dxi-column>
+																		<dxi-column dataField="Month" caption="Month">
+																		</dxi-column>
+																		<dxi-column dataField="MRIHours"
+																			caption="MRI Hours"></dxi-column>
+																		<dxi-column dataField="CtHours"
+																			caption="CT Hours">
+																		</dxi-column>
+																		<dxi-column dataField="LeaseTotal"
+																			caption="Lease Total" dataType="number"
+																			format="currency"></dxi-column>
+																	</dx-data-grid>
+																	<dx-data-grid id="gridContainerBlockLeaseCreditList"
+																		[dataSource]="blockLeaseCreditList"
+																		[showBorders]="true"
+																		[allowColumnResizing]="true"
+																		[columnAutoWidth]="true"
+																		style="Max-height:150px">
+																		<dxo-scrolling columnRenderingMode="virtual">
+																		</dxo-scrolling>
+																		<dxi-column dataField="Lease" caption="Lease #">
+																		</dxi-column>
+																		<dxi-column dataField="Credit"
+																			caption="Credit #">
+																		</dxi-column>
+																		<dxi-column dataField="CreditReason"
+																			caption="Credit Reason"></dxi-column>
+																		<dxi-column dataField="CreditTime"
+																			caption="Credit Time"></dxi-column>
+																		<dxi-column dataField="ModalityType"
+																			caption="Modality"></dxi-column>
+																		<dxi-column dataField="CreditAmount"
+																			caption="Credit Amount"></dxi-column>
+																		<dxo-summary>
+																			<dxi-total-item column="CreditAmount"
+																				summaryType="sum" displayFormat="{0}"
+																				valueFormat="currency"></dxi-total-item>
+																		</dxo-summary>
+																	</dx-data-grid>
+																</div>
+															</dx-data-grid>
+														</div>
+														<div class="pagination-theme">
+															<div
+																*ngFor="let item of blockLeasePaymentList | paginate: { id:'paginationpaid', itemsPerPage: pageSizeOfPaid, currentPage: pageNumberOfPaid, totalItems:totalRecordpaid }">
+															</div>
+															<pagination-controls id="paginationpaid"
+																(pageChange)="onPageNumberChangePaid($event)">
+															</pagination-controls>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal">Close</button>
-				<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
-				<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
-					[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
-				<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
-					(click)="updateFacility(true)">Apply</button>
+				<button type="button" class="btn btn-border-gray btn-sm pull-right"
+					(click)="CloseAddEditModal()">Close</button>
+
+				<div *ngIf="defaultPopupTab != 'BlockLeaseRate' && defaultPopupTab != 'Leases'">
+					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="addFacility()">insert</button>
+
+					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						[attr.data-dismiss]="modalValue" (click)="updateFacility(true)">Ok</button>
+
+					<button *ngIf="isApplyAndOkBtnVisisble" type="button" class="btn btn-border btn-sm pull-left"
+						(click)="updateFacility(true)">Apply</button>
+
+				</div>
+
+				<div *ngIf="defaultPopupTab == 'BlockLeaseRate' || defaultPopupTab == 'Leases'">
+
+					<button type="button" *ngIf="isInsertBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">insert</button>
+
+					<button type="button" *ngIf="isApplyAndOkBtnVisisble" class="btn btn-theme btn-sm pull-left"
+						data-toggle="modal" data-target="#blockLeasePricingUpdatePopUp">Ok</button>
+
+					<button *ngIf="isApplyAndOkBtnVisisble" type="button" data-toggle="modal"
+						data-target="#blockLeasePricingUpdatePopUp"
+						class="btn btn-border btn-sm pull-left">Apply</button>
+
+				</div>
 			</div>
+
 		</div>
-	</div>
 
 
 </div>
+
+<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
+data-keyboard="false" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title">Agreement</h5>
+			<div class="close-dismiss" data-dismiss="modal"></div>
+		</div>
+		<div class="modal-body" *ngIf="fileData">
+			<iframe width="100%" height="100%" frameBorder="0"
+				[src]="fileData"></iframe>
+		</div>
+	</div>
+</div>
+</div>
+
 <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -3348,4 +4273,100 @@
 	data-target="#deleteLink"></button>
 <button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
     data-target="#add-Edit-facility"></button>
+<app-document-manager-facility></app-document-manager-facility>
+	</div>
+ <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-theme modal-small" id="confirmationLease" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true"
+	style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Alert</h5>
+				<div class="close-dismiss" data-dismiss="modal" (click)="confirmationLease(false)"></div>
+			</div>
+			<div class="modal-body">
+				<p>Disabling Use Block Lease will remove all the existing blocks of the facility . Do you still want to
+					disable it ?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" (click)="confirmationLease(false)"
+					class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+				<a (click)="confirmationLease(true)" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Yes</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="blockLeasePricingUpdatePopUp" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">ARE YOU SURE YOU WANT TO UPDATE RATE ?</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>IT WILL AFFECT ONLY UNSIGNED LEASES.</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="saveBlockLeasePricing()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-theme in modal-small" id="deleteUnusedCreditLink" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body">
+				<p>ARE YOU SURE YOU WANT TO DELETE THIS CREDIT?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+					data-dismiss="modal">Cancel</a>
+				<a (click)="deleteUnusedCredit()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+					data-dismiss="modal">Ok</a>
+			</div>
+		</div>
+	</div>
+ 
+
+
+<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
+	data-target="#deleteLink"></button>
+<button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
+	data-target="#confirmationLease"></button>
+<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
+	data-target="#add-Edit-facility"></button>
+<button class="d-none" #hiddenDeleteUnusedCreditLink [hidden]="true" data-toggle="modal"
+	data-target="#deleteUnusedCreditLink"></button>
+<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
 <app-document-manager-facility></app-document-manager-facility>

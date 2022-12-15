@@ -3,3 +3,23 @@
     height: 280px !important;
     overflow-y: scroll !important
 }
+.disabledClass{
+	pointer-events: none !important;
+  }
+  /* .dxDataGrid {
+    height: calc(100vh - 140px);
+    } */
+
+    .dx-freespace-row {
+      height: 0px !important;
+   }
+   .PDFIcon{
+    cursor: pointer;
+    color: #3b8beb;
+   }
+   .enableClass{
+    pointer-events: all !important;
+   }
+
+
+ 
