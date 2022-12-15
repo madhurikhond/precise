@@ -28,6 +28,7 @@ export class PayInvoiceModalComponent implements OnInit {
   formattedInputAmount: any;
   inputAmount: any;
   strAmount: string = '';
+  formattedInputCheckNumber: any;
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   constructor(private decimalPipe: DecimalPipe,
     private fb: FormBuilder, public modal: NgbActiveModal,
@@ -38,6 +39,7 @@ export class PayInvoiceModalComponent implements OnInit {
   ngOnInit(): void {
     this.createPayInvoiceForm();
     this.formattedInputAmount = this.decimalPipe.transform(this.AmountDetails.TotalAmount, '0.2-2');
+  this.formattedInputCheckNumber = this.payInvoiceForm.controls['checkId'].value;
     // this.setPayInvoiceForm();
   }
   transformAmount(element) {
@@ -98,20 +100,28 @@ var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 
     e.preventDefault();
     return false;
-    // var inp = String.fromCharCode(event.keyCode);
-    // //Validators.pattern('[-_a-zA-Z0-9]*')]
-    // if (/[a-zA-Z0-9]/.test(inp)) {
-    //   return true;
-    // } else {
-    //   event.preventDefault();
-    //   return false;
-    // }
+ 
   }
-
   onPaste(e) {
-    e.preventDefault();
-    return false;
+    debugger
+    this.formattedInputCheckNumber = this.payInvoiceForm.controls['checkId'].value;
+   // alert('Value:' +  this.formattedInputCheckNumber);
+    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+     
+        return true;
+    }
+    else{
+      var amtStr=  this.formattedInputCheckNumber.replace(/[^a-zA-Z0-9]/g, '');
+      this.payInvoiceForm.patchValue({
+        checkId:amtStr,
+      });
+      return true;
+    }
+ 
   }
+ 
   successNotification(data: any) {
     this.notificationService.showNotification({
       alertHeader: 'Success',
