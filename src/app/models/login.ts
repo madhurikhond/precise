@@ -12,5 +12,7 @@ export class AuthUser {
     ReferrerId: string;
     BrokerId: string;
     UserType:string;
+    FirstName:string;
+    LastName:string;
+    WorkEmail:string;
   }
-  

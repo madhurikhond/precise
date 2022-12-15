@@ -191,3 +191,39 @@ padding: 0;
 .infoIcon .tooltip.show{
   opacity: 1;
 }
+
+#signatureModal .modal-body{
+  text-transform: capitalize !important;
+}
+
+.radflowGrid tr.dx-row.dx-data-row.dx-column-lines td {
+  background: #E5E5E5;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 6px 8px !important;
+}
+.radflowGrid .innerTable tr.dx-row.dx-data-row.dx-column-lines td {
+  background: rgb(255, 255, 255);
+}
+
+.radflowGrid .innerTable tr.dx-row.dx-column-lines.dx-header-row td {
+  padding: 6px 8px !important;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 600;
+  vertical-align: top !important;
+  border-bottom: none !important;
+  white-space: nowrap !important;
+  background-color: #e1f0ff !important;
+  border-left: 1px solid #ddd !important;
+}
+
+.radflowGrid .dx-datagrid-content .dx-datagrid-table .dx-row > td.dx-datagrid-group-space + td{
+  text-align: center!important;
+}
+
+#AddFundingCmpModal .modal-dialog .modal-body .tab-section.addFundingCmp-tab {
+  height: auto;
+}

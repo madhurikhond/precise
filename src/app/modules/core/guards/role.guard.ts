@@ -6,6 +6,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 
@@ -50,6 +51,10 @@ export class RoleGuard implements CanActivate {
         }
         this.filter(list, routerUrl.toLowerCase());
         if (this.matches.length > 0) {
+          if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
+          {
+            routerUrl = 'radportal';
+          }
           return true;
         } else {
           if (this.matches)

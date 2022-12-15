@@ -8,11 +8,13 @@ const USER = 'user';
 const JWT_TOKEN = 'jwt_t';
 const PARTNER_ID = 'p_id';
 const PARTNER_JWT_Token = 'p_jwt_t';
+const LIEN_JWT_Token = 'l_jwt_t';
 const PATIENT_LANGUAGE = 'lang';
 const PATIENT_STUDY = 'p_study';
 const PATIENT_PREGNANCY = 'p_pregnancy';
 const PATIENT_PRESCREENING = 'p_prescreening';
 const PATIENT_TIMEOUT = 'p_timeout';
+const LIEN_TIMEOUT = 'lien_timeout';
 const LAST_PAGE_URL = 'last_page_url';
 //const User_Role = 'user_permission';
 const EXPAND_ROWS = 'expand_rows';
@@ -41,6 +43,11 @@ export class StorageService {
   clearAll() {
     localStorage.removeItem(USER);
     localStorage.removeItem(JWT_TOKEN);
+    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(LIEN_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
+    localStorage.removeItem(LIEN_TIMEOUT);
+    localStorage.removeItem(PATIENT_TIMEOUT);
   }
   public set setFreshLogin(isfreshlogin) {
     localStorage.setItem(FRESH_LOGIN, isfreshlogin);
@@ -61,6 +68,16 @@ export class StorageService {
 
   public get PTimeout():string {
     return localStorage.getItem(PATIENT_TIMEOUT);
+  }
+
+  
+
+  public set LienTimeout(date: string) {
+    localStorage.setItem(LIEN_TIMEOUT, date);
+  }
+
+  public get LienTimeout():string {
+    return localStorage.getItem(LIEN_TIMEOUT);
   }
 
   public set PartnerId(partnerId: string) {
@@ -107,6 +124,10 @@ export class StorageService {
     localStorage.setItem(PARTNER_JWT_Token, jwtToken);
   }
 
+  public set LienJWTToken(jwtToken: string) {
+    localStorage.setItem(LIEN_JWT_Token, jwtToken);
+  }
+
   setPatientLanguage(language: string) {
     if(language === LanguageOption.ES)
       this.fullLanguageName = 'spanish';
@@ -133,6 +154,10 @@ export class StorageService {
 
   public get PartnerJWTToken(): string {
     return localStorage.getItem(PARTNER_JWT_Token);
+  }
+
+  public get LienJWTToken(): string {
+    return localStorage.getItem(LIEN_JWT_Token);
   }
 
   public get LastPageURL(): string {
@@ -164,11 +189,18 @@ export class StorageService {
 
   LogoutPatient()
   {
-    localStorage.removeItem('p_jwt_t');
-    localStorage.removeItem('p_id');
+    localStorage.removeItem(PARTNER_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
     localStorage.clear();
   }
 
+  LogoutLienPortal()
+  {
+    localStorage.removeItem(LIEN_JWT_Token);
+    localStorage.removeItem(PARTNER_ID);
+    localStorage.removeItem(LIEN_TIMEOUT);
+    localStorage.clear();
+  }
   // public set UserRole(value: string) {
   //   localStorage.setItem(User_Role, JSON.stringify(value));
   // }
@@ -219,6 +251,22 @@ export class StorageService {
     var token = this.PartnerJWTToken;
     if (token != null && token != undefined) {
       var decodedToken = this._tokenservice.getDecodedAccessToken(this.PartnerJWTToken);
+      var tokenExpiry = new Date(decodedToken.exp * 1000);
+      var today = new Date();
+      if (tokenExpiry < today) {
+        return false;
+      }
+      else{
+        return true;
+      }
+    }else
+      return false;
+  }  
+
+  public get L_JWTValid():boolean {
+    var token = this.LienJWTToken;
+    if (token != null && token != undefined) {
+      var decodedToken = this._tokenservice.getDecodedAccessToken(this.LienJWTToken);
       var tokenExpiry = new Date(decodedToken.exp * 1000);
       var today = new Date();
       if (tokenExpiry < today) {

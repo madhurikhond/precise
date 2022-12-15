@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 declare const $: any
@@ -22,6 +23,12 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if (this.storageService.user) {
+      if(this.storageService.user.UserType == RADIOLOGIST_TYPE){
+        this.router.navigate(['unauthorize-access'], {
+          replaceUrl: true,
+        });
+        return false;
+      }
       this.isPermissionChanged = this.storageService.getItem("isPermissionChanged");
       if (this.isPermissionChanged) {
 

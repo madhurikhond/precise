@@ -14,3 +14,5 @@ export const SCOPE_SHEET_DETAIL_URL = "/project/scopesheet-details";
 export const LOGIN_PAGE_URL = "login";
 export const USER_PAGE_URL = "my-users";
 export const ADDUSER_PAGE_URL = "edituser";
+
+export const RADIOLOGIST_TYPE = "Reading Radiologist";

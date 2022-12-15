@@ -1,0 +1,9 @@
+.PDFIcon{
+    cursor: pointer;
+}
+.PDFIcon i.fa {
+    color: #3b8beb;
+    font-size: 16px;
+    font-weight: 600;
+}
+

@@ -63,6 +63,8 @@ export class AppComponent implements OnInit {
     this.deleteOrderedSchedulerActivity()
     this._commonMethodService.clearAllSubjects();
     this._storageService.clearAll();
+    localStorage.removeItem('p_jwt_t');
+    localStorage.removeItem('l_jwt_t');
     localStorage.removeItem('user');
     localStorage.removeItem('roles');
     this._router.navigate(['login']);
