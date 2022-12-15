@@ -127,10 +127,10 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf= "addPhoneChecked">
                               <div class="form-group">
                                  <div class="input-group">
-                                    <div class="theme-label">Message Body</div>
+                                    <div class="theme-label">Text Message Body</div>
                                     <input type="text" class="form-control" formControlName ='smsTextModel' [(ngModel)]="smsTextModel"
                                     [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.smsTextModel.errors) }"
    >
@@ -144,13 +144,13 @@
                            </div>
                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                               <textarea class="form-control" cols="10" rows="5" formControlName="notesModel"
-                                 placeholder="Internal Notes (ww to be sent)"></textarea>
+                                 placeholder="Internal Notes (will to be sent)"></textarea>
                            </div>
                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                               <div class="checkbox-theme">
                                  <input id="chkInternalUser" type="checkbox" (change)="onchkUserChange($event)"
                                     style="opacity: 1; margin: 21px 0px 0px -5px" />
-                                 <label class="arrow-labe2">Notify Internal User</label>
+                                 <label class="arrow-labe2">Notify Internal User Via Slack</label>
                                  <select id="inputUser" class="form-control" hidden>
                                     <option *ngFor="let item of userList" value={{item.UserName}}>
                                        {{item.UserName}}
