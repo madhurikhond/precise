@@ -7346,6 +7346,8 @@ ngb-modal-window.modal{
 #CalendarSchedulerWindow .modal-body .dhx_cal_data{overflow-y: scroll;
 	height: calc(100% - 300px) !IMPORTANT;
 }
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{overflow-y: scroll !important;
+overflow-x: hidden;	}
 .CalendarTooltip{  z-index: 1050 !important }
 .invalid-feedback{
 	line-height: 17px;
