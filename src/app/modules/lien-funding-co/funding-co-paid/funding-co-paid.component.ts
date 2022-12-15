@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 enum actionDropdown {
@@ -18,11 +19,14 @@ enum actionDropdown {
 export class FundingCoPaidComponent {
 
   getfilterData: any;
+  permission : any;
+  index = 1;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
       this.getfilterData = val;
       this.getFundingCoPaidList();
+      this.setPermisstion();
     }
   }
 
@@ -50,7 +54,8 @@ export class FundingCoPaidComponent {
   selectedAction = "";
 
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder,
+    private storageService : StorageService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
 
@@ -179,6 +184,14 @@ export class FundingCoPaidComponent {
       },()=>{
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
+    }
+  }
+
+  setPermisstion() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children)
+        this.permission = permission.Children[this.index];
     }
   }
 }

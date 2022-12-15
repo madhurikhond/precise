@@ -35,8 +35,8 @@ export class NavbarComponent implements OnInit {
 
 
 
-  makeActive() { 
-    setTimeout(() => {      
+  makeActive() {
+    setTimeout(() => {
     for (let index = 0; index < 2; index++) {
       $('.left-menu').find('.nav-link.active').parents('ul').parents('li').children(0).addClass('active jClass')
     }
@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit {
 
  getPermission(){
   var data = this.storageService.UserRole;
-    this.responseHierarchy = JSON.parse(data); 
+    this.responseHierarchy = JSON.parse(data);
     if (this.responseHierarchy && this.responseHierarchy.length) {
       this.responseHierarchy.forEach(value => {
         if (value && value.hierarchy) {
@@ -58,31 +58,60 @@ export class NavbarComponent implements OnInit {
         }
       })
     }
-    for (let i = 0; i < this.responseHierarchy.length; i++) {      
+    for (let i = 0; i < this.responseHierarchy.length; i++) {
       this.list.push(this.responseHierarchy[i].hierarchy);
    }
    this.splitListAccToType(this.list);
  }
- splitListAccToType(list1: any)
-  {
-    list1.forEach((i) => {
-      if(i.Type)
-      {
-        if(i.Type==1)
-        {
-          this.leftNavList.push(i);
-        }
-        // if(i.Type==2)
-        // {
-        //   this.headerPopupList.push(i);
-        // }
-        // if(i.Type==3)
-        // {
-        //   this.rightNavList.push(i);  
-        // }
+//  splitListAccToType(list1: any)
+//   {
+//     list1.forEach((i) => {
+//       if(i.Type)
+//       {
+//         if(i.Type==1)
+//         {
+//           this.leftNavList.push(i);
+//         }
+//         // if(i.Type==2)
+//         // {
+//         //   this.headerPopupList.push(i);
+//         // }
+//         // if(i.Type==3)
+//         // {
+//         //   this.rightNavList.push(i);
+//         // }
+//       }
+//     });
+//   }
+
+
+
+splitListAccToType(list1: any) {
+  list1.forEach((i) => {
+    if (i.Type) {
+      if (i.Type == 1) {
+        if (i.Children && i.Children.length > 0)
+          i.Children = this.splitListAccToType_child(i.Children);
+        this.leftNavList.push(i);
       }
+    }
+  });
+}
+
+splitListAccToType_child(list: any) {
+  if (list && list.length > 0) {
+    list = list.filter(element => {
+      if (element.Children && element.Children.length > 0)
+        element.Children = this.splitListAccToType_child(element.Children);
+      else
+        if (!element.Url)
+          return !element;
+      return element;
     });
+    return list;
   }
+  return [];
+}
 
   clearCSS() {
     $('.left-menu').find('.nav-link').removeClass('active jClass');
