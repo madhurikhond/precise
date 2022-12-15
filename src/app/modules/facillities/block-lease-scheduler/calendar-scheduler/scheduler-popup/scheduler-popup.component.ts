@@ -141,15 +141,14 @@ export class SchedulerPopupComponent implements OnInit {
         end_time: [this.event['end_date'], Validators.required],
       });
     }
-    if (this.mode == 'month') {
-      this.leaseForm.patchValue({
-        //  start_time: null,
-        end_time: new Date("1/1/2019 12:05:00 AM")
-      })
+    if (this.mode == 'month') {      
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,
           end_time: null
+        })
+        this.leaseForm.patchValue({
+          end_time: new Date("1/1/2019 12:05:00 AM")
         })
       }
     }
@@ -509,7 +508,7 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           debugger
-          if (res.responseCode == 200 && res.response.responseCode != 404  ) {
+          if (res.responseCode == 200 && res.response.responseCode != 404) {
             if (res.response) {
               this.showNotificationOnSucess({
                 message: res.response.message,
@@ -521,8 +520,7 @@ export class SchedulerPopupComponent implements OnInit {
             }
             this.modal.dismiss(ModalResult.SAVE);
           }
-          else if(res.response.responseCode == 404 )
-          {
+          else if (res.response.responseCode == 404) {
             this.errorNotification(res.response);
           }
         }, (err: any) => {
@@ -594,9 +592,9 @@ export class SchedulerPopupComponent implements OnInit {
     }, 500);
 
   }
-  handleBlockOffDaysChange(e: any, from: string) {   
-    
-    this.AlreadyBlockedLeaseList = []; 
+  handleBlockOffDaysChange(e: any, from: string) {
+
+    this.AlreadyBlockedLeaseList = [];
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
     if (this.editBlockOffFormControls.end_date.value != null) {
