@@ -9,12 +9,12 @@
             <div class="radio-theme">
                 <input class="form-control" name="ScheduleType" id="BlockTime" type="radio"
                     (change)="changeScheduleType($event.target.value)" value="true" checked="checked">
-                <label for="BlockTime">Block time</label>
+                <label for="BlockTime">Add time to lease</label>
             </div>
             <div class="radio-theme">
                 <input class="form-control" name="ScheduleType" id="BlockOff"
                     (change)="changeScheduleType($event.target.value)" value="false" type="radio">
-                <label for="BlockOff">Block off Days</label>
+                <label for="BlockOff">Create black out time(Cannot lease during these times)</label>
             </div>
         </div>
         <form *ngIf="!isBlockOffTime" [formGroup]="leaseBlockOffForm" class="theme-form" novalidate>
