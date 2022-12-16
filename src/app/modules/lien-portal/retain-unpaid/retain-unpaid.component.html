@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check $</div>
-                                    <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="checkAmount" placeholder="Check Amount">
+                                    <input type="text" maxlength="18" mask="99999999999999.00" class="form-control" formControlName="checkAmount" placeholder="Check Amount">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -178,7 +178,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check #</div>
-                                    <input type="text" class="form-control" formControlName="checkNo" placeholder="Check #">
+                                    <input type="text" class="form-control" formControlName="checkNo" maxlength="15" mask="000000000000000" placeholder="Check No">
                                 </div>
                             </div>
 

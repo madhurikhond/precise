@@ -65,6 +65,7 @@ export class RetainUnpaidComponent implements OnInit {
   radiologistSign: string;
   isDefaultSignature: boolean;
   defaultSignature: any;
+  defaultCompanyName: any[];
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
     private fb: FormBuilder) {
@@ -92,8 +93,8 @@ export class RetainUnpaidComponent implements OnInit {
     })
     this.receivePaymentform = this.fb.group({
       checkAmount: ['', [Validators.required]],
-      checkDate: ['',Validators.required],
-      checkNo: ['',Validators.required],
+      checkDate: ['', Validators.required],
+      checkNo: ['', Validators.required],
     })
     this.defaultCheckDate = new Date();
   }
@@ -102,8 +103,8 @@ export class RetainUnpaidComponent implements OnInit {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
     this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
     this.bindFundComp_DDL();
-    if(this.isDefaultSignature)
-     this.defaultSignature = this.lienPortalService.defaultSignature
+    if (this.isDefaultSignature)
+      this.defaultSignature = this.lienPortalService.defaultSignature
   }
 
   getRetainUnPaidList() {
@@ -166,36 +167,36 @@ export class RetainUnpaidComponent implements OnInit {
     })
   }
 
-  previewAssignment(){
-    if(Number(this.assignARform.get("fundingCompany").value)){
+  previewAssignment() {
+    if (Number(this.assignARform.get("fundingCompany").value)) {
       var retainSelectedData = [];
-      this.checkboxSelectedData.map(data =>{
+      this.checkboxSelectedData.map(data => {
         data.retainedArUnPaidList.forEach(element => {
-         var selectedData = {
-          "patientId": element.patientId,
-          "patientName": element.firstName + ' ' + element.lastName,
-          "dateOfStudy": element.dateRead,
-          "studyDescription": element.studyDescription,
-          "cptGroup": element.cptGroup
-         }
-         retainSelectedData.push(selectedData);
+          var selectedData = {
+            "patientId": element.patientId,
+            "patientName": element.firstName + ' ' + element.lastName,
+            "dateOfStudy": element.dateRead,
+            "studyDescription": element.studyDescription,
+            "cptGroup": element.cptGroup
+          }
+          retainSelectedData.push(selectedData);
         });
-       });
+      });
       var request = {
-          "pdfPreview": retainSelectedData,
-          "radFirstName": this.storageService.user.FirstName,
-          "radLastName": this.storageService.user.LastName,
-          "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
+        "pdfPreview": retainSelectedData,
+        "radFirstName": this.storageService.user.FirstName,
+        "radLastName": this.storageService.user.LastName,
+        "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
       }
-      this.lienPortalService.PostAPI(request,LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res)=>{
-        if(res.status == LienPortalResponseStatus.Success){
+      this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res) => {
+        if (res.status == LienPortalResponseStatus.Success) {
           this.lienPortalService.FilePreview(res.result);
         }
         else
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
     }
-    else{
+    else {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.FUNDING_COMPANY_REQUIRED);
     }
   }
@@ -211,8 +212,14 @@ export class RetainUnpaidComponent implements OnInit {
     let data = {};
     this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetFundingCompanyByUser).subscribe((result) => {
       if (result.status == LienPortalResponseStatus.Success) {
-        if (result.result)
-          this.fundingCompanies = result.result
+        if (result.result) {
+          this.fundingCompanies = result.result;
+          this.defaultCompanyName = this.fundingCompanies.filter(x => x.defaultCompanyId > 0);
+          if (this.defaultCompanyName.length > 0)
+            this.assignARform.patchValue({
+              'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+            })
+        }
       }
       else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
@@ -225,7 +232,7 @@ export class RetainUnpaidComponent implements OnInit {
     if (this.receivePaymentform.valid) {
       var assignData = {
         batchId: this.checkboxSelectedData[0].lienFundingMappingId,
-        checkAmount: parseInt(this.receivePaymentform.controls.checkAmount.value),
+        checkAmount: parseFloat(this.receivePaymentform.controls.checkAmount.value),
         checkDate: this.lienPortalService.convertDateFormat(this.receivePaymentform.controls.checkDate.value),
         checkNumber: this.receivePaymentform.controls.checkNo.value,
       }
@@ -263,7 +270,7 @@ export class RetainUnpaidComponent implements OnInit {
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
         fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
-        baseUrl:window.location.origin
+        baseUrl: window.location.origin
       }
 
       this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MoveRetainARToAssignAR).subscribe((res) => {
@@ -292,6 +299,7 @@ export class RetainUnpaidComponent implements OnInit {
     this.assignARform.reset();
     this.receivePaymentform.reset();
     this.signaturePad.clear();
+
     this.assignARform.patchValue({
       'fundingCompany': '',
       'firstName': (this.storageService.user.FirstName) ? this.storageService.user.FirstName : '',
@@ -305,10 +313,14 @@ export class RetainUnpaidComponent implements OnInit {
       'checkNo': '',
     });
 
+    if (this.defaultCompanyName.length > 0)
+      this.assignARform.patchValue({
+        'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+      })
+
     this.defaultCheckDate = new Date();
 
-    if (this.lienPortalService.isDefaultSignature)
-    {
+    if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
       this.drawComplete();
     }
@@ -330,14 +342,5 @@ export class RetainUnpaidComponent implements OnInit {
         });
       });
     }, 150);
-  }
-
-  numberOnly(event): boolean {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
-
   }
 }

@@ -202,6 +202,8 @@ export class StorageService {
     localStorage.removeItem(PARTNER_ID);
     localStorage.removeItem(LIEN_TIMEOUT);
     localStorage.clear();
+    this.clearAll();
+    this.clearAuth();
   }
   // public set UserRole(value: string) {
   //   localStorage.setItem(User_Role, JSON.stringify(value));
@@ -217,7 +219,9 @@ export class StorageService {
       localStorage.removeItem('roles');
       localStorage.removeItem('_cr_u_infor');
       localStorage.removeItem('jwt_t');
-      window.location.reload();
+      if(this.user)
+        window.location.reload();
+
     }
     // return JSON.parse(localStorage.getItem(User_Role));
   }

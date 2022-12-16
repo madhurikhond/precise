@@ -92,7 +92,6 @@ export class PendingSignatureComponent {
   clearSign(): void {
     this.signaturePad.clear();
     this.signatureForm.patchValue({ fundingCompanySign: '' });
-    this.signaturePad.fromDataURL(this.defaultSignature);
   }
 
   signatureCompleted() {

@@ -60,6 +60,7 @@ export class PendingBillComponent implements OnInit {
   checkboxSelectedData: any = [];
   isDefaultSignature: boolean;
   defaultSignature: any;
+  defaultCompanyName: any[];
 
   constructor(
     private lienPortalService: LienPortalService,
@@ -141,7 +142,14 @@ export class PendingBillComponent implements OnInit {
       .subscribe(
         (result) => {
           if (result.status == LienPortalResponseStatus.Success) {
-            if (result.result) this.fundingCompanies = result.result;
+            if (result.result) {
+              this.fundingCompanies = result.result;
+              this.defaultCompanyName = this.fundingCompanies.filter(x => x.defaultCompanyId > 0);
+              if (this.defaultCompanyName.length > 0)
+                this.assignARform.patchValue({
+                  'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+              })
+            }
           } else
             this.lienPortalService.errorNotification(
               LienPortalStatusMessage.COMMON_ERROR
@@ -287,7 +295,13 @@ export class PendingBillComponent implements OnInit {
       lastName: this.storageService.user.LastName,
       radiologistSign: '',
     });
-    if (this.lienPortalService.isDefaultSignature) {
+
+     if (this.defaultCompanyName.length > 0)
+      this.assignARform.patchValue({
+        'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+      })
+    
+      if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
       this.drawComplete();
     }

@@ -141,7 +141,7 @@
                             <div class="input-group">
                                 <div class="theme-label">Total For Check</div>
                                 <label class="totlaPayAmt">{{paymentForm.get("checkAmount").value
-                                    | currency:'INR':'symbol-narrow'}}</label>
+                                    | currency:'USD':'symbol-narrow'}}</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check #</div>
-                                <input type="text" class="form-control" formControlName="checkNumber"
+                                <input type="text" class="form-control" formControlName="checkNumber"  maxlength="15" mask="000000000000000"
                                     placeholder="Check #">
                             </div>
                         </div>
