@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { CommonRegex } from 'src/app/constants/commonregex';
-import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
@@ -23,6 +23,7 @@ export class RetainUnpaidComponent implements OnInit {
     this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
+      this.setPermisstion();
       this.getRetainUnPaidList();
     }
   }
@@ -65,6 +66,8 @@ export class RetainUnpaidComponent implements OnInit {
   radiologistSign: string;
   isDefaultSignature: boolean;
   defaultSignature: any;
+  permissionForAssignAR : any;
+  permissionForReceivePayment : any;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
     private fb: FormBuilder) {
@@ -339,5 +342,19 @@ export class RetainUnpaidComponent implements OnInit {
     }
     return true;
 
+  }
+
+  setPermisstion() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children){
+        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+        if(dataAssigned.length == 1)
+          this.permissionForAssignAR = dataAssigned[0];
+        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.MarkPaidForRetainedAR);
+        if(dataRetained.length == 1)
+          this.permissionForReceivePayment = dataRetained[0];
+      }
+    }
   }
 }
