@@ -40,6 +40,7 @@ export class CreateAlertComponent implements OnInit {
   alertButtonClick: boolean = false;
   readonly CkeConfig = ckeConfig;
   Issubmitted:boolean =false;
+  isPatientPhone = false ;
   name = 'ng2-ckeditor';
   //ckeConfig: CKEDITOR.config;
   ckeConfig:any;
@@ -112,7 +113,7 @@ export class CreateAlertComponent implements OnInit {
       infoAdditionalPhone1: '',
       infoAdditionalPhone2: '',
       infoAdditionalPhone3: '',
-      smsTextModel : ['', Validators.required]
+      smsTextModel : ['',Validators.required]
     });
 
     this.isContactModelShow = false;
@@ -327,7 +328,7 @@ export class CreateAlertComponent implements OnInit {
 
   }
   onchkPatientPhoneChange(id) {
-
+    this.isPatientPhone = id.target.checked;
   }
   ClearInfoList() {
     this.brokerInfoList = [];
@@ -386,6 +387,10 @@ export class CreateAlertComponent implements OnInit {
   }
   btnCreateAlert() {
     debugger
+   
+    if(this.addPhoneChecked == false && this.isPatientPhone == false ) {
+      this.contactInfoForm.get('smsTextModel').setErrors(null);
+    }
     var PatientID  = this.contactInfoForm.get('patientID').value ;
     var patientId = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
     this.contactInfoForm.get('patientID').setValue(patientId);
@@ -484,7 +489,8 @@ export class CreateAlertComponent implements OnInit {
     this.Issubmitted = false;
     this.modalValue = ''
     this.patientFieldDisable= false;
-
+    this.addPhoneChecked = false ;
+    this.isPatientPhone  = false ;
   }
   sendEmail() {
     if (this.emailSend.length > 0) {
