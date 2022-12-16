@@ -61,12 +61,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.checkIsLoggedIn()) {
       //this.router.navigate(['dashboard']);
-      this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
+      
       if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
       {
         this.storageService.LastPageURL = null;
         this.onLienPortalLogin();
       }else{
+        this.redirectLinkWithPermission = this.redirectLinkPremission(this.storageService.UserRole)
         this.patientPortalService.refreshToken();
         this.lienPortalService.refreshLienToken();
         this.router.navigate((this.storageService.LastPageURL === null || this.storageService.LastPageURL === '') ? [this.redirectLinkWithPermission] : [this.storageService.LastPageURL]);

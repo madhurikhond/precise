@@ -7,6 +7,8 @@ import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum'
 import { NotificationService } from '../common/notification.service';
 import { StorageService } from '../common/storage.service';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
+import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ export class LienPortalService {
   defaultSignature : string;
 
   constructor(private readonly _httpService: HttpLienPortalRequestService,
-    private readonly notificationService: NotificationService,
+    private readonly notificationService: NotificationService,private readonly route:Router,
     public storageService: StorageService) { }
 
   GetLienPartnerToken(showGlobalLoader: boolean = true) {
@@ -79,6 +81,10 @@ export class LienPortalService {
         if (res.status == LienPortalResponseStatus.Success) {
           this.storageService.PartnerId = res.result.partnerId;
           this.storageService.LienJWTToken = res.result.jwtToken;
+          if(this.storageService.user.UserType === RADIOLOGIST_TYPE)
+          {
+            this.route.navigate(['lien-portal']);
+          }
         }
       }
       else {
