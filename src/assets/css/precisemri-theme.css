@@ -7339,7 +7339,7 @@ ngb-modal-window.modal{
     }
 
 .payment-invoice-popup{
-	z-index: 1052;
+	z-index: 1058 !important;
 }
 #CalendarSchedulerWindow .modal-body .dhx_scheduler_month,#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{
 	overflow-y: hidden !Important;
