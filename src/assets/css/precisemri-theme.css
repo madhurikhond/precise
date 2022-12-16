@@ -6804,6 +6804,9 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #viewFile, #viewFile_Doc, #docManagerRefFundingCo, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
 	z-index: 1052;
 }
+#viewFile_DocManager{
+	z-index: 1060 !important;
+}
 #viewFileFundingCo, #uploadFilePopUpFundingCo, #send-documents, #deleteItemConfirmPopUpFundingCo, #RenamePopUpFundingCo{
 	z-index: 1053;
 }
@@ -7336,7 +7339,7 @@ ngb-modal-window.modal{
     }
 
 .payment-invoice-popup{
-	z-index: 1052;
+	z-index: 1058 !important;
 }
 #CalendarSchedulerWindow .modal-body .dhx_scheduler_month,#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{
 	overflow-y: hidden !Important;
@@ -7346,6 +7349,8 @@ ngb-modal-window.modal{
 #CalendarSchedulerWindow .modal-body .dhx_cal_data{overflow-y: scroll;
 	height: calc(100% - 300px) !IMPORTANT;
 }
+#CalendarSchedulerWindow .modal-body .dhx_scheduler_month .dhx_cal_data{overflow-y: scroll !important;
+overflow-x: hidden;	}
 .CalendarTooltip{  z-index: 1050 !important }
 .invalid-feedback{
 	line-height: 17px;

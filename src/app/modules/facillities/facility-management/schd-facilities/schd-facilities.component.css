@@ -20,6 +20,9 @@
    .enableClass{
     pointer-events: all !important;
    }
+   .popUpClose{
+    z-index: 1056 !important;
+   }
 
 
  

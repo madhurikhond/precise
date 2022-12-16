@@ -2,8 +2,8 @@
 
     <div class="tableDataSection">
         <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
-            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
+            <a class="btn btn-common btn-retainedAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForRetainAR && permissionForRetainAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForAssignAR && permissionForAssignAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
         <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"

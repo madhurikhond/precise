@@ -359,7 +359,7 @@
                         <dxi-column dataField="BlockLeaseNumber" caption="Token"></dxi-column>
                         <dxi-column dataField="TotalHours" caption="Lease Hours"></dxi-column>
                         <dxi-column dataField="LeaseAgreement" cellTemplate="leaseAggrementTemplate"
-                            caption="Lease Aggrements"></dxi-column>
+                            caption="Lease Agreements"></dxi-column>
                         <div *dxTemplate="let data of 'leaseDateCellTemplate'">
                             <ng-container *ngIf="data && data.value">
                                 {{data.value | date:dateTimeFormatCustom.Date}}

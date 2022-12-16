@@ -88,11 +88,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   headerTitle: string = '';
   selectedFileData: any;
   billArray: any;
-  isFileSizeSmall : any 
+  isFileSizeSmall: any
   readonly dateTimeFormatCustom = DateTimeFormatCustom;
   show: boolean = false;
-  fileLocation :any ;
-  isRadioLogist:boolean = false;
+  fileLocation: any;
+  isRadioLogist: boolean = false;
   @HostListener('document:click', ['$event'])
   onClickEvent(event: MouseEvent) {
     let docManagerHeadertd = <HTMLElement>event.target;
@@ -133,32 +133,30 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       items: [{ text: 'Open' }, { text: 'Send Document' }, { text: 'Delete' }, { text: 'Rename' }, { text: 'Upload' }],
       onItemClick: this.onItemClick.bind(this)
     };
-    if(this.storageService.user.UserType == RADIOLOGIST_TYPE)
-    {
+    if (this.storageService.user.UserType == RADIOLOGIST_TYPE) {
       this.CustomToolBarItem1 = {
-      items: [{ text: 'Download All Files' }],
-      onItemClick: this.onItemClick.bind(this)
+        items: [{ text: 'Download All Files' }],
+        onItemClick: this.onItemClick.bind(this)
       };
       this.isRadioLogist = false;
-    }else{
+    } else {
       this.CustomToolBarItem1 = {
         items: [{ text: 'Upload' }, { text: 'Scan' }, { text: 'Download All Files' }, { text: 'Delete Selected Files' }],
         onItemClick: this.onItemClick.bind(this)
-        };
+      };
       this.isRadioLogist = true;
     }
-    if(this.isRadioLogist)
-    {
+    if (this.isRadioLogist) {
       this.CustomToolBarItem2 = {
         items: [{ text: 'Download Selected' }],
         onItemClick: this.onItemClick.bind(this)
       };
-    }else{
-    this.CustomToolBarItem2 = {
-      items: [{ text: 'Download Selected' }, { text: 'Delete Selected Files' }],
-      onItemClick: this.onItemClick.bind(this)
-    };
-  }
+    } else {
+      this.CustomToolBarItem2 = {
+        items: [{ text: 'Download Selected' }, { text: 'Delete Selected Files' }],
+        onItemClick: this.onItemClick.bind(this)
+      };
+    }
     this.onItemClick = this.onItemClick.bind(this);
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;
 
@@ -322,7 +320,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       if (res.response != null) {
         this.path = JSON.parse(res.response).Base64;
         if (text == 'Open') {
-          
+
           this.displayFile(name, e.file.dataItem.filePath);
         }
         // else if (text == 'Download Selected') {
@@ -330,26 +328,25 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
         //   this.downloadFile(this.selectedFileNames, this.path);
         // }
       }
-      if (text == 'Download Selected') {
-        debugger
+      if (text == 'Download Selected') {        
         let fileExtension = this.selectedFileNames.split('.').pop();
         if (this.selectedFileNames.match(/.(jpg|jpeg|png|gif)$/i)) {
-                  this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
-                }
-                else if (this.selectedFileNames.match(/.(pdf)$/i)) {
-                  this.selectedFileBase64String = 'data:application/pdf;base64|' + this.path;
-                }
+          this.selectedFileBase64String = 'data:image/' + fileExtension + ';base64,' + this.path;
+        }
+        else if (this.selectedFileNames.match(/.(pdf)$/i)) {
+          this.selectedFileBase64String = 'data:application/pdf;base64,' + this.path;
+        }
         this.downloadFile(this.selectedFileNames, this.selectedFileBase64String);
       }
     })
   }
   onItemClick(e) {
-   
+
     if (e.itemData.text == 'Open') {
-     
+
       if (this.selectedFileKeys.length == 1) {
-       // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
-         this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath);
+        // this.getFilesByKey(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath, e.itemData.text, e)
+        this.displayFile(e.fileSystemItem.dataItem.name, e.fileSystemItem.dataItem.filePath);
         // call the Api here. It takes 1 parameter the base64 string
       }
       else if (this.selectedFileKeys.length > 1) {
@@ -363,11 +360,11 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       if (this.selectedFileKeys.length == 1) {
         this.getFilesByKey(this.selectedFileNames, this.fileLocation, e.itemData.text, e)
         //this.downloadFile(this.selectedFileNames, this.selectedFileBase64String)
-       
+
         //this.clearSelectedFields();
       }
       else if (this.selectedFileKeys.length > 1) {
-       
+
         this.getFilesByKeys(e.itemData.text)
         //this.downloadAllFilesAsZipFile(this.selectedFileItems);
       }
@@ -432,7 +429,17 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
         this.hiddenFileDeleteItem.nativeElement.click();
       }
     }
-    else if (e.itemData.text == 'Delete' || e.itemData.text == 'Delete Selected Files') {
+    else if (e.itemData.text == 'Delete') {
+      this.hiddenFileDeleteItem.nativeElement.click();
+      this.currentDeleteItemRecord = null;
+      this.selectedDeletedDoc = [];
+      if (e.fileSystemItem)
+        this.currentDeleteItemRecord = { 'docId': e.fileSystemItem.dataItem.docId, 'name': e.fileSystemItem.dataItem.name, 'referrerId': e.fileSystemItem.dataItem.referreId }
+      else
+        this.currentDeleteItemRecord = { 'docId': this.selectedFileItems[0].docId, 'name': this.selectedFileItems[0].name, 'referrerId': this.selectedFileItems[0].referreId }
+    }
+
+    else if (e.itemData.text == 'Delete Selected Files') {
       if (this.selectedFileKeys.length == 1) {
         this.hiddenFileDeleteItem.nativeElement.click();
         this.currentDeleteItemRecord = null;
@@ -447,7 +454,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       }
     }
     else if (e.itemData.text == 'Rename') {
-    
+
       if (this.selectedFileKeys.length == 1) {
         this.hiddenFileRenamePopUpItem.nativeElement.click();
         this.currentRenameItemRecord = null;
@@ -517,7 +524,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     this.selectedFileNames = e.selectedItems.map(m => m.name)[0];
     if ((this.selectedFileNames) == undefined)
       this.selectedFileNames = ''
-      
+
     if (this.selectedFileNames) {
       this.selectedFileKeys = e.selectedItemKeys;
       var fileExtension = this.selectedFileNames.split('.').pop();
@@ -699,7 +706,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
   fileBrowseHandler(files) {
-debugger
+    debugger
     this.selectedUploadFile = [];
     if (files.length > 1) {
       this.hiddenCommonMessagePopUpButton.nativeElement.click();
@@ -708,12 +715,12 @@ debugger
     }
     if (files[0].name.match(/.(jpg|jpeg|png|gif|bmp|txt|doc|docx|xlsx|xls|pdf)$/i)) {
       let fileSize = this.formatBytes(files[0].size, undefined);
-      this.isFileSizeSmall = files[0].size == 0 ? true : false ;
+      this.isFileSizeSmall = files[0].size == 0 ? true : false;
       if (files[0].size < 4000000 && !this.isFileSizeSmall) {
         this.prepareFilesList(files);
         this.isfileSizeOk = false;
       }
-        else if(!this.isFileSizeSmall){
+      else if (!this.isFileSizeSmall) {
         this.isfileSizeOk = true;
       }
     }
@@ -723,7 +730,7 @@ debugger
       this.CodeErrorNotification('File type not allowed');
     }
   }
-  
+
   uploadFile(file: any) {
     if (this.selectedUploadFile.length == 0) {
       return;
@@ -863,7 +870,7 @@ debugger
     }
   }
   renameOrCancelItem(isItemRename: boolean) {
-    
+
     this.submitted = true;
     this.modelValue = 'modal';
     if (this.renameForm.invalid) {
@@ -873,7 +880,7 @@ debugger
     if (isItemRename) {
       let updatedNewFileName = this.refrenameForm.renameTxt.value + '.' + this.GetRenameFileExtension;
       if (updatedNewFileName != this.currentRenameItemRecord.name) {
-        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64); 
+        this.renameFile(this.currentRenameItemRecord.docId, encodeURIComponent(this.currentRenameItemRecord.name), encodeURIComponent(updatedNewFileName), this.currentRenameItemRecord.referrerId, this.currentRenameItemRecord.docType, this.currentRenameItemRecord.fileBase64);
       }
     }
     else {
@@ -890,8 +897,8 @@ debugger
       paths = this.selectedFileItems.map(m => m.filePath);
     }
     paths.forEach(function (value) {
-      IdString=IdString+"|"+value;
-    }); 
+      IdString = IdString + "|" + value;
+    });
     this.documentmanagerService.getFilesByKeys(true, JSON.stringify(IdString)).subscribe((res) => {
       if (res.response != null) {
         this.downloadAllBasePath = res.response
@@ -907,11 +914,11 @@ debugger
   renameFile(docId: any, OldFileName: any, NewfileName: any, patientId: any, docType: string, fileBase64: any) {
     this.documentmanagerService.renameFile(true, OldFileName, NewfileName, patientId, docId, Number(this.storageService.user.UserId), this.fromPage, null, docType).subscribe((res) => {
       if (res.responseCode == 200) {
-        
+
         let index: number = this.fileItems.map(function (e) { return e.docId; }).indexOf(docId);
         if (index !== -1) {
           this.fileItems[index].name = res.response;
-          this.fileItems[index].filePath = this.fileItems[index].filePath.replace(OldFileName.replace(/%20/g,' ') ,res.response);
+          this.fileItems[index].filePath = this.fileItems[index].filePath.replace(OldFileName.replace(/%20/g, ' '), res.response);
           this.fileManager.instance.refresh();
         }
         this.successNotification(res);
