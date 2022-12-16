@@ -10,6 +10,7 @@ import {
   LienPortalPageTitleOption,
   LienPortalResponseStatus,
   LienPortalStatusMessage,
+  OriginalLienOwnerPermission,
 } from 'src/app/models/lien-portal-response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,6 +29,7 @@ export class PendingBillComponent implements OnInit {
     this.totalRecord= 0;
     if (val && val != '') {
       this.getfilterData = val;
+      this.setPermisstion();
       this.getListingData();
     }
   }
@@ -60,6 +62,10 @@ export class PendingBillComponent implements OnInit {
   checkboxSelectedData: any = [];
   isDefaultSignature: boolean;
   defaultSignature: any;
+  permissionForAssignAR : any;
+  permissionForRetainAR : any;
+  permissionTitleAssignAR = OriginalLienOwnerPermission.BillStudiesAndAssignAR;
+  permissionTitleRetainAR = OriginalLienOwnerPermission.BillStudiesAndRetainAR;
   defaultCompanyName: any[];
 
   constructor(
@@ -334,5 +340,19 @@ export class PendingBillComponent implements OnInit {
           );
         }
       );
+  }
+
+  setPermisstion() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children){
+        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+        if(dataAssigned.length == 1)
+          this.permissionForAssignAR = dataAssigned[0];
+        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
+        if(dataRetained.length == 1)
+          this.permissionForRetainAR = dataRetained[0];
+      }
+    }
   }
 }

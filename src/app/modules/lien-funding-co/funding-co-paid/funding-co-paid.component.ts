@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
@@ -20,7 +20,7 @@ export class FundingCoPaidComponent {
 
   getfilterData: any;
   permission : any;
-  index = 1;
+  permissionTitle = LienPortalFundingCoPermission.PayForAR;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
@@ -190,8 +190,11 @@ export class FundingCoPaidComponent {
   setPermisstion() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
-      if (permission.Children)
-        this.permission = permission.Children[this.index];
+      if (permission.Children){
+        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+        if(data.length == 1)
+          this.permission = data[0];
+      }
     }
   }
 }
