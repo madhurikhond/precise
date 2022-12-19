@@ -77,13 +77,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
+                <h5 class="modal-title">Assign Selected Accounts Receivables To The Following Funding Company</h5>
                 <div class="close-dismiss" data-dismiss="modal" #closeBtn></div>
             </div>
             <form [formGroup]="assignARform">
                 <div class="modal-body">
                     <div class="modal-content">
-                        <p class="stepText"> 1. Assign a funding company</p>
+                        <p class="stepText lower-text-data"> 1. Assign a funding company</p>
                         <div class="form-group">
                             <select class="form-control" formControlName="fundingCompany">
                                 <option value="">Select</option>
@@ -91,7 +91,7 @@
                                     {{item.fundingCompanyName}}</option>
                             </select>
                         </div>
-                        <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                        <p class="stepText lower-text-data"> 2. Sign & generate an AR assignments to the selected funding company</p>
                         <div class="ar-assignment-form">
                             <div class="row">
                                 <div class="col-6">

@@ -1,12 +1,12 @@
 <div class="inner-tab-content">
-    <div class="row pt-2">
-        <div class="col-md-6">
+    <div class="row">
+        <!-- <div class="col-md-6">
             <label *ngIf="dataSource.length > 0">
                 <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
                 Select All
             </label>
-        </div>
-        <div class="col-md-6 headerBtnSection">
+        </div> -->
+        <div class="col-md-12 headerBtnSection">
             <div class="selectAction-sec">
                 <div class="selectAction-Dropdown">
                     <div class="form-group">
@@ -107,16 +107,16 @@
             </div>
             <div class="modal-body">
                 <div class="modal-content">
-                    <p class="confirmationText">This will remove the entire payment. Are you sure you want to continue?
+                    <p class="modal-lower-case">This will remove the entire payment. Are you sure you want to continue?
                     </p>
-                    <p class="confirmationText">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES. VOID ANY
-                        NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
+                    <p class="modal-upper-case">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES.</p>
+                    <p class="pt-2"> VOID ANY NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate" (click)="removePayment()">Yes</button>
+                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate" (click)="removePayment()">Yes Cancel And Remove Payment</button>
             </div>
         </div>
     </div>

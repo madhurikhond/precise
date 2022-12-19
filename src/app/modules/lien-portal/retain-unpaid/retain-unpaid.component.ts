@@ -23,7 +23,7 @@ export class RetainUnpaidComponent implements OnInit {
     this.totalRecord = 0;
     if (val && val != "") {
       this.getfilterData = val;
-      this.setPermisstion();
+      this.setPermission();
       this.getRetainUnPaidList();
     }
   }
@@ -143,6 +143,7 @@ export class RetainUnpaidComponent implements OnInit {
       if (item.currentSelectedRowKeys.length > 0) {
         var selectedbatchName = item.currentSelectedRowKeys[0].batchName;
         var chkBatch = document.getElementsByName(selectedbatchName);
+        item.currentDeselectedRowKeys = item.selectedRowKeys.filter(x=> { return x.batchName != selectedbatchName});
         chkBatch.forEach(item => {
           var element = <HTMLInputElement>item;
           element.checked = true;
@@ -155,6 +156,7 @@ export class RetainUnpaidComponent implements OnInit {
         var deSelectedbatchname = item.currentDeselectedRowKeys[0].batchName;
         var chkBatch = document.getElementsByName(deSelectedbatchname);
         this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
+        this.dataGrid.instance.deselectRows(item.currentDeselectedRowKeys[0]);
         chkBatch.forEach(function (item) {
           var element = <HTMLInputElement>item;
           element.checked = false;
@@ -347,7 +349,7 @@ export class RetainUnpaidComponent implements OnInit {
     }, 150);
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){

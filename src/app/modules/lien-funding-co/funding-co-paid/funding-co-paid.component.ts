@@ -95,12 +95,25 @@ export class FundingCoPaidComponent {
       this.dataGrid.instance.deselectAll();
   }
 
-  changeCheckbox($event: any) {
-    this.selectedData = $event.selectedRowsData;
-    if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
-      this.isSelectAll = true;
-    else if ($event.selectedRowsData.length == 0)
-      this.isSelectAll = false;
+  changeCheckbox(item: any) {
+
+    this.dataGrid.instance.expandRow((item.currentSelectedRowKeys[0]));
+    this.selectedData = item.selectedRowsData;
+    // if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
+    //   this.isSelectAll = true;
+    // else if ($event.selectedRowsData.length == 0)
+    //   this.isSelectAll = false;
+
+      if (item.currentSelectedRowKeys.length > 0) {
+        var selectedCheckNo = item.currentSelectedRowKeys[0].checkNumber;
+        item.currentDeselectedRowKeys = item.selectedRowKeys.filter(x=> { return x.checkNumber != selectedCheckNo});
+      }
+
+      //Deselection
+      if (item.currentDeselectedRowKeys.length > 0) {
+        this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
+        this.dataGrid.instance.deselectRows(item.currentDeselectedRowKeys[0]);
+      }
   }
 
   onPageNumberChange(pageNumber: any) {
