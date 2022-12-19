@@ -171,6 +171,7 @@ export class PendingBillComponent implements OnInit {
 
   previewAssignment() {
     if (Number(this.assignARform.get('fundingCompany').value)) {
+      var selectedFundingCompany = this.fundingCompanies.filter(x=>x.fundingCompanyId == (this.assignARform.get('fundingCompany').value));
       var checkboxSelectedData = this.checkboxSelectedData.map((data) => ({
         patientId: data.patientId,
         patientName: data.firstName + ' ' + data.lastName,
@@ -183,6 +184,7 @@ export class PendingBillComponent implements OnInit {
         radFirstName: this.storageService.user.FirstName,
         radLastName: this.storageService.user.LastName,
         fundingCompanyId: Number(this.assignARform.get('fundingCompany').value),
+        fundingCompany: selectedFundingCompany[0].fundingCompanyName,
       };
       this.lienPortalService
         .PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment)
