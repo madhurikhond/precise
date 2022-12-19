@@ -1274,3 +1274,12 @@ p {
 .emailesginpdf{
 	font-size: 25px;
 }
+
+.pending-lease-pdf{position: relative;}
+.pending-lease-pdf h3{display: inline-block;}
+.pending-lease-pdf a{
+	position: absolute;
+   
+    top: 0px;
+    padding-left: 12px;
+}
