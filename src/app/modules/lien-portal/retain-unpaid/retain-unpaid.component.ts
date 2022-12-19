@@ -174,6 +174,7 @@ export class RetainUnpaidComponent implements OnInit {
 
   previewAssignment() {
     if (Number(this.assignARform.get("fundingCompany").value)) {
+      var selectedFundingCompany = this.fundingCompanies.filter(x=>x.fundingCompanyId == (this.assignARform.get('fundingCompany').value));
       var retainSelectedData = [];
       this.checkboxSelectedData.map(data => {
         data.retainedArUnPaidList.forEach(element => {
@@ -192,6 +193,7 @@ export class RetainUnpaidComponent implements OnInit {
         "radFirstName": this.storageService.user.FirstName,
         "radLastName": this.storageService.user.LastName,
         "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
+        "fundingCompany": selectedFundingCompany[0].fundingCompanyName,
       }
       this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
