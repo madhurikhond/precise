@@ -6,17 +6,13 @@
                     <div class="esign-header-left">
                         <img src="assets/images/precise-imaging-logo.png" class="logo">
                     </div>
-                    <div>
-                        <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(leaseAgreementPath,'')"
-                            class="link-btn fa fa-file-pdf-o" data-toggle="modal"
-                            data-target="#view-lease-aggrement-pdf"></a>
-                    </div>
+
                 </div>
                 <div class="esign-header-title"> <span id="lblepftype" class="page-title">FACILITY LEASE
                         AGREEMENT</span>
                 </div>
                 <div class="paragraph-group">
-                    <p> <strong>This LEASE AGREEMENT .</strong></p>
+                    <p> <strong></strong></p>
                     <!-- This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
                     {{LeaseDetail.createdOn}} (the "Effective Date") by and between {{LeaseDetail.FacilityParentName }}
                     (hereinafter referred to as
@@ -24,15 +20,24 @@
                     referred
                     to as the “Lessee"). -->
                     This LEASE AGREEMENT (this "Agreement") is made, entered into and effective on and as of
-                    (the "Effective Date") by and between 
+                    (the "Effective Date") by and between
                     (hereinafter referred to as
                     the "Lessor") and Precise MRI Corp., dba Precise Imaging, a California Corporation (here in after
                     referred
                     to as the “Lessee").
                 </div>
+                    <div>
+                        <h3>View pending lease</h3>
+                        <a href="javascript:void(0)" (click)="getLeaseAggrementDetail(leaseAgreementPath,'')"
+                            class="link-btn fa fa-file-pdf-o emailesginpdf" data-toggle="modal"
+                            data-target="#view-lease-aggrement-pdf"></a>
+                        
+
+                    </div>
+                
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">PLEASE SIGN YOUR LEASE AGREEMENT</h5>
+                        <h3 class="modal-title">Please sign below</h3>
                         <div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
                     </div>
                     <form name="form"
@@ -103,8 +108,9 @@
                                                 <div>signature is required</div>
                                             </div>
                                         </div>
-                                        <a href="javascript:void(0)" (click)="clearSign(false);" style="background-color: gray;"
-                                        class="btn btn-theme btn-sm">Clear Signature</a>
+                                        <a href="javascript:void(0)" (click)="clearSign(false);"
+                                            style="background-color: gray;" class="btn btn-theme btn-sm">Clear
+                                            Signature</a>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +121,7 @@
                                 [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                                 class="btn btn-theme btn-sm pull-left">Sign</button>
                             <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
-                                data-dismiss="modal" #closeBtn (click)="clearSign(true)" >Clear</a>
+                                data-dismiss="modal" #closeBtn (click)="clearSign(true)">Clear</a>
                         </div>
                     </form>
                 </div>
@@ -143,7 +149,7 @@
     <img src="assets/images/award.png">
     <p>We have received your eSigned, thank you.</p>
 </div>
-<div  class="esign-successful" *ngIf="isEsignValid">
+<div class="esign-successful" *ngIf="isEsignValid">
     <img src="assets\images\alert.png">
     <p>The lease agreement has been already signed by the facility.</p>
 </div>
