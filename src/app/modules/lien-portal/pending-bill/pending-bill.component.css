@@ -51,6 +51,7 @@
 color: #2269be;
 border-color: #2269be;
 font-style: normal !important;
+text-transform: none !important;
 }
 .signatureBtn{
     display: flex;
@@ -70,13 +71,12 @@ font-style: normal !important;
     font-weight: 400;
 }
 .stepText {
-    text-transform: capitalize;
+    text-transform: none;
     font-size: 14px;
     font-weight: 500;
     color: #3f3e3e;
 }
 .confirmationText {
-    text-transform: capitalize;
     font-size: 14px;
     font-weight: 500;
     color: #000;
@@ -85,4 +85,7 @@ font-style: normal !important;
 }
 .modal-content .confirmationText:last-child{
     margin-bottom: 0;
+}
+.lower-text-data{
+    text-transform: none !important;
 }
