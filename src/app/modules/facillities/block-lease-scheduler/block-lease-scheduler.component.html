@@ -208,7 +208,7 @@
                                 *ngIf="getColumnByDataField(data)[0].IsMriService === false && data.column.caption == 'MRI'">
                                 <img src="/assets/images/schedule-cross.png" style="width: 18px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (getColumnByDataField(data)[0].CT > 0 && getColumnByDataField(data)[0].CT != null || getColumnByDataField(data)[0].MRI > 0 && getColumnByDataField(data)[0].MRI !== null)">
+                            <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (getColumnByDataField(data)[0].CT > 0 && getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].MRI > 0 && getColumnByDataField(data)[0].MRI !== null)">
                                 <img class="paid_unpaid_cursor"
                                     (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
