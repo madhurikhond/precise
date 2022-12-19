@@ -25,7 +25,7 @@ export class FundingCoUnpaidComponent {
     if (val && val != null) {
       this.getFilterData = val;
       this.getListingData();
-      this.setPermisstion();
+      this.setPermission();
     }
   }
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
@@ -144,7 +144,7 @@ export class FundingCoUnpaidComponent {
     this.commonService.sendDataToDocumentManager(patientId);
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){

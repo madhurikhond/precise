@@ -37,7 +37,7 @@ export class FundingCoSettingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setPermisstion();
+    this.setPermission();
     this.getFundingCompanySettings();
   }
 
@@ -113,7 +113,7 @@ export class FundingCoSettingComponent implements OnInit {
     })
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){
