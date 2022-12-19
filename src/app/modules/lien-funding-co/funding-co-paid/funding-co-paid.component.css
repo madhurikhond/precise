@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
 }
 
 .selectAction-Dropdown .form-group {
@@ -74,4 +74,10 @@
 }
 .dropDown{
     margin: 6px;
+}
+.modal-lower-case {
+    text-transform: none !important;
+}
+.modal-upper-case{
+    text-transform: uppercase !important;
 }
