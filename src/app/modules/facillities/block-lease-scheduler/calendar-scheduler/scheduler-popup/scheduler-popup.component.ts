@@ -147,9 +147,9 @@ export class SchedulerPopupComponent implements OnInit {
           start_time: null,
           end_time: null
         })
-        this.leaseForm.patchValue({
-          end_time: new Date("1/1/2019 12:05:00 AM")
-        })
+        // this.leaseForm.patchValue({
+        //   end_time: new Date("1/1/2019 12:05:00 AM")
+        // })
       }
     }
     this.setValidatorForleaseForm();
