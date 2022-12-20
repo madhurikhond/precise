@@ -983,6 +983,7 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getAllBlockLeaseCredits();
         this.getblockLeasePaymentByFacilityId(this.facilityId);
         this.getUnpaidLeases();
+        this.getFacilityCreditsUnUsed();
       }
     }, (err: any) => {
       this.errorNotification(err);
