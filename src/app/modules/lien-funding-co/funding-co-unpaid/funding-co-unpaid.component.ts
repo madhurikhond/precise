@@ -97,7 +97,7 @@ export class FundingCoUnpaidComponent {
 
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
       this.isSelectedAll = true;
-    else if ($event.selectedRowsData.length == 0)
+    else
       this.isSelectedAll = false;
   }
 
