@@ -95,7 +95,7 @@ export class RetainUnpaidComponent implements OnInit {
       radiologistSign: ['', Validators.required]
     })
     this.receivePaymentform = this.fb.group({
-      checkAmount: ['', [Validators.required]],
+      checkAmount: ['', [Validators.required ,Validators.pattern(/^(?=.*[1-9])(?:[1-9]\d*\.?|0?\.)\d*$/)]],
       checkDate: ['', Validators.required],
       checkNo: ['', Validators.required],
     })
@@ -349,6 +349,15 @@ export class RetainUnpaidComponent implements OnInit {
         });
       });
     }, 150);
+  }
+
+  getInputData(data) {
+    if (data) {
+      if (!((data.target.value).match('^[1-9][0-9]*$'))) {
+        if (data.target.value.length == 1)
+          this.receivePaymentform.controls.checkAmount.setValue('');
+      }
+    }
   }
 
   setPermission() {
