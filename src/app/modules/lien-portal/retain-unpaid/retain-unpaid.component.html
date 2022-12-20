@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check $</div>
-                                    <input type="text" maxlength="18" mask="99999999999999.00" class="form-control" formControlName="checkAmount" placeholder="Check Amount">
+                                    <input type="text" (input)="getInputData($event)" mask="separator.2" thousandSeparator="" separatorLimit="99999999999999" class="form-control" formControlName="checkAmount" placeholder="Check Amount">
                                 </div>
                             </div>
                             <div class="form-group">
