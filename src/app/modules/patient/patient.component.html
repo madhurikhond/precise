@@ -1150,7 +1150,7 @@
                                     <dxi-column dataField="UserDetail" caption="DETAILS"></dxi-column>
                                     <dxi-column dataField="PreviousState" caption="PREVIOUS STATE">
                                     </dxi-column>
-                                    <dxi-column dataField="NextState" caption="NEXT STATE" [visible]="false">
+                                    <dxi-column dataField="NextState" caption="NEXT STATE">
                                     </dxi-column>
                                     <div *dxTemplate="let ts of 'timeStamp'">
                                         {{ts.value |date: dateTimeFormatCustom.DateTimeWithSec}}
