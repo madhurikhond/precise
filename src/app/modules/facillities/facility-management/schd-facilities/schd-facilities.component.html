@@ -3822,7 +3822,7 @@
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
 																data-toggle="modal"
-																	data-target="#viewFile_Doc"
+																	data-target="#viewFile_Docx"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
@@ -4248,7 +4248,7 @@
 	</div>
 </div>
 
-<div class="modal fade modal-theme in test" id="viewFile_Doc" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
+<div class="modal fade modal-theme in test" id="viewFile_Docx" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
 data-keyboard="false" tabindex="-1" role="dialog"
 aria-labelledby="exampleModalLabel" aria-modal="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -4356,5 +4356,5 @@ aria-labelledby="exampleModalLabel" aria-modal="true">
 	data-target="#add-Edit-facility"></button>
 <button class="d-none" #hiddenDeleteUnusedCreditLink [hidden]="true" data-toggle="modal"
 	data-target="#deleteUnusedCreditLink"></button>
-<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
+<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Docx"></button>
 <app-document-manager-facility></app-document-manager-facility>
