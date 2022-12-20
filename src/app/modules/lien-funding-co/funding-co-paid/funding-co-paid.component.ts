@@ -26,7 +26,7 @@ export class FundingCoPaidComponent {
     if (val && val != null) {
       this.getfilterData = val;
       this.getFundingCoPaidList();
-      this.setPermisstion();
+      this.setPermission();
     }
   }
 
@@ -200,7 +200,7 @@ export class FundingCoPaidComponent {
     }
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){

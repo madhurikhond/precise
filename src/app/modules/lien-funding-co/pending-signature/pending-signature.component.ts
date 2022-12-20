@@ -61,7 +61,7 @@ export class PendingSignatureComponent {
     private storageService: StorageService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
-    this.setPermisstion();
+    this.setPermission();
     this.getFundingCompanySetting();
     this.signatureForm = this.fb.group({
       firstName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable)? this.storageService.user.FirstName : '', Validators.required],
@@ -200,7 +200,7 @@ export class PendingSignatureComponent {
       this.lienPortalService.downloadFile(data.fileName, data.fileByte);
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){

@@ -29,7 +29,7 @@ export class PendingBillComponent implements OnInit {
     this.totalRecord= 0;
     if (val && val != '') {
       this.getfilterData = val;
-      this.setPermisstion();
+      this.setPermission();
       this.getListingData();
     }
   }
@@ -308,7 +308,7 @@ export class PendingBillComponent implements OnInit {
       this.assignARform.patchValue({
         'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
       })
-    
+
       if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
       this.drawComplete();
@@ -344,7 +344,7 @@ export class PendingBillComponent implements OnInit {
       );
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
       if (permission.Children){
