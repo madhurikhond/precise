@@ -48,7 +48,7 @@ export class AddFundingCompanyComponent implements OnInit {
       notifyAssignment: [[], Validators.required]
     });
   }
-
+434
   ngOnInit(): void {
     this.bindState_DDL();
   }
@@ -316,22 +316,19 @@ export class AddFundingCompanyComponent implements OnInit {
 
     for(let i=0;i<formData.length;i++)
     {
-      form[formData[i].groupId] = new FormControl(formData[i].price,[Validators.required]);
+      form[formData[i].groupId] = new FormControl(formData[i].price,[Validators.required,Validators.pattern(/^(?=.*[1-9])(?:[1-9]\d*\.?|0?\.)\d*$/)]);
     }
     this.fundingCompanyPriceForm = new FormGroup(form);
   }
 
-  getInputData(data,id){
-    if(data)
-      if(!((data.target.value).match('^[1-9][0-9]*$')))
-      if(data.target.value.length == 1)  
-        this.fundingCompanyPriceForm.controls[id].setValue('');
-      else
-      {
-        var newStr = data.target.value.replace(data.data, '');
-        (Number(data.data) || data.data == '.' || data.data == '0')? this.fundingCompanyPriceForm.controls[id].setValue(data.target.value) : this.fundingCompanyPriceForm.controls[id].setValue(newStr);
+  getInputData(data, id) {
+    if (data) {
+      if (!((data.target.value).match('^[1-9][0-9]*$'))) {
+        if (data.target.value.length == 1)
+          this.fundingCompanyPriceForm.controls[id].setValue('');
       }
     }
+  }
 
     onClickCompanyInfo(selectedTab){
       this.defaultSelectedTab = selectedTab;
