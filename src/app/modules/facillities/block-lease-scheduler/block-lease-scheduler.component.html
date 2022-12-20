@@ -186,18 +186,18 @@
                     </dxi-column>
                     <div *dxTemplate="let data of 'getDataTemplate'">
                         <ul class="datagrid-list">
-                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete == true && getColumnByDataField(data)[0].MRI > 0 || getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].IsScheduledComplete == true) && data.column.caption == 'MRI'">
+                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete == true && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )) && data.column.caption == 'MRI'">
                                 <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
                                     style="width: 18px;" />
                                 <span *ngIf="getColumnByDataField(data)[0].MRI > 0 && data.column.caption == 'MRI'"
                                     class="displayCounter">{{getColumnByDataField(data)[0].MRI}}</span>
 
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete== true && getColumnByDataField(data)[0].CT > 0 || getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].IsScheduledComplete== true) && data.column.caption == 'CT'">
+                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete== true && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 ))  && data.column.caption == 'CT'">
                                 <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
                                     style="width: 18px;" />
                                
-                                <span *ngIf="(getColumnByDataField(data)[0].CT > 0 || getColumnByDataField(data)[0].CT !== null) && data.column.caption == 'CT'"
+                                <span *ngIf="(getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'"
                                     class="displayCounter">{{getColumnByDataField(data)[0].CT}}</span>
                             </li>
                             <li
@@ -208,7 +208,14 @@
                                 *ngIf="getColumnByDataField(data)[0].IsMriService === false && data.column.caption == 'MRI'">
                                 <img src="/assets/images/schedule-cross.png" style="width: 18px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (getColumnByDataField(data)[0].CT > 0 && getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].MRI > 0 && getColumnByDataField(data)[0].MRI !== null)">
+                            <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
+                                <img class="paid_unpaid_cursor"
+                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
+                                    data-toggle="modal" data-target="#add-Edit-facility"
+                                    src="assets/images/paid.png"
+                                    style="width: 11px;" />
+                            </li>
+                            <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
                                     (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
@@ -216,40 +223,40 @@
                                     style="width: 11px;" />
                             </li>
                             <!-- <li><span>CT data:</span>{{getColumnByDataField(data)[0].CT}}</li> -->
-                            <li *ngIf="(getColumnByDataField(data)[0].IsUnpaid && getColumnByDataField(data)[0].MRI > 0 || getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].IsUnpaid) && data.column.caption == 'MRI'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )   && data.column.caption == 'MRI'">
                                 <img class="paid_unpaid_cursor"
                                     (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsUnpaid && getColumnByDataField(data)[0].CT > 0 || getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].IsUnpaid ) && data.column.caption == 'CT'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 )  && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
                                     (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsFacilitySign  && getColumnByDataField(data)[0].MRI > 0 || getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].IsFacilitySign) && data.column.caption == 'MRI'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign  && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )  && data.column.caption == 'MRI'">
                                 <img data-toggle="modal" data-target="#all-leases-popup"
                                     (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 18px;" />
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsFacilitySign && getColumnByDataField(data)[0].CT > 0 || getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].IsFacilitySign) && data.column.caption == 'CT'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign && (getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 )   && data.column.caption == 'CT'">
                                 <img data-toggle="modal" data-target="#all-leases-popup"
                                     (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 18px;" />
                             </li>
                             
-                            <li *ngIf="(getColumnByDataField(data)[0].IsFacilityNotSign && getColumnByDataField(data)[0].MRI > 0 || getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].IsFacilityNotSign) && data.column.caption == 'MRI'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
                                 <img data-toggle="modal" data-target="#all-leases-popup"
                                     (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 18px;" />
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsFacilityNotSign && getColumnByDataField(data)[0].CT > 0 || getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].IsFacilityNotSign) && data.column.caption == 'CT'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 ) && data.column.caption == 'CT'">
                                 <img data-toggle="modal" data-target="#all-leases-popup"
                                     (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
