@@ -1,12 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { SignaturePad } from 'angular2-signaturepad';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-facility-esign',
   templateUrl: './facility-esign.component.html',
@@ -31,7 +30,7 @@ export class FacilityEsignComponent implements OnInit {
     canvasHeight: 200
   };
   submitted = false; modelValue: string = 'modal';
-  constructor(private Activatedroute: ActivatedRoute,
+  constructor(private  Activatedroute: ActivatedRoute,
     private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
     private readonly notificationService: NotificationService,
     private sanitizer: DomSanitizer) { }
@@ -41,7 +40,7 @@ export class FacilityEsignComponent implements OnInit {
       this.BlockLeaseNumber = params.get('BLS');
       this.getEsignData();
     });
-
+    
   }
   getEsignData() {
 
@@ -61,6 +60,7 @@ export class FacilityEsignComponent implements OnInit {
       }
       else if (res.response == null) {
         this.isEsignValid = true;
+       
       } else {
         this.error(res);
       }
@@ -68,6 +68,7 @@ export class FacilityEsignComponent implements OnInit {
       this.error(err);
     });
   }
+ 
   signConfirm(isConfirmSign: boolean) {
     this.f.resetForm();
     this.signaturePad.clear();
@@ -86,7 +87,6 @@ export class FacilityEsignComponent implements OnInit {
     }
    
   }
-
   getLeaseAggrementDetail(path: any, fileData: any) {
 
     this.apiUrl = `${environment.baseUrl}/v${environment.currentVersion}/`;

@@ -37,7 +37,16 @@
                 <dxo-pager [visible]="false"></dxo-pager>
                 <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column dataField="checkNumber" caption="Checkno"></dxi-column>
+                <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
+
+                <div *dxTemplate="let data of 'CheckNumberTemplate'">
+                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="modal-lower-case">
+                      <span class="mr-2">Check No: {{data.data.checkNumber}}</span>
+                      <span class="mr-2">Check Date: {{data.data.checkDate}}</span>
+                      <span class="mr-2">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
+                    </div>
+                </div>
+
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
                     <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
