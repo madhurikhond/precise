@@ -76,3 +76,6 @@ font-style: normal !important;
 .note span {
     font-weight: 400;
 }
+.lower-text-data{
+    text-transform: none !important;
+}

@@ -83,7 +83,8 @@ export class LienFundingCoComponent implements OnInit {
         this.dateType = [
           {val:'birthDate',text:'Date Of Birth'},
           {val:'dateRead',text:'Date Of Read'},
-          {val:'assignedDate',text:'Date AR Assigned'}
+          {val:'assignedDate',text:'Date AR Assigned'},
+          {val:'executeDate',text:'Execution Date'}
         ]
         break;
       case LienFundingCoTabName.PAID:
@@ -95,7 +96,6 @@ export class LienFundingCoComponent implements OnInit {
         ]
         break;
       default:
-        this.filter = undefined;
         break;
     }
   }

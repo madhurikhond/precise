@@ -3,7 +3,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { threadId } from 'worker_threads';
@@ -30,6 +30,7 @@ export class SettingComponent implements OnInit {
   isEmailReminder: boolean = true;
   isEmailSendCopy: boolean = true;
   isDefaultSignature: boolean = true;
+
   days = [];
   time = [];
   radiologistSign: string;
@@ -46,12 +47,16 @@ export class SettingComponent implements OnInit {
   currentPageNumber: number = 1;
 
   isReadonly: boolean;
+  permission : any;
+  permissionTitle = OriginalLienOwnerPermission.BillStudiesAndAssignAR;
 
   constructor(private lienPortalService: LienPortalService,
-    private storageService: StorageService) { }
+    private storageService: StorageService) {
+      this.storageService.permission = null;
+    }
 
   ngOnInit(): void {
-
+    this.setPermission();
     this.getDaysData();
     this.getTimeData();
     this.onSettingTabClicked();
@@ -104,7 +109,7 @@ export class SettingComponent implements OnInit {
       this.defaultEmail = this.storageService.user.WorkEmail ? this.storageService.user.WorkEmail : '';
     }
     this.selectedMode = 'settings';
-    
+
   }
 
   getDaysData() {
@@ -199,24 +204,34 @@ export class SettingComponent implements OnInit {
     this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.GetRadiologistSettings).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
         var data = res.result;
-        this.isEmailReminder = data.isEmailReminder;
-        this.isEmailSendCopy = data.isEmailSendCopy;
-        this.isDefaultSignature = data.isDefaultSignature;
+        if(this.permission && this.permission.IsAdd == 'true'){
+          this.isEmailReminder = data.isEmailReminder;
+          this.isEmailSendCopy = data.isEmailSendCopy;
+          this.isDefaultSignature = data.isDefaultSignature;
+        }else{
+          this.isEmailReminder = false;
+          this.isEmailSendCopy = false;
+          this.isDefaultSignature = false;
+        }
         if(data.emailReminders){
           this.selectedDays = (data.emailReminders.dayOfWeek) ? data.emailReminders.dayOfWeek : [];
           this.selectedTimeToReminder = (data.emailReminders.timeOfDay) ? data.emailReminders.timeOfDay : '12:00 AM';
         }else{
           this.selectedDays = [];
           this.selectedTimeToReminder = '12:00 AM';
-        
         }
-        if (data.emailSendCopies.length == 1)
+
+        if (data.emailSendCopies.length > 0)
+        {
           this.defaultEmail = data.emailSendCopies[0];
         if (data.emailSendCopies.length == 2)
           this.firstEmail = data.emailSendCopies[1]
         if (data.emailSendCopies.length == 3)
+          this.firstEmail = data.emailSendCopies[1]
           this.secondEmail = data.emailSendCopies[2]
+        }
         this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+        this.radiologistSign = data.defaultSign.defaultSign;
       } else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -264,4 +279,15 @@ export class SettingComponent implements OnInit {
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
  }
+
+ setPermission() {
+  if (this.storageService.permission.length > 0) {
+    var permission :any= this.storageService.permission[0];
+    if (permission.Children){
+      var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+      if(data.length == 1)
+        this.permission = data[0];
+    }
+  }
+}
 }

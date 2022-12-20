@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
-import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
@@ -19,13 +19,13 @@ export class FundingCoUnpaidComponent {
   getFilterData: any;
   defaultCheckDate = new Date();
   permission : any;
-  index = 1;
+  permissionTitle = LienPortalFundingCoPermission.PayForAR;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
       this.getFilterData = val;
       this.getListingData();
-      this.setPermisstion();
+      this.setPermission();
     }
   }
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
@@ -144,11 +144,14 @@ export class FundingCoUnpaidComponent {
     this.commonService.sendDataToDocumentManager(patientId);
   }
 
-  setPermisstion() {
+  setPermission() {
     if (this.storageService.permission.length > 0) {
       var permission :any= this.storageService.permission[0];
-      if (permission.Children)
-        this.permission = permission.Children[this.index];
+      if (permission.Children){
+        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+        if(data.length == 1)
+          this.permission = data[0];
+      }
     }
   }
 }

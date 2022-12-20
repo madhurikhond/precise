@@ -2,8 +2,8 @@
 
     <div class="tableDataSection">
         <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
-            <a class="btn btn-common btn-assignAR" [ngClass]="checkboxSelectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
+            <a class="btn btn-common btn-retainedAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForRetainAR && permissionForRetainAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-assignAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForAssignAR && permissionForAssignAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
         <dx-data-grid [dataSource]="dataSource" [allowColumnResizing]="true" [columnAutoWidth]="true"
@@ -52,13 +52,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Assign Selectes Accounts Receivables To The Following Funding Company</h5>
+                <h5 class="modal-title">Assign Selected Accounts Receivables To The Following Funding Company</h5>
                 <div class="close-dismiss" data-dismiss="modal" #closeAssignBtn></div>
             </div>
             <form [formGroup]="assignARform">
               <div class="modal-body">
                 <div class="modal-content">
-                    <p class="stepText"> 1. Assign a funding company</p>
+                    <p class="stepText lower-text-data"> 1. Assign a funding company</p>
                     <div class="form-group">
                       <select class="form-control" formControlName="fundingCompany">
                         <option value="">Select</option>
@@ -66,7 +66,7 @@
                           {{item.fundingCompanyName}}</option>
                     </select>
                     </div>
-                    <p class="stepText"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                    <p class="stepText lower-text-data"> 2. Sign & generate an AR assignments to the selected funding company</p>
                     <div class="ar-assignment-form">
                         <div class="row">
                             <div class="col-6">
@@ -130,8 +130,8 @@
             </div>
             <div class="modal-body">
                 <div class="modal-content">
-                    <p class="confirmationText">Are you sure you want to retain the selected AR and not assign the AR to a funding company?</p>
-                    <p class="confirmationText">You will be required to then follow up with the attorney and patient to negotiate each bill and collect funds directly.</p>
+                    <p class="confirmationText lower-text-data">Are you sure you want to retain the selected AR and not assign the AR to a funding company?</p>
+                    <p class="confirmationText lower-text-data">You will be required to then follow up with the attorney and patient to negotiate each bill and collect funds directly.</p>
                 </div>
             </div>
             <div class="modal-footer">

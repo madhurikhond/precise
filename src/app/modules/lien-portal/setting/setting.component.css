@@ -176,3 +176,6 @@
 .headerBtn {
     margin-bottom: 18px;
 }
+.textUnSet{
+  text-transform: none !important;
+}

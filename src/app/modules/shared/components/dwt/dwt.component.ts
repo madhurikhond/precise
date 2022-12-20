@@ -521,7 +521,7 @@ export class DwtComponent implements OnInit, OnDestroy {
             this.DWObject.Viewer.pageMargin = 10;
           }, 0);
         },
-        err => this.showMessage(err));
+        );
   }
   openModal(content, type?: string) {
     this.modalRef = this.modalService.open(content, {

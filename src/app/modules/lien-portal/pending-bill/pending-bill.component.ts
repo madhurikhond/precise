@@ -10,6 +10,7 @@ import {
   LienPortalPageTitleOption,
   LienPortalResponseStatus,
   LienPortalStatusMessage,
+  OriginalLienOwnerPermission,
 } from 'src/app/models/lien-portal-response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,6 +29,7 @@ export class PendingBillComponent implements OnInit {
     this.totalRecord= 0;
     if (val && val != '') {
       this.getfilterData = val;
+      this.setPermission();
       this.getListingData();
     }
   }
@@ -60,6 +62,11 @@ export class PendingBillComponent implements OnInit {
   checkboxSelectedData: any = [];
   isDefaultSignature: boolean;
   defaultSignature: any;
+  permissionForAssignAR : any;
+  permissionForRetainAR : any;
+  permissionTitleAssignAR = OriginalLienOwnerPermission.BillStudiesAndAssignAR;
+  permissionTitleRetainAR = OriginalLienOwnerPermission.BillStudiesAndRetainAR;
+  defaultCompanyName: any[];
 
   constructor(
     private lienPortalService: LienPortalService,
@@ -141,7 +148,14 @@ export class PendingBillComponent implements OnInit {
       .subscribe(
         (result) => {
           if (result.status == LienPortalResponseStatus.Success) {
-            if (result.result) this.fundingCompanies = result.result;
+            if (result.result) {
+              this.fundingCompanies = result.result;
+              this.defaultCompanyName = this.fundingCompanies.filter(x => x.defaultCompanyId > 0);
+              if (this.defaultCompanyName.length > 0)
+                this.assignARform.patchValue({
+                  'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+              })
+            }
           } else
             this.lienPortalService.errorNotification(
               LienPortalStatusMessage.COMMON_ERROR
@@ -157,6 +171,7 @@ export class PendingBillComponent implements OnInit {
 
   previewAssignment() {
     if (Number(this.assignARform.get('fundingCompany').value)) {
+      var selectedFundingCompany = this.fundingCompanies.filter(x=>x.fundingCompanyId == (this.assignARform.get('fundingCompany').value));
       var checkboxSelectedData = this.checkboxSelectedData.map((data) => ({
         patientId: data.patientId,
         patientName: data.firstName + ' ' + data.lastName,
@@ -169,6 +184,7 @@ export class PendingBillComponent implements OnInit {
         radFirstName: this.storageService.user.FirstName,
         radLastName: this.storageService.user.LastName,
         fundingCompanyId: Number(this.assignARform.get('fundingCompany').value),
+        fundingCompany: selectedFundingCompany[0].fundingCompanyName,
       };
       this.lienPortalService
         .PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment)
@@ -287,7 +303,13 @@ export class PendingBillComponent implements OnInit {
       lastName: this.storageService.user.LastName,
       radiologistSign: '',
     });
-    if (this.lienPortalService.isDefaultSignature) {
+
+     if (this.defaultCompanyName.length > 0)
+      this.assignARform.patchValue({
+        'fundingCompany': Number(this.defaultCompanyName[0].fundingCompanyId)
+      })
+
+      if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
       this.drawComplete();
     }
@@ -320,5 +342,19 @@ export class PendingBillComponent implements OnInit {
           );
         }
       );
+  }
+
+  setPermission() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children){
+        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+        if(dataAssigned.length == 1)
+          this.permissionForAssignAR = dataAssigned[0];
+        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
+        if(dataRetained.length == 1)
+          this.permissionForRetainAR = dataRetained[0];
+      }
+    }
   }
 }

@@ -106,3 +106,15 @@ export enum LienPortalAPIEndpoint {
   AddFundingUserSetting = APIURL.LIEN_PORTAL + "AddFundingUserSetting",
   GetFundingCompanySetting = APIURL.LIEN_PORTAL + "GetFundingCompanySetting",
 }
+
+
+export enum LienPortalFundingCoPermission {
+  PayForAR = "PAY FOR AR",
+  SignForAssignAR = "SIGN FOR ASSIGNED AR"
+}
+
+export enum OriginalLienOwnerPermission {
+  BillStudiesAndAssignAR = "BILL STUDIES & ASSIGN AR",
+  BillStudiesAndRetainAR = "BILL STUDIES & RETAIN AR",
+  MarkPaidForRetainedAR = "MARK PAID FOR RETAINED AR"
+}
