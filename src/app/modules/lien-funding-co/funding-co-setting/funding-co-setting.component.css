@@ -78,10 +78,8 @@
     font-weight: 500;
     color: #000000;
     margin-right: 16px;
-    text-transform: capitalize;
+    text-transform: none !important;
 }
-
-
 
 #settings span {
     font-size: 15px;

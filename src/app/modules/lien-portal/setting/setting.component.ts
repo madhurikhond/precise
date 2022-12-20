@@ -56,7 +56,7 @@ export class SettingComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.setPermisstion();
+    this.setPermission();
     this.getDaysData();
     this.getTimeData();
     this.onSettingTabClicked();
@@ -221,13 +221,17 @@ export class SettingComponent implements OnInit {
           this.selectedTimeToReminder = '12:00 AM';
         }
 
-        if (data.emailSendCopies.length == 1)
+        if (data.emailSendCopies.length > 0)
+        {
           this.defaultEmail = data.emailSendCopies[0];
         if (data.emailSendCopies.length == 2)
           this.firstEmail = data.emailSendCopies[1]
         if (data.emailSendCopies.length == 3)
+          this.firstEmail = data.emailSendCopies[1]
           this.secondEmail = data.emailSendCopies[2]
+        }
         this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
+        this.radiologistSign = data.defaultSign.defaultSign;
       } else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -276,7 +280,7 @@ export class SettingComponent implements OnInit {
       })
  }
 
- setPermisstion() {
+ setPermission() {
   if (this.storageService.permission.length > 0) {
     var permission :any= this.storageService.permission[0];
     if (permission.Children){
