@@ -69,6 +69,7 @@ export class FundingCoSettingComponent implements OnInit {
           if (data.defaultSign)
           {
             if (data.defaultSign.defaultSign)
+              this.defaultSignature = data.defaultSign.defaultSign;
               this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
           }
         }
