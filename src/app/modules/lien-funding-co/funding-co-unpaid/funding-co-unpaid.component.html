@@ -10,7 +10,7 @@
             <div class="col-md-6">
                 <p class="headerBtnSection">
                     <a class="btn btn-common btn-assignAR btn-blue"
-                        [ngClass]="selectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
+                        [ngClass]="selectedData.length > 0 && permission && (permission.IsAdd | lowercase) == 'true' ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
                         data-target="#SelectedBatches">Pay For Selected Assigned Batches </a>
                 </p>
             </div>
@@ -46,6 +46,7 @@
                             <dxi-column dataField="rad" caption="RAD"> </dxi-column>
                             <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
                             <dxi-column dataField="dateARAssigned" caption="Date AR Assigned"></dxi-column>
+                            <dxi-column dataField="executionDate" caption="Execution Date"></dxi-column>
                             <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
                             <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
                             <dxi-column dataField="firstName" caption="First Name"></dxi-column>
@@ -92,7 +93,7 @@
                             <div class="input-group">
                                 <div class="theme-label">Total For Check</div>
                                 <label class="totlaPayAmt">{{paymentForm.get("checkAmount").value
-                                    | currency:'INR':'symbol-narrow'}}</label>
+                                    | currency:'USD':'symbol-narrow'}}</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,7 +108,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check #</div>
-                                <input type="text" class="form-control" formControlName="checkNumber"
+                                <input type="text" class="form-control" formControlName="checkNumber" maxlength="15" mask="000000000000000"
                                     placeholder="Check #">
                             </div>
                         </div>

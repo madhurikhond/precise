@@ -292,7 +292,7 @@
                                                 <td>{{item.groupName}}</td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}" maxlength="12" (input)="getInputData($event,item.groupId)">
+                                                        <input type="text" class="form-control" formControlName="{{item.groupId}}" (input)="getInputData($event,item.groupId)" mask="separator.2" thousandSeparator="" separatorLimit="99999999999999">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -308,8 +308,7 @@
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
                 <button type="submit" class="btn btn-theme pull-right btn-sm btn-primary"
-                    id="btnUpdate">{{fundingCompanyId==0?'Add':'Save'}} Funding
-                    Company</button>
+                    id="btnUpdate">{{fundingCompanyId==0?'Add Funding Company':'Update Changes'}} </button>
             </div>
         </div>
     </form>

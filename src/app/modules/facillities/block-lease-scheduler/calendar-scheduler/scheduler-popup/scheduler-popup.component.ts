@@ -141,16 +141,15 @@ export class SchedulerPopupComponent implements OnInit {
         end_time: [this.event['end_date'], Validators.required],
       });
     }
-    if (this.mode == 'month') {
-      this.leaseForm.patchValue({
-        //  start_time: null,
-        end_time: new Date("1/1/2019 12:05:00 AM")
-      })
+    if (this.mode == 'month') {      
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,
           end_time: null
         })
+        // this.leaseForm.patchValue({
+        //   end_time: new Date("1/1/2019 12:05:00 AM")
+        // })
       }
     }
     this.setValidatorForleaseForm();
@@ -508,7 +507,8 @@ export class SchedulerPopupComponent implements OnInit {
           'resourceId': this.selectedresourceId
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
-          if (res.responseCode == 200) {
+          debugger
+          if (res.responseCode == 200 && res.response.responseCode != 404) {
             if (res.response) {
               this.showNotificationOnSucess({
                 message: res.response.message,
@@ -521,6 +521,9 @@ export class SchedulerPopupComponent implements OnInit {
               this.showNotificationOnSucess(res);
             }
             this.modal.dismiss(ModalResult.SAVE);
+          }
+          else if (res.response.responseCode == 404) {
+            this.errorNotification(res.response);
           }
         }, (err: any) => {
           this.errorNotification(err);

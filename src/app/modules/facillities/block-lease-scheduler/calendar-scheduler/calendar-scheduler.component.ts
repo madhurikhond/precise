@@ -240,7 +240,7 @@ export class CalendarSchedulerComponent implements OnInit {
         scheduler.deleteMarkedTimespan();
         scheduler.parse(JSON.stringify(this.SchedulerDayWeekMonth));
         scheduler.templates.event_bar_date = function (start, end, ev) {
-            return "• <b>" + scheduler.templates.event_date(end) + "</b> ";
+            return "• <b>" + scheduler.templates.event_date(start) + '-' + scheduler.templates.event_date(end) + "</b> ";
         };
 
         this.displayClosedDays = [];

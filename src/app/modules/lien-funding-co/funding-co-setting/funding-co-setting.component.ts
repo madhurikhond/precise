@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 @Component({
@@ -28,12 +29,15 @@ export class FundingCoSettingComponent implements OnInit {
   isPendingTaskEnable: boolean = true;
   isDefaultSignature: boolean = true;
   defaultSignature: string;
+  permission : any;
+  permissionTitle = LienPortalFundingCoPermission.SignForAssignAR;
 
-
-
-  constructor(private lienPortalService: LienPortalService) { }
+  constructor(private lienPortalService: LienPortalService, private storageService : StorageService) {
+    this.storageService.permission = null;
+  }
 
   ngOnInit(): void {
+    this.setPermission();
     this.getFundingCompanySettings();
   }
 
@@ -52,12 +56,20 @@ export class FundingCoSettingComponent implements OnInit {
       if (res.status == LienPortalResponseStatus.Success) {
         if (res.result) {
           var data = res.result;
-          this.isDefaultNamesEnable = data.isDefaultNamesEnable;
-          this.isPendingTaskEnable = data.isPendingTaskEnable;
-          this.isDefaultSignature = data.isDefaultSignature;
+          if(this.permission &&  this.permission.IsAdd === 'true'){
+            this.isDefaultNamesEnable = data.isDefaultNamesEnable;
+            this.isPendingTaskEnable = data.isPendingTaskEnable;
+            this.isDefaultSignature = data.isDefaultSignature;
+          }
+          else{
+            this.isDefaultNamesEnable = false;
+            this.isPendingTaskEnable = false;
+            this.isDefaultSignature = false;
+          }
           if (data.defaultSign)
           {
             if (data.defaultSign.defaultSign)
+              this.defaultSignature = data.defaultSign.defaultSign;
               this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
           }
         }
@@ -100,5 +112,16 @@ export class FundingCoSettingComponent implements OnInit {
     }, () => {
       this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     })
+  }
+
+  setPermission() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children){
+        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+        if(data.length == 1)
+          this.permission = data[0];
+      }
+    }
   }
 }

@@ -130,8 +130,8 @@
 </div>
 <!-- Pop Up Start -->
 
-<div class="modal fade modal-theme in" data-backdrop="static" data-keyboard="false" id="add-Edit-facility"
-	role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in popUpClose" data-backdrop="static" data-keyboard="false" id="add-Edit-facility" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -194,6 +194,11 @@
 								(click)="tabClick('Analytics')" [ngClass]="{'active': defaultPopupTab === 'Analytics'}"
 								data-toggle="tab" href="#edit-analytics">Analytics</a>
 						</li>
+						<!-- <li class="nav-item" *ngIf="isPopUpInEditMode"> <a class="nav-link"
+							 (click)="tabClick('Leases')"
+							[ngClass]="{'active': defaultPopupTab === 'Leases' || defaultPopupTab === 'BlockLeaseRate' || defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_CT' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'Credit/Debit' || defaultPopupTab === 'LeasePayments'}"
+							data-toggle="tab" href="#editLeases">Leases</a>
+						</li> -->
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane" [ngClass]="defaultPopupTab == 'General Info' ? 'active show' : 'fade'"
@@ -1315,7 +1320,7 @@
 																<select class="form-control" formControlName="mri3make">
 																	<option></option>
 																	<option value="GE">GE</option>
-																	<option value="Fonar">Fonar</option>
+																	<option value="Fonar">Fooptionnar</option>
 																	<option value="Hitachi">Hitachi</option>
 																	<option value="Phillips">Phillips</option>
 																	<option value="Siemens">Siemens</option>
@@ -1732,8 +1737,10 @@
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
 																<!-- <input type="date" class="form-control" formControlName="mriexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mriexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
+																<dx-date-box formControlName="mriexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1764,9 +1771,10 @@
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
 																<!-- <input type="date" class="form-control" formControlName="ctexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																
+																<dx-date-box formControlName="ctexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1798,9 +1806,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="xrayexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date"formControlName="xrayexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="xrayexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1831,10 +1840,10 @@
 														<div class="form-group">
 															<div class="theme-label">Expire:</div>
 															<div class="input-group">
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="arthoExpires" type="date"
-																	[showClearButton]="true" 
-																	[useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="arthoExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1867,9 +1876,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="bnexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="bnexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																	
+																<dx-date-box formControlName="bnexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1902,9 +1912,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="mammoExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="mammoExpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="mammoExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1937,10 +1948,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="nmexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="nmexpires" type="date"
+																<dx-date-box formControlName="nmexpires" type="date"
 																	[showClearButton]="true" [useMaskBehavior]="true"
-																	displayFormat="shortdate">
-																	</dx-date-box>
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -1973,9 +1984,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="psexpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="psexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																	</dx-date-box>
+																<dx-date-box formControlName="psexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -2008,9 +2020,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="usexpires"> -->
-																<dx-date-box  [displayFormat]="dateTimeFormatCustom.Date" formControlName="usexpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true"></dx-date-box>
-																	
+																<dx-date-box formControlName="usexpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -2043,9 +2056,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="myElogramExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="myElogramExpires"
+																<dx-date-box formControlName="myElogramExpires"
 																	type="date" [showClearButton]="true"
-																	[useMaskBehavior]="true" ></dx-date-box>
+																	[useMaskBehavior]="true" displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -2077,9 +2091,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="dexaExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="dexaExpires" type="date"
-																	[showClearButton]="true" [useMaskBehavior]="true">
-																</dx-date-box>
+																<dx-date-box formControlName="dexaExpires" type="date"
+																	[showClearButton]="true" [useMaskBehavior]="true"
+																	displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -2112,9 +2127,10 @@
 															<div class="input-group">
 																<!-- <input type="date" class="form-control"
                                                    formControlName="ctArthoExpires"> -->
-																<dx-date-box [displayFormat]="dateTimeFormatCustom.Date" formControlName="ctArthoExpires"
+																<dx-date-box formControlName="ctArthoExpires"
 																	type="date" [showClearButton]="true"
-																	[useMaskBehavior]="true" ></dx-date-box>
+																	[useMaskBehavior]="true" displayFormat="shortdate"
+																	dateSerializationFormat="yyyy-MM-dd"></dx-date-box>
 															</div>
 														</div>
 													</div>
@@ -2229,6 +2245,7 @@
 																<input type="time" class="form-control"
 																	formControlName="schedulingMonOpenTo2">
 															</div>
+
 														</div>
 													</div>
 													<div class="checkbox-theme"><br>
@@ -2991,9 +3008,8 @@
 										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 											<div class="cke-editor-group">
 												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
-												formControlName="facilityPolicy"
-													[config]="CkeConfig" (paste)="onPaste($event)"
-													(change)="onChange($event)">
+													formControlName="facilityPolicy" [config]="CkeConfig"
+													(paste)="onPaste($event)" (change)="onChange($event)">
 												</ckeditor>
 												<!-- <ckeditor [editor]="Editor" debounce="500"
 													formControlName="facilityPolicy" style="text-transform: none;"
@@ -3009,9 +3025,8 @@
 										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 											<div class="cke-editor-group ">
 												<ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
-												formControlName="parentPolicy" name="myckeditor" 
-													[config]="ckConfig"  (paste)="onPaste($event)" 
-													(change)="onChange($event)">
+													formControlName="parentPolicy" name="myckeditor" [config]="ckConfig"
+													(paste)="onPaste($event)" (change)="onChange($event)">
 												</ckeditor>
 												<!-- <ckeditor [editor]="Editor" formControlName="parentPolicy"
 													style="text-transform: none;" [disabled]="true"
@@ -3261,7 +3276,7 @@
 										</div>
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerFacilityPricingList"
-												[dataSource]="facilityPricingList" [showBorders]="true" [(selectedRowKeys)]="selectedRows"   (onRowUpdating)="onCellUpdating($event)"  >
+												[dataSource]="facilityPricingList" [showBorders]="true">
 												<dxo-editing mode="cell" [allowUpdating]="allowUpdatingPrice">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
@@ -3287,7 +3302,7 @@
 														message="Enter valid values">
 													</dxi-validation-rule>
 												</dxi-column> -->
-												<dxi-column dataField="isCopyPrice" caption="IS COPY PRICE"  
+												<dxi-column dataField="isCopyPrice" caption="IS COPY PRICE"
 													[visible]="true"></dxi-column>
 												<dxi-column dataField="service" caption="SERVICE" [visible]="false">
 												</dxi-column>
@@ -3313,7 +3328,7 @@
 												<!-- <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter> -->
 												<dxo-header-filter [visible]="true" [allowSearch]="true">
 												</dxo-header-filter>
-												<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search.."> 
+												<!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search..">
 												</dxo-search-panel> -->
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxi-column dataField="id" caption="id" [visible]="false"></dxi-column>
@@ -3594,30 +3609,30 @@
 								</div> -->
 								<div class="send-lien-row">
 									<div class="send-lien-col">
-										
-											<div class="theme-label">Next Day Summary</div>
-										
+
+										<div class="theme-label">Next Day Summary</div>
+
 									</div>
 									<div class="send-lien-col">
 										<div class="form-group md-input-focused">
 											<ng-select [items]="EpicUserList" placeholder="Select"
 												formControlName="userList" bindLabel="UserName" [multiple]="true"
 												[closeOnSelect]="false" bindValue="UserName"
-												[(ngModel)]="selectedEpicUserList" id="id19"  (add)="a1=ValidateMultiSelectTextLength('id19',a1)">
+												[(ngModel)]="selectedEpicUserList">
 												<ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-													<div class="ng-value" *ngFor="let item of items | slice:0:a1"> <span
+													<div class="ng-value" *ngFor="let item of items | slice:0:1"> <span
 															class="ng-value-label"> {{item.UserName}}</span>
 														<span class="ng-value-icon right" (click)="clear(item)"
 															aria-hidden="true">×</span>
 													</div>
-													<div class="ng-value" *ngIf="items.length > a1"> <span
-															class="ng-value-label">{{items.length - a1}} more..</span>
+													<div class="ng-value" *ngIf="items.length > 1"> <span
+															class="ng-value-label">{{items.length - 1}} more..</span>
 													</div>
 												</ng-template>
 											</ng-select>
 										</div>
 									</div>
-								</div> 
+								</div>
 								<!-- <div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 										<div class="checkbox-theme">
@@ -3651,7 +3666,7 @@
 						<div class="tab-pane" [ngClass]="defaultPopupTab == 'Analytics' ? 'active show' : 'fade'"
 							id="edit-analytics" *ngIf="isPopUpInEditMode">
 							<div class="search-field search-field-theme page-top-action">
-								<form class="theme-form autocomplete" [formGroup]= "facilityTagForm">
+								<form class="theme-form autocomplete" [formGroup]="facilityTagForm">
 									<div class="form-group">
 										<div class="theme-label">Enter Tag</div>
 										<div class="input-group md-input-focused">
@@ -3789,7 +3804,7 @@
 															<dxi-column dataField="totalHour"
 																cellTemplate="TotalHourTemplate" caption="Total">
 															</dxi-column>
-															<dxi-column caption="Aggrement"
+															<dxi-column caption="Agreement"
 																cellTemplate="pdfMRILinkTemplate">
 															</dxi-column>
 															<div *dxTemplate="let data of 'MriRateTemplate'">
@@ -3807,7 +3822,7 @@
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
 																data-toggle="modal"
-																	data-target="#viewFile_Doc"
+																	data-target="#viewFile_Docx"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
@@ -3846,7 +3861,7 @@
 															<dxi-column dataField="totalHour" caption="Total"
 																cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
-															<dxi-column caption="Aggrement"
+															<dxi-column caption="Agreement"
 																cellTemplate="pdfCTLinkTemplate">
 															</dxi-column>
 															<div *dxTemplate="let data of 'CTRateTemplate'">
@@ -4230,9 +4245,10 @@
 		</div>
 
 
+	</div>
 </div>
 
-<div class="modal fade modal-theme in" id="viewFile_Doc" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
+<div class="modal fade modal-theme in test" id="viewFile_Docx" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
 data-keyboard="false" tabindex="-1" role="dialog"
 aria-labelledby="exampleModalLabel" aria-modal="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -4250,32 +4266,6 @@ aria-labelledby="exampleModalLabel" aria-modal="true">
 </div>
 
 <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Delete</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
-			</div>
-			<div class="modal-body">
-				<p>ARE YOU SURE YOU WANT TO DELETE THIS TAG?</p>
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-					data-dismiss="modal">Cancel</a>
-				<a (click)="deleteFacilityTag()" href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-					data-dismiss="modal">Ok</a>
-			</div>
-		</div>
-	</div>
-</div>
-<button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
-	data-target="#deleteLink"></button>
-<button class="d-none" #hiddenAddEditPopUpItem [hidden]="true" data-toggle="modal"
-    data-target="#add-Edit-facility"></button>
-<app-document-manager-facility></app-document-manager-facility>
-	</div>
- <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-modal="true" data-backdrop="static" style="z-index:9999999">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -4357,9 +4347,7 @@ aria-labelledby="exampleModalLabel" aria-modal="true">
 			</div>
 		</div>
 	</div>
- 
-
-
+</div>
 <button class="d-none" #hiddenDeleteTagPopUpButton [hidden]="true" data-toggle="modal"
 	data-target="#deleteLink"></button>
 <button class="d-none" #hiddenConfirmationLeaseBtn [hidden]="true" data-toggle="modal"
@@ -4368,5 +4356,5 @@ aria-labelledby="exampleModalLabel" aria-modal="true">
 	data-target="#add-Edit-facility"></button>
 <button class="d-none" #hiddenDeleteUnusedCreditLink [hidden]="true" data-toggle="modal"
 	data-target="#deleteUnusedCreditLink"></button>
-<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Doc"></button>
+<button class="d-none" #hiddenViewFile [hidden]="true" data-toggle="modal" data-target="#viewFile_Docx"></button>
 <app-document-manager-facility></app-document-manager-facility>

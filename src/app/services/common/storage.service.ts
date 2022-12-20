@@ -28,6 +28,8 @@ export class StorageService {
   private loggedInUser: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   public fullLanguageName: string = 'english';
+  private _permission = null;
+  private matches = [];
 
   constructor(private _tokenservice: TokenService) {
     this.loggedInUser = new BehaviorSubject<any>('');
@@ -70,7 +72,7 @@ export class StorageService {
     return localStorage.getItem(PATIENT_TIMEOUT);
   }
 
-  
+
 
   public set LienTimeout(date: string) {
     localStorage.setItem(LIEN_TIMEOUT, date);
@@ -115,7 +117,7 @@ export class StorageService {
   removePatientPreScreening(){
     localStorage.removeItem(PATIENT_PRESCREENING);
   }
-  
+
   removePatientPregnancy(){
     localStorage.removeItem(PATIENT_PREGNANCY);
   }
@@ -200,6 +202,8 @@ export class StorageService {
     localStorage.removeItem(PARTNER_ID);
     localStorage.removeItem(LIEN_TIMEOUT);
     localStorage.clear();
+    this.clearAll();
+    this.clearAuth();
   }
   // public set UserRole(value: string) {
   //   localStorage.setItem(User_Role, JSON.stringify(value));
@@ -215,7 +219,9 @@ export class StorageService {
       localStorage.removeItem('roles');
       localStorage.removeItem('_cr_u_infor');
       localStorage.removeItem('jwt_t');
-      window.location.reload();
+      if(this.user)
+        window.location.reload();
+
     }
     // return JSON.parse(localStorage.getItem(User_Role));
   }
@@ -261,7 +267,7 @@ export class StorageService {
       }
     }else
       return false;
-  }  
+  }
 
   public get L_JWTValid():boolean {
     var token = this.LienJWTToken;
@@ -277,10 +283,61 @@ export class StorageService {
       }
     }else
       return false;
-  }  
+  }
 
   addHours(numOfHours, date = new Date()) {
     date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
     return date;
+  }
+
+  public get permission() {
+    return this._permission;
+  }
+
+  public set permission(value: string) {
+    this._permission = null;
+    var data = this.UserRole;
+    var routerUrl = value ? value : window.location.pathname;
+    if (data) {
+      try {
+        let list: any = [];
+        let responseHierarchy = JSON.parse(data);
+
+        if (responseHierarchy && responseHierarchy.length) {
+          responseHierarchy.forEach((value) => {
+            if (value && value.hierarchy) {
+              list.push(JSON.parse(value.hierarchy));
+            }
+          });
+        }
+
+        if (routerUrl.includes('?')) {
+          var check = routerUrl;
+          var a = check.split('?');
+          routerUrl = a[0];
+        }
+        this.filter_for_permission(list, routerUrl.toLowerCase());
+
+        if (this.matches.length > 0) {
+          this._permission = this.matches;
+        }
+
+      } catch (error) {
+
+      }
+    }
+  }
+
+
+  private filter_for_permission(arr, term) {
+    arr.forEach((i) => {
+      var masterUrl = i.MasterUrl.toLowerCase();
+      if (term.includes(masterUrl) && masterUrl !== '') {
+        this.matches.push(i);
+      }
+      if (i.Children.length > 0) {
+        this.filter_for_permission(i.Children, term);
+      }
+    });
   }
 }

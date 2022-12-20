@@ -1,17 +1,17 @@
 <div class="inner-tab-content">
-    <div class="row pt-2">
-        <div class="col-md-6">
+    <div class="row">
+        <!-- <div class="col-md-6">
             <label *ngIf="dataSource.length > 0">
                 <input type="checkbox" [(ngModel)]="isSelectAll" (change)="onSelectAll($event.target.checked)">
                 Select All
             </label>
-        </div>
-        <div class="col-md-6 headerBtnSection">
+        </div> -->
+        <div class="col-md-12 headerBtnSection">
             <div class="selectAction-sec">
                 <div class="selectAction-Dropdown">
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="form-control dropDown" [(ngModel)]="selectedAction">
+                            <select class="form-control dropDown" [(ngModel)]="selectedAction" [disabled]="!permission || ((permission.IsAdd | lowercase) == 'false')">
                                 <option value="">Select Action</option>
                                 <option [value]="_actionDropdown.remove">Cancel & Remove</option>
                                 <option [value]="_actionDropdown.edit_payment">Edit Payment Info</option>
@@ -37,7 +37,16 @@
                 <dxo-pager [visible]="false"></dxo-pager>
                 <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column dataField="checkNumber" caption="Checkno"></dxi-column>
+                <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
+
+                <div *dxTemplate="let data of 'CheckNumberTemplate'">
+                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="modal-lower-case">
+                      <span class="mr-2">Check No: {{data.data.checkNumber}}</span>
+                      <span class="mr-2">Check Date: {{data.data.checkDate}}</span>
+                      <span class="mr-2">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
+                    </div>
+                </div>
+
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
                     <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
@@ -107,16 +116,16 @@
             </div>
             <div class="modal-body">
                 <div class="modal-content">
-                    <p class="confirmationText">This will remove the entire payment. Are you sure you want to continue?
+                    <p class="modal-lower-case">This will remove the entire payment. Are you sure you want to continue?
                     </p>
-                    <p class="confirmationText">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES. VOID ANY
-                        NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
+                    <p class="modal-upper-case">Note: MAKE SURE TO MANUALLY DELETE ANY CSV OR PDF FILES.</p>
+                    <p class="pt-2"> VOID ANY NECESSARY CHECKS IN ACCOUNTING SOFTWARE.</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
-                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate" (click)="removePayment()">Yes</button>
+                <button type="button" class="btn btn-theme pull-right btn-sm" id="btnUpdate" (click)="removePayment()">Yes Cancel And Remove Payment</button>
             </div>
         </div>
     </div>
@@ -141,7 +150,7 @@
                             <div class="input-group">
                                 <div class="theme-label">Total For Check</div>
                                 <label class="totlaPayAmt">{{paymentForm.get("checkAmount").value
-                                    | currency:'INR':'symbol-narrow'}}</label>
+                                    | currency:'USD':'symbol-narrow'}}</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -156,7 +165,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check #</div>
-                                <input type="text" class="form-control" formControlName="checkNumber"
+                                <input type="text" class="form-control" formControlName="checkNumber"  maxlength="15" mask="000000000000000"
                                     placeholder="Check #">
                             </div>
                         </div>

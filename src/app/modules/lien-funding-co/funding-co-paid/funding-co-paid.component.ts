@@ -1,8 +1,9 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 enum actionDropdown {
@@ -18,11 +19,14 @@ enum actionDropdown {
 export class FundingCoPaidComponent {
 
   getfilterData: any;
+  permission : any;
+  permissionTitle = LienPortalFundingCoPermission.PayForAR;
   @Input()
   set filterData(val: any) {
     if (val && val != null) {
       this.getfilterData = val;
       this.getFundingCoPaidList();
+      this.setPermission();
     }
   }
 
@@ -50,7 +54,8 @@ export class FundingCoPaidComponent {
   selectedAction = "";
 
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder) {
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder,
+    private storageService : StorageService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
 
@@ -90,12 +95,25 @@ export class FundingCoPaidComponent {
       this.dataGrid.instance.deselectAll();
   }
 
-  changeCheckbox($event: any) {
-    this.selectedData = $event.selectedRowsData;
-    if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
-      this.isSelectAll = true;
-    else if ($event.selectedRowsData.length == 0)
-      this.isSelectAll = false;
+  changeCheckbox(item: any) {
+
+    this.dataGrid.instance.expandRow((item.currentSelectedRowKeys[0]));
+    this.selectedData = item.selectedRowsData;
+    // if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
+    //   this.isSelectAll = true;
+    // else if ($event.selectedRowsData.length == 0)
+    //   this.isSelectAll = false;
+
+      if (item.currentSelectedRowKeys.length > 0) {
+        var selectedCheckNo = item.currentSelectedRowKeys[0].checkNumber;
+        item.currentDeselectedRowKeys = item.selectedRowKeys.filter(x=> { return x.checkNumber != selectedCheckNo});
+      }
+
+      //Deselection
+      if (item.currentDeselectedRowKeys.length > 0) {
+        this.dataGrid.instance.collapseRow((item.currentDeselectedRowKeys[0]));
+        this.dataGrid.instance.deselectRows(item.currentDeselectedRowKeys[0]);
+      }
   }
 
   onPageNumberChange(pageNumber: any) {
@@ -179,6 +197,17 @@ export class FundingCoPaidComponent {
       },()=>{
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
+    }
+  }
+
+  setPermission() {
+    if (this.storageService.permission.length > 0) {
+      var permission :any= this.storageService.permission[0];
+      if (permission.Children){
+        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+        if(data.length == 1)
+          this.permission = data[0];
+      }
     }
   }
 }

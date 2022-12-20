@@ -40,6 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
         url.indexOf('/patient/esignrequest') < 0 &&
         url.indexOf('/bi') < 0 &&
         url.indexOf('/reset-password') < 0 &&
+        url.indexOf('/facility-esign') < 0 &&
         url.indexOf(PatientPortalURLName.PATIENT_PORTAL) < 0) {
         this._storageService.LastPageURL = this._router.url;
       }
