@@ -256,8 +256,8 @@ export class RetainUnpaidComponent implements OnInit {
       })
     }
   }
-  onAssignAR() {
 
+  onAssignAR() {
     var request = [];
     if (this.assignARform.valid) {
       this.checkboxSelectedData.map(data => {
@@ -329,7 +329,7 @@ export class RetainUnpaidComponent implements OnInit {
 
     if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
-      this.drawComplete();
+      this.assignARform.controls.radiologistSign.setValue(this.defaultSignature);
     }
   }
 

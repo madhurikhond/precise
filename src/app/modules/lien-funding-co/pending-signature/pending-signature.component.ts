@@ -145,18 +145,13 @@ export class PendingSignatureComponent {
       if (res.status == LienPortalResponseStatus.Success) {
         if (res.result) {
           var data = res.result;
-          if(this.permission && this.permission.IsAdd === 'true'){
-            this.isDefaultNamesEnable = data.isDefaultNamesEnable;
-            this.isDefaultSignature = data.isDefaultSignature;
-            if (data.defaultSign) {
-              if (data.defaultSign.defaultSign) {
-                this.defaultSignature = data.defaultSign.defaultSign;
-                this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
-              }
+          this.isDefaultNamesEnable = data.isDefaultNamesEnable;
+          this.isDefaultSignature = data.isDefaultSignature;
+          if (data.defaultSign) {
+            if (data.defaultSign.defaultSign) {
+              this.defaultSignature = data.defaultSign.defaultSign;
+              this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
             }
-          }else{
-            this.isDefaultSignature = false;
-            this.isDefaultNamesEnable = false;
           }
         }
       } else
@@ -177,9 +172,7 @@ export class PendingSignatureComponent {
     });
     if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
-      this.signatureForm.patchValue({
-        fundingCompanySign: this.signaturePad.toDataURL(),
-      })
+      this.signatureForm.controls.fundingCompanySign.setValue(this.defaultSignature);
     }
   }
 

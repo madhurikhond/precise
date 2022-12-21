@@ -311,7 +311,7 @@ export class PendingBillComponent implements OnInit {
 
       if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
-      this.drawComplete();
+      this.assignARform.controls.radiologistSign.setValue(this.lienPortalService.defaultSignature);
     }
   }
 
