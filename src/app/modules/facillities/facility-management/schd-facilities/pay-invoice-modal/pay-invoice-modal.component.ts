@@ -43,7 +43,7 @@ export class PayInvoiceModalComponent implements OnInit {
     // this.setPayInvoiceForm();
   }
   transformAmount(element) {
-    //  this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
+      this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
     if (!isNaN(this.formattedInputAmount))
       this.formattedInputAmount = Number(this.formattedInputAmount).toLocaleString();
   }
