@@ -8,6 +8,7 @@
          </div>
          <div class="modal-body">
             <div class="modal-body-inner">
+               {{contactInfoForm.value | json}}
                <form class="theme-form" [formGroup]="contactInfoForm" *ngIf="contactInfoForm">
                   <div class="row">
                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
@@ -126,18 +127,18 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
-                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf= "addPhoneChecked || isPatientPhone">
+                           </div> 
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf= "addPhoneChecked || IsPatientPhone">
                               <div class="form-group">
                                  <div class="input-group">
                                     <div class="theme-label">Text Message Body</div>
-                                    <textarea type="text" class="form-control" formControlName ='smsTextModel' [(ngModel)]="smsTextModel"
-                                    [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.smsTextModel.errors) }"></textarea>
+                                    <textarea type="text" class="form-control" formControlName ='SmsTextModel' [(ngModel)]="smsTextModel"
+                                    [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.SmsTextModel.errors) }"></textarea>
    
                                  </div>
-                                 <div *ngIf="(Issubmitted && contactInfoForm.controls.smsTextModel.errors)"
+                                 <div *ngIf="(Issubmitted && contactInfoForm.controls.SmsTextModel.errors)"
                                     class="invalid-feedback">
-                                    <div *ngIf=" contactInfoForm.controls.smsTextModel.errors?.required">
+                                    <div *ngIf=" contactInfoForm.controls.SmsTextModel.errors?.required">
                                        message body is required</div>
                                  </div>
                               </div>
@@ -188,14 +189,14 @@
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
                                           <input id="chkAttFax" style="display: none;" type="checkbox"
-                                             formControlName="isAttorneyFax" />
+                                             formControlName="IsAttorneyFax" />
                                           <label for="chkAttFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
                                              formControlName="infoAttorneyFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkAttEmail" style="display: none;" type="checkbox"
-                                             formControlName="isAttorneyEmail" />
+                                             formControlName="IsAttorneyEmail" />
                                           <label for="chkAttEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -218,15 +219,15 @@
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
                                           <input id="chkRefPhyFax" type="checkbox" style="display: none;"
-                                             formControlName="isRefPhyFax" />
+                                             formControlName="IsRefPhyFax" />
                                           <label for="chkRefPhyFax"><img
                                                 src="assets/images/FaxIconGray.png"></label>&nbsp;&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoRefPhyFax" />
+                                             formControlName="InfoRefPhyFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkRefPhyEmail" style="display: none;" type="checkbox"
-                                             formControlName="isRefPhyEmail" />
+                                             formControlName="IsRefPhyEmail" />
                                           <label for="chkRefPhyEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -249,19 +250,19 @@
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
                                           <input id="chkBrokerMainFax" type="checkbox" style="display: none;"
-                                             formControlName="isBrokerMainFax" />
+                                             formControlName="IsBrokerMainFax" />
                                           <label for="chkBrokerMainFax"><img
                                                 src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerMainFax" />
+                                             formControlName="InfoBrokerMainFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkBrokerMainEmail" type="checkbox" style="display: none;"
-                                             formControlName="isBrokerMainEmail" />
+                                             formControlName="IsBrokerMainEmail" />
                                           <label for="chkBrokerMainEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerMainEmail" />&nbsp; Main
+                                             formControlName="InfoBrokerMainEmail" />&nbsp; Main
                                        </div>
                                     </div>
                                     <div class="create-alert-icon-list">
@@ -271,7 +272,7 @@
                                           <label for="chkBrokerBillingFax"><img
                                                 src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerBillingFax" />
+                                             formControlName="InfoBrokerBillingFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkBrokerBillingEmail" type="checkbox" style="display: none;"
@@ -279,7 +280,7 @@
                                           <label for="chkBrokerBillingEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerBillingEmail" />&nbsp; Billing
+                                             formControlName="InfoBrokerBillingEmail" />&nbsp; Billing
                                        </div>
                                     </div>             
                                     <div class="create-alert-icon-list">
@@ -289,7 +290,7 @@
                                           <label for="chkBrokerAPFax"><img
                                                 src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerAPFax" />
+                                             formControlName="InfoBrokerAPFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkBrokerAPEmail" type="checkbox" style="display: none;"
@@ -297,7 +298,7 @@
                                           <label for="chkBrokerAPEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoBrokerAPEmail" />&nbsp; AP
+                                             formControlName="InfoBrokerAPEmail" />&nbsp; AP
                                        </div>
                                     </div>
                                  </div>
@@ -310,38 +311,38 @@
                               <div class="create-alert-list-right">
                                  <div class="create-alert-list-right-top">
                                     <input class="theme-label-subtitle" type="text" readonly style="border:0"
-                                       formControlName="infoPatientName" />
+                                       formControlName="InfoPatientName" />
                                  </div>
                                  <div class="create-alert-list-right-bottom">
                                     <div class="create-alert-icon-list">
                                        <!--use 2 divs to hide and show acc. to conditions-->
                                        <div class="create-alert-icon-detail"
-                                          *ngIf="contactInfoFormRef.infoPatientFax.value=='N/A'">
+                                          *ngIf="contactInfoFormRef.InfoPatientFax.value=='N/A'">
                                           <input id="chkPatientFax" type="checkbox" style="display: none;"
-                                             formControlName="isPatientFax"
-                                             [attr.disabled]="contactInfoFormRef.infoPatientFax.value=='N/A'" />
+                                             formControlName="IsPatientFax"
+                                             [attr.disabled]="contactInfoFormRef.InfoPatientFax.value=='N/A'" />
                                           <label for="chkPatientFax">
                                              <img src="assets/images/FaxIconGray.png">
                                           </label>&nbsp;
                                           <input type="text" readonly style="border:0"
-                                             formControlName="infoPatientFax" />
+                                             formControlName="InfoPatientFax" />
                                        </div>
                                     </div>
 
                                     <div class="create-alert-icon-detail"
-                                       *ngIf="contactInfoFormRef.infoPatientFax.value!='N/A'">
+                                       *ngIf="contactInfoFormRef.InfoPatientFax.value!='N/A'">
                                        <input id="chkPatientFax" type="checkbox" style="display: none;"
-                                          formControlName="isPatientFax" />
+                                          formControlName="IsPatientFax" />
                                        <label for="chkPatientFax">
                                           <img src="assets/images/FaxIconGray.png">
                                        </label>&nbsp;
-                                       <input type="text" readonly style="border:0" formControlName="infoPatientFax" />
+                                       <input type="text" readonly style="border:0" formControlName="InfoPatientFax" />
                                     </div>
 
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
                                           <input id="chkPatientEmail" type="checkbox" style="display: none;"
-                                             formControlName="isPatientEmail" />
+                                             formControlName="IsPatientEmail" />
                                           <label for="chkPatientEmail">
                                              <img src="assets/images/EmailIconGray.png">
                                           </label>&nbsp;
@@ -355,7 +356,7 @@
                                           *ngIf="contactInfoFormRef.infoPatientPhone.value=='N/A'">
                                           <input id="chkPatientPhone" type="checkbox" style="display: none;"
                                              [attr.disabled]="contactInfoFormRef.infoPatientPhone.value=='N/A'"
-                                             formControlName="isPatientPhone"
+                                             formControlName="IsPatientPhone"
                                              (change)="onchkPatientPhoneChange($event)" />
                                           <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -364,7 +365,7 @@
                                        <div class="create-alert-icon-detail"
                                           *ngIf="contactInfoFormRef.infoPatientPhone.value!='N/A'">
                                           <input id="chkPatientPhone" type="checkbox" style="display: none;"
-                                             formControlName="isPatientPhone"
+                                             formControlName="IsPatientPhone"
                                              (change)="onchkPatientPhoneChange($event)" />
                                           <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -385,7 +386,7 @@
                                  <div class="create-alert-list-right-bottom">
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
-                                          <input id="chkAddFax" type="checkbox" style="display: none;"
+                                          <input id="chkAddFax" type="checkbox" style="display: none;" 
                                              (change)="onchkFaxChange($event)" />
                                           <label for="chkAddFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           <input type="text" mask="(000) 000-0000 (0000)" id="AddFax1"
