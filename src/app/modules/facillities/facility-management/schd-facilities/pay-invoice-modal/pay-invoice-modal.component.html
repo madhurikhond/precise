@@ -32,8 +32,7 @@
                                 [ngClass]="{ 'is-invalid': payInvoiceFormControls.checkAmount.errors }">
                         </div>                        
                         <div *ngIf="payInvoiceFormControls.checkAmount.errors" class="invalid-feedback">
-                            <div *ngIf="payInvoiceFormControls.checkAmount.errors?.pattern">
-                                check amount must be a valid number.</div>
+                            
                             <div *ngIf="payInvoiceFormControls.checkAmount.errors.maxlength && !payInvoiceFormControls.checkAmount.errors?.pattern">
                                 check amount should be a vaid number/decimal.</div>
                            
