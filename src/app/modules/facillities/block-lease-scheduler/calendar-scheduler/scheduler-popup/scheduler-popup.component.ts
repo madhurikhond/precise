@@ -87,7 +87,16 @@ export class SchedulerPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    debugger
     // this.isLeaseSigned = true;
+  //   $("#Mridula").find('.dx-dropdowneditor-input-wrapper')({  
+  //     type: "time",  
+  //     value: this.now,  
+  //     onOpened: function(e) {  
+  //         e.component._strategy._timeView._hourBox.option('min', 8);  
+  //         e.component._strategy._timeView._HourBox.option('max', 20);  
+  //     }  
+  // }); 
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -115,6 +124,11 @@ export class SchedulerPopupComponent implements OnInit {
         }
       }
     })
+  }
+  mridula(e:any){
+    debugger
+    e.component._strategy._timeView._hourBox.option('min', 8);  
+    e.component._strategy._timeView._HourBox.option('max', 20);
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
