@@ -115,6 +115,7 @@ export class SchedulerPopupComponent implements OnInit {
         }
       }
     })
+    this.getTotalLeaseAndCreditHours();
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
