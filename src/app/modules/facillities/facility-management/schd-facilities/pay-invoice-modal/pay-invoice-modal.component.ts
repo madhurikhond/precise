@@ -43,7 +43,7 @@ export class PayInvoiceModalComponent implements OnInit {
     // this.setPayInvoiceForm();
   }
   transformAmount(element) {
-    //  this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
+      this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
     if (!isNaN(this.formattedInputAmount))
       this.formattedInputAmount = Number(this.formattedInputAmount).toLocaleString();
   }
@@ -52,7 +52,7 @@ export class PayInvoiceModalComponent implements OnInit {
     this.payInvoiceForm = this.fb.group({
       checkId: ['', [Validators.required]],
       checkDate: [this.currentDate, [Validators.required]],
-      checkAmount: ['', [Validators.required,Validators.maxLength(9),Validators.minLength(1), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
+      checkAmount: ['', [Validators.required,Validators.max(999999),Validators.min(1), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
     });
   }
   close() {
