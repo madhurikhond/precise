@@ -98,6 +98,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     schedulerLoad() {
         scheduler.skin = 'material';
+        scheduler.config.first_hour = 6;
+		scheduler.config.last_hour = 24;
         scheduler.config.xml_date = '%Y-%m-%d';
         scheduler.config.hour_date="%h:%i %A";
 		scheduler.xy.scale_width = 70;
