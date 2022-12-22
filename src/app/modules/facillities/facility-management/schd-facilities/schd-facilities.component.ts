@@ -3030,6 +3030,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getFacilityCreditsUnUsed() {
+    this.creditIdArray=[];
     var data = {
       FacilityId: this.facilityId,
       pageNo: this.pageNumberOfUnusedCredits,
@@ -3136,6 +3137,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onSelectionChangedCredit(ec) {
     var CreditID: any = [];
+    this.creditIdArray=[];
     this.selectedCreditPayment = ec.selectedRowsData;
     if (ec.selectedRowsData.length !== 0) {
       ec.selectedRowsData.forEach((i) => {
