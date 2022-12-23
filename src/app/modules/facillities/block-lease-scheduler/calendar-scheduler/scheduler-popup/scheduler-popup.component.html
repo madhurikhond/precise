@@ -127,7 +127,7 @@
 
 
 
-{{leaseForm.value | json}}
+
         <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form" novalidate>
             <div class="row">
 
@@ -216,38 +216,16 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group icon-active">
-                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null" 
-                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="return false"
-                                formControlName="start_time" class="form-control"  
-                                max= "2016-02-01T18:29:00.000Z" min= "2016-02-01T00:30:00.000Z"
-                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
-                                type="time" [interval] = "5">
-                            </dx-date-box>
-                            
-                        </div>  
-                        <div *ngIf="(submitted && editFormControls.start_time.errors)" class="invalid-feedback">
-                            <div *ngIf="editFormControls.start_time.errors?.required">
-                                Start time is required</div>
-                        </div>
-                    </div>
-                </div> -->
-
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
-                        <div class="input-group icon-active">{{maxValueEndTime}}
-
-                            {{minValueStartTime}}
-                            <dx-date-box 
-                            [disabled]="isLeaseSigned ? 'disabled' : null" 
-                             class="form-control"  formControlName="start_time"
-                            (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="return false"
-                            [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
-                            [interval] = "5" min= "2022-12-23T23:20:00.000Z" max="2022-12-23T03:40:01.000Z" type="time"> </dx-date-box> 
-
-                         </div>  
+                        <div class="input-group icon-active">
+                            <dx-date-box [disabled]="isLeaseSigned ? 'disabled' : null"
+                                (onValueChanged)="handleValueChange($event,'start_time')" onkeydown="return false"
+                                formControlName="start_time" class="form-control"
+                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.start_time.errors) }"
+                                type="time" pickerType="list" [interval]="5">
+                            </dx-date-box>
+                        </div>
                         <div *ngIf="(submitted && editFormControls.start_time.errors)" class="invalid-feedback">
                             <div *ngIf="editFormControls.start_time.errors?.required">
                                 Start time is required</div>
@@ -289,8 +267,7 @@
                                 (onValueChanged)="handleValueChange($event,'end_time')" formControlName="end_time"
                                 class="form-control" onkeydown="return false"
                                 [ngClass]="{ 'is-invalid': (submitted && editFormControls.end_time.errors) }"
-                                type="time" pickerType="list" [interval]="5"
-                                max= "2016-02-01T18:29:00.000Z" min= "2016-02-01T00:30:00.000Z">
+                                type="time" pickerType="list" [interval]="5">
                             </dx-date-box>
                         </div>
                         <div *ngIf="(submitted && editFormControls.end_time.errors)" class="invalid-feedback">
