@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
@@ -65,6 +65,8 @@ export class FundingCoPaidComponent {
       checkNumber: ['', Validators.required],
       checkAmount: [0, Validators.required]
     })
+
+    this.commonService.setTitle(LienPortalPageTitleOption.PAID);
   }
 
   private getFundingCoPaidList() {

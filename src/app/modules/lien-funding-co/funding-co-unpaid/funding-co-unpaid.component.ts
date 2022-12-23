@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
-import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
@@ -52,6 +52,8 @@ export class FundingCoUnpaidComponent {
       checkNumber: ['', Validators.required],
       checkAmount: [0, Validators.required]
     })
+
+    this.commonService.setTitle(LienPortalPageTitleOption.UNPAID);
   }
 
   private getListingData() {

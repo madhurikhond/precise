@@ -46,7 +46,10 @@ export enum LienPortalPageTitleOption {
   RETAINED_AND_UNPAID = "Retained & Unpaid",
   RETAINED_AND_PAID = "Retained & Paid",
   SETTINGS = "Settings",
-  FUNDING_COMPANY = "Funding Company"
+  FUNDING_COMPANY = "Funding Company",
+  PENDING_SIGNATURE = "Pending Signature",
+  PAID = "Paid",
+  UNPAID = "Unpaid",
 }
 
 export enum LienPortalTabName {
