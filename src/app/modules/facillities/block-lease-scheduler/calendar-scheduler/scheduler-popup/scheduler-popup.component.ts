@@ -72,6 +72,8 @@ export class SchedulerPopupComponent implements OnInit {
   blockLeasePricingList: any = [];
   MriPrice: any = [];
   CtPrice: any = [];
+  minValueStartTime: any;
+  maxValueEndTime: any;
   IsFacilityDetailsPopUpOpen: boolean = false;
   constructor(
     public modal: NgbActiveModal,
@@ -84,19 +86,20 @@ export class SchedulerPopupComponent implements OnInit {
     private readonly commonService: CommonMethodService,
     private fb: FormBuilder,
     private common: CommonMethodService
-  ) { }
+  ) {
+    
+   }
 
   ngOnInit(): void {
     debugger
+    this.minValueStartTime = this.event['start_date'].getFullYear() + '-' + this.event['start_date'].getMonth()
+    + '-' + this.event['start_date'].getDate() + 'T06:30:00.000Z'
+  this.maxValueEndTime = this.event['start_date'].getFullYear() + '-' + this.event['start_date'].getMonth()
+  + '-' + this.event['start_date'].getDate() + 'T23:29:00.000Z'
+  
+    //2022-12-23T00:30:00.000Z
+   
     // this.isLeaseSigned = true;
-  //   $("#Mridula").find('.dx-dropdowneditor-input-wrapper')({  
-  //     type: "time",  
-  //     value: this.now,  
-  //     onOpened: function(e) {  
-  //         e.component._strategy._timeView._hourBox.option('min', 8);  
-  //         e.component._strategy._timeView._HourBox.option('max', 20);  
-  //     }  
-  // }); 
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -125,12 +128,8 @@ export class SchedulerPopupComponent implements OnInit {
       }
     })
   }
-  mridula(e:any){
-    debugger
-    e.component._strategy._timeView._hourBox.option('min', 8);  
-    e.component._strategy._timeView._HourBox.option('max', 20);
-  }
   leaseFormInitialization() {
+    debugger
     var eTime = new Date(this.event['end_date']);
     eTime.setSeconds(eTime.getSeconds() + 1);
     this.leaseForm = this.formBuilder.group({
@@ -155,7 +154,7 @@ export class SchedulerPopupComponent implements OnInit {
         end_time: [this.event['end_date'], Validators.required],
       });
     }
-    if (this.mode == 'month') {      
+    if (this.mode == 'month') {
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,
@@ -272,7 +271,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
     this.blockLeaseSchedulerService.addUpdateBlockLeaseCreditReason(true, body).subscribe((res) => {
       if (res.response != null) {
-        this.creditReasonList = res.response.filter(a=>a.IsActive==true);
+        this.creditReasonList = res.response.filter(a => a.IsActive == true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -308,6 +307,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   }
   validateAutoBlockOffDays() {
+    debugger
     this.AlreadyBlockedLeaseList = [];
     let body =
     {
@@ -346,6 +346,7 @@ export class SchedulerPopupComponent implements OnInit {
     //this.modal.dismiss(ModalResult.CLOSE);
   }
   MatchFacilityHours() {
+    debugger
     this.isValidTimeAndClosedDays = true;
     this.facilityClosedDaysJSON = []; this.FacilityTimesJSON = [];
     let body =
@@ -385,6 +386,7 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   getTotalLeaseAndCreditHours() {
+    debugger
     let body =
     {
       'facilityId': this.FacilityID,
@@ -443,6 +445,7 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
+    debugger
     if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
       this.notificationService.showNotification({
         alertHeader: '',
@@ -608,8 +611,9 @@ export class SchedulerPopupComponent implements OnInit {
     }, 500);
 
   }
-  handleBlockOffDaysChange(e: any, from: string) {   
-    this.AlreadyBlockedLeaseList = []; 
+  handleBlockOffDaysChange(e: any, from: string) {
+    debugger
+    this.AlreadyBlockedLeaseList = [];
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
     if (this.editBlockOffFormControls.end_date.value != null) {
@@ -634,6 +638,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   handleValueChange(e: any, from: string) {
+    debugger
     this.AlreadyBlockedLeaseList = [];
     this.TotalBlockHours = '';
     this.TotalLeaseHours = '';
@@ -709,6 +714,7 @@ export class SchedulerPopupComponent implements OnInit {
     this.isValidTimeAndClosedDays = true;
   }
   getTwentyFourHourTime(time) {
+    debugger
     let hours = Number(time.match(/^(\d+)/)[1]);
     const minutes = Number(time.match(/:(\d+)/)[1]);
     const AMPM = time.match(/\s(.*)$/)[1];

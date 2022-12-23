@@ -367,6 +367,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
     }
     openForm(event: any) {
+        debugger
         const modalRef = this.modalService.open(SchedulerPopupComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
         modalRef.componentInstance.isNew = scheduler.getState().new_event;
         modalRef.componentInstance.mode = scheduler.getState().mode;
