@@ -99,8 +99,8 @@ export class CalendarSchedulerComponent implements OnInit {
     schedulerLoad() {
         scheduler.skin = 'material';
         scheduler.config.xml_date = '%Y-%m-%d';
-        scheduler.config.hour_date="%h:%i %A";
-		scheduler.xy.scale_width = 70;
+        scheduler.config.hour_date = "%h:%i %A";
+        scheduler.xy.scale_width = 70;
         scheduler.config.drag_move = false;
         scheduler.config.limit_time_select = true;
         scheduler.config.details_on_create = true;
@@ -150,7 +150,7 @@ export class CalendarSchedulerComponent implements OnInit {
                 scheduler.templates.tooltip_date_format(start) +
                 "<br/><b>End date:</b> " + scheduler.templates.tooltip_date_format(end);
         };
-        scheduler.templates.tooltip_date_format=function (date){
+        scheduler.templates.tooltip_date_format = function (date) {
             var formatFunc = scheduler.date.date_to_str("%m/%d/%y %h:%i %A");
             return formatFunc(date);
         }
@@ -300,10 +300,17 @@ export class CalendarSchedulerComponent implements OnInit {
                 'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
                 'modality': null,
                 'resourceId': 0
-            } 
+            }
             this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
-                if (!this.displayClosedDays.includes( event._sday<6? event._sday + 1:0)) {
-                    if (res.response) { 
+                var dayValue = 0;
+                if (scheduler._mode == 'day') {
+                    dayValue = event.start_date.getDay();
+                }
+                else {
+                    dayValue = event._sday  < 6 ? event._sday + 1 : 0;
+                }
+                if (!this.displayClosedDays.includes(dayValue)) {
+                    if (res.response) {
                         const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                         modalRef.componentInstance.isPastDateOrOffDays = true;
                         modalRef.result.then().catch((reason: ModalResult | any) => {
@@ -327,6 +334,7 @@ export class CalendarSchedulerComponent implements OnInit {
                         }
                     });
                 }
+
 
             }, (err: any) => {
                 this.errorNotification(err);
@@ -574,7 +582,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                     this.signConfirm(false);
                     this.IsEsignModalHide = true;
-                     this.modaldismissscheduler.nativeElement.click();
+                    this.modaldismissscheduler.nativeElement.click();
                     this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
@@ -605,7 +613,7 @@ export class CalendarSchedulerComponent implements OnInit {
             }
 
             this.confirmBlockToLease(false, data);
-            this.closeEsignPopup.nativeElement.click();   
+            this.closeEsignPopup.nativeElement.click();
             this.f.submitted = false;
         }
     }
@@ -627,7 +635,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
 
             this.approveAllParentToLease(false, data);
-            this.closeApproveEsignPopup.nativeElement.click();       
+            this.closeApproveEsignPopup.nativeElement.click();
             this.ff.submitted = false;
         }
     }
@@ -652,7 +660,7 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.ApproveAndSendLeaseToFacilityToAll(true, body).subscribe((res) => {
             if (res.response) {
-               
+
                 if (res.responseCode == 200 || res.response.ResponseCode == 200) {
                     this.notificationService.showNotification({
                         alertHeader: 'Success',
@@ -661,7 +669,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     })
                     this.approveAddEsignModelConfirm(false);
                     this.modaldismissscheduler.nativeElement.click();
-                    this.commonService.sendDataBlockLeaseScheduler('true');                  
+                    this.commonService.sendDataBlockLeaseScheduler('true');
                 }
                 else {
                     this.errorNotification(res);
