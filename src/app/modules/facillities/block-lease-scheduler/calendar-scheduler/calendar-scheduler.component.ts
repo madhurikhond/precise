@@ -207,7 +207,6 @@ export class CalendarSchedulerComponent implements OnInit {
 
 
         scheduler.showLightbox = (id: any) => {
-            debugger
             const event = scheduler.getEvent(id);
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
