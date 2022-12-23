@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
@@ -32,11 +33,12 @@ export class FundingCoSettingComponent implements OnInit {
   permission : any;
   permissionTitle = LienPortalFundingCoPermission.SignForAssignAR;
 
-  constructor(private lienPortalService: LienPortalService, private storageService : StorageService) {
+  constructor(private lienPortalService: LienPortalService, private storageService : StorageService,private readonly commonService: CommonMethodService) {
     this.storageService.permission = null;
   }
 
   ngOnInit(): void {
+    this.commonService.setTitle(LienPortalPageTitleOption.SETTINGS);
     this.setPermission();
     this.getFundingCompanySettings();
   }
