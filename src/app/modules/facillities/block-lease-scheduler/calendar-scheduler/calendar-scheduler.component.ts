@@ -207,6 +207,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
 
         scheduler.showLightbox = (id: any) => {
+            debugger
             const event = scheduler.getEvent(id);
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
@@ -300,12 +301,10 @@ export class CalendarSchedulerComponent implements OnInit {
                 'endTime': this.getTwentyFourHourTime(event.end_date.toLocaleTimeString('en-US')),
                 'modality': null,
                 'resourceId': 0
-            }
-
+            } 
             this.blockLeaseSchedulerService.getAlreadyBlockedOffDays(true, body).subscribe((res) => {
-                if (!this.displayClosedDays.includes(event._sday + 1)) {
-                    if (res.response) {
-
+                if (!this.displayClosedDays.includes( event._sday<6? event._sday + 1:0)) {
+                    if (res.response) { 
                         const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                         modalRef.componentInstance.isPastDateOrOffDays = true;
                         modalRef.result.then().catch((reason: ModalResult | any) => {
