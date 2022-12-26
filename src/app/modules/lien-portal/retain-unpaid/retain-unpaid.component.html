@@ -20,8 +20,10 @@
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                     <dxo-pager [visible]="false"></dxo-pager>
-                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
-                    </dxi-column>
+                    <dxi-column cellTemplate="batchNameTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'batchNameTemplate'">
+                            <span class="clsBatchBox">{{(data && data.data && data.data.batchName?data.data.batchName:'')}}</span>
+                        </div>
 
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
                     <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">

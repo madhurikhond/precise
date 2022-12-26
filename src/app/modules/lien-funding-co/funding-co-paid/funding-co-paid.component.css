@@ -56,18 +56,18 @@
     color: #7e7e7e;
 }
 .my-modal .theme-label {
-    font-size: 13px;
+    font-size: 14px;
     text-transform: capitalize;
     font-weight: 600;
-    min-width: 111px;
+    min-width: 125px;
     line-height: 30px;
 }
 .my-modal .modal-dialog {
-    max-width: 340px;
+    max-width: 370px;
   }
   .totlaPayAmt {
     margin-bottom: 0;
-    font-size: 15px;
+    font-size: 20px;
     color: green;
     font-weight: 500;
     line-height: 27px;
@@ -80,4 +80,18 @@
 }
 .modal-upper-case{
     text-transform: uppercase !important;
+}
+
+.clsBatchBox {
+    text-align: left;
+    width: 25%;
+    display: inline-block;
+    white-space: nowrap;    
+}
+
+.clsChecknumberBox {
+    text-align: left;
+    width: 35%;
+    display: inline-block;
+    white-space: nowrap;
 }

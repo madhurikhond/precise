@@ -59,3 +59,14 @@
     color: #000000;
     font-weight: 500;
 }
+
+.clsBatchBox {
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.unsetTranTitle{
+    text-transform: none !important;
+}

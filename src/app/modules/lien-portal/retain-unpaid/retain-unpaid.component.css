@@ -30,14 +30,14 @@
     justify-content: flex-end;
 }
 #ReceivePaymentModal .theme-label {
-    font-size: 13px;
+    font-size: 14px;
     text-transform: capitalize;
     font-weight: 600;
-    min-width: 100px;
+    min-width: 125px;
     line-height: 30px;
 }
 #ReceivePaymentModal .modal-dialog {
-    max-width: 340px;
+    max-width: 370px;
   }
 
   .signature-custom {
@@ -78,4 +78,10 @@ font-style: normal !important;
 }
 .lower-text-data{
     text-transform: none !important;
+}
+.clsBatchBox {
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    white-space: nowrap;
 }

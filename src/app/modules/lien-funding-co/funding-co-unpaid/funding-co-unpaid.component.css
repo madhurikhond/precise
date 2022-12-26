@@ -10,35 +10,43 @@
     color: #fff;
     border: 1px solid #3b8beb;
 }
-.btn-retainedAR{
-    margin-right:16px;
+
+.btn-retainedAR {
+    margin-right: 16px;
 }
-.btn-grey{
+
+.btn-grey {
     background: #7e7e7e;
     border: 1px solid #7e7e7e;
 }
-.btn-common:hover{
+
+.btn-common:hover {
     background: #ffffff;
     color: #3b8beb;
 }
-.btn-common.btn-grey:hover{
+
+.btn-common.btn-grey:hover {
     background: #ffffff;
     color: #7e7e7e;
 }
+
 .headerBtnSection {
     display: flex;
     justify-content: flex-end;
 }
-.PDFIcon i.fa{
+
+.PDFIcon i.fa {
     color: #3b8beb;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
 }
+
 .signature-custom {
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     border-radius: 6px;
 }
+
 .btnsignature {
     border: 1px solid #eee;
     color: #000;
@@ -46,33 +54,46 @@
     font-weight: 600;
     line-height: 24px;
 }
+
 .btn-preview {
     margin-left: auto;
 }
-.signatureBtn{
+
+.signatureBtn {
     display: flex;
     margin-top: 16px;
 }
+
 .innerTitle {
     text-transform: capitalize;
     font-size: 15px;
     color: #000000;
     font-weight: 500;
 }
+
 #SelectedBatches .theme-label {
-    font-size: 13px;
+    font-size: 14px;
     text-transform: capitalize;
     font-weight: 600;
-    min-width: 111px;
+    min-width: 125px;
     line-height: 30px;
 }
+
 #SelectedBatches .modal-dialog {
-    max-width: 340px;
-  }
-  .totlaPayAmt {
+    max-width: 370px;
+}
+
+.totlaPayAmt {
     margin-bottom: 0;
-    font-size: 15px;
+    font-size: 20px;
     color: green;
     font-weight: 500;
     line-height: 27px;
+}
+
+.clsBatchBox {
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    white-space: nowrap;
 }

@@ -26,8 +26,10 @@
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
                     </dxo-selection>
-                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
-                    </dxi-column>
+                    <dxi-column cellTemplate="batchNameTemplate"></dxi-column>
+                    <div *dxTemplate="let data of 'batchNameTemplate'">
+                        <span class="clsBatchBox">{{(data && data.data && data.data.batchName?data.data.batchName:'')}}</span>
+                    </div>
 
                     <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                     <div *dxTemplate="let data of 'PDFIconTemplate'">
@@ -84,13 +86,13 @@
         role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR TO THE FOLLOWING FUNDING COMPANY</h5>
+                <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR</h5>
                 <div class="close-dismiss" (click)="clearSignatureForm()" data-dismiss="modal" #modal_close></div>
             </div>
             <div class="modal-body">
                 <div class="modal-content">
 
-                    <p class="innerTitle">Sign & execute the AR assignment agreement </p>
+                    <p class="innerTitle unsetTranTitle">Sign & Execute the AR Assignment Agreement </p>
                     <div class="ar-assignment-form">
                         <div class="row">
                             <div class="col-6">

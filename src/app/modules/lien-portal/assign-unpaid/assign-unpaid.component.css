@@ -7,3 +7,10 @@
     font-weight: 600;
 }
 
+
+.clsBatchBox {
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    white-space: nowrap;
+}
