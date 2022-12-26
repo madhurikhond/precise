@@ -28,7 +28,7 @@
                     <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
                     </dxi-column> -->
                     <dxi-column cellTemplate="BatchTemplate">
-                      <div *dxTemplate="let data of 'BatchTemplate'">
+                      <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
                       {{data.data.batchName}}
                       <span class="studyCount">
                         {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>

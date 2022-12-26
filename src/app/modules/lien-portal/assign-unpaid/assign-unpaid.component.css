@@ -9,3 +9,10 @@
 .studyCount{
   margin-left: 10px;
 }
+
+.clsBatchBox {
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    white-space: nowrap;
+}
