@@ -6806,6 +6806,9 @@ tree-node:last-child > .tree-node > .tree-children::after {
 #viewFile, #viewFile_Doc, #docManagerRefFundingCo, #new-cnr-request, #docManager, #exportCheckConfirmationPopUp, #emailCustodianRecords{
 	z-index: 1052;
 }
+#viewFile_Docx{
+	z-index: 1062 !important;
+}
 #viewFile_DocManager{
 	z-index: 1060 !important;
 }
