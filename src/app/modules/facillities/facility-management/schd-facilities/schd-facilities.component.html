@@ -3793,6 +3793,10 @@
 															<dxo-paging [enabled]="false"></dxo-paging>
 															<dxi-column dataField="LeaseId" caption="Lease #">
 															</dxi-column>
+															<dxi-column cellTemplate ="dateCreatedOnTemplate" caption="Lease Created">
+															</dxi-column>
+															<dxi-column cellTemplate="dateExecutedOnTemplate" caption="Lease Executed">
+															</dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
@@ -3827,6 +3831,17 @@
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
 
+															</div>
+
+															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
+																<p>
+																	{{data.data.CreatedOn|date: 'MM/dd/yyyy'}}
+																</p>
+															</div>															
+															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
+																<p>
+																	{{data.data.FacilitySignedOn|date: 'MM/dd/yyyy'}}
+																</p>													
 															</div>
 														</dx-data-grid>
 													</div>
