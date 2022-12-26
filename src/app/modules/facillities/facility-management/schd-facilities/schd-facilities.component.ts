@@ -1423,7 +1423,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
     if (!data.useBlockLease) {
-
+      this.GetUnpaidLeasesList =[];
       $('#BlockLeaseRate')
         .not('.btn')
         .attr('disabled', true)
@@ -1436,14 +1436,14 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', true)
       //   .addClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
-      $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', true)
-        .addClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
+      // $('#LeasePaymentsUnPaid')
+      //   .not('.btn')
+      //   .attr('disabled', true)
+      //   .addClass('disabledClass');
     } else {
       $('#BlockLeaseRate')
         .not('.btn')
@@ -1453,18 +1453,18 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-      $('#LeasePaymentsUnPaid')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#LeasePaymentsUnPaid')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
       // $('#LeaseAgreementCT')
       //   .not('.btn')
       //   .attr('disabled', false)
       //   .removeClass('disabledClass');
-      $('#CreditandDebit')
-        .not('.btn')
-        .attr('disabled', false)
-        .removeClass('disabledClass');
+      // $('#CreditandDebit')
+      //   .not('.btn')
+      //   .attr('disabled', false)
+      //   .removeClass('disabledClass');
 
     }
     this.generalInfoForm.patchValue({
@@ -3095,6 +3095,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getFacilityCreditsUnUsed();
   }
   getUnpaidLeases() {
+  
     var data = {
       FacilityId: this.facilityId,
       PageNumber: this.pageNumberOfUnpaidLeases,
@@ -3105,11 +3106,11 @@ export class SchdFacilitiesComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.response != null && res.response.length > 0) {
-            this.GetUnpaidLeasesList = res.response;
+           this.GetUnpaidLeasesList = res.response;
             this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
           } else {
             this.totalRecordUnpaidLeases = 1;
-            this.GetUnpaidLeasesList = [];
+           this.GetUnpaidLeasesList = [];
           }
         },
         (err: any) => {
