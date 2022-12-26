@@ -3835,12 +3835,12 @@
 
 															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
 																<p>
-																	{{data.data.CreatedOn|date: 'MM/dd/yyyy'}}
+																	{{data.data.CreatedOn| date:dateTimeFormatCustom.Date}}
 																</p>
 															</div>															
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
 																<p>
-																	{{data.data.FacilitySignedOn|date: 'MM/dd/yyyy'}}
+																	{{data.data.FacilitySignedOn|date: dateTimeFormatCustom.Date}}
 																</p>													
 															</div>
 														</dx-data-grid>
