@@ -43,4 +43,10 @@ providedIn: 'root'
       map((res: ApiResponse) => res)
     );
   }
+
+  patientAttRefData(emailBody: any) {
+    return this._httpService.post(`CreateAlert/patientAttRefData`, emailBody, true,true).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
 }

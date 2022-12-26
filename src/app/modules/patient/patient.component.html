@@ -667,7 +667,7 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="precisemri-search pull-left">
-                        <p>Studies Found: &nbsp;<span>{{patientGridList.length>0? totalRecord:0}}</span> </p>
+                        <p class="sp-top-4">Studies Found: &nbsp;<span>{{patientGridList.length>0? totalRecord:0}}</span> </p>
                         &nbsp;&nbsp;
                     </div>
                     <div class="precisemri-search pull-left">
@@ -684,7 +684,7 @@
                                 </div>
                             </ng-template>
                         </ng-select>                       
-                        <div class="checkbox-theme">
+                        <div class="checkbox-theme op-check-hd sp-left-nw">
                             <input class="form-control" id = "barcodes" [(ngModel)]="isSelectAll"
                                    type="checkbox">
                             <label for="barcodes" class="arrow-label">Select All</label>
@@ -700,6 +700,7 @@
                     </div>
                   
                     <div class="precisemri-search patient-precisemri-search cs-wt-pt-ser" *ngIf="!IsPatientActionHide">
+                       
                         <ng-select class="form-search" [items]="ddlvalue" bindLabel="Text" [clearable]="false"
                             [searchable]="false" [(ngModel)]="ddlCurrentText" bindValue="Text"
                             (change)="onChangeDdlAction($event)">
@@ -725,6 +726,9 @@
                             (click)="goButtonClick()">Go</button>
                     </div>
                     <div class="precisemri-search patient-precisemri-search">
+                        <div class="form-group p-rel">
+                            <div class="theme-label op-th-lable">Order by</div>
+                        
                         <ng-select class="form-search" [items]="ddlAllColumns" bindLabel="Text" [clearable]="false"
                             [searchable]="false" (change)="onChangeSelectedColumn($event)"
                             [(ngModel)]="ddlCurrentSelectedColumnText" placeholder="Select column" bindValue="Text">
@@ -736,7 +740,10 @@
 
                             </ng-template>
                         </ng-select>
-
+                    </div>
+                    <div class="form-group p-rel">
+                        <div class="theme-label op-th-lable">Sort by</div>
+                    
                         <ng-select class="form-search" [items]="ddlSortingOrder" bindLabel="Text" [clearable]="false"
                             [searchable]="false" (change)="onChangeSortingOrder($event)"
                             [(ngModel)]="ddlSelectedSortingOrderText" placeholder="Select column" bindValue="Text">
@@ -747,6 +754,7 @@
                                 </div>
                             </ng-template>
                         </ng-select>
+                    </div>
                     </div>
                     <div class="precisemri-search page-select">
                         <div class="theme-label">Page Size</div>
