@@ -458,11 +458,11 @@
             <div class="modal-body">
                 <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
                     <span *ngIf="isBlockOffTime">YOU CAN NOT BLACK OUT SOME OF THE DATES SELECTED IN
-                        BLACK OUT  LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        BLACK OUT LEASE DURATION BECAUSE FOLLOWING DATES ARE
                         ALREADY LEASE
                         BLACKED OUT :</span>
                     <span *ngIf="!isBlockOffTime">YOU CAN NOT BLACK OUT SOME OF THE DATES SELECTED IN
-                        BLACK OUT LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                        BLACK OUT LEASE DURATION BECAUSE FOLLOWING DATES ARE
                         ALREADY BLACKED OUT :</span>
                 </p>
                 <ng-template #isDateValid>{{dateTimeValidationMsg}}</ng-template>

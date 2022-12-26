@@ -12,7 +12,7 @@
                 <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
 
                 <div *dxTemplate="let data of 'CheckNumberTemplate'">
-                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="modal-lower-case">
+                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="clsChecknumberBox modal-lower-case">
                       <span class="mr-2">Check No: {{data.data.checkNumber}}</span>
                       <span class="mr-2">Check Date: {{data.data.checkDate}}</span>
                       <span class="mr-2">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
@@ -25,7 +25,19 @@
                         [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
                         <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
-                        <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
+                        <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
+                        <dxi-column cellTemplate="BatchTemplate">
+                          <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                          {{data.data.batchName}}
+                          <span class="studyCount">
+                            {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                            <ng-template #oneStudy>
+                               <span>Study</span>
+                            </ng-template>
+                          </span>
+                         </div>
+                        </dxi-column>
+
                         <dxi-column dataField="batchName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
                         <div *dxTemplate="let data of 'PDFIconTemplate'">
                           <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>

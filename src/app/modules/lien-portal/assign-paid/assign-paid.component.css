@@ -9,3 +9,21 @@
 .modal-lower-case {
   text-transform: none !important;
 }
+
+.studyCount{
+  margin-left: 10px;
+}
+
+.clsBatchBox {
+    text-align: left;
+    width: 25%;
+    display: inline-block;
+    white-space: nowrap;    
+}
+
+.clsChecknumberBox {
+    text-align: left;
+    width: 35%;
+    display: inline-block;
+    white-space: nowrap;
+}
