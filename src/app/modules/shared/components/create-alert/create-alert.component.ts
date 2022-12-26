@@ -41,7 +41,7 @@ export class CreateAlertComponent implements OnInit {
   alertButtonClick: boolean = false;
   readonly CkeConfig = ckeConfig;
   Issubmitted:boolean =false;
-  IsPatientPhone = false ;
+  IsPatientPhoneSent = false ;
   name = 'ng2-ckeditor';
   //ckeConfig: CKEDITOR.config;
   ckeConfig:any;
@@ -97,7 +97,7 @@ export class CreateAlertComponent implements OnInit {
       infoPatientPhone: 'N/A',
       IsPatientPhone: false,
       infoPatientEmail: 'N/A',
-      IsPatientEmail: false,
+      IsPatientEmail: [''],
       infoBrokerName: 'N/A',
       InfoBrokerMainEmail: 'N/A',
       IsBrokerMainEmail: false,
@@ -196,7 +196,6 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   onReasonChange(Reason) {
-    debugger
     this.Reason = Reason ;
     this.contactInfoForm.patchValue({ reason: Reason });
     var a;
@@ -287,12 +286,11 @@ export class CreateAlertComponent implements OnInit {
     (this.contactInfoForm.get('InfoBrokerBillingFax').value == 'N/A' ? this.contactInfoForm.get('isBrokerBillingFax').disable() : this.contactInfoForm.get('isBrokerBillingFax').enable());
     (this.contactInfoForm.get('InfoBrokerAPFax').value == 'N/A' ? this.contactInfoForm.get('isBrokerAPFax').disable() : this.contactInfoForm.get('isBrokerAPFax').enable());
     if (this.attInfoList.length != 0) {
-      
       this.contactInfoForm.patchValue({
         infoAttorneyName: this.attInfoList.Name,
         infoAttorneyFax: this.attInfoList.Fax,
         infoAttorneyPhone: this.attInfoList.Phone,
-        infoAttorneyEmail: this.attInfoList.Email
+        infoAttorneyEmail: this.attInfoList.Email, 
       })
     }
     (this.contactInfoForm.get('infoAttorneyFax').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyFax').disable() : this.contactInfoForm.get('IsAttorneyFax').enable());
@@ -306,23 +304,22 @@ export class CreateAlertComponent implements OnInit {
         infoPatientEmail: this.patientInfoList.Email
       })
     if(this.retainInfoList.length != 0){
-      this.IsPatientPhone = this.retainInfoList.IsPatientSmsSend
       this.contactInfoForm.patchValue({
-        IsAttorneyFax : this.retainInfoList.IsAttorenyFaxSend,
-        IsAttorneyEmail : this.retainInfoList.IsAttorenyEmailSend,
-        IsRefPhyFax : this.retainInfoList.IsRefPhyFaxSend,
-        IsRefPhyEmail : this.retainInfoList.IsRefPhyEmailSend,
-        IsBrokerMainFax : this.retainInfoList.IsBrokerMainFaxSend,
-        IsBrokerMainEmail : this.retainInfoList.IsbrokerMainEmailSend,
-        InfoBrokerBillingFax : this.retainInfoList.IsBrokerBillingFaxSend,
-        InfoBrokerBillingEmail : this.retainInfoList.IsBrokerBillingEmailSend,
-        InfoBrokerAPFax :  this.retainInfoList.IsBrokerApFaxSend,
-        InfoBrokerAPEmail : this.retainInfoList.IsBrokerApEmailSend,
-        InfoBrokerMainEmail : this.retainInfoList.IsbrokerMainEmailSend,
-        InfoBrokerMainFax : this.retainInfoList.IsBrokerMainFaxSend,
-        IsPatientFax : this.retainInfoList.IsPatientFaxSend,
-        IsPatientEmail : this.retainInfoList.IsPatientEmailSend,
-        IsPatientPhone : this.retainInfoList.IsPatientSmsSend
+        IsAttorneyFax : this.retainInfoList.IsAttorenyFaxSend == '0' ? false : true ,
+        IsAttorneyEmail : this.retainInfoList.IsAttorenyEmailSend == '0' ? false : true ,
+        IsRefPhyFax : this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true ,
+        IsRefPhyEmail : this.retainInfoList.IsRefPhyEmailSend == '0' ? false : true ,
+        IsBrokerMainFax : this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true ,
+        IsBrokerMainEmail : this.retainInfoList.IsbrokerMainEmailSend == '0' ? false : true ,
+        InfoBrokerBillingFax : this.retainInfoList.IsBrokerBillingFaxSend == '0' ? false : true ,
+        InfoBrokerBillingEmail : this.retainInfoList.IsBrokerBillingEmailSend == '0' ? false : true ,
+        InfoBrokerAPFax :  this.retainInfoList.IsBrokerApFaxSend == '0' ? false : true ,
+        InfoBrokerAPEmail : this.retainInfoList.IsBrokerApEmailSend == '0' ? false : true ,
+        InfoBrokerMainEmail : this.retainInfoList.IsbrokerMainEmailSend == '0' ? false : true ,
+        InfoBrokerMainFax : this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true ,
+        IsPatientFax : this.retainInfoList.IsPatientFaxSend == '0' ? false : true ,
+        IsPatientEmail : this.retainInfoList.IsPatientEmailSend == '0' ? false : true ,
+        IsPatientPhone : this.retainInfoList.IsPatientSmsSend == '0' ? false : true 
       })
     }
     }
@@ -371,11 +368,14 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   onchkPhoneChange(id) {
-    debugger
     this.addPhoneChecked = id.target.checked;
-    this.contactInfoForm.patchValue({
-      SmsTextModel :   this.smsBody 
-    })
+    if(this.addPhoneChecked == true){
+      this.smsTextModel= this.smsBody;
+    }
+    
+    // this.contactInfoForm.patchValue({
+    //   SmsTextModel :   this.smsBody 
+    // })
     if (id.target.checked) {
       document.getElementById('AddPhone1').hidden = false;
       document.getElementById('AddPhone2').hidden = false;
@@ -386,14 +386,14 @@ export class CreateAlertComponent implements OnInit {
       document.getElementById('AddPhone3').hidden = true;
     }
     }
-  onchkPatientPhoneChange(id) {
-    debugger
-    this.IsPatientPhone = id.target.checked;
-    if(this.smsBody != null || this.smsBody !== ''){
-      this.contactInfoForm.patchValue({
-        SmsTextModel :   this.smsBody 
-     })
+  onchkPatientPhoneChange(id) { 
+    this.IsPatientPhoneSent = id.target.checked;
+    if(this.IsPatientPhoneSent == true){
+      this.smsTextModel= this.smsBody;
     }
+    //   this.contactInfoForm.patchValue({
+    //     SmsTextModel :   this.smsBody 
+    //  })
   }
   ClearInfoList() {
     this.brokerInfoList = [];
@@ -451,7 +451,7 @@ export class CreateAlertComponent implements OnInit {
 
   btnCreateAlert() {
     debugger
-    if(this.addPhoneChecked == false && this.IsPatientPhone == false ) {
+    if(this.addPhoneChecked == false && this.IsPatientPhoneSent == false ) {
       this.contactInfoForm.get('SmsTextModel').setErrors(null);
     }
     var PatientID  = this.contactInfoForm.get('patientID').value ;
@@ -553,7 +553,7 @@ export class CreateAlertComponent implements OnInit {
     this.modalValue = ''
     this.patientFieldDisable= false;
     this.addPhoneChecked = false ;
-    this.IsPatientPhone  = false ;
+    this.IsPatientPhoneSent  = false ;
     this.doctorAsDefaultContact = false;
     this.attorneyAsDefaultContact = false;
   }
