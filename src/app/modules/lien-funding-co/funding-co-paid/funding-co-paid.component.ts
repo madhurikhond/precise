@@ -169,7 +169,7 @@ export class FundingCoPaidComponent {
       }
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.EditPaymentInformation).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_DELETED_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
           this.getFundingCoPaidList();
           this.modal_edit_payment_close.nativeElement.click();
           this.selectedAction = "";
@@ -189,7 +189,7 @@ export class FundingCoPaidComponent {
       };
       this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.RemovePayment).subscribe((res)=>{
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_DELETED_SUCCESS);
           this.getFundingCoPaidList();
           this.modal_remove_close.nativeElement.click();
           this.selectedAction = "";
