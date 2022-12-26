@@ -7298,18 +7298,18 @@ ngb-modal-window.modal{
   }
   .displayCounter {
 	font-size: 9px;
-    line-height: 18px;
+    line-height: 17px;
     text-align: center;
     color: #ffffff;
     font-weight: 700;
     position: absolute;
     background: #e74c3b;
     border-radius: 50%;
-    top: -8px;
-    left: 8px;
+    top: -7px;
+    left: 7px;
     padding: 0px 3px;
-    height: 20px;
-    width: 20px;
+    height: 17px;
+    width: 17px;
 }
 .dhx_scale_holder_now{
 	background-color: #fff !important;
@@ -7325,7 +7325,7 @@ ngb-modal-window.modal{
 }
 .scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list li{
 	position: relative;
-	padding-right: 10px;
+	padding-right: 9px;
 }
 .cash-price-table.table-responsive{
 	height: auto;
