@@ -79,3 +79,6 @@ font-style: normal !important;
 .lower-text-data{
     text-transform: none !important;
 }
+.studyCount{
+  margin-left: 10px;
+}

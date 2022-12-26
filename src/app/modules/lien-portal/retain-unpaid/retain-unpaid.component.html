@@ -20,7 +20,18 @@
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                     <dxo-pager [visible]="false"></dxo-pager>
-                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
+                    <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
+                    </dxi-column> -->
+                    <dxi-column cellTemplate="BatchTemplate">
+                      <div *dxTemplate="let data of 'BatchTemplate'">
+                      {{data.data.batchName}}
+                      <span class="studyCount">
+                        {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                        <ng-template #oneStudy>
+                           <span>Study</span>
+                        </ng-template>
+                      </span>
+                     </div>
                     </dxi-column>
 
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
