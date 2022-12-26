@@ -98,6 +98,8 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     schedulerLoad() {
         scheduler.skin = 'material';
+        scheduler.config.first_hour = 6;
+		scheduler.config.last_hour = 24;
         scheduler.config.xml_date = '%Y-%m-%d';
         scheduler.config.hour_date = "%h:%i %A";
         scheduler.xy.scale_width = 70;
@@ -371,6 +373,7 @@ export class CalendarSchedulerComponent implements OnInit {
 
     }
     openForm(event: any) {
+        debugger
         const modalRef = this.modalService.open(SchedulerPopupComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
         modalRef.componentInstance.isNew = scheduler.getState().new_event;
         modalRef.componentInstance.mode = scheduler.getState().mode;
