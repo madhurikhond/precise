@@ -356,7 +356,7 @@ export class SchedulerPopupComponent implements OnInit {
             this.isValidAlreadyBlockedLease = false;
           }
           else {
-            this.isValidAlreadyBlockedLease = true;
+            this.isValidAlreadyBlockedLease = false;
             this.validateFacilityTimeAndClosedDays(body);
           }
         } else {
