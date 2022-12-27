@@ -112,7 +112,8 @@
                     <div class="tab-pane active" *ngIf="selectedMode=='funding_company'" id="funding-company">
                         <div class="funding-cmp-content">
                             <div class="headerBtn">
-                                <a class="btn btn-common btn-preciseFunding btn-grey">Add Precise Imaging Funding
+                                <a class="btn btn-common btn-preciseFunding btn-grey" (click)="openPreciseCompPopup()" data-toggle="modal"
+                                data-target="#AddFundingCmpModal">Add Precise Imaging Funding
                                     Co.</a>
                                 <a class="btn btn-common btn-newFunding btn-blue textUnSet" (click)="openFundCompPupup()" data-toggle="modal"
                                     data-target="#AddFundingCmpModal">Add new funding company</a>
