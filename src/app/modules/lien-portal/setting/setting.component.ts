@@ -1,12 +1,9 @@
-import { ThrowStmt } from '@angular/compiler';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
-import { threadId } from 'worker_threads';
 import { AddFundingCompanyComponent } from '../add-funding-company/add-funding-company.component';
 
 @Component({
@@ -161,7 +158,7 @@ export class SettingComponent implements OnInit {
   }
 
   saveSign() {
-      var data = {
+      let data = {
         "defaultSign": this.radiologistSign
       };
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.AddRadDefaultSign).subscribe((result) => {
@@ -187,13 +184,17 @@ export class SettingComponent implements OnInit {
     this.fundingCompanyComponent.onLoad(fundingCompanyId);
   }
 
+  openPreciseCompPopup(){
+    this.fundingCompanyComponent.defaultPreciseImagingFundingCo();
+  }
+
   onReturnSuccess(isSuccess: any) {
     if (isSuccess) {
       this.bindFundComp_list();
     }
   }
   changeStatus() {
-    if (this.isEmailReminder == true)
+    if (this.isEmailReminder === true)
       this.isReadonly = false;
     else
       this.isReadonly = true;

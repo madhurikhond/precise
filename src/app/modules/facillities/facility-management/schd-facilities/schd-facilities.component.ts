@@ -3192,7 +3192,7 @@ export class SchdFacilitiesComponent implements OnInit {
 
         this.notificationService.showNotification({
           alertHeader: 'Error',
-          alertMessage: 'Selected credit duration should not be greater than lease duration.',
+          alertMessage: 'Selected credit amount should be less than or equal to the total lease amount.',
           alertType: 400,
         });
       }
