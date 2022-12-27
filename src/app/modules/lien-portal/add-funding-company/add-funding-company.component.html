@@ -254,7 +254,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <div class="checkbox-theme pull-left">
-                                                    <input id="fundingcmp" class="styled" (change)="onDefaultCompanyChanged()"
+                                                    <input id="fundingcmp" class="styled" [attr.disabled]="popupDefaultCheckmark ? true: null" (change)="onDefaultCompanyChanged()"
                                                         type="checkbox" formControlName="defaultCompany">
                                                     <label for="fundingcmp" style="text-transform:capitalize;"
                                                         class="arrow-label">Default Funding Company</label>

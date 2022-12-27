@@ -25,6 +25,7 @@ export class AddFundingCompanyComponent implements OnInit {
   private readonly commonRegex = CommonRegex;
   isNotify_readonly: Boolean = false;
   popUpHeaderText : string;
+  popupDefaultCheckmark: Boolean =false;
 
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
@@ -55,6 +56,7 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   onLoad(val): void {
+    this.popupDefaultCheckmark = false;
     this.defaultSelectedTab = 'company-info';
     this.fundingCompanyPriceForm.reset();
     if (val != undefined && val != null) {
@@ -76,6 +78,7 @@ export class AddFundingCompanyComponent implements OnInit {
     this.defaultSelectedTab = 'company-info';
     this.fundingCompanyPriceForm.reset();
     this.fundingCompanyId = 0;
+    this.popupDefaultCheckmark = true;
     this.bindDefaultFundingCompany();
   }
 
