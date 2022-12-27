@@ -33,11 +33,11 @@
                         </div>                        
                         <div *ngIf="payInvoiceFormControls.checkAmount.errors" class="invalid-feedback">
                             <div *ngIf="payInvoiceFormControls.checkAmount.errors.min">
-                                amount should be more then $1
+                                the amount should not be negative 
                             
                          </div>
                             <div *ngIf="payInvoiceFormControls.checkAmount.errors.max">
-                               amount should be less then $9,99,999
+                               amount should be less than or equal to $9,99,999
                            
                         </div>
                             <div *ngIf="payInvoiceFormControls.checkAmount.errors.maxlength && !payInvoiceFormControls.checkAmount.errors?.pattern">

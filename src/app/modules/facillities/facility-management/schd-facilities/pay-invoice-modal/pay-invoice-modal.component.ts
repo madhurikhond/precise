@@ -52,7 +52,7 @@ export class PayInvoiceModalComponent implements OnInit {
     this.payInvoiceForm = this.fb.group({
       checkId: ['', [Validators.required]],
       checkDate: [this.currentDate, [Validators.required]],
-      checkAmount: ['', [Validators.required,Validators.max(999999),Validators.min(1), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
+      checkAmount: ['', [Validators.required,Validators.max(999999),Validators.min(0), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
     });
   }
   close() {
