@@ -238,27 +238,27 @@
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign  && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 )  && data.column.caption == 'MRI'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                    (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign && (getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0 )   && data.column.caption == 'CT'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                    (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 ) && data.column.caption == 'CT'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
