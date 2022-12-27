@@ -2,7 +2,7 @@
 
     <div class="tab-pane assignpaid-section" id="AssignARUnpaid">
         <div class="table-responsive">
-            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="AssignARpaid"
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="AssignARpaid"
                 [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>

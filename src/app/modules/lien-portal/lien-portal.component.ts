@@ -196,8 +196,7 @@ export class LienPortalComponent implements OnInit {
       check: '',
       checkNumber: '',
     });
-    // this.onFilter();
-    this.filter = undefined;
+    this.onFilter();
   }
 }
 
