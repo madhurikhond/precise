@@ -10,7 +10,7 @@
         </p>
         <div class="tab-pane retainedUnpaid-section" id="RetainedARUnpaid">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainARUnpaid"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="retainARUnpaid"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
                     [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
                     <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>

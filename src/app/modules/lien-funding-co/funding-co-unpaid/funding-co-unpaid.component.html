@@ -17,7 +17,7 @@
         </div>
         <div class="tab-pane fundingcoUnpaid-section" id="FundingCoUnpaid">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
                     (onSelectionChanged)="onSelectCheckbox($event)" [showColumnHeaders]="false">
                     <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
@@ -48,22 +48,22 @@
                         <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
                             [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
                             [allowColumnResizing]="true">
-                            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                            <dxo-scrolling [useNative]="true"></dxo-scrolling>
                             <dxo-sorting mode="none"></dxo-sorting>
 
-                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                            <dxi-column [width]="100" [width]="4+'%'" [allowFiltering]="false" [allowSorting]="false"
                                 cellTemplate="readingIconTemplate">
                             </dxi-column>
-                            <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
-                            <dxi-column dataField="dateARAssigned" caption="Date AR Assigned"></dxi-column>
-                            <dxi-column dataField="executionDate" caption="Execution Date"></dxi-column>
-                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
-                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
-                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
-                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
-                            <dxi-column dataField="study" caption="Study"></dxi-column>
-                            <dxi-column cellTemplate="ARPriceTemplate" caption="AR Price">
+                            <dxi-column dataField="rad" [width]="12+'%'" caption="RAD"> </dxi-column>
+                            <dxi-column dataField="dateRead" [width]="7+'%'" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="dateARAssigned" [width]="7+'%'" caption="Date AR Assigned"></dxi-column>
+                            <dxi-column dataField="executionDate" [width]="7+'%'" caption="Execution Date"></dxi-column>
+                            <dxi-column dataField="patientId" [width]="7+'%'" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" [width]="15+'%'" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" [width]="15+'%'" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" [width]="7+'%'" caption="DOB"></dxi-column>
+                            <dxi-column dataField="study" [width]="11+'%'" caption="Study"></dxi-column>
+                            <dxi-column cellTemplate="ARPriceTemplate" [width]="8+'%'" caption="AR Price">
                               <div *dxTemplate="let data of 'ARPriceTemplate'">
                                 {{data.data.arPrice | currency:'USD':'symbol-narrow'}}
                               </div>

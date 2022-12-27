@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"
-                    [innerText]="(fundingCompanyId == 0?'Add New Funding Company':'Edit Funding Company')"></h5>
+                    [innerText]="popUpHeaderText"></h5>
                 <div class="close-dismiss" data-dismiss="modal" #modal_close></div>
             </div>
             <div class="modal-body">
@@ -16,7 +16,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" [ngClass]="defaultSelectedTab =='company-info'?'active':''" data-toggle="tab" href="#companyinfo" (click)="onClickCompanyInfo('company-info')">Company Info</a>
                             </li>
-                            <li class="nav-item" *ngIf="fundingCompanyId > 0">
+                            <li class="nav-item">
                                 <a class="nav-link" [ngClass]="defaultSelectedTab =='pricing'?'active':''" data-toggle="tab" href="#pricing" (click)="onClickCompanyInfo('pricing')">Pricing</a>
                             </li>
                         </ul>
@@ -142,7 +142,7 @@
                                                         fundingCompanyForm.controls['city'].touched
                                                         && fundingCompanyForm.controls['city'].errors"
                                                     class="tooltiptext">
-                                                    <small class="error text-danger"
+                                                    <small class="error text-danger"36
                                                         *ngIf="fundingCompanyForm.controls['city'].errors.required">
                                                         City is required.
                                                     </small>
@@ -254,7 +254,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <div class="checkbox-theme pull-left">
-                                                    <input id="fundingcmp" class="styled" (change)="onDefaultCompanyChanged()"
+                                                    <input id="fundingcmp" class="styled" [attr.disabled]="popupDefaultCheckmark ? true: null" (change)="onDefaultCompanyChanged()"
                                                         type="checkbox" formControlName="defaultCompany">
                                                     <label for="fundingcmp" style="text-transform:capitalize;"
                                                         class="arrow-label">Default Funding Company</label>

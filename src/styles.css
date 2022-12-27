@@ -227,3 +227,15 @@ padding: 0;
 #AddFundingCmpModal .modal-dialog .modal-body .tab-section.addFundingCmp-tab {
   height: auto;
 }
+
+.radflowGrid_plusMinus .dx-datagrid-group-closed::before {
+  content: "+" !important;
+  font-family: cursive;
+  font-size: 25px;
+}
+
+.radflowGrid_plusMinus .dx-datagrid-group-opened::before {
+  content: "-" !important;
+  font-family: cursive;
+  font-size: 25px;
+}
