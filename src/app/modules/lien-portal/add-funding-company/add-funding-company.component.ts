@@ -1,9 +1,8 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { AccountService } from 'src/app/services/account.service';
-import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
 @Component({
@@ -25,6 +24,7 @@ export class AddFundingCompanyComponent implements OnInit {
   private editData: any = [];
   private readonly commonRegex = CommonRegex;
   isNotify_readonly: Boolean = false;
+  popUpHeaderText : string;
 
   constructor(private fb: FormBuilder,
     private lienPortalService: LienPortalService,
@@ -50,13 +50,16 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 434
   ngOnInit(): void {
+    this.GetCPTGroupList();
     this.bindState_DDL();
   }
 
   onLoad(val): void {
     this.defaultSelectedTab = 'company-info';
+    this.fundingCompanyPriceForm.reset();
     if (val != undefined && val != null) {
       this.fundingCompanyId = val;
+      this.popUpHeaderText = this.fundingCompanyId == 0?'Add New Funding Company':'Edit Funding Company';
       this.fundingCompanyForm.markAsUntouched();
       this.fundingCompanyForm.patchValue({ fundingCompanyId: this.fundingCompanyId });
       if (this.fundingCompanyId > 0) {
@@ -67,6 +70,15 @@ export class AddFundingCompanyComponent implements OnInit {
       }
     }
   }
+
+  defaultPreciseImagingFundingCo(){
+    this.popUpHeaderText = 'Add Precise Imaging Funding Co.';
+    this.defaultSelectedTab = 'company-info';
+    this.fundingCompanyPriceForm.reset();
+    this.fundingCompanyId = 0;
+    this.bindDefaultFundingCompany();
+  }
+
 
   onCompanyInfoTabClicked() { }
 
@@ -161,8 +173,8 @@ export class AddFundingCompanyComponent implements OnInit {
       fax: data.mainFax,
       notifyAssignment: data.notify
     });
-    
-    
+
+
   }
 
   mapGroupPrice(data){
@@ -179,52 +191,35 @@ export class AddFundingCompanyComponent implements OnInit {
   onSubmit() {
 
     this.fundingCompanyForm.markAllAsTouched();
-    if(this.fundingCompanyId > 0)
+    if(this.fundingCompanyForm.valid && this.fundingCompanyPriceForm.valid)
     {
-      if(this.fundingCompanyForm.valid && this.fundingCompanyPriceForm.valid)
-      {
-        var request = {
-          "fundingCompanyId": this.fundingCompanyId,
-          "groupPrice": this.mapGroupPrice(this.fundingCompanyPriceForm.value)
-        }
-      this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AddFundingCompanySellPrice).subscribe((res) => {
-        if (res.status == LienPortalResponseStatus.Success) {
-          let message = LienPortalStatusMessage.FUNDING_COMPANY_UPDATED;
-          this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
-        }
-        else
-          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-      }, () => {
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-      })
-      }
-      else
-      {
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.FILLOUT_REQUIRED_REQUIRED_FIELDS);
-      }
+      let message = this.fundingCompanyId > 0 ? LienPortalStatusMessage.FUNDING_COMPANY_UPDATED : LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
+      this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
     }
     else
     {
-      if (this.fundingCompanyForm.valid) {
-        let message = LienPortalStatusMessage.FUNDING_COMPANY_ADDED;
-        this.saveFundingCompanyData(this.fundingCompanyForm.value,message);
-      }
+         this.lienPortalService.errorNotification(LienPortalStatusMessage.FILLOUT_REQUIRED_REQUIRED_FIELDS);
     }
-
   }
 
   saveFundingCompanyData(value:any,message){
-    var contactSeprator = value.contactPhone.split(" x");
+    let contactSeprator = value.contactPhone.split(" x");
     if(contactSeprator[1])
     {
       if(contactSeprator[1].length == 0)
-        value.contactPhone = value.contactPhone.replace(' x', '');  
+        value.contactPhone = value.contactPhone.replace(' x', '');
     }
     value.contactPhone = value.contactPhone.replace('(', '').replace(')', '').replace(' ', '-').replace('-x', ' x');
     this.lienPortalService.PostAPI(value, LienPortalAPIEndpoint.UpsertFundingCompanyInfo).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
-        this.lienPortalService.successNotification(message);
         this.modal_close.nativeElement.click();
+        let request = {
+                   "fundingCompanyId": this.fundingCompanyId > 0 ? this.fundingCompanyId : res.result,
+                   "groupPrice": this.mapGroupPrice(this.fundingCompanyPriceForm.value)
+                 }
+        this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AddFundingCompanySellPrice).subscribe((res) => {
+          this.lienPortalService.successNotification(message);
+        })
         this.returnSuccess.emit(true);
       }
       else
@@ -333,5 +328,5 @@ export class AddFundingCompanyComponent implements OnInit {
     onClickCompanyInfo(selectedTab){
       this.defaultSelectedTab = selectedTab;
     }
-  
+
 }
