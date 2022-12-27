@@ -23,12 +23,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if (this.storageService.user) {
-      if(this.storageService.user.UserType == RADIOLOGIST_TYPE){
-        this.router.navigate(['unauthorize-access'], {
-          replaceUrl: true,
-        });
-        return false;
-      }
+     
       this.isPermissionChanged = this.storageService.getItem("isPermissionChanged");
       if (this.isPermissionChanged) {
 

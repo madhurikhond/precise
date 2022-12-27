@@ -1,6 +1,10 @@
-<div class="radProtal-section Liensettings">
+<div class="page-area">
+    
     <app-header></app-header>
-    <div class="radportal-body">
+    <app-navbar></app-navbar>
+    <div class="page-working-area lien-funding-co">
+    <div class="main-page-body">
+        <div class="inner-page-body">
         <div class="rad-lien-setting">
             <h3 class="lien-title"> <a routerLink="/lien-portal"><i class="fa fa-arrow-left"></i></a> Radiologist Lien
                 Management</h3>
@@ -161,6 +165,8 @@
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <app-add-funding-company (returnSuccess)="onReturnSuccess($event)" ></app-add-funding-company>
