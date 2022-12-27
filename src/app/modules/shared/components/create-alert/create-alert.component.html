@@ -7,7 +7,7 @@
             <div class="close-dismiss" (click)="close()" data-dismiss="modal"></div>
          </div>
          <div class="modal-body">
-            <div class="modal-body-inner">
+            <div class="modal-body-inner"> 
                <form class="theme-form" [formGroup]="contactInfoForm" *ngIf="contactInfoForm">
                   <div class="row">
                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
@@ -189,15 +189,18 @@
                                        <div class="create-alert-icon-detail">
                                           <input id="chkAttFax" style="display: none;" type="checkbox"
                                              formControlName="IsAttorneyFax" />
-                                          <label for="chkAttFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <label  *ngIf = "attorneyAsDefaultContact == false"  for="chkAttFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                          <label *ngIf = "attorneyAsDefaultContact == true" for="chkAttFax"><img src="assets/images/FaxIconGreen.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
                                              formControlName="infoAttorneyFax" />
                                        </div>
-                                       <div class="create-alert-icon-detail">
+                                       <div class="create-alert-icon-detail"> 
                                           <input id="chkAttEmail" style="display: none;" type="checkbox"
                                              formControlName="IsAttorneyEmail" />
-                                          <label for="chkAttEmail"><img
+                                          <label *ngIf = "attorneyAsDefaultContact == false"  for="chkAttEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                                <label *ngIf = "attorneyAsDefaultContact == true"  for="chkAttEmail"><img
+                                                   src="assets/images/EmailIconGreen.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
                                              formControlName="infoAttorneyEmail" />
                                        </div>
@@ -219,16 +222,21 @@
                                        <div class="create-alert-icon-detail">
                                           <input id="chkRefPhyFax" type="checkbox" style="display: none;"
                                              formControlName="IsRefPhyFax" />
-                                          <label for="chkRefPhyFax"><img
+                                          <label  *ngIf = "doctorAsDefaultContact == false"    for="chkRefPhyFax"><img
                                                 src="assets/images/FaxIconGray.png"></label>&nbsp;&nbsp;
+                                                <label  *ngIf = "doctorAsDefaultContact == true"  for="chkRefPhyFax"><img
+                                                   src="assets/images/FaxIconGreen.png"></label>&nbsp;&nbsp;
                                           <input type="text" readonly style="border:0"
                                              formControlName="InfoRefPhyFax" />
                                        </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkRefPhyEmail" style="display: none;" type="checkbox"
                                              formControlName="IsRefPhyEmail" />
-                                          <label for="chkRefPhyEmail"><img
+                                          <label *ngIf = "doctorAsDefaultContact == false"  for="chkRefPhyEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;&nbsp;
+                                                <label *ngIf = "doctorAsDefaultContact == true"  for="chkRefPhyEmail"><img
+                                                   src="assets/images/EmailIconGreen.png"></label>&nbsp;&nbsp;
+                                                
                                           <input type="text" readonly style="border:0"
                                              formControlName="infoRefPhyEmail" />
                                        </div>
@@ -388,26 +396,60 @@
                                           <input id="chkAddFax" type="checkbox" formControlName="AddtionalDeskFax" style="display: none;" 
                                              (change)="onchkFaxChange($event)" />
                                           <label for="chkAddFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax1"
-                                             formControlName="infoAdditionalFax1" hidden />
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax2"
-                                             formControlName="infoAdditionalFax2" hidden />
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddFax3"
-                                             formControlName="infoAdditionalFax3" hidden />
+                                          
+                                          <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddFax1"
+                                          class="form-control"  formControlName="infoAdditionalFax1" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax1"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalFax1.invalid">Invalid Fax</small>
+                                              </div>
+                                          <input  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddFax2"
+                                          class="form-control"  formControlName="infoAdditionalFax2" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax2"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalFax2.invalid">Invalid Fax</small>
+                                              </div>
+                                          <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors)}" type="text" mask="(000) 000-0000 (0000)" id="AddFax3"
+                                          class="form-control"  formControlName="infoAdditionalFax3" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax3"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalFax3.invalid">Invalid Fax</small>
+                                              </div>
                                        </div>
                                     </div>
                                     <div class="create-alert-icon-list">
                                        <div class="create-alert-icon-detail">
                                           <input id="chkAddEmail" type="checkbox" formControlName="AddtionalDeskEmail" style="display: none;"
-                                             (change)="onchkEmailChange($event)" />
+                                           (change)="onchkEmailChange($event)" />
                                           <label for="chkAddEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
-                                          <input type="email" id="AddEmail1" formControlName="infoAdditionalEmail1"
+                                          <input type="email" [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors)}"
+													 id="AddEmail1" class="form-control" formControlName="infoAdditionalEmail1"
                                              hidden />
-                                          <input type="email" id="AddEmail2" formControlName="infoAdditionalEmail2"
+                                            <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail1"
+                                            class="tooltiptext text-right">
+                                             <small class="error text-danger"
+                                                *ngIf="contactInfoForm.controls.infoAdditionalEmail1.invalid">Invalid email</small>
+                                             </div>
+                                          <input type="email"  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail2.errors)}"
+														 id="AddEmail2" class="form-control" formControlName="infoAdditionalEmail2"
                                              hidden />
-                                          <input type="email" id="AddEmail3" formControlName="infoAdditionalEmail3"
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail2"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalEmail2.invalid">Invalid email</small>
+                                              </div>
+                                          <input   [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail3.errors)}"
+														type="email" id="AddEmail3" class="form-control" formControlName="infoAdditionalEmail3"
                                              hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail3"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalEmail3.invalid">Invalid email</small>
+                                              </div>
                                        </div>
                                     </div>
                                     <div class="create-alert-icon-list">
@@ -415,12 +457,28 @@
                                           <input id="chkAddPhone" type="checkbox" formControlName="AddtionalDeskSms" style="display: none;"
                                              (change)="onchkPhoneChange($event)" />
                                           <label for="chkAddPhone"><img src="assets/images/sms.png"></label>&nbsp;
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone1"
-                                             formControlName="infoAdditionalPhone1" hidden />
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone2"
-                                             formControlName="infoAdditionalPhone2" hidden />
-                                          <input type="text" mask="(000) 000-0000 (0000)" id="AddPhone3"
-                                             formControlName="infoAdditionalPhone3" hidden />
+                                          <input type="text" [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors)}" mask="(000) 000-0000 (0000)" id="AddPhone1"
+                                          class="form-control" formControlName="infoAdditionalPhone1" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone1"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalPhone1.invalid">Invalid Phone</small>
+                                              </div>
+                                          <input  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors)}" type="text" mask="(000) 000-0000 (0000)" id="AddPhone2"
+                                          class="form-control" formControlName="infoAdditionalPhone2" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone2"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalPhone2.invalid">Invalid Phone</small>
+                                              </div>
+
+                                          <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddPhone3"
+                                          class="form-control" formControlName="infoAdditionalPhone3" hidden />
+                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone3"
+                                             class="tooltiptext text-right">
+                                              <small class="error text-danger"
+                                                 *ngIf="contactInfoForm.controls.infoAdditionalPhone3.invalid">Invalid Phone</small>
+                                              </div>
                                        </div>
                                     </div>
                                  </div>

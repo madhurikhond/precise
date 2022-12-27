@@ -5,7 +5,7 @@ import { CommonMethodService } from 'src/app/services/common/common-method.servi
 import { CreateAlertService } from 'src/app/services/create-alert/createalert.service';
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { StorageService } from 'src/app/services/common/storage.service';
-
+import { CommonRegex } from 'src/app/constants/commonregex';
 declare const $: any;
 
 @Component({
@@ -62,6 +62,7 @@ export class CreateAlertComponent implements OnInit {
   isFaxSentSuccessfully : any ;
   isSlackSentSuccessfully  : any ;
   isSmsSentSuccessfully : any;
+  readonly commonRegex=CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
   @ViewChild('CheckSmsEmailSlackFax', { static: false }) CheckSmsEmailSlackFax: ElementRef;
   constructor(private fb: FormBuilder,
@@ -120,15 +121,15 @@ export class CreateAlertComponent implements OnInit {
       IsBrokerBillingFax: false,
       InfoBrokerAPFax: 'N/A',
       IsBrokerAPFax: false,
-      infoAdditionalFax1: '',
-      infoAdditionalFax2: '',
-      infoAdditionalFax3: '',
-      infoAdditionalEmail1: '',
-      infoAdditionalEmail2: '',
-      infoAdditionalEmail3: '',
-      infoAdditionalPhone1: '',
-      infoAdditionalPhone2: '',
-      infoAdditionalPhone3: '',
+      infoAdditionalFax1:['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      infoAdditionalFax2: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      infoAdditionalFax3: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      infoAdditionalEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      infoAdditionalEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      infoAdditionalEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      infoAdditionalPhone1:  ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone2:['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone3: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
       SmsTextModel: ['', Validators.required],
       AddtionalDeskFax: false,
       AddtionalDeskEmail: false,
@@ -323,19 +324,17 @@ export class CreateAlertComponent implements OnInit {
           IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend == '0' ? false : true,
           IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
           IsBrokerMainEmail: this.retainInfoList.IsBrokerMainEmailSend == '0' ? false : true,
-          InfoBrokerBillingFax: this.retainInfoList.IsBrokerBillingFaxSend == '0' ? false : true,
-          InfoBrokerBillingEmail: this.retainInfoList.IsBrokerBillingEmailSend == '0' ? false : true,
-          InfoBrokerAPFax: this.retainInfoList.IsBrokerAPFaxSend == '0' ? false : true,
-          InfoBrokerAPEmail: this.retainInfoList.IsBrokerAPEmailSend == '0' ? false : true,
-          InfoBrokerMainEmail: this.retainInfoList.IsBrokerMainEmailSend == '0' ? false : true,
-          InfoBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
           IsPatientFax: this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
           IsPatientEmail: this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
-          AddtionalDeskFax: this.retainInfoList.AddtionalDeskFax == '0' ? false : true,
-          AddtionalDeskEmail: this.retainInfoList.AddtionalDeskEmail == '0' ? false : true,
-          AddtionalDeskSms: this.retainInfoList.AddtionalDeskSms == '0' ? false : true
-        })
+          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  == '0' ? false : true,
+          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend== '0' ? false : true,
+          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend == '0' ? false : true
+        });
+        if(this.retainInfoList.IsAddionalDeskPhoneSend == "1" ||
+        this.retainInfoList.IsPatientSmsSend == "1"){
+          this.smsTextModel = this.smsBody;
+        }
       }
     }
 
