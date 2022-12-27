@@ -2,7 +2,7 @@
 
     <div class="tab-pane reatinedpaid-section" id="RetainedARPaid">
         <div class="table-responsive">
-            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainedARpaid"
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="retainedARpaid"
                 [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
