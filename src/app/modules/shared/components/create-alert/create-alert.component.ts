@@ -657,7 +657,11 @@ export class CreateAlertComponent implements OnInit {
       let data = {
         'PatientID': this.patientInfoList.ID,
         'UserSlackID': this.UserSlackId,
-        'SlackUserName' : this.slackUserName
+        'SlackUserName' : this.slackUserName,
+        'CurrentUserID': this.storageService.user.UserId,
+        'UserName':this.storageService.user.FullName,
+        'Type':this.Alert,
+        'Reason':this.Reason
       }
       this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
