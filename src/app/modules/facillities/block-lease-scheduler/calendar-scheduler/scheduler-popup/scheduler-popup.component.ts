@@ -780,6 +780,15 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
 
+  changetxtFunction() {
+    var x = document.getElementById("repeat-control");
+    if (x.innerHTML === "Disabled") {
+      x.innerHTML = "Enabled";
+    } else {
+      x.innerHTML = "Disabled";
+    }
+      
+  }
   ClosePopup(te) {
     setTimeout(() => {
       $('body').addClass('modal-open')
@@ -788,6 +797,7 @@ export class SchedulerPopupComponent implements OnInit {
   get editFormControls() { return this.leaseForm.controls; }
   get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
 }
+
 export enum ModalResult {
   BACKDROP_CLICK = 0,
   ESC = 1,

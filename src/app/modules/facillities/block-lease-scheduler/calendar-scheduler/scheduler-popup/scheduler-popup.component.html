@@ -232,6 +232,11 @@
                         </div>
                     </div>
                 </div>
+
+
+             
+
+
                 <div *ngIf="TotalBlockHours" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
@@ -239,7 +244,105 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="repeater-block" >
+
+                    <div class="rep-head">
+                        <strong>Repeat Event</strong>
+                        <span id="repeat-control" [onclick]="changetxtFunction()">Enabled</span>
+                    </div>
+                    
+                                    <div class="rp-tab-block">
+                                        <div class="radio-tabs lab-space">
+                                             <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="day" id="">Daily</label>
+                                              <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="week">Weekly</label>
+                                               <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="month" checked="">Monthly</label>
+                                               <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="year">Yearly</label>
+                                         </div>
+                    
+                    
+                                         <div class="lab-space bx-space"  id="dhx_repeat_day">
+                                             <label><input class="dhx_repeat_radio" type="radio" name="day_type" value="d">Every</label>
+                                             <label><input class="dhx_repeat_text" type="text" name="day_count" value="1">day</label>
+                                              <label><input class="dhx_repeat_radio" type="radio" name="day_type" checked="" value="w">Every workday</label>
+                                          </div>
+                    
+                    
+                                          <div class="bx-space" style="display:none;">
+                                            <label> Repeat every<input class="dhx_repeat_text" type="text" name="week_count" value="1"></label>
+                                            <span>week next days:</span><br>
+                                             <table class="dhx_days">
+                                                <tbody><tr> 
+                                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="1">Monday</label>
+                                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="4">Thursday</label> </td>
+                                                     <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="2">Tuesday</label>
+                                                         <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="5">Friday</label></td>
+                                                     <td> <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="3">Wednesday</label>
+                                                    <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="6">Saturday</label> </td>
+                                                     <td> <label><input class="dhx_repeat_checkbox " type="checkbox" name="week_day" value="0">Sunday</label></td>
+                                                    </tr> </tbody></table>
+                                          </div>
+                    
+                    
+                    
+                    
+                                          <div class="monthlytabblock" id="dhx_repeat_month" style="display:none;"> 
+                                            <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio" name="month_type" value="d">Repeat</label>
+                                            <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
+                                            <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
+                                             <label class="dhx_repeat_month_label">
+                                                <input class="dhx_repeat_radio" type="radio" name="month_type" checked="" value="w">On</label>
+                                             <input class="dhx_repeat_text" type="text" name="month_week2" value="1"><label>
+                                                <select class="form-control weekselect">
+                                            <option value="1" selected="">Monday</option>
+                                            <option value="2">Tuesday</option>
+                                            <option value="3">Wednesday</option>
+                                            <option value="4">Thursday</option>
+                                            <option value="5">Friday</option>
+                                            <option value="6">Saturday</option>
+                                            <option value="0">Sunday</option>
+                                              </select>every</label>
+                                              <label><input class="dhx_repeat_text" type="text" name="month_count2" value="1">month</label></div>
+
+
+
+                                              <div id="dhx_repeat_year" style="display:none;"> 
+                                                <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio" name="year_type" value="d">Every</label>
+                                                <label><input class="dhx_repeat_text" type="text" name="year_day" value="1">day</label>
+                                                <label><select name="year_month" class="form-control weekselect">
+                                                    <option value="0" selected="">January</option>
+                                                    <option value="1">February</option><option value="2">March</option><option value="3">April</option>
+                                                    <option value="4">May</option><option value="5">June</option><option value="6">July</option>
+                                                    <option value="7">August</option><option value="8">September</option><option value="9">October</option>
+                                                    <option value="10">November</option><option value="11">December</option></select>month</label><br>
+                                                     <label class="dhx_repeat_year_label">
+                                                        <input class="dhx_repeat_radio" type="radio" name="year_type" checked="" value="w">On</label>
+
+                                                        <input class="dhx_repeat_text" type="text" name="year_week2" value="1">
+                                                        <select class="form-control weekselect" name="year_day2">
+                                                            <option value="1" selected="">Monday</option><option value="2">Tuesday</option>
+                                                            <option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option>
+                                                            <option value="6">Saturday</option><option value="7">Sunday</option>
+                                                        </select><span class="of-txt">of</span><select class="form-control weekselect" name="year_month2"><option value="0" selected="">January</option>
+                                                            <option value="1">February</option><option value="2">March</option><option value="3">April</option>
+                                                            <option value="4">May</option><option value="5">June</option><option value="6">July</option>
+                                                            <option value="7">August</option><option value="8">September</option><option value="9">October</option>
+                                                            <option value="10">November</option><option value="11">December</option></select><br> </div>
+
+
+                                         
+                                    </div>
+                                    
+                    </div>
+
+
+
+
             </div>
+
+         
+
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Lease Time Ends</div>
@@ -276,6 +379,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
             </div>
             <!-- <div class="row">
