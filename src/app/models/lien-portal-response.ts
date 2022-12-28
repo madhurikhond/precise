@@ -112,11 +112,13 @@ export enum LienPortalAPIEndpoint {
 
 
 export enum LienPortalFundingCoPermission {
+  LienFundingCompany = "LIEN FUNDING COMPANY",
   PayForAR = "PAY FOR AR",
   SignForAssignAR = "SIGN FOR ASSIGNED AR"
 }
 
 export enum OriginalLienOwnerPermission {
+  OriginalLienOwner = "ORIGINAL LIEN OWNER",
   BillStudiesAndAssignAR = "BILL STUDIES & ASSIGN AR",
   BillStudiesAndRetainAR = "BILL STUDIES & RETAIN AR",
   MarkPaidForRetainedAR = "MARK PAID FOR RETAINED AR"

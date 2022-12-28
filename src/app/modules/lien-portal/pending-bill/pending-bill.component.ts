@@ -346,12 +346,13 @@ export class PendingBillComponent implements OnInit {
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == OriginalLienOwnerPermission.OriginalLienOwner);
+      if (permission.length > 0){
+        var dataAssigned = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
         if(dataAssigned.length == 1)
           this.permissionForAssignAR = dataAssigned[0];
-        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
+        var dataRetained = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
         if(dataRetained.length == 1)
           this.permissionForRetainAR = dataRetained[0];
       }
