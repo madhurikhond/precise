@@ -1,13 +1,41 @@
-.PDFIcon{
+.PDFIcon {
     cursor: pointer;
 }
+
+.btn-grey {
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    height: 25px;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+}
+
+.clsPlusMinusButton>a:hover {
+    background: #ffffff;
+    color: #3b8beb;
+}
+
+
 .PDFIcon i.fa {
     color: #3b8beb;
     font-size: 16px;
     font-weight: 600;
 }
-.studyCount{
-  margin-left: 10px;
+
+.studyCount {
+    margin-left: 10px;
 }
 
 .clsBatchBox {
