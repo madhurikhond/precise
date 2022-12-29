@@ -128,7 +128,7 @@ export class FundingCoPaidComponent {
 
   downloadPDF(data) {
     if (data.fileName)
-      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
+      this.lienPortalService.downloadFile(data.fileByte);
   }
 
   showDocManager(patientId: any) {

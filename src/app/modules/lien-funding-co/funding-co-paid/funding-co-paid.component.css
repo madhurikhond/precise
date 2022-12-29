@@ -86,15 +86,39 @@
 }
 
 .clsBatchBox {
-    text-align: left;
+    /* text-align: left;
     width: 25%;
     display: inline-block;
-    white-space: nowrap;    
+    white-space: nowrap; */
+    display: flex;
+    width: 95%;
+    margin: auto;
 }
 
 .clsChecknumberBox {
-    text-align: left;
+    /* text-align: left;
     width: 35%;
     display: inline-block;
-    white-space: nowrap;
+    white-space: nowrap; */
+    display: flex;
+    width: 95%;
+    margin: auto;
+}
+
+.clsChecknumberBox>span{
+  text-align: left;
+  flex: 30%;
+}
+.clsChecknumberBox>span:last-child{
+  text-align: right;
+}
+.clsBatchBox>span{
+  text-align: left;
+  flex: 25%;
+}
+.clsBatchBox>span:last-child{
+  text-align: right;
+}
+.textSize{
+  font-size: 20px;
 }

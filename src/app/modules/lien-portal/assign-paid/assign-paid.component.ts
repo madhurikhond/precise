@@ -91,7 +91,7 @@ export class AssignPaidComponent implements OnInit {
 
   downloadPDF(data) {
     if(data.fileName)
-      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+      this.lienPortalService.downloadFile(data.fileByte);
   }
 
 }
