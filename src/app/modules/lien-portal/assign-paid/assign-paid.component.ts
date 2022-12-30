@@ -94,5 +94,12 @@ export class AssignPaidComponent implements OnInit {
       this.lienPortalService.downloadFile(data.fileByte);
   }
 
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
+  }
+
 }
 

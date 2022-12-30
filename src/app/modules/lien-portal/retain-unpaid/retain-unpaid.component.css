@@ -36,6 +36,27 @@
     min-width: 125px;
     line-height: 30px;
 }
+
+
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+  }
+  
+  
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }
 #ReceivePaymentModal .modal-dialog {
     max-width: 370px;
   }

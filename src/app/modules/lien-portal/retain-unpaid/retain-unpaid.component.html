@@ -1,18 +1,31 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
-        <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR"
-                [ngClass]="(checkboxSelectedData.length > 0 && permissionForAssignAR && permissionForAssignAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
-                data-target="#AssignARFundingModal" (click)="clearModalPopup()">Assign ar to funding CO</a>
-            <a class="btn btn-common btn-assignAR"
-                [ngClass]="(checkboxSelectedData.length > 0 && permissionForReceivePayment && permissionForReceivePayment.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
-                data-target="#ReceivePaymentModal" (click)="clearModalPopup()">Receive payment for selected studies</a>
-        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="clsPlusMinusButton">
+                    <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+                    <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="headerBtnSection">
+                    <a class="btn btn-common btn-retainedAR"
+                        [ngClass]="(checkboxSelectedData.length > 0 && permissionForAssignAR && permissionForAssignAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'"
+                        data-toggle="modal" data-target="#AssignARFundingModal" (click)="clearModalPopup()">Assign ar to
+                        funding CO</a>
+                    <a class="btn btn-common btn-assignAR"
+                        [ngClass]="(checkboxSelectedData.length > 0 && permissionForReceivePayment && permissionForReceivePayment.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'"
+                        data-toggle="modal" data-target="#ReceivePaymentModal" (click)="clearModalPopup()">Receive
+                        payment
+                        for selected studies</a>
+                </p>
+            </div>
+        </div>
         <div class="tab-pane retainedUnpaid-section" id="RetainedARUnpaid">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="retainARUnpaid"
-                    [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus"
+                    [dataSource]="retainARUnpaid" [showBorders]="false" [allowColumnResizing]="true"
+                    [columnAutoWidth]="true" [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
                     <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                     <dxo-load-panel [enabled]="true"> </dxo-load-panel>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
@@ -21,15 +34,16 @@
                     <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                     <dxo-pager [visible]="false"></dxo-pager>
                     <dxi-column cellTemplate="BatchTemplate">
-                      <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                      {{data.data.batchName}}
-                      <span class="studyCount">
-                        {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
-                        <ng-template #oneStudy>
-                           <span>Study</span>
-                        </ng-template>
-                      </span>
-                     </div>
+                        <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                            {{data.data.batchName}}
+                            <span class="studyCount">
+                                {{data.data.studyCounts }} <span
+                                    *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                                <ng-template #oneStudy>
+                                    <span>Study</span>
+                                </ng-template>
+                            </span>
+                        </div>
                     </dxi-column>
 
                     <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
@@ -81,8 +95,8 @@
 
 <!---------------------signature modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="AssignARFundingModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false"
+    id="AssignARFundingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -100,7 +114,8 @@
                                     {{item.fundingCompanyName}}</option>
                             </select>
                         </div>
-                        <p class="stepText lower-text-data"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                        <p class="stepText lower-text-data"> 2. Sign & generate an AR assignments to the selected
+                            funding company</p>
                         <div class="ar-assignment-form">
                             <div class="row">
                                 <div class="col-6">
@@ -139,8 +154,10 @@
                         </div>
                     </div>
                     <p class="note">
-                      <a href="javascript:void(0)" class="btn btnsignature btn-preview" (click)="previewAssignment()">Preview Assignment </a>
-                      Note:  <span>Once assigned,  the selected funding company will e-sign the assignment</span></p>
+                        <a href="javascript:void(0)" class="btn btnsignature btn-preview"
+                            (click)="previewAssignment()">Preview Assignment </a>
+                        Note: <span>Once assigned, the selected funding company will e-sign the assignment</span>
+                    </p>
                 </div>
             </form>
             <div class="modal-footer">
@@ -157,8 +174,8 @@
 
 <!---------------------Receive payment for selected studies modal start--------------------------->
 
-<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="ReceivePaymentModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" data-keyboard="false" id="ReceivePaymentModal"
+    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
         <div class="modal-content">
@@ -173,21 +190,26 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check $</div>
-                                    <input type="text" (input)="getInputData($event)" mask="separator.2" thousandSeparator="" separatorLimit="99999999999999" class="form-control textSize" formControlName="checkAmount" placeholder="Check Amount">
+                                    <input type="text" (input)="getInputData($event)" mask="separator.2"
+                                        thousandSeparator="" separatorLimit="99999999999999"
+                                        class="form-control textSize" formControlName="checkAmount"
+                                        placeholder="Check Amount">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check Date </div>
-                                    <dx-date-box class="form-control textSize" [displayFormat]="'MM/dd/yyyy'" formControlName="checkDate" type="date"
-                                    [showClearButton]="true" [useMaskBehavior]="true" [value]="defaultCheckDate">
-                                </dx-date-box>
+                                    <dx-date-box class="form-control textSize" [displayFormat]="'MM/dd/yyyy'"
+                                        formControlName="checkDate" type="date" [showClearButton]="true"
+                                        [useMaskBehavior]="true" [value]="defaultCheckDate">
+                                    </dx-date-box>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="theme-label">Check #</div>
-                                    <input type="text" class="form-control textSize" formControlName="checkNo" maxlength="15" mask="000000000000000" placeholder="Check No">
+                                    <input type="text" class="form-control textSize" formControlName="checkNo"
+                                        maxlength="15" mask="000000000000000" placeholder="Check No">
                                 </div>
                             </div>
 
@@ -197,7 +219,9 @@
                 <div class="modal-footer">
                     <a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
                         data-dismiss="modal">Cancel</a>
-                    <button type="button" class="btn btn-theme pull-right btn-sm" [ngClass]="!receivePaymentform.valid ? 'btn-grey disabled' : 'btn-primary'" id="btnUpdate" (click)="onMarkAsPaid()">Mark As Paid</button>
+                    <button type="button" class="btn btn-theme pull-right btn-sm"
+                        [ngClass]="!receivePaymentform.valid ? 'btn-grey disabled' : 'btn-primary'" id="btnUpdate"
+                        (click)="onMarkAsPaid()">Mark As Paid</button>
                 </div>
             </form>
         </div>
