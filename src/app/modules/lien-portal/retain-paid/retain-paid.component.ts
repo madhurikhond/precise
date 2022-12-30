@@ -88,6 +88,13 @@ export class RetainPaidComponent implements OnInit {
     else
       this.pageNumber = 0;
   }
+
+  onCollapse() {
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand() {
+    this.dataGrid.instance.expandAll(-1);
+  }
 }
 
 

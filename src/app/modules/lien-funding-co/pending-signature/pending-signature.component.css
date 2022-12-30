@@ -60,16 +60,43 @@
     font-weight: 500;
 }
 
-.studyCount{
-  margin-left: 10px;
+.clsBatchBox>span{
+  text-align: right;
+  flex: 25%;
 }
-
+.clsBatchBox>span:first-child{
+  text-align: left;
+}
+.clsBatchBox>span:last-child{
+  text-align: right;
+}
 .clsBatchBox {
-    text-align: left;
-    width: 30%;
-    display: inline-block;
-    white-space: nowrap;
+  display: flex;
+  width: 99%;
+  margin: auto;
 }
 .unsetTranTitle{
     text-transform: none !important;
 }
+.clsPlusMinusButton {
+    display: inline-block;
+    margin-left: 20px;
+}
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+  }
+  
+  
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }

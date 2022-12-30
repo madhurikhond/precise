@@ -1,13 +1,18 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
         <div class="row">
-            <div class="col-md-6 pt-2">
+            <div class="col-md-8 pt-2">
                 <label *ngIf="dataSource.length > 0">
                     <input type="checkbox" [(ngModel)]="isSelectedAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
+
+                <div class="clsPlusMinusButton">
+                    <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+                    <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p class="headerBtnSection">
                     <a class="btn btn-common btn-assignAR btn-blue"
                         [ngClass]="selectedData.length > 0 && permission && (permission.IsAdd | lowercase) == 'true' ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
@@ -29,13 +34,15 @@
                     </dxi-column> -->
                     <dxi-column cellTemplate="BatchTemplate">
                       <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                      {{data.data.batchName}}
-                      <span class="studyCount">
+                      <span>{{data.data.radiologistName}}</span>
+                      <span>{{data.data.transactionNumber}}</span>
+                      <span>
                         {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
                         <ng-template #oneStudy>
                            <span>Study</span>
                         </ng-template>
                       </span>
+                      <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                      </div>
                     </dxi-column>
 
@@ -115,7 +122,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check Date </div>
-                                <dx-date-box class="form-control" [displayFormat]="'MM/dd/yyyy'"
+                                <dx-date-box class="form-control textSize" [displayFormat]="'MM/dd/yyyy'"
                                     formControlName="checkDate" type="date" [showClearButton]="true"
                                     [useMaskBehavior]="true" [value]="defaultCheckDate">
                                 </dx-date-box>
@@ -124,7 +131,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check #</div>
-                                <input type="text" class="form-control" formControlName="checkNumber" maxlength="15" mask="000000000000000"
+                                <input type="text" class="form-control textSize" formControlName="checkNumber" maxlength="15" mask="000000000000000"
                                     placeholder="Check #">
                             </div>
                         </div>

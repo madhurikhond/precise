@@ -89,9 +89,16 @@ export class AssignUnpaidComponent implements OnInit {
       this.pageNumber = 0;
   }
 
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
+  }
+
   downloadPDF(data) {
     if(data.fileName)
-      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+      this.lienPortalService.downloadFile(data.fileByte);
   }
 
 

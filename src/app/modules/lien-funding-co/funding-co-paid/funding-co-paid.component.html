@@ -6,7 +6,13 @@
                 Select All
             </label>
         </div> -->
-        <div class="col-md-12 headerBtnSection">
+        <div class="col-md-6">
+            <div class="clsPlusMinusButton">
+                <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+                <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+            </div>
+        </div>
+        <div class="col-md-6 headerBtnSection">
             <div class="selectAction-sec">
                 <div class="selectAction-Dropdown">
                     <div class="form-group">
@@ -44,9 +50,9 @@
                 <div *dxTemplate="let data of 'CheckNumberTemplate'">
                     <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount"
                         class="clsChecknumberBox modal-lower-case">
-                        <span class="mr-2">Check No: {{data.data.checkNumber}}</span>
-                        <span class="mr-2">Check Date: {{data.data.checkDate}}</span>
-                        <span class="mr-2">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
+                        <span class="">Check No: {{data.data.checkNumber}}</span>
+                        <span class="">Check Date: {{data.data.checkDate}}</span>
+                        <span class="">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
                     </div>
                 </div>
 
@@ -60,14 +66,16 @@
                         <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
                         <dxi-column cellTemplate="BatchTemplate">
                             <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                                {{data.data.batchName}}
-                                <span class="studyCount">
+                                <span>{{data.data.radiologistName}}</span>
+                                <span>{{data.data.transactionNumber}}</span>
+                                <span>
                                     {{data.data.studyCounts }} <span
                                         *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
                                     <ng-template #oneStudy>
                                         <span>Study</span>
                                     </ng-template>
                                 </span>
+                                <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                             </div>
                         </dxi-column>
                         <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
@@ -180,7 +188,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check Date </div>
-                                <dx-date-box class="form-control" [displayFormat]="'MM/dd/yyyy'"
+                                <dx-date-box class="form-control textSize" [displayFormat]="'MM/dd/yyyy'"
                                     formControlName="checkDate" type="date" [showClearButton]="true"
                                     [useMaskBehavior]="true">
                                 </dx-date-box>
@@ -189,7 +197,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="theme-label">Check #</div>
-                                <input type="text" class="form-control" formControlName="checkNumber" maxlength="15"
+                                <input type="text" class="form-control textSize" formControlName="checkNumber" maxlength="15"
                                     mask="000000000000000" placeholder="Check #">
                             </div>
                         </div>
@@ -201,8 +209,8 @@
                 <a href="javascript:void(0)" (click)="clearPaymentForm()" class="btn btn-border-gray pull-left btn-sm"
                     data-dismiss="modal">Cancel</a>
                 <button type="submit" class="btn btn-theme pull-right btn-sm"
-                    [ngClass]="paymentForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Payment
-                    Update</button>
+                    [ngClass]="paymentForm.valid ? 'btn-primary':'btn-grey disabled'" id="btnUpdate">Update Payment Info
+                </button>
             </div>
         </div>
     </form>

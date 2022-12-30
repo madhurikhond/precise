@@ -98,10 +98,10 @@ export class LienPortalService {
   }
 
   _base64ToArrayBuffer(base64:any) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
+    let binary_string = window.atob(base64);
+    let len = binary_string.length;
+    let bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
         bytes[i] = binary_string.charCodeAt(i);
     }
     return bytes.buffer;
@@ -113,18 +113,21 @@ export class LienPortalService {
     window.open(URL.createObjectURL(file), '_blank');
   }
 
-  downloadFile(fileName, fileData) {
-    var source;
-    let fileExtension = fileName.split('.').pop();
-    const link = document.createElement('a');
-    if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
-      source = 'data:image/' + fileExtension + ';base64,' + fileData;
-    }
-    else if (fileName.match(/.(pdf)$/i)) {
-      source = 'data:application/pdf;base64,' + fileData;
-    }
-    link.href = source;
-    link.download = `${fileName}`
-    link.click();
+  downloadFile(fileData) {
+    let ArrayBuff = this._base64ToArrayBuffer(fileData);
+    let file = new Blob([ArrayBuff], { type: 'application/pdf' });
+    window.open(URL.createObjectURL(file), '_blank');
+    // var source;
+    // let fileExtension = fileName.split('.').pop();
+    // const link = document.createElement('a');
+    // if (fileName.match(/.(jpg|jpeg|png|gif)$/i)) {
+    //   source = 'data:image/' + fileExtension + ';base64,' + fileData;
+    // }
+    // else if (fileName.match(/.(pdf)$/i)) {
+    //   source = 'data:application/pdf;base64,' + fileData;
+    // }
+    // link.href = source;
+    // link.download = `${fileName}`
+    // link.click();
   }
 }

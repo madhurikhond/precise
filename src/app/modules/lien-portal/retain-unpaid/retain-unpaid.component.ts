@@ -246,7 +246,7 @@ export class RetainUnpaidComponent implements OnInit {
       this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MarkRetainBatchPaid).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.closeReceivePaymentModal();
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_STUDIES_SUCCESS);
           this.getRetainUnPaidList();
         }
         else
@@ -362,15 +362,23 @@ export class RetainUnpaidComponent implements OnInit {
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == OriginalLienOwnerPermission.OriginalLienOwner);
+      if (permission.length > 0){
+        var dataAssigned = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
         if(dataAssigned.length == 1)
           this.permissionForAssignAR = dataAssigned[0];
-        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.MarkPaidForRetainedAR);
+        var dataRetained = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.MarkPaidForRetainedAR);
         if(dataRetained.length == 1)
           this.permissionForReceivePayment = dataRetained[0];
       }
     }
+  }
+
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }

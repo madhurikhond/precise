@@ -117,7 +117,7 @@ export class FundingCoUnpaidComponent {
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.LienPayment).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAY_BATCHES_SUCCESS);
           this.getListingData();
           this.modal_close.nativeElement.click();
         }
@@ -139,7 +139,7 @@ export class FundingCoUnpaidComponent {
 
   downloadPDF(data) {
     if (data.fileName)
-      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
+      this.lienPortalService.downloadFile( data.fileByte);
   }
 
   showDocManager(patientId: any) {
@@ -148,12 +148,19 @@ export class FundingCoUnpaidComponent {
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == LienPortalFundingCoPermission.LienFundingCompany);
+      if(permission.length > 0){
+        var data = permission[0].Children.filter(val => val.PageTitle == this.permissionTitle);
         if(data.length == 1)
           this.permission = data[0];
       }
     }
+  }
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }

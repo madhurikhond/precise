@@ -10,21 +10,21 @@
             [allowColumnReordering]="true" [showBorders]="true" (onSelectionChanged)="changeCheckbox($event)">
             <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
             <dxo-load-panel [enabled]="true"> </dxo-load-panel>
-            <dxo-selection [selectAllMode]="allMode"  [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
+            <dxo-selection [selectAllMode]="allMode" [width]="60"  [showCheckBoxesMode]="checkBoxesMode" mode="multiple"> </dxo-selection>
             <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
             <dxo-pager [visible]="false"></dxo-pager>
             <dxo-sorting mode="multiple"></dxo-sorting>
-            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
+            <dxi-column [width]="60" [allowFiltering]="false" [allowSorting]="false" cellTemplate="facilityIdTemplate">
             </dxi-column>
-            <dxi-column dataField="rad" caption="RAD"></dxi-column>
+            <dxi-column dataField="rad" caption="RADIOLOGIST"></dxi-column>
             <dxi-column dataField="dateRead" caption="DATE READ"></dxi-column>
             <dxi-column dataField="patientId" caption="PATIENT ID"></dxi-column>
             <dxi-column dataField="lastName" caption="LAST NAME"></dxi-column>
             <dxi-column dataField="firstName" caption="FIRST NAME"></dxi-column>
             <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
-            <dxi-column dataField="dateOfStudy" caption="DOS"></dxi-column>
             <dxi-column dataField="study" caption="STUDY"></dxi-column>
-            <dxi-column dataField="accession" caption="ACCESS#"></dxi-column>
+            <dxi-column dataField="dateOfStudy" caption="DOS"></dxi-column>
+            <dxi-column dataField="accession" caption="ACCESION"></dxi-column>
             <dxi-column dataField="cptGroup" caption="CPT GROUP"></dxi-column>
 
 
@@ -52,7 +52,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Assign Selected Accounts Receivables To The Following Funding Company</h5>
+                <h5 class="modal-title">Assign Selected AR To The Following Funding Company</h5>
                 <div class="close-dismiss" data-dismiss="modal" #closeAssignBtn></div>
             </div>
             <form [formGroup]="assignARform">

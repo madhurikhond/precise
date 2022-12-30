@@ -112,7 +112,7 @@ export class PendingSignatureComponent {
     this.selectedData = $event.selectedRowsData;
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
       this.isSelectedAll = true;
-    else 
+    else
       this.isSelectedAll = false;
   }
 
@@ -128,7 +128,7 @@ export class PendingSignatureComponent {
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGN_AR_SUCCESS);
           this.getListingData();
           this.modal_close.nativeElement.click();
         }
@@ -191,17 +191,24 @@ export class PendingSignatureComponent {
 
   downloadPDF(data) {
     if (data.fileName)
-      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
+      this.lienPortalService.downloadFile(data.fileByte);
   }
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == LienPortalFundingCoPermission.LienFundingCompany);
+      if(permission.length > 0){
+        var data = permission[0].Children.filter(val => val.PageTitle == this.permissionTitle);
         if(data.length == 1)
           this.permission = data[0];
       }
     }
+  }
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }

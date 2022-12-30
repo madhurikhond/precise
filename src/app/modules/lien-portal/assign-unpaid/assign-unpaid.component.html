@@ -1,26 +1,33 @@
 <div class="inner-tab-content">
-
+    <div class="clsPlusMinusButton">
+        <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+        <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+    </div>
     <div class="tab-pane assignUnpaid-section" id="AssignARUnpaid">
         <div class="table-responsive">
-            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="AssignARUnpaid"
-                [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus"
+                [dataSource]="AssignARUnpaid" [showBorders]="false" [allowColumnResizing]="true"
+                [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-sorting mode="none"></dxo-sorting>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
-                 <dxo-pager [visible]="false"></dxo-pager>
-                 <dxo-sorting mode="none"></dxo-sorting>
+                <dxo-pager [visible]="false"></dxo-pager>
+                <dxo-sorting mode="none"></dxo-sorting>
 
-                 <dxi-column cellTemplate="BatchTemplate">
-                   <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                   {{data.data.batchName}}
-                   <span class="studyCount">
-                     {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
-                     <ng-template #oneStudy>
-                        <span>Study</span>
-                     </ng-template>
-                   </span>
-                  </div>
-                 </dxi-column>
+                <dxi-column cellTemplate="BatchTemplate">
+                    <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                        <span>{{data.data.fundingCompanyName}}</span>
+                        <span>{{data.data.transactionNumber}}</span>
+                        <span>
+                            {{data.data.studyCounts }} <span
+                                *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                            <ng-template #oneStudy>
+                                <span>Study</span>
+                            </ng-template>
+                        </span>
+                        <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                    </div>
+                </dxi-column>
 
                 <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column> -->
                 <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>

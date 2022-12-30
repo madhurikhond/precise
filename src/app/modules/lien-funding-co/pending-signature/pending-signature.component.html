@@ -1,13 +1,18 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
         <div class="row">
-            <div class="col-md-6 pt-2">
+            <div class="col-md-8 pt-2">
                 <label *ngIf="dataSource.length > 0">
                     <input type="checkbox" [(ngModel)]="isSelectedAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
+
+                <div class="clsPlusMinusButton">
+                    <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+                    <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p class="headerBtnSection">
                     <a class="btn btn-common btn-assignAR btn-blue"
                         [ngClass]="selectedData.length > 0 && permission && (permission.IsAdd | lowercase) == 'true' ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
@@ -30,13 +35,15 @@
                     </dxi-column> -->
                     <dxi-column cellTemplate="BatchTemplate">
                       <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                      {{data.data.batchName}}
-                      <span class="studyCount">
+                      <span>{{data.data.radiologistName}}</span>
+                      <span>{{data.data.transactionNumber}}</span>
+                      <span >
                         {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
                         <ng-template #oneStudy>
                            <span>Study</span>
                         </ng-template>
                       </span>
+                      <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                      </div>
                     </dxi-column>
 
@@ -55,7 +62,7 @@
                             <dxi-column  [width]="4+'%'" [allowFiltering]="false" [allowSorting]="false"
                                 cellTemplate="readingIconTemplate">
                             </dxi-column>
-                            <dxi-column dataField="rad" [width]="10+'%'" caption="RAD"> </dxi-column>
+                            <dxi-column dataField="rad" [width]="10+'%'" caption="RADIOLOGIST"> </dxi-column>
                             <dxi-column dataField="dateRead" [width]="7+'%'" caption="Date Read"></dxi-column>
                             <dxi-column dataField="arAssignedDate" [width]="7+'%'" caption="Date AR Assigned"></dxi-column>
                             <dxi-column dataField="patientId" [width]="8+'%'" caption="Patient ID"></dxi-column>
