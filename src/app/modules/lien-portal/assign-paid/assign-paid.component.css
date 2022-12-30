@@ -10,20 +10,40 @@
   text-transform: none !important;
 }
 
-.studyCount{
-  margin-left: 10px;
-}
-
 .clsBatchBox {
-    text-align: left;
-    width: 25%;
-    display: inline-block;
-    white-space: nowrap;    
+  /* text-align: left;
+  width: 25%;
+  display: inline-block;
+  white-space: nowrap; */
+  display: flex;
+  width: 99%;
+  margin: auto;
 }
 
 .clsChecknumberBox {
-    text-align: left;
-    width: 35%;
-    display: inline-block;
-    white-space: nowrap;
+  /* text-align: left;
+  width: 35%;
+  display: inline-block;
+  white-space: nowrap; */
+  display: flex;
+  width: 98%;
+  margin: auto;
+}
+
+.clsChecknumberBox>span{
+text-align: left;
+flex: 30%;
+}
+.clsBatchBox>span:first-child{
+text-align: left;
+}
+.clsChecknumberBox>span:last-child{
+text-align: right;
+}
+.clsBatchBox>span{
+text-align: right;
+flex: 25%;
+}
+.clsBatchBox>span:last-child{
+text-align: right;
 }

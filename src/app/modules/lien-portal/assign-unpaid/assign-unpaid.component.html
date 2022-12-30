@@ -16,14 +16,16 @@
 
                 <dxi-column cellTemplate="BatchTemplate">
                     <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                        {{data.data.batchName}}
-                        <span class="studyCount">
+                        <span>{{data.data.fundingCompanyName}}</span>
+                        <span>{{data.data.transactionNumber}}</span>
+                        <span>
                             {{data.data.studyCounts }} <span
                                 *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
                             <ng-template #oneStudy>
                                 <span>Study</span>
                             </ng-template>
                         </span>
+                        <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                     </div>
                 </dxi-column>
 

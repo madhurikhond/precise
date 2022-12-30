@@ -81,9 +81,6 @@
 .modal-upper-case{
     text-transform: uppercase !important;
 }
-.studyCount{
-  margin-left: 10px;
-}
 
 .clsBatchBox {
     /* text-align: left;
@@ -91,7 +88,7 @@
     display: inline-block;
     white-space: nowrap; */
     display: flex;
-    width: 95%;
+    width: 99%;
     margin: auto;
 }
 
@@ -101,7 +98,7 @@
     display: inline-block;
     white-space: nowrap; */
     display: flex;
-    width: 95%;
+    width: 98%;
     margin: auto;
 }
 
@@ -109,11 +106,14 @@
   text-align: left;
   flex: 30%;
 }
+.clsBatchBox>span:first-child{
+  text-align: left;
+}
 .clsChecknumberBox>span:last-child{
   text-align: right;
 }
 .clsBatchBox>span{
-  text-align: left;
+  text-align: right;
   flex: 25%;
 }
 .clsBatchBox>span:last-child{
