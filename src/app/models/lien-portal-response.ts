@@ -11,15 +11,21 @@ export enum LienPortalStatusMessage {
   COMMON_ERROR = 'Request Failed',
   FUNDING_COMPANY_ADDED = 'Funding Company Added Successfully.',
   FUNDING_COMPANY_UPDATED = 'Funding Company Updated Successfully.',
-  STUDIES_ASSIGNED_TO_FUNDING_CO = 'Studies assigned to Funding Co. Successfully.',
+  STUDIES_ASSIGNED_TO_FUNDING_CO = 'Studies Assigned to Funding Co. Successfully.',
   STUDIES_RETAINED_SUCCESS = 'Studies Retained Successfully.',
   SIGNATURE_UPDATED_SUCCESS = 'Signature Updated Successfully.',
   PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.',
-  SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
+  SETTING_SAVED_SUCCESS = 'Setting Saved Successfully.',
   FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.',
   FUNDING_COMPANY_PAID_RECORD = 'Please Select a Paid Record.',
   FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.',
-  PAYMENT_DELETED_SUCCESS = 'Payment Removed Successfully.'
+  PAYMENT_DELETED_SUCCESS = 'Payment Removed Successfully.',
+
+  PAYMENT_RECEIVE_STUDIES_SUCCESS = 'Payment received Successfully for Studies.',
+  SIGN_AR_SUCCESS = 'Sign assigned AR Successfully.',
+  PAY_BATCHES_SUCCESS = 'Payment received Successfully for Assigned Batches.',
+  PAYMENT_INFO_UPDATE_SUCCESS = 'Payment info updated Successfully.',
+
 }
 
 export enum LienPortalURLName{

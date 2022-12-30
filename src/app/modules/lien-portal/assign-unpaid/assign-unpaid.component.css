@@ -13,20 +13,19 @@
     font-family: cursive;
     font-size: 20px;
     min-width: auto;
-    height: 25px;
     line-height: 20px;
     padding: 0px 10px;
     background: #3b8beb;
     border-radius: 5px;
     color: #fff;
     border: 1px solid #3b8beb;
-}
-
-.clsPlusMinusButton>a:hover {
-    background: #ffffff;
-    color: #3b8beb;
-}
-
+  }
+  
+  
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }
 
 .PDFIcon i.fa {
     color: #3b8beb;

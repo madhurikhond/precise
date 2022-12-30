@@ -246,7 +246,7 @@ export class RetainUnpaidComponent implements OnInit {
       this.lienPortalService.PostAPI(assignData, LienPortalAPIEndpoint.MarkRetainBatchPaid).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.closeReceivePaymentModal();
-          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.PAYMENT_RECEIVE_STUDIES_SUCCESS);
           this.getRetainUnPaidList();
         }
         else
@@ -373,5 +373,12 @@ export class RetainUnpaidComponent implements OnInit {
           this.permissionForReceivePayment = dataRetained[0];
       }
     }
+  }
+
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }

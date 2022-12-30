@@ -1,5 +1,8 @@
 <div class="inner-tab-content">
-
+    <div class="clsPlusMinusButton">
+        <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+ <span>Expand ALl</span></a>
+        <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">- <span>Collapse All</span></a>
+    </div>
     <div class="tab-pane reatinedpaid-section" id="RetainedARPaid">
         <div class="table-responsive">
             <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="retainedARpaid"

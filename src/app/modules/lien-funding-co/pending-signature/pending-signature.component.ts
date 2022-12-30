@@ -128,7 +128,7 @@ export class PendingSignatureComponent {
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGN_AR_SUCCESS);
           this.getListingData();
           this.modal_close.nativeElement.click();
         }
@@ -204,5 +204,11 @@ export class PendingSignatureComponent {
           this.permission = data[0];
       }
     }
+  }
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }
