@@ -128,7 +128,7 @@ export class PendingSignatureComponent {
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGN_AR_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.ASSIGNED_AR_EXECUTED);
           this.getListingData();
           this.modal_close.nativeElement.click();
         }
