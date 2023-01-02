@@ -638,7 +638,7 @@ export class CreateAlertComponent implements OnInit {
         'FromPage': 'CreateAlert',
         // 'EmailSubject': this.contactInfoForm.get('emailSubModel').value,
         'CurrentUserID': this.storageService.user.UserId,
-        // 'EmailBody': this.contactInfoForm.get('emailBodyModel').value
+         'EmailBody': this.contactInfoForm.get('emailBodyModel').value
       }
       this.CreateAlertService.sendFax(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
@@ -661,7 +661,8 @@ export class CreateAlertComponent implements OnInit {
         'CurrentUserID': this.storageService.user.UserId,
         'UserName':this.storageService.user.FullName,
         'Type':this.Alert,
-        'Reason':this.Reason
+        'Reason':this.Reason,
+        'InternalNotes':this.contactInfoForm
       }
       this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
