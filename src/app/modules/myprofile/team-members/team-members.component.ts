@@ -29,7 +29,11 @@ export class TeamMembersComponent implements OnInit {
   mycontent: string;
   log: string = '';
   search: string = '';
-
+  firstName : string = ''
+  location : string = ''
+  workEmail : string = ''
+  departmentName : string = ''
+  lastName : string = ''
   constructor(private readonly myprofileService: MyprofileService, private readonly notificationService: NotificationService, private readonly commonMethodService: CommonMethodService) { }
   ngOnInit(): void {
     this.commonMethodService.setTitle('Team Members');
@@ -68,7 +72,7 @@ export class TeamMembersComponent implements OnInit {
     this.getTeamMembers();
   }
   getTeamMembers() {
-    this.myprofileService.getTeamMembersNew(true, this.pageNumber, this.pageSize, this.search).subscribe((res) => {
+    this.myprofileService.getTeamMembersNew(true,this.pageNumber,this.pageSize,this.search).subscribe((res) => {
       if (res.response != null && res.response.length > 0) {
         this.teamMemberList = res.response;
         this.totalRecords = res.totalRecords;
