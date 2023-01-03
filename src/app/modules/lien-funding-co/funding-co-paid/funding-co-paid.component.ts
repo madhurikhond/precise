@@ -52,6 +52,7 @@ export class FundingCoPaidComponent {
   paymentForm: FormGroup;
   defaultCheckDate = new Date();
   selectedAction = "";
+  expandAll = false;
 
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder,
@@ -213,21 +214,15 @@ export class FundingCoPaidComponent {
       }
     }
   }
+ 
   onCollapse() {
+    this.expandAll = false;
     this.dataGrid.instance.collapseAll(-1);
-
   }
   onExpand() {
+    this.expandAll = true;
     this.dataGrid.instance.expandAll(-1);
   }
 
-  // onRowExpanded(e) {
-  //   console.log(e);
-  //   console.log(this.dataGrid.instance.getRowIndexByKey(e.key));
-  // }
 
-  // onRowCollapsed(e) {
-  //   console.log(e);
-  //   console.log(this.dataGrid.instance.getRowIndexByKey(e.key));
-  // }
 }

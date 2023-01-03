@@ -83,7 +83,8 @@
                             <a class="PDFIcon" (click)="downloadPDF(data.data)"><i
                                     class="fa fa-file-pdf-o PDFIcon"></i></a>
                         </div>
-                        <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
+                        <dxo-master-detail [enabled]="true" [autoExpandAll]="expandAll"
+                        [template]="'batchDetail'"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
                             <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
                                 [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
