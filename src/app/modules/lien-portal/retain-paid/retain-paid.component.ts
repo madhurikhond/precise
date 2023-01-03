@@ -37,6 +37,7 @@ export class RetainPaidComponent implements OnInit {
   currentFilter: any;
   dataSource: any = [];
   retainedARpaid: any = [];
+  expandAll = false;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
@@ -90,9 +91,11 @@ export class RetainPaidComponent implements OnInit {
   }
 
   onCollapse() {
+    this.expandAll = false;
     this.dataGrid.instance.collapseAll(-1);
   }
   onExpand() {
+    this.expandAll = true;
     this.dataGrid.instance.expandAll(-1);
   }
 }
