@@ -11,7 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
-
+declare const $: any;
 @Component({
   selector: 'app-block-lease-scheduler',
   templateUrl: './block-lease-scheduler.component.html',
@@ -128,13 +128,20 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     }
   }
 
-  getCalendarSchedulerWindowById(row: any) {
+  getCalendarSchedulerWindowById(row: any, event) {
+    
+    this.getRowColorChanged(event)
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
       'FacilityName': row.data.Facilityname
     }
     this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
+    //this.test(event);
+  }
+
+  test(event) {
+    debugger
   }
   // getModalityList() {
   //   this.modalityList = [];
@@ -235,7 +242,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.AllBlockLeaseList = arr;
   }
 
+  getRowColorChanged(e: any) {
+    debugger
+    $('.scheduling-facillities-table').find('.custom-facility-row-selection').removeClass('custom-facility-row-selection');
+    e.path[3].classList.add('custom-facility-row-selection')
+    var tr = $('.custom-facility-row-selection');
+    var rowIndex = tr.parent().children().index(tr);
+    $('.scheduling-facillities-table').find('.dx-scrollable-content').find('table tr:nth-child(' + (rowIndex + 1) + ')').addClass('custom-facility-row-selection')
+  }
   getColumnByDataField(column: any) {
+
     var retArray = [];
     let index = 0;
     if (column.column.caption == 'MRI')
@@ -359,7 +375,9 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     });
   }
 
-  getFacilityDetail(facilityId: any, type: any) {
+  getFacilityDetail(facilityId: any, type: any,event) {
+    debugger
+    this.getRowColorChanged(event)
     if (facilityId) {
       let body = {
         'facilityId': facilityId,
