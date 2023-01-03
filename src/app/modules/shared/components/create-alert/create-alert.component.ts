@@ -363,6 +363,7 @@ export class CreateAlertComponent implements OnInit {
   onUserChange(selectedUser:any){
     this.slackUserName = selectedUser.target.value ;
    this.UserSlackId = this.userList.filter(obj => obj.UserName === selectedUser.target.value)[0].UserSlackID
+   
   }
   onchkFaxChange(id) {
     if (id.target.checked) {
@@ -662,7 +663,7 @@ export class CreateAlertComponent implements OnInit {
         'UserName':this.storageService.user.FullName,
         'Type':this.Alert,
         'Reason':this.Reason,
-        'InternalNotes':this.contactInfoForm
+        'InternalNotes':this.contactInfoForm.controls.notesModel.value
       }
       this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
