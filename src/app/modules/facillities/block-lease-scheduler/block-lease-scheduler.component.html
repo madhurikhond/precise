@@ -210,14 +210,14 @@
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/paid.png"
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/paid.png"
                                     style="width: 11px;" />
@@ -225,47 +225,47 @@
                             <!-- <li><span>CT data:</span>{{getColumnByDataField(data)[0].CT}}</li> -->
                             <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 )   && data.column.caption == 'MRI'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 )  && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign  && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 )  && data.column.caption == 'MRI'">
                                 <img data-toggle="modal" data-target="#add-Edit-facility"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_MRI')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign && (getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0 )   && data.column.caption == 'CT'">
                                 <img data-toggle="modal" data-target="#add-Edit-facility"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_CT')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
                                 <img data-toggle="modal" data-target="#add-Edit-facility"
-                                (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_MRI')"
+                                (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 ) && data.column.caption == 'CT'">
                                 <img data-toggle="modal" data-target="#add-Edit-facility"
-                                (click)="getFacilityDetail(data.data.FacilityID,'LeaseAgreement_CT')"
+                                (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
                                     style="width: 17px;" />
                             </li>
                         </ul>
                     </div>
                     <div *dxTemplate="let data of 'viewCellTemplate'">
-                        <a href="javascript:void(0);" class="link-btn" (click)="getCalendarSchedulerWindowById(data,$event)"
+                        <a href="javascript:void(0);" class="link-btn" (click)="getCalendarSchedulerWindowById(data)"
                             data-toggle="modal" data-target="#CalendarSchedulerWindow">
                             {{data.data.Facilityname}}</a>
                     </div>
