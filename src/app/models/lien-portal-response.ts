@@ -24,7 +24,7 @@ export enum LienPortalStatusMessage {
   PAYMENT_RECEIVE_STUDIES_SUCCESS = 'Payment received Successfully for Studies.',
   SIGN_AR_SUCCESS = 'Sign assigned AR Successfully.',
   ASSIGNED_AR_EXECUTED = 'Assigned AR Executed',
-  PAY_BATCHES_SUCCESS = 'Payment received Successfully for Assigned Batches.',
+  PAY_BATCHES_SUCCESS = 'Selected AR has been marked as paid.',
   PAYMENT_INFO_UPDATE_SUCCESS = 'Payment info updated Successfully.',
 
 }
