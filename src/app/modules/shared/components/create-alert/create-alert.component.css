@@ -75,3 +75,9 @@ ul {
  .ck-editor-valid.is-invalid #cke_editor3{
   border: 1px solid red !important;
 }
+
+.dflexbox{width: 100%;}
+  .dflexbox .form-control{margin-left: 3px;
+    margin-right: 3px;
+    width: 145px;
+    display: inline-block;}
