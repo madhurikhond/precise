@@ -508,7 +508,7 @@ export class CalendarSchedulerComponent implements OnInit {
         }
         this.GetBlockLeaseData();
         let otherFacilitIndex = this.otherFacilitiesParsed.findIndex((x) => x.FacilityName == this.FACILITY_NAME);
-        delete this.otherFacilitiesParsed[otherFacilitIndex];
+        this.otherFacilitiesParsed.splice(otherFacilitIndex, 1);
         if (this.otherFacilitiesParsed[0]) {
             this.FACILITY_NAME = this.otherFacilitiesParsed[0].FacilityName;
             this.approveGoToNext = true;
