@@ -318,18 +318,18 @@ export class CreateAlertComponent implements OnInit {
       })
       if (this.retainInfoList.length != 0) {
         this.contactInfoForm.patchValue({
-          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend == '0' ? false : true,
-          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend == '0' ? false : true,
-          IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true,
-          IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend == '0' ? false : true,
-          IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
-          IsBrokerMainEmail: this.retainInfoList.IsBrokerMainEmailSend == '0' ? false : true,
-          IsPatientFax: this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
-          IsPatientEmail: this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
-          IsPatientPhone: this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
-          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  == '0' ? false : true,
-          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend== '0' ? false : true,
-          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend == '0' ? false : true
+          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend == '0' || this.retainInfoList.IsAttorenyFaxSend === null ? false : true,
+          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend == '0' || this.retainInfoList.IsAttorenyEmailSend === null ? false : true,
+          IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend == '0' || this.retainInfoList.IsRefPhyFaxSend === null ? false : true,
+          IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend == '0' || this.retainInfoList.IsRefPhyEmailSend === null ? false : true,
+          IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend == '0' || this.retainInfoList.IsBrokerMainFaxSend === null ? false : true,
+          IsBrokerMainEmail: this.retainInfoList.IsBrokerMainEmailSend == '0' || this.retainInfoList.IsBrokerMainEmailSend === null ? false : true,
+          IsPatientFax: this.retainInfoList.IsPatientFaxSend == '0' || this.retainInfoList.IsPatientFaxSend === null ? false : true,
+          IsPatientEmail: this.retainInfoList.IsPatientEmailSend == '0' || this.retainInfoList.IsPatientEmailSend === null  ? false : true,
+          IsPatientPhone: this.retainInfoList.IsPatientSmsSend == '0' || this.retainInfoList.IsPatientSmsSend === null ? false : true,
+          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  == '0' || this.retainInfoList.IsAddionalDeskFaxSend === null  ? false : true,
+          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend == '0' || this.retainInfoList.IsAddionalDeskEmailSend === null  ? false : true,
+          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend == '0' || this.retainInfoList.IsAddionalDeskPhoneSend === null ? false : true
         });
         if(this.retainInfoList.IsAddionalDeskPhoneSend == "1" ||
         this.retainInfoList.IsPatientSmsSend == "1"){
