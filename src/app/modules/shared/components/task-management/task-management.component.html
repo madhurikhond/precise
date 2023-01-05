@@ -148,9 +148,10 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                 <div class="tasklist-group">
                     <div class="single-task" *ngFor="let singleTask of allTaskArray;let i=index;">
                         <div class="task-name">{{singleTask.TaskTitle}}</div>
-                        <div class="task-description">
-                            {{singleTask.TaskSpecifics}}...
-                            <a href="javascript:void(0)" class="readmore" data-toggle="modal" data-target="#view-task" (click)="viewTask(singleTask.TaskId)">Read More</a>
+                        <div class="task-description d-flex">
+                            <p [innerHTML]="singleTask.TaskSpecifics">
+                            </p><span>...</span>
+                            <a href="javascript:void(0)" class="readmore" data-toggle="modal" data-target="#view-task" (click)="viewTask(singleTask.TaskId)">Read More</a>                            
                         </div>
                         <div class="task-detail">
                             <div class="task-left-group">
@@ -334,7 +335,7 @@ aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
                     <!-- <div class="single-details">Patient ID: <a href="javascript:void(0)" style="text-decoration: underline !important;" (click)="openPatientDetailWindow(taskDetail.patientDetail)" data-toggle="modal" data-target="#patient-Detail-Window">{{taskDetail.PatientId}}</a> {{taskDetail.PatientRecord}} </div> -->
                     </ng-container>
                     <div class="single-details">Detail:</div>
-                    <p>{{taskDetail.TaskSpecifics}}</p>
+                    <p [innerHTML]="taskDetail.TaskSpecifics"></p>
                 </div>
                 <div class="modaltask-detail-description" *ngIf="IsAssignedToOtherUser==true">
                     <div class="single-details">originally assigned from {{taskDetail.InitialyAssignedTo}}</div>

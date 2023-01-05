@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="task-detail panel-collapse collapse" id="task{{i}}"
                                     data-parent="#tasks-accordion">
-                                    <p>{{singleTask.TaskSpecifics}}</p>
+                                    <p [innerHTML]="singleTask.TaskSpecifics">
                                 </div>
                             </div>
                             <div class="single-task" *ngIf="allTaskArray.length==0">
