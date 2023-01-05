@@ -2,7 +2,7 @@
 
     <div class="tableDataSection">
         <p class="headerBtnSection">
-            <a class="btn btn-common btn-retainedAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForRetainAR && permissionForRetainAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
+            <a class="btn btn-common btn-retainedAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForRetainAR && permissionForRetainAR.IsAdd == 'true') ? 'btn-outline-grey':'btn-outline-grey disabled'" data-toggle="modal" data-target="#RetainedARModal">BILL SELECTED STUDIES & RETAIN AR</a>
             <a class="btn btn-common btn-assignAR" [ngClass]="(checkboxSelectedData.length > 0 && permissionForAssignAR && permissionForAssignAR.IsAdd == 'true') ? 'btn-primary':'btn-grey disabled'" data-toggle="modal" data-target="#signatureModal" (click)="clearModalPopup()">BILL
                 SELECTED STUDIES & ASSIGN AR</a>
         </p>
@@ -40,8 +40,6 @@
                 </div>
                 <pagination-controls id="pagination1" (pageChange)="onPageNumberChange($event)"></pagination-controls>
             </div>
-
-
     </div>
 </div>
 
