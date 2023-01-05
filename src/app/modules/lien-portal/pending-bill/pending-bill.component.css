@@ -17,8 +17,13 @@
     background: #7e7e7e;
     border: 1px solid #7e7e7e;
 }
+.btn-outline-grey{
+    background: #ffffff !important;
+    color: #7e7e7e !important;
+    border: 1px solid #7e7e7e !important;
+}
 .disabled{
-    background: #7e7e7e !important;
+    background: #7e7e7e;
     border: 1px solid #7e7e7e !important;
 }
 .btn-common:hover{
