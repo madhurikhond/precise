@@ -1,4 +1,4 @@
-<div class="modal fade modal-theme create-alert-popup" id="create-alert" role="dialog"
+<div class="modal fade modal-theme create-alert-popup" id="create-alert" role="dialog"  data-backdrop="static"
    aria-labelledby="exampleModalLabel" aria-modal="true">
    <div class="modal-dialog modal-dialog-centered" role="document" >
       <div class="modal-content">
@@ -150,7 +150,7 @@
                               <div class="checkbox-theme">
                                  <input id="chkInternalUser" type="checkbox" (change)="onchkUserChange($event)"
                                     style="opacity: 1; margin: 21px 0px 0px -5px" />
-                                 <label class="arrow-labe2">Notify Internal User Via Slack</label>
+                                 <label class="arrow-labe2">Notify Internal Via Slack</label>
                                  <select id="inputUser"  (change)="onUserChange($event)" class="form-control" hidden>
                                     <option *ngFor="let item of userList" value={{item.UserName}}>
                                        {{item.UserName}}

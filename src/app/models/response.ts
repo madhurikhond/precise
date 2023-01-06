@@ -7,4 +7,5 @@ export class ApiResponse {
   toDoRecords: number;
   pageNumber: number;
   error: any;
+  status: any;
 }

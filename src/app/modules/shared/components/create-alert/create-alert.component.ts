@@ -6,6 +6,7 @@ import { CreateAlertService } from 'src/app/services/create-alert/createalert.se
 import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
+import { forkJoin } from 'rxjs';
 declare const $: any;
 
 @Component({
@@ -62,6 +63,14 @@ export class CreateAlertComponent implements OnInit {
   isFaxSentSuccessfully : any ;
   isSlackSentSuccessfully  : any ;
   isSmsSentSuccessfully : any;
+  IsSmsSend : any ;
+  IsFaxSend : any ;
+  IsEmailSent : any ;
+  IsSlackSend : any ;
+  request1 : any ; 
+  request2 : any ; 
+  request3 : any ; 
+  request4 : any ; 
   readonly commonRegex=CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
   @ViewChild('CheckSmsEmailSlackFax', { static: false }) CheckSmsEmailSlackFax: ElementRef;
@@ -327,9 +336,21 @@ export class CreateAlertComponent implements OnInit {
           IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend  ? false : true,
           IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend ? false : true,
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend ? false : true,
-          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  === null || this.retainInfoList.IsAddionalDeskFaxSend   ? false : true,
-          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend === null || this.retainInfoList.IsAddionalDeskEmailSend  ? false : true,
-          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend === null || this.retainInfoList.IsAddionalDeskPhoneSend  ? false : true
+          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  === null || this.retainInfoList.IsAddionalDeskFaxSend  == 'false' ? false : true,
+          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend === null || this.retainInfoList.IsAddionalDeskEmailSend == 'false' ? false : true,
+          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend === null || this.retainInfoList.IsAddionalDeskPhoneSend == 'false' ? false : true,
+
+          infoAdditionalEmail1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalEmail2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalEmail3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+  
+          infoAdditionalPhone1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalPhone2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalPhone3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+  
+          infoAdditionalFax1 :  this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
+          infoAdditionalFax2 :  this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
+          infoAdditionalFax3 :  this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
         });
         if(this.contactInfoForm.controls.AddtionalDeskSms.value === true ||
           this.contactInfoForm.controls.IsPatientPhone.value === true){
@@ -392,7 +413,6 @@ export class CreateAlertComponent implements OnInit {
     if (this.addPhoneChecked == true) {
       this.smsTextModel = this.smsBody;
     }
-
     // this.contactInfoForm.patchValue({
     //   SmsTextModel :   this.smsBody 
     // })
@@ -472,7 +492,8 @@ export class CreateAlertComponent implements OnInit {
     this.contactInfoForm.get('IsPatientEmail').value == true ||
     this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
     this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerBillingEmail').value == true
+    this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
+    this.contactInfoForm.get('IsAttorneyEmail').value == true
     ) {
       this.sendEmail();
   }
@@ -482,18 +503,24 @@ export class CreateAlertComponent implements OnInit {
       this.contactInfoForm.get('AddtionalDeskFax').value == true ||
       this.contactInfoForm.get('IsRefPhyFax').value == true ||
       this.contactInfoForm.get('IsBrokerAPFax').value == true ||
-      this.contactInfoForm.get('IsBrokerBillingFax').value == true) {
+      this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
+      this.contactInfoForm.get('IsAttorneyFax').value == true) {
       this.sendFax();
     }
 
     if (this.contactInfoForm.get('AddtionalDeskSms').value == true ||
       this.contactInfoForm.get('isRefPhyPhone').value == true ||
-      this.contactInfoForm.get('isAttorneyPhone').value == true) {
+      this.contactInfoForm.get('isAttorneyPhone').value == true || 
+      this.contactInfoForm.get('IsPatientPhone').value == true) {
       this.sendSMS();
     }
-    if(this.IsSendSlackChecked == true)
-    this.sendSlack()
-
+    if(this.IsSendSlackChecked == true){
+      this.sendSlack();
+    }
+    //this.test();
+    if(this.IsEmailSent == "false" || this.IsFaxSend  == "false" || this.IsSlackSend == "false" || this.IsFaxSend == "false"){
+      this.CheckSmsEmailSlackFax.nativeElement.click();
+    }  
   }
 
   btnCreateAlert() {
@@ -576,11 +603,13 @@ export class CreateAlertComponent implements OnInit {
       };
     }
 
-    this.CreateAlertService.sendSMS(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+    this.request1 = this.CreateAlertService.sendSMS(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
       if (res.responseCode == 200) {
         this.isSmsSentSuccessfully = true; 
         var data: any = res;
+        this.IsSmsSend =  res.status
         this.ClearInfoList();
+       
       }
     },
       (err: any) => {
@@ -589,6 +618,7 @@ export class CreateAlertComponent implements OnInit {
   }
   close() {
     // this.getDropdown();
+  this.contactInfoForm.reset();
     this.ClearInfoList();
     this.isContactModelShow = false;
     this.patientIdModel = '';
@@ -616,10 +646,12 @@ export class CreateAlertComponent implements OnInit {
         'EmailBody': this.contactInfoForm.get('emailBodyModel').value,
         'CurrentUserID': this.storageService.user.UserId
       }
-      this.CreateAlertService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+      this.request2 = this.CreateAlertService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
           this.isEmailSentSuccessfully = true ;
+          this.IsEmailSent = res.status ;
           this.ClearInfoList();
+        
         }
         else {
         }
@@ -641,10 +673,12 @@ export class CreateAlertComponent implements OnInit {
         'CurrentUserID': this.storageService.user.UserId,
          'EmailBody': this.contactInfoForm.get('emailBodyModel').value
       }
-      this.CreateAlertService.sendFax(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+      this.request3 = this.CreateAlertService.sendFax(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
           this.isFaxSentSuccessfully = true ;
+        //  this.IsFaxSend = res.status
           this.ClearInfoList();
+          
         }
         else {
         }
@@ -665,10 +699,12 @@ export class CreateAlertComponent implements OnInit {
         'Reason':this.Reason,
         'InternalNotes':this.contactInfoForm.controls.notesModel.value
       }
-      this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+     this.request4 = this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
           this.isSlackSentSuccessfully = true ;
+          this.IsSlackSend = res.status;
           this.ClearInfoList();
+         
         }
         else {
         }
@@ -676,5 +712,21 @@ export class CreateAlertComponent implements OnInit {
       });
     }
   }
+// test(){
+//   debugger
+//   const requestArray : any = [];
+//   requestArray.push(this.request1);
+//   requestArray.push(this.request2);
+//   requestArray.push(this.request3);
+//   requestArray.push(this.request4);
+
+  
+//   forkJoin(requestArray).subscribe(results => {
+//     console.log(results);
+//     let response = results;
+//     console.log(response);
+//   });
+// }
+
   get contactInfoFormRef() { return this.contactInfoForm.controls; }
 }    
