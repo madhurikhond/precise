@@ -183,11 +183,14 @@
 										<div class="cke-editor-group">
 											<div class="theme-label">Default Sms</div>
 											<!-- <textarea class="form-control" id="sms-editor" cols="30" rows="10" required></textarea> -->
-											<ckeditor #myckeditor
+											<!-- <ckeditor #myckeditor
 											formControlName="defaultSms"
 											   [config]="CkeConfig" (paste)="onPaste($event)"
 											   (change)="onChange($event)">
-											</ckeditor>
+											</ckeditor> -->
+											<div class="input-group op-cs-txtarea">
+												<textarea formControlName="defaultSms" class="form-control"> </textarea>
+											</div>
 											<!-- <ckeditor [editor]="Editor" formControlName="defaultSms"></ckeditor> -->
 										</div>
 									</div>
