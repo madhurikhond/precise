@@ -12,3 +12,10 @@
 .documentTabHide{
     display:none !important;
   }
+
+.invalid-feedback {    text-transform: capitalize;
+    white-space: inherit!important;
+    text-overflow: inherit!important;
+    white-space: pre-wrap!important;
+    overflow: inherit;}
+  
