@@ -338,7 +338,19 @@ export class CreateAlertComponent implements OnInit {
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend ? false : true,
           AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  === null || this.retainInfoList.IsAddionalDeskFaxSend  == 'false' ? false : true,
           AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend === null || this.retainInfoList.IsAddionalDeskEmailSend == 'false' ? false : true,
-          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend === null || this.retainInfoList.IsAddionalDeskPhoneSend == 'false' ? false : true
+          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend === null || this.retainInfoList.IsAddionalDeskPhoneSend == 'false' ? false : true,
+
+          infoAdditionalEmail1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalEmail2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalEmail3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+  
+          infoAdditionalPhone1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalPhone2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalPhone3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+  
+          infoAdditionalFax1 :  this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
+          infoAdditionalFax2 :  this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
+          infoAdditionalFax3 :  this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
         });
         if(this.contactInfoForm.controls.AddtionalDeskSms.value === true ||
           this.contactInfoForm.controls.IsPatientPhone.value === true){
