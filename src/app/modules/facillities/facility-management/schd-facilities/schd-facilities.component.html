@@ -3763,11 +3763,24 @@
 												<dxi-column dataField="ResourceName" caption="Resource Name"
 													[allowEditing]="false">
 												</dxi-column>
-												<dxi-column dataField="LeaseRatePerHour" caption="Lease Rate/ hr">
+												<dxi-column dataField="LeaseRatePerHour" 
+												cellTemplate="LeaseRatePerHour" caption="Lease Rate/ hr">
 												</dxi-column>
 												<dxi-column dataField="ContrastCostPerUnit"
-													caption="Contrast Cost per Unit">
+												cellTemplate="ContrastCostPerUnit" caption="Contrast Cost per Unit">
 												</dxi-column>
+												<div *dxTemplate="let data of 'LeaseRatePerHour'">
+													<p *ngIf="data.data.LeaseRatePerHour">
+														${{data.data.LeaseRatePerHour | number:'0.2-2'}}</p>
+													<p *ngIf="!data.data.LeaseRatePerHour"></p>
+
+												</div>
+												<div *dxTemplate="let data of 'ContrastCostPerUnit'">
+													<p *ngIf="data.data.ContrastCostPerUnit">
+														${{data.data.ContrastCostPerUnit | number:'0.2-2'}}</p>
+													<p *ngIf="!data.data.ContrastCostPerUnit"></p>
+
+												</div>
 											</dx-data-grid>
 										</div>
 									</div>
@@ -4056,19 +4069,30 @@
 																	cellTemplate="monthTemplate" caption="MONTH">
 																</dxi-column>
 
-																<dxi-column dataField="MRI" caption="MRI HOURS">
+																<dxi-column dataField="ModalityType" caption="Modality">
 																</dxi-column>
-																<dxi-column dataField="CT" caption="CT HOURS">
+																<dxi-column dataField="ResourceName" caption="Resource Name">
+																</dxi-column>
+																<dxi-column dataField="TotalLeasedHours" caption="Total Hours">
+																</dxi-column>
+																<dxi-column dataField="ResourceRatePerHour" cellTemplate="templateResourceRatePerHour" 
+																caption="Rate Per Hour">
 																</dxi-column>
 																<dxi-column dataField="TotalAmount"
 																	cellTemplate="leaseTotalTemplate"
-																	caption="LEASE TOTAL">
+																	caption="TOTAL Amount">
 																</dxi-column>
 
 																<div *dxTemplate="let data of 'leaseTotalTemplate'">
 																	<p *ngIf="data.data.TotalAmount">
 																		${{data.data.TotalAmount | number:'0.2-2'}}</p>
 																	<p *ngIf="!data.data.TotalAmount"></p>
+
+																</div>
+																<div *dxTemplate="let data of 'templateResourceRatePerHour'">
+																	<p *ngIf="data.data.ResourceRatePerHour">
+																		${{data.data.ResourceRatePerHour | number:'0.2-2'}}</p>
+																	<p *ngIf="!data.data.ResourceRatePerHour"></p>
 
 																</div>
 																<div *dxTemplate="let data of 'monthTemplate'">
