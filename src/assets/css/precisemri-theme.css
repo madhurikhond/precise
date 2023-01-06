@@ -6016,6 +6016,9 @@ textarea.form-control {
 	font-weight: 600;
 	color: #000;
 }
+.test tr{
+	background-color: #FF616F !important;
+}
 .modaltask-detail .single-details .blue-btn {
 	background: #3b8beb;
 	display: inline-block;
@@ -6962,6 +6965,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .custom-patient-row-selection td{
 	background-color: #f7bb9b  !important;
 }
+
 .release-note{
 	display: block;
     clear: both;
@@ -7417,3 +7421,8 @@ select {
 		
 	}
 
+	.custom-facility-row-selection td{
+		background-color: #D3D3D3 !important;
+	}
+
+	
