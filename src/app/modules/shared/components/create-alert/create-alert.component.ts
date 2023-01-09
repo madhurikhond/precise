@@ -259,6 +259,10 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   showContactInfo(PatientID) {
+    if(PatientID == ""){
+      this.isContactModelShow = false;
+    }
+    if(PatientID !== ""){
     PatientID = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
     if (this.contactInfoForm.get('patientID').value != PatientID) {
       if (PatientID && this.alertButtonClick) {
@@ -267,26 +271,28 @@ export class CreateAlertComponent implements OnInit {
         this.patientFieldDisable = false;
       }
       this.contactInfoForm.patchValue({ patientID: PatientID })
-      this.CreateAlertService.getPatientRefAttInfoForAlert(true, PatientID).subscribe((res) => {
-        var data: any = res;
-        if (data.response != null) {
-          this.ClearInfoList();
-          if (data.response.attInfoList != null) { this.attInfoList = data.response.attInfoList[0]; }
-          if (data.response.refPhyList != null) { this.refPhyInfoList = data.response.refPhyList[0]; }
-          if (data.response.brokerInfoList != null) { this.brokerInfoList = data.response.brokerInfoList[0] }
-          if (data.response.patientInfoList != null) { this.patientInfoList = data.response.patientInfoList[0]; }
-          if (data.response.retainInfoList != null) { this.retainInfoList = data.response.retainInfoList[0]; }
-          this.FillContactInfo();
-          this.updateSubjectBody();
-          this.isContactModelShow = true;
-        }
-        else {
-          this.isContactModelShow = false;
-        }
-      },
-        (err: any) => {
-
-        });
+        this.CreateAlertService.getPatientRefAttInfoForAlert(true, PatientID).subscribe((res) => {
+          var data: any = res;
+          if (data.response != null) {
+            this.ClearInfoList();
+            if (data.response.attInfoList != null) { this.attInfoList = data.response.attInfoList[0]; }
+            if (data.response.refPhyList != null) { this.refPhyInfoList = data.response.refPhyList[0]; }
+            if (data.response.brokerInfoList != null) { this.brokerInfoList = data.response.brokerInfoList[0] }
+            if (data.response.patientInfoList != null) { this.patientInfoList = data.response.patientInfoList[0]; }
+            if (data.response.retainInfoList != null) { this.retainInfoList = data.response.retainInfoList[0]; }
+            this.FillContactInfo();
+            this.updateSubjectBody();
+            this.isContactModelShow = true;
+          }
+          else {
+            this.isContactModelShow = false;
+          }
+        },
+          (err: any) => {
+  
+          });
+      }
+     
     }
   }
   updateSubjectBody() {
