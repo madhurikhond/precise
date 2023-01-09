@@ -205,13 +205,30 @@ export class CreateAlertComponent implements OnInit {
       });
   }
   onAlertChange(Alert) {
+    debugger
     this.Alert = Alert;
     this.reasonList = '';
     this.contactInfoForm.patchValue({ alertType: Alert });
+    var a ;
     if (Alert != '' || Alert != null) {
       this.reasonList = this.reasonFilter.filter(function (el) {
         return el.Alerttype == Alert;
       });
+      if(this.reasonList.length > 0){
+        this.contactInfoForm.patchValue({
+          emailSubModel: this.reasonList[0].DefaultEmailSubject ?this.reasonList[0].DefaultEmailSubject: '' ,
+          emailBodyModel: this.reasonList[0].DefaultBody ? this.reasonList[0].DefaultBody : '',
+          SmsTextModel : this.reasonList[0].DefaultSms ? this.reasonList[0].DefaultSms : ''
+        })  
+      }   else{
+        this.contactInfoForm.patchValue({
+          emailSubModel:  '' ,
+          emailBodyModel:  '',
+          SmsTextModel :  ''
+        })  
+      }  
+      this.updateSubjectBody();
+      this.updatePatientAttRefData();
     }
     else {
 
@@ -231,6 +248,7 @@ export class CreateAlertComponent implements OnInit {
       this.contactInfoForm.patchValue({
         emailSubModel: a[0].DefaultEmailSubject,
         emailBodyModel: a[0].DefaultBody,
+        SmsTextModel : a[0].DefaultSms
       })
       this.updateSubjectBody();
       this.updatePatientAttRefData()
@@ -270,8 +288,10 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   updateSubjectBody() {
+    debugger
     var emailSubject: string = this.contactInfoForm.get('emailSubModel').value
     var emailBody: string = this.contactInfoForm.get('emailBodyModel').value
+    var smsBody : string = this.contactInfoForm.get('SmsTextModel').value
     if (this.patientInfoList != 0 && emailSubject) {
       emailSubject = emailSubject.replace('{{PatientID}}', this.patientInfoList.ID)
       emailSubject = emailSubject.replace('{{PatientFirstName}}', this.patientInfoList.Firstname)
@@ -286,7 +306,7 @@ export class CreateAlertComponent implements OnInit {
     this.contactInfoForm.patchValue({
       emailSubModel: (this.patientIdModel == '' ? emailSubject : emailSubject.replace('{{PatientID}}', this.patientIdModel)),
       emailBodyModel: (this.patientIdModel == '' ? emailBody : emailBody.replace('{{PatientID}}', this.patientIdModel)),
-      // smsTextModel :  (this.patientIdModel == '' ? smsBody : smsBody.replace('{{PatientID}}', this.patientIdModel)),
+      smsTextModel :  (this.patientIdModel == '' ?  smsBody : smsBody.replace('{{PatientID}}', this.patientIdModel)),
     })
   }
   FillContactInfo() {
