@@ -55,23 +55,25 @@ export class CreateAlertComponent implements OnInit {
   defaultContactBody: any;
   doctorAsDefaultContact: any;
   attorneyAsDefaultContact: any;
-  slackSend : any ;
-  UserSlackId :any ;
-  slackUserName : any ;
-  IsSendSlackChecked :any 
-  isEmailSentSuccessfully : any ;
-  isFaxSentSuccessfully : any ;
-  isSlackSentSuccessfully  : any ;
-  isSmsSentSuccessfully : any;
-  IsSmsSend : any ;
-  IsFaxSend : any ;
-  IsEmailSent : any ;
-  IsSlackSend : any ;
-  request1 : any ; 
-  request2 : any ; 
-  request3 : any ; 
-  request4 : any ; 
-  readonly commonRegex=CommonRegex;
+  slackSend: any;
+  UserSlackId: any;
+  slackUserName: any;
+  IsSendSlackChecked: any
+  isEmailSentSuccessfully: any;
+  isFaxSentSuccessfully: any;
+  isSlackSentSuccessfully: any;
+  isSmsSentSuccessfully: any;
+  IsSmsSend: any;
+  IsFaxSend: any;
+  IsEmailSent: any;
+  IsSlackSend: any;
+  request1: any;
+  request2: any;
+  request3: any;
+  request4: any;
+  addEmailChecked : any ;
+  addFaxChecked : any
+  readonly commonRegex = CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
   @ViewChild('CheckSmsEmailSlackFax', { static: false }) CheckSmsEmailSlackFax: ElementRef;
   constructor(private fb: FormBuilder,
@@ -130,14 +132,14 @@ export class CreateAlertComponent implements OnInit {
       IsBrokerBillingFax: false,
       InfoBrokerAPFax: 'N/A',
       IsBrokerAPFax: false,
-      infoAdditionalFax1:['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      infoAdditionalFax1: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
       infoAdditionalFax2: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
       infoAdditionalFax3: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
       infoAdditionalEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
       infoAdditionalEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
       infoAdditionalEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      infoAdditionalPhone1:  ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      infoAdditionalPhone2:['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone1: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone2: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
       infoAdditionalPhone3: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
       SmsTextModel: ['', Validators.required],
       AddtionalDeskFax: false,
@@ -327,33 +329,50 @@ export class CreateAlertComponent implements OnInit {
       })
       if (this.retainInfoList.length != 0) {
         this.contactInfoForm.patchValue({
-          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend  === null|| this.retainInfoList.IsAttorenyFaxSend?false : true,
-          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend  ? false : true,
-          IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend  === null || this.retainInfoList.IsRefPhyFaxSend   ? false : true,
-          IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend === null || this.retainInfoList.IsRefPhyEmailSend? false : true,
-          IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend === null || this.retainInfoList.IsBrokerMainFaxSend ? false : true,
-          IsBrokerMainEmail: this.retainInfoList.IsbrokerMainEmailSend === null|| this.retainInfoList.IsbrokerMainEmailSend ? false : true,
-          IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend  ? false : true,
-          IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend ? false : true,
-          IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend ? false : true,
-          AddtionalDeskFax: this.retainInfoList.IsAddionalDeskFaxSend  === null || this.retainInfoList.IsAddionalDeskFaxSend  == 'false' ? false : true,
-          AddtionalDeskEmail: this.retainInfoList.IsAddionalDeskEmailSend === null || this.retainInfoList.IsAddionalDeskEmailSend == 'false' ? false : true,
-          AddtionalDeskSms: this.retainInfoList.IsAddionalDeskPhoneSend === null || this.retainInfoList.IsAddionalDeskPhoneSend == 'false' ? false : true,
+          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == '0'? false : true,
+          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend == '0' ? false : true,
+          IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend === null || this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true,
+          IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend === null || this.retainInfoList.IsRefPhyEmailSend == '0'  ? false : true,
+          IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend === null || this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
+          IsBrokerMainEmail: this.retainInfoList.IsbrokerMainEmailSend === null || this.retainInfoList.IsbrokerMainEmailSend == '0'  ? false : true,
+          IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
+          IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
+          IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
 
-          infoAdditionalEmail1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
-          infoAdditionalEmail2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
-          infoAdditionalEmail3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
-  
-          infoAdditionalPhone1 :  this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
-          infoAdditionalPhone2 :  this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
-          infoAdditionalPhone3 :  this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
-  
-          infoAdditionalFax1 :  this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
-          infoAdditionalFax2 :  this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
-          infoAdditionalFax3 :  this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
+
+
+          AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
+          AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
+          AddtionalDeskSms: this.retainInfoList.IsManualDesSmsSend3 || this.retainInfoList.IsManualDesSmsSend2 || this.retainInfoList.IsManualDesSmsSend2 == '1' ? true : false,
+
+
+
+
+          infoAdditionalEmail1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalEmail2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalEmail3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+
+          infoAdditionalPhone1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+          infoAdditionalPhone2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+          infoAdditionalPhone3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+
+          infoAdditionalFax1: this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
+          infoAdditionalFax2: this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
+          infoAdditionalFax3: this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
         });
-        if(this.contactInfoForm.controls.AddtionalDeskSms.value === true ||
-          this.contactInfoForm.controls.IsPatientPhone.value === true){
+
+        if(this.contactInfoForm.controls.AddtionalDeskEmail.value){
+          this.addEmailChecked = true
+        }
+        if(this.contactInfoForm.controls.AddtionalDeskFax.value){
+          this.addFaxChecked = true
+        }
+        if (this.contactInfoForm.controls.IsPatientPhone.value) {
+          this.IsPatientPhoneSent = true;
+          this.smsTextModel = this.smsBody;
+        }
+        if (this.contactInfoForm.controls.AddtionalDeskSms.value) {
+          this.addPhoneChecked = true;
           this.smsTextModel = this.smsBody;
         }
       }
@@ -374,67 +393,40 @@ export class CreateAlertComponent implements OnInit {
     (this.contactInfoForm.get('infoRefPhyEmail').value == 'N/A' ? this.contactInfoForm.get('IsRefPhyEmail').disable() : this.contactInfoForm.get('IsRefPhyEmail').enable());
   }
   onchkUserChange(id) {
-    this.IsSendSlackChecked = id.target.checked ;
+    this.IsSendSlackChecked = id.target.checked;
     if (id.target.checked) {
       document.getElementById('inputUser').hidden = false;
     } else {
       document.getElementById('inputUser').hidden = true;
     }
   }
-  onUserChange(selectedUser:any){
-    this.slackUserName = selectedUser.target.value ;
-   this.UserSlackId = this.userList.filter(obj => obj.UserName === selectedUser.target.value)[0].UserSlackID
-   
+  onUserChange(selectedUser: any) {
+    this.slackUserName = selectedUser.target.value;
+    this.UserSlackId = this.userList.filter(obj => obj.UserName === selectedUser.target.value)[0].UserSlackID
+
   }
   onchkFaxChange(id) {
-    if (id.target.checked) {
-      document.getElementById('AddFax1').hidden = false;
-      document.getElementById('AddFax2').hidden = false;
-      document.getElementById('AddFax3').hidden = false;
-    } else {
-      document.getElementById('AddFax1').hidden = true;
-      document.getElementById('AddFax2').hidden = true;
-      document.getElementById('AddFax3').hidden = true;
-    }
+    this.addFaxChecked = id.target.checked;
   }
+
   onchkEmailChange(id) {
-    if (id.target.checked) {
-      document.getElementById('AddEmail1').hidden = false;
-      document.getElementById('AddEmail2').hidden = false;
-      document.getElementById('AddEmail3').hidden = false;
-    } else {
-      document.getElementById('AddEmail1').hidden = true;
-      document.getElementById('AddEmail2').hidden = true;
-      document.getElementById('AddEmail3').hidden = true;
-    }
+    this.addEmailChecked = id.target.checked;
   }
+
   onchkPhoneChange(id) {
     this.addPhoneChecked = id.target.checked;
     if (this.addPhoneChecked == true) {
       this.smsTextModel = this.smsBody;
     }
-    // this.contactInfoForm.patchValue({
-    //   SmsTextModel :   this.smsBody 
-    // })
-    if (id.target.checked) {
-      document.getElementById('AddPhone1').hidden = false;
-      document.getElementById('AddPhone2').hidden = false;
-      document.getElementById('AddPhone3').hidden = false;
-    } else {
-      document.getElementById('AddPhone1').hidden = true;
-      document.getElementById('AddPhone2').hidden = true;
-      document.getElementById('AddPhone3').hidden = true;
-    }
   }
+
   onchkPatientPhoneChange(id) {
     this.IsPatientPhoneSent = id.target.checked;
     if (this.IsPatientPhoneSent == true) {
       this.smsTextModel = this.smsBody;
     }
-    //   this.contactInfoForm.patchValue({
-    //     SmsTextModel :   this.smsBody 
-    //  })
   }
+
   ClearInfoList() {
     this.brokerInfoList = [];
     this.attInfoList = [];
@@ -488,15 +480,15 @@ export class CreateAlertComponent implements OnInit {
     this.btnCreateAlert();
     this.getSendInfo();
     if (this.contactInfoForm.get('IsBrokerMainEmail').value == true ||
-    this.contactInfoForm.get('IsRefPhyEmail').value == true ||
-    this.contactInfoForm.get('IsPatientEmail').value == true ||
-    this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
-    this.contactInfoForm.get('IsAttorneyEmail').value == true
+      this.contactInfoForm.get('IsRefPhyEmail').value == true ||
+      this.contactInfoForm.get('IsPatientEmail').value == true ||
+      this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
+      this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
+      this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
+      this.contactInfoForm.get('IsAttorneyEmail').value == true
     ) {
       this.sendEmail();
-  }
+    }
 
     if (this.contactInfoForm.get('IsBrokerMainFax').value == true ||
       this.contactInfoForm.get('IsPatientFax').value == true ||
@@ -510,17 +502,17 @@ export class CreateAlertComponent implements OnInit {
 
     if (this.contactInfoForm.get('AddtionalDeskSms').value == true ||
       this.contactInfoForm.get('isRefPhyPhone').value == true ||
-      this.contactInfoForm.get('isAttorneyPhone').value == true || 
+      this.contactInfoForm.get('isAttorneyPhone').value == true ||
       this.contactInfoForm.get('IsPatientPhone').value == true) {
       this.sendSMS();
     }
-    if(this.IsSendSlackChecked == true){
+    if (this.IsSendSlackChecked == true) {
       this.sendSlack();
     }
     //this.test();
-    if(this.IsEmailSent == "false" || this.IsFaxSend  == "false" || this.IsSlackSend == "false" || this.IsFaxSend == "false"){
+    if (this.IsEmailSent == "false" || this.IsFaxSend == "false" || this.IsSlackSend == "false" || this.IsFaxSend == "false") {
       this.CheckSmsEmailSlackFax.nativeElement.click();
-    }  
+    }
   }
 
   btnCreateAlert() {
@@ -605,11 +597,11 @@ export class CreateAlertComponent implements OnInit {
 
     this.request1 = this.CreateAlertService.sendSMS(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
       if (res.responseCode == 200) {
-        this.isSmsSentSuccessfully = true; 
+        this.isSmsSentSuccessfully = true;
         var data: any = res;
-        this.IsSmsSend =  res.status
+        this.IsSmsSend = res.status
         this.ClearInfoList();
-       
+
       }
     },
       (err: any) => {
@@ -618,7 +610,7 @@ export class CreateAlertComponent implements OnInit {
   }
   close() {
     // this.getDropdown();
-  this.contactInfoForm.reset();
+    this.contactInfoForm.reset();
     this.ClearInfoList();
     this.isContactModelShow = false;
     this.patientIdModel = '';
@@ -648,10 +640,10 @@ export class CreateAlertComponent implements OnInit {
       }
       this.request2 = this.CreateAlertService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
-          this.isEmailSentSuccessfully = true ;
-          this.IsEmailSent = res.status ;
+          this.isEmailSentSuccessfully = true;
+          this.IsEmailSent = res.status;
           this.ClearInfoList();
-        
+
         }
         else {
         }
@@ -671,14 +663,14 @@ export class CreateAlertComponent implements OnInit {
         'FromPage': 'CreateAlert',
         // 'EmailSubject': this.contactInfoForm.get('emailSubModel').value,
         'CurrentUserID': this.storageService.user.UserId,
-         'EmailBody': this.contactInfoForm.get('emailBodyModel').value
+        'EmailBody': this.contactInfoForm.get('emailBodyModel').value
       }
       this.request3 = this.CreateAlertService.sendFax(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
-          this.isFaxSentSuccessfully = true ;
-        //  this.IsFaxSend = res.status
+          this.isFaxSentSuccessfully = true;
+          //  this.IsFaxSend = res.status
           this.ClearInfoList();
-          
+
         }
         else {
         }
@@ -692,19 +684,19 @@ export class CreateAlertComponent implements OnInit {
       let data = {
         'PatientID': this.patientInfoList.ID,
         'UserSlackID': this.UserSlackId,
-        'SlackUserName' : this.slackUserName,
+        'SlackUserName': this.slackUserName,
         'CurrentUserID': this.storageService.user.UserId,
-        'UserName':this.storageService.user.FullName,
-        'Type':this.Alert,
-        'Reason':this.Reason,
-        'InternalNotes':this.contactInfoForm.controls.notesModel.value
+        'UserName': this.storageService.user.FullName,
+        'Type': this.Alert,
+        'Reason': this.Reason,
+        'InternalNotes': this.contactInfoForm.controls.notesModel.value
       }
-     this.request4 = this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+      this.request4 = this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
-          this.isSlackSentSuccessfully = true ;
+          this.isSlackSentSuccessfully = true;
           this.IsSlackSend = res.status;
           this.ClearInfoList();
-         
+
         }
         else {
         }
@@ -712,21 +704,6 @@ export class CreateAlertComponent implements OnInit {
       });
     }
   }
-// test(){
-//   debugger
-//   const requestArray : any = [];
-//   requestArray.push(this.request1);
-//   requestArray.push(this.request2);
-//   requestArray.push(this.request3);
-//   requestArray.push(this.request4);
-
-  
-//   forkJoin(requestArray).subscribe(results => {
-//     console.log(results);
-//     let response = results;
-//     console.log(response);
-//   });
-// }
 
   get contactInfoFormRef() { return this.contactInfoForm.controls; }
 }    
