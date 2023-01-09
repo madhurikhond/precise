@@ -169,18 +169,24 @@ export class CreateAlertComponent implements OnInit {
       'Reason': this.Reason
     }
     this.CreateAlertService.patientAttRefData(JSON.stringify(JSON.stringify(emailBody))).subscribe((res) => {
+
       if (res.responseCode === 200) {
         this.defaultContactBody = JSON.parse(res.response)[0].defaultContact;
         if (this.defaultContactBody == "Doctor") {
           this.doctorAsDefaultContact = true;
+          this.attorneyAsDefaultContact = false;
         }
         else if (this.defaultContactBody == "Attorney") {
           this.attorneyAsDefaultContact = true;
+          this.doctorAsDefaultContact = false;
         }
         else {
           this.doctorAsDefaultContact = true;
           this.attorneyAsDefaultContact = true;
         }
+      }else{
+        this.doctorAsDefaultContact = false;
+        this.attorneyAsDefaultContact = false;
       }
     },
       (err: any) => {
@@ -218,6 +224,7 @@ export class CreateAlertComponent implements OnInit {
       });
       if(this.reasonList.length > 0){
         this.contactInfoForm.patchValue({
+       
           emailSubModel: this.reasonList[0].DefaultEmailSubject ?this.reasonList[0].DefaultEmailSubject: '' ,
           emailBodyModel: this.reasonList[0].DefaultBody ? this.reasonList[0].DefaultBody : '',
           SmsTextModel : this.reasonList[0].DefaultSms ? this.reasonList[0].DefaultSms : ''
@@ -237,6 +244,7 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   onReasonChange(Reason) {
+
     this.Reason = Reason;
     this.contactInfoForm.patchValue({ reason: Reason });
     var a;
