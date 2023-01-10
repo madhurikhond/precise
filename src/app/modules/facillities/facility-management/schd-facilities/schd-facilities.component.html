@@ -4178,6 +4178,8 @@
 																id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
+																[rowAlternationEnabled]="true"  
+
 																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
 																[allowColumnResizing]="true"
 																[columnResizingMode]="columnResizingMode"
@@ -4261,8 +4263,18 @@
 																			caption="Credit Time"></dxi-column>
 																		<dxi-column dataField="ModalityType"
 																			caption="Modality"></dxi-column>
-																		<dxi-column dataField="CreditAmount"
-																			caption="Credit Amount"></dxi-column>
+																		<dxi-column dataField="CreditAmount" cellTemplate="creditTotalTemplate"
+																			caption="Credit Amount" ></dxi-column>
+
+																			<div *dxTemplate="let data of 'creditTotalTemplate'">
+																				<p *ngIf="data.data.CreditAmount">
+																					${{data.data.CreditAmount | number:'0.2-2'}}
+																				</p>
+																				<p *ngIf="!data.data.CreditAmount"></p>
+			
+																			</div>
+
+
 																		<dxo-summary>
 																			<dxi-total-item column="CreditAmount"
 																				summaryType="sum" displayFormat="{0}"
