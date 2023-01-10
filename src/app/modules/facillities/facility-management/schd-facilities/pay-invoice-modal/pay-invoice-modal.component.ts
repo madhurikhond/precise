@@ -39,11 +39,11 @@ export class PayInvoiceModalComponent implements OnInit {
   ngOnInit(): void {
     this.createPayInvoiceForm();
     this.formattedInputAmount = this.decimalPipe.transform(this.AmountDetails.TotalAmount, '0.2-2');
-  this.formattedInputCheckNumber = this.payInvoiceForm.controls['checkId'].value;
+    this.formattedInputCheckNumber = this.payInvoiceForm.controls['checkId'].value;
     // this.setPayInvoiceForm();
   }
   transformAmount(element) {
-      this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2'); 
+    this.formattedInputAmount = this.decimalPipe.transform(this.formattedInputAmount, '0.2-2');
     if (!isNaN(this.formattedInputAmount))
       this.formattedInputAmount = Number(this.formattedInputAmount).toLocaleString();
   }
@@ -52,7 +52,7 @@ export class PayInvoiceModalComponent implements OnInit {
     this.payInvoiceForm = this.fb.group({
       checkId: ['', [Validators.required]],
       checkDate: [this.currentDate, [Validators.required]],
-      checkAmount: ['', [Validators.required,Validators.max(999999),Validators.min(0), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
+      checkAmount: ['', [Validators.required, Validators.max(999999), Validators.min(0), Validators.pattern('([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]')]]
     });
   }
   close() {
@@ -91,37 +91,35 @@ export class PayInvoiceModalComponent implements OnInit {
     });
   }
   keyPressAlphaNumeric(e) {
-debugger
-var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
     var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
     if (regex.test(str)) {
-        return true;
+      return true;
     }
 
     e.preventDefault();
     return false;
- 
+
   }
   onPaste(e) {
-    debugger
     this.formattedInputCheckNumber = this.payInvoiceForm.controls['checkId'].value;
-   // alert('Value:' +  this.formattedInputCheckNumber);
+    // alert('Value:' +  this.formattedInputCheckNumber);
     var regex = new RegExp("^[a-zA-Z0-9 ]+$");
     var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
     if (regex.test(str)) {
-     
-        return true;
+
+      return true;
     }
-    else{
-      var amtStr=  this.formattedInputCheckNumber.replace(/[^a-zA-Z0-9]/g, '');
+    else {
+      var amtStr = this.formattedInputCheckNumber.replace(/[^a-zA-Z0-9]/g, '');
       this.payInvoiceForm.patchValue({
-        checkId:amtStr,
+        checkId: amtStr,
       });
       return true;
     }
- 
+
   }
- 
+
   successNotification(data: any) {
     this.notificationService.showNotification({
       alertHeader: 'Success',

@@ -1,4 +1,4 @@
-<div class="modal fade modal-theme create-alert-popup" id="create-alert" role="dialog"
+<div class="modal fade modal-theme create-alert-popup" id="create-alert" role="dialog"  data-backdrop="static"
    aria-labelledby="exampleModalLabel" aria-modal="true">
    <div class="modal-dialog modal-dialog-centered" role="document" >
       <div class="modal-content">
@@ -39,10 +39,10 @@
                            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                               <div class="form-group">
                                  <div class="input-group">
-                                    <select id="reasonSelect" class="form-control"
+                                    <select id="reasonSelect" class="form-control" formControlName="reason"
                                        (change)="onReasonChange($event.target.value)"
                                        [ngClass]="{'is-invalid':Issubmitted && contactInfoFormRef.reason.errors}">
-                                       <option [value]="" disabled selected>Select Reason</option>
+                                       <option [value]="0">Select Reason</option>
                                        <option *ngFor="let item of reasonList" value={{item.Reason}}>
                                           {{item.Reason}}
                                        </option>
@@ -150,7 +150,7 @@
                               <div class="checkbox-theme">
                                  <input id="chkInternalUser" type="checkbox" (change)="onchkUserChange($event)"
                                     style="opacity: 1; margin: 21px 0px 0px -5px" />
-                                 <label class="arrow-labe2">Notify Internal User Via Slack</label>
+                                 <label class="arrow-labe2">Notify Internal Via Slack</label>
                                  <select id="inputUser"  (change)="onUserChange($event)" class="form-control" hidden>
                                     <option *ngFor="let item of userList" value={{item.UserName}}>
                                        {{item.UserName}}
@@ -398,21 +398,21 @@
                                           <label for="chkAddFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
                                           
                                           <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddFax1"
-                                          class="form-control"  formControlName="infoAdditionalFax1" hidden />
+                                          class="form-control"  formControlName="infoAdditionalFax1"   *ngIf = "addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax1"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
                                                  *ngIf="contactInfoForm.controls.infoAdditionalFax1.invalid">Invalid Fax</small>
                                               </div>
                                           <input  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddFax2"
-                                          class="form-control"  formControlName="infoAdditionalFax2" hidden />
+                                          class="form-control"  formControlName="infoAdditionalFax2" *ngIf = "addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax2"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
                                                  *ngIf="contactInfoForm.controls.infoAdditionalFax2.invalid">Invalid Fax</small>
                                               </div>
                                           <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors)}" type="text" mask="(000) 000-0000 (0000)" id="AddFax3"
-                                          class="form-control"  formControlName="infoAdditionalFax3" hidden />
+                                          class="form-control"  formControlName="infoAdditionalFax3" *ngIf = "addFaxChecked"/>
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax3"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
@@ -427,24 +427,24 @@
                                           <label for="chkAddEmail"><img
                                                 src="assets/images/EmailIconGray.png"></label>&nbsp;
                                           <input type="email" [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors)}"
-													 id="AddEmail1" class="form-control" formControlName="infoAdditionalEmail1"
-                                             hidden />
+                                          *ngIf = "addEmailChecked"  id="AddEmail1" class="form-control" formControlName="infoAdditionalEmail1"
+                                              />
                                             <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail1"
                                             class="tooltiptext text-right">
                                              <small class="error text-danger"
                                                 *ngIf="contactInfoForm.controls.infoAdditionalEmail1.invalid">Invalid email</small>
                                              </div>
                                           <input type="email"  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail2.errors)}"
-														 id="AddEmail2" class="form-control" formControlName="infoAdditionalEmail2"
-                                             hidden />
+                                          *ngIf = "addEmailChecked" id="AddEmail2" class="form-control" formControlName="infoAdditionalEmail2"
+                                              />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail2"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
                                                  *ngIf="contactInfoForm.controls.infoAdditionalEmail2.invalid">Invalid email</small>
                                               </div>
                                           <input   [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail3.errors)}"
-														type="email" id="AddEmail3" class="form-control" formControlName="infoAdditionalEmail3"
-                                             hidden />
+														type="email" *ngIf = "addEmailChecked"  id="AddEmail3" class="form-control" formControlName="infoAdditionalEmail3"
+                                              />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail3"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
@@ -458,14 +458,14 @@
                                              (change)="onchkPhoneChange($event)" />
                                           <label for="chkAddPhone"><img src="assets/images/sms.png"></label>&nbsp;
                                           <input type="text" [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors)}" mask="(000) 000-0000 (0000)" id="AddPhone1"
-                                          class="form-control" formControlName="infoAdditionalPhone1" hidden />
+                                          class="form-control" formControlName="infoAdditionalPhone1" *ngIf = "addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone1"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
                                                  *ngIf="contactInfoForm.controls.infoAdditionalPhone1.invalid">Invalid Phone</small>
                                               </div>
                                           <input  [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors)}" type="text" mask="(000) 000-0000 (0000)" id="AddPhone2"
-                                          class="form-control" formControlName="infoAdditionalPhone2" hidden />
+                                          class="form-control" formControlName="infoAdditionalPhone2"*ngIf = "addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone2"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"
@@ -473,7 +473,7 @@
                                               </div>
 
                                           <input [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors)}"  type="text" mask="(000) 000-0000 (0000)" id="AddPhone3"
-                                          class="form-control" formControlName="infoAdditionalPhone3" hidden />
+                                          class="form-control" formControlName="infoAdditionalPhone3" *ngIf = "addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone3"
                                              class="tooltiptext text-right">
                                               <small class="error text-danger"

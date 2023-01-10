@@ -11,7 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../environments/environment';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 
-
+declare const $: any;
 @Component({
   selector: 'app-block-lease-scheduler',
   templateUrl: './block-lease-scheduler.component.html',
@@ -129,13 +129,16 @@ export class BlockLeaseSchedulerComponent implements OnInit {
   }
 
   getCalendarSchedulerWindowById(row: any) {
+    this.getRowColorChanged(row)
     let body = {
       'FacilityID': row.data.FacilityID,
       'FacilityParentID': row.data.FacilityParentID,
       'FacilityName': row.data.Facilityname
     }
     this.blockLeaseSchedulerService.sendDataToCalendarSchedulerWindow(body);
+    //this.test(event);
   }
+
   // getModalityList() {
   //   this.modalityList = [];
   //   this.facilityService.getMasterModalities(true).subscribe((res) => {
@@ -235,7 +238,22 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     this.AllBlockLeaseList = arr;
   }
 
+  getRowColorChanged(data: any) {
+    let dataGridalltrList: any = document.getElementsByTagName("tr");
+    for (var i = 0; i < dataGridalltrList.length; i++) {
+      dataGridalltrList[i].classList.remove("custom-facility-row-selection")
+    }
+    for (let index = 0; index < data.row.cells.length; index++) {
+      data.row.cells[index].cellElement.parentElement.classList.add("custom-facility-row-selection");
+    }
+    // $('.scheduling-facillities-table').find('.custom-facility-row-selection').removeClass('custom-facility-row-selection');
+    // e.path[3].classList.add('custom-facility-row-selection')
+    // var tr = $('.custom-facility-row-selection');
+    // var rowIndex = tr.parent().children().index(tr);
+    // $('.scheduling-facillities-table').find('.dx-scrollable-content').find('table tr:nth-child(' + (rowIndex + 1) + ')').addClass('custom-facility-row-selection')
+  }
   getColumnByDataField(column: any) {
+
     var retArray = [];
     let index = 0;
     if (column.column.caption == 'MRI')
@@ -359,11 +377,13 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     });
   }
 
-  getFacilityDetail(facilityId: any, type: any) {
+  getFacilityDetail(dataColorRow:any,facilityId: any, type: any,event) {
+    this.getRowColorChanged(dataColorRow)
     if (facilityId) {
       let body = {
         'facilityId': facilityId,
-        'type': type
+        'type': type,
+        'clickOnIcon' : 1
       }
       this.facilityService.sendDataToPatientFacilityWindow(body);
     }
