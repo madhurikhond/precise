@@ -39,10 +39,10 @@
                            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                               <div class="form-group">
                                  <div class="input-group">
-                                    <select id="reasonSelect" class="form-control"
+                                    <select id="reasonSelect" class="form-control" formControlName="reason"
                                        (change)="onReasonChange($event.target.value)"
                                        [ngClass]="{'is-invalid':Issubmitted && contactInfoFormRef.reason.errors}">
-                                       <option [value]="" disabled selected>Select Reason</option>
+                                       <option [value]="0">Select Reason</option>
                                        <option *ngFor="let item of reasonList" value={{item.Reason}}>
                                           {{item.Reason}}
                                        </option>

@@ -97,7 +97,7 @@ export class CreateAlertComponent implements OnInit {
       patientHeaderModel: ['', Validators.required],
       patientID: ['', Validators.required],
       alertType: ['', Validators.required],
-      reason: ['', Validators.required],
+      reason: ['0', Validators.required],
       infoAttorneyName: 'N/A',
       infoAttorneyFax: 'N/A',
       IsAttorneyFax: false,
@@ -213,7 +213,6 @@ export class CreateAlertComponent implements OnInit {
       });
   }
   onAlertChange(Alert) {
-    debugger
     this.Alert = Alert;
     this.reasonList = '';
     this.contactInfoForm.patchValue({ alertType: Alert });
@@ -224,13 +223,14 @@ export class CreateAlertComponent implements OnInit {
       });
       if(this.reasonList.length > 0){
         this.contactInfoForm.patchValue({
-       
+          reason : this.reasonList[0].Reason ?this.reasonList[0].Reason : "0",
           emailSubModel: this.reasonList[0].DefaultEmailSubject ?this.reasonList[0].DefaultEmailSubject: '' ,
           emailBodyModel: this.reasonList[0].DefaultBody ? this.reasonList[0].DefaultBody : '',
           SmsTextModel : this.reasonList[0].DefaultSms ? this.reasonList[0].DefaultSms : ''
         })  
       }   else{
         this.contactInfoForm.patchValue({
+          reason : '0' ,
           emailSubModel:  '' ,
           emailBodyModel:  '',
           SmsTextModel :  ''
@@ -244,7 +244,6 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   onReasonChange(Reason) {
-
     this.Reason = Reason;
     this.contactInfoForm.patchValue({ reason: Reason });
     var a;
@@ -304,10 +303,10 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   updateSubjectBody() {
-    debugger
     var emailSubject: string = this.contactInfoForm.get('emailSubModel').value
     var emailBody: string = this.contactInfoForm.get('emailBodyModel').value
     var smsBody : string = this.contactInfoForm.get('SmsTextModel').value
+   // var reasonBody : string = this.contactInfoForm.get('reason').value
     if (this.patientInfoList != 0 && emailSubject) {
       emailSubject = emailSubject.replace('{{PatientID}}', this.patientInfoList.ID)
       emailSubject = emailSubject.replace('{{PatientFirstName}}', this.patientInfoList.Firstname)
@@ -320,9 +319,11 @@ export class CreateAlertComponent implements OnInit {
     }
 
     this.contactInfoForm.patchValue({
+    
       emailSubModel: (this.patientIdModel == '' ? emailSubject : emailSubject.replace('{{PatientID}}', this.patientIdModel)),
       emailBodyModel: (this.patientIdModel == '' ? emailBody : emailBody.replace('{{PatientID}}', this.patientIdModel)),
       smsTextModel :  (this.patientIdModel == '' ?  smsBody : smsBody.replace('{{PatientID}}', this.patientIdModel)),
+     
     })
   }
   FillContactInfo() {
@@ -633,7 +634,7 @@ export class CreateAlertComponent implements OnInit {
       if (res.responseCode == 200) {
         this.isSmsSentSuccessfully = true;
         var data: any = res;
-        this.IsSmsSend = res.status
+       // this.IsSmsSend = res.status
         this.ClearInfoList();
 
       }
@@ -659,8 +660,13 @@ export class CreateAlertComponent implements OnInit {
     this.IsPatientPhoneSent = false;
     this.doctorAsDefaultContact = false;
     this.attorneyAsDefaultContact = false;
+    this.contactInfoForm.controls.reason.setValue('0')
   }
   sendEmail() {
+    if (this.contactInfoForm.invalid) {
+      this.modalValue = '';
+      return;
+    } this.modalValue = 'modal'
     if (this.emailSend.length > 0) {
       let data = {
         'patientid': this.patientInfoList.ID,
@@ -675,9 +681,8 @@ export class CreateAlertComponent implements OnInit {
       this.request2 = this.CreateAlertService.sendEmail(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
           this.isEmailSentSuccessfully = true;
-          this.IsEmailSent = res.status;
+         // this.IsEmailSent = res.status;
           this.ClearInfoList();
-
         }
         else {
         }
@@ -687,6 +692,10 @@ export class CreateAlertComponent implements OnInit {
   }
 
   sendFax() {
+    if (this.contactInfoForm.invalid) {
+      this.modalValue = '';
+      return;
+    } this.modalValue = 'modal'
     if (this.faxSend.length > 0) {
       let data = {
         'patientid': this.patientInfoList.ID,
@@ -714,6 +723,10 @@ export class CreateAlertComponent implements OnInit {
   }
 
   sendSlack() {
+    if (this.contactInfoForm.invalid) {
+      this.modalValue = '';
+      return;
+    } this.modalValue = 'modal'
     if (this.UserSlackId.length > 0 && this.IsSendSlackChecked == true) {
       let data = {
         'PatientID': this.patientInfoList.ID,
@@ -728,7 +741,7 @@ export class CreateAlertComponent implements OnInit {
       this.request4 = this.CreateAlertService.sendSlack(JSON.stringify(JSON.stringify(data))).subscribe((res) => {
         if (res.responseCode == 200) {
           this.isSlackSentSuccessfully = true;
-          this.IsSlackSend = res.status;
+         // this.IsSlackSend = res.status;
           this.ClearInfoList();
 
         }
