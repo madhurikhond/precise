@@ -198,6 +198,9 @@ export class SchdFacilitiesComponent implements OnInit {
           this.getFacilityDetail(res.facilityId);
           this.defaultPopupTab = res.type;
         }
+        if(res.facilityId && res.clickOnIcon == 1){
+          this.getLeaseAgreementsByFacilityId(res.facilityId  )
+        }
       }
     });
     facilityService.sendDataToschdFacilities.subscribe((res) => {
