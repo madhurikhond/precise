@@ -382,7 +382,8 @@ export class BlockLeaseSchedulerComponent implements OnInit {
     if (facilityId) {
       let body = {
         'facilityId': facilityId,
-        'type': type
+        'type': type,
+        'clickOnIcon' : 1
       }
       this.facilityService.sendDataToPatientFacilityWindow(body);
     }
