@@ -3763,11 +3763,11 @@
 												<dxi-column dataField="ResourceName" caption="Resource Name"
 													[allowEditing]="false">
 												</dxi-column>
-												<dxi-column dataField="LeaseRatePerHour" 
-												cellTemplate="LeaseRatePerHour" caption="Lease Rate/ hr">
+												<dxi-column dataField="LeaseRatePerHour" cellTemplate="LeaseRatePerHour"
+													caption="Lease Rate/ hr">
 												</dxi-column>
 												<dxi-column dataField="ContrastCostPerUnit"
-												cellTemplate="ContrastCostPerUnit" caption="Contrast Cost per Unit">
+													cellTemplate="ContrastCostPerUnit" caption="Contrast Cost per Unit">
 												</dxi-column>
 												<div *dxTemplate="let data of 'LeaseRatePerHour'">
 													<p *ngIf="data.data.LeaseRatePerHour">
@@ -4071,12 +4071,15 @@
 
 																<dxi-column dataField="ModalityType" caption="Modality">
 																</dxi-column>
-																<dxi-column dataField="ResourceName" caption="Resource Name">
+																<dxi-column dataField="ResourceName"
+																	caption="Resource Name">
 																</dxi-column>
-																<dxi-column dataField="TotalLeasedHours" caption="Total Hours">
+																<dxi-column dataField="TotalLeasedHours"
+																	caption="Total Hours">
 																</dxi-column>
-																<dxi-column dataField="ResourceRatePerHour" cellTemplate="templateResourceRatePerHour" 
-																caption="Rate Per Hour">
+																<dxi-column dataField="ResourceRatePerHour"
+																	cellTemplate="templateResourceRatePerHour"
+																	caption="Rate Per Hour">
 																</dxi-column>
 																<dxi-column dataField="TotalAmount"
 																	cellTemplate="leaseTotalTemplate"
@@ -4089,9 +4092,11 @@
 																	<p *ngIf="!data.data.TotalAmount"></p>
 
 																</div>
-																<div *dxTemplate="let data of 'templateResourceRatePerHour'">
+																<div
+																	*dxTemplate="let data of 'templateResourceRatePerHour'">
 																	<p *ngIf="data.data.ResourceRatePerHour">
-																		${{data.data.ResourceRatePerHour | number:'0.2-2'}}</p>
+																		${{data.data.ResourceRatePerHour |
+																		number:'0.2-2'}}</p>
 																	<p *ngIf="!data.data.ResourceRatePerHour"></p>
 
 																</div>
@@ -4178,8 +4183,6 @@
 																id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
-																[rowAlternationEnabled]="true"  
-
 																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
 																[allowColumnResizing]="true"
 																[columnResizingMode]="columnResizingMode"
@@ -4194,7 +4197,7 @@
 																<dxi-column dataField="PaymentTXN"
 																	caption="PAYMENT TXN">
 																</dxi-column>
-																<dxi-column dataField="DateCreated"
+																<dxi-column dataField="DateCreated" cellTemplate="DateCreatedTemplate"
 																	caption="DATE CREATED">
 																</dxi-column>
 																<dxi-column dataField="paidMonth"
@@ -4202,7 +4205,7 @@
 																</dxi-column>
 																<dxi-column dataField="CheckNo" caption="CHECK #">
 																</dxi-column>
-																<dxi-column dataField="CheckDate" caption="CHECK DATE"
+																<dxi-column dataField="CheckDate" caption="CHECK DATE" cellTemplate="CheckDateTemplate"
 																	[width]="200"> </dxi-column>
 																<dxi-column dataField="CheckAmount"
 																	caption="CHECK AMOUNT" dataType="number"
@@ -4216,6 +4219,18 @@
 																				class="fa fa-file-pdf-o PDFIcon"></i></a>
 																	</div>
 																</dxi-column>
+																<div *dxTemplate="let data of 'CheckDateTemplate'">
+																	<p>
+																		{{data.data.CheckDate|
+																		date:dateTimeFormatCustom.Date}}
+																	</p>
+																</div>
+																<div *dxTemplate="let data of 'DateCreatedTemplate'">
+																	<p>
+																		{{data.data.DateCreated|
+																		date:dateTimeFormatCustom.Date}}
+																	</p>
+																</div>
 																<dxo-master-detail [enabled]="true"
 																	template="productDetail"></dxo-master-detail>
 																<div *dxTemplate="let detail of 'productDetail'">
@@ -4263,16 +4278,19 @@
 																			caption="Credit Time"></dxi-column>
 																		<dxi-column dataField="ModalityType"
 																			caption="Modality"></dxi-column>
-																		<dxi-column dataField="CreditAmount" cellTemplate="creditTotalTemplate"
-																			caption="Credit Amount" ></dxi-column>
+																		<dxi-column dataField="CreditAmount"
+																			cellTemplate="creditTotalTemplate"
+																			caption="Credit Amount"></dxi-column>
 
-																			<div *dxTemplate="let data of 'creditTotalTemplate'">
-																				<p *ngIf="data.data.CreditAmount">
-																					${{data.data.CreditAmount | number:'0.2-2'}}
-																				</p>
-																				<p *ngIf="!data.data.CreditAmount"></p>
-			
-																			</div>
+																		<div
+																			*dxTemplate="let data of 'creditTotalTemplate'">
+																			<p *ngIf="data.data.CreditAmount">
+																				${{data.data.CreditAmount |
+																				number:'0.2-2'}}
+																			</p>
+																			<p *ngIf="!data.data.CreditAmount"></p>
+
+																		</div>
 
 
 																		<dxo-summary>
