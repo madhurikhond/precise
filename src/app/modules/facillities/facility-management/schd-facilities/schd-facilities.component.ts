@@ -1178,15 +1178,11 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   getLeaseAgreementsByFacilityId(facilityId: number) {
     this.blockLeaseAgreementMRIList = [];
-    let body: any;
-    if (
-      this.defaultPopupTab == 'LeaseAgreements' ||
-      this.defaultPopupTab == 'LeaseAgreement_MRI'
-    ) {
-      body = { FacilityID: facilityId, Modality: 'MRI' };
-    } else {
-      body = { FacilityID: facilityId, Modality: 'CT' };
-    }
+    let body: any = {
+      FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
+        ? 'MRI' : 'CT', PageNumber: this.MRIPageNumber, PageSize: this.MRIpageSize
+    };
+
     this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
@@ -1205,18 +1201,20 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
     this.MRIPageNumber = pageNumber;
-    if (type == 'MRI') {
-      this.fullblockLeaseAgreementMRIList =
-        this.blockLeaseAgreementMRIList.slice(
-          (this.MRIPageNumber - 1) * this.MRIpageSize,
-          (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
-        );
-    } else {
-      this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(
-        (this.MRIPageNumber - 1) * this.MRIpageSize,
-        (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
-      );
-    }
+
+    this.getLeaseAgreementsByFacilityId(this.facilityId);
+    // if (type == 'MRI') {
+    //   this.fullblockLeaseAgreementMRIList =
+    //     this.blockLeaseAgreementMRIList.slice(
+    //       (this.MRIPageNumber - 1) * this.MRIpageSize,
+    //       (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+    //     );
+    // } else {
+    //   this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(
+    //     (this.MRIPageNumber - 1) * this.MRIpageSize,
+    //     (this.MRIPageNumber - 1) * this.MRIpageSize + this.MRIpageSize
+    //   );
+    // }
   }
   getBlockLeasePricing(facilityId: number) {
     this.blockLeasePricingList = [];
@@ -1426,7 +1424,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
     if (!data.useBlockLease) {
-      this.GetUnpaidLeasesList =[];
+      this.GetUnpaidLeasesList = [];
       $('#BlockLeaseRate')
         .not('.btn')
         .attr('disabled', true)
@@ -3033,7 +3031,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getFacilityCreditsUnUsed() {
-    this.creditIdArray=[];
+    this.creditIdArray = [];
     var data = {
       FacilityId: this.facilityId,
       pageNo: this.pageNumberOfUnusedCredits,
@@ -3098,7 +3096,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getFacilityCreditsUnUsed();
   }
   getUnpaidLeases() {
-  
+
     var data = {
       FacilityId: this.facilityId,
       PageNumber: this.pageNumberOfUnpaidLeases,
@@ -3109,11 +3107,11 @@ export class SchdFacilitiesComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.response != null && res.response.length > 0) {
-           this.GetUnpaidLeasesList = res.response;
+            this.GetUnpaidLeasesList = res.response;
             this.totalRecordUnpaidLeases = res.response[0].TotalRecords;
           } else {
             this.totalRecordUnpaidLeases = 1;
-           this.GetUnpaidLeasesList = [];
+            this.GetUnpaidLeasesList = [];
           }
         },
         (err: any) => {
@@ -3141,7 +3139,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   onSelectionChangedCredit(ec) {
     var CreditID: any = [];
-    this.creditIdArray=[];
+    this.creditIdArray = [];
     this.selectedCreditPayment = ec.selectedRowsData;
     if (ec.selectedRowsData.length !== 0) {
       ec.selectedRowsData.forEach((i) => {
@@ -3156,7 +3154,7 @@ export class SchdFacilitiesComponent implements OnInit {
       TotalLease += this.selectedleaseArray[i].TotalAmount;
     }
     for (let i = 0; i < this.selectedCreditPayment.length; i++) {
-      TotalCredit += this.selectedCreditPayment[i]['Credit Amount'];
+      TotalCredit += this.selectedCreditPayment[i].CreditAmount;
     }
     var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
     var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';

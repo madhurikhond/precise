@@ -130,8 +130,8 @@
 </div>
 <!-- Pop Up Start -->
 
-<div class="modal fade modal-theme in popUpClose" data-backdrop="static" data-keyboard="false" id="add-Edit-facility" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme in popUpClose" data-backdrop="static" data-keyboard="false" id="add-Edit-facility"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -747,7 +747,7 @@
 													class="invalid-feedback">
 													<div
 														*ngIf="facilityContactDetailFormControls.emailAddress23P.errors">
-														3RD EMAIL ADDRESS FOR  LEASE must be a valid email address</div>
+														3RD EMAIL ADDRESS FOR LEASE must be a valid email address</div>
 												</div>
 											</div>
 										</div>
@@ -948,7 +948,8 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="MriServices" type="checkbox"
-															formControlName="mriservice" (change)="onChangeService('mri')">
+															formControlName="mriservice"
+															(change)="onChangeService('mri')">
 														<label for="MriServices" class="arrow-label">MRI</label>
 													</div>
 												</div>
@@ -957,7 +958,8 @@
 												<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 													<div class="checkbox-theme">
 														<input class="form-control" id="CtServices" type="checkbox"
-															formControlName="ctservice" (change)="onChangeService('ct')">
+															formControlName="ctservice"
+															(change)="onChangeService('ct')">
 														<label for="CtServices" class="arrow-label">CT</label>
 													</div>
 												</div>
@@ -1518,19 +1520,18 @@
 														</tr>
 														<tr>
 															<td>2</td>
-															<td> 
-																	<select class="form-control"
-																		formControlName="ct2make"
-																		(change)="CheckSameCombinationCT('Type2')">
-																		<option></option>
-																		<option value="GE">GE</option>
-																		<option value="Fonar">Fonar</option>
-																		<option value="Hitachi">Hitachi</option>
-																		<option value="Phillips">Phillips</option>
-																		<option value="Siemens">Siemens</option>
-																		<option value="Toshiba">Toshiba</option>
-																		<option value="Other">Other</option>
-																	</select>
+															<td>
+																<select class="form-control" formControlName="ct2make"
+																	(change)="CheckSameCombinationCT('Type2')">
+																	<option></option>
+																	<option value="GE">GE</option>
+																	<option value="Fonar">Fonar</option>
+																	<option value="Hitachi">Hitachi</option>
+																	<option value="Phillips">Phillips</option>
+																	<option value="Siemens">Siemens</option>
+																	<option value="Toshiba">Toshiba</option>
+																	<option value="Other">Other</option>
+																</select>
 															</td>
 															<td>
 																<select class="form-control"
@@ -3756,13 +3757,30 @@
 												<dxi-column dataField="facilityId" caption="facilityId"
 													[visible]="false">
 												</dxi-column>
-												<dxi-column dataField="Modality" caption="TYPE" [allowEditing]="false">
+												<dxi-column dataField="Modality" caption="Modality"
+													[allowEditing]="false">
 												</dxi-column>
-												<dxi-column dataField="LeaseRatePerHour" caption="Lease Rate/ hr">
+												<dxi-column dataField="ResourceName" caption="Resource Name"
+													[allowEditing]="false">
+												</dxi-column>
+												<dxi-column dataField="LeaseRatePerHour" cellTemplate="LeaseRatePerHour"
+													caption="Lease Rate/ hr">
 												</dxi-column>
 												<dxi-column dataField="ContrastCostPerUnit"
-													caption="Contrast Cost per Unit">
+													cellTemplate="ContrastCostPerUnit" caption="Contrast Cost per Unit">
 												</dxi-column>
+												<div *dxTemplate="let data of 'LeaseRatePerHour'">
+													<p *ngIf="data.data.LeaseRatePerHour">
+														${{data.data.LeaseRatePerHour | number:'0.2-2'}}</p>
+													<p *ngIf="!data.data.LeaseRatePerHour"></p>
+
+												</div>
+												<div *dxTemplate="let data of 'ContrastCostPerUnit'">
+													<p *ngIf="data.data.ContrastCostPerUnit">
+														${{data.data.ContrastCostPerUnit | number:'0.2-2'}}</p>
+													<p *ngIf="!data.data.ContrastCostPerUnit"></p>
+
+												</div>
 											</dx-data-grid>
 										</div>
 									</div>
@@ -3793,40 +3811,45 @@
 															<dxo-paging [enabled]="false"></dxo-paging>
 															<dxi-column dataField="LeaseId" caption="Lease #">
 															</dxi-column>
-															<dxi-column cellTemplate ="dateCreatedOnTemplate" caption="Lease Created">
+															<dxi-column cellTemplate="dateCreatedOnTemplate"
+																caption="Lease Created">
 															</dxi-column>
-															<dxi-column cellTemplate="dateExecutedOnTemplate" caption="Lease Executed">
+															<dxi-column cellTemplate="dateExecutedOnTemplate"
+																caption="Lease Executed">
 															</dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
+															<dxi-column dataField="ResourceName"
+																caption="Resource Name">
+															</dxi-column>
 															<dxi-column dataField="TotalLeaseHours" caption="MRI Hours">
 															</dxi-column>
-															<dxi-column dataField="LeaseRatePerHour"
+															<dxi-column dataField="ResourceRatePerHour"
 																cellTemplate="MriRateTemplate" caption="MRI Rate">
 															</dxi-column>
-															<dxi-column dataField="totalHour"
+															<dxi-column dataField="TotalAmount"
 																cellTemplate="TotalHourTemplate" caption="Total">
 															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfMRILinkTemplate">
 															</dxi-column>
 															<div *dxTemplate="let data of 'MriRateTemplate'">
-																<p *ngIf="data.data.LeaseRatePerHour">
-																	${{data.data.LeaseRatePerHour| number:'0.2-2'}}</p>
-																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+																<p *ngIf="data.data.ResourceRatePerHour">
+																	${{data.data.ResourceRatePerHour| number:'0.2-2'}}
+																</p>
+																<p *ngIf="!data.data.ResourceRatePerHour"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'TotalHourTemplate'">
-																<p *ngIf="data.data.totalHour">
-																	${{data.data.totalHour | number:'0.2-2'}}</p>
+																<p *ngIf="data.data.TotalAmount">
+																	${{data.data.TotalAmount | number:'0.2-2'}}</p>
 																<p *ngIf="!data.data.totalHour"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
-																data-toggle="modal"
-																	data-target="#viewFile_Docx"
+																	data-toggle="modal" data-target="#viewFile_Docx"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
@@ -3835,13 +3858,15 @@
 
 															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
 																<p>
-																	{{data.data.CreatedOn| date:dateTimeFormatCustom.Date}}
+																	{{data.data.CreatedOn|
+																	date:dateTimeFormatCustom.Date}}
 																</p>
-															</div>															
+															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
 																<p>
-																	{{data.data.FacilitySignedOn|date: dateTimeFormatCustom.Date}}
-																</p>													
+																	{{data.data.FacilitySignedOn|date:
+																	dateTimeFormatCustom.Date}}
+																</p>
 															</div>
 														</dx-data-grid>
 													</div>
@@ -3865,30 +3890,41 @@
 															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
 															<dxi-column dataField="LeaseId" caption="Lease #">
 															</dxi-column>
+															<dxi-column cellTemplate="dateCreatedOnTemplate"
+																caption="Lease Created">
+															</dxi-column>
+															<dxi-column cellTemplate="dateExecutedOnTemplate"
+																caption="Lease Executed">
+															</dxi-column>
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
+															<dxi-column dataField="ResourceName"
+																caption="Resource Name">
+															</dxi-column>
+
 															<dxi-column dataField="TotalLeaseHours" caption="CT Hours">
 															</dxi-column>
-															<dxi-column dataField="LeaseRatePerHour" caption="CT Rate"
-																cellTemplate="CTRateTemplate">
+															<dxi-column dataField="ResourceRatePerHour"
+																caption="CT Rate" cellTemplate="CTRateTemplate">
 															</dxi-column>
-															<dxi-column dataField="totalHour" caption="Total"
+															<dxi-column dataField="TotalAmount" caption="Total"
 																cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfCTLinkTemplate">
 															</dxi-column>
 															<div *dxTemplate="let data of 'CTRateTemplate'">
-																<p *ngIf="data.data.LeaseRatePerHour">
-																	${{data.data.LeaseRatePerHour | number:'0.2-2'}}</p>
-																<p *ngIf="!data.data.LeaseRatePerHour"></p>
+																<p *ngIf="data.data.ResourceRatePerHour">
+																	${{data.data.ResourceRatePerHour | number:'0.2-2'}}
+																</p>
+																<p *ngIf="!data.data.ResourceRatePerHour"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
-																<p *ngIf="data.data.totalHour">
-																	${{data.data.totalHour | number:'0.2-2'}}</p>
-																<p *ngIf="!data.data.totalHour"></p>
+																<p *ngIf="data.data.TotalAmount">
+																	${{data.data.TotalAmount | number:'0.2-2'}}</p>
+																<p *ngIf="!data.data.TotalAmount"></p>
 
 															</div>
 															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
@@ -3896,7 +3932,18 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
-
+															</div>
+															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
+																<p>
+																	{{data.data.CreatedOn|
+																	date:dateTimeFormatCustom.Date}}
+																</p>
+															</div>
+															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
+																<p>
+																	{{data.data.FacilitySignedOn|date:
+																	dateTimeFormatCustom.Date}}
+																</p>
 															</div>
 														</dx-data-grid>
 													</div>
@@ -3915,12 +3962,13 @@
 										</div>
 									</div>
 
-								
+
 
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
-										<div class="table-responsive" id="DivContainerCreditandDebit112" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+										<div class="table-responsive" id="DivContainerCreditandDebit112"
+											[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 											<dx-data-grid id="gridContainerCreditandDebit" [allowColumnResizing]="true"
 												[columnAutoWidth]="true" [allowColumnReordering]="false"
 												[dataSource]="CreditDebitList" [showBorders]="true">
@@ -3991,7 +4039,7 @@
 												<div class="tab-pane" id="LeasePaymentsUnPaid"
 													[ngClass]="defaultPopupTab === 'LeasePayments' || defaultPopupTab === 'LeasePaymentsUnPaid' ? 'active show' : 'fade'">
 													<button type="button" class="btn btn-theme"
-													[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
+														[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'"
 														[disabled]="btnActive==0?true:false"
 														(click)="UnpaidButtonClick($event)"
 														[ngStyle]="{'background-color':(btnActive==0)? '#bfbfbf' : '#3b8beb'}">Pay
@@ -3999,7 +4047,8 @@
 													<!------------------ Unpaid lease Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Leases</div>
-														<div class="table-responsive" id="DivContainerCreditandDebit" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+														<div class="table-responsive" id="DivContainerCreditandDebit"
+															[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -4020,19 +4069,35 @@
 																	cellTemplate="monthTemplate" caption="MONTH">
 																</dxi-column>
 
-																<dxi-column dataField="MRI" caption="MRI HOURS">
+																<dxi-column dataField="ModalityType" caption="Modality">
 																</dxi-column>
-																<dxi-column dataField="CT" caption="CT HOURS">
+																<dxi-column dataField="ResourceName"
+																	caption="Resource Name">
+																</dxi-column>
+																<dxi-column dataField="TotalLeasedHours"
+																	caption="Total Hours">
+																</dxi-column>
+																<dxi-column dataField="ResourceRatePerHour"
+																	cellTemplate="templateResourceRatePerHour"
+																	caption="Rate Per Hour">
 																</dxi-column>
 																<dxi-column dataField="TotalAmount"
 																	cellTemplate="leaseTotalTemplate"
-																	caption="LEASE TOTAL">
+																	caption="TOTAL Amount">
 																</dxi-column>
 
 																<div *dxTemplate="let data of 'leaseTotalTemplate'">
 																	<p *ngIf="data.data.TotalAmount">
 																		${{data.data.TotalAmount | number:'0.2-2'}}</p>
 																	<p *ngIf="!data.data.TotalAmount"></p>
+
+																</div>
+																<div
+																	*dxTemplate="let data of 'templateResourceRatePerHour'">
+																	<p *ngIf="data.data.ResourceRatePerHour">
+																		${{data.data.ResourceRatePerHour |
+																		number:'0.2-2'}}</p>
+																	<p *ngIf="!data.data.ResourceRatePerHour"></p>
 
 																</div>
 																<div *dxTemplate="let data of 'monthTemplate'">
@@ -4058,7 +4123,8 @@
 													<!------------------ Unpaid Credits Grid Starts------------------>
 													<div>
 														<div class="theme-label-title">Credits</div>
-														<div class="table-responsive" id="DivContainerCreditandDebit11" [ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
+														<div class="table-responsive" id="DivContainerCreditandDebit11"
+															[ngClass]="disableCheckbox == false ? 'disabledClass' : 'enableClass'">
 															<dx-data-grid id="gridContainerCreditandDebit"
 																[allowColumnResizing]="true" [columnAutoWidth]="true"
 																[allowColumnReordering]="false"
@@ -4077,22 +4143,22 @@
 																</dxi-column>
 																<dxi-column dataField="CreditId" caption="CREDIT #">
 																</dxi-column>
-																<dxi-column dataField="CREDIT REASON"
+																<dxi-column dataField="ReasonText"
 																	caption="CREDIT REASON"></dxi-column>
 																<dxi-column dataField="Credit time"
 																	caption="CREDIT TIME">
 																</dxi-column>
 																<dxi-column dataField="ModalityType" caption="MODALITY">
 																</dxi-column>
-																<dxi-column dataField="Credit Amount"
+																<dxi-column dataField="CreditAmount"
 																	caption="CREDIT AMOUNT"
 																	cellTemplate="creditTotalTemplate"></dxi-column>
 
 																<div *dxTemplate="let data of 'creditTotalTemplate'">
-																	<p *ngIf="data.data['Credit Amount']">
-																		${{data.data['Credit Amount'] | number:'0.2-2'}}
+																	<p *ngIf="data.data.CreditAmount">
+																		${{data.data.CreditAmount | number:'0.2-2'}}
 																	</p>
-																	<p *ngIf="!data.data['Credit Amount']"></p>
+																	<p *ngIf="!data.data.CreditAmount"></p>
 
 																</div>
 
@@ -4113,7 +4179,8 @@
 													[ngClass]="defaultPopupTab === 'LeasePaymentsPaid' ? 'active show' : 'fade'">
 													<div>
 														<div class="table-responsive">
-															<dx-data-grid #dxDataGrid id="gridContainerBlockLeasePaymentList"
+															<dx-data-grid #dxDataGrid
+																id="gridContainerBlockLeasePaymentList"
 																[dataSource]="blockLeasePaymentList"
 																[showBorders]="true"
 																(onRowClick)="getLeasePaymentMappingByFacilityId($event)"
@@ -4130,7 +4197,7 @@
 																<dxi-column dataField="PaymentTXN"
 																	caption="PAYMENT TXN">
 																</dxi-column>
-																<dxi-column dataField="DateCreated"
+																<dxi-column dataField="DateCreated" cellTemplate="DateCreatedTemplate"
 																	caption="DATE CREATED">
 																</dxi-column>
 																<dxi-column dataField="paidMonth"
@@ -4138,7 +4205,7 @@
 																</dxi-column>
 																<dxi-column dataField="CheckNo" caption="CHECK #">
 																</dxi-column>
-																<dxi-column dataField="CheckDate" caption="CHECK DATE"
+																<dxi-column dataField="CheckDate" caption="CHECK DATE" cellTemplate="CheckDateTemplate"
 																	[width]="200"> </dxi-column>
 																<dxi-column dataField="CheckAmount"
 																	caption="CHECK AMOUNT" dataType="number"
@@ -4152,6 +4219,18 @@
 																				class="fa fa-file-pdf-o PDFIcon"></i></a>
 																	</div>
 																</dxi-column>
+																<div *dxTemplate="let data of 'CheckDateTemplate'">
+																	<p>
+																		{{data.data.CheckDate|
+																		date:dateTimeFormatCustom.Date}}
+																	</p>
+																</div>
+																<div *dxTemplate="let data of 'DateCreatedTemplate'">
+																	<p>
+																		{{data.data.DateCreated|
+																		date:dateTimeFormatCustom.Date}}
+																	</p>
+																</div>
 																<dxo-master-detail [enabled]="true"
 																	template="productDetail"></dxo-master-detail>
 																<div *dxTemplate="let detail of 'productDetail'">
@@ -4168,10 +4247,13 @@
 																		</dxi-column>
 																		<dxi-column dataField="Month" caption="Month">
 																		</dxi-column>
-																		<dxi-column dataField="MRIHours"
-																			caption="MRI Hours"></dxi-column>
-																		<dxi-column dataField="CtHours"
-																			caption="CT Hours">
+																		<dxi-column dataField="Modality"
+																			caption="Modality"></dxi-column>
+																		<dxi-column dataField="ResourceName"
+																			caption="Resource Name">
+																		</dxi-column>
+																		<dxi-column dataField="TotalHours"
+																			caption="Total Hours">
 																		</dxi-column>
 																		<dxi-column dataField="LeaseTotal"
 																			caption="Lease Total" dataType="number"
@@ -4197,7 +4279,20 @@
 																		<dxi-column dataField="ModalityType"
 																			caption="Modality"></dxi-column>
 																		<dxi-column dataField="CreditAmount"
+																			cellTemplate="creditTotalTemplate"
 																			caption="Credit Amount"></dxi-column>
+
+																		<div
+																			*dxTemplate="let data of 'creditTotalTemplate'">
+																			<p *ngIf="data.data.CreditAmount">
+																				${{data.data.CreditAmount |
+																				number:'0.2-2'}}
+																			</p>
+																			<p *ngIf="!data.data.CreditAmount"></p>
+
+																		</div>
+
+
 																		<dxo-summary>
 																			<dxi-total-item column="CreditAmount"
 																				summaryType="sum" displayFormat="{0}"
@@ -4263,21 +4358,20 @@
 	</div>
 </div>
 
-<div class="modal fade modal-theme in test" id="viewFile_Docx" data-backdrop="static"  [ngStyle]="{'display':displayStyle}"
-data-keyboard="false" tabindex="-1" role="dialog"
-aria-labelledby="exampleModalLabel" aria-modal="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-	<div class="modal-content">
-		<div class="modal-header">
-			<h5 class="modal-title">Agreement</h5>
-			<div class="close-dismiss" data-dismiss="modal"></div>
-		</div>
-		<div class="modal-body" *ngIf="fileData">
-			<iframe width="100%" height="100%" frameBorder="0"
-				[src]="fileData"></iframe>
+<div class="modal fade modal-theme in test" id="viewFile_Docx" data-backdrop="static"
+	[ngStyle]="{'display':displayStyle}" data-keyboard="false" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agreement</h5>
+				<div class="close-dismiss" data-dismiss="modal"></div>
+			</div>
+			<div class="modal-body" *ngIf="fileData">
+				<iframe width="100%" height="100%" frameBorder="0" [src]="fileData"></iframe>
+			</div>
 		</div>
 	</div>
-</div>
 </div>
 
 <div class="modal fade modal-theme in modal-small" id="deleteLink" tabindex="-1" role="dialog"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { NotificationService } from 'src/app/services/common/notification.service';
@@ -15,7 +15,7 @@ import { CommonRegex } from 'src/app/constants/commonregex';
   templateUrl: './parent-comp.component.html',
   styleUrls: ['./parent-comp.component.css']
 })
-export class ParentCompComponent implements OnInit {
+export class ParentCompComponent implements OnInit, OnChanges {
   searchText: string;
   userType: number;
   parentFacilityList: any = [];
@@ -122,6 +122,10 @@ export class ParentCompComponent implements OnInit {
     //   forcePasteAsPlainText: true
     // };
   }
+  ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+  }
+  
   onChange($event: any): void {
     //this.log += new Date() + "<br />";
   }
