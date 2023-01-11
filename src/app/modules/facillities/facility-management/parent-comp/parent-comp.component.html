@@ -462,8 +462,8 @@
                                             <div class="checkbox-theme">
                                                 <input class="form-control" formControlName="IsSendLeaseToFacility"
                                                     id="parent-info5" type="checkbox" >
-                                                <label for="parent-info5" class="arrow-label">Send lease agreement to
-                                                    facility</label>
+                                                <label for="parent-info5" class="arrow-label">Send lease agreement to scheduling
+                                                    facility instead of the parent</label>
                                             </div>
                                         </div>
                                     </div>
@@ -478,12 +478,12 @@
                                                     <div *ngIf="(submitted && pcForm.DefaultEmailAddress3P.errors)"
                                                         class="invalid-feedback">
                                                         <div *ngIf="pcForm.DefaultEmailAddress3P.errors?.required ">
-                                                            DEFAULT EMAIL ADDRESS FOR LEASE is required
+                                                            DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
                                                         </div>
                                                         <div *ngIf="pcForm.DefaultEmailAddress3P.errors.pattern">DEFAULT
                                                             EMAIL ADDRESS FOR LEASE
-                                                            must be a valid
-                                                            email address
+                                                            MUST BE A VALID
+                                                            EMAIL ADDRESS
                                                         </div>
                                                     </div>
                                                 </div>
@@ -500,8 +500,8 @@
                                                     <div *ngIf="submitted && pcForm.EmailAddress13P .errors"
                                                         class="invalid-feedback">
                                                         <div *ngIf="pcForm.EmailAddress13P.errors">2ND EMAIL ADDRESS FOR
-                                                            LEASE must be a valid
-                                                            email address
+                                                            LEASE MUST BE A VALID
+                                                            EMAIL ADDRESS
                                                         </div>
                                                     </div>
                                                 </div>
@@ -515,9 +515,8 @@
                                                         class="form-control"
                                                         [ngClass]="{'is-invalid':(submitted && pcForm.EmailAddress23P.errors)}">
                                                     <div *ngIf="submitted && pcForm.EmailAddress23P .errors"
-                                                        class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE must be a
-                                                        valid
-                                                        email address</div>
+                                                        class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE A VALID
+                                                        EMAIL ADDRESS</div>
                                                 </div>
                                             </div>
                                         </div>
