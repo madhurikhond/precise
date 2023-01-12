@@ -76,7 +76,10 @@ ul {
   border: 1px solid red !important;
 }
 
-.dflexbox{width: 100%;}
+.dflexbox{width: 100%;    display: flex;
+  align-items: center;
+  text-align: left;}
+  .dflexbox .tooltiptext {position: absolute;}
   .dflexbox .form-control{margin-left: 3px;
     margin-right: 3px;
     width: 145px;
