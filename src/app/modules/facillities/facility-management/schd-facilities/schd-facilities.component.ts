@@ -154,6 +154,7 @@ export class SchdFacilitiesComponent implements OnInit {
   totalRecordpaid: number = 1;
   selectedleaseArray: any = []; selectedRows: any = [];
   readonly commonRegex = CommonRegex;
+  currentPageUrl: string;
 
   //   config = {
   //     uiColor: '#ffffff',
@@ -216,6 +217,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentPageUrl = window.location.href;
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
         ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
@@ -1184,6 +1186,7 @@ export class SchdFacilitiesComponent implements OnInit {
     };
 
     this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
+      debugger
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
           this.blockLeaseAgreementMRIList = res.response;
@@ -3537,5 +3540,16 @@ export class SchdFacilitiesComponent implements OnInit {
       this.CheckSameCombinationCT('Type2');
       this.CheckSameCombinationCT('Type3');
     }
+  }
+  copyToClipboard(currentPageUrl) {
+debugger
+    navigator.clipboard.writeText(currentPageUrl).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToaster({
+      alertHeader: '',
+      alertMessage: currentPageUrl,
+      alertType: null
+    });
   }
 }
