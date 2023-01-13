@@ -188,13 +188,23 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="TotalLeaseHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div  class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div class="input-group icon-active">
+                            Lease Id : {{displayLeaseIdSchedulerPopUp}} 
+                        </div>
+                        <div *ngIf="TotalLeaseHours"  class="input-group icon-active">
+                            Total Lease Hour(s) :<br> {{TotalLeaseHours}}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="TotalLeaseHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
                             Total Lease Hour(s) :<br> {{TotalLeaseHours}}
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
