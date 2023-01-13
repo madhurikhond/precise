@@ -217,7 +217,9 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl = window.location.href;
+
+    this.currentPageUrl = window.location.href.substr(0, 22);
+
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
         ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
@@ -1186,7 +1188,6 @@ export class SchdFacilitiesComponent implements OnInit {
     };
 
     this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
-      debugger
       if (res.response != null) {
         if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI') {
           this.blockLeaseAgreementMRIList = res.response;
@@ -3542,7 +3543,6 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   copyToClipboard(currentPageUrl) {
-debugger
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
