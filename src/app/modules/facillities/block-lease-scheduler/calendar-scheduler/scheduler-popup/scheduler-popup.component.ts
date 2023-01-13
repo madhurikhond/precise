@@ -73,6 +73,7 @@ export class SchedulerPopupComponent implements OnInit {
   MriPrice: any = [];
   CtPrice: any = [];
   IsFacilityDetailsPopUpOpen: boolean = false;
+  displayLeaseIdSchedulerPopUp : any ;
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -162,9 +163,11 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   getLeaseData() {
-
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
       if (res.response != null) {
+        if (res.response.LeaseDetails != null) {
+          this.displayLeaseIdSchedulerPopUp =  JSON.parse(res.response.LeaseDetails).leaseId
+        }
         if (res.response.CreditDetails != null) {
           this.CreditDetailsList = res.response.CreditDetails;
         }
@@ -382,7 +385,6 @@ export class SchedulerPopupComponent implements OnInit {
       'leaseId': (this.LeaseBlockId) ? this.LeaseBlockId : 0,
     }
     this.blockLeaseSchedulerService.getTotalLeaseAndCreditHoursOnEdit(true, body).subscribe((res) => {
-      debugger
       if (res.response) {
         if (res.response[0].BlockHours)
           this.TotalBlockHours = JSON.parse(res.response[0].BlockHours).LeaseHoursDetail;
@@ -508,7 +510,6 @@ export class SchedulerPopupComponent implements OnInit {
           'resourceId': this.selectedresourceId
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
-          debugger
           if (res.responseCode == 200 && res.response.responseCode != 404) {
             if (res.response) {
               this.showNotificationOnSucess({
