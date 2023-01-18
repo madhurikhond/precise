@@ -86,20 +86,102 @@
                     </div>
                 </div>
                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-                    <ul class="top-left action-menu">
+                    <ul class="top-left action-menu tp-action-menu">
+
+                    
+
+                        <li> <!-- <span type="button" class="dlwt-key" data-toggle="modal" data-target="#dlwt-icon">
+                            <i class="fa fa-key" aria-hidden="true"></i> Key </span>                       -->
+
+
+
+                            <div class="dropdown-cs-new">
+                                <button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span type="button" class="dlwt-key">
+                                        <i class="fa fa-key" aria-hidden="true"></i> Key </span>
+                                </button>
+                                <div class="dropdown-menu keydp-menu" aria-labelledby="dropdownMenuButton">
+                                    <div class="cash-price-list">
+                                        <ul class="md-cs-prise-ul">
+                                            <li>
+                                                <img src="/assets/images/schedule-check.png" />
+                                                <span>Schedule Complete</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/schedule-cross.png" />
+                                                <span>Modality is not offered at facility</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/schedule-cancel.png" />
+                                                <span>Schedule not complete</span>
+                                            </li>
+                                        </ul>
+                                        <ul class="md-cs-prise-ul">
+                                            <li>
+                                                <img src="/assets/images/sign-lease.png" />
+                                                <span>Lease signed</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/sign-pending.png" />
+                                                <span>Pending facility signature</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/paid.png" style="width:11px;" />
+                                                <span>Paid</span>
+                                            </li>
+                                            <!-- <li>
+                                                <img src="/assets/images/sign-parties.png" />
+                                                <span>Lease not signed by both parties</span>
+                                            </li> -->
+                                        </ul>
+                                        <ul class="md-cs-prise-ul">
+                                            <!-- <li>
+                                                <img src="/assets/images/paid.png" style="width:11px;" />
+                                                <span>Paid</span>
+                                            </li> -->
+                                            <li>
+                                                <img src="/assets/images/unpaid.png" style="width:11px;" />
+                                                <span>Unpaid</span>
+                                            </li>
+                            
+                                        </ul>
+                                    </div>
+                                
+                                </div>
+                              </div>
+
+
+                         
+                            
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  
+                                  </div>
+                            
+                            </li>
                         <li class="pull-right">
+                           
+
+                                
+
                             <!-- <a href="javascript:void(0)" title="Settings" class="pe-7s-config"></a> -->
                             <a href="javascript:void(0);" class="pe-7s-config" data-toggle="modal"
                                 data-target="#creditReasonsSettings">
                             </a>
                         </li>
+
+                      
                     </ul>
+
+
+                
+
+
                 </div>
             </div>
         </div>
 
         <div class="cash-price-table table-responsive">
-            <div class="scheduling-facillities-table">
+            <div class="scheduling-facillities-table" style="height: 525px;">
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
@@ -285,51 +367,7 @@
 
         </div>
 
-        <div class="cash-price-list">
-            <ul>
-                <li>
-                    <img src="/assets/images/schedule-check.png" />
-                    <span>Schedule Complete</span>
-                </li>
-                <li>
-                    <img src="/assets/images/schedule-cross.png" />
-                    <span>Modality is not offered at facility</span>
-                </li>
-                <li>
-                    <img src="/assets/images/schedule-cancel.png" />
-                    <span>Schedule not complete</span>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <img src="/assets/images/sign-lease.png" />
-                    <span>Lease signed</span>
-                </li>
-                <li>
-                    <img src="/assets/images/sign-pending.png" />
-                    <span>Pending facility signature</span>
-                </li>
-                <li>
-                    <img src="/assets/images/paid.png" style="width:11px;" />
-                    <span>Paid</span>
-                </li>
-                <!-- <li>
-                    <img src="/assets/images/sign-parties.png" />
-                    <span>Lease not signed by both parties</span>
-                </li> -->
-            </ul>
-            <ul>
-                <!-- <li>
-                    <img src="/assets/images/paid.png" style="width:11px;" />
-                    <span>Paid</span>
-                </li> -->
-                <li>
-                    <img src="/assets/images/unpaid.png" style="width:11px;" />
-                    <span>Unpaid</span>
-                </li>
 
-            </ul>
-        </div>
     </div>
 </div>
 <div class="modal fade modal-theme modal-small" id="all-leases-popup" tabindex="-1" role="dialog"
@@ -410,3 +448,5 @@
 </div>
 <app-calendar-scheduler></app-calendar-scheduler>
 <app-credit-reasons-setting></app-credit-reasons-setting>
+
+
