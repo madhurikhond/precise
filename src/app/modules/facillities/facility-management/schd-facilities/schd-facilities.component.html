@@ -3856,6 +3856,11 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
+																<a href="javascript:void(0)" class="text-success link-btn" *ngIf = 'data.data.IsLeaseExecuted'
+																data-toggle="modal" data-target="#viewFile_Docx"  style="margin-left: 5px"
+																(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
+																<i class="fa fa-file-pdf-o"></i>
+															</a>
 
 															</div>
 
