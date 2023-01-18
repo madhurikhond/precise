@@ -3866,12 +3866,11 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p  *ngIf = 'data.data.FacilitySignedOn'>
-																	{{data.data.FacilitySignedOn|date:
+																<p *ngIf = 'data.data.FacilitySignedOn!==null'>
+																	{{data.data.FacilitySignedOn
+																		|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
-															</div>
-															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
 																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
@@ -3881,8 +3880,6 @@
 																<p  *ngIf = 'data.data.IsPaid == true'>
 																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
-															</div>
-															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
 																<p  *ngIf = 'data.data.IsUnpaid == true'>
 																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
@@ -3930,6 +3927,9 @@
 															<dxi-column dataField="TotalAmount" caption="Total"
 																cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
+															<dxi-column caption="Paid"
+															cellTemplate="paidUnpaidIconShowTemplate">
+															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfCTLinkTemplate">
 															</dxi-column>
@@ -3962,6 +3962,24 @@
 																<p *ngIf="data.data.FacilitySignedOn">
 																	{{data.data.FacilitySignedOn|date:
 																	dateTimeFormatCustom.Date}}
+																</p>
+																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
+																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
+																</p>
+															</div>
+															<!-- <div *dxTemplate="let data of 'dateExecutedOnTemplate'">
+																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
+																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
+																</p>
+															</div> -->
+															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
+																<p  *ngIf = 'data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
+																</p>
+																<p  *ngIf = 'data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
 															</div>
 														</dx-data-grid>
