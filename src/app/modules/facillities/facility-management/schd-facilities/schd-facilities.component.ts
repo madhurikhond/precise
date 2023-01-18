@@ -199,8 +199,8 @@ export class SchdFacilitiesComponent implements OnInit {
           this.getFacilityDetail(res.facilityId);
           this.defaultPopupTab = res.type;
         }
-        if(res.facilityId && res.clickOnIcon == 1){
-          this.getLeaseAgreementsByFacilityId(res.facilityId  )
+        if (res.facilityId && res.clickOnIcon == 1) {
+          this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
       }
     });
@@ -1356,7 +1356,9 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getLeasePaymentMappingByFacilityId(paymentMapping: any) {
-    paymentMapping.component.collapseAll(-1);
+    if (paymentMapping.component) {
+      paymentMapping.component.collapseAll(-1);
+    }
     if (paymentMapping.isExpanded) {
       let PaymentId = '';
       if (paymentMapping.data === undefined) {

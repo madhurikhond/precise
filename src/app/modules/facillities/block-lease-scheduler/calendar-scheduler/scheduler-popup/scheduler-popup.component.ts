@@ -40,6 +40,7 @@ export class SchedulerPopupComponent implements OnInit {
   LeaseBlockId: number = 0;
   CreditId: number = 0;
   LeaseDetails: any[] = [];
+  IsLeaseIdExists :any ;
   modalityResourcesList: any[] = [];
   schedulingDetailsList: any[] = [];
   CreditDetailsList: any[] = [];
@@ -166,12 +167,13 @@ export class SchedulerPopupComponent implements OnInit {
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
       if (res.response != null) {
         if (res.response.LeaseDetails != null) {
+          this.IsLeaseIdExists = JSON.parse(res.response.LeaseDetails).leaseId ? true : false ;
           this.displayLeaseIdSchedulerPopUp =  JSON.parse(res.response.LeaseDetails).leaseId
         }
         if (res.response.CreditDetails != null) {
           this.CreditDetailsList = res.response.CreditDetails;
         }
-
+       
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
 
         if (this.LeaseDetails != null) {

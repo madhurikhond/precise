@@ -3866,12 +3866,11 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p  *ngIf = 'data.data.FacilitySignedOn !== null'>
-																	{{data.data.FacilitySignedOn|date:
+																<p *ngIf = 'data.data.FacilitySignedOn!==null'>
+																	{{data.data.FacilitySignedOn
+																		|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
-															</div>
-															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
 																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
@@ -3881,8 +3880,6 @@
 																<p  *ngIf = 'data.data.IsPaid == true'>
 																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
-															</div>
-															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
 																<p  *ngIf = 'data.data.IsUnpaid == true'>
 																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
@@ -3930,6 +3927,9 @@
 															<dxi-column dataField="TotalAmount" caption="Total"
 																cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
+															<dxi-column caption="Paid"
+															cellTemplate="paidUnpaidIconShowTemplate">
+															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfCTLinkTemplate">
 															</dxi-column>
@@ -3959,9 +3959,27 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p>
+																<p *ngIf="data.data.FacilitySignedOn">
 																	{{data.data.FacilitySignedOn|date:
 																	dateTimeFormatCustom.Date}}
+																</p>
+																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
+																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
+																</p>
+															</div>
+															<!-- <div *dxTemplate="let data of 'dateExecutedOnTemplate'">
+																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
+																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
+																</p>
+															</div> -->
+															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
+																<p  *ngIf = 'data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
+																</p>
+																<p  *ngIf = 'data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
 																</p>
 															</div>
 														</dx-data-grid>
@@ -4226,9 +4244,9 @@
 																</dxi-column>
 																<dxi-column dataField="CheckDate" caption="CHECK DATE" cellTemplate="CheckDateTemplate"
 																	[width]="200"> </dxi-column>
-																<dxi-column dataField="CheckAmount"
-																	caption="CHECK AMOUNT" dataType="number"
-																	format="currency"></dxi-column>
+																<dxi-column dataField="CheckAmount" cellTemplate="creditTotalTemplate"
+																	caption="CHECK AMOUNT"  
+																	 ></dxi-column>
 																<dxi-column dataField="FileDetail "
 																	caption="VIEW PDF PAYMENT DETAILS"
 																	cellTemplate="cellTemplate">
@@ -4238,6 +4256,12 @@
 																				class="fa fa-file-pdf-o PDFIcon"></i></a>
 																	</div>
 																</dxi-column>
+																<div *dxTemplate="let data of 'creditTotalTemplate'">
+																	<p *ngIf="data.data.CheckAmount">
+																		${{data.data.CheckAmount | number:'0.2-2'}}
+																	</p> 
+
+																</div>
 																<div *dxTemplate="let data of 'CheckDateTemplate'">
 																	<p>
 																		{{data.data.CheckDate|
