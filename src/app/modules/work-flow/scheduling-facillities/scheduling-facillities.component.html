@@ -93,13 +93,13 @@
             <div class="form-group">
                <div class="theme-label">Work Zip</div>
                <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="workZipModel" (keyup.enter)="applyFilter()">
+                  <input type="text" class="form-control" (ngModelChange)="nameChanged($event,'WorkZip')" [(ngModel)]="workZipModel" (keyup.enter)="applyFilter()">
                </div>
             </div>
             <div class="form-group">
                <div class="theme-label">Home Zip</div>
                <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="homeZipModel" (keyup.enter)="applyFilter()">
+                  <input type="text" class="form-control"  (ngModelChange)="nameChanged($event,'HomeZip')"  [(ngModel)]="homeZipModel" (keyup.enter)="applyFilter()">
                </div>
             </div>
             <div class="form-group">

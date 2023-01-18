@@ -1032,4 +1032,21 @@ getAllcolumns() {
     { value: 'Work Score', Text: 'Work Score' },
   ];
 }
+
+nameChanged(arg: any, type: any) {
+ if(type=='WorkZip' && !this.homeZipModel && arg )
+ {
+  this.ddlCurrentSelectedColumnText='Work Score'
+  this.ddlCurrentSelectedColumnValue='Work Score'
+ }
+ else if(type=='HomeZip' && arg ){
+  this.ddlCurrentSelectedColumnText='Home Score'
+  this.ddlCurrentSelectedColumnValue='Home Score'
+ }
+ else if(this.workZipModel){
+  this.ddlCurrentSelectedColumnText='Work Score'
+  this.ddlCurrentSelectedColumnValue='Work Score'
+ }
+}
+
 }
