@@ -3856,6 +3856,11 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
+																<a href="javascript:void(0)" class="text-success link-btn" *ngIf = 'data.data.IsLeaseExecuted'
+																data-toggle="modal" data-target="#viewFile_Docx"  style="margin-left: 5px"
+																(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
+																<i class="fa fa-file-pdf-o"></i>
+															</a>
 
 															</div>
 
@@ -3877,12 +3882,12 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
-																<p  *ngIf = 'data.data.IsPaid == true'>
-																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
-																</p>
-																<p  *ngIf = 'data.data.IsUnpaid == true'>
-																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
-																</p>
+																<i  *ngIf = 'data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																</i>
+																<i  *ngIf = 'data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																</i>
 															</div>
 														</dx-data-grid>
 													</div>
@@ -3975,12 +3980,12 @@
 																</p>
 															</div> -->
 															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
-																<p  *ngIf = 'data.data.IsPaid == true'>
-																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 11px;">
-																</p>
-																<p  *ngIf = 'data.data.IsUnpaid == true'>
-																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 11px;">
-																</p>
+																<i  *ngIf = 'data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																</i>
+																<i  *ngIf = 'data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																</i>
 															</div>
 														</dx-data-grid>
 													</div>
@@ -4095,7 +4100,7 @@
 																	[showCheckBoxesMode]="checkBoxesMode"
 																	mode="multiple">
 																</dxo-selection>
-																<dxo-sorting mode="multiple"></dxo-sorting>
+																<dxo-sorting mode="none"></dxo-sorting>
 																<dxo-paging [enabled]="false"></dxo-paging>
 																<dxo-load-panel [enabled]="true"></dxo-load-panel>
 																<dxo-grouping #expand [autoExpandAll]="true">
