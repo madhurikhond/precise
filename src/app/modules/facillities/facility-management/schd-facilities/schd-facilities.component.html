@@ -3866,7 +3866,7 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p  *ngIf = 'data.data.FacilitySignedOn !== null'>
+																<p  *ngIf = 'data.data.FacilitySignedOn'>
 																	{{data.data.FacilitySignedOn|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
@@ -3959,7 +3959,7 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p>
+																<p *ngIf="data.data.FacilitySignedOn">
 																	{{data.data.FacilitySignedOn|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
@@ -4226,9 +4226,9 @@
 																</dxi-column>
 																<dxi-column dataField="CheckDate" caption="CHECK DATE" cellTemplate="CheckDateTemplate"
 																	[width]="200"> </dxi-column>
-																<dxi-column dataField="CheckAmount"
-																	caption="CHECK AMOUNT" dataType="number"
-																	format="currency"></dxi-column>
+																<dxi-column dataField="CheckAmount" cellTemplate="creditTotalTemplate"
+																	caption="CHECK AMOUNT"  
+																	 ></dxi-column>
 																<dxi-column dataField="FileDetail "
 																	caption="VIEW PDF PAYMENT DETAILS"
 																	cellTemplate="cellTemplate">
@@ -4238,6 +4238,12 @@
 																				class="fa fa-file-pdf-o PDFIcon"></i></a>
 																	</div>
 																</dxi-column>
+																<div *dxTemplate="let data of 'creditTotalTemplate'">
+																	<p *ngIf="data.data.CheckAmount">
+																		${{data.data.CheckAmount | number:'0.2-2'}}
+																	</p> 
+
+																</div>
 																<div *dxTemplate="let data of 'CheckDateTemplate'">
 																	<p>
 																		{{data.data.CheckDate|
