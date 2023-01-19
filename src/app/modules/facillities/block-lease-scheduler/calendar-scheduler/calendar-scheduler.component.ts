@@ -213,7 +213,7 @@ export class CalendarSchedulerComponent implements OnInit {
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
-            //event.end_date = new Date(event.end_date - 1);
+            event.end_date = new Date(event.end_date - 1);
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = false;
