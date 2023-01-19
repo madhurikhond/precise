@@ -3751,7 +3751,8 @@
 										<div class="table-responsive">
 											<dx-data-grid id="gridContainerBlockLeasePricing"
 												[dataSource]="blockLeasePricingList"
-												(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
+												(onRowUpdated)="onRowUpdated($event)" [showBorders]="true"
+												(onEditorPreparing)="onEditorPreparing($event)">
 												<dxo-editing mode="cell" [allowUpdating]="true">
 												</dxo-editing>
 												<dxi-column dataField="facilityId" caption="facilityId"
