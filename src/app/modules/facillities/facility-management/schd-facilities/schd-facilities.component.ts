@@ -155,6 +155,8 @@ export class SchdFacilitiesComponent implements OnInit {
   selectedleaseArray: any = []; selectedRows: any = [];
   readonly commonRegex = CommonRegex;
   currentPageUrl: string;
+  CTpageSize :number = 20;
+  CTPageNumber  : number =1 ;
 
   //   config = {
   //     uiColor: '#ffffff',
@@ -202,6 +204,8 @@ export class SchdFacilitiesComponent implements OnInit {
         if (res.facilityId && res.clickOnIcon == 1) {
           this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
+        this.MRIPageNumber =1 
+        this.CTPageNumber =1
       }
     });
     facilityService.sendDataToschdFacilities.subscribe((res) => {
@@ -1180,11 +1184,21 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
   }
+  onEditorPreparing(e) {  
+    if (e.dataField === "ContrastCostPerUnit" || e.dataField === "LeaseRatePerHour") {  
+      e.editorOptions.onKeyPress = function(args) {  
+        var event = args.event;  
+        if (!/[0-9]/.test(String.fromCharCode(event.keyCode)))  
+          event.preventDefault();  
+      }  
+    }  
+  }
   getLeaseAgreementsByFacilityId(facilityId: number) {
     this.blockLeaseAgreementMRIList = [];
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
-        ? 'MRI' : 'CT', PageNumber: this.MRIPageNumber, PageSize: this.MRIpageSize
+        ? 'MRI' : 'CT', PageNumber:  this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' ? this.MRIPageNumber :this.CTPageNumber,
+         PageSize:this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'  ?this.MRIpageSize : this.CTpageSize
     };
 
     this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
@@ -1197,14 +1211,19 @@ export class SchdFacilitiesComponent implements OnInit {
         else {
           this.blockLeaseAgreementCTList = res.response;
           this.totalrecordsFull_CT = res.response[0].TotalRecords;
-          this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(0, this.MRIpageSize);
+          this.fullblockLeaseAgreementCTList = this.blockLeaseAgreementCTList.slice(0, this.CTpageSize);
         }
 
       }
     });
   }
   onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
-    this.MRIPageNumber = pageNumber;
+    if(type == 'MRI'){
+      this.MRIPageNumber = pageNumber;
+    }
+    if(type == 'CT'){
+      this.CTPageNumber = pageNumber;
+    }
 
     this.getLeaseAgreementsByFacilityId(this.facilityId);
     // if (type == 'MRI') {
@@ -2975,15 +2994,23 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
-    if (
+   if (
       this.defaultPopupTab == 'LeaseAgreements' ||
-      this.defaultPopupTab == 'LeaseAgreement_MRI' ||
-      this.defaultPopupTab == 'LeaseAgreement_CT'
+      this.defaultPopupTab == 'LeaseAgreement_MRI' 
     ) {
       this.MRIPageNumber = 1;
       this.MRIpageSize = 20;
       this.getLeaseAgreementsByFacilityId(this.facilityId);
+    } 
+    if (
+      this.defaultPopupTab == 'LeaseAgreements' ||
+      this.defaultPopupTab == 'LeaseAgreement_CT' 
+    ) {
+      this.CTPageNumber = 1;
+      this.CTpageSize = 20;
+      this.getLeaseAgreementsByFacilityId(this.facilityId);
     }
+
     if (
       this.defaultPopupTab == 'BlockLeaseRate' ||
       this.defaultPopupTab == 'Leases'
