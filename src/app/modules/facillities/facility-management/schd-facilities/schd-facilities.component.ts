@@ -1184,6 +1184,15 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
   }
+  onEditorPreparing(e) {  
+    if (e.dataField === "ContrastCostPerUnit" || e.dataField === "LeaseRatePerHour") {  
+      e.editorOptions.onKeyPress = function(args) {  
+        var event = args.event;  
+        if (!/[0-9]/.test(String.fromCharCode(event.keyCode)))  
+          event.preventDefault();  
+      }  
+    }  
+  }
   getLeaseAgreementsByFacilityId(facilityId: number) {
     this.blockLeaseAgreementMRIList = [];
     let body: any = {
