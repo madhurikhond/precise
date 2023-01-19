@@ -3987,7 +3987,7 @@
 													<div class="pagination-theme">
 														<div class="pagination-theme">
 															<div
-																*ngFor="let item of fullblockLeaseAgreementCTList | paginate: { id: 'pagination_CT' , itemsPerPage: MRIpageSize, currentPage: MRIPageNumber, totalItems:totalrecordsFull_CT}">
+																*ngFor="let item of fullblockLeaseAgreementCTList | paginate: { id: 'pagination_CT' , itemsPerPage: CTpageSize, currentPage: CTPageNumber, totalItems:totalrecordsFull_CT}">
 															</div>
 															<pagination-controls id="pagination_CT"
 																(pageChange)="onPageNumberChangedLeaseAgreements($event,'CT')">
