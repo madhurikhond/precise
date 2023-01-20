@@ -202,6 +202,8 @@ export class SchdFacilitiesComponent implements OnInit {
           this.defaultPopupTab = res.type;
         }
         if (res.facilityId && res.clickOnIcon == 1) {
+          this.pageNumberOfUnpaidLeases = 1 ;
+          this.pageNumberOfPaid =1 ;
           this.MRIPageNumber =1 
           this.CTPageNumber =1
           this.getLeaseAgreementsByFacilityId(res.facilityId)
@@ -222,7 +224,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl = window.location.href.replace("facilities/facility-management/schd-facilities","")+"facilities/3p-block-lease-scheduler"
+    this.currentPageUrl =  window.location.href.split('m/')[0]+'m/facilities/3p-block-lease-scheduler';
 
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
