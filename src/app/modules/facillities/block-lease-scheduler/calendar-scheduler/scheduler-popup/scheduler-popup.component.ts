@@ -40,7 +40,7 @@ export class SchedulerPopupComponent implements OnInit {
   LeaseBlockId: number = 0;
   CreditId: number = 0;
   LeaseDetails: any[] = [];
-  IsLeaseIdExists :any ;
+  IsLeaseIdExists: any;
   modalityResourcesList: any[] = [];
   schedulingDetailsList: any[] = [];
   CreditDetailsList: any[] = [];
@@ -71,10 +71,8 @@ export class SchedulerPopupComponent implements OnInit {
   dateTimeValidationMsg: string; LeaseId: string = ''; BlockOffDaysSubmitted: boolean = false;
   readonly dateTimeFormatCustom = DateTimeFormatCustom; isValidAlreadyBlockedOffLease: boolean = false;
   blockLeasePricingList: any = [];
-  MriPrice: any = [];
-  CtPrice: any = [];
   IsFacilityDetailsPopUpOpen: boolean = false;
-  displayLeaseIdSchedulerPopUp : any ;
+  displayLeaseIdSchedulerPopUp: any;
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -144,7 +142,7 @@ export class SchedulerPopupComponent implements OnInit {
         end_time: [this.event['end_date'], Validators.required],
       });
     }
-    if (this.mode == 'month') {      
+    if (this.mode == 'month') {
       if (!this.event['LeaseBlockId']) {
         this.leaseBlockOffForm.patchValue({
           start_time: null,
@@ -167,13 +165,13 @@ export class SchedulerPopupComponent implements OnInit {
     this.blockLeaseSchedulerService.getBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
       if (res.response != null) {
         if (res.response.LeaseDetails != null) {
-          this.IsLeaseIdExists = JSON.parse(res.response.LeaseDetails).leaseId ? true : false ;
-          this.displayLeaseIdSchedulerPopUp =  JSON.parse(res.response.LeaseDetails).leaseId
+          this.IsLeaseIdExists = JSON.parse(res.response.LeaseDetails).leaseId ? true : false;
+          this.displayLeaseIdSchedulerPopUp = JSON.parse(res.response.LeaseDetails).leaseId
         }
         if (res.response.CreditDetails != null) {
           this.CreditDetailsList = res.response.CreditDetails;
         }
-       
+
         this.LeaseDetails = JSON.parse(res.response.LeaseDetails);
 
         if (this.LeaseDetails != null) {
@@ -216,27 +214,11 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeasePricingList = [];
         let data = [{ FacilityID: this.FacilityID, Operation: 5 }];
-        this.facilityService.getBlockLeasePricing(true, data).subscribe((res) => {
-          if (res.response != null) {
-            this.MriPrice = [];
-            this.CtPrice = [];
-            this.blockLeasePricingList = res.response;
-            this.addMriAndCtPrice(this.blockLeasePricingList);
-          }
-        });
-
       }
     }, (err: any) => {
       this.errorNotification(err);
     });
-
   }
-
-  addMriAndCtPrice(data: any) {
-    this.CtPrice = data.find(x => x.Modality == 'CT');
-    this.MriPrice = data.find(x => x.Modality == 'MRI');
-  }
-
 
   setValidatorForleaseForm() {
     if (this.isLeaseSigned == true) {
@@ -264,7 +246,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
     this.blockLeaseSchedulerService.addUpdateBlockLeaseCreditReason(true, body).subscribe((res) => {
       if (res.response != null) {
-        this.creditReasonList = res.response.filter(a=>a.IsActive==true);
+        this.creditReasonList = res.response.filter(a => a.IsActive == true);
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -434,22 +416,22 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
-    if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
-      this.notificationService.showNotification({
-        alertHeader: '',
-        alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
-        alertType: null
-      });
-      return;
-    }
-    if (this.selectedModality.toUpperCase() == 'MRI' && (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null)) {
-      this.notificationService.showNotification({
-        alertHeader: '',
-        alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease',
-        alertType: null
-      });
-      return;
-    }
+    // if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
+    //   this.notificationService.showNotification({
+    //     alertHeader: '',
+    //     alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
+    //     alertType: null
+    //   });
+    //   return;
+    // }
+    // if (this.selectedModality.toUpperCase() == 'MRI' && (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null)) {
+    //   this.notificationService.showNotification({
+    //     alertHeader: '',
+    //     alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease',
+    //     alertType: null
+    //   });
+    //   return;
+    // }
 
     if (!this.isBlockOffTime) {
       if (this.AlreadyBlockedLeaseList.length > 0) {
@@ -513,18 +495,28 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200 && res.response.responseCode != 404) {
-            if (res.response) {
-              this.showNotificationOnSucess({
-                message: res.response.message,
-                responseCode: res.responseCode
+
+            if (res.response.responseCode == 400) {
+              this.notificationService.showNotification({
+                alertHeader: '',
+                alertMessage: res.response.message,
+                alertType: null
               });
-
-
             }
             else {
-              this.showNotificationOnSucess(res);
+
+              if (res.response) {
+                this.showNotificationOnSucess({
+                  message: res.response.message,
+                  responseCode: res.responseCode
+                });
+
+              }
+              else {
+                this.showNotificationOnSucess(res);
+              }
+              this.modal.dismiss(ModalResult.SAVE);
             }
-            this.modal.dismiss(ModalResult.SAVE);
           }
           else if (res.response.responseCode == 404) {
             this.errorNotification(res.response);
@@ -598,8 +590,8 @@ export class SchedulerPopupComponent implements OnInit {
     }, 500);
 
   }
-  handleBlockOffDaysChange(e: any, from: string) {   
-    this.AlreadyBlockedLeaseList = []; 
+  handleBlockOffDaysChange(e: any, from: string) {
+    this.AlreadyBlockedLeaseList = [];
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
     var end_date = new Date(this.editBlockOffFormControls.end_date.value);
     if (this.editBlockOffFormControls.end_date.value != null) {
