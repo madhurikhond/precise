@@ -222,7 +222,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl = window.location.href.replace("facilities/facility-management/schd-facilities","")+"facilities/3p-block-lease-scheduler"
+    this.currentPageUrl = window.location.href.replace("facilities/facility-management/schd-facilities","")
 
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
