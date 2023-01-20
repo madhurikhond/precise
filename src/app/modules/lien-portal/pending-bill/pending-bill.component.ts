@@ -110,6 +110,10 @@ export class PendingBillComponent implements OnInit {
   }
 
   getListingData() {
+
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+
     this.lienPortalService
       .PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingToBill)
       .subscribe(

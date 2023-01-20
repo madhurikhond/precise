@@ -73,6 +73,9 @@ export class PendingSignatureComponent {
   }
 
   private getListingData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];

@@ -62,6 +62,8 @@ export class AssignUnpaidComponent implements OnInit {
 
 
   getListingData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
     this.dataSource = [];
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARUnpaid).subscribe((result) => {
       if (result.status == LienPortalResponseStatus.Success) {

@@ -71,6 +71,9 @@ export class FundingCoPaidComponent {
   }
 
   private getFundingCoPaidList() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetFundingCompanyPaidList).subscribe(res => {
       if (res.status == LienPortalResponseStatus.Success) {
         this.totalRecord = 0;

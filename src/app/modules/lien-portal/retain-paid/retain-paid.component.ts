@@ -63,6 +63,10 @@ export class RetainPaidComponent implements OnInit {
   }
 
   GetRetainedArPaidList() {
+
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.dataSource = [];
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetRetainedArPaidList).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {

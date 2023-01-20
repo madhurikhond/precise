@@ -57,6 +57,9 @@ export class FundingCoUnpaidComponent {
   }
 
   private getListingData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetFundingCompanyUnpaidList).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];

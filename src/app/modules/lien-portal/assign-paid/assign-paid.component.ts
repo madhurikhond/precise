@@ -63,6 +63,9 @@ export class AssignPaidComponent implements OnInit {
   }
 
   getAssigndPaidData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARPaid).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
         this.dataSource = [];
