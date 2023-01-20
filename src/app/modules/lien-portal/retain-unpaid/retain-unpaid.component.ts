@@ -111,6 +111,8 @@ export class RetainUnpaidComponent implements OnInit {
   }
 
   getRetainUnPaidList() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
     this.dataSource = [];
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetRetainedUnPaid).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
