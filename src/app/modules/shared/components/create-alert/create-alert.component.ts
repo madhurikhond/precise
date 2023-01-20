@@ -7,6 +7,7 @@ import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { forkJoin } from 'rxjs';
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 declare const $: any;
 
 @Component({
@@ -565,7 +566,7 @@ export class CreateAlertComponent implements OnInit {
     } this.modalValue = 'modal'
     this.CreateAlertService.createAlert(this.contactInfoForm.value, true).subscribe((res) => {
       var data: any = res;
-      if (data.response != null) {
+      if (data.responseCode === 200) {
         this.alertList = data.response.alertList;
         this.reasonFilter = data.response.reasonList;
         this.notificationService.showNotification({
@@ -577,11 +578,18 @@ export class CreateAlertComponent implements OnInit {
         if (this.alertButtonClick) {
           this.commonService.loadCreateAlertRecords('true');
         }
+      }else{
+        this.notificationService.showNotification({
+          alertHeader: 'Error',
+          alertMessage: res.message,
+          alertType: ResponseStatusCode.InternalError
+        });
       }
     },
-      (err: any) => {
-
-      });
+    (err: any) => {
+      
+    
+    });
   }
   getSendInfo() {
 
