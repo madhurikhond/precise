@@ -1,8 +1,11 @@
 <div class="inner-tab-content">
-
+    <div class="clsPlusMinusButton" *ngIf="this.totalRecord>0">
+        <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+</a>
+        <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">-</a>
+    </div>
     <div class="tab-pane reatinedpaid-section" id="RetainedARPaid">
         <div class="table-responsive">
-            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="retainedARpaid"
+            <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="retainedARpaid"
                 [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true" [showColumnHeaders]="false">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
@@ -12,7 +15,7 @@
                 <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
 
                 <div *dxTemplate="let data of 'CheckNumberTemplate'">
-                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="modal-lower-case">
+                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount" class="clsChecknumberBox modal-lower-case">
                         <span class="mr-2">Check No: {{data.data.checkNumber}}</span>
                          <span class="mr-2">Check Date: {{data.data.checkDate}}</span>
                          <span class="mr-2">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
@@ -25,8 +28,22 @@
                         [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
                         <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
-                        <dxi-column dataField="batchName" caption="Batchname"> </dxi-column>
-                        <dxo-master-detail [enabled]="true" template="batchDetail"></dxo-master-detail>
+                        <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
+                        <dxi-column cellTemplate="BatchTemplate">
+                          <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                          <span>{{data.data.radiologistName}}</span>
+                          <span>{{data.data.transactionNumber}}</span>
+                          <span class="studyCount">
+                            {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                            <ng-template #oneStudy>
+                               <span>Study</span>
+                            </ng-template>
+                          </span>
+                          <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                         </div>
+                        </dxi-column>
+                        <dxo-master-detail [enabled]="true" [autoExpandAll]="expandAll"
+                            [template]="'batchDetail'"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
                             <dx-data-grid [dataSource]="detail.data.retainedArPaidList" class="innerList" [columnAutoWidth]="true"
                                 [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">

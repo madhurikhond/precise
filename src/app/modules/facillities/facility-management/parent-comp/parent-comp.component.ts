@@ -193,7 +193,7 @@ export class ParentCompComponent implements OnInit {
       Zip: ['', Validators.required],
       Website: [''],
       IsActive: [''],
-      IsSendLeaseToFacility:[''],
+      IsSendLeaseToFacility: [''],
       OwnerName: [''],
       OwnerEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       OwnerPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
@@ -214,6 +214,28 @@ export class ParentCompComponent implements OnInit {
       EmailAddress13P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       EmailAddress23P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]]
     });
+
+    this.parentCompanyDetailForm.get('IsSendLeaseToFacility').valueChanges
+      .subscribe(isSendLeaseToFacility => {
+
+        const DefaultEmailAddress3P = this.parentCompanyDetailForm.get('DefaultEmailAddress3P');
+        const EmailAddress13P = this.parentCompanyDetailForm.get('EmailAddress13P');
+        const EmailAddress23P = this.parentCompanyDetailForm.get('EmailAddress23P');
+
+        if (isSendLeaseToFacility) {
+          DefaultEmailAddress3P.setValue(null);
+          EmailAddress13P.setValue(null);
+          EmailAddress23P.setValue(null);
+          DefaultEmailAddress3P.setValidators(null);
+          EmailAddress13P.setValidators(null);
+          EmailAddress13P.setValidators(null);
+        } else {
+          DefaultEmailAddress3P.setValidators([Validators.required, Validators.pattern(this.commonRegex.EmailRegex)])
+          EmailAddress13P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
+          EmailAddress23P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
+        }
+        this.parentCompanyDetailForm.get('DefaultEmailAddress3P').updateValueAndValidity();
+      });
   }
   createModalityServiceTabForm() {
     this.modalityServicesForm = this.fb.group({
@@ -336,7 +358,7 @@ export class ParentCompComponent implements OnInit {
       Zip: res.response.Zip,
       Website: res.response.Website,
       IsActive: res.response.IsActive,
-      IsSendLeaseToFacility:res.response.IsSendLeaseToFacility,
+      IsSendLeaseToFacility: res.response.IsSendLeaseToFacility,
       OwnerName: res.response.OwnerName,
       OwnerEmail: res.response.OwnerEmail,
       OwnerPhone: res.response.OwnerPhone,
@@ -509,7 +531,7 @@ export class ParentCompComponent implements OnInit {
       'zip': this.pcForm.Zip.value,
       'website': this.pcForm.Website.value,
       'isActive': this.pcForm.IsActive.value,
-      'IsSendLeaseToFacility':this.pcForm.IsSendLeaseToFacility.value,
+      'IsSendLeaseToFacility': this.pcForm.IsSendLeaseToFacility.value,
       'ownerName': this.pcForm.OwnerName.value,
       'ownerEmail': this.pcForm.OwnerEmail.value,
       'ownerPhone': this.pcForm.OwnerPhone.value != null ? this.pcForm.OwnerPhone.value.replace(/\D+/g, '') : '',
@@ -526,9 +548,9 @@ export class ParentCompComponent implements OnInit {
       'billingEmail': this.pcForm.BillingEmail.value,
       'billingPhone': this.pcForm.BillingPhone.value != null ? this.pcForm.BillingPhone.value.replace(/\D+/g, '') : '',
       'billingFax': this.pcForm.BillingFax.value != null ? this.pcForm.BillingFax.value.replace(/\D+/g, '') : '',
-      'defaultEmailAddress3P':this.pcForm.DefaultEmailAddress3P.value,
-      'emailAddress13P':this.pcForm.EmailAddress13P.value ,
-      'emailAddress23P':this.pcForm.EmailAddress23P.value,
+      'defaultEmailAddress3P': this.pcForm.DefaultEmailAddress3P.value,
+      'emailAddress13P': this.pcForm.EmailAddress13P.value,
+      'emailAddress23P': this.pcForm.EmailAddress23P.value,
 
       //// Modality Service
       'arthrogramService': this.modalityServicesFormControl.ArthrogramService.value,
@@ -632,7 +654,7 @@ export class ParentCompComponent implements OnInit {
       'zip': this.pcForm.Zip.value,
       'website': this.pcForm.Website.value,
       'isActive': this.pcForm.IsActive.value,
-      'IsSendLeaseToFacility':this.pcForm.IsSendLeaseToFacility.value,
+      'IsSendLeaseToFacility': this.pcForm.IsSendLeaseToFacility.value,
       'ownerName': this.pcForm.OwnerName.value,
       'ownerEmail': this.pcForm.OwnerEmail.value,
       'ownerPhone': this.pcForm.OwnerPhone.value != null ? this.pcForm.OwnerPhone.value.replace(/\D+/g, '') : '',
@@ -649,9 +671,9 @@ export class ParentCompComponent implements OnInit {
       'billingEmail': this.pcForm.BillingEmail.value,
       'billingPhone': this.pcForm.BillingPhone.value != null ? this.pcForm.BillingPhone.value.replace(/\D+/g, '') : '',
       'billingFax': this.pcForm.BillingFax.value != null ? this.pcForm.BillingFax.value.replace(/\D+/g, '') : '',
-      'defaultEmailAddress3P':this.pcForm.DefaultEmailAddress3P.value,
-      'emailAddress13P':this.pcForm.EmailAddress13P.value ,
-      'emailAddress23P':this.pcForm.EmailAddress23P.value,
+      'defaultEmailAddress3P': this.pcForm.DefaultEmailAddress3P.value,
+      'emailAddress13P': this.pcForm.EmailAddress13P.value,
+      'emailAddress23P': this.pcForm.EmailAddress23P.value,
 
       //// Modality Service
       'arthrogramService': this.modalityServicesFormControl.ArthrogramService.value,
@@ -770,6 +792,7 @@ export class ParentCompComponent implements OnInit {
     let instance = DataGrid.getInstance(element) as DataGrid;
     this.commonMethodService.onExporting(instance, 'ParentFacility')
   }
+
   get pcForm() { return this.parentCompanyDetailForm.controls; }
   get modalityServicesFormControl() { return this.modalityServicesForm.controls };
   get modalityMriFormControl() { return this.modalityMriForm.controls };

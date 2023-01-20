@@ -110,6 +110,10 @@ export class PendingBillComponent implements OnInit {
   }
 
   getListingData() {
+
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+
     this.lienPortalService
       .PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetPendingToBill)
       .subscribe(
@@ -311,7 +315,7 @@ export class PendingBillComponent implements OnInit {
 
       if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
-      this.drawComplete();
+      this.assignARform.controls.radiologistSign.setValue(this.lienPortalService.defaultSignature);
     }
   }
 
@@ -346,12 +350,13 @@ export class PendingBillComponent implements OnInit {
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var dataAssigned = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == OriginalLienOwnerPermission.OriginalLienOwner);
+      if (permission.length > 0){
+        var dataAssigned = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndAssignAR);
         if(dataAssigned.length == 1)
           this.permissionForAssignAR = dataAssigned[0];
-        var dataRetained = permission.Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
+        var dataRetained = permission[0].Children.filter(val => val.PageTitle == OriginalLienOwnerPermission.BillStudiesAndRetainAR);
         if(dataRetained.length == 1)
           this.permissionForRetainAR = dataRetained[0];
       }

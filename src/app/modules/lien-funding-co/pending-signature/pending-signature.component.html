@@ -1,16 +1,21 @@
 <div class="inner-tab-content">
     <div class="tableDataSection">
         <div class="row">
-            <div class="col-md-6 pt-2">
+            <div class="col-md-8 pt-2">
                 <label *ngIf="dataSource.length > 0">
                     <input type="checkbox" [(ngModel)]="isSelectedAll" (change)="onSelectAll($event.target.checked)">
                     Select All
                 </label>
+
+                <div class="clsPlusMinusButton" *ngIf="this.totalRecord>0">
+                    <a href="javascript:;" (click)="onExpand()" class="btn btn-common">+</a>
+                    <a href="javascript:;" (click)="onCollapse()" class="btn btn-common">-</a>
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p class="headerBtnSection">
                     <a class="btn btn-common btn-assignAR btn-blue"
-                        [ngClass]="selectedData.length > 0 ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
+                        [ngClass]="selectedData.length > 0 && permission && (permission.IsAdd | lowercase) == 'true' ? 'btn-primary':'btn-grey disabled'" data-toggle="modal"
                         data-target="#SignatureModal" (click)="clearModalPopup()">
                         Sign & Execute Selected Assigned AR </a>
                 </p>
@@ -18,7 +23,7 @@
         </div>
         <div class="tab-pane pendingsignature-section" id="PendingSignature">
             <div class="table-responsive">
-                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid" [dataSource]="dataSource"
+                <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus" [dataSource]="dataSource"
                     [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
                     (onSelectionChanged)="onSelectCheckbox($event)" [showColumnHeaders]="false">
                     <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
@@ -26,7 +31,20 @@
                     <dxo-sorting mode="none"></dxo-sorting>
                     <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
                     </dxo-selection>
-                    <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
+                    <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname">
+                    </dxi-column> -->
+                    <dxi-column cellTemplate="BatchTemplate">
+                      <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                      <span>{{data.data.radiologistName}}</span>
+                      <span>{{data.data.transactionNumber}}</span>
+                      <span >
+                        {{data.data.studyCounts }} <span *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                        <ng-template #oneStudy>
+                           <span>Study</span>
+                        </ng-template>
+                      </span>
+                      <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                     </div>
                     </dxi-column>
 
                     <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
@@ -39,22 +57,27 @@
                             [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
                             [allowColumnResizing]="true">
                             <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
-                            <dxo-sorting mode="none"></dxo-sorting>
+                            <dxo-scrolling [useNative]="true"></dxo-scrolling>
 
-                            <dxi-column [width]="100" [allowFiltering]="false" [allowSorting]="false"
+                            <dxi-column  [width]="4+'%'" [allowFiltering]="false" [allowSorting]="false"
                                 cellTemplate="readingIconTemplate">
                             </dxi-column>
-                            <dxi-column dataField="rad" caption="RAD"> </dxi-column>
-                            <dxi-column dataField="dateRead" caption="Date Read"></dxi-column>
-                            <dxi-column dataField="arAssignedDate" caption="Date AR Assigned"></dxi-column>
-                            <dxi-column dataField="patientId" caption="Patient ID"></dxi-column>
-                            <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
-                            <dxi-column dataField="firstName" caption="First Name"></dxi-column>
-                            <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
-                            <dxi-column dataField="study" caption="Study"></dxi-column>
-                            <dxi-column dataField="accession" caption="Accession"></dxi-column>
-                            <dxi-column dataField="cptGroup" caption="CPT Group"></dxi-column>
-                            <dxi-column dataField="arPrice" caption="AR Price"></dxi-column>
+                            <dxi-column dataField="rad" [width]="10+'%'" caption="RADIOLOGIST"> </dxi-column>
+                            <dxi-column dataField="dateRead" [width]="7+'%'" caption="Date Read"></dxi-column>
+                            <dxi-column dataField="arAssignedDate" [width]="7+'%'" caption="Date AR Assigned"></dxi-column>
+                            <dxi-column dataField="patientId" [width]="8+'%'" caption="Patient ID"></dxi-column>
+                            <dxi-column dataField="lastName" [width]="10+'%'" caption="Last Name"></dxi-column>
+                            <dxi-column dataField="firstName" [width]="10+'%'" caption="First Name"></dxi-column>
+                            <dxi-column dataField="dateOfBirth" [width]="7+'%'" caption="DOB"></dxi-column>
+                            <dxi-column dataField="study" [width]="10+'%'" caption="Study"></dxi-column>
+                            <dxi-column dataField="accession" [width]="7+'%'" caption="Accession"></dxi-column>
+                            <dxi-column dataField="cptGroup" [width]="10+'%'" caption="CPT Group"></dxi-column>
+                            <dxi-column cellTemplate="ARPriceTemplate" [width]="10+'%'" caption="AR Price">
+                              <div *dxTemplate="let data of 'ARPriceTemplate'">
+                                {{data.data.arPrice | currency:'USD':'symbol-narrow'}}
+                              </div>
+                            </dxi-column>
+                            <!-- <dxi-column dataField="arPrice" caption="AR Price"></dxi-column> -->
                             <div *dxTemplate="let data of 'readingIconTemplate'">
                                 <a href="javascript:void(0)" class="single-action fa fa-file-text-o" data-toggle="modal"
                                     data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
@@ -84,13 +107,13 @@
         role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR TO THE FOLLOWING FUNDING COMPANY</h5>
+                <h5 class="modal-title">SIGN & EXECUTE SELECTED ASSIGNED AR</h5>
                 <div class="close-dismiss" (click)="clearSignatureForm()" data-dismiss="modal" #modal_close></div>
             </div>
             <div class="modal-body">
                 <div class="modal-content">
 
-                    <p class="innerTitle">Sign & execute the AR assignment agreement </p>
+                    <p class="innerTitle unsetTranTitle">Sign & Execute the AR Assignment Agreement </p>
                     <div class="ar-assignment-form">
                         <div class="row">
                             <div class="col-6">

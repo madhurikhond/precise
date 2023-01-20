@@ -11,15 +11,22 @@ export enum LienPortalStatusMessage {
   COMMON_ERROR = 'Request Failed',
   FUNDING_COMPANY_ADDED = 'Funding Company Added Successfully.',
   FUNDING_COMPANY_UPDATED = 'Funding Company Updated Successfully.',
-  STUDIES_ASSIGNED_TO_FUNDING_CO = 'Studies assigned to Funding Co. Successfully.',
+  STUDIES_ASSIGNED_TO_FUNDING_CO = 'Studies Assigned to Funding Co. Successfully.',
   STUDIES_RETAINED_SUCCESS = 'Studies Retained Successfully.',
   SIGNATURE_UPDATED_SUCCESS = 'Signature Updated Successfully.',
   PAYMENT_RECEIVE_SUCCESS = 'Payment Updated Successfully.',
-  SETTING_SAVED_SUCCESS = 'Setting Saved successfully.',
+  SETTING_SAVED_SUCCESS = 'Setting Saved Successfully.',
   FUNDING_COMPANY_REQUIRED = 'Please Select a Funding Company.',
   FUNDING_COMPANY_PAID_RECORD = 'Please Select a Paid Record.',
   FILLOUT_REQUIRED_REQUIRED_FIELDS = 'Please fill out all required fields.',
-  PAYMENT_DELETED_SUCCESS = 'Payment Removed Successfully.'
+  PAYMENT_DELETED_SUCCESS = 'Payment Removed Successfully.',
+
+  PAYMENT_RECEIVE_STUDIES_SUCCESS = 'Payment received Successfully for Studies.',
+  SIGN_AR_SUCCESS = 'Sign assigned AR Successfully.',
+  ASSIGNED_AR_EXECUTED = 'Assigned AR Executed',
+  PAY_BATCHES_SUCCESS = 'Selected AR has been marked as paid.',
+  PAYMENT_INFO_UPDATE_SUCCESS = 'Payment info updated Successfully.',
+
 }
 
 export enum LienPortalURLName{
@@ -46,7 +53,10 @@ export enum LienPortalPageTitleOption {
   RETAINED_AND_UNPAID = "Retained & Unpaid",
   RETAINED_AND_PAID = "Retained & Paid",
   SETTINGS = "Settings",
-  FUNDING_COMPANY = "Funding Company"
+  FUNDING_COMPANY = "Funding Company",
+  PENDING_SIGNATURE = "Pending Signature",
+  PAID = "Paid",
+  UNPAID = "Unpaid",
 }
 
 export enum LienPortalTabName {
@@ -109,11 +119,13 @@ export enum LienPortalAPIEndpoint {
 
 
 export enum LienPortalFundingCoPermission {
+  LienFundingCompany = "LIEN FUNDING COMPANY",
   PayForAR = "PAY FOR AR",
   SignForAssignAR = "SIGN FOR ASSIGNED AR"
 }
 
 export enum OriginalLienOwnerPermission {
+  OriginalLienOwner = "ORIGINAL LIEN OWNER",
   BillStudiesAndAssignAR = "BILL STUDIES & ASSIGN AR",
   BillStudiesAndRetainAR = "BILL STUDIES & RETAIN AR",
   MarkPaidForRetainedAR = "MARK PAID FOR RETAINED AR"

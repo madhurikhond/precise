@@ -1,9 +1,51 @@
-.PDFIcon{
+.PDFIcon {
     cursor: pointer;
 }
+
+.btn-grey {
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    height: 25px;
+    border: 1px solid #3b8beb;
+  }
+  
+  
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }
+
 .PDFIcon i.fa {
     color: #3b8beb;
     font-size: 16px;
     font-weight: 600;
 }
 
+.clsBatchBox>span{
+  text-align: right;
+  flex: 25%;
+}
+.clsBatchBox>span:first-child{
+  text-align: left;
+}
+.clsBatchBox>span:last-child{
+  text-align: right;
+}
+.clsBatchBox {
+  display: flex;
+  width: 99%;
+  margin: auto;
+}

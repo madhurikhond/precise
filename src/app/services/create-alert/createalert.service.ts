@@ -43,4 +43,16 @@ providedIn: 'root'
       map((res: ApiResponse) => res)
     );
   }
+
+  sendSlack(slackData: string) {
+    return this._httpService.post(`CreateAlert/SendSlack`, slackData, true,true).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
+
+  patientAttRefData(emailBody: any) {
+    return this._httpService.post(`CreateAlert/patientAttRefData`, emailBody, true,true).pipe(
+      map((res: ApiResponse) => res)
+    );
+  }
 }

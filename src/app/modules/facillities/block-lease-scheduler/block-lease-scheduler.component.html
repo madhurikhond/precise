@@ -86,20 +86,102 @@
                     </div>
                 </div>
                 <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-                    <ul class="top-left action-menu">
+                    <ul class="top-left action-menu tp-action-menu">
+
+                    
+
+                        <li> <!-- <span type="button" class="dlwt-key" data-toggle="modal" data-target="#dlwt-icon">
+                            <i class="fa fa-key" aria-hidden="true"></i> Key </span>                       -->
+
+
+
+                            <div class="dropdown-cs-new">
+                                <button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span type="button" class="dlwt-key">
+                                        <i class="fa fa-key" aria-hidden="true"></i> Key </span>
+                                </button>
+                                <div class="dropdown-menu keydp-menu" aria-labelledby="dropdownMenuButton">
+                                    <div class="cash-price-list">
+                                        <ul class="md-cs-prise-ul">
+                                            <li>
+                                                <img src="/assets/images/schedule-check.png" />
+                                                <span>Schedule Complete</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/schedule-cross.png" />
+                                                <span>Modality is not offered at facility</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/schedule-cancel.png" />
+                                                <span>Schedule not complete</span>
+                                            </li>
+                                        </ul>
+                                        <ul class="md-cs-prise-ul">
+                                            <li>
+                                                <img src="/assets/images/sign-lease.png" />
+                                                <span>Lease signed</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/sign-pending.png" />
+                                                <span>Pending facility signature</span>
+                                            </li>
+                                            <li>
+                                                <img src="/assets/images/paid.png" style="width:11px;" />
+                                                <span>Paid</span>
+                                            </li>
+                                            <!-- <li>
+                                                <img src="/assets/images/sign-parties.png" />
+                                                <span>Lease not signed by both parties</span>
+                                            </li> -->
+                                        </ul>
+                                        <ul class="md-cs-prise-ul">
+                                            <!-- <li>
+                                                <img src="/assets/images/paid.png" style="width:11px;" />
+                                                <span>Paid</span>
+                                            </li> -->
+                                            <li>
+                                                <img src="/assets/images/unpaid.png" style="width:11px;" />
+                                                <span>Unpaid</span>
+                                            </li>
+                            
+                                        </ul>
+                                    </div>
+                                
+                                </div>
+                              </div>
+
+
+                         
+                            
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  
+                                  </div>
+                            
+                            </li>
                         <li class="pull-right">
+                           
+
+                                
+
                             <!-- <a href="javascript:void(0)" title="Settings" class="pe-7s-config"></a> -->
                             <a href="javascript:void(0);" class="pe-7s-config" data-toggle="modal"
                                 data-target="#creditReasonsSettings">
                             </a>
                         </li>
+
+                      
                     </ul>
+
+
+                
+
+
                 </div>
             </div>
         </div>
 
         <div class="cash-price-table table-responsive">
-            <div class="scheduling-facillities-table">
+            <div class="scheduling-facillities-table" style="height: 525px;">
                 <dx-data-grid id="gridContainer" [dataSource]="AllBlockLeaseList" keyExpr="FacilityID"
                     [columnAutoWidth]="true" [showBorders]="true" [allowColumnReordering]="true"
                     [wordWrapEnabled]="true">
@@ -186,81 +268,81 @@
                     </dxi-column>
                     <div *dxTemplate="let data of 'getDataTemplate'">
                         <ul class="datagrid-list">
-                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete == true && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )) && data.column.caption == 'MRI'">
+                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete == true && (getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].MRI > 0 )) && data.column.caption == 'MRI'">
                                 <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                                 <span *ngIf="getColumnByDataField(data)[0].MRI > 0 && data.column.caption == 'MRI'"
                                     class="displayCounter">{{getColumnByDataField(data)[0].MRI}}</span>
 
                             </li>
-                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete== true && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 ))  && data.column.caption == 'CT'">
+                            <li *ngIf="(getColumnByDataField(data)[0].IsScheduledComplete== true && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 ))  && data.column.caption == 'CT'">
                                 <img [src]="getColumnByDataField(data)[0].IsScheduledComplete==true?'assets/images/schedule-check.png':'assets/images/schedule-cancel.png'"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                                
-                                <span *ngIf="(getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'"
+                                <span *ngIf="(getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'"
                                     class="displayCounter">{{getColumnByDataField(data)[0].CT}}</span>
                             </li>
                             <li
                                 *ngIf="getColumnByDataField(data)[0].IsCtService === false && data.column.caption == 'CT'">
-                                <img src="/assets/images/schedule-cross.png" style="width: 18px;" />
+                                <img src="/assets/images/schedule-cross.png" style="width: 17px;" />
                             </li>
                             <li
                                 *ngIf="getColumnByDataField(data)[0].IsMriService === false && data.column.caption == 'MRI'">
-                                <img src="/assets/images/schedule-cross.png" style="width: 18px;" />
+                                <img src="/assets/images/schedule-cross.png" style="width: 17px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].MRI !== null && getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/paid.png"
                                     style="width: 11px;" />
                             </li>
                             <li *ngIf="getColumnByDataField(data)[0].IsPaid  && (  getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0  ) && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/paid.png"
                                     style="width: 11px;" />
                             </li>
                             <!-- <li><span>CT data:</span>{{getColumnByDataField(data)[0].CT}}</li> -->
-                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )   && data.column.caption == 'MRI'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 )   && data.column.caption == 'MRI'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 )  && data.column.caption == 'CT'">
+                            <li *ngIf="getColumnByDataField(data)[0].IsUnpaid && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 )  && data.column.caption == 'CT'">
                                 <img class="paid_unpaid_cursor"
-                                    (click)="getFacilityDetail(data.data.FacilityID,'LeasePaymentsUnPaid')"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeasePaymentsUnPaid')"
                                     data-toggle="modal" data-target="#add-Edit-facility"
                                     src="assets/images/unpaid.png"
                                     style="width: 11px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign  && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 )  && data.column.caption == 'MRI'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign  && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 )  && data.column.caption == 'MRI'">
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign && (getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 )   && data.column.caption == 'CT'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASESIGNED')"
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilitySign && (getColumnByDataField(data)[0].CT !== null && getColumnByDataField(data)[0].CT > 0 )   && data.column.caption == 'CT'">
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                    (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-lease.png" class="paid_unpaid_cursor"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                             </li>
                             
-                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && (getColumnByDataField(data)[0].MRI !== null || getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && (getColumnByDataField(data)[0].MRI !== null &&  getColumnByDataField(data)[0].MRI > 0 ) && data.column.caption == 'MRI'">
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_MRI')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                             </li>
-                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && ( getColumnByDataField(data)[0].CT !== null || getColumnByDataField(data)[0].CT > 0 ) && data.column.caption == 'CT'">
-                                <img data-toggle="modal" data-target="#all-leases-popup"
-                                    (click)="getAllLeasesOfFacilityByStatus(data.data.FacilityID,data,true,'LEASEUNSIGNED')"
+                            <li *ngIf="getColumnByDataField(data)[0].IsFacilityNotSign && ( getColumnByDataField(data)[0].CT !== null &&  getColumnByDataField(data)[0].CT > 0 ) && data.column.caption == 'CT'">
+                                <img data-toggle="modal" data-target="#add-Edit-facility"
+                                (click)="getFacilityDetail(data,data.data.FacilityID,'LeaseAgreement_CT')"
                                     src="assets/images/sign-pending.png" class="paid_unpaid_cursor"
-                                    style="width: 18px;" />
+                                    style="width: 17px;" />
                             </li>
                         </ul>
                     </div>
@@ -285,51 +367,7 @@
 
         </div>
 
-        <div class="cash-price-list">
-            <ul>
-                <li>
-                    <img src="/assets/images/schedule-check.png" />
-                    <span>Schedule Complete</span>
-                </li>
-                <li>
-                    <img src="/assets/images/schedule-cross.png" />
-                    <span>Modality is not offered at facility</span>
-                </li>
-                <li>
-                    <img src="/assets/images/schedule-cancel.png" />
-                    <span>Schedule not complete</span>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <img src="/assets/images/sign-lease.png" />
-                    <span>Lease signed</span>
-                </li>
-                <li>
-                    <img src="/assets/images/sign-pending.png" />
-                    <span>Pending facility signature</span>
-                </li>
-                <li>
-                    <img src="/assets/images/paid.png" style="width:11px;" />
-                    <span>Paid</span>
-                </li>
-                <!-- <li>
-                    <img src="/assets/images/sign-parties.png" />
-                    <span>Lease not signed by both parties</span>
-                </li> -->
-            </ul>
-            <ul>
-                <!-- <li>
-                    <img src="/assets/images/paid.png" style="width:11px;" />
-                    <span>Paid</span>
-                </li> -->
-                <li>
-                    <img src="/assets/images/unpaid.png" style="width:11px;" />
-                    <span>Unpaid</span>
-                </li>
 
-            </ul>
-        </div>
     </div>
 </div>
 <div class="modal fade modal-theme modal-small" id="all-leases-popup" tabindex="-1" role="dialog"
@@ -410,3 +448,5 @@
 </div>
 <app-calendar-scheduler></app-calendar-scheduler>
 <app-credit-reasons-setting></app-credit-reasons-setting>
+
+

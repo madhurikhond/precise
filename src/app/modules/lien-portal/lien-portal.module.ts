@@ -25,10 +25,12 @@ import { HeaderComponent } from './shared/header/header.component';
 import { RAuthGuard } from '../core/guards/rauth.guard';
 import { LienProfileComponent } from './lien-profile/lien-profile.component';
 import { LienChangePasswordComponent } from './lien-change-password/lien-change-password.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { DetailComponent } from './shared/navbar/detail/detail.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent,LienPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent,LienProfileComponent,LienChangePasswordComponent],
+  declarations: [HeaderComponent,NavbarComponent,DetailComponent,LienPortalComponent, PendingBillComponent, AssignUnpaidComponent, AssignPaidComponent, RetainUnpaidComponent, RetainPaidComponent, SettingComponent, AddFundingCompanyComponent,LienProfileComponent,LienChangePasswordComponent],
   imports: [
     CommonModule,
     NgSelectModule,

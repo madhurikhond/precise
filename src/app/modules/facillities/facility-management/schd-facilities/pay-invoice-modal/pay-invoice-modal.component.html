@@ -28,14 +28,20 @@
                         <div class="theme-label">Check Amount</div>
                         <div class="input-group">
                             <input type="text" (change)="transformAmount($event)" [(ngModel)]="formattedInputAmount"
-                                class="form-control number" formControlName="checkAmount"
+                                class="form-control number" formControlName="checkAmount" appCurrencyInput
                                 [ngClass]="{ 'is-invalid': payInvoiceFormControls.checkAmount.errors }">
                         </div>                        
                         <div *ngIf="payInvoiceFormControls.checkAmount.errors" class="invalid-feedback">
-                            <div *ngIf="payInvoiceFormControls.checkAmount.errors?.pattern">
-                                check amount must be a valid number.</div>
+                            <div *ngIf="payInvoiceFormControls.checkAmount.errors.min">
+                                the amount should not be negative 
+                            
+                         </div>
+                            <div *ngIf="payInvoiceFormControls.checkAmount.errors.max">
+                               amount should be less than or equal to $9,99,999
+                           
+                        </div>
                             <div *ngIf="payInvoiceFormControls.checkAmount.errors.maxlength && !payInvoiceFormControls.checkAmount.errors?.pattern">
-                                check amount should be maximum 9 characters</div>
+                                check amount should be a vaid number/decimal.</div>
                            
                         </div>
                     </div>

@@ -37,6 +37,7 @@ export class RetainPaidComponent implements OnInit {
   currentFilter: any;
   dataSource: any = [];
   retainedARpaid: any = [];
+  expandAll = false;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
@@ -62,6 +63,10 @@ export class RetainPaidComponent implements OnInit {
   }
 
   GetRetainedArPaidList() {
+
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.dataSource = [];
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetRetainedArPaidList).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
@@ -87,6 +92,15 @@ export class RetainPaidComponent implements OnInit {
       this.pageNumber = pageNumber - 1;
     else
       this.pageNumber = 0;
+  }
+
+  onCollapse() {
+    this.expandAll = false;
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand() {
+    this.expandAll = true;
+    this.dataGrid.instance.expandAll(-1);
   }
 }
 

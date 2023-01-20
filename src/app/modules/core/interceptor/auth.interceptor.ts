@@ -69,6 +69,7 @@ export class AuthInterceptor implements HttpInterceptor {
       else if(url === LienPortalURLName.LIEN_PORTAL || url === LienPortalURLName.LIEN_PORTAL)
       {
         this._storageService.LastPageURL = null;
+        this.makeActiveTAB();
         this.makeActive();
       }
       else{

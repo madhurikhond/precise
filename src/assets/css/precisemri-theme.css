@@ -3670,6 +3670,7 @@ button {
     position: relative;
     padding: 0 10px;
 }
+.sp-top-4{padding-top: 4px;}
 .page-top-action .patient-detail-search .theme-label {
 	float: left;
 	padding: 6px 10px 0px 0px;
@@ -3684,10 +3685,11 @@ button {
 	line-height: 30px;
 }
 .page-top-action .patient-precisemri-search .form-search {
-    width: 118px;
+    width: 153px;
     padding: 0;
+	margin-right: 10px;
 }
-.cs-wt-pt-ser  .form-search {width: 150px!important;}
+.cs-wt-pt-ser  .form-search {width:182px!important;}
 .page-top-action .precisemri-search.page-select select.form-search{min-width: 68px!IMPORTANT;}
 .precisemri-search ng-select.form-search .ng-select-container {
 	height: 30px;
@@ -3713,7 +3715,7 @@ button {
 .precisemri-search ng-select.form-search,
 .page-top-action .precisemri-search select.form-search {
 	padding: 0px 10px 0px 10px;
-	width: 200px;
+	width: 211px;
 	min-width: auto;
 	height: 30px;
 	line-height: 28px;
@@ -6014,6 +6016,9 @@ textarea.form-control {
 	font-weight: 600;
 	color: #000;
 }
+.test tr{
+	background-color: #FF616F !important;
+}
 .modaltask-detail .single-details .blue-btn {
 	background: #3b8beb;
 	display: inline-block;
@@ -6960,6 +6965,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 .custom-patient-row-selection td{
 	background-color: #f7bb9b  !important;
 }
+
 .release-note{
 	display: block;
     clear: both;
@@ -7298,18 +7304,18 @@ ngb-modal-window.modal{
   }
   .displayCounter {
 	font-size: 9px;
-    line-height: 18px;
+    line-height: 17px;
     text-align: center;
     color: #ffffff;
     font-weight: 700;
     position: absolute;
     background: #e74c3b;
     border-radius: 50%;
-    top: -8px;
-    left: 8px;
+    top: -7px;
+    left: 7px;
     padding: 0px 3px;
-    height: 20px;
-    width: 20px;
+    height: 17px;
+    width: 17px;
 }
 .dhx_scale_holder_now{
 	background-color: #fff !important;
@@ -7325,7 +7331,7 @@ ngb-modal-window.modal{
 }
 .scheduling-facillities-table .dx-datagrid-rowsview ul.datagrid-list li{
 	position: relative;
-	padding-right: 10px;
+	padding-right: 9px;
 }
 .cash-price-table.table-responsive{
 	height: auto;
@@ -7333,7 +7339,7 @@ ngb-modal-window.modal{
 }
 .no-spacetextarea .invalid-feedback{padding-left: 15px;}
 .cash-price-table.table-responsive .dx-datagrid-rowsview{
-	max-height: 300px;
+	max-height: 460px;
 }
 #CalendarSchedulerWindow .dhx_cal_event >div{
     word-wrap: break-word;
@@ -7371,7 +7377,9 @@ select {
 .scroll-up .modal-theme{
 	overflow: auto;
 }
-
+.dx-scrollview-content .dx-item.dx-list-item:nth-child(-n + 72)  {
+	display: none !important;
+  }
 .theme-form .form-group signature-pad{overflow-x: hidden  !important;}
 
 /* .cs-action-credit .dx-datagrid-table tbody tr td:nth-child(1){width:40px!important; min-width: 30px!important; 
@@ -7389,7 +7397,23 @@ select {
 	.modal{overflow: auto;}
 
 	.op-cs-txtarea textarea{min-height: 200px;}
+	.op-check-hd input{display: none;}
+	.op-check-hd{margin-top: 5px;}
+	.sp-left-nw{display: block;}
 
+	.op-th-lable{    font-size: 10px;
+		color: #000000;
+		position: absolute;
+		line-height: 14px;
+		margin: 0px;
+		padding: 0px 5px;
+		left: 6px;
+		top: -8px;
+		background: rgb(255 255 255);
+		z-index: 3;
+		border-radius: 4px;
+		height: 14px;}
+		.p-rel{position: relative;}
 
 	.ms-lf-col{padding-left: 30px;}
 	@media (max-width: 990px) {
@@ -7397,3 +7421,45 @@ select {
 		
 	}
 
+	.custom-facility-row-selection td{
+	
+		background-color: #D3D3D3 !important;
+	}
+
+	
+
+	.dlwt-theme {
+		background-color: rgb(0 0 0 / 50%);
+	}
+
+	.dlwt-key{
+		color: #153aa5;			
+		font-weight: 600;
+		margin-top: 1px; font-size: 14px; text-transform: capitalize;}
+
+
+		.dlwt-theme .modal-dialog{    width: 600px;
+			max-width: 600px;}
+
+			.tp-action-menu{display: flex;}
+
+			.dropdown-cs-new:hover > .dropdown-menu {
+				display: block;
+				width: 330px;
+			  }
+			  .dropdown-cs-new button{border: 0px; background:transparent;}
+			  .dropdown-cs-new button:after{display: none!important;}
+			  .keydp-menu{ 
+				right: 0px;transform: initial!important;
+				left: auto; box-shadow: 0px 6px 10px 10px rgb(0 0 0 / 5%);     border: 0px;
+				padding: 10px;}
+
+
+				.dropdown-menu.keydp-menu.show{right: 0px!important;
+					transform: initial!important;
+					left: auto!important;
+					top: 48px!important;
+					width: 330px;}
+			  
+				.dropdown-cs-new .cash-price-list{margin-top:0px;}
+			 

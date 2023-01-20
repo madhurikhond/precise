@@ -9,3 +9,62 @@
 .modal-lower-case {
   text-transform: none !important;
 }
+
+.clsBatchBox {
+  /* text-align: left;
+  width: 25%;
+  display: inline-block;
+  white-space: nowrap; */
+  display: flex;
+  width: 99%;
+  margin: auto;
+}
+
+.clsChecknumberBox {
+  /* text-align: left;
+  width: 35%;
+  display: inline-block;
+  white-space: nowrap; */
+  display: flex;
+  width: 98%;
+  margin: auto;
+}
+
+.clsChecknumberBox>span{
+text-align: left;
+flex: 30%;
+}
+.clsBatchBox>span:first-child{
+text-align: left;
+}
+.clsChecknumberBox>span:last-child{
+text-align: right;
+}
+.clsBatchBox>span{
+text-align: right;
+flex: 25%;
+}
+.clsBatchBox>span:last-child{
+text-align: right;
+}
+
+.clsPlusMinusButton>a {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-family: cursive;
+  font-size: 20px;
+  min-width: auto;
+  line-height: 20px;
+  padding: 0px 10px;
+  background: #3b8beb;
+  border-radius: 5px;
+  color: #fff;
+  height: 25px;
+  border: 1px solid #3b8beb;
+}
+
+
+.clsPlusMinusButton > a > span {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+  margin-left: 5px;
+}

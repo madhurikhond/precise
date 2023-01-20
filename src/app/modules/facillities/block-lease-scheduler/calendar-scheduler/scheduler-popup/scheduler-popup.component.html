@@ -188,13 +188,23 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="TotalLeaseHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div  class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <div  *ngIf="IsLeaseIdExists"  class="input-group icon-active">
+                            Lease Id : {{displayLeaseIdSchedulerPopUp}} 
+                        </div>
+                        <div *ngIf="TotalLeaseHours"  class="input-group icon-active">
+                            Total Lease Hour(s) :<br> {{TotalLeaseHours}}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="TotalLeaseHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
                             Total Lease Hour(s) :<br> {{TotalLeaseHours}}
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
@@ -457,13 +467,13 @@
             </div>
             <div class="modal-body">
                 <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
-                    <span *ngIf="isBlockOffTime">YOU CAN NOT BLOCK SOME OF THE DATES SELECTED IN
-                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
+                    <span *ngIf="isBlockOffTime">YOU CAN NOT BLACK OUT SOME OF THE DATES SELECTED IN
+                        BLACK OUT LEASE DURATION BECAUSE FOLLOWING DATES ARE
                         ALREADY LEASE
-                        BLOCKED :</span>
-                    <span *ngIf="!isBlockOffTime">YOU CAN NOT BLOCK OFF SOME OF THE DATES SELECTED IN
-                        BLOCK LEASE DURATION BECAUSE FOLLWONG DATES ARE
-                        ALREADY BLOCKED OFF :</span>
+                        BLACKED OUT :</span>
+                    <span *ngIf="!isBlockOffTime">YOU CAN NOT BLACK OUT SOME OF THE DATES SELECTED IN
+                        BLACK OUT LEASE DURATION BECAUSE FOLLOWING DATES ARE
+                        ALREADY BLACKED OUT :</span>
                 </p>
                 <ng-template #isDateValid>{{dateTimeValidationMsg}}</ng-template>
                 <table>

@@ -37,6 +37,7 @@ export class AssignPaidComponent implements OnInit {
   currentFilter: any;
   dataSource: any = [];
   AssignARpaid: any = [];
+  expandAll = false;
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService) {
     this.allMode = 'page';
@@ -62,6 +63,9 @@ export class AssignPaidComponent implements OnInit {
   }
 
   getAssigndPaidData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetAssignedARPaid).subscribe((res) => {
       if (res.status == LienPortalResponseStatus.Success) {
         this.dataSource = [];
@@ -90,9 +94,20 @@ export class AssignPaidComponent implements OnInit {
   }
 
   downloadPDF(data) {
-    if(data.fileName)
-      this.lienPortalService.downloadFile(data.fileName,data.fileByte);
+    if (data.fileName)
+      this.lienPortalService.downloadFile(data.fileByte);
   }
+
+
+  onCollapse() {
+    this.expandAll = false;
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand() {
+    this.expandAll = true;
+    this.dataGrid.instance.expandAll(-1);
+  }
+
 
 }
 

@@ -30,14 +30,36 @@
     justify-content: flex-end;
 }
 #ReceivePaymentModal .theme-label {
-    font-size: 13px;
+    font-size: 14px;
     text-transform: capitalize;
     font-weight: 600;
-    min-width: 100px;
+    min-width: 125px;
     line-height: 30px;
 }
+
+
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    height: 25px;
+    border: 1px solid #3b8beb;
+  }
+  
+  
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }
 #ReceivePaymentModal .modal-dialog {
-    max-width: 340px;
+    max-width: 370px;
   }
 
   .signature-custom {
@@ -78,4 +100,24 @@ font-style: normal !important;
 }
 .lower-text-data{
     text-transform: none !important;
+}
+
+.clsBatchBox>span{
+  text-align: right;
+  flex: 25%;
+}
+.clsBatchBox>span:first-child{
+  text-align: left;
+}
+.clsBatchBox>span:last-child{
+  text-align: right;
+}
+.clsBatchBox {
+  display: flex;
+  width: 99%;
+  margin: auto;
+}
+
+.textSize{
+  font-size: 20px;
 }

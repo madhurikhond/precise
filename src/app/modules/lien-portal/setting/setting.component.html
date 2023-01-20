@@ -1,6 +1,10 @@
-<div class="radProtal-section Liensettings">
+<div class="page-area">
+    
     <app-header></app-header>
-    <div class="radportal-body">
+    <app-navbar></app-navbar>
+    <div class="page-working-area lien-funding-co">
+    <div class="main-page-body">
+        <div class="inner-page-body">
         <div class="rad-lien-setting">
             <h3 class="lien-title"> <a routerLink="/lien-portal"><i class="fa fa-arrow-left"></i></a> Radiologist Lien
                 Management</h3>
@@ -108,8 +112,9 @@
                     <div class="tab-pane active" *ngIf="selectedMode=='funding_company'" id="funding-company">
                         <div class="funding-cmp-content">
                             <div class="headerBtn">
-                                <!-- <a class="btn btn-common btn-preciseFunding btn-grey">Add Precise Imaging Funding
-                                    Co.</a> -->
+                                <a class="btn btn-common btn-preciseFunding btn-grey" (click)="openPreciseCompPopup()" data-toggle="modal"
+                                data-target="#AddFundingCmpModal">Add Precise Imaging Funding
+                                    Co.</a>
                                 <a class="btn btn-common btn-newFunding btn-blue textUnSet" (click)="openFundCompPupup()" data-toggle="modal"
                                     data-target="#AddFundingCmpModal">Add new funding company</a>
                             </div>
@@ -161,6 +166,8 @@
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <app-add-funding-company (returnSuccess)="onReturnSuccess($event)" ></app-add-funding-company>

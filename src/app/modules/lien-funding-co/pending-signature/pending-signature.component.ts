@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SignaturePad } from 'angular2-signaturepad';
 import themes from 'devextreme/ui/themes';
-import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalResponse, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
+import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalPageTitleOption, LienPortalResponse, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
@@ -69,9 +69,13 @@ export class PendingSignatureComponent {
       fundingCompanySign: ['', Validators.required],
       baseUrl: window.location.origin
     })
+    this.commonService.setTitle(LienPortalPageTitleOption.PENDING_SIGNATURE);
   }
 
   private getListingData() {
+    this.pageNumber = 0;
+    this.currentPageNumber = 1;
+    
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];
@@ -111,7 +115,7 @@ export class PendingSignatureComponent {
     this.selectedData = $event.selectedRowsData;
     if (this.dataGrid.instance.totalCount() == $event.selectedRowsData.length)
       this.isSelectedAll = true;
-    else 
+    else
       this.isSelectedAll = false;
   }
 
@@ -127,7 +131,7 @@ export class PendingSignatureComponent {
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.SIGNATURE_UPDATED_SUCCESS);
+          this.lienPortalService.successNotification(LienPortalStatusMessage.ASSIGNED_AR_EXECUTED);
           this.getListingData();
           this.modal_close.nativeElement.click();
         }
@@ -145,18 +149,13 @@ export class PendingSignatureComponent {
       if (res.status == LienPortalResponseStatus.Success) {
         if (res.result) {
           var data = res.result;
-          if(this.permission && this.permission.IsAdd === 'true'){
-            this.isDefaultNamesEnable = data.isDefaultNamesEnable;
-            this.isDefaultSignature = data.isDefaultSignature;
-            if (data.defaultSign) {
-              if (data.defaultSign.defaultSign) {
-                this.defaultSignature = data.defaultSign.defaultSign;
-                this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
-              }
+          this.isDefaultNamesEnable = data.isDefaultNamesEnable;
+          this.isDefaultSignature = data.isDefaultSignature;
+          if (data.defaultSign) {
+            if (data.defaultSign.defaultSign) {
+              this.defaultSignature = data.defaultSign.defaultSign;
+              this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
             }
-          }else{
-            this.isDefaultSignature = false;
-            this.isDefaultNamesEnable = false;
           }
         }
       } else
@@ -177,9 +176,7 @@ export class PendingSignatureComponent {
     });
     if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
-      this.signatureForm.patchValue({
-        fundingCompanySign: this.signaturePad.toDataURL(),
-      })
+      this.signatureForm.controls.fundingCompanySign.setValue(this.defaultSignature);
     }
   }
 
@@ -197,17 +194,24 @@ export class PendingSignatureComponent {
 
   downloadPDF(data) {
     if (data.fileName)
-      this.lienPortalService.downloadFile(data.fileName, data.fileByte);
+      this.lienPortalService.downloadFile(data.fileByte);
   }
 
   setPermission() {
     if (this.storageService.permission.length > 0) {
-      var permission :any= this.storageService.permission[0];
-      if (permission.Children){
-        var data = permission.Children.filter(val => val.PageTitle == this.permissionTitle);
+      var permission :any= this.storageService.permission;
+      permission = permission.filter(val => val.PageTitle == LienPortalFundingCoPermission.LienFundingCompany);
+      if(permission.length > 0){
+        var data = permission[0].Children.filter(val => val.PageTitle == this.permissionTitle);
         if(data.length == 1)
           this.permission = data[0];
       }
     }
+  }
+  onCollapse(){
+    this.dataGrid.instance.collapseAll(-1);
+  }
+  onExpand(){
+    this.dataGrid.instance.expandAll(-1);
   }
 }
