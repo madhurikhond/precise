@@ -76,11 +76,18 @@ ul {
   border: 1px solid red !important;
 }
 
-.dflexbox{width: 100%;    display: flex;
+.dflexbox{width: 100%;
+  display: flex;
   align-items: center;
   text-align: left;}
+  .dflexbox input{width: 33%;}
   .dflexbox .tooltiptext {position: absolute;}
   .dflexbox .form-control{margin-left: 3px;
     margin-right: 3px;
     width: 145px;
     display: inline-block;}
+  .emfx{width:calc(100% - 100px);}
+  .input-dflex{width: 33.33%;}
+  .emfx .create-alert-icon-list{width: 100%;}
+  .input-dflex input{width: 94%!important; padding-right: 10px!important; font-size: 14px;}
+  .input-dflex{}
