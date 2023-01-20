@@ -85,6 +85,7 @@ export class CreateAlertComponent implements OnInit {
     this.commonService.createAlertPopUpObservable.subscribe((res) => {
 
       this.alertButtonClick = res;
+      this.close()
       this.hiddenCreateAlertPopUpButton.nativeElement.click();
       this.getDropdown();
 
@@ -303,9 +304,9 @@ export class CreateAlertComponent implements OnInit {
     }
   }
   updateSubjectBody() {
-    var emailSubject: string = this.contactInfoForm.get('emailSubModel').value
-    var emailBody: string = this.contactInfoForm.get('emailBodyModel').value
-    var smsBody : string = this.contactInfoForm.get('SmsTextModel').value
+    var emailSubject: string = this.contactInfoForm.get('emailSubModel').value ? this.contactInfoForm.get('emailSubModel').value :''
+    var emailBody: string = this.contactInfoForm.get('emailBodyModel').value ? this.contactInfoForm.get('emailBodyModel').value : ''
+    var smsBody : string = this.contactInfoForm.get('SmsTextModel').value ? this.contactInfoForm.get('SmsTextModel').value :'';
    // var reasonBody : string = this.contactInfoForm.get('reason').value
     if (this.patientInfoList != 0 && emailSubject) {
       emailSubject = emailSubject.replace('{{PatientID}}', this.patientInfoList.ID)
