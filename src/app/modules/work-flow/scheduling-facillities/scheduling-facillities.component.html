@@ -380,6 +380,37 @@
                   {{item.value}}</option>
             </select>
          </div>
+         <div class="precisemri-search patient-precisemri-search">
+            <div class="form-group p-rel">
+                <div class="theme-label op-th-lable">Order by</div>
+            
+            <ng-select class="form-search" [items]="ddlAllColumns" bindLabel="Text" [clearable]="false"
+                [searchable]="false" (change)="onChangeSelectedColumn($event)"
+                [(ngModel)]="ddlCurrentSelectedColumnText" placeholder="Select column" bindValue="Text">
+                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.Text}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </div>
+
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="form-group p-rel">
+            <div class="theme-label op-th-lable">Sort by</div>
+        
+            <ng-select class="form-search" [items]="ddlSortingOrder" bindLabel="Text" [clearable]="false"
+                [searchable]="false" (change)="onChangeSortingOrder($event)"
+                [(ngModel)]="ddlSelectedSortingOrderText" placeholder="Select column" bindValue="Text">
+                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                        <span class="ng-value-label"> {{item.Text}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
+        </div>
          <div class="table-responsive scheduling-facillities-table">
             <div class="table-responsive page-table">
                <dx-data-grid id="schedulingFacilityGrid" [dataSource]="schedulingFacilityList"
