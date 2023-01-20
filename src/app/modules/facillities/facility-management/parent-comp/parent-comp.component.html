@@ -8,11 +8,12 @@
             </div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="precisemri-search page-select">
-					<div class="theme-label">Page Size</div>
-						<select class="form-search" (change)= "onPageSizeChange($event.target.value)">
-							<option *ngFor = "let item of pageSizeArray" [selected]= "item.IsSelected == true"  value={{item.value}}>{{item.value}}</option>
-						</select>
-					</div>
+                    <div class="theme-label">Page Size</div>
+                    <select class="form-search" (change)="onPageSizeChange($event.target.value)">
+                        <option *ngFor="let item of pageSizeArray" [selected]="item.IsSelected == true"
+                            value={{item.value}}>{{item.value}}</option>
+                    </select>
+                </div>
                 <a href="javascript:void(0)" class="right btn btn-theme" (click)="getAllParentFacility()"><i
                         class="fa fa-repeat"></i> Refresh</a>
             </div>
@@ -31,7 +32,7 @@
             <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
 
             <!-- </dxo-header-filter> -->
-			<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
             <!-- <dxo-search-panel [visible]="true" [width]="300" placeholder="Search..."> -->
             <!-- </dxo-search-panel> -->
             <dxo-paging [pageSize]="15"></dxo-paging>
@@ -74,7 +75,7 @@
             <dxi-column dataField="ultrasoundPriceGlobal" caption="US Global" [(visible)]="isShowColumnWithNoData">
             </dxi-column>
             <dxi-column dataField="ultrasoundPriceTech" caption="US Tech" [(visible)]="isShowColumnWithNoData">
-            </dxi-column>      
+            </dxi-column>
             <dxi-column dataField="boneDensityPriceGlobal" caption="Bone Den. Global"
                 [(visible)]="isShowColumnWithNoData"></dxi-column>
             <dxi-column dataField="boneDensityPriceTech" caption="Bone Den. Tech" [(visible)]="isShowColumnWithNoData">
@@ -122,8 +123,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-theme" id="add-edit-parent-facility" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-modal="true">
+<div class="modal fade modal-theme" id="add-edit-parent-facility" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="static" data-keyboard="false">
         <div class="modal-content">
             <div class="modal-header">
@@ -147,120 +148,115 @@
                             <a class="nav-link" data-toggle="tab" href="#edit-parent-pricing">Pricing</a>
                         </li>
                         <li class="nav-item" *ngIf="isPopUpInEditMode">
-							<a class="nav-link" data-toggle="modal" data-target="#facilityDocManager"
-								(click)="senddocManagerFacility()">Documents</a>
-						</li>
+                            <a class="nav-link" data-toggle="modal" data-target="#facilityDocManager"
+                                (click)="senddocManagerFacility()">Documents</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active show" id="edit-parent-details">
                             <form [formGroup]="parentCompanyDetailForm" class="theme-form">
-                                    <div class="row">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="row">
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Company Name</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="FacilityParentName"
-                                                        class="form-control"
-                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.FacilityParentName.errors) || pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors}">
-                                                    <div *ngIf="(submitted && pcForm.FacilityParentName.errors)  || (pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors)"
-                                                        class="invalid-feedback">
-                                                        <div
-                                                            *ngIf="pcForm.FacilityParentName.errors?.required  || pcForm.FacilityParentName.touched">
-                                                            Parent Facility Name is required</div>
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Company Name</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="FacilityParentName"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (submitted && pcForm.FacilityParentName.errors) || pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors}">
+                                                        <div *ngIf="(submitted && pcForm.FacilityParentName.errors)  || (pcForm.FacilityParentName.touched && pcForm.FacilityParentName.errors)"
+                                                            class="invalid-feedback">
+                                                            <div
+                                                                *ngIf="pcForm.FacilityParentName.errors?.required  || pcForm.FacilityParentName.touched">
+                                                                Parent Facility Name is required</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">DBA</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="DBA" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Address</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="Address" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.Address.errors) || pcForm.Address.touched && pcForm.Address.errors}">
-                                                    <div *ngIf="(submitted && pcForm.Address.errors)  || (pcForm.Address.touched && pcForm.Address.errors)"
-                                                        class="invalid-feedback">
-                                                        <div
-                                                            *ngIf="pcForm.Address.errors?.required  || pcForm.Address.touched">
-                                                            Address is required</div>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">DBA</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="DBA" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">City</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="City" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.City.errors) || pcForm.City.touched && pcForm.City.errors}">
-                                                    <div *ngIf="(submitted && pcForm.City.errors)  || (pcForm.City.touched && pcForm.City.errors)"
-                                                        class="invalid-feedback">
-                                                        <div
-                                                            *ngIf="pcForm.City.errors?.required  || pcForm.City.touched">
-                                                            City is required</div>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Address</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="Address"
+                                                            class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (submitted && pcForm.Address.errors) || pcForm.Address.touched && pcForm.Address.errors}">
+                                                        <div *ngIf="(submitted && pcForm.Address.errors)  || (pcForm.Address.touched && pcForm.Address.errors)"
+                                                            class="invalid-feedback">
+                                                            <div
+                                                                *ngIf="pcForm.Address.errors?.required  || pcForm.Address.touched">
+                                                                Address is required</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">State</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="State" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.State.errors) || pcForm.State.touched && pcForm.State.errors}">
-                                                    <div *ngIf="(submitted && pcForm.State.errors)  || (pcForm.State.touched && pcForm.State.errors)"
-                                                        class="invalid-feedback">
-                                                        <div
-                                                            *ngIf="pcForm.State.errors?.required  || pcForm.State.touched">
-                                                            State is required</div>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">City</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="City" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (submitted && pcForm.City.errors) || pcForm.City.touched && pcForm.City.errors}">
+                                                        <div *ngIf="(submitted && pcForm.City.errors)  || (pcForm.City.touched && pcForm.City.errors)"
+                                                            class="invalid-feedback">
+                                                            <div
+                                                                *ngIf="pcForm.City.errors?.required  || pcForm.City.touched">
+                                                                City is required</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <div class="theme-label">Zip</div>
-                                                <div class="input-group">
-                                                    <input type="text" formControlName="Zip" class="form-control"
-                                                        [ngClass]="{ 'is-invalid': (submitted && pcForm.Zip.errors) || pcForm.Zip.touched && pcForm.Zip.errors}">
-                                                    <div *ngIf="(submitted && pcForm.Zip.errors)  || (pcForm.Zip.touched && pcForm.Zip.errors)"
-                                                        class="invalid-feedback">
-                                                        <div *ngIf="pcForm.Zip.errors?.required  || pcForm.Zip.touched">
-                                                            Zip is required</div>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">State</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="State" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (submitted && pcForm.State.errors) || pcForm.State.touched && pcForm.State.errors}">
+                                                        <div *ngIf="(submitted && pcForm.State.errors)  || (pcForm.State.touched && pcForm.State.errors)"
+                                                            class="invalid-feedback">
+                                                            <div
+                                                                *ngIf="pcForm.State.errors?.required  || pcForm.State.touched">
+                                                                State is required</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="checkbox-theme">
-                                                <input class="form-control" formControlName="IsActive" id="parent-info4"
-                                                    type="checkbox">
-                                                <label for="parent-info4" class="arrow-label">Active</label>
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <div class="theme-label">Zip</div>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="Zip" class="form-control"
+                                                            [ngClass]="{ 'is-invalid': (submitted && pcForm.Zip.errors) || pcForm.Zip.touched && pcForm.Zip.errors}">
+                                                        <div *ngIf="(submitted && pcForm.Zip.errors)  || (pcForm.Zip.touched && pcForm.Zip.errors)"
+                                                            class="invalid-feedback">
+                                                            <div
+                                                                *ngIf="pcForm.Zip.errors?.required  || pcForm.Zip.touched">
+                                                                Zip is required</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                                            <div class="checkbox-theme">
-                                                <input class="form-control" formControlName="IsSendLeaseToFacility"
-                                                    id="parent-info5" type="checkbox">
-                                                <label for="parent-info5" class="arrow-label">Send lease agreement to facility</label>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="checkbox-theme">
+                                                    <input class="form-control" formControlName="IsActive"
+                                                        id="parent-info4" type="checkbox">
+                                                    <label for="parent-info4" class="arrow-label">Active</label>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
 
 
-                                        </div>
                                     </div>
-                               
-								<div class="user-detail">
+                                </div>
+
+                                <div class="user-detail">
                                     <div class="row">
                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
                                             <div class="form-group">
@@ -462,7 +458,16 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="checkbox-theme">
+                                                <input class="form-control" formControlName="IsSendLeaseToFacility"
+                                                    id="parent-info5" type="checkbox" >
+                                                <label for="parent-info5" class="arrow-label">Send lease agreement to scheduling
+                                                    facility instead of the parent</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="!parentCompanyDetailForm.get('IsSendLeaseToFacility').value">
                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
@@ -473,11 +478,12 @@
                                                     <div *ngIf="(submitted && pcForm.DefaultEmailAddress3P.errors)"
                                                         class="invalid-feedback">
                                                         <div *ngIf="pcForm.DefaultEmailAddress3P.errors?.required ">
-                                                            DEFAULT EMAIL ADDRESS FOR LEASE is required
+                                                            DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
                                                         </div>
-                                                        <div *ngIf="pcForm.DefaultEmailAddress3P.errors.pattern">DEFAULT EMAIL ADDRESS FOR LEASE
-                                                            must be a valid
-                                                            email address
+                                                        <div *ngIf="pcForm.DefaultEmailAddress3P.errors.pattern">DEFAULT
+                                                            EMAIL ADDRESS FOR LEASE
+                                                            MUST BE A VALID
+                                                            EMAIL ADDRESS
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,8 +499,9 @@
                                                         [ngClass]="{'is-invalid': (submitted && pcForm.EmailAddress13P.errors)}">
                                                     <div *ngIf="submitted && pcForm.EmailAddress13P .errors"
                                                         class="invalid-feedback">
-                                                        <div *ngIf="pcForm.EmailAddress13P.errors">2ND EMAIL ADDRESS FOR LEASE must be a valid
-                                                            email address
+                                                        <div *ngIf="pcForm.EmailAddress13P.errors">2ND EMAIL ADDRESS FOR
+                                                            LEASE MUST BE A VALID
+                                                            EMAIL ADDRESS
                                                         </div>
                                                     </div>
                                                 </div>
@@ -508,8 +515,8 @@
                                                         class="form-control"
                                                         [ngClass]="{'is-invalid':(submitted && pcForm.EmailAddress23P.errors)}">
                                                     <div *ngIf="submitted && pcForm.EmailAddress23P .errors"
-                                                        class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE must be a valid
-                                                        email address</div>
+                                                        class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE A VALID
+                                                        EMAIL ADDRESS</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -524,10 +531,9 @@
                                 </div>
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <ckeditor #myckeditor class=" ng-untouched ng-pristine ng-invalid"
-												 [(ngModel)]="parentPolicy"
-													[config]="CkeConfig" (paste)="onPaste($event)"
-													(change)="onChange($event)">
-												</ckeditor>
+                                        [(ngModel)]="parentPolicy" [config]="CkeConfig" (paste)="onPaste($event)"
+                                        (change)="onChange($event)">
+                                    </ckeditor>
                                     <!-- <ckeditor [editor]="Editor" [(ngModel)]="parentPolicy" debounce="500"
                                         style="text-transform: none;"></ckeditor> -->
                                 </div>
@@ -636,7 +642,7 @@
                                                             formControlName="DEXAService">
                                                         <label for="DexaServices" class="arrow-label">DEXA</label>
                                                     </div>
-												</div>
+                                                </div>
                                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
                                                     <div class="checkbox-theme">
                                                         <input class="form-contro11" id="CTArthrogramServices"
@@ -1222,7 +1228,8 @@
                                                 <!-- </dxo-filter-row> -->
                                                 <!-- <dxo-header-filter [visible]="showHeaderFilter"> -->
                                                 <!-- </dxo-header-filter> -->
-												<dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                                                
+                                                <dxo-header-filter [visible]="true" [allowSearch]="true">
+                                                </dxo-header-filter>
                                                 <dxo-load-panel [enabled]="true">
                                                 </dxo-load-panel>
 
@@ -1284,8 +1291,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" (click)="getAllParentFacility()" class="btn btn-border-gray pull-right btn-sm"
-                    data-dismiss="modal">Close</a>
+                <a href="javascript:void(0)" (click)="getAllParentFacility()"
+                    class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">Close</a>
                 <a href="javascript:void(0)" *ngIf="isInsertButtonVisible" (click)="addParentFacility()"
                     class="btn btn-theme btn-sm pull-left" [attr.data-dismiss]="modalValue">Insert</a>
                 <a href="javascript:void(0)" *ngIf="isOkAndApplyButtonVisible" (click)="updateParentFacilityById()"
