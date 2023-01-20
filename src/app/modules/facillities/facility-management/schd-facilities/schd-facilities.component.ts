@@ -222,7 +222,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl = window.location.href
+    this.currentPageUrl = window.location.href.replace("facilities/facility-management/schd-facilities","")+"facilities/3p-block-lease-scheduler"
 
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
@@ -3573,6 +3573,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   copyToClipboard(currentPageUrl) {
+    debugger
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
