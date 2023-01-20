@@ -202,10 +202,11 @@ export class SchdFacilitiesComponent implements OnInit {
           this.defaultPopupTab = res.type;
         }
         if (res.facilityId && res.clickOnIcon == 1) {
+          this.MRIPageNumber =1 
+          this.CTPageNumber =1
           this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
-        this.MRIPageNumber =1 
-        this.CTPageNumber =1
+       
       }
     });
     facilityService.sendDataToschdFacilities.subscribe((res) => {
@@ -1193,6 +1194,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }  
   }
   getLeaseAgreementsByFacilityId(facilityId: number) {
+    debugger
     this.blockLeaseAgreementMRIList = [];
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
