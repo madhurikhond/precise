@@ -117,7 +117,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
   ddlCurrentSelectedColumnText: string = 'Facility Name';
   ddlSelectedSortingOrderText: string = 'ascending';
   ddlSelectedSortingOrderValue: string = 'asc';
-  ddlAllColumns=[];
+  ddlAllColumns = [];
   ddlSortingOrder: any = [];
   log: string = '';
   @ViewChild('fPolicy', { static: false }) fPolicy: ElementRef;
@@ -143,7 +143,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     this.getBrokerList();
     this.getFinancialTypeList();
     this.totalSchedulingFacility = 1;
-    this.filterBody = this.getApplyFilter(true, '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',this.ddlCurrentSelectedColumnValue,this.ddlSelectedSortingOrderValue);
+    this.filterBody = this.getApplyFilter(true, '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', this.ddlCurrentSelectedColumnValue, this.ddlSelectedSortingOrderValue);
     this.getAllSchedulingFacility(this.filterBody);
     // this.ckConfig = {
     //   allowedContent: false,
@@ -154,7 +154,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     // removeButtons : 'Checkbox,Radio,Form,TextField,Textarea,Select,Button,ImageButton,HiddenField,PageBreak,SpecialChar,HorizontalRule,SpellChecker, Scayt',
     // };
     this.ckConfig = {
-      allowedContent: false,     
+      allowedContent: false,
       forcePasteAsPlainText: true,
       readOnly: true,
       removePlugins: 'elementspath,blockquote,preview,save,print,newpage,templates,find,replace,SpellChecker,scayt,flash,smiley,about',
@@ -162,7 +162,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     };
     this.policyForm.patchValue({
       facilityPolicy: this.facilityPolicy,
-      parentPolicy : this.parentPolicy
+      parentPolicy: this.parentPolicy
     })
     setTimeout(() => {
       this.ddlAllColumns = this.getAllcolumns();
@@ -508,7 +508,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     });
   }
   getFinancialTypeList() {
-    
+
     this.financialTypeList = [];
     this.facilityService.getFinancialTypes(true).subscribe((res) => {
       if (res.response != null) {
@@ -569,7 +569,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
   }
   getFacilityDetail() {
 
-    let body = this.getApplyFilter(true, this.facilityId.toString(), 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',this.ddlCurrentSelectedColumnValue,this.ddlSelectedSortingOrderValue);
+    let body = this.getApplyFilter(true, this.facilityId.toString(), 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', this.ddlCurrentSelectedColumnValue, this.ddlSelectedSortingOrderValue);
     this.facilityService.getSchedulingFacilityData(true, body, 1, 1).subscribe((res) => {
       if (res.response != null) {
         let facilityDetail = res.response[0];
@@ -592,7 +592,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     }, (err: any) => {
       this.errorNotification(err);
     });
-  
+
   }
   getSchedulingFacilityPricing() {
 
@@ -923,11 +923,11 @@ export class SchedulingFacillitiesComponent implements OnInit {
     this.selectedXrayHours = null;
     this.workZipModel = null;
     this.homeZipModel = null;
-    this.filterBody = this.getApplyFilter(true, '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',this.ddlCurrentSelectedColumnValue,this.ddlSelectedSortingOrderValue);
+    this.filterBody = this.getApplyFilter(true, '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', this.ddlCurrentSelectedColumnValue, this.ddlSelectedSortingOrderValue);
     this.getAllSchedulingFacility(this.filterBody);
   }
   applyFilter() {
-    
+
     let selectedFacility = this.selectedFacility ? this.selectedFacility.toString() : '';
     let selectedParentFacility = this.selectedParentFacility ? this.selectedParentFacility.toString() : '';
     let selectedXrayWalkIn = this.selectedXrayWalkIn ? this.selectedXrayWalkIn.toString() : '';
@@ -954,7 +954,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     this.filterBody = this.getApplyFilter(true, '', null, selectedFacility, selectedParentFacility, selectedXrayWalkIn,
       selectedFinancialType, selectedModality, selectedHours, selectedXrayHours, selectedMriType, selectedMriStrength,
       selectedMriMake, selectedMriWeight, selectedMriContrast, selectedMriSedation, selectedMriBreast, selectedCtSlices,
-      selectedCtMake, selectedCtWeight, selectedCtContrast, selectedCtSedation, selectedCtBreast, workZipModel, homeZipModel,this.ddlCurrentSelectedColumnValue,this.ddlSelectedSortingOrderValue);
+      selectedCtMake, selectedCtWeight, selectedCtContrast, selectedCtSedation, selectedCtBreast, workZipModel, homeZipModel, this.ddlCurrentSelectedColumnValue, this.ddlSelectedSortingOrderValue);
     this.getAllSchedulingFacility(this.filterBody);
   }
 
@@ -962,7 +962,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
     xraywalikIn: any, financialType: any, modality: any, daysOfWeek: any, xrayWeek: any, mriType: any, mriStrength: any,
     mriMake: any, mriWeight: any, mriContrast: any, mriSedation: any, mriBreast: any,
     ctSlices: any, ctMake: any, ctWeight: any, ctContrast: any,
-    ctSedation: any, ctBreast: any, workZip: any, homeZip: any,sortingColumn:any,sortingOrder:any): any {
+    ctSedation: any, ctBreast: any, workZip: any, homeZip: any, sortingColumn: any, sortingOrder: any): any {
     return {
       'isActive': isActive, 'facilityId': facilityId.toString(), 'brokerId': this.selectedBroker, 'facilityName': facilityName,
       'parentCompanyName': parentCompanyName, 'xraywalikIn': xraywalikIn, 'financialType': financialType,
@@ -970,7 +970,7 @@ export class SchedulingFacillitiesComponent implements OnInit {
       'mriType': mriType, 'mriStrength': mriStrength, 'mriMake': mriMake, 'mriWeight': mriWeight, 'mriContrast': mriContrast,
       'mriSedation': mriSedation, 'mriBreast': mriBreast, 'ctSlices': ctSlices,
       'ctMake': ctMake, 'ctWeight': ctWeight, 'ctContrast': ctContrast,
-      'ctSedation': ctSedation, 'ctBreast': ctBreast, 'workZip': workZip, 'homeZip': homeZip,'sortingColumn':sortingColumn,'sortingOrder':sortingOrder
+      'ctSedation': ctSedation, 'ctBreast': ctBreast, 'workZip': workZip, 'homeZip': homeZip, 'sortingColumn': sortingColumn, 'sortingOrder': sortingOrder
     }
   }
   calculateCellValueForPhoneNumber(row: any) {
@@ -999,54 +999,55 @@ export class SchedulingFacillitiesComponent implements OnInit {
   get refmodalityMriForm() { return this.modalityMriForm.controls; }
   get getpolicyForm() { return this.policyForm.controls; }
 
- ValidateMultiSelectTextLength(id, a)
- {
-   a =this.commonMethodService.ValidateMultiSelectTextLength(id,a);
- return a;
- }
- 
-getSortingOrder() {
-  return [
-    { value: 'asc', Text: 'Ascending' },
-    { value: 'desc', Text: 'Descending' }]
-}
-onChangeSelectedColumn(index) {
-  this.ddlCurrentSelectedColumnValue = index.value;
-  this.ddlCurrentSelectedColumnText = index.Text;
-  this.applyFilter()
-}
-onChangeSortingOrder(index) {
-  this.ddlSelectedSortingOrderValue = index.value;
-  this.ddlSelectedSortingOrderText = index.Text;
-  this.applyFilter()
-}
-getAllcolumns() {
-  return [
-    { value: 'Facility Name', Text: 'Facility Name' },
-    { value: 'City', Text: 'City' },
-    { value: 'State', Text: 'State' },
-    { value: 'Zip', Text: 'Zip' },
-    { value: 'Home Distance', Text: 'Home Distance' },
-    { value: 'Work Distance', Text: 'Work Distance' },
-    { value: 'Home Score', Text: 'Home Score' },
-    { value: 'Work Score', Text: 'Work Score' },
-  ];
-}
+  ValidateMultiSelectTextLength(id, a) {
+    a = this.commonMethodService.ValidateMultiSelectTextLength(id, a);
+    return a;
+  }
 
-nameChanged(arg: any, type: any) {
- if(type=='WorkZip' && !this.homeZipModel && arg )
- {
-  this.ddlCurrentSelectedColumnText='Work Score'
-  this.ddlCurrentSelectedColumnValue='Work Score'
- }
- else if(type=='HomeZip' && arg ){
-  this.ddlCurrentSelectedColumnText='Home Score'
-  this.ddlCurrentSelectedColumnValue='Home Score'
- }
- else if(this.workZipModel){
-  this.ddlCurrentSelectedColumnText='Work Score'
-  this.ddlCurrentSelectedColumnValue='Work Score'
- }
-}
+  getSortingOrder() {
+    return [
+      { value: 'asc', Text: 'Ascending' },
+      { value: 'desc', Text: 'Descending' }]
+  }
+  onChangeSelectedColumn(index) {
+    this.ddlCurrentSelectedColumnValue = index.value;
+    this.ddlCurrentSelectedColumnText = index.Text;
+    this.applyFilter()
+  }
+  onChangeSortingOrder(index) {
+    this.ddlSelectedSortingOrderValue = index.value;
+    this.ddlSelectedSortingOrderText = index.Text;
+    this.applyFilter()
+  }
+  getAllcolumns() {
+    return [
+      { value: 'Facility Name', Text: 'Facility Name' },
+      { value: 'City', Text: 'City' },
+      { value: 'State', Text: 'State' },
+      { value: 'Zip', Text: 'Zip' },
+      { value: 'Home Distance', Text: 'Home Distance' },
+      { value: 'Work Distance', Text: 'Work Distance' },
+      { value: 'Home Score', Text: 'Home Score' },
+      { value: 'Work Score', Text: 'Work Score' },
+    ];
+  }
 
+  nameChanged(arg: any, type: any) {
+    if ((type == 'HomeZip' && arg) || (this.homeZipModel && arg)) {
+      this.ddlCurrentSelectedColumnText = 'Home Score'
+      this.ddlCurrentSelectedColumnValue = 'Home Score'
+    }
+    else if ((type == 'WorkZip' && arg) || (this.workZipModel && type == 'HomeZip')) {
+      this.ddlCurrentSelectedColumnText = 'Work Score'
+      this.ddlCurrentSelectedColumnValue = 'Work Score'
+    }
+    else if (this.homeZipModel) {
+      this.ddlCurrentSelectedColumnText = 'Home Score'
+      this.ddlCurrentSelectedColumnValue = 'Home Score'
+    }
+    else {
+      this.ddlCurrentSelectedColumnText = 'Facility Name'
+      this.ddlCurrentSelectedColumnValue = 'Facility Name'
+    }
+  }
 }
