@@ -222,8 +222,9 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('before' + window.location.href)
     this.currentPageUrl = window.location.href.replace("facilities/facility-management/schd-facilities","")
-
+    console.log(this.currentPageUrl)
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
         ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
