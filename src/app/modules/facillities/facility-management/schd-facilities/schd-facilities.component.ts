@@ -206,6 +206,7 @@ export class SchdFacilitiesComponent implements OnInit {
           this.pageNumberOfPaid =1 ;
           this.MRIPageNumber =1 
           this.CTPageNumber =1
+          this.pageNumberOfUnusedCredits =1;
           this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
        
