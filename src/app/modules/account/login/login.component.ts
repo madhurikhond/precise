@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit {
       Email: email,
       Password: password
     })).subscribe((res: any) => {
+      debugger
       if (res) {
         this.freshLogin = 'true';
         this.storageService.setFreshLogin = this.freshLogin
