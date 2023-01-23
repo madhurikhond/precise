@@ -314,6 +314,9 @@ export class PatientComponent implements OnInit {
       let getData = list.filter(obj => obj.PageTitle.toLowerCase() == 'patients');
       if (getData.length > 0) {
         this.IsPatientActionHide = JSON.parse(getData[0].IsPatientActionHide);
+        if (this.IsPatientActionHide) {
+          this.ddlvalue = this.ddlvalue.filter(person => person.value == 2 || person.value == 3);
+        }
       }
     }
   }
