@@ -42,8 +42,8 @@ export class ResetPasswordComponent implements OnInit {
     
     this.resetPasswordForm = this.fb.group({
 
-      newPassword: [null, [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-z0-9])[A-Za-z\d].{8,}')]],
-      confirmPassword: [null, [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-z0-9])[A-Za-z\d].{8,}')]],
+      newPassword: [null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$')]],
+      confirmPassword: [null, [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$')]],
       token: this.strToken,
     }, {
       validator: this.MustMatch('newPassword', 'confirmPassword')
