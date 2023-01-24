@@ -721,8 +721,8 @@
                             </option>
                         </select> -->
 
-                        <button type="button" class="search" [disabled]="this.ddlCurrentValue==0?true:false"
-                            [ngStyle]="{'background-color': (this.ddlCurrentValue==0) ? '#bfbfbf' : '#3b8beb'}"
+                        <button type="button" class="search" [disabled]="this.ddlCurrentValue=='0'?true:false"
+                            [ngStyle]="{'background-color': (this.ddlCurrentValue=='0') ? '#bfbfbf' : '#3b8beb'}"
                             (click)="goButtonClick()">Go</button>
                     </div>
                     <div class="precisemri-search patient-precisemri-search">
