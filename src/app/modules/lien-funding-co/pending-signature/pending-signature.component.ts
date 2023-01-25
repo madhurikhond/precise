@@ -129,7 +129,24 @@ export class PendingSignatureComponent {
   onSubmitSignature() {
     if (this.signatureForm.valid && this.selectedData.length > 0) {
       var data = this.signatureForm.value;
+      var allCPTGroups = "";
+      for(let i=0;i<this.selectedData.length;i++)
+      {
+        if(i == (this.selectedData.length-1))
+        {
+          this.selectedData[i].batchWiseData.forEach(element => {
+            allCPTGroups += element.cptGroup;
+          });
+        }
+        else{
+          this.selectedData[i].batchWiseData.forEach(element => {
+            allCPTGroups += element.cptGroup + ',';
+          });
+        }
+      }
+
       data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
+      data.request.cptGroup = allCPTGroups;
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.lienPortalService.successNotification(LienPortalStatusMessage.ASSIGNED_AR_EXECUTED);
