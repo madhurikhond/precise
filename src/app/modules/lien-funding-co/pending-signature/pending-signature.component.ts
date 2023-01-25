@@ -130,23 +130,28 @@ export class PendingSignatureComponent {
     if (this.signatureForm.valid && this.selectedData.length > 0) {
       var data = this.signatureForm.value;
       var allCPTGroups = "";
+      var cptDictionary = [];
       for(let i=0;i<this.selectedData.length;i++)
       {
-        if(i == (this.selectedData.length-1))
-        {
-          this.selectedData[i].batchWiseData.forEach(element => {
-            allCPTGroups += element.cptGroup;
-          });
-        }
-        else{
-          this.selectedData[i].batchWiseData.forEach(element => {
-            allCPTGroups += element.cptGroup + ',';
-          });
-        }
+          allCPTGroups = "";
+          for(let j=0;j<this.selectedData[i].batchWiseData.length;j++)
+          {
+            if((this.selectedData[i].batchWiseData.length-1) == j)
+            {
+              allCPTGroups += this.selectedData[i].batchWiseData[j].cptGroup;
+            }
+            else{
+              allCPTGroups += this.selectedData[i].batchWiseData[j].cptGroup + ',';
+            }
+          };
+          let res = {
+            "lienFundingMappingId":this.selectedData[i].batchId,
+            "cptGroup":allCPTGroups
+          }
+          cptDictionary.push(res);
       }
 
-      data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
-      data.request.cptGroup = allCPTGroups;
+      data.request = cptDictionary;
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.lienPortalService.successNotification(LienPortalStatusMessage.ASSIGNED_AR_EXECUTED);
