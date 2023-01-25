@@ -186,7 +186,8 @@ export class RetainUnpaidComponent implements OnInit {
             "patientName": element.firstName + ' ' + element.lastName,
             "dateOfStudy": element.dateRead,
             "studyDescription": element.studyDescription,
-            "cptGroup": element.cptGroup
+            "cptGroup": element.cptGroup,
+            "dob": element.dateOfBirth
           }
           retainSelectedData.push(selectedData);
         });

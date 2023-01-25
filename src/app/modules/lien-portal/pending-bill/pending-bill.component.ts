@@ -183,6 +183,7 @@ export class PendingBillComponent implements OnInit {
         dateOfStudy: data.dateOfStudy,
         studyDescription: data.study,
         cptGroup: data.cptGroup,
+        dob: data.dateOfBirth
       }));
       var request = {
         pdfPreview: checkboxSelectedData,
