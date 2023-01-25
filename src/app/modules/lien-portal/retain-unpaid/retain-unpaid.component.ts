@@ -92,7 +92,8 @@ export class RetainUnpaidComponent implements OnInit {
       fundingCompany: ['', Validators.required],
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
-      radiologistSign: ['', Validators.required]
+      radiologistSign: ['', Validators.required],
+      title : ['',Validators.required]
     })
     this.receivePaymentform = this.fb.group({
       checkAmount: ['', [Validators.required ,Validators.pattern(/^(?=.*[1-9])(?:[1-9]\d*\.?|0?\.)\d*$/)]],
@@ -196,6 +197,7 @@ export class RetainUnpaidComponent implements OnInit {
         "radLastName": this.storageService.user.LastName,
         "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
         "fundingCompany": selectedFundingCompany[0].fundingCompanyName,
+        "title": this.assignARform.get('title').value,
       }
       this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
@@ -279,6 +281,7 @@ export class RetainUnpaidComponent implements OnInit {
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
         fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
+        title: this.assignARform.get('title').value,
         baseUrl: window.location.origin
       }
 

@@ -67,7 +67,8 @@ export class PendingSignatureComponent {
       firstName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable)? this.storageService.user.FirstName : '', Validators.required],
       lastName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '', Validators.required],
       fundingCompanySign: ['', Validators.required],
-      baseUrl: window.location.origin
+      baseUrl: window.location.origin,
+      title : ['',Validators.required]
     })
     this.commonService.setTitle(LienPortalPageTitleOption.PENDING_SIGNATURE);
   }
@@ -172,7 +173,8 @@ export class PendingSignatureComponent {
       firstName: (this.permission && this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.FirstName : '',
       lastName: (this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '',
       fundingCompanySign: '',
-      baseUrl: window.location.origin
+      baseUrl: window.location.origin,
+      title: '',
     });
     if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);

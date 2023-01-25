@@ -83,6 +83,7 @@ export class PendingBillComponent implements OnInit {
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
       radiologistSign: ['', Validators.required],
+      title : ['',Validators.required]
     });
   }
 
@@ -189,6 +190,7 @@ export class PendingBillComponent implements OnInit {
         radLastName: this.storageService.user.LastName,
         fundingCompanyId: Number(this.assignARform.get('fundingCompany').value),
         fundingCompany: selectedFundingCompany[0].fundingCompanyName,
+        title: this.assignARform.get('title').value,
       };
       this.lienPortalService
         .PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment)
@@ -228,6 +230,7 @@ export class PendingBillComponent implements OnInit {
         lastName: this.assignARform.get('lastName').value,
         fundingCompanyId: Number(this.assignARform.get('fundingCompany').value),
         baseUrl: window.location.origin,
+        title: this.assignARform.get('title').value,
       };
 
       this.lienPortalService
