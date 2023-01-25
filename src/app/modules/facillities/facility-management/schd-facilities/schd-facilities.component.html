@@ -3957,6 +3957,11 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
+																<a href="javascript:void(0)" class="text-success link-btn" *ngIf = 'data.data.IsLeaseExecuted'
+																data-toggle="modal" data-target="#viewFile_Docx"  style="margin-left: 5px"
+																(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
+																<i class="fa fa-file-pdf-o"></i>
+																</a>
 															</div>
 															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
 																<p>
@@ -4019,7 +4024,7 @@
 												<dxo-paging [enabled]="false"></dxo-paging>
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-												<dxi-column dataField="Credit time" caption="Credit Time"></dxi-column>
+												<dxi-column dataField="CreditTime" caption="Credit Time"></dxi-column>
 												<dxi-column dataField="LeaseTime" caption="Original Leased Time">
 												</dxi-column>
 												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>

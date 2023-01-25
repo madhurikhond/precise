@@ -202,8 +202,11 @@ export class SchdFacilitiesComponent implements OnInit {
           this.defaultPopupTab = res.type;
         }
         if (res.facilityId && res.clickOnIcon == 1) {
+          this.pageNumberOfUnpaidLeases = 1 ;
+          this.pageNumberOfPaid =1 ;
           this.MRIPageNumber =1 
           this.CTPageNumber =1
+          this.pageNumberOfUnusedCredits =1;
           this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
        
@@ -222,8 +225,8 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl = window.location.href
-
+    this.currentPageUrl =  window.location.href.split('m/')[0]+'m/facilities/3p-block-lease-scheduler';
+    console.log(this.currentPageUrl)
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
         ? this.pageSizeArray.filter((x) => x.IsSelected)[0].value
@@ -3573,6 +3576,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   copyToClipboard(currentPageUrl) {
+    debugger
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
