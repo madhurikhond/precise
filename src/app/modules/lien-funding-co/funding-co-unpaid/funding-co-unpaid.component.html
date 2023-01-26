@@ -70,6 +70,7 @@
                             <dxi-column dataField="firstName" [width]="15+'%'" caption="First Name"></dxi-column>
                             <dxi-column dataField="dateOfBirth" [width]="7+'%'" caption="DOB"></dxi-column>
                             <dxi-column dataField="study" [width]="11+'%'" caption="Study"></dxi-column>
+                            <dxi-column dataField="dateOfStudy" [width]="10+'%'" caption="DOS"></dxi-column>
                             <dxi-column cellTemplate="ARPriceTemplate" [width]="8+'%'" caption="AR Price">
                               <div *dxTemplate="let data of 'ARPriceTemplate'">
                                 {{data.data.arPrice | currency:'USD':'symbol-narrow'}}
