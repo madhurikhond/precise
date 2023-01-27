@@ -125,3 +125,19 @@ font-style: normal !important;
   padding: 2px 12px;
   height: auto;
 }
+
+.copyIcon{
+  margin-left: 41px;
+}
+.copyIcon>i{
+  cursor: pointer;
+  color: #3b8beb;
+}
+.trnNumber {
+  display: flex;
+  align-items: center;
+}
+
+.trnNumber span {
+  width: 115px;
+}

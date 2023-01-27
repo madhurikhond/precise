@@ -172,7 +172,7 @@ export class FundingCoUnpaidComponent {
     navigator.clipboard.writeText(trnNumber).catch(() => {
       console.error("Unable to copy text");
     });
-    this.notificationService.showToaster({
+    this.notificationService.showToasterForTransaction({
       alertHeader: '',
       alertMessage: trnNumber,
       alertType: null
