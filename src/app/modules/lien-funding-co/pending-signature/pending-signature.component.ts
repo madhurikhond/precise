@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { ThrowStmt } from '@angular/compiler';
+import { NotificationService } from 'src/app/services/common/notification.service';
 
 @Component({
   selector: 'app-pending-signature',
@@ -58,7 +59,7 @@ export class PendingSignatureComponent {
 
   constructor(private lienPortalService: LienPortalService,
     private fb: FormBuilder, private commonService: CommonMethodService,
-    private storageService: StorageService) {
+    private storageService: StorageService,private readonly notificationService: NotificationService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
     this.setPermission();
@@ -76,7 +77,7 @@ export class PendingSignatureComponent {
   private getListingData() {
     this.pageNumber = 0;
     this.currentPageNumber = 1;
-    
+
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];
@@ -237,5 +238,16 @@ export class PendingSignatureComponent {
   }
   onExpand(){
     this.dataGrid.instance.expandAll(-1);
+  }
+
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToaster({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
   }
 }

@@ -7,6 +7,7 @@ import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.serv
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { StorageService } from 'src/app/services/common/storage.service';
+import { NotificationService } from 'src/app/services/common/notification.service';
 
 @Component({
   selector: 'app-funding-co-unpaid',
@@ -43,7 +44,7 @@ export class FundingCoUnpaidComponent {
   paymentForm: FormGroup;
 
   constructor(private fb: FormBuilder, private lienPortalService: LienPortalService, private commonService: CommonMethodService,
-    private storageService : StorageService) {
+    private storageService : StorageService,private readonly notificationService: NotificationService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
 
@@ -59,7 +60,7 @@ export class FundingCoUnpaidComponent {
   private getListingData() {
     this.pageNumber = 0;
     this.currentPageNumber = 1;
-    
+
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetFundingCompanyUnpaidList).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];
@@ -166,4 +167,16 @@ export class FundingCoUnpaidComponent {
   onExpand(){
     this.dataGrid.instance.expandAll(-1);
   }
+
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToaster({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
+  }
+
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalFundingCoPermission, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 
@@ -56,7 +57,7 @@ export class FundingCoPaidComponent {
 
 
   constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private fb: FormBuilder,
-    private storageService: StorageService) {
+    private storageService: StorageService,private readonly notificationService: NotificationService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
 
@@ -73,7 +74,7 @@ export class FundingCoPaidComponent {
   private getFundingCoPaidList() {
     this.pageNumber = 0;
     this.currentPageNumber = 1;
-    
+
     this.lienPortalService.PostAPI(this.getfilterData, LienPortalAPIEndpoint.GetFundingCompanyPaidList).subscribe(res => {
       if (res.status == LienPortalResponseStatus.Success) {
         this.totalRecord = 0;
@@ -217,7 +218,7 @@ export class FundingCoPaidComponent {
       }
     }
   }
- 
+
   onCollapse() {
     this.expandAll = false;
     this.dataGrid.instance.collapseAll(-1);
@@ -227,5 +228,14 @@ export class FundingCoPaidComponent {
     this.dataGrid.instance.expandAll(-1);
   }
 
-
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToaster({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
+  }
 }
