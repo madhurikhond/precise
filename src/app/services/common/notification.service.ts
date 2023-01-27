@@ -22,6 +22,19 @@ export class NotificationService {
     });
   }
 
+  showToasterForTransaction(notification: Notification){
+ 
+    this._toastr.clear();
+    this._toastr.show(`Transaction No : '${notification.alertMessage}' copied to clipboard.`, notification.alertHeader ? notification.alertHeader : null, {
+      closeButton: false,
+      progressBar: false,
+      enableHtml: true,
+      timeOut: 2000,
+      messageClass: 'custom-toast-message',
+      positionClass: 'toast-bottom-center'
+    });
+  }
+
   showNotification(notification : Notification){
     this._toastr.clear();
     if(notification.alertHeader){

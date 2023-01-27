@@ -128,10 +128,24 @@
     height: 25px;
     border: 1px solid #3b8beb;
   }
-  
-  
+
+
   .clsPlusMinusButton > a > span {
     font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
     margin-left: 5px;
   }
-  
+  .copyIcon{
+    margin-left: 41px;
+  }
+  .copyIcon>i{
+    cursor: pointer;
+    color: #3b8beb;
+  }
+  .trnNumber {
+    display: flex;
+    align-items: center;
+}
+
+.trnNumber span {
+    width: 115px;
+}

@@ -23,13 +23,13 @@
                 </div>
 
                 <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
-                <div class="innerBatchTitle" *dxTemplate="let detail of 'batchNameList'">
-                    <dx-data-grid [dataSource]="detail.data.retainedArPaidBatches" class="innerList" [columnAutoWidth]="true"
-                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="false">
+                <div class="innerBatchTitle radflowGrid" *dxTemplate="let detail of 'batchNameList'">
+                    <dx-data-grid [dataSource]="detail.data.retainedArPaidBatches" class="innerList innerTable" [columnAutoWidth]="true"
+                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"  [showColumnHeaders]="true">
                         <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-sorting mode="none"></dxo-sorting>
                         <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
-                        <dxi-column cellTemplate="BatchTemplate">
+                        <!-- <dxi-column cellTemplate="BatchTemplate">
                           <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
                           <span>{{data.data.radiologistName}}</span>
                           <span>{{data.data.transactionNumber}}</span>
@@ -41,7 +41,21 @@
                           </span>
                           <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                          </div>
+                        </dxi-column> -->
+
+                        <dxi-column dataField="radiologistName" caption="Reading Radiologist"></dxi-column>
+
+                        <dxi-column dataField="transactionNumber" caption="Transaction Number" cellTemplate="transactionNumberTemplate">
+                          <div *dxTemplate="let data of 'transactionNumberTemplate'" class="trnNumber">
+                            <span>{{data.data.transactionNumber}}</span><a class="copyIcon" (click)="copyToClipboard(data.data.transactionNumber)"><i class="fa fa-copy"></i></a>
+                          </div>
                         </dxi-column>
+
+                        <dxi-column dataField="studyCounts" caption="Study Count"></dxi-column>
+                        <dxi-column dataField="totalAmount" caption="Purchase Total" cellTemplate="TotalAmount"></dxi-column>
+                        <div *dxTemplate="let data of 'TotalAmount'">
+                          <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                      </div>
                         <dxo-master-detail [enabled]="true" [autoExpandAll]="expandAll"
                             [template]="'batchDetail'"></dxo-master-detail>
                         <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">

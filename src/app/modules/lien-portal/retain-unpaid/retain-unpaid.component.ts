@@ -5,6 +5,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
@@ -70,7 +71,8 @@ export class RetainUnpaidComponent implements OnInit {
   permissionForReceivePayment : any;
   defaultCompanyName: any[];
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, 
+    private storageService: StorageService,private readonly notificationService: NotificationService,
     private fb: FormBuilder) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
@@ -386,5 +388,16 @@ export class RetainUnpaidComponent implements OnInit {
   }
   onExpand(){
     this.dataGrid.instance.expandAll(-1);
+  }
+
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToasterForTransaction({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
   }
 }
