@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { NotificationService } from 'src/app/services/common/notification.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
   selector: 'app-assign-unpaid',
@@ -37,7 +38,7 @@ export class AssignUnpaidComponent implements OnInit {
   AssignARUnpaid: any = [];
 
   constructor(private lienPortalService: LienPortalService,
-    private commonService: CommonMethodService) {
+    private commonService: CommonMethodService,private readonly notificationService: NotificationService) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
     this.showFilterRow = true;
@@ -103,5 +104,14 @@ export class AssignUnpaidComponent implements OnInit {
       this.lienPortalService.downloadFile(data.fileByte);
   }
 
-
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToasterForTransaction({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
+  }
 }

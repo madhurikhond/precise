@@ -61,3 +61,6 @@
 .funding-notify-assignment{
   text-transform: none !important;
 }
+.row.fundingCheck{
+  padding-top: 15px;
+}
