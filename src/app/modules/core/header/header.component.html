@@ -31,8 +31,8 @@
     </div>
     <div class="header-action-right">	
         <div class="precisemri-search" *ngIf="docManager">
-            <input type="text" class="form-search" placeholder="Search Patient Id" #patientId (keyup.enter)="showDocManager(patientId.value)">
-            <a href="javascript:void(0)" class="pe-icon fa fa-file-text-o"></a>
+            <input type="text" class="form-search" placeholder="Search Patient Id" #patientId (keyup.enter)="showDocManager(patientId.value)" appInputSpaceTrim>
+            <a href="javascript:void(0)" class="pe-icon fa fa-file-text-o" ></a>
         </div>
         <div class="header-action dropdown" *ngIf="taskManager">
             <div class="dropdown-toggle nav-link">
