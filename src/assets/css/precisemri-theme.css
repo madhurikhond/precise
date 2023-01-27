@@ -7278,9 +7278,11 @@ ngb-modal-window.modal{
 }
 .section_CT{
     background-color: #684f8c !important;
+	color: white !important
 }
 .section_MRI{
     background-color: #0FC4A7 !important;
+	color: black !important
 }
 
 .dhx_cal_event.section_CT div{
