@@ -364,6 +364,7 @@ export class CreateAlertComponent implements OnInit {
         infoPatientPhone: this.patientInfoList.phone,
         infoPatientEmail: this.patientInfoList.Email
       })
+      
       if (this.retainInfoList.length != 0) {
         this.contactInfoForm.patchValue({
           IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == '0'? false : true,
@@ -376,26 +377,21 @@ export class CreateAlertComponent implements OnInit {
           IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
 
-
-
           AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
           AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
           AddtionalDeskSms: this.retainInfoList.IsManualDesSmsSend3 || this.retainInfoList.IsManualDesSmsSend2 || this.retainInfoList.IsManualDesSmsSend2 == '1' ? true : false,
-
-
-
 
           infoAdditionalEmail1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
           infoAdditionalEmail2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
           infoAdditionalEmail3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
 
-          infoAdditionalPhone1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
-          infoAdditionalPhone2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
-          infoAdditionalPhone3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+          infoAdditionalPhone1: this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
+          infoAdditionalPhone2: this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
+          infoAdditionalPhone3: this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
 
-          infoAdditionalFax1: this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
-          infoAdditionalFax2: this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
-          infoAdditionalFax3: this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
+          infoAdditionalFax1: this.retainInfoList.ManualDesFax1 ? this.retainInfoList.ManualDesFax1 : '',
+          infoAdditionalFax2: this.retainInfoList.ManualDesFax2 ? this.retainInfoList.ManualDesFax2 : '',
+          infoAdditionalFax3: this.retainInfoList.ManualDesFax3 ? this.retainInfoList.ManualDesFax3 : '',
         });
 
         if(this.contactInfoForm.controls.AddtionalDeskEmail.value){
@@ -444,10 +440,20 @@ export class CreateAlertComponent implements OnInit {
   }
   onchkFaxChange(id) {
     this.addFaxChecked = id.target.checked;
+    if (this.addFaxChecked == false) {
+      this.contactInfoForm.get('infoAdditionalFax1').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalFax2').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalFax3').setErrors(null);
+    }
   }
 
   onchkEmailChange(id) {
     this.addEmailChecked = id.target.checked;
+    if(this.addEmailChecked ==  false){
+        this.contactInfoForm.get('infoAdditionalEmail1').setErrors(null);
+        this.contactInfoForm.get('infoAdditionalEmail2').setErrors(null);
+        this.contactInfoForm.get('infoAdditionalEmail3').setErrors(null);  
+    }
   }
 
   onchkPhoneChange(id) {
@@ -455,8 +461,13 @@ export class CreateAlertComponent implements OnInit {
     if (this.addPhoneChecked == true) {
       this.smsTextModel = this.smsBody;
     }
+    if (this.addPhoneChecked == false) {
+      this.contactInfoForm.get('infoAdditionalPhone1').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalPhone2').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalPhone3').setErrors(null);
+    }
   }
-
+  
   onchkPatientPhoneChange(id) {
     this.IsPatientPhoneSent = id.target.checked;
     if (this.IsPatientPhoneSent == true) {
@@ -553,6 +564,23 @@ export class CreateAlertComponent implements OnInit {
   }
 
   btnCreateAlert() {
+  if (this.addPhoneChecked == false) {
+    this.contactInfoForm.get('infoAdditionalPhone1').setErrors(null);
+    this.contactInfoForm.get('infoAdditionalPhone2').setErrors(null);
+    this.contactInfoForm.get('infoAdditionalPhone3').setErrors(null);
+  }
+
+    if(this.addEmailChecked ==  false){
+      this.contactInfoForm.get('infoAdditionalEmail1').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalEmail2').setErrors(null);
+      this.contactInfoForm.get('infoAdditionalEmail3').setErrors(null);
+  }
+
+  if (this.addFaxChecked == false) {
+    this.contactInfoForm.get('infoAdditionalFax1').setErrors(null);
+    this.contactInfoForm.get('infoAdditionalFax2').setErrors(null);
+    this.contactInfoForm.get('infoAdditionalFax3').setErrors(null);
+  }
     if (this.addPhoneChecked == false && this.IsPatientPhoneSent == false) {
       this.contactInfoForm.get('SmsTextModel').setErrors(null);
     }
@@ -608,15 +636,15 @@ export class CreateAlertComponent implements OnInit {
     if (this.contactInfoForm.get('IsBrokerMainFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('InfoBrokerMainFax').value + ', ')
     if (this.contactInfoForm.get('IsBrokerBillingFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('InfoBrokerBillingFax').value + ', ')
     if (this.contactInfoForm.get('IsBrokerAPFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('InfoBrokerAPFax').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalFax1').value != '') this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax1').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalFax2').value != '') this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax2').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalFax3').value != '') this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax3').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalPhone1').value != '') this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone1').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalPhone2').value != '') this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone2').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalPhone3').value != '') this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone3').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalEmail1').value != '') this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail1').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalEmail2').value != '') this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail2').value + ', ')
-    if (this.contactInfoForm.get('infoAdditionalEmail3').value != '') this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail3').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalFax1').value != '' && this.addFaxChecked) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax1').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalFax2').value != '' && this.addFaxChecked ) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax2').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalFax3').value != '' && this.addFaxChecked ) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAdditionalFax3').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalPhone1').value != '' && this.addPhoneChecked) this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone1').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalPhone2').value != '' && this.addPhoneChecked) this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone2').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalPhone3').value != '' && this.addPhoneChecked) this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAdditionalPhone3').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalEmail1').value != '' && this.addEmailChecked) this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail1').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalEmail2').value != '' && this.addEmailChecked ) this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail2').value + ', ')
+    if (this.contactInfoForm.get('infoAdditionalEmail3').value != '' && this.addEmailChecked) this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAdditionalEmail3').value + ', ')
   }
   sendSMS() {
     if (this.contactInfoForm.invalid) {
@@ -667,6 +695,8 @@ export class CreateAlertComponent implements OnInit {
     this.patientFieldDisable = false;
     this.addPhoneChecked = false;
     this.IsPatientPhoneSent = false;
+    this.addEmailChecked  =false
+    this.addFaxChecked = false;
     this.doctorAsDefaultContact = false;
     this.attorneyAsDefaultContact = false;
     this.contactInfoForm.controls.reason.setValue('0')

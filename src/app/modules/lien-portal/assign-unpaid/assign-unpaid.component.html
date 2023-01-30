@@ -7,14 +7,14 @@
         <div class="table-responsive">
             <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus"
                 [dataSource]="AssignARUnpaid" [showBorders]="false" [allowColumnResizing]="true"
-                [columnAutoWidth]="true" [showColumnHeaders]="false">
+                [columnAutoWidth]="true" [showColumnHeaders]="true">
                 <dxo-selection mode="single"></dxo-selection>
                 <dxo-sorting mode="none"></dxo-sorting>
                 <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
                 <dxo-pager [visible]="false"></dxo-pager>
                 <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column cellTemplate="BatchTemplate">
+                <!-- <dxi-column cellTemplate="BatchTemplate">
                     <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
                         <span>{{data.data.fundingCompanyName}}</span>
                         <span>{{data.data.transactionNumber}}</span>
@@ -27,10 +27,26 @@
                         </span>
                         <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
                     </div>
+                </dxi-column> -->
+                    
+                <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column> -->
+
+                <dxi-column dataField="fundingCompanyName" caption="Funding Company"></dxi-column>
+
+                <dxi-column dataField="transactionNumber" caption="Transaction Number" cellTemplate="transactionNumberTemplate">
+                  <div *dxTemplate="let data of 'transactionNumberTemplate'" class="trnNumber">
+                    <span>{{data.data.transactionNumber}}</span><a class="copyIcon" (click)="copyToClipboard(data.data.transactionNumber)">
+                        <i class="fa fa-copy"></i></a>
+                  </div>
                 </dxi-column>
 
-                <!-- <dxi-column dataField="batchName" caption="Batchname" alignment="center" class="batchname"></dxi-column> -->
-                <dxi-column dataField="fileName" caption="PDFIcon" cellTemplate="PDFIconTemplate"></dxi-column>
+                <dxi-column dataField="studyCounts" caption="Study Count"></dxi-column>
+                <dxi-column dataField="totalAmount" caption="Purchase Total" cellTemplate="TotalAmount"></dxi-column>
+                <div *dxTemplate="let data of 'TotalAmount'">
+                  <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+              </div>
+
+                <dxi-column dataField="fileName" caption="" cellTemplate="PDFIconTemplate"></dxi-column>
                 <div *dxTemplate="let data of 'PDFIconTemplate'">
                     <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
                 </div>
@@ -50,6 +66,7 @@
                         <dxi-column dataField="firstName" caption="First Name"></dxi-column>
                         <dxi-column dataField="dateOfBirth" caption="DOB"></dxi-column>
                         <dxi-column dataField="study" caption="Study"></dxi-column>
+                        <dxi-column dataField="dateOfStudy" caption="DOS"></dxi-column>
                     </dx-data-grid>
 
                 </div>

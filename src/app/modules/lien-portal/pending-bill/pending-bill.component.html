@@ -56,15 +56,29 @@
             <form [formGroup]="assignARform">
               <div class="modal-body">
                 <div class="modal-content">
-                    <p class="stepText lower-text-data"> 1. Assign a funding company</p>
-                    <div class="form-group">
-                      <select class="form-control" formControlName="fundingCompany">
-                        <option value="">Select</option>
-                        <option *ngFor="let item of fundingCompanies" [value]="item.fundingCompanyId">
-                          {{item.fundingCompanyName}}</option>
-                    </select>
-                    </div>
-                    <p class="stepText lower-text-data"> 2. Sign & generate an AR assignments to the selected funding company</p>
+                    <div class="row">
+                        <div class="col-6">
+                          <p class="stepText lower-text-data"> 1. Assign a funding company</p>
+                          <div class="form-group">
+                            <select class="form-control fundingCmpSelect" formControlName="fundingCompany">
+                              <option value="">Select</option>
+                              <option *ngFor="let item of fundingCompanies" [value]="item.fundingCompanyId">
+                                {{item.fundingCompanyName}}</option>
+                          </select>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <p class="stepText"> 2. Title</p>
+                          <div class="ar-title-form">
+                              <div class="form-group">
+                                  <div class="input-group">
+                                      <input type="text" class="form-control" formControlName="title" placeholder="Title">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      </div>
+                    <p class="stepText lower-text-data"> 3. Sign & generate an AR assignments to the selected funding company</p>
                     <div class="ar-assignment-form">
                         <div class="row">
                             <div class="col-6">

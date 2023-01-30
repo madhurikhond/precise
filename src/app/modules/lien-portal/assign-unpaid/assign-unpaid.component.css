@@ -49,3 +49,19 @@
   width: 99%;
   margin: auto;
 }
+
+.copyIcon{
+  margin-left: 41px;
+}
+.copyIcon>i{
+  cursor: pointer;
+  color: #3b8beb;
+}
+.trnNumber {
+  display: flex;
+  align-items: center;
+}
+
+.trnNumber span {
+  width: 115px;
+}

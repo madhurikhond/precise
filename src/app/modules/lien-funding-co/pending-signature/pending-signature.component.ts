@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { ThrowStmt } from '@angular/compiler';
+import { NotificationService } from 'src/app/services/common/notification.service';
 
 @Component({
   selector: 'app-pending-signature',
@@ -58,7 +59,7 @@ export class PendingSignatureComponent {
 
   constructor(private lienPortalService: LienPortalService,
     private fb: FormBuilder, private commonService: CommonMethodService,
-    private storageService: StorageService) {
+    private storageService: StorageService,private readonly notificationService: NotificationService) {
     this.allMode = 'allPages';
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
     this.setPermission();
@@ -67,7 +68,8 @@ export class PendingSignatureComponent {
       firstName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable)? this.storageService.user.FirstName : '', Validators.required],
       lastName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '', Validators.required],
       fundingCompanySign: ['', Validators.required],
-      baseUrl: window.location.origin
+      baseUrl: window.location.origin,
+      title : ['',Validators.required]
     })
     this.commonService.setTitle(LienPortalPageTitleOption.PENDING_SIGNATURE);
   }
@@ -75,7 +77,7 @@ export class PendingSignatureComponent {
   private getListingData() {
     this.pageNumber = 0;
     this.currentPageNumber = 1;
-    
+
     this.lienPortalService.PostAPI(this.getFilterData, LienPortalAPIEndpoint.GetPendingSignature).subscribe((result) => {
       this.totalRecord = 0;
       this.dataSource = [];
@@ -128,7 +130,29 @@ export class PendingSignatureComponent {
   onSubmitSignature() {
     if (this.signatureForm.valid && this.selectedData.length > 0) {
       var data = this.signatureForm.value;
-      data.request = this.selectedData.map(value => ({ lienFundingMappingId: value.batchId }));
+      var allCPTGroups = "";
+      var cptDictionary = [];
+      for(let i=0;i<this.selectedData.length;i++)
+      {
+          allCPTGroups = "";
+          for(let j=0;j<this.selectedData[i].batchWiseData.length;j++)
+          {
+            if((this.selectedData[i].batchWiseData.length-1) == j)
+            {
+              allCPTGroups += this.selectedData[i].batchWiseData[j].cptGroup;
+            }
+            else{
+              allCPTGroups += this.selectedData[i].batchWiseData[j].cptGroup + ',';
+            }
+          };
+          let res = {
+            "lienFundingMappingId":this.selectedData[i].batchId,
+            "cptGroup":allCPTGroups
+          }
+          cptDictionary.push(res);
+      }
+
+      data.request = cptDictionary;
       this.lienPortalService.PostAPI(data, LienPortalAPIEndpoint.SaveFundingCompany).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
           this.lienPortalService.successNotification(LienPortalStatusMessage.ASSIGNED_AR_EXECUTED);
@@ -172,7 +196,8 @@ export class PendingSignatureComponent {
       firstName: (this.permission && this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.FirstName : '',
       lastName: (this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '',
       fundingCompanySign: '',
-      baseUrl: window.location.origin
+      baseUrl: window.location.origin,
+      title: '',
     });
     if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
@@ -213,5 +238,16 @@ export class PendingSignatureComponent {
   }
   onExpand(){
     this.dataGrid.instance.expandAll(-1);
+  }
+
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToasterForTransaction({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
   }
 }

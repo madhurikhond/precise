@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
     }
     for (let i = 0; i < this.responseHierarchy.length; i++) {
       if(this.responseHierarchy[i].hierarchy.PageTitle == 'ORIGINAL LIEN OWNER')
-        this.responseHierarchy[i].hierarchy.PageTitle = 'LIEN OWNER';
+        this.responseHierarchy[i].hierarchy.PageTitle = 'LIEN PORTAL';
         
       this.list.push(this.responseHierarchy[i].hierarchy);
    }
