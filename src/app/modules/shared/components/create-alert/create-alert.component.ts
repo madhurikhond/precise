@@ -73,7 +73,8 @@ export class CreateAlertComponent implements OnInit {
   request3: any;
   request4: any;
   addEmailChecked : any ;
-  addFaxChecked : any
+  addFaxChecked : any;
+  createAndSendbuttonDisable :any ;
   readonly commonRegex = CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
   @ViewChild('CheckSmsEmailSlackFax', { static: false }) CheckSmsEmailSlackFax: ElementRef;
@@ -340,12 +341,7 @@ export class CreateAlertComponent implements OnInit {
         InfoBrokerAPFax: this.brokerInfoList.APFax
       })
     }
-    (this.contactInfoForm.get('InfoBrokerMainEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerMainEmail').disable() : this.contactInfoForm.get('IsBrokerMainEmail').enable());
-    (this.contactInfoForm.get('InfoBrokerBillingEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerBillingEmail').disable() : this.contactInfoForm.get('IsBrokerBillingEmail').enable());
-    (this.contactInfoForm.get('InfoBrokerAPEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerAPEmail').disable() : this.contactInfoForm.get('IsBrokerAPEmail').enable());
-    (this.contactInfoForm.get('InfoBrokerMainFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerMainFax').disable() : this.contactInfoForm.get('IsBrokerMainFax').enable());
-    (this.contactInfoForm.get('InfoBrokerBillingFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerBillingFax').disable() : this.contactInfoForm.get('IsBrokerBillingFax').enable());
-    (this.contactInfoForm.get('InfoBrokerAPFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerAPFax').disable() : this.contactInfoForm.get('IsBrokerAPFax').enable());
+
     if (this.attInfoList.length != 0) {
       this.contactInfoForm.patchValue({
         infoAttorneyName: this.attInfoList.Name,
@@ -354,8 +350,7 @@ export class CreateAlertComponent implements OnInit {
         infoAttorneyEmail: this.attInfoList.Email,
       })
     }
-    (this.contactInfoForm.get('infoAttorneyFax').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyFax').disable() : this.contactInfoForm.get('IsAttorneyFax').enable());
-    (this.contactInfoForm.get('infoAttorneyEmail').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyEmail').disable() : this.contactInfoForm.get('IsAttorneyEmail').enable());
+   
     if (this.patientInfoList.length != 0) {
       this.contactInfoForm.patchValue({
         patientHeaderModel: this.patientInfoList.HeaderName,
@@ -367,15 +362,35 @@ export class CreateAlertComponent implements OnInit {
       
       if (this.retainInfoList.length != 0) {
         this.contactInfoForm.patchValue({
-          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == '0'? false : true,
-          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend == '0' ? false : true,
+          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == 'false'? false : true,
+          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend == 'false' ? false : true,
           IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend === null || this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true,
           IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend === null || this.retainInfoList.IsRefPhyEmailSend == '0'  ? false : true,
           IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend === null || this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
           IsBrokerMainEmail: this.retainInfoList.IsbrokerMainEmailSend === null || this.retainInfoList.IsbrokerMainEmailSend == '0'  ? false : true,
+          IsBrokerBillingEmail : this.retainInfoList.IsBrokerBillingEmailSend === null || this.retainInfoList.IsBrokerBillingEmailSend == '0'  ? false : true,
+          IsBrokerBillingFax : this.retainInfoList.IsBrokerBillingFaxSend === null || this.retainInfoList.IsBrokerBillingFaxSend == '0'  ? false : true,
+          IsBrokerAPFax : this.retainInfoList.IsBrokerApFaxSend === null || this.retainInfoList.IsBrokerApFaxSend == '0'  ? false : true,
+          IsBrokerAPEmail :  this.retainInfoList.IsBrokerApEmailSend === null || this.retainInfoList.IsBrokerApEmailSend == '0'  ? false : true,
           IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
           IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
+          infoAttorneyFax : this.retainInfoList.AttorenyFax ? this.retainInfoList.AttorenyFax : 'N/A',
+          infoAttorneyEmail : this.retainInfoList.AttorenyEmail ? this.retainInfoList.AttorenyEmail : 'N/A',
+          InfoRefPhyFax : this.retainInfoList.RefPhyFax ? this.retainInfoList.RefPhyFax : 'N/A',
+          infoRefPhyEmail : this.retainInfoList.RefPhyEmail ? this.retainInfoList.RefPhyEmail : 'N/A',
+          InfoBrokerMainFax : this.retainInfoList.BrokerMainFax  ? this.retainInfoList.BrokerMainFax : 'N/A',
+          InfoBrokerMainEmail : this.retainInfoList.BrokerMainEmail  ? this.retainInfoList.BrokerMainEmail : 'N/A',
+          InfoBrokerBillingFax : this.retainInfoList.BrokerBillingFax  ? this.retainInfoList.BrokerBillingFax : 'N/A',
+          InfoBrokerBillingEmail : this.retainInfoList.BrokerBillingEmail  ? this.retainInfoList.BrokerBillingEmail : 'N/A',
+          InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
+          InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
+          infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
+          infoPatientPhone : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A',
+          infoPatientEmail : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientSms : 'N/A', 
+          InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
+
+
 
           AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
           AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
@@ -408,9 +423,17 @@ export class CreateAlertComponent implements OnInit {
           this.addPhoneChecked = true;
           this.smsTextModel = this.smsBody;
         }
+       
       }
     }
-
+    (this.contactInfoForm.get('infoAttorneyFax').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyFax').disable() : this.contactInfoForm.get('IsAttorneyFax').enable());
+    (this.contactInfoForm.get('infoAttorneyEmail').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyEmail').disable() : this.contactInfoForm.get('IsAttorneyEmail').enable());
+    (this.contactInfoForm.get('InfoBrokerMainEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerMainEmail').disable() : this.contactInfoForm.get('IsBrokerMainEmail').enable());
+    (this.contactInfoForm.get('InfoBrokerBillingEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerBillingEmail').disable() : this.contactInfoForm.get('IsBrokerBillingEmail').enable());
+    (this.contactInfoForm.get('InfoBrokerAPEmail').value == 'N/A' ? this.contactInfoForm.get('IsBrokerAPEmail').disable() : this.contactInfoForm.get('IsBrokerAPEmail').enable());
+    (this.contactInfoForm.get('InfoBrokerMainFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerMainFax').disable() : this.contactInfoForm.get('IsBrokerMainFax').enable());
+    (this.contactInfoForm.get('InfoBrokerBillingFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerBillingFax').disable() : this.contactInfoForm.get('IsBrokerBillingFax').enable());
+    (this.contactInfoForm.get('InfoBrokerAPFax').value == 'N/A' ? this.contactInfoForm.get('IsBrokerAPFax').disable() : this.contactInfoForm.get('IsBrokerAPFax').enable());
     (this.contactInfoForm.get('infoPatientPhone').value == 'N/A' ? this.contactInfoForm.get('IsPatientPhone').disable() : this.contactInfoForm.get('IsPatientPhone').enable());
     (this.contactInfoForm.get('infoPatientEmail').value == 'N/A' ? this.contactInfoForm.get('IsPatientEmail').disable() : this.contactInfoForm.get('IsPatientEmail').enable());
 
@@ -525,42 +548,70 @@ export class CreateAlertComponent implements OnInit {
     this.phoneSend = '';
   }
   btnCreateSendAlert() {
-    this.btnCreateAlert();
-    this.getSendInfo();
-    if (this.contactInfoForm.get('IsBrokerMainEmail').value == true ||
-      this.contactInfoForm.get('IsRefPhyEmail').value == true ||
-      this.contactInfoForm.get('IsPatientEmail').value == true ||
-      this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
-      this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
-      this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
-      this.contactInfoForm.get('IsAttorneyEmail').value == true
-    ) {
-      this.sendEmail();
-    }
-
-    if (this.contactInfoForm.get('IsBrokerMainFax').value == true ||
+    if(this.contactInfoForm.get('IsBrokerMainEmail').value || 
+    this.contactInfoForm.get('IsRefPhyEmail').value == true ||
+    this.contactInfoForm.get('IsPatientEmail').value == true ||
+    this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
+    this.contactInfoForm.get('IsAttorneyEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerMainFax').value == true ||
       this.contactInfoForm.get('IsPatientFax').value == true ||
       this.contactInfoForm.get('AddtionalDeskFax').value == true ||
       this.contactInfoForm.get('IsRefPhyFax').value == true ||
       this.contactInfoForm.get('IsBrokerAPFax').value == true ||
       this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
-      this.contactInfoForm.get('IsAttorneyFax').value == true) {
-      this.sendFax();
-    }
-
-    if (this.contactInfoForm.get('AddtionalDeskSms').value == true ||
+      this.contactInfoForm.get('IsAttorneyFax').value == true ||
+      this.contactInfoForm.get('AddtionalDeskSms').value == true ||
       this.contactInfoForm.get('isRefPhyPhone').value == true ||
       this.contactInfoForm.get('isAttorneyPhone').value == true ||
-      this.contactInfoForm.get('IsPatientPhone').value == true) {
-      this.sendSMS();
+      this.contactInfoForm.get('IsPatientPhone').value == true
+    ){
+      this.btnCreateAlert();
+      this.getSendInfo();
+      if (this.contactInfoForm.get('IsBrokerMainEmail').value == true ||
+        this.contactInfoForm.get('IsRefPhyEmail').value == true ||
+        this.contactInfoForm.get('IsPatientEmail').value == true ||
+        this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
+        this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
+        this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
+        this.contactInfoForm.get('IsAttorneyEmail').value == true
+      ) {
+        this.sendEmail();
+      }
+  
+      if (this.contactInfoForm.get('IsBrokerMainFax').value == true ||
+        this.contactInfoForm.get('IsPatientFax').value == true ||
+        this.contactInfoForm.get('AddtionalDeskFax').value == true ||
+        this.contactInfoForm.get('IsRefPhyFax').value == true ||
+        this.contactInfoForm.get('IsBrokerAPFax').value == true ||
+        this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
+        this.contactInfoForm.get('IsAttorneyFax').value == true) {
+        this.sendFax();
+      }
+  
+      if (this.contactInfoForm.get('AddtionalDeskSms').value == true ||
+        this.contactInfoForm.get('isRefPhyPhone').value == true ||
+        this.contactInfoForm.get('isAttorneyPhone').value == true ||
+        this.contactInfoForm.get('IsPatientPhone').value == true) {
+        this.sendSMS();
+      }
+      if (this.IsSendSlackChecked == true) {
+        this.sendSlack();
+      }
+      //this.test();
+      if (this.IsEmailSent == "false" || this.IsFaxSend == "false" || this.IsSlackSend == "false" || this.IsFaxSend == "false") {
+        this.CheckSmsEmailSlackFax.nativeElement.click();
+      }
     }
-    if (this.IsSendSlackChecked == true) {
-      this.sendSlack();
-    }
-    //this.test();
-    if (this.IsEmailSent == "false" || this.IsFaxSend == "false" || this.IsSlackSend == "false" || this.IsFaxSend == "false") {
-      this.CheckSmsEmailSlackFax.nativeElement.click();
-    }
+   else{
+    this.notificationService.showNotification({ 
+      alertHeader : null,
+      alertMessage: 'Please check atleast one icon.',
+      alertType: ResponseStatusCode.BadRequest
+    });
+    return
+   }
   }
 
   btnCreateAlert() {
