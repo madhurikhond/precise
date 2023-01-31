@@ -403,39 +403,41 @@
 
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors)}"
-                                                type="text" mask="(000) -000-0000" id="AddFax1"
+                                                type="text"mask="(000) 000-0000" id="AddFax1"
                                                 class="form-control" formControlName="infoAdditionalFax1"
                                                 *ngIf="addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax1.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax1.errors.pattern">Invalid
                                                    Fax</small>
+                                                   <small class="error text-danger"
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax1.errors.required">atleast one contact Number is required</small>
                                              </div>
                                           </div>
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors )}"
-                                                type="text" mask="(000) -000-0000" id="AddFax2"
+                                                type="text" mask="(000) 000-0000" id="AddFax2"
                                                 class="form-control" formControlName="infoAdditionalFax2"
                                                 *ngIf="addFaxChecked" />
                                              <div
                                                 *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax2.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax2.errors.pattern">Invalid
                                                    Fax</small>
                                              </div>
                                           </div>
 
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors)}"
-                                                type="text" mask="(000) -000-0000" id="AddFax3"
+                                                type="text" mask="(000) 000-0000" id="AddFax3"
                                                 class="form-control" formControlName="infoAdditionalFax3"
                                                 *ngIf="addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax3.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalFax3.errors.pattern">Invalid
                                                    Fax</small>
                                              </div>
                                           </div>
@@ -456,8 +458,10 @@
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail1.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail1.errors.pattern">Invalid
                                                    email</small>
+                                                   <small class="error text-danger"
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail1.errors.required">atleast one email is required</small>
                                              </div>
                                           </div>
                                           <div class="input-dflex"> <input type="email"
@@ -467,7 +471,7 @@
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail2.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail2.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail2.errors.pattern">Invalid
                                                    email</small>
                                              </div>
                                           </div>
@@ -478,7 +482,7 @@
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail3.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail3.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalEmail3.errors.pattern">Invalid
                                                    email</small>
                                              </div>
                                           </div>
@@ -491,37 +495,39 @@
                                           <label for="chkAddPhone"><img src="assets/images/sms.png"></label>&nbsp;
                                           <div class="input-dflex"> <input type="text"
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors )}"
-                                                mask="(000) -000-0000" id="AddPhone1" class="form-control"
+                                                mask="(000) 000-0000" id="AddPhone1" class="form-control"
                                                 formControlName="infoAdditionalPhone1" *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone1.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone1.errors.pattern">Invalid
                                                    Phone</small>
+                                                   <small class="error text-danger"
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone1.errors.required">atleast one phone Number is required</small>
                                              </div>
                                           </div>
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors)}"
-                                                type="text" mask="(000) -000-0000" id="AddPhone2"
+                                                type="text" mask="(000) 000-0000" id="AddPhone2"
                                                 class="form-control" formControlName="infoAdditionalPhone2"
                                                 *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone2.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone2.errors.pattern">Invalid
                                                    Phone</small>
                                              </div>
                                           </div>
 
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors}"
-                                                type="text" mask="(000) -000-0000" id="AddPhone3"
+                                                type="text" mask="(000) 000-0000" id="AddPhone3"
                                                 class="form-control" formControlName="infoAdditionalPhone3"
                                                 *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors"
                                                 class="tooltiptext text-right">
                                                 <small class="error text-danger"
-                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone3.errors">Invalid
+                                                   *ngIf="contactInfoForm.controls.infoAdditionalPhone3.errors.pattern">Invalid
                                                    Phone</small>
                                              </div>
                                           </div>

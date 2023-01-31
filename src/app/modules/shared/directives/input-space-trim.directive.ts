@@ -5,10 +5,7 @@ import { NgControl, NgModel } from '@angular/forms';
   selector: '[appInputSpaceTrim],input[type="text"]'
 })
 export class InputSpaceTrimDirective {
-
   constructor(private el: ElementRef) { }
-
-
   @HostListener('blur') onBlur() {
     const value = this.el.nativeElement.value;
     const valueTrim = value.trim();
