@@ -388,8 +388,8 @@ export class CreateAlertComponent implements OnInit {
           InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
           InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
           infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
-          infoPatientPhone : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A',
-          infoPatientEmail : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientSms : 'N/A', 
+          infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
+          infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
           InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
 
 
