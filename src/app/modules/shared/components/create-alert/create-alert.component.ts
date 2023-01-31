@@ -548,6 +548,7 @@ export class CreateAlertComponent implements OnInit {
     this.phoneSend = '';
   }
   btnCreateSendAlert() {
+    console.log(this.contactInfoForm.controls.infoAdditionalPhone3)
     if(this.contactInfoForm.get('IsBrokerMainEmail').value || 
     this.contactInfoForm.get('IsRefPhyEmail').value == true ||
     this.contactInfoForm.get('IsPatientEmail').value == true ||
@@ -565,7 +566,7 @@ export class CreateAlertComponent implements OnInit {
       this.contactInfoForm.get('AddtionalDeskSms').value == true ||
       this.contactInfoForm.get('isRefPhyPhone').value == true ||
       this.contactInfoForm.get('isAttorneyPhone').value == true ||
-      this.contactInfoForm.get('IsPatientPhone').value == true
+      this.contactInfoForm.get('IsPatientPhone').value == true 
     ){
       this.btnCreateAlert();
       this.getSendInfo();
@@ -604,7 +605,7 @@ export class CreateAlertComponent implements OnInit {
         this.CheckSmsEmailSlackFax.nativeElement.click();
       }
     }
-   else{
+   else if(this.isContactModelShow){
     this.notificationService.showNotification({ 
       alertHeader : null,
       alertMessage: 'Please check atleast one icon.',
