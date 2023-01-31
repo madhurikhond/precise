@@ -74,6 +74,9 @@ export class CreateAlertComponent implements OnInit {
   request4: any;
   addEmailChecked : any ;
   addFaxChecked : any;
+  showRequiredFaxValidation : boolean =  false;
+  showRequiredEmailValidation : boolean =  false;
+  showRequiredPhoneValidation : boolean =  false;
   createAndSendbuttonDisable :any ;
   readonly commonRegex = CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
@@ -85,7 +88,6 @@ export class CreateAlertComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.createAlertPopUpObservable.subscribe((res) => {
-
       this.alertButtonClick = res;
       this.close()
       this.hiddenCreateAlertPopUpButton.nativeElement.click();
@@ -135,14 +137,14 @@ export class CreateAlertComponent implements OnInit {
       IsBrokerBillingFax: false,
       InfoBrokerAPFax: 'N/A',
       IsBrokerAPFax: false,
-      infoAdditionalFax1: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
+      infoAdditionalFax1: ['', [Validators.required,Validators.pattern(this.commonRegex.FaxRegex)]],
       infoAdditionalFax2: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
       infoAdditionalFax3: ['', [Validators.pattern(this.commonRegex.FaxRegex)]],
-      infoAdditionalEmail1: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
+      infoAdditionalEmail1: ['', [Validators.required,Validators.pattern(this.commonRegex.EmailRegex)]],
       infoAdditionalEmail2: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
       infoAdditionalEmail3: ['', [Validators.pattern(this.commonRegex.EmailRegex)]],
-      infoAdditionalPhone1: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
-      infoAdditionalPhone2: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone1: ['',  [Validators.required,Validators.pattern(this.commonRegex.PhoneRegex)]],
+      infoAdditionalPhone2: ['',[Validators.pattern(this.commonRegex.PhoneRegex)]],
       infoAdditionalPhone3: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
       SmsTextModel: ['', Validators.required],
       AddtionalDeskFax: false,
@@ -386,8 +388,8 @@ export class CreateAlertComponent implements OnInit {
           InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
           InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
           infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
-          infoPatientPhone : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A',
-          infoPatientEmail : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientSms : 'N/A', 
+          infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
+          infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
           InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
 
 
@@ -548,7 +550,14 @@ export class CreateAlertComponent implements OnInit {
     this.phoneSend = '';
   }
   btnCreateSendAlert() {
-    console.log(this.contactInfoForm.controls.infoAdditionalPhone3)
+    if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null ){
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage: 'Please enter Patient ID.',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return
+    }
     if(this.contactInfoForm.get('IsBrokerMainEmail').value || 
     this.contactInfoForm.get('IsRefPhyEmail').value == true ||
     this.contactInfoForm.get('IsPatientEmail').value == true ||
@@ -564,6 +573,8 @@ export class CreateAlertComponent implements OnInit {
       this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
       this.contactInfoForm.get('IsAttorneyFax').value == true ||
       this.contactInfoForm.get('AddtionalDeskSms').value == true ||
+      this.contactInfoForm.get('AddtionalDeskFax').value == true ||
+      this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
       this.contactInfoForm.get('isRefPhyPhone').value == true ||
       this.contactInfoForm.get('isAttorneyPhone').value == true ||
       this.contactInfoForm.get('IsPatientPhone').value == true 
@@ -616,6 +627,47 @@ export class CreateAlertComponent implements OnInit {
   }
 
   btnCreateAlert() {
+    if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null ){
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage: 'Please enter Patient ID.',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return
+    }
+    if(this.contactInfoForm.get('IsBrokerMainEmail').value || 
+    this.contactInfoForm.get('IsRefPhyEmail').value == true ||
+    this.contactInfoForm.get('IsPatientEmail').value == true ||
+    this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
+    this.contactInfoForm.get('IsAttorneyEmail').value == true ||
+    this.contactInfoForm.get('IsBrokerMainFax').value == true ||
+      this.contactInfoForm.get('IsPatientFax').value == true ||
+      this.contactInfoForm.get('AddtionalDeskFax').value == true ||
+      this.contactInfoForm.get('IsRefPhyFax').value == true ||
+      this.contactInfoForm.get('IsBrokerAPFax').value == true ||
+      this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
+      this.contactInfoForm.get('IsAttorneyFax').value == true ||
+      this.contactInfoForm.get('AddtionalDeskSms').value == true ||
+      this.contactInfoForm.get('AddtionalDeskFax').value == true ||
+      this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
+      this.contactInfoForm.get('isRefPhyPhone').value == true ||
+      this.contactInfoForm.get('isAttorneyPhone').value == true ||
+      this.contactInfoForm.get('IsPatientPhone').value == true 
+    ){
+      if((this.contactInfoForm.controls.infoAdditionalFax2.value == '' || this.contactInfoForm.controls.infoAdditionalFax2.value == null) && 
+      (this.contactInfoForm.controls.infoAdditionalFax3.value == '' || this.contactInfoForm.controls.infoAdditionalFax3.value == null)){
+          this.showRequiredFaxValidation = true;
+      }
+      if((this.contactInfoForm.controls.infoAdditionalEmail2.value == '' || this.contactInfoForm.controls.infoAdditionalEmail2.value == null) && 
+      (this.contactInfoForm.controls.infoAdditionalEmail3.value == '' || this.contactInfoForm.controls.infoAdditionalEmail3.value == null)){
+          this.showRequiredEmailValidation = true;
+      }
+      if((this.contactInfoForm.controls.infoAdditionalPhone2.value == '' || this.contactInfoForm.controls.infoAdditionalPhone2.value == null) && 
+      (this.contactInfoForm.controls.infoAdditionalPhone3.value == '' || this.contactInfoForm.controls.infoAdditionalPhone3.value == null)){
+          this.showRequiredPhoneValidation = true;
+      }
   if (this.addPhoneChecked == false) {
     this.contactInfoForm.get('infoAdditionalPhone1').setErrors(null);
     this.contactInfoForm.get('infoAdditionalPhone2').setErrors(null);
@@ -670,7 +722,16 @@ export class CreateAlertComponent implements OnInit {
       
     
     });
+  }else if(this.isContactModelShow){
+    this.notificationService.showNotification({ 
+      alertHeader : null,
+      alertMessage: 'Please check atleast one icon.',
+      alertType: ResponseStatusCode.BadRequest
+    });
+    return
   }
+  }
+
   getSendInfo() {
 
     if (this.contactInfoForm.get('IsAttorneyFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAttorneyFax').value + ', ')
