@@ -276,6 +276,7 @@ export class CreateAlertComponent implements OnInit {
     }
     if(PatientID !== ""){
     PatientID = PatientID.toLowerCase().includes('pre') ? PatientID : 'PRE' + PatientID;
+    this.contactInfoForm.get('patientID').setValue('');
     if (this.contactInfoForm.get('patientID').value != PatientID) {
       if (PatientID && this.alertButtonClick) {
         this.patientFieldDisable = true;
@@ -295,6 +296,9 @@ export class CreateAlertComponent implements OnInit {
             this.FillContactInfo();
             this.updateSubjectBody();
             this.isContactModelShow = true;
+            this.addEmailChecked = false;
+            this.addPhoneChecked = false;
+            this.addFaxChecked = false;
           }
           else {
             this.isContactModelShow = false;
@@ -377,23 +381,20 @@ export class CreateAlertComponent implements OnInit {
           IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
           IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
           IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
-          infoAttorneyFax : this.retainInfoList.AttorenyFax ? this.retainInfoList.AttorenyFax : 'N/A',
-          infoAttorneyEmail : this.retainInfoList.AttorenyEmail ? this.retainInfoList.AttorenyEmail : 'N/A',
-          InfoRefPhyFax : this.retainInfoList.RefPhyFax ? this.retainInfoList.RefPhyFax : 'N/A',
-          infoRefPhyEmail : this.retainInfoList.RefPhyEmail ? this.retainInfoList.RefPhyEmail : 'N/A',
-          InfoBrokerMainFax : this.retainInfoList.BrokerMainFax  ? this.retainInfoList.BrokerMainFax : 'N/A',
-          InfoBrokerMainEmail : this.retainInfoList.BrokerMainEmail  ? this.retainInfoList.BrokerMainEmail : 'N/A',
-          InfoBrokerBillingFax : this.retainInfoList.BrokerBillingFax  ? this.retainInfoList.BrokerBillingFax : 'N/A',
-          InfoBrokerBillingEmail : this.retainInfoList.BrokerBillingEmail  ? this.retainInfoList.BrokerBillingEmail : 'N/A',
-          InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
-          InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
-          infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
-          infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
-          infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
-          InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
-
-
-
+          // infoAttorneyFax : this.retainInfoList.AttorenyFax ? this.retainInfoList.AttorenyFax : 'N/A',
+          // infoAttorneyEmail : this.retainInfoList.AttorenyEmail ? this.retainInfoList.AttorenyEmail : 'N/A',
+          // InfoRefPhyFax : this.retainInfoList.RefPhyFax ? this.retainInfoList.RefPhyFax : 'N/A',
+          // infoRefPhyEmail : this.retainInfoList.RefPhyEmail ? this.retainInfoList.RefPhyEmail : 'N/A',
+          // InfoBrokerMainFax : this.retainInfoList.BrokerMainFax  ? this.retainInfoList.BrokerMainFax : 'N/A',
+          // InfoBrokerMainEmail : this.retainInfoList.BrokerMainEmail  ? this.retainInfoList.BrokerMainEmail : 'N/A',
+          // InfoBrokerBillingFax : this.retainInfoList.BrokerBillingFax  ? this.retainInfoList.BrokerBillingFax : 'N/A',
+          // InfoBrokerBillingEmail : this.retainInfoList.BrokerBillingEmail  ? this.retainInfoList.BrokerBillingEmail : 'N/A',
+          // InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
+          // InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
+          // infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
+          // infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
+          // infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
+          // InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
           AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
           AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
           AddtionalDeskSms: this.retainInfoList.IsManualDesSmsSend3 || this.retainInfoList.IsManualDesSmsSend2 || this.retainInfoList.IsManualDesSmsSend2 == '1' ? true : false,
@@ -549,6 +550,10 @@ export class CreateAlertComponent implements OnInit {
     this.emailSend = '';
     this.phoneSend = '';
   }
+  setRequired() {
+    return [Validators.required];
+  }
+
   btnCreateSendAlert() {
     if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null ){
       this.notificationService.showNotification({ 
@@ -812,8 +817,28 @@ export class CreateAlertComponent implements OnInit {
     this.addFaxChecked = false;
     this.doctorAsDefaultContact = false;
     this.attorneyAsDefaultContact = false;
+    this.showRequiredFaxValidation = false
+    this.showRequiredEmailValidation = false
+    this.showRequiredPhoneValidation = false;
+
     this.contactInfoForm.controls.reason.setValue('0')
   }
+  onClickFaxField(e){ 
+    if(e.target.value !== '' || e.target.value !== null){
+     this.showRequiredFaxValidation = false ;
+    }
+  }
+  onClickEmailField(e){ 
+    if(e.target.value !== '' || e.target.value !== null){
+     this.showRequiredEmailValidation = false ;
+    }
+  }
+  onClickPhoneField(e){ 
+    if(e.target.value !== '' || e.target.value !== null){
+     this.showRequiredPhoneValidation = false ;
+    }
+  }
+
   sendEmail() {
     if (this.contactInfoForm.invalid) {
       this.modalValue = '';
@@ -856,7 +881,7 @@ export class CreateAlertComponent implements OnInit {
         'lastName': this.patientInfoList.LastName,
         // 'MailTo': this.emailSend,
         'FromPage': 'CreateAlert',
-        // 'EmailSubject': this.contactInfoForm.get('emailSubModel').value,
+        // 'EmailSubject': this.contactInfoFGetPatientRefAttInfoForAlertorm.get('emailSubModel').value,
         'CurrentUserID': this.storageService.user.UserId,
         'EmailBody': this.contactInfoForm.get('emailBodyModel').value
       }
