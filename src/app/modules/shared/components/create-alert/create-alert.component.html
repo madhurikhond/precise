@@ -66,7 +66,6 @@
                                        [disabled]="patientFieldDisable"
                                        [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoFormRef.patientID.errors) }"
                                        [(ngModel)]="patientIdModel" (keyup.enter)="showContactInfo($event.target.value)"
-                                       (focusout)="showContactInfo($event.target.value)"
                                        (change)="showContactInfo($event.target.value)"
                                        [ngModelOptions]="{standalone: true}">
                                  </div>
@@ -400,10 +399,10 @@
                                           <input id="chkAddFax" type="checkbox" formControlName="AddtionalDeskFax"
                                              style="display: none;" (change)="onchkFaxChange($event)" />
                                           <label for="chkAddFax"><img src="assets/images/FaxIconGray.png"></label>&nbsp;
-
                                           <div class="input-dflex"> <input
-                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors && showRequiredFaxValidation)}"
-                                                type="text"mask="(000) 000-0000" id="AddFax1"
+                                             [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors?.pattern)}"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors?.required && showRequiredFaxValidation)}"
+                                                type="text"mask="(000) 000-0000" id="AddFax1" 
                                                 class="form-control" formControlName="infoAdditionalFax1"
                                                 *ngIf="addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax1.errors"
@@ -416,9 +415,9 @@
                                              </div>
                                           </div>
                                           <div class="input-dflex"> <input
-                                                [ngClass]="{'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors )}"
-                                                type="text" mask="(000) 000-0000" id="AddFax2"
-                                                class="form-control" formControlName="infoAdditionalFax2"
+                                                [ngClass]="{'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors)}"
+                                                type="text" mask="(000) 000-0000" id="AddFax2" (keydown)="onClickFaxField($event)"
+                                                class="form-control" formControlName="infoAdditionalFax2" 
                                                 *ngIf="addFaxChecked" />
                                              <div
                                                 *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax2.errors"
@@ -431,7 +430,7 @@
 
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors)}"
-                                                type="text" mask="(000) 000-0000" id="AddFax3"
+                                                type="text" mask="(000) 000-0000" id="AddFax3" (keydown)="onClickFaxField($event)"
                                                 class="form-control" formControlName="infoAdditionalFax3"
                                                 *ngIf="addFaxChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalFax3.errors"
@@ -452,7 +451,8 @@
 
 
                                           <div class="input-dflex"> <input type="email"
-                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors && showRequiredEmailValidation)}"
+                                               [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors?.pattern)}"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors?.required && showRequiredEmailValidation)}"
                                                 *ngIf="addEmailChecked" id="AddEmail1" class="form-control"
                                                 formControlName="infoAdditionalEmail1" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail1.errors"
@@ -466,7 +466,7 @@
                                           </div>
                                           <div class="input-dflex"> <input type="email"
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail2.errors)}"
-                                                *ngIf="addEmailChecked" id="AddEmail2" class="form-control"
+                                                *ngIf="addEmailChecked" id="AddEmail2" class="form-control" (keydown)="onClickEmailField($event)"
                                                 formControlName="infoAdditionalEmail2" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail2.errors"
                                                 class="tooltiptext text-right">
@@ -477,7 +477,7 @@
                                           </div>
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalEmail3.errors)}"
-                                                type="email" *ngIf="addEmailChecked" id="AddEmail3" class="form-control"
+                                                type="email" *ngIf="addEmailChecked" id="AddEmail3" class="form-control" 
                                                 formControlName="infoAdditionalEmail3" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalEmail3.errors"
                                                 class="tooltiptext text-right">
@@ -494,7 +494,8 @@
                                              style="display: none;" (change)="onchkPhoneChange($event)" />
                                           <label for="chkAddPhone"><img src="assets/images/sms.png"></label>&nbsp;
                                           <div class="input-dflex"> <input type="text"
-                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors && showRequiredPhoneValidation)}"
+                                             [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors?.pattern)}"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors?.required && showRequiredPhoneValidation)}"
                                                 mask="(000) 000-0000" id="AddPhone1" class="form-control"
                                                 formControlName="infoAdditionalPhone1" *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone1.errors"
@@ -508,7 +509,7 @@
                                           </div>
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors)}"
-                                                type="text" mask="(000) 000-0000" id="AddPhone2"
+                                                type="text" mask="(000) 000-0000" id="AddPhone2"  (keydown)="onClickPhoneField($event)"
                                                 class="form-control" formControlName="infoAdditionalPhone2"
                                                 *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone2.errors"
@@ -521,7 +522,7 @@
 
                                           <div class="input-dflex"> <input
                                                 [ngClass]="{ 'is-invalid': Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors}"
-                                                type="text" mask="(000) 000-0000" id="AddPhone3"
+                                                type="text" mask="(000) 000-0000" id="AddPhone3" (keydown)="onClickPhoneField($event)"
                                                 class="form-control" formControlName="infoAdditionalPhone3"
                                                 *ngIf="addPhoneChecked" />
                                              <div *ngIf="Issubmitted && contactInfoForm.controls.infoAdditionalPhone3.errors"
