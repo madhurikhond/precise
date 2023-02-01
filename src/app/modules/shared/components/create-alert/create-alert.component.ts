@@ -550,9 +550,6 @@ export class CreateAlertComponent implements OnInit {
     this.emailSend = '';
     this.phoneSend = '';
   }
-  setRequired() {
-    return [Validators.required];
-  }
 
   btnCreateSendAlert() {
     if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null ){
@@ -881,7 +878,7 @@ export class CreateAlertComponent implements OnInit {
         'lastName': this.patientInfoList.LastName,
         // 'MailTo': this.emailSend,
         'FromPage': 'CreateAlert',
-        // 'EmailSubject': this.contactInfoFGetPatientRefAttInfoForAlertorm.get('emailSubModel').value,
+        // 'EmailSubject': this.contactInfoForm.get('emailSubModel').value,,
         'CurrentUserID': this.storageService.user.UserId,
         'EmailBody': this.contactInfoForm.get('emailBodyModel').value
       }
