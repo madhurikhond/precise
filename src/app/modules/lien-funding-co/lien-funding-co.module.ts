@@ -19,9 +19,10 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { FundingCoUnpaidComponent } from './funding-co-unpaid/funding-co-unpaid.component';
 import { FundingCoPaidComponent } from './funding-co-paid/funding-co-paid.component';
 import { FundingCoSettingComponent } from './funding-co-setting/funding-co-setting.component';
+import { OriginalLienOwnerComponent } from './original-lien-owner/original-lien-owner.component';
 
 @NgModule({
-  declarations: [LienFundingCoComponent, PendingSignatureComponent, FundingCoUnpaidComponent,FundingCoPaidComponent,FundingCoSettingComponent],
+  declarations: [LienFundingCoComponent, PendingSignatureComponent, FundingCoUnpaidComponent,FundingCoPaidComponent,FundingCoSettingComponent,OriginalLienOwnerComponent],
   imports: [
     CommonModule,
     NgSelectModule,
