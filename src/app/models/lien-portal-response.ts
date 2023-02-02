@@ -57,6 +57,7 @@ export enum LienPortalPageTitleOption {
   PENDING_SIGNATURE = "Pending Signature",
   PAID = "Paid",
   UNPAID = "Unpaid",
+  ORIGINALLIENOWNERDATA = "Original Lien Owner Data"
 }
 
 export enum LienPortalTabName {
@@ -68,6 +69,7 @@ export enum LienPortalTabName {
 }
 
 export enum LienFundingCoTabName {
+  ORIGINALLIENOWNER = 'originallien',
   PENDING = 'pending',
   UNPAID = "unpaid",
   PAID = "paid",
@@ -111,7 +113,7 @@ export enum LienPortalAPIEndpoint {
   GetRadiologistUser = APIURL.LIEN_PORTAL + "GetRadiologistUser",
   RemovePayment = APIURL.LIEN_PORTAL + "RemovePayment",
   EditPaymentInformation = APIURL.LIEN_PORTAL + "EditPaymentInformation",
-
+  GetReferrersWisePendingToBillCount = APIURL.LIEN_PORTAL + "GetReferrersWisePendingToBillCount",
   //Funding Company Setting
   AddFundingUserSetting = APIURL.LIEN_PORTAL + "AddFundingUserSetting",
   GetFundingCompanySetting = APIURL.LIEN_PORTAL + "GetFundingCompanySetting",

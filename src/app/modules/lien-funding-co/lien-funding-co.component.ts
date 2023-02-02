@@ -55,6 +55,8 @@ export class LienFundingCoComponent implements OnInit {
     };
 
     switch (this.selectedMode) {
+      case LienFundingCoTabName.ORIGINALLIENOWNER:
+        break;
       case LienFundingCoTabName.PENDING:
         break;
       case LienFundingCoTabName.UNPAID:
@@ -72,6 +74,11 @@ export class LienFundingCoComponent implements OnInit {
 
   bindDateType_list() {
     switch (this.selectedMode) {
+      case LienFundingCoTabName.ORIGINALLIENOWNER:
+        this.dateType = [
+          {val:'studyDate',text:'Date Of Study'}
+        ]
+        break;
       case LienFundingCoTabName.PENDING:
         this.dateType = [
           {val:'birthDate',text:'Date Of Birth'},

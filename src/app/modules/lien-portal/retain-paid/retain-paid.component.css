@@ -75,3 +75,19 @@ flex: 25%;
 text-align: right;
 }
 
+.copyIcon{
+  margin-left: 41px;
+}
+.copyIcon>i{
+  cursor: pointer;
+  color: #3b8beb;
+}
+.trnNumber {
+  display: flex;
+  align-items: center;
+}
+
+.trnNumber span {
+  width: 115px;
+}
+

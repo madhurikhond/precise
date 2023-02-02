@@ -5,6 +5,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { LienPortalAPIEndpoint, LienPortalPageTitleOption, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
+import { NotificationService } from 'src/app/services/common/notification.service';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { LienPortalService } from 'src/app/services/lien-portal/lien-portal.service';
 @Component({
@@ -70,7 +71,8 @@ export class RetainUnpaidComponent implements OnInit {
   permissionForReceivePayment : any;
   defaultCompanyName: any[];
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, private storageService: StorageService,
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, 
+    private storageService: StorageService,private readonly notificationService: NotificationService,
     private fb: FormBuilder) {
     this.allMode = 'page';
     this.checkBoxesMode = 'always';
@@ -92,7 +94,8 @@ export class RetainUnpaidComponent implements OnInit {
       fundingCompany: ['', Validators.required],
       firstName: [this.storageService.user.FirstName, Validators.required],
       lastName: [this.storageService.user.LastName, Validators.required],
-      radiologistSign: ['', Validators.required]
+      radiologistSign: ['', Validators.required],
+      title : ['',Validators.required]
     })
     this.receivePaymentform = this.fb.group({
       checkAmount: ['', [Validators.required ,Validators.pattern(/^(?=.*[1-9])(?:[1-9]\d*\.?|0?\.)\d*$/)]],
@@ -185,7 +188,8 @@ export class RetainUnpaidComponent implements OnInit {
             "patientName": element.firstName + ' ' + element.lastName,
             "dateOfStudy": element.dateRead,
             "studyDescription": element.studyDescription,
-            "cptGroup": element.cptGroup
+            "cptGroup": element.cptGroup,
+            "dob": element.dateOfBirth
           }
           retainSelectedData.push(selectedData);
         });
@@ -196,6 +200,7 @@ export class RetainUnpaidComponent implements OnInit {
         "radLastName": this.storageService.user.LastName,
         "fundingCompanyId": Number(this.assignARform.get("fundingCompany").value),
         "fundingCompany": selectedFundingCompany[0].fundingCompanyName,
+        "title": this.assignARform.get('title').value,
       }
       this.lienPortalService.PostAPI(request, LienPortalAPIEndpoint.AssignARPreviewAssignment).subscribe((res) => {
         if (res.status == LienPortalResponseStatus.Success) {
@@ -279,6 +284,7 @@ export class RetainUnpaidComponent implements OnInit {
         firstName: this.assignARform.get("firstName").value,
         lastName: this.assignARform.get("lastName").value,
         fundingCompanyId: Number(this.assignARform.get("fundingCompany").value),
+        title: this.assignARform.get('title').value,
         baseUrl: window.location.origin
       }
 
@@ -382,5 +388,16 @@ export class RetainUnpaidComponent implements OnInit {
   }
   onExpand(){
     this.dataGrid.instance.expandAll(-1);
+  }
+
+  copyToClipboard(trnNumber){
+    navigator.clipboard.writeText(trnNumber).catch(() => {
+      console.error("Unable to copy text");
+    });
+    this.notificationService.showToasterForTransaction({
+      alertHeader: '',
+      alertMessage: trnNumber,
+      alertType: null
+    });
   }
 }

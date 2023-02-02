@@ -34,6 +34,7 @@ export class AddFundingCompanyComponent implements OnInit {
     this.fundingCompanyForm = this.fb.group({
       fundingCompanyId: [0],
       fundingCompanyName: ['', Validators.required],
+      dba:[''],
       contactName: ['', Validators.required],
       contactEmail: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       contactPhone: ['', [Validators.required,Validators.pattern(/^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{4}( ?x([0-9]{3}))?$/)]],
@@ -101,6 +102,7 @@ export class AddFundingCompanyComponent implements OnInit {
   private clearFundingCompanyForm() {
     this.fundingCompanyForm.patchValue({
       fundingCompanyName: '',
+      dba: '',
       contactName: '',
       contactEmail: '',
       contactPhone: '',
@@ -162,6 +164,7 @@ export class AddFundingCompanyComponent implements OnInit {
     this.fundingCompanyForm.patchValue({
       fundingCompanyId: data.fundingCompanyId,
       fundingCompanyName: data.fundingCompanyName,
+      dba: data.dba,
       contactName: data.contactName,
       contactEmail: data.contactEmail,
       contactPhone: data.phoneNumber,
@@ -192,7 +195,6 @@ export class AddFundingCompanyComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.fundingCompanyForm.markAllAsTouched();
     if(this.fundingCompanyForm.valid && this.fundingCompanyPriceForm.valid)
     {
@@ -290,7 +292,6 @@ export class AddFundingCompanyComponent implements OnInit {
     let data ={};
     this.lienPortalService.PostAPI(data,LienPortalAPIEndpoint.GetCPTGroupList).subscribe((result)=>{
       if (result.status == LienPortalResponseStatus.Success) {
-        console.log(result);
         this.cptGroupList = result.result;
         this.setGroupIdSellPrice();
         this.cptGroupList = this.cptGroupList.filter((value)=>{

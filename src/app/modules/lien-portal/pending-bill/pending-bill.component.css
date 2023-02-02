@@ -94,3 +94,7 @@ text-transform: none !important;
 .lower-text-data{
     text-transform: none !important;
 }
+.fundingCmpSelect.form-control{
+    padding: 2px 12px;
+    height: auto;
+  }
