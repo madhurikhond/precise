@@ -1353,6 +1353,7 @@ export class SchdFacilitiesComponent implements OnInit {
           }
         );
     }
+    this.updateFacility(true);
   }
   getFacilityPricingHistory(facilityId: number) {
     this.facilityPricingHistoryList = [];
