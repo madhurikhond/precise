@@ -314,11 +314,11 @@
 											<label for="editinfo5" class="arrow-label">Do not schedule this
 												facility</label>
 										</div>
-										<div class="checkbox-theme">
+										<!-- <div class="checkbox-theme">
 											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"
 												formControlName="useBlockLease" type="checkbox">
 											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
-										</div>
+										</div> -->
 										<div class="form-group">
 											<div class="theme-label">Facility mile</div>
 											<div class="input-group">
@@ -739,7 +739,7 @@
 											<div class="form-group">
 												<div class="theme-label">3RD EMAIL ADDRESS FOR LEASE</div>
 												<div class="input-group">
-													<input type="text" class="form-control"
+													<input type="text" class="form-control"  
 														formControlName="emailAddress23P"
 														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress23P.errors }">
 												</div>
@@ -3783,8 +3783,77 @@
 
 												</div>
 											</dx-data-grid>
-										</div>
+										</div> 
 									</div>
+									<form class="theme-form" [formGroup]="facilityContactDetailForm">
+										<div class="checkbox-theme">
+											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"
+												formControlName="useBlockLease" type="checkbox">
+											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
+										</div>
+										 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="checkbox-theme">
+                                                <input class="form-control" formControlName="isSendLeaseToFacility"
+                                                    id="scheduling-info5" type="checkbox" disabled>
+                                                <label for="scheduling-info5" class="arrow-label">Send lease agreement to scheduling
+                                                    facility instead of the parent</label>
+                                            </div>
+                                        </div>
+										<div class="row" *ngIf="facilityContactDetailForm.get('isSendLeaseToFacility').value">
+											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+												<div class="form-group">
+													<div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
+													<div class="input-group">
+														<input type="text" formControlName="defaultEmailAddress3P"
+															class="form-control"
+															[ngClass]="{ 'is-invalid':facilityContactDetailFormControls.defaultEmailAddress3P.errors}">
+														<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
+															class="invalid-feedback">
+															<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required ">
+																DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
+															</div>
+															<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors.pattern">DEFAULT
+																EMAIL ADDRESS FOR LEASE
+																MUST BE A VALID
+																EMAIL ADDRESS
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+	
+											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+												<div class="form-group">
+													<div class="theme-label"> 2ND EMAIL ADDRESS FOR LEASE</div>
+													<div class="input-group">
+														<input type="text" formControlName="emailAddress13P"
+															class="form-control"
+															[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors}">
+														<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors"
+															class="invalid-feedback">
+															<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors">2ND EMAIL ADDRESS FOR
+																LEASE MUST BE A VALID
+																EMAIL ADDRESS
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+												<div class="form-group">
+													<div class="theme-label">3RD EMAIL ADDRESS FOR LEASE</div>
+													<div class="input-group">
+														<input type="text" formControlName="emailAddress23P"
+															class="form-control"
+															[ngClass]="{'is-invalid':(facilityContactDetailFormControls.emailAddress23P.errors)}">
+														<div *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
+															class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE A VALID
+															EMAIL ADDRESS</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										</form>
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
 										id="LeaseAgreements">
@@ -3886,7 +3955,7 @@
 																<i  *ngIf = 'data.data.IsPaid == true'>
 																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
 																</i>
-																<i  *ngIf = 'data.data.IsPaid == false'>
+																<i  *ngIf = 'data.data.IsUnpaid == true'>
 																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
 																</i>
 															</div>
@@ -3989,7 +4058,7 @@
 																<i  *ngIf = 'data.data.IsPaid == true'>
 																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
 																</i>
-																<i  *ngIf = 'data.data.IsPaid == false'>
+																<i  *ngIf = 'data.data.IsUnpaid == true'>
 																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
 																</i>
 															</div>
@@ -4024,7 +4093,7 @@
 												<dxo-paging [enabled]="false"></dxo-paging>
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-												<dxi-column dataField="CreditTime" caption="Credit Time"></dxi-column>
+												<dxi-column dataField="Credit time" caption="Credit Time"></dxi-column>
 												<dxi-column dataField="LeaseTime" caption="Original Leased Time">
 												</dxi-column>
 												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>

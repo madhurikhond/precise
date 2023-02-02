@@ -157,7 +157,7 @@ export class SchdFacilitiesComponent implements OnInit {
   currentPageUrl: string;
   CTpageSize :number = 20;
   CTPageNumber  : number =1 ;
-
+  isSendLeaseToFacility : any;
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -434,7 +434,7 @@ export class SchdFacilitiesComponent implements OnInit {
       overridePrice: [''],
       isActive: [''],
       doNotScheduleFacility: [''],
-      useBlockLease: [''],
+
       facilityMile: [''],
       priceWeight: [''],
       latitude: [''],
@@ -443,7 +443,32 @@ export class SchdFacilitiesComponent implements OnInit {
       previousFacilityName1: [''],
       previousFacilityName2: [''],
       schedFacilityTaxID: [''],
+     
     });
+
+    // this.generalInfoForm.get('isSendLeaseToFacility').valueChanges
+    // .subscribe(isSendLeaseToFacility => {
+    //   const DefaultEmailAddress3P = this.generalInfoForm.get('DefaultEmailAddress3P');
+    //   const EmailAddress13P = this.generalInfoForm.get('EmailAddress13P');
+    //   const EmailAddress23P = this.generalInfoForm.get('EmailAddress23P');
+
+    //   if (isSendLeaseToFacility) {
+    //     // DefaultEmailAddress3P.setValue(null);
+    //     // EmailAddress13P.setValue(null);
+    //     // EmailAddress23P.setValue(null);
+    //     DefaultEmailAddress3P.setValidators(null);
+    //     EmailAddress13P.setValidators(null);
+    //     EmailAddress13P.setValidators(null);
+    //   } else {
+    //     // DefaultEmailAddress3P.setValue(this.facilityDetail.defaultEmailAddress3P);
+    //     // EmailAddress13P.setValue(this.facilityDetail.emailAddress13P);
+    //     // EmailAddress23P.setValue(this.facilityDetail.emailAddress23P);
+    //     DefaultEmailAddress3P.setValidators([Validators.required, Validators.pattern(this.commonRegex.EmailRegex)])
+    //     EmailAddress13P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
+    //     EmailAddress23P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
+    //   }
+    //   this.generalInfoForm.get('DefaultEmailAddress3P').updateValueAndValidity();
+    // });
   }
   createFacilityDetailTabForm() {
     this.facilityContactDetailForm = this.fb.group({
@@ -483,13 +508,14 @@ export class SchdFacilitiesComponent implements OnInit {
       imagesCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       imagesHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       imagesFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-
       billingContact: [''],
       billingEmail: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       billingOfficePhone: ['', [Validators.minLength(10)]],
       billingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       billingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       billingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      useBlockLease: [''],
+      isSendLeaseToFacility : [''],
     });
 
   }
@@ -958,6 +984,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getFacilityResourceDropDownData();
   }
   getFacilityDetailById() {
+    debugger
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
@@ -1196,6 +1223,7 @@ export class SchdFacilitiesComponent implements OnInit {
       }  
     }  
   }
+
   getLeaseAgreementsByFacilityId(facilityId: number) {
     debugger
     this.blockLeaseAgreementMRIList = [];
@@ -1282,6 +1310,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.eventBlockLeasePricingData = e;
   }
   saveBlockLeasePricing() {
+    debugger
     this.submitted = true;
     console.log(this.eventBlockLeasePricingData);
     if (this.eventBlockLeasePricingData['data']) {
@@ -1449,9 +1478,39 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   setGeneralInfoTabForm(data: any) {
-    this.disableCheckbox = data.useBlockLease;
+    this.isSendLeaseToFacility = data.isSendLeaseToFacility
     this.parentDropDownModel = data.parentCoName;
     this.facilityName = data.facilityName;
+    this.generalInfoForm.patchValue({
+      facilityId: data.facilityId,
+      facilityName: data.facilityName,
+      parentCoName: data.parentCoName,
+      facilityParentId: data.facilityParentId,
+      street: data.street,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      lacounty: data.lacounty,
+      overridePrice: data.overridePrice,
+      isActive: data.isActive,
+      doNotScheduleFacility: data.doNotScheduleFacility,
+
+      facilityMile: data.facilityMile,
+      priceWeight: data.priceWeight,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      previousFacilityName: data.previousFacilityName,
+      previousFacilityName1: data.previousFacilityName1,
+      previousFacilityName2: data.previousFacilityName2,
+      schedulingLevel: data.schedulingLevel,
+      schedFacilityTaxID: data.schedFacilityTaxID,
+
+    });
+   
+    if (data.overridePrice) this.allowUpdatingPrice = true;
+    else this.allowUpdatingPrice = false;
+  }
+  setFacilityContactDetailTabForm(data: any) {
     if (!data.useBlockLease) {
       this.GetUnpaidLeasesList = [];
       $('#BlockLeaseRate')
@@ -1497,34 +1556,7 @@ export class SchdFacilitiesComponent implements OnInit {
       //   .removeClass('disabledClass');
 
     }
-    this.generalInfoForm.patchValue({
-      facilityId: data.facilityId,
-      facilityName: data.facilityName,
-      parentCoName: data.parentCoName,
-      facilityParentId: data.facilityParentId,
-      street: data.street,
-      city: data.city,
-      state: data.state,
-      zip: data.zip,
-      lacounty: data.lacounty,
-      overridePrice: data.overridePrice,
-      isActive: data.isActive,
-      doNotScheduleFacility: data.doNotScheduleFacility,
-      useBlockLease: data.useBlockLease,
-      facilityMile: data.facilityMile,
-      priceWeight: data.priceWeight,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      previousFacilityName: data.previousFacilityName,
-      previousFacilityName1: data.previousFacilityName1,
-      previousFacilityName2: data.previousFacilityName2,
-      schedulingLevel: data.schedulingLevel,
-      schedFacilityTaxID: data.schedFacilityTaxID,
-    });
-    if (data.overridePrice) this.allowUpdatingPrice = true;
-    else this.allowUpdatingPrice = false;
-  }
-  setFacilityContactDetailTabForm(data: any) {
+    this.disableCheckbox = data.useBlockLease;
     this.facilityContactDetailForm.patchValue({
       itsupportContact: data.itsupportContact,
       itsupportEmail: data.itsupportEmail,
@@ -1570,6 +1602,8 @@ export class SchdFacilitiesComponent implements OnInit {
       billingCellPhone: data.billingCellPhone,
       billingHomePhone: data.billingHomePhone,
       billingFax: data.billingFax,
+      useBlockLease: data.useBlockLease,
+      isSendLeaseToFacility : data.isSendLeaseToFacility
     });
   }
   setModalityServiceTabForm(data: any) {
@@ -2024,6 +2058,7 @@ export class SchdFacilitiesComponent implements OnInit {
   updateFacility(isPopUpStay: boolean) {
     this.modalValue = 'modal';
     this.submitted = true;
+    this.setFacilityContactDetailTabForm(this.facilityContactDetailForm.value)
     this.setGeneralInfoTabForm(this.generalInfoForm.value);
     if (
       this.generalInfoForm.invalid ||
@@ -2051,7 +2086,6 @@ export class SchdFacilitiesComponent implements OnInit {
       isActive: this.generalInfoFormControls.isActive.value,
       doNotScheduleFacility:
         this.generalInfoFormControls.doNotScheduleFacility.value,
-      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -2115,7 +2149,7 @@ export class SchdFacilitiesComponent implements OnInit {
       billingHomePhone: this.facilityContactDetailFormControls.billingHomePhone.value != null ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(/\D+/g, '') : '',
       billingFax: this.facilityContactDetailFormControls.billingFax.value != null ? this.facilityContactDetailFormControls.billingFax.value.replace(/\D+/g, '') : '',
 
-
+      useBlockLease: this.facilityContactDetailFormControls.useBlockLease.value,
       ///// Modality Service Tab Form Controls
 
       arthrogramService: this.modalityServiceFormControls.arthrogramService.value,
@@ -2464,7 +2498,7 @@ export class SchdFacilitiesComponent implements OnInit {
       isActive: this.generalInfoFormControls.isActive.value,
       doNotScheduleFacility:
         this.generalInfoFormControls.doNotScheduleFacility.value,
-      useBlockLease: this.generalInfoFormControls.useBlockLease.value,
+      
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -2522,7 +2556,7 @@ export class SchdFacilitiesComponent implements OnInit {
       billingCellPhone: this.facilityContactDetailFormControls.billingCellPhone.value != null ? this.facilityContactDetailFormControls.billingCellPhone.value.replace(/\D+/g, '') : '',
       billingHomePhone: this.facilityContactDetailFormControls.billingHomePhone.value != null ? this.facilityContactDetailFormControls.billingHomePhone.value.replace(/\D+/g, '') : '',
       billingFax: this.facilityContactDetailFormControls.billingFax.value != null ? this.facilityContactDetailFormControls.billingFax.value.replace(/\D+/g, '') : '',
-
+      useBlockLease: this.facilityContactDetailFormControls.useBlockLease.value,
 
       ///// Modality Service Tab Form Controls
 
