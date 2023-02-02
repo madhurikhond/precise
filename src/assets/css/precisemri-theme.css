@@ -6963,7 +6963,7 @@ tree-node:last-child > .tree-node > .tree-children::after {
 	float: none;
 }
 .custom-patient-row-selection td{
-	background-color: #f7bb9b  !important;
+	background-color: #D3D3D3 !important;
 }
 
 .release-note{
