@@ -185,7 +185,7 @@ export class RetainUnpaidComponent implements OnInit {
         data.retainedArUnPaidList.forEach(element => {
           var selectedData = {
             "patientId": element.patientId,
-            "patientName": element.firstName + ' ' + element.lastName,
+            "patientName": element.lastName + ', ' + element.firstName,
             "dateOfStudy": element.dateRead,
             "studyDescription": element.studyDescription,
             "cptGroup": element.cptGroup,
