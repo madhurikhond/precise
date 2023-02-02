@@ -739,7 +739,7 @@
 											<div class="form-group">
 												<div class="theme-label">3RD EMAIL ADDRESS FOR LEASE</div>
 												<div class="input-group">
-													<input type="text" class="form-control"  
+													<input type="text" class="form-control"
 														formControlName="emailAddress23P"
 														[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress23P.errors }">
 												</div>
@@ -3783,7 +3783,7 @@
 
 												</div>
 											</dx-data-grid>
-										</div> 
+										</div>
 									</div>
 									<form class="theme-form" [formGroup]="facilityContactDetailForm">
 										<div class="checkbox-theme">
@@ -3791,15 +3791,17 @@
 												formControlName="useBlockLease" type="checkbox">
 											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
-										 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="checkbox-theme">
-                                                <input class="form-control" formControlName="isSendLeaseToFacility"
-                                                    id="scheduling-info5" type="checkbox" disabled>
-                                                <label for="scheduling-info5" class="arrow-label">Send lease agreement to scheduling
-                                                    facility instead of the parent</label>
-                                            </div>
-                                        </div>
-										<div class="row" *ngIf="facilityContactDetailForm.get('isSendLeaseToFacility').value">
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="checkbox-theme">
+												<input class="form-control" formControlName="isSendLeaseToFacility"
+													id="scheduling-info5" type="checkbox" disabled>
+												<label for="scheduling-info5" class="arrow-label">Send lease agreement
+													to scheduling
+													facility instead of the parent</label>
+											</div>
+										</div>
+										<div class="row"
+											*ngIf="facilityContactDetailForm.get('isSendLeaseToFacility').value">
 											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 												<div class="form-group">
 													<div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
@@ -3809,10 +3811,13 @@
 															[ngClass]="{ 'is-invalid':facilityContactDetailFormControls.defaultEmailAddress3P.errors}">
 														<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
 															class="invalid-feedback">
-															<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required ">
+															<div
+																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required ">
 																DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
 															</div>
-															<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors.pattern">DEFAULT
+															<div
+																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors.pattern">
+																DEFAULT
 																EMAIL ADDRESS FOR LEASE
 																MUST BE A VALID
 																EMAIL ADDRESS
@@ -3821,7 +3826,7 @@
 													</div>
 												</div>
 											</div>
-	
+
 											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
 												<div class="form-group">
 													<div class="theme-label"> 2ND EMAIL ADDRESS FOR LEASE</div>
@@ -3831,7 +3836,9 @@
 															[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors}">
 														<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors"
 															class="invalid-feedback">
-															<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors">2ND EMAIL ADDRESS FOR
+															<div
+																*ngIf="facilityContactDetailFormControls.emailAddress13P.errors">
+																2ND EMAIL ADDRESS FOR
 																LEASE MUST BE A VALID
 																EMAIL ADDRESS
 															</div>
@@ -3847,13 +3854,14 @@
 															class="form-control"
 															[ngClass]="{'is-invalid':(facilityContactDetailFormControls.emailAddress23P.errors)}">
 														<div *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
-															class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE A VALID
+															class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE
+															A VALID
 															EMAIL ADDRESS</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										</form>
+									</form>
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
 										id="LeaseAgreements">
@@ -3902,7 +3910,7 @@
 																cellTemplate="TotalHourTemplate" caption="Total">
 															</dxi-column>
 															<dxi-column caption="Paid"
-															cellTemplate="paidUnpaidIconShowTemplate">
+																cellTemplate="paidUnpaidIconShowTemplate">
 															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfMRILinkTemplate">
@@ -3926,11 +3934,14 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
-																<a href="javascript:void(0)" class="text-success link-btn" *ngIf = 'data.data.IsLeaseExecuted'
-																data-toggle="modal" data-target="#viewFile_Docx"  style="margin-left: 5px"
-																(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
-																<i class="fa fa-file-pdf-o"></i>
-															</a>
+																<a href="javascript:void(0)"
+																	class="text-success link-btn"
+																	*ngIf='data.data.IsLeaseExecuted'
+																	data-toggle="modal" data-target="#viewFile_Docx"
+																	style="margin-left: 5px"
+																	(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
+																	<i class="fa fa-file-pdf-o"></i>
+																</a>
 
 															</div>
 
@@ -3941,22 +3952,26 @@
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p *ngIf = 'data.data.FacilitySignedOn!==null'>
+																<p *ngIf='data.data.FacilitySignedOn!==null'>
 																	{{data.data.FacilitySignedOn
-																		|date:
+																	|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
-																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																<p *ngIf='data.data.FacilitySignedOn == null'>
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
 																</p>
 															</div>
 															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
-																<i  *ngIf = 'data.data.IsPaid == true'>
-																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																<i *ngIf='data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png"
+																		class="paid_unpaid_cursor"
+																		style="width: 9px;margin-left: 5px">
 																</i>
-																<i  *ngIf = 'data.data.IsUnpaid == true'>
-																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																<i *ngIf='data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png"
+																		class="paid_unpaid_cursor"
+																		style="width: 9px;margin-left: 5px">
 																</i>
 															</div>
 														</dx-data-grid>
@@ -4003,7 +4018,7 @@
 																cellTemplate="TotalCTHourTemplate">
 															</dxi-column>
 															<dxi-column caption="Paid"
-															cellTemplate="paidUnpaidIconShowTemplate">
+																cellTemplate="paidUnpaidIconShowTemplate">
 															</dxi-column>
 															<dxi-column caption="Agreement"
 																cellTemplate="pdfCTLinkTemplate">
@@ -4026,10 +4041,13 @@
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
-																<a href="javascript:void(0)" class="text-success link-btn" *ngIf = 'data.data.IsLeaseExecuted'
-																data-toggle="modal" data-target="#viewFile_Docx"  style="margin-left: 5px"
-																(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
-																<i class="fa fa-file-pdf-o"></i>
+																<a href="javascript:void(0)"
+																	class="text-success link-btn"
+																	*ngIf='data.data.IsLeaseExecuted'
+																	data-toggle="modal" data-target="#viewFile_Docx"
+																	style="margin-left: 5px"
+																	(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
+																	<i class="fa fa-file-pdf-o"></i>
 																</a>
 															</div>
 															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
@@ -4043,7 +4061,7 @@
 																	{{data.data.FacilitySignedOn|date:
 																	dateTimeFormatCustom.Date}}
 																</p>
-																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
+																<p *ngIf='data.data.FacilitySignedOn == null'>
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
 																</p>
@@ -4055,11 +4073,15 @@
 																</p>
 															</div> -->
 															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
-																<i  *ngIf = 'data.data.IsPaid == true'>
-																	<img src="assets/images/paid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																<i *ngIf='data.data.IsPaid == true'>
+																	<img src="assets/images/paid.png"
+																		class="paid_unpaid_cursor"
+																		style="width: 9px;margin-left: 5px">
 																</i>
-																<i  *ngIf = 'data.data.IsUnpaid == true'>
-																	<img src="assets/images/unpaid.png" class="paid_unpaid_cursor" style="width: 9px;margin-left: 5px">
+																<i *ngIf='data.data.IsUnpaid == true'>
+																	<img src="assets/images/unpaid.png"
+																		class="paid_unpaid_cursor"
+																		style="width: 9px;margin-left: 5px">
 																</i>
 															</div>
 														</dx-data-grid>
@@ -4183,7 +4205,8 @@
 																<dxi-column dataField="LeaseId" caption="LEASE #">
 																</dxi-column>
 																<dxi-column dataField="MonthLabel"
-																	cellTemplate="monthTemplate" [allowSorting]="false" caption="MONTH">
+																	cellTemplate="monthTemplate" [allowSorting]="false"
+																	caption="MONTH">
 																</dxi-column>
 
 																<dxi-column dataField="ModalityType" caption="Modality">
@@ -4314,7 +4337,8 @@
 																<dxi-column dataField="PaymentTXN"
 																	caption="PAYMENT TXN">
 																</dxi-column>
-																<dxi-column dataField="DateCreated" cellTemplate="DateCreatedTemplate"
+																<dxi-column dataField="DateCreated"
+																	cellTemplate="DateCreatedTemplate"
 																	caption="DATE CREATED">
 																</dxi-column>
 																<dxi-column dataField="paidMonth"
@@ -4322,11 +4346,12 @@
 																</dxi-column>
 																<dxi-column dataField="CheckNo" caption="CHECK #">
 																</dxi-column>
-																<dxi-column dataField="CheckDate" caption="CHECK DATE" cellTemplate="CheckDateTemplate"
-																	[width]="200"> </dxi-column>
-																<dxi-column dataField="CheckAmount" cellTemplate="creditTotalTemplate"
-																	caption="CHECK AMOUNT"  
-																	 ></dxi-column>
+																<dxi-column dataField="CheckDate" caption="CHECK DATE"
+																	cellTemplate="CheckDateTemplate" [width]="200">
+																</dxi-column>
+																<dxi-column dataField="CheckAmount"
+																	cellTemplate="creditTotalTemplate"
+																	caption="CHECK AMOUNT"></dxi-column>
 																<dxi-column dataField="FileDetail "
 																	caption="VIEW PDF PAYMENT DETAILS"
 																	cellTemplate="cellTemplate">
@@ -4339,7 +4364,7 @@
 																<div *dxTemplate="let data of 'creditTotalTemplate'">
 																	<p *ngIf="data.data.CheckAmount">
 																		${{data.data.CheckAmount | number:'0.2-2'}}
-																	</p> 
+																	</p>
 
 																</div>
 																<div *dxTemplate="let data of 'CheckDateTemplate'">
@@ -4398,7 +4423,7 @@
 																		<dxi-column dataField="CreditReason"
 																			caption="Credit Reason"></dxi-column>
 																		<dxi-column dataField="CreditTime"
-																			caption="Credit Time"></dxi-column>
+																			caption="Credit time"></dxi-column>
 																		<dxi-column dataField="ModalityType"
 																			caption="Modality"></dxi-column>
 																		<dxi-column dataField="CreditAmount"

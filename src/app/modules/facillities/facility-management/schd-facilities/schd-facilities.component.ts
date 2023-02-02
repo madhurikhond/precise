@@ -445,30 +445,6 @@ export class SchdFacilitiesComponent implements OnInit {
       schedFacilityTaxID: [''],
      
     });
-
-    // this.generalInfoForm.get('isSendLeaseToFacility').valueChanges
-    // .subscribe(isSendLeaseToFacility => {
-    //   const DefaultEmailAddress3P = this.generalInfoForm.get('DefaultEmailAddress3P');
-    //   const EmailAddress13P = this.generalInfoForm.get('EmailAddress13P');
-    //   const EmailAddress23P = this.generalInfoForm.get('EmailAddress23P');
-
-    //   if (isSendLeaseToFacility) {
-    //     // DefaultEmailAddress3P.setValue(null);
-    //     // EmailAddress13P.setValue(null);
-    //     // EmailAddress23P.setValue(null);
-    //     DefaultEmailAddress3P.setValidators(null);
-    //     EmailAddress13P.setValidators(null);
-    //     EmailAddress13P.setValidators(null);
-    //   } else {
-    //     // DefaultEmailAddress3P.setValue(this.facilityDetail.defaultEmailAddress3P);
-    //     // EmailAddress13P.setValue(this.facilityDetail.emailAddress13P);
-    //     // EmailAddress23P.setValue(this.facilityDetail.emailAddress23P);
-    //     DefaultEmailAddress3P.setValidators([Validators.required, Validators.pattern(this.commonRegex.EmailRegex)])
-    //     EmailAddress13P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
-    //     EmailAddress23P.setValidators([Validators.pattern(this.commonRegex.EmailRegex)])
-    //   }
-    //   this.generalInfoForm.get('DefaultEmailAddress3P').updateValueAndValidity();
-    // });
   }
   createFacilityDetailTabForm() {
     this.facilityContactDetailForm = this.fb.group({
@@ -984,7 +960,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.getFacilityResourceDropDownData();
   }
   getFacilityDetailById() {
-    debugger
     //this.isFacilityNoteTabVisible=true;
     //this.isFacilityPricingTabVisible=true;
     //this.isFacilityDocumentTabVisible=true;
@@ -1225,7 +1200,6 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   getLeaseAgreementsByFacilityId(facilityId: number) {
-    debugger
     this.blockLeaseAgreementMRIList = [];
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
@@ -1310,7 +1284,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.eventBlockLeasePricingData = e;
   }
   saveBlockLeasePricing() {
-    debugger
     this.submitted = true;
     console.log(this.eventBlockLeasePricingData);
     if (this.eventBlockLeasePricingData['data']) {
@@ -3611,7 +3584,6 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   copyToClipboard(currentPageUrl) {
-    debugger
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
