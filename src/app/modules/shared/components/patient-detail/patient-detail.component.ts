@@ -202,6 +202,7 @@ export class PatientDetailComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    debugger
     if (this.pateintIdDynamic) {
       this.divPatientId = this.pateintIdDynamic;
     }
@@ -1032,7 +1033,11 @@ export class PatientDetailComponent implements OnInit {
   createAlert() {
     
     $('.caPatientID').val(this.patientID);
-    this.commonMethodService.sendDatatoCreateAlertPage(true);
+    let body : any = {
+      'isAlertClicked' : true,
+      'hasAlert' : this.isHasAlert
+    }
+    this.commonMethodService.sendDatatoCreateAlertPage(body);
     setTimeout(() => {
       $('.caPatientID').focus();
       setTimeout(() => {

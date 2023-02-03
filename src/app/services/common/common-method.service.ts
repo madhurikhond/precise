@@ -215,8 +215,8 @@ export class CommonMethodService {
   sendDataToDocumentManagerForRefAndFundingCo(data: any) {
     this.docManagerSubjectForDocCompforRefAndFundingCo.next(data);
   }
-  sendDatatoCreateAlertPage(isOpen: boolean) {
-    this.createAlertPopUpSubject.next(isOpen);
+  sendDatatoCreateAlertPage(body: any) {
+    this.createAlertPopUpSubject.next(body);
   }
   sendDatatoRequestSearch(data: any) {
     this.requestSearchSubject.next(data);
