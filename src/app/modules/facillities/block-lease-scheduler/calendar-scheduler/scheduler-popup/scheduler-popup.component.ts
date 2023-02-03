@@ -282,6 +282,10 @@ export class SchedulerPopupComponent implements OnInit {
 
   }
   validateAutoBlockOffDays() {
+    if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
+      this.selectedModality = this.modalityResourcesList[0].Modality
+      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
+    }    
     this.AlreadyBlockedLeaseList = [];
     let body =
     {
@@ -432,7 +436,10 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
-
+    if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
+      this.selectedModality = this.modalityResourcesList[0].Modality
+      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
+    }
     if (!this.isBlockOffTime) {
       if (this.AlreadyBlockedLeaseList.length > 0) {
         this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
@@ -679,6 +686,12 @@ export class SchedulerPopupComponent implements OnInit {
         if (res.response.length > 0) {
           this.IsAllModality = true;
           this.modalityResourcesList = res.response;
+          if(this.modalityResourcesList.length == 1){
+            this.leaseForm.patchValue({
+              modalityType:  this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID,
+              contrastType : 'w/o'
+            });
+          }
         }
         else
           this.IsAllModality = false;
@@ -737,11 +750,13 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   close() {
+    // this.leaseForm.reset();
     if (this.LeaseBlockId)
       this.modal.dismiss(ModalResult.BACKDROP_CLICK);
     else
       this.modal.dismiss(ModalResult.CLOSE);
   }
+
   changeScheduleType(checked: any) {
     this.leaseForm.patchValue({
       modalityType: "",
