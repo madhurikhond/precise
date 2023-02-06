@@ -3186,13 +3186,14 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   UnpaidButtonClick(e) {
-    var TotalLease = 0, TotalCredit = 0;
+    var TotalLease = 0, TotalCredit : number = 0;
     for (let i = 0; i < this.selectedleaseArray.length; i++) {
       TotalLease += this.selectedleaseArray[i].TotalAmount;
     }
     for (let i = 0; i < this.selectedCreditPayment.length; i++) {
-      TotalCredit += this.selectedCreditPayment[i].CreditAmount;
+      TotalCredit += parseFloat(this.selectedCreditPayment[i].CreditAmount);
     }
+    
     var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
     var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';
     var data = {

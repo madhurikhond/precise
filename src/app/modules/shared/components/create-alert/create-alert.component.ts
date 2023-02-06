@@ -78,6 +78,7 @@ export class CreateAlertComponent implements OnInit {
   showRequiredEmailValidation : boolean =  false;
   showRequiredPhoneValidation : boolean =  false;
   createAndSendbuttonDisable :any ;
+  hasAlert: any ;
   readonly commonRegex = CommonRegex;
   @ViewChild('hiddenCreateAlertPopUpButton', { static: false }) hiddenCreateAlertPopUpButton: ElementRef;
   @ViewChild('CheckSmsEmailSlackFax', { static: false }) CheckSmsEmailSlackFax: ElementRef;
@@ -87,14 +88,17 @@ export class CreateAlertComponent implements OnInit {
     private readonly CreateAlertService: CreateAlertService) { }
 
   ngOnInit(): void {
-    this.commonService.createAlertPopUpObservable.subscribe((res) => {
-      this.alertButtonClick = res;
+    debugger
+    this.commonService.createAlertPopUpObservable.subscribe((body) => {
+      this.alertButtonClick = body.isAlertClicked;
+      this.hasAlert = body.hasAlert == true ? 1 : 0;
       this.close()
       this.hiddenCreateAlertPopUpButton.nativeElement.click();
       this.getDropdown();
 
     }, (err: any) => {
     })
+
     this.contactInfoForm = this.fb.group({
       emailSubModel: ['', Validators.required],
       emailBodyModel: ['', Validators.required],
@@ -149,7 +153,8 @@ export class CreateAlertComponent implements OnInit {
       SmsTextModel: ['', Validators.required],
       AddtionalDeskFax: false,
       AddtionalDeskEmail: false,
-      AddtionalDeskSms: false
+      AddtionalDeskSms: false ,
+      HasAlert : this.hasAlert
     });
 
     this.isContactModelShow = false;
@@ -157,6 +162,7 @@ export class CreateAlertComponent implements OnInit {
       $('.ck-editor__editable').focus()
     }, 200
     );
+   
   }
   onClickToolbarButton() {
     $('#cke_editor1').remove()
@@ -629,7 +635,7 @@ export class CreateAlertComponent implements OnInit {
   }
 
   btnCreateAlert() {
-    if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null ){
+    if(this.contactInfoForm.get('patientID').value == '' || this.contactInfoForm.get('patientID').value == null && (this.alertButtonClick == false || this.alertButtonClick == undefined )){
       this.notificationService.showNotification({ 
         alertHeader : null,
         alertMessage: 'Please enter Patient ID.',
@@ -637,27 +643,7 @@ export class CreateAlertComponent implements OnInit {
       });
       return
     }
-    if(this.contactInfoForm.get('IsBrokerMainEmail').value || 
-    this.contactInfoForm.get('IsRefPhyEmail').value == true ||
-    this.contactInfoForm.get('IsPatientEmail').value == true ||
-    this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerAPEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerBillingEmail').value == true ||
-    this.contactInfoForm.get('IsAttorneyEmail').value == true ||
-    this.contactInfoForm.get('IsBrokerMainFax').value == true ||
-      this.contactInfoForm.get('IsPatientFax').value == true ||
-      this.contactInfoForm.get('AddtionalDeskFax').value == true ||
-      this.contactInfoForm.get('IsRefPhyFax').value == true ||
-      this.contactInfoForm.get('IsBrokerAPFax').value == true ||
-      this.contactInfoForm.get('IsBrokerBillingFax').value == true ||
-      this.contactInfoForm.get('IsAttorneyFax').value == true ||
-      this.contactInfoForm.get('AddtionalDeskSms').value == true ||
-      this.contactInfoForm.get('AddtionalDeskFax').value == true ||
-      this.contactInfoForm.get('AddtionalDeskEmail').value == true ||
-      this.contactInfoForm.get('isRefPhyPhone').value == true ||
-      this.contactInfoForm.get('isAttorneyPhone').value == true ||
-      this.contactInfoForm.get('IsPatientPhone').value == true 
-    ){
+
       if((this.contactInfoForm.controls.infoAdditionalFax2.value == '' || this.contactInfoForm.controls.infoAdditionalFax2.value == null) && 
       (this.contactInfoForm.controls.infoAdditionalFax3.value == '' || this.contactInfoForm.controls.infoAdditionalFax3.value == null)){
           this.showRequiredFaxValidation = true;
@@ -698,6 +684,12 @@ export class CreateAlertComponent implements OnInit {
       this.modalValue = '';
       return;
     } this.modalValue = 'modal'
+    if(this.alertButtonClick== undefined){
+      this.contactInfoForm.controls.HasAlert.setValue('1')
+    }else if (this.alertButtonClick == true){
+      this.contactInfoForm.controls.HasAlert.setValue('1') 
+    }
+   
     this.CreateAlertService.createAlert(this.contactInfoForm.value, true).subscribe((res) => {
       var data: any = res;
       if (data.responseCode === 200) {
@@ -721,21 +713,10 @@ export class CreateAlertComponent implements OnInit {
       }
     },
     (err: any) => {
-      
-    
     });
-  }else if(this.isContactModelShow){
-    this.notificationService.showNotification({ 
-      alertHeader : null,
-      alertMessage: 'Please check atleast one icon.',
-      alertType: ResponseStatusCode.BadRequest
-    });
-    return
-  }
   }
 
   getSendInfo() {
-
     if (this.contactInfoForm.get('IsAttorneyFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAttorneyFax').value + ', ')
     if (this.contactInfoForm.get('isAttorneyPhone').value == true) this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAttorneyPhone').value + ', ')
     if (this.contactInfoForm.get('IsAttorneyEmail').value == true) this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAttorneyEmail').value + ', ')
