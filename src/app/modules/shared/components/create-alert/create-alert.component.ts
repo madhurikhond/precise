@@ -687,7 +687,7 @@ export class CreateAlertComponent implements OnInit {
     if(this.alertButtonClick== undefined){
       this.contactInfoForm.controls.HasAlert.setValue('1')
     }else if (this.alertButtonClick == true){
-      this.contactInfoForm.controls.HasAlert.setValue(this.hasAlert)
+      this.contactInfoForm.controls.HasAlert.setValue('1') 
     }
    
     this.CreateAlertService.createAlert(this.contactInfoForm.value, true).subscribe((res) => {
@@ -717,7 +717,6 @@ export class CreateAlertComponent implements OnInit {
   }
 
   getSendInfo() {
-
     if (this.contactInfoForm.get('IsAttorneyFax').value == true) this.faxSend = (this.faxSend + this.contactInfoForm.get('infoAttorneyFax').value + ', ')
     if (this.contactInfoForm.get('isAttorneyPhone').value == true) this.phoneSend = (this.phoneSend + this.contactInfoForm.get('infoAttorneyPhone').value + ', ')
     if (this.contactInfoForm.get('IsAttorneyEmail').value == true) this.emailSend = (this.emailSend + this.contactInfoForm.get('infoAttorneyEmail').value + ', ')
