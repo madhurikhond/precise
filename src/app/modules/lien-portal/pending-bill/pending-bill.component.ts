@@ -179,10 +179,11 @@ export class PendingBillComponent implements OnInit {
       var selectedFundingCompany = this.fundingCompanies.filter(x=>x.fundingCompanyId == (this.assignARform.get('fundingCompany').value));
       var checkboxSelectedData = this.checkboxSelectedData.map((data) => ({
         patientId: data.patientId,
-        patientName: data.firstName + ' ' + data.lastName,
+        patientName: data.lastName + ', ' + data.firstName,
         dateOfStudy: data.dateOfStudy,
         studyDescription: data.study,
         cptGroup: data.cptGroup,
+        internalStudyId : data.internalStudyId,
         dob: data.dateOfBirth
       }));
       var request = {

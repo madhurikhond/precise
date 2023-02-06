@@ -148,7 +148,7 @@
                                     formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
-                                    <option value="" selected>Select Modality</option>
+                                    <option  value = '' selected>Select Modality</option>
                                     <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
                                         label="{{group.Modality}}">
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>

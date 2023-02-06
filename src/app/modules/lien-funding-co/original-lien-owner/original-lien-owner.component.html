@@ -1,0 +1,30 @@
+<div class="inner-tab-content">
+    <div class="row">
+   
+    </div>
+    <div class="tab-pane fundingcopaid-section" id="FundingCoPaid">
+        <div class="table-responsive">
+            <dx-data-grid #grid id="gridContainerassignUnpaidList"
+                [dataSource]="radiologistNameWiseCounts" [showBorders]="false" [allowColumnResizing]="false" [columnAutoWidth]="false"
+                [showColumnHeaders]="true">
+                <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+                <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+                <dxo-pager [visible]="false"></dxo-pager>
+                <dxo-sorting mode="none"></dxo-sorting>
+
+                <dxi-column dataField="radiologistName" caption="Reading Radiologist"></dxi-column>
+                <dxi-column dataField="studyCount" caption="Study Count"></dxi-column>
+
+            </dx-data-grid>
+        </div>
+        <div class="pagination-theme" *ngIf="this.totalRecord>0">
+            <div class="pagination-theme">
+                <div
+                    *ngFor="let item of radiologistNameWiseCounts | paginate: { id: 'pagination10' , itemsPerPage: pageSize, currentPage: currentPageNumber, totalItems:totalRecord}">
+                </div>
+                <pagination-controls id="pagination10" (pageChange)="onPageNumberChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

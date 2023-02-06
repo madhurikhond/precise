@@ -1,0 +1,162 @@
+.PDFIcon{
+    cursor: pointer;
+}
+.PDFIcon i.fa {
+    color: #3b8beb;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.selectAction-sec {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* margin-bottom: 15px; */
+}
+
+.selectAction-Dropdown .form-group {
+    margin-bottom: 0;
+}
+.selectAction-Dropdown .input-group .form-control{
+    font-size: 13px;
+}
+
+.btn-common {
+    font-size: 14px;
+    min-width: auto;
+    height: 30px;
+    line-height: 28px;
+    padding: 0px 15px;
+    margin-right: 0;
+    background: #3b8beb;
+    border-radius: 6px;
+    color: #fff;
+    border: 1px solid #3b8beb;
+}
+
+.btn-go {
+    background: #3b8beb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 10px;
+    padding: 4px 9px;
+}
+
+.btn-grey{
+    background: #7e7e7e;
+    border: 1px solid #7e7e7e;
+}
+.btn-common:hover{
+    background: #ffffff;
+    color: #3b8beb;
+}
+.btn-common.btn-grey:hover{
+    background: #ffffff;
+    color: #7e7e7e;
+}
+.my-modal .theme-label {
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 600;
+    min-width: 125px;
+    line-height: 30px;
+}
+.my-modal .modal-dialog {
+    max-width: 370px;
+  }
+  .totlaPayAmt {
+    margin-bottom: 0;
+    font-size: 20px;
+    color: green;
+    font-weight: 500;
+    line-height: 27px;
+}
+.dropDown{
+    margin: 6px;
+}
+.modal-lower-case {
+    text-transform: none !important;
+}
+.modal-upper-case{
+    text-transform: uppercase !important;
+}
+
+.clsBatchBox {
+    /* text-align: left;
+    width: 25%;
+    display: inline-block;
+    white-space: nowrap; */
+    display: flex;
+    width: 99%;
+    margin: auto;
+}
+
+.clsChecknumberBox {
+    /* text-align: left;
+    width: 35%;
+    display: inline-block;
+    white-space: nowrap; */
+    display: flex;
+    width: 98%;
+    margin: auto;
+}
+
+.clsChecknumberBox>span{
+  text-align: left;
+  flex: 30%;
+}
+.clsBatchBox>span:first-child{
+  text-align: left;
+}
+.clsChecknumberBox>span:last-child{
+  text-align: right;
+}
+.clsBatchBox>span{
+  text-align: right;
+  flex: 25%;
+}
+.clsBatchBox>span:last-child{
+  text-align: right;
+}
+.textSize{
+  font-size: 20px;
+}
+
+
+.clsPlusMinusButton>a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-family: cursive;
+    font-size: 20px;
+    min-width: auto;
+    line-height: 20px;
+    padding: 0px 10px;
+    background: #3b8beb;
+    border-radius: 5px;
+    color: #fff;
+    height: 25px;
+    border: 1px solid #3b8beb;
+  }
+
+
+  .clsPlusMinusButton > a > span {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    margin-left: 5px;
+  }
+
+  .copyIcon{
+    margin-left: 41px;
+  }
+  .copyIcon>i{
+    cursor: pointer;
+    color: #3b8beb;
+  }
+  .trnNumber {
+    display: flex;
+    align-items: center;
+}
+
+.trnNumber span {
+    width: 115px;
+}
