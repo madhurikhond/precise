@@ -3038,6 +3038,12 @@ export class SchdFacilitiesComponent implements OnInit {
     if (this.defaultPopupTab == 'Credit/Debit') {
       this.getAllBlockLeaseCredits();
     }
+    if(this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'Credit/Debit' || this.defaultPopupTab == 'LeasePayments' ){
+      $("#useLeaseForm").css("display", "none");
+    }
+    if(this.defaultPopupTab == 'BlockLeaseRate'){
+      $("#useLeaseForm").css("display", "block");
+    }
   }
   CodeErrorNotification(msg: string) {
     this.notificationService.showNotification({
