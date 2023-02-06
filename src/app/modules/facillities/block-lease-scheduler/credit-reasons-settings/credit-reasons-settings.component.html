@@ -18,8 +18,16 @@
                                 (click)="updateTabId('eSignSetting',true)"
                                 [ngClass]="{'active': tabId == 'eSignSetting'}">eSign Signature Setting</a>
                         </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Reminder"
+                                (click)="updateTabId('Reminder',true)"
+                                [ngClass]="{'active': tabId == 'Reminder'}">Reminders</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
+                       
                       <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
                         <div class="row">
                           <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
@@ -98,9 +106,62 @@
                             </div>
                           
                         </div>
+
+                        <div class="tab-pane" [ngClass]="tabId == 'Reminder' ? 'active show' : 'fade'" id="Reminder">
+                            
+                            <div class="row rm-tb">                             
+
+                               <div class="col-md-12">
+                                <div class="row">
+                                <div _ngcontent-knr-c454="" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><div  class="theme-label-subtitle">Set Reminder</div></div>
+                              
+                             </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">  
+                                    <div class="col-md-1">                                      
+                                    
+                                    
+                                        <div class="switch-group switch-small text-right">                                       
+                                            <label  class="switch">                                            
+                                            <input  type="checkbox" checked=""><span  class="slider round"></span></label>
+                                        </div>
+                                        
+                                     
+                                    </div>
+                                    
+                                <div class="col-md-10 rght-dys">
+                                    Reminder facility every
+                                    <select id="dayselect" class="form-control smsl-grp">
+                                    <option value="">Select day</option>
+                                    <option value='1'>1</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5</option>
+                                    <option value='6'>6</option>
+                                </select>
+                                days if lease is created and not signed by the facility
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal-footer">
+                <a  href="javascript:void(0)" data-target="#" data-toggle="modal" class=" btn btn-border-gray pull-left btn-sm">Close</a>
+                    <a _ngcontent-dpe-c559="" href="javascript:void(0)" id="closebtn" data-dismiss="modal" class=" btn btn-theme pull-right">Ok</a>
+              
+                   
+               </div>
+
+
+
         </div>
     </div>
 </div>
