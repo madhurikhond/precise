@@ -116,51 +116,44 @@
                                     <div class="row">
                                         <div 
                                             class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="theme-label-subtitle">Set Reminder</div>
+                                            <span class="theme-label-subtitle">Set Reminder</span>
+                                            <div class="switch-group switch-small text-right">
+                                                <label class="switch">
+                                                    <input type="checkbox"  (change)="onIsActiveValueChange($event)" formControlName = 'IsActive' checked=""><span
+                                                        class="slider round"></span></label>
+                                            </div>
                                     </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-1">
+                                         <!-- <div class="col-md-1">
                                             <div class="switch-group switch-small text-right">
                                                 <label class="switch">
                                                     <input type="checkbox" formControlName = 'IsActive' checked=""><span
                                                         class="slider round"></span></label>
                                             </div>
-                                        </div>
+                                        </div>  -->
                                         <div>
 											<div class="input-group md-input-focused">
-                                                <span>Reminder facility every</span>
-												<select id="dayselect" class="form-control" formControlName="ReminderInterval">
-													<option value="" disabled>Select Reminder Interval</option>
+                                                <span>Reminder facility every</span> 
+												<select id="dayselect" [disabled]="disableReminderInterval" class="form-control" formControlName="ReminderInterval"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && reminderForm.controls.ReminderInterval.errors) }">
+													<option value = "0" >Select Reminder Interval</option>
 													<option *ngFor="let reminder of reminderInternallist"
 														[ngValue]="reminder">
 														{{reminder}}</option>
 												</select>
                                                 <span>days if lease is created and not signed by the facility</span>
 											</div>
-											<!-- 
-                                                [ngClass]="{ 'is-invalid': (submitted && generalInfoFormControls.facilityParentId.errors) }"
-                                                <div *ngIf="(submitted && generalInfoFormControls.facilityParentId.errors)"
-												class="invalid-feedback">
-												<div *ngIf="generalInfoFormControls.facilityParentId.errors?.required">
-													Parent Company Name is required</div>
-											</div> -->
+                                            <div *ngIf="(Issubmitted && reminderForm.controls.ReminderInterval.errors)"
+                                            class="invalid-feedback">
+                                            <div *ngIf="reminderForm.controls.ReminderInterval.errors?.required">
+                                                reminder interval is required</div>
+                                        </div> 
+											
 										</div>
-                                        <!-- <div class="col-md-10 rght-dys">
-                                            Reminder facility every
-                                            <select id="dayselect" class="form-control smsl-grp"  formControlName = 'ReminderInterval'>
-                                                <option value="">Select day</option>
-                                                <option value='1'>1</option>
-                                                <option value='2'>2</option>
-                                                <option value='3'>3</option>
-                                                <option value='4'>4</option>
-                                                <option value='5'>5</option>
-                                                <option value='6'>6</option>
-                                            </select>
-                                            days if lease is created and not signed by the facility
-                                        </div> -->
+
                                     </div>
                                 </div>
                             </div>

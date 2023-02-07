@@ -33,6 +33,8 @@ export class CreditReasonsSettingComponent implements OnInit {
   totalcreditReasonsList: number = 0;
   reminderInternallist: any = [];
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
+  Issubmitted : boolean = false;
+  disableReminderInterval : boolean ;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -63,7 +65,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   reminderFormInitialize() {
     this.reminderForm = this.fb.group({
       IsActive: [''],
-      ReminderInterval: ['']
+      ReminderInterval: ['0']
     });
   }
   updateTabId(tabName: string, val: boolean) {
@@ -306,23 +308,33 @@ export class CreditReasonsSettingComponent implements OnInit {
       this.reminderInternallist.push(i)
     }
   }
+  onIsActiveValueChange(e){
+    if(this.reminderForm.controls.IsActive.value  == true){
+      this.reminderForm.get('ReminderInterval').enable();
+    }else{
+      this.reminderForm.get('ReminderInterval').disable();
+    }
+  }
+
   updateManageReminderSettings() {
     debugger
+    this.Issubmitted = true ;
+    if (this.reminderForm.controls.IsActive.value == false) {
+      return;
+    }
     let data = {
       'Id': 0,
       'ReminderInterval': this.reminderForm.controls.ReminderInterval.value,
-      'isActive': this.reminderForm.controls.IsActive.value === true ? 1 : 0,
+      'IsActive': this.reminderForm.controls.IsActive.value === true ? 1 : 0,
       'Operation': 0
     }
     this.blockLeaseSchedulerService.ManageReminderSettings(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
       if (res) {
-        debugger
         this.notificationService.showNotification({
           alertHeader: 'Success',
-          alertMessage: res.response[0].Message,
+          alertMessage: res.message,
           alertType: res.responseCode
         })
-        this.getManageReminderSettings();
       }
     },
       (err: any) => {
@@ -338,7 +350,7 @@ export class CreditReasonsSettingComponent implements OnInit {
     let data = {
       'Id': 0,
       'ReminderInterval': 0,
-      'isActive': 1,
+      'IsActive': 0,
       'Operation': 4
     }
     this.blockLeaseSchedulerService.ManageReminderSettings(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
@@ -348,6 +360,12 @@ export class CreditReasonsSettingComponent implements OnInit {
             IsActive: JSON.parse(res.response).IsActive,
             ReminderInterval: JSON.parse(res.response).ReminderInterval
           });
+        }
+        if(this.reminderForm.controls.IsActive.value == true){
+          this.reminderForm.get('ReminderInterval').enable();
+        }
+        if(this.reminderForm.controls.IsActive.value == false){
+          this.reminderForm.get('ReminderInterval').disable();
         }
       }
     });
