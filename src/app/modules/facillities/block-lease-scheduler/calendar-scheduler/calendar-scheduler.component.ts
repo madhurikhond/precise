@@ -97,6 +97,7 @@ export class CalendarSchedulerComponent implements OnInit {
         // this.schedulerLoad();
     }
     schedulerLoad() {
+        debugger
         scheduler.skin = 'material';
         scheduler.config.first_hour = 6;
 		scheduler.config.last_hour = 24;
@@ -209,11 +210,12 @@ export class CalendarSchedulerComponent implements OnInit {
 
 
         scheduler.showLightbox = (id: any) => {
+            debugger
             const event = scheduler.getEvent(id);
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
-            event.end_date = new Date(event.end_date - 1);
+            event.end_date = new Date(event.end_date);
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = false;
@@ -290,6 +292,7 @@ export class CalendarSchedulerComponent implements OnInit {
         this.latestStartDate = "";
     }
     checkBlockedOffDays(event: any, id: number) {
+        debugger
         if (event.LeaseBlockId) {
             scheduler.startLightbox(id, this.openForm(event));
         } else {
@@ -317,12 +320,15 @@ export class CalendarSchedulerComponent implements OnInit {
                         modalRef.componentInstance.isPastDateOrOffDays = true;
                         modalRef.result.then().catch((reason: ModalResult | any) => {
                             if (reason == 5) {
+                                debugger
                                 scheduler.startLightbox(id, this.openForm(event));
                             } else {
+
                                 scheduler.deleteEvent(event.id);
                             }
                         });
                     } else {
+                        debugger
                         scheduler.startLightbox(id, this.openForm(event));
                     }
                 } else {
@@ -330,6 +336,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     modalRef.componentInstance.isPastDateOrOffDays = true;
                     modalRef.result.then().catch((reason: ModalResult | any) => {
                         if (reason == 5) {
+                            debugger
                             scheduler.startLightbox(id, this.openForm(event));
                         } else {
                             scheduler.deleteEvent(event.id);
