@@ -97,6 +97,7 @@ export class CalendarSchedulerComponent implements OnInit {
         // this.schedulerLoad();
     }
     schedulerLoad() {
+        debugger
         scheduler.skin = 'material';
         scheduler.config.first_hour = 6;
 		scheduler.config.last_hour = 24;
@@ -213,7 +214,7 @@ export class CalendarSchedulerComponent implements OnInit {
             var currentDate = new Date();
             const current_Date = new Date(currentDate.toLocaleDateString());
             const startDate = new Date(event.start_date.toLocaleDateString());
-            event.end_date = new Date(event.end_date - 1);
+            event.end_date = new Date(event.end_date);
             if ((startDate < current_Date) && event.LeaseBlockId == undefined) {
                 const modalRef = this.modalService.open(PastDateConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
                 modalRef.componentInstance.isPastDateOrOffDays = false;
@@ -319,6 +320,7 @@ export class CalendarSchedulerComponent implements OnInit {
                             if (reason == 5) {
                                 scheduler.startLightbox(id, this.openForm(event));
                             } else {
+
                                 scheduler.deleteEvent(event.id);
                             }
                         });
@@ -330,6 +332,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     modalRef.componentInstance.isPastDateOrOffDays = true;
                     modalRef.result.then().catch((reason: ModalResult | any) => {
                         if (reason == 5) {
+
                             scheduler.startLightbox(id, this.openForm(event));
                         } else {
                             scheduler.deleteEvent(event.id);
@@ -373,7 +376,6 @@ export class CalendarSchedulerComponent implements OnInit {
 
     }
     openForm(event: any) {
-        debugger
         const modalRef = this.modalService.open(SchedulerPopupComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
         modalRef.componentInstance.isNew = scheduler.getState().new_event;
         modalRef.componentInstance.mode = scheduler.getState().mode;
@@ -547,7 +549,6 @@ export class CalendarSchedulerComponent implements OnInit {
         this.approveAddEsignModel.signapprove = this.signaturePadapproveAddEsignModel.toDataURL();
     }
     signConfirm(isConfirmSign: boolean) {
-        debugger
         this.f.resetForm();
         this.signaturePad.clear();
         this.model.signature = '';
