@@ -17,6 +17,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   columnResizingMode: string;
   resizingModes: string[] = ['nextColumn', 'nextColumn'];
   addCreditReasonForm: FormGroup;
+  reminderForm: FormGroup;
   creditReasonsList: any = [];
   PagecreditReasonsList: any = [];
   esignList: any = [];
@@ -30,7 +31,10 @@ export class CreditReasonsSettingComponent implements OnInit {
   pageNumber: number = 1;
   totalesignList: number = 0;
   totalcreditReasonsList: number = 0;
+  reminderInternallist: any = [];
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
+  Issubmitted : boolean = false;
+  disableReminderInterval : boolean ;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -48,11 +52,20 @@ export class CreditReasonsSettingComponent implements OnInit {
     this.getCreditReasonsList();
     this.getEsignData();
     this.creditReasonFormInitialize();
+    this.reminderFormInitialize();
+    this.createDropDown()
+
   }
   creditReasonFormInitialize() {
     this.addCreditReasonForm = this.fb.group({
       reason: ['', [Validators.required]],
       isActive: [true]
+    });
+  }
+  reminderFormInitialize() {
+    this.reminderForm = this.fb.group({
+      IsActive: [''],
+      ReminderInterval: ['0']
     });
   }
   updateTabId(tabName: string, val: boolean) {
@@ -289,6 +302,75 @@ export class CreditReasonsSettingComponent implements OnInit {
         });
       });
   }
+  createDropDown() {
+    debugger
+    for (let i = 1; i <= 30; i++) {
+      this.reminderInternallist.push(i)
+    }
+  }
+  onIsActiveValueChange(e){
+    if(this.reminderForm.controls.IsActive.value  == true){
+      this.reminderForm.get('ReminderInterval').enable();
+    }else{
+      this.reminderForm.get('ReminderInterval').disable();
+    }
+  }
+
+  updateManageReminderSettings() {
+    debugger
+    this.Issubmitted = true ;
+    if (this.reminderForm.controls.IsActive.value == false) {
+      return;
+    }
+    let data = {
+      'Id': 0,
+      'ReminderInterval': this.reminderForm.controls.ReminderInterval.value,
+      'IsActive': this.reminderForm.controls.IsActive.value === true ? 1 : 0,
+      'Operation': 0
+    }
+    this.blockLeaseSchedulerService.ManageReminderSettings(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+      if (res) {
+        this.notificationService.showNotification({
+          alertHeader: 'Success',
+          alertMessage: res.message,
+          alertType: res.responseCode
+        })
+      }
+    },
+      (err: any) => {
+        this.notificationService.showNotification({
+          alertHeader: err.statusText,
+          alertMessage: err.message,
+          alertType: err.status
+        });
+      });
+  }
+
+  getManageReminderSettings() {
+    let data = {
+      'Id': 0,
+      'ReminderInterval': 0,
+      'IsActive': 0,
+      'Operation': 4
+    }
+    this.blockLeaseSchedulerService.ManageReminderSettings(true, JSON.stringify(JSON.stringify(data))).subscribe((res) => {
+      if (res) {
+        if (res != null) {
+          this.reminderForm.patchValue({
+            IsActive: JSON.parse(res.response).IsActive,
+            ReminderInterval: JSON.parse(res.response).ReminderInterval
+          });
+        }
+        if(this.reminderForm.controls.IsActive.value == true){
+          this.reminderForm.get('ReminderInterval').enable();
+        }
+        if(this.reminderForm.controls.IsActive.value == false){
+          this.reminderForm.get('ReminderInterval').disable();
+        }
+      }
+    });
+  }
+
   get addForm() { return this.addCreditReasonForm.controls; }
   onPageNumberChange(pageNumber: any) {
     this.pageNumber = pageNumber;

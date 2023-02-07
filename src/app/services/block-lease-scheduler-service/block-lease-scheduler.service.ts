@@ -161,5 +161,10 @@ export class BlockLeaseSchedulerService {
     return this._httpService.post(`BlockLeaseScheduler/GetAlreadyBlockedOffDaysModalityBased`, Body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res));
   }
+
+  ManageReminderSettings(showGlobalLoader: boolean = true, Body: any){
+    return this._httpService.post(`BlockLeaseScheduler/ManageReminderSettings`, Body, showGlobalLoader,true).pipe(
+      map((res: ApiResponse) => res));
+  }
 }
 
