@@ -22,57 +22,58 @@
 
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#Reminder"
-                                (click)="updateTabId('Reminder',true)"
+                                (click)="updateTabId('Reminder',true)" (click)="getManageReminderSettings()"
                                 [ngClass]="{'active': tabId == 'Reminder'}">Reminders</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                       
-                      <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
-                        <div class="row">
-                          <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
-                            <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
-                               data-toggle="modal" data-target="#add-new-record" style="margin-bottom: 13px;">
-                              <i class="fa fa-plus"></i> Add
-                              New Record
-                            </a>
-                          </div>
-                        </div>
-                        <div class="table-responsive" class="action-credit cs-action-credit">
-                          <dx-data-grid id="gridContainer" [dataSource]="PagecreditReasonsList"
-                                        [allowColumnResizing]="true" [columnAutoWidth]="true"  keyExpr="ID"
-                                        [showBorders]="true">
-                            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
-                            <dxo-load-panel [enabled]="true"></dxo-load-panel>
-                            <dxi-column dataField="ID"  caption="Action" [allowFiltering]="false" [width]="100"
-                                        [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
-                            </dxi-column>
-                            <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
-                            <dxi-column dataField="IsActive" caption="Active" cellTemplate="IsActive">
-                            </dxi-column>
-                            <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
-                            <div *dxTemplate="let data of 'cellTemplate'">
-                              <a href="javascript:void(0)" (click)="edit(data.data.ID)"
-                                 class="single-action fa fa-pencil-square-o" data-toggle="modal"
-                                 data-target="#add-new-record"></a>
+
+                        <div class="tab-pane" [ngClass]="tabId == 'Reasons' ? 'active show' : 'fade'" id="Reasons">
+                            <div class="row">
+                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                                    <a href="javascript:void(0)" (click)="add()" class="btn btn-theme btn-sm pull-left"
+                                        data-toggle="modal" data-target="#add-new-record" style="margin-bottom: 13px;">
+                                        <i class="fa fa-plus"></i> Add
+                                        New Record
+                                    </a>
+                                </div>
                             </div>
-                          </dx-data-grid>
+                            <div class="table-responsive" class="action-credit cs-action-credit">
+                                <dx-data-grid id="gridContainer" [dataSource]="PagecreditReasonsList"
+                                    [allowColumnResizing]="true" [columnAutoWidth]="true" keyExpr="ID"
+                                    [showBorders]="true">
+                                    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                                    <dxi-column dataField="ID" caption="Action" [allowFiltering]="false" [width]="100"
+                                        [allowSorting]="false" cellTemplate="cellTemplate" [visible]="true">
+                                    </dxi-column>
+                                    <dxi-column dataField="ReasonText" caption="Reason Text"></dxi-column>
+                                    <dxi-column dataField="IsActive" caption="Active" cellTemplate="IsActive">
+                                    </dxi-column>
+                                    <div *dxTemplate="let data of 'IsActive'"> {{data.value ? "Yes":"No"}} </div>
+                                    <div *dxTemplate="let data of 'cellTemplate'">
+                                        <a href="javascript:void(0)" (click)="edit(data.data.ID)"
+                                            class="single-action fa fa-pencil-square-o" data-toggle="modal"
+                                            data-target="#add-new-record"></a>
+                                    </div>
+                                </dx-data-grid>
+                            </div>
+                            <div class="pagination-theme">
+                                <div
+                                    *ngFor="let item of PagecreditReasonsList | paginate: { id: 'pagination1020' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalcreditReasonsList}">
+                                </div>
+                                <pagination-controls id="pagination1020" (pageChange)="onPageNumberChange($event)">
+                                </pagination-controls>
+                            </div>
                         </div>
-                        <div class="pagination-theme">
-                          <div *ngFor="let item of PagecreditReasonsList | paginate: { id: 'pagination1020' , itemsPerPage: pageSize, currentPage: pageNumber, totalItems:totalcreditReasonsList}">
-                          </div>
-                          <pagination-controls id="pagination1020"
-                                               (pageChange)="onPageNumberChange($event)">
-                          </pagination-controls>
-                        </div>
-                      </div>
                         <div class="tab-pane" [ngClass]="tabId == 'eSignSetting' ? 'active show' : 'fade'"
                             id="eSignSetting">
                             <div class="row">
                                 <div *ngIf="esignList.length==0" class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
                                     <a href="javascript:void(0)" (click)="addEsign()"
                                         class="btn btn-theme btn-sm pull-left" data-toggle="modal"
-                                        data-target="#SignPopUp" style="margin-bottom: 13px;"><i class="fa fa-plus"></i> Add
+                                        data-target="#SignPopUp" style="margin-bottom: 13px;"><i class="fa fa-plus"></i>
+                                        Add
                                         New Record</a>
                                 </div>
                             </div>
@@ -87,13 +88,14 @@
                                         [allowSorting]="false" cellTemplate="editCellTemplate" [visible]="true">
                                     </dxi-column>
                                     <dxi-column caption="Name" [width]="100" cellTemplate="getName"> </dxi-column>
-                                    <dxi-column dataField="DefaultSign" caption="DEFAULT SIGNATURE" [width]="100" [allowFiltering]="false"
-                                        [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
+                                    <dxi-column dataField="DefaultSign" caption="DEFAULT SIGNATURE" [width]="100"
+                                        [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                                    </dxi-column>
 
 
 
                                     <div *dxTemplate="let data of 'getName'">
-                                      {{data.data.FirstName}} {{data.data.LastName}}
+                                        {{data.data.FirstName}} {{data.data.LastName}}
                                     </div>
                                     <div *dxTemplate="let data of 'cellTemplate'">
                                         <img id="imgSign" [src]="data.value" />
@@ -104,61 +106,70 @@
                                     </div>
                                 </dx-data-grid>
                             </div>
-                          
+
                         </div>
 
                         <div class="tab-pane" [ngClass]="tabId == 'Reminder' ? 'active show' : 'fade'" id="Reminder">
-                            
-                            <div class="row rm-tb">                             
-
-                               <div class="col-md-12">
-                                <div class="row">
-                                <div _ngcontent-knr-c454="" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><div  class="theme-label-subtitle">Set Reminder</div></div>
-                              
-                             </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="row">  
-                                    <div class="col-md-1">                                      
-                                    
-                                    
-                                        <div class="switch-group switch-small text-right">                                       
-                                            <label  class="switch">                                            
-                                            <input  type="checkbox" checked=""><span  class="slider round"></span></label>
-                                        </div>
-                                        
-                                     
+                            <form [formGroup]="reminderForm" class="theme-form">
+                            <div class="row rm-tb">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div 
+                                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="theme-label-subtitle">Set Reminder</span>
+                                            <div class="switch-group switch-small text-right">
+                                                <label class="switch">
+                                                    <input type="checkbox"  (change)="onIsActiveValueChange($event)" formControlName = 'IsActive' checked=""><span
+                                                        class="slider round"></span></label>
+                                            </div>
                                     </div>
-                                    
-                                <div class="col-md-10 rght-dys">
-                                    Reminder facility every
-                                    <select id="dayselect" class="form-control smsl-grp">
-                                    <option value="">Select day</option>
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                </select>
-                                days if lease is created and not signed by the facility
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                         <!-- <div class="col-md-1">
+                                            <div class="switch-group switch-small text-right">
+                                                <label class="switch">
+                                                    <input type="checkbox" formControlName = 'IsActive' checked=""><span
+                                                        class="slider round"></span></label>
+                                            </div>
+                                        </div>  -->
+                                        <div>
+											<div class="input-group md-input-focused">
+                                                <span>Reminder facility every</span> 
+												<select id="dayselect" [disabled]="disableReminderInterval" class="form-control" formControlName="ReminderInterval"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && reminderForm.controls.ReminderInterval.errors) }">
+													<option value = "0" >Select Reminder Interval</option>
+													<option *ngFor="let reminder of reminderInternallist"
+														[ngValue]="reminder">
+														{{reminder}}</option>
+												</select>
+                                                <span>days if lease is created and not signed by the facility</span>
+											</div>
+                                            <div *ngIf="(Issubmitted && reminderForm.controls.ReminderInterval.errors)"
+                                            class="invalid-feedback">
+                                            <div *ngIf="reminderForm.controls.ReminderInterval.errors?.required">
+                                                reminder interval is required</div>
+                                        </div> 
+											
+										</div>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            </div>
-
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <a  href="javascript:void(0)" data-target="#" data-toggle="modal" class=" btn btn-border-gray pull-left btn-sm">Close</a>
-                    <a _ngcontent-dpe-c559="" href="javascript:void(0)" id="closebtn" data-dismiss="modal" class=" btn btn-theme pull-right">Ok</a>
-              
-                   
-               </div>
+                <a href="javascript:void(0)" data-target="#" data-toggle="modal"
+                    class=" btn btn-border-gray pull-right btn-sm">Close</a>
+                <!-- <a _ngcontent-dpe-c559="" href="javascript:void(0)" id="closebtn" data-dismiss="modal" class=" btn btn-theme pull-right" click="updateManageReminderSettings()">Ok</a> -->
+                <button type="button" id="closebtn" class="btn btn-theme btn-sm pull-left" 
+                    (click) ="updateManageReminderSettings()">Ok</button>
+            </div>
 
 
 
@@ -227,7 +238,7 @@
                 #f="ngForm" class="theme-form" novalidate>
                 <div class="modal-body">
                     <div class="modal-body-inner">
-                        <div class="row">                          
+                        <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
                                 <div class="form-group">
                                     <div class="theme-label">Title</div>
@@ -297,7 +308,7 @@
                         [ngStyle]="{'background-color': ((!firstName.invalid) && (!Title.invalid) && (!lastName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
                         class="btn btn-theme btn-sm pull-left">UPDATE SIGNATURE</button>
                     <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-                       #closeBtn (click)="signConfirm(false)">Close</a>
+                        #closeBtn (click)="signConfirm(false)">Close</a>
                 </div>
             </form>
         </div>
