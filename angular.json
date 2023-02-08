@@ -35,7 +35,8 @@
               "node_modules/devextreme/dist/css/dx.common.css",
               "node_modules/devextreme/dist/css/dx.light.css",
               "node_modules/ng2-tree/styles.css",
-              "src/assets/scheduler/codebase/dhtmlxscheduler_material.css"
+              "src/assets/scheduler/codebase/dhtmlxscheduler_material.css",
+              "src/assets/css/customSignatureFont.css"
             ],
             "scripts": [ "./node_modules/jquery/dist/jquery.js" ]
           },

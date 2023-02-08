@@ -1,415 +1,967 @@
-
-<div [ngClass]="{'d-none':isSignSuccessflyyMessage}">
-<div class="esign-request-body"
-	[ngClass]="{'esign-request-body-fixed disabled' : alreadySignedbodyDisabled || esignbodyDisabled }" id="esignbody">
-
-	<div class="white-strip " id="alreadyLienSigned" [style.display]="alreadySignedbodyDisabled ? 'block' : 'none'"
-		style="display: block;">
-		<div class="main-section">
-			<div class="left-section">
-				<span>El gravamen ya ha sido firmado. Descargar una copia</span>
-				<a href="javascript:void(0);" (click)="downloadSignFile()"><img
-						src="assets/images/downloadicon.png" /></a>
-			</div>
-		</div>
-	</div>
-
-	<div class="blue-strip " id="bluestrip" [style.display]="esignbodyDisabled ? 'block' : 'none'"
-		style="display: block;">
-		<div class="main-section">
-			<div class="left-section">
-				<div style="display: flex;">
-					<div class="flagimage">
-						<img src="assets/images/flag.png">
-					</div>
-					<div> <span style="color: #fff">Por favor lea el </span><a data-toggle="modal"
-							data-target="#ElecAgreePopUp" style="color: #fff; text-decoration: underline">Expedientes
-							electrónicos y divulgación de firmas.</a>
-						<div class="checkbox-theme">
-							<input id="agree" class="styled" (change)="eventCheck($event)" type="checkbox">
-							<label for="agree" class="arrow-label">Acepto usar registros y firmas electrónicas.</label>
+<div class="NewEsignRequest">
+	<div class="signrequest">
+		<div class="header">
+			<div class="row">
+				<div class="col-6">
+					<div class="left-header-sec">
+						<div class="logo">
+							<img src="assets/images/precise-imaging-logo.png" alt=""/>
+						</div>
+						<div class="infoSec">
+							<p>Embargos por lesiones personales para <span>{{allSignData?.FullNameLF}} - </span><span>{{allSignData?.PATIENTID}}</span></p>
+							<p>by Precise Imaging</p>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="right-action">
-				<div class="switch-group switch-small text-right">
-					<span class="text">Click for English</span>
-					<label class="switch switch-active">
-						<input type="checkbox" checked (change)="changelanguage($event)">
-						<span class="slider round"></span>
-					</label>
-
-				</div>
-				<button type="button" (click)="openlien()" class="btn btn-theme">Seguir</button>
-				<div class="dropdown">
-					<div id="pnltop" style="display: block;">
-						<select name="drpactions" (change)="drpactionChanges($event)" class="dropdownaction">
-							<option selected="selected" value="0">Otras acciones</option>
-							<option value="1">Imprimir y firmar</option>
-							<option value="2">Guardar documento</option>
-						</select>
-						<div id="pdfviewer" style="text-align: center; display: none">
-							<iframe id="pdf" name="pdf"></iframe>
+				<div class="col-6" *ngIf="(!istechlienSigned && !isradlienSigned && isRadAssigned) || (!isRadAssigned && !istechlienSigned) ||
+        (isRadAssigned && istechlienSigned && !isradlienSigned)">
+					<div class="right-header-sec">
+						<div class="switch-group switch-small text-right LanguageToggle">
+							<span class="text">Click For English</span>
+							<label class="switch">
+								<input type="checkbox" [checked]=false (click)="changelanguage($event)" >
+								<span class="slider round"></span>
+							</label>
 						</div>
-						<input type="submit" name="printpreview" value="" id="printpreview" style="display: none">
-						<input type="submit" name="savepdf" value="" id="savepdf" style="display: none">
+			  <div class="header-action action-web dropdown">
+          <div class="dropdown-toggle nav-link" id="dropdownlogout" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            <div class="otherAction">Otras acciones<i class="fa fa-angle-down"></i></div>
+            <ul class="dropdown-menu multi-level">
+              <li class="dropdown-submenu">
+                <a href="javascript:;" (click)="showLanguages($event)"><i class="fa fa-language"></i>Elige lengua</a>
+                <ul class="dropdown-menu" [ngClass]="{'d-none': !isDropdownLanguageVisible}">
+                  <li (click)="switchLanguage('English')"><a tabindex="-1" href="#">Inglesa</a></li>
+                  <li (click)="switchLanguage('Spanish')"><a href="#">Española</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="javascript:void(0);" (click)="previewAndSave(2)"><i class="fa fa-download"></i>Descargar</a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" (click)="previewAndSave(1)"><i class="fa fa-print"></i>Imprimir</a>
+              </li>
+            </ul>
+          </div>
+				</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="top-strip">
-		<p>Seleccione el campo de signo para crear o agregar su firma</p>
-	</div>
-	<div class="top-action top-action-switch">
-		<ul>
-			<li>
-				<a href="javascript:void(0)" (click)="plus()" class="fa fa-search-plus"></a>
-			</li>
-			<li>
-				<a href="javascript:void(0)" (click)="minus()" class="fa fa-search-minus"></a>
-			</li>
-			<li>
-				<a href="javascript:void(0)" (click)="previewAndSave(1)" class="fa fa-print"></a>
-			</li>
-			<li>
-				<a href="javascript:void(0)" (click)="previewAndSave(2)" class="fa fa-download"></a>
-			</li>
-		</ul>
-		<div class="switch-group switch-small text-right">
-			<span class="text">Click for English</span>
-			<label class="switch">
-				<input type="checkbox" checked (change)="changelanguage($event)">
-				<span class="slider round"></span>
-			</label>
-		</div>
-	</div>
-	<div class="esign-request-main esign-request-main-group">
-		<div id="englishpatient" class="esign-request" style="display: block;">
-			<div class="esign-header">
-				<div class="esign-header-left">
-					<img src="assets/images/radflowsolutions-logo.png" class="logo">
-					<div class="label-input" (click)="scrollToElement(esign_signature)">
-						<img src="assets/images/newsign-s.png" id="opensign" tabindex="-1" class="esign-header-web animation-large" style="cursor: pointer;">
-						<img src="assets/images/mobile-newsign-s.png" id="opensign" tabindex="-1" class="esign-header-mobile animation-large" style="cursor: pointer;">
-					</div>
-				</div>
-				<div class="switch-group switch-small text-right">
-					<span class="text">Click for English</span>
-					<label class="switch">
-						<input type="checkbox" checked (change)="changelanguage($event)">
-						<span class="slider round"></span>
-					</label>
 
+	<div [ngClass]="{'d-none':isSignSuccessflyyMessage}" class="sign-body-content">
+	  <div class="esign-request-body"
+		id="esignbody">
+		<div class="white-strip " id="alreadyLienSigned" [style.display]="alreadySignedbodyDisabled ? 'block' : 'none'"
+		  style="display: block;">
+		  <div class="main-section">
+			<div class="left-section downloadLienCopy">
+			  <span class="lienSigedText">Los gravámenes ya han sido firmados.</span><span class="downloadACopy"> Descargar una copia</span>
+			  <a href="javascript:void(0);" (click)="downloadSignFile()" class="downloadIcon"><img
+				  src="assets/images/downloadicon.png" alt=""/></a>
+			</div>
+		  </div>
+		</div>
+
+    <div class="white-strip " id="alreadyLienSigned" [style.display]="istechlienSigned && !isradlienSigned && !isRadAssigned ? 'block' : 'none'"
+    style="display: block;">
+    <div class="main-section">
+      <div class="left-section downloadLienCopy">
+        <span class="lienSigedText">
+          El gravamen técnico ya se ha firmado. Le notificaremos cuando el radiólogo asigne.
+        </span>
+        <span class="downloadACopy"> Descargar una copia</span>
+        <a href="javascript:void(0);" (click)="downloadSignFile()" class="downloadIcon"><img
+            src="assets/images/downloadicon.png" alt="" /></a>
+      </div>
+    </div>
+  </div>
+
+		<div class="main-container">
+		  <div class="left-part" *ngIf="isShown">
+			<div class="document-name-sec">
+			  <div class="docName">
+          DOCUMENTOS<span>:</span><span class="docCount">1</span>
+			  </div>
+			  <div class="doc-close">
+				<i class="fa fa-close"  (click)="previewClose()"></i>
+			  </div>
+			</div>
+			<div class="preview-esign-requet-main">
+				<div class="documentname-number">
+					<p class="nameofDoc">Gravamen técnico (imágenes) por lesiones personales</p>
+          <p class="totalPage" *ngIf="isRadAssigned">2 <span>paginas</span></p>
+          <p class="totalPage" *ngIf="!isRadAssigned">1 <span>página</span></p>
+				</div>
+			  <div class="previewpage-number">
+				<div class="PageNo">
+				  <p>1</p>
+				</div>
+				<div class="esign-request-main esign-request-main-group" [ngClass]="{'sign-approved': submittedSignature || istechlienSigned}" style="cursor: pointer;" (click)="navigateToPage(1)" >
+					<div id="englishpatient" class="esign-request" style="display: block;">
+						<div class="esign-header-title"> <span id="lblepftype" class="page-title">Gravamen técnico (imágenes) por lesiones personales</span>
+						</div>
+						<div class="esign-details">
+						  <div class="esign-single-line"> <span id="lblepattorney" class="headertext">AL DESPACHO JURIDICO DE:</span>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtattname" type="text" [value]="allSignData?.AttorneyFullName"
+								  readonly="readonly" id="txtattname" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtattadd1" type="text" [value]="allSignData?.AttorneyAddress"
+								  readonly="readonly" id="txtattadd1" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtattadd3" type="text" [value]="allSignData?.AttorneyCityState"
+								  readonly="readonly" id="txtattadd3" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+              <div class="tel-fax-sec">
+                <div class="esign-single-line ">
+                  <div class="esign-input-group telDetail">
+                    <div class="esign-input-body"> <span id="lbleptel" class="headerlabel">TEL: &nbsp;</span>
+                      <span id="lbletel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
+                    </div>
+                  </div>
+                  <div class="esign-input-group faxDetail">
+                    <div class="esign-input-body"> <span id="lblepfax" class="headerlabel">FAX: &nbsp;</span>
+                      <span id="lblefax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
+                    </div>
+                    </div>
+                </div>
+              </div>
+						  <div class="esign-single-line">
+							<div class="patient-info-group">
+							  <div class="patient-info-single"> <span id="lbleppatientname" class="headertext">Patient Name :
+								  {{allSignData?.FullNameLF}}</span>
+							  </div>
+							  <div class="patient-info-single"> <span id="lbleppatientid" class="headertext">Patient ID :
+								  {{allSignData?.PATIENTID}}</span>
+							  </div>
+							  <div class="patient-info-single"> <span id="lblepdob" class="headertext">Date Of Birth :
+								  {{allSignData?.BIRTHDATE}}</span>
+							  </div>
+							</div>
+						  </div>
+						  <div class="paragraph-group">
+                <p> <strong>* * * (INFORME A SU ABOGADO DE TODO LES PROCEDIMIENTO(S) HECHO CON PRECISE IMAGING PARA
+                  GARANTIZAR EL PAGO DE LOS SERVICIOS A TRAVÉS DE SU CASO. DE NO INFORMAR A SU ABOGADO PUEDE
+                  HACER QUE USTED SEA RESPONSABLE DEL PAGO DE LOS SERVICIOS.) * * *</strong></p>
+                <p><strong>(Por la presente autorizo a Precise Imaging a proporcionarle a usted, mi abogado, todos
+                  los registros médicos, facturas y gravámenes del examen o exámenes, con respecto al
+                  accidente en el que estuve envuelto en la fecha de la herida escrito por debajo.)</strong></p>
+                <p><strong>(REGISTROS MÉDICOS, FACTURUS Y GRAVAMENES Por la presente le autorizo y le dirigo usted,
+                  mi abogado, a pagar directamente a Precise Imaging las sumas adeudadas y adeudadas por los
+                  servicios que se me presten, tanto por este accidente como por cualquier otras factura que
+                  se deba y deba a Precise Imaging y que retenga dichas sumas de cualquier acuerdo, juicio o
+                  veredicto que puede ser necesarias para proteger y compensar adecuadamente a Precise
+                  Imaging. Por el presente documento, a mi abogado que pague en su totalidad todas las
+                  facturas que se adeyden a Precise Imaging.)</strong> </p>
+                <p><strong>(Entiendo perfectamente que soy responsable directa y plenamente a Precise Imaging de
+                  todas las facturas médicas presentadas por dicha entidad por los servicios prestados y que
+                  este acuuerdo se hace unicamente por la protección adicional de dicha entidad y en
+                  consideración de la entidad a la espera de pago. Además, entiendo que dicho pago no está
+                  supeditado a ningun acuerdo, juicio o veredicto por el cual eventualmente pueda recuperar
+                  dicha tasa.Me han informado que si mi abogado no desea cooperar en la protección de los
+                  intereses de Precise Imaging, la entidad no esperará el pago y puede declarar tado el saldo
+                  adeudado y pagadero. El paciente acepta pagar todos los honorarios razonables de los
+                  abogados de Precise, los costos de cobro y los gastos asociados con la aplicación de
+                  gravámenes. Si se requiere que Precise conserve a un abogado para hacer cumplir cualquier
+                  disposición de este acuerdo, ya sea que se inicie o no un procedimiento legal, la parte que
+                  prevalece sustancialmente tendrá derecho a honorarios razonables de abogados,
+                  independientemente de si en el juicio, en la apelación, en cualquier procedimiento de
+                  quiebra, asunto de arbitraje o sin recurso a juicio. En el caso de que se requiera que
+                  Precise dé a una agencia de cobranzas cualquier cantidad pendiente de pago debida en virtud
+                  de este acuerdo, el paciente acepta pagar todos y cada uno de los costos, honorarios o
+                  cargos impuestos por dicha agencia de cobranzas al cobrar las cantidades adeudadas en virtud
+                  del presente acuerdo.)</strong></p>
+                <p><strong>(Por la presente acepto renunciar a la ejecución de cualquier Estatuto de Limitaciones
+                  por un período adicional de cuatro (4) años segun lo dispiesto en el CCP 360.5)</strong> </p>
+						  </div>
+						</div>
+						<div #esign_signature class="esign-signature">
+						  <div class="esign-patient-information esign-patient-information-group ">
+							<div class="signature-table signature-table-group">
+							  <div class="single-signature">
+								<div class="label-title">Fecha(s) de la lesión:</div>
+								<div class="label-input">
+								  <input name="txtepdateofinjury" type="text" readonly [value]="allSignData?.InjuryDate"
+									id="txtepdateofinjury" class="text-line">
+								</div>
+							  </div>
+							  <div class="single-signature">
+								<div class="label-title">Imprimir primero, medio, &amp; TODOS los apellidos:
+								</div>
+								<div class="label-input">
+								  <input name="txtepfullname" type="text" readonly [value]="allSignData?.FullNameLF"
+									id="txtepfullname" class="text-line">
+								</div>
+							  </div>
+							  <div class="single-signature">
+								<div class="label-title">Nombre del conductor (si fuera pasajero):
+								</div>
+								<div class="label-input">
+								  <input name="txtepdrivername" readonly type="text"  [value]="allSignData?.DriverName" id="txtepdrivername" class="text-line">
+								</div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+						<div class="esign-details">
+						  <div class="paragraph-group">
+							<p>El abajo firmante, siendo el abogado del registro del paciente anterior, por la presente acepta
+								observar todos los términos de lo anterior y acepta retener dichas sumas de cualquier acuerdo,
+								juicio o veredicto, según sea necesario para proteger adecuadamente y compensar completamente a
+								Precise. Imágenes. El abogado también acepta que, en caso de que se litigue este derecho de
+								retención, se otorgarán los honorarios y costos del abogado a la parte vencedora. Acepto
+								proporcionar una actualización del estado del caso cada ciento ochenta (180) días a partir de la
+								primera fecha de servicio. Reconozco que el hecho de no proporcionar actualizaciones periódicas
+								del estado del caso puede resultar en que la(s) cuenta(s) del paciente sean remitidas a
+								cobranzas.</p>
+						  </div>
+						</div>
+            <div #esignSignatureTab class="esign-patient-information">
+              <div class="signature-table">
+                <div class="single-signature patient-signature BorderBoxAttorneyDesign">
+                  <div class="Newborder-Signature" *ngIf="!completedFirstSignature">
+                    <div class="label-input patientsign-input" *ngIf="!completedSecondSignature">
+                      <div class="signatureBox">
+                        <i class="fa  fa-pencil">Firma</i>
+                      </div>
+                    </div>
+                    <div class="label-input patientsign-input" (click)="clearData();signatureClick(1)" *ngIf="completedSecondSignature">
+                      <div class="signatureBox">
+                        <i (click)="acceptCompletedSignature(1)">Aceptar firma</i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="Newborder-Signature" *ngIf="completedFirstSignature" >
+                    <img  [src]="pFirstSign" alt="">
+                  </div>
+                  <div class="label-title">(Firma del paciente)</div>
+                </div>
+                <div class="single-signature">
+                  <div class="label-title label-date">Fecha:</div>
+                  <div class="label-input">
+                    <input name="txtepdate" readonly type="text" [value]="allSignData?.Currentdate" id="txtepdate"
+                      class="text-line">
+                  </div>
+                </div>
+                <div class="single-signature  patient-signature BorderBoxPatientDesign">
+                  <div class="label-input patientsign-input" *ngIf="!attorneySigend">
+                  </div>
+                  <div class="label-input patientsign-input Newborder-Signature" *ngIf="attorneySigend">
+                    <img [src]="attorneySignature" alt="">
+                  </div>
+                  <div class="label-title">(Firma del abogado)</div>
+                </div>
+                <div class="single-signature">
+                  <div class="label-title label-date">Fecha:</div>
+                  <div class="label-input">
+                    <input name="txtPepdate1" type="text" readonly [value]="allSignData?.signdate" id="txtPepdate1"
+                      class="text-line">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="address-phone-sec">
+              <p>{{allreferrerData?.RadAddress}} <span>{{allreferrerData?.RadPhone}} </span></p>
+              </div>
+					  </div>
+				</div>
+			  </div>
+			  <div class="previewpage-number" *ngIf="isRadAssigned">
+				<div class="PageNo">
+				  <p>2</p>
+				</div>
+				<div class="esign-request-main esign-request-main-group" [ngClass]="{'sign-approved': submittedSignature}" style="cursor: pointer;" (click)="navigateToPage(2)">
+					<div id="Div4" class="esign-request">
+						<div class="esign-header">
+						  <div class="esign-header-left"> <span id="LblHeaderBillName"
+							  class="PLien-Header">{{allreferrerData?.patientBillName}}</span>
+						  </div>
+						</div>
+						<div class="esign-header-title"> <span id="Label1" class="page-title">GRAVAMEN DE RADIÓLOGO MÉDICO POR LESIONES PERSONALES</span>
+						</div>
+						<div class="esign-details">
+						  <div class="esign-single-line"> <span id="Label2" class="headertext">AL DESPACHO JURIDICO DE:</span>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtPattname" type="text" [value]="allSignData?.AttorneyFullName"
+								  readonly="readonly" id="txtPattname" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtPattadd1" type="text" [value]="allSignData?.AttorneyAddress"
+								  readonly="readonly" id="txtPattadd1" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+						  <div class="esign-single-line">
+							<div class="esign-input-group">
+							  <div class="esign-input-head">
+								<input name="txtPattadd3" type="text" [value]="allSignData?.AttorneyCityState"
+								  readonly="readonly" id="txtPattadd3" class="headerinput">
+							  </div>
+							</div>
+						  </div>
+              <div class="tel-fax-sec">
+                <div class="esign-single-line ">
+                  <div class="esign-input-group telDetail">
+                    <div class="esign-input-body"> <span id="lbleptel" class="headerlabel">TEL: &nbsp;</span>
+                      <span id="lbletel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
+                    </div>
+                  </div>
+                  <div class="esign-input-group faxDetail">
+                    <div class="esign-input-body"> <span id="lblepfax" class="headerlabel">FAX: &nbsp;</span>
+                      <span id="lblefax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
+                    </div>
+                    </div>
+                </div>
+              </div>
+						  <div class="esign-single-line">
+							<div class="patient-info-group">
+							  <div class="patient-info-single"> <span id="lblPeppatientname" class="headertext">Patient Name :
+								  {{allSignData?.FullNameLF}}</span>
+							  </div>
+							  <div class="patient-info-single"> <span id="lblPeppatientid" class="headertext">Patient ID :
+								  {{allSignData?.PATIENTID}}</span>
+							  </div>
+							  <div class="patient-info-single"> <span id="lblPepdob" class="headertext">Date Of Birth :
+								  {{allSignData?.BIRTHDATE}}</span>
+							  </div>
+							</div>
+						  </div>
+						  <div class="paragraph-group">
+                <p> <strong>* * * INFORME A SU ABOGADO DE TODOS LOS PROCEDIMIENTOS REALIZADOS CON
+                  <span id="lblPatientBillName1">{{allreferrerData?.patientBillName}}</span>
+                  PARA ASEGURAR QUE LOS SERVICIOS SE PAGUEN A TRAVÉS DE SU CASO. EL NO INFORMAR A SU ABOGADO PUEDE DETENERLO
+  RESPONSABLE DEL PAGO DE LOS SERVICIOS.</strong> * * *</p>
+                <p> <strong>RE: INFORMES MÉDICOS Y GRAVAMEN DE MÉDICO (INFORME DE MÉDICO Y GRAVAMEN DE MÉDICO) Por la presente
+                  autorizar
+                  <span id="lblPatientBillName3">{{allreferrerData?.patientBillName}}</span>
+                  (proveedor de radiología) para proporcionarle a usted, mi abogado, un informe completo del examen que incluya
+                  todos los registros médicos, con respecto al accidente en el que estuve involucrado en las siguientes fechas de
+                  lesión.</strong></p>
+                <p> <strong>Por la presente autorizo ​​y ordeno a usted, mi abogado, que pague directamente a
+                  <span id="lblPatientBillName5">{{allreferrerData?.patientBillName}}</span>
+                  dichas sumas adeudadas y adeudadas por los servicios profesionales prestados a mí, tanto por razón de este
+  accidente y por cualquier otra factura vencida y adeudada
+                  <span id="lblPatientBillName8">{{allreferrerData?.patientBillName}}</span>
+                  y retener tales sumas de cualquier acuerdo, juicio o veredicto que sea necesario para
+  proteger adecuadamente y compensar plenamente
+                  <span id="lblPatientBillName9">{{allreferrerData?.patientBillName}}</span>. Yo por la presente más
+                  dirigir mi
+                  Abogado para pagar en su totalidad las facturas médicas adeudadas a
+                  <span id="lblPatientBillName10">{{allreferrerData?.patientBillName}}</span>..</strong>
+                <p> <strong>Entiendo completamente que soy directa y totalmente responsable de
+                  <span id="lblPatientBillName12">{{allreferrerData?.patientBillName}}</span>
+                  por todas las facturas médicas presentadas por dicho proveedor por los servicios prestados y que este
+  acuerdo se hace únicamente para la protección adicional de dicha práctica y en consideración de
+  el proveedor esperando el pago. Además, entiendo que dicho pago no está supeditado a
+  cualquier arreglo, juicio o veredicto por el cual yo pueda eventualmente recuperar dicho honorario. Estuve
+  advertido que si mi abogado no desea cooperar en la protección
+                  <span id="lblPatientBillName13">{{allreferrerData?.patientBillName}}</span>el interés, el
+                  proveedor
+                  no esperará el pago y puede declarar el saldo total vencido y pagadero. El paciente acepta
+                  pagar todo<span id="lblPatientBillName19">{{allreferrerData?.patientBillName}}</span>'s
+                  razonable
+                  honorarios de abogados, costos de cobro y gastos asociados con la ejecución de este gravamen.
+                  Si<span id="lblPatientBillName17">{{allreferrerData?.patientBillName}}</span> se requiere
+                  para retener
+                  un abogado para hacer cumplir cualquier disposición de este Acuerdo, ya sea que se inicie o no un procedimiento legal
+                  comenzado, la parte que prevalece sustancialmente tendrá derecho a un abogado razonable
+                  honorarios independientemente de si en juicio, en apelación, en cualquier procedimiento de quiebra, arbitraje
+                  asunto o sin recurso a la conveniencia. En el caso<span
+                    id="lblPatientBillName16">{{allreferrerData?.patientBillName}}</span> se requiere para
+                    convertir cualquier cantidad pendiente de pago adeudada bajo
+                    este acuerdo a una agencia de cobro, entonces el Paciente acepta pagar todos y cada uno de los costos, tarifas o
+                    cargos impuestos por dicha agencia de cobro en el cobro de las cantidades adeudadas en virtud del presente.</strong>
+                </p>
+                <p><strong>Por la presente acepto renunciar a la ejecución de cualquier estatuto de limitaciones por un período adicional
+                  período de cuatro (4) años según lo dispuesto en CCP 360.5.</strong></p>
+						  </div>
+						</div>
+						<div class="esign-signature">
+						  <div class="esign-patient-information esign-patient-information-group">
+							<div class="signature-table signature-table-group">
+							  <div class="single-signature">
+								<div class="label-title">Fecha(s) de la lesión:</div>
+								<div class="label-input">
+								  <input name="txtPepdateofinjury" type="text" readonly [value]="allSignData?.InjuryDate"
+									id="txtPepdateofinjury" class="text-line">
+								</div>
+							  </div>
+							  <div class="single-signature">
+								<div class="label-title">Imprimir primero, medio, &amp; TODOS los apellidos:
+								</div>
+								<div class="label-input">
+								  <input name="txtPepfullname" type="text" readonly [value]="allSignData?.FullNameLF"
+									id="txtPepfullname" class="text-line">
+								</div>
+							  </div>
+							  <div class="single-signature">
+								<div class="label-title">Nombre del conductor (si fuera pasajero):
+								</div>
+								<div class="label-input">
+								  <input name="txtPepdrivername" readonly type="text"  [value]="allSignData?.DriverName"id="txtPepdrivername" class="text-line">
+								</div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+						<div class="esign-details">
+						  <div class="paragraph-group">
+							<p>El abajo firmante, siendo el abogado registrado del paciente anterior, por la presente acepta observar todos
+                los términos de lo anterior, y acuerda retener dichas sumas de cualquier acuerdo, juicio o
+                veredicto, según sea necesario para proteger adecuadamente y compensar plenamente<span
+								id="lblPatientBillName23">{{allreferrerData?.patientBillName}}</span> abogado más
+                acuerda que, en caso de que se litigue este derecho de retención, se otorgará a la parte vencedora
+                honorarios y costos.</p>
+						  </div>
+						</div>
+            <div class="esign-patient-information">
+              <div class="signature-table">
+                <div class="single-signature patient-signature BorderBoxAttorneyDesign">
+                  <div class="Newborder-Signature" *ngIf="!completedSecondSignature">
+                    <div class="label-input patientsign-input" *ngIf="!completedFirstSignature">
+                      <div class="signatureBox">
+                        <i class="fa  fa-pencil">Firma</i>
+                      </div>
+                    </div>
+                    <div class="label-input patientsign-input" (click)="clearData();signatureClick(2)" *ngIf="completedFirstSignature">
+                      <div class="signatureBox">
+                        <i (click)="acceptCompletedSignature(2)">Aceptar firma</i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="Newborder-Signature" *ngIf="completedSecondSignature" >
+                    <img [src]="pSecondSign" alt="">
+                  </div>
+                  <div class="label-title">(Firma del paciente)</div>
+                </div>
+                <div class="single-signature">
+                  <div class="label-title label-date">Fecha:</div>
+                  <div class="label-input">
+                    <input name="txtepdate" readonly type="text" [value]="allSignData?.Currentdate" id="txtepdate"
+                      class="text-line">
+                  </div>
+                </div>
+                <div class="single-signature  patient-signature BorderBoxPatientDesign">
+                  <div class="label-input patientsign-input" *ngIf="!attorneySigend">
+                  </div>
+                  <div class="label-input patientsign-input Newborder-Signature" *ngIf="attorneySigend">
+                    <img [src]="attorneySignature" alt="" *ngIf="allSignData.ASL_P">
+                  </div>
+                  <div class="label-title">(Firma del abogado)</div>
+                </div>
+                <div class="single-signature">
+                  <div class="label-title label-date">Fecha:</div>
+                  <div class="label-input">
+                    <input name="txtPepdate1" type="text" readonly [value]="allSignData?.signdate" id="txtPepdate1"
+                      class="text-line">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="address-phone-sec">
+              <p>{{allreferrerData?.RadAddress}} <span>{{allreferrerData?.RadPhone}}</span></p>
+              </div>
+					  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="right-part">
+			<div class="test">
+			<div class="three-header-settng-content">
+				<div class="collsapeIcon">
+					<i class="fa fa-file-text-o" (click)="previewShow()"></i>
+				</div>
+				<div class="right-header">
+					<div class="icon-field-sec">
+            <div class="validation">
+              <p *ngIf="!completedFirstSignature && !completedSecondSignature && !istechlienSigned && !isradlienSigned && isRadAssigned">Por favor complete 2 campos obligatorios.
+              </p>
+              <p
+                *ngIf="(completedFirstSignature && !completedSecondSignature) || (!completedFirstSignature && completedSecondSignature) ||(istechlienSigned && !isradlienSigned)">
+                1 campo obligatorio.</p>
+                <p *ngIf="!isRadAssigned && !istechlienSigned">Por favor complete 1 campo requerido.</p>
+            </div>
+						<div class="start-btn">
+							<button class="btn btn-border" id="btnStart" (click)="btnStartScroll()">
+                Comenzar
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="esign-header-title"> <span id="lblepftype" class="page-title">GRAVAMEN MÉDICO POR LESIONES
-					PERSONALES</span>
-			</div>
-			<div class="esign-details">
-				<div class="esign-single-line"> <span id="lblepattorney" class="headertext">A LA OFICINA DE DERECHO
-						DE:</span>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+		</div>
+			<div class="esign-request-main-scroll-content">
+			  <div class="esign-request-main esign-request-main-group" id="page1">
+				<div id="englishpatient" class="esign-request" style="display: block;">
+				  <div class="esign-header-title"> <span id="lblepftype" class="page-title">Técnico de lesiones personales
+            (Imágenes) Gravamen</span>
+				  </div>
+				  <div class="esign-details">
+					<div class="esign-single-line"> <span id="lblepattorney" class="headertext">AL DESPACHO JURIDICO DE:</span>
+					</div>
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtattname" type="text" [value]="allSignData?.AttorneyFullName"
-								readonly="readonly" id="txtattname" class="headerinput">
+						  <input name="txtattname" type="text" [value]="allSignData?.AttorneyFullName"
+							readonly="readonly" id="txtattname" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtattadd1" type="text" [value]="allSignData?.AttorneyAddress"
-								readonly="readonly" id="txtattadd1" class="headerinput">
+						  <input name="txtattadd1" type="text" [value]="allSignData?.AttorneyAddress"
+							readonly="readonly" id="txtattadd1" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtattadd3" type="text" [value]="allSignData?.AttorneyCityState"
-								readonly="readonly" id="txtattadd3" class="headerinput">
+						  <input name="txtattadd3" type="text" [value]="allSignData?.AttorneyCityState"
+							readonly="readonly" id="txtattadd3" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
-						<div class="esign-input-body"> <span id="lbleptel" class="headerlabel">TEL: &nbsp;</span>
-							<span id="lbletel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
-						<div class="esign-input-body"> <span id="lblepfax" class="headerlabel">FAX: &nbsp;</span>
-							<span id="lblefax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="patient-info-group">
+          <div class="tel-fax-sec">
+            <div class="esign-single-line ">
+              <div class="esign-input-group telDetail">
+                <div class="esign-input-body"> <span id="lbleptel" class="headerlabel">TEL: &nbsp;</span>
+                  <span id="lbletel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
+                </div>
+              </div>
+              <div class="esign-input-group faxDetail">
+                <div class="esign-input-body"> <span id="lblepfax" class="headerlabel">FAX: &nbsp;</span>
+                  <span id="lblefax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
+                </div>
+                </div>
+            </div>
+          </div>
+					<div class="esign-single-line">
+					  <div class="patient-info-group">
 						<div class="patient-info-single"> <span id="lbleppatientname" class="headertext">Patient Name :
-								{{allSignData?.FullNameLF}}</span>
+							{{allSignData?.FullNameLF}}</span>
 						</div>
 						<div class="patient-info-single"> <span id="lbleppatientid" class="headertext">Patient ID :
-								{{allSignData?.PATIENTID}}</span>
+							{{allSignData?.PATIENTID}}</span>
 						</div>
 						<div class="patient-info-single"> <span id="lblepdob" class="headertext">Date Of Birth :
-								{{allSignData?.BIRTHDATE}}</span>
+							{{allSignData?.BIRTHDATE}}</span>
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="paragraph-group">
-					<p> <strong>* * * (INFORME A SU ABOGADO DE TODO LES PROCEDIMIENTO(S) HECHO CON PRECISE IMAGING PARA
-							GARANTIZAR EL PAGO DE LOS SERVICIOS A TRAVÉS DE SU CASO. DE NO INFORMAR A SU ABOGADO PUEDE
-							HACER QUE USTED SEA RESPONSABLE DEL PAGO DE LOS SERVICIOS.) * * *</strong></p>
-					<p><strong>(Por la presente autorizo a Precise Imaging a proporcionarle a usted, mi abogado, todos
-							los registros médicos, facturas y gravámenes del examen o exámenes, con respecto al
-							accidente en el que estuve envuelto en la fecha de la herida escrito por debajo.)</strong>
-					</p>
-					<p><strong>(REGISTROS MÉDICOS, FACTURUS Y GRAVAMENES Por la presente le autorizo y le dirigo usted,
-							mi abogado, a pagar directamente a Precise Imaging las sumas adeudadas y adeudadas por los
-							servicios que se me presten, tanto por este accidente como por cualquier otras factura que
-							se deba y deba a Precise Imaging y que retenga dichas sumas de cualquier acuerdo, juicio o
-							veredicto que puede ser necesarias para proteger y compensar adecuadamente a Precise
-							Imaging. Por el presente documento, a mi abogado que pague en su totalidad todas las
-							facturas que se adeyden a Precise Imaging.)</strong></p>
-					<p><strong>(Entiendo perfectamente que soy responsable directa y plenamente a Precise Imaging de
-							todas las facturas médicas presentadas por dicha entidad por los servicios prestados y que
-							este acuuerdo se hace unicamente por la protección adicional de dicha entidad y en
-							consideración de la entidad a la espera de pago. Además, entiendo que dicho pago no está
-							supeditado a ningun acuerdo, juicio o veredicto por el cual eventualmente pueda recuperar
-							dicha tasa.Me han informado que si mi abogado no desea cooperar en la protección de los
-							intereses de Precise Imaging, la entidad no esperará el pago y puede declarar tado el saldo
-							adeudado y pagadero. El paciente acepta pagar todos los honorarios razonables de los
-							abogados de Precise, los costos de cobro y los gastos asociados con la aplicación de
-							gravámenes. Si se requiere que Precise conserve a un abogado para hacer cumplir cualquier
-							disposición de este acuerdo, ya sea que se inicie o no un procedimiento legal, la parte que
-							prevalece sustancialmente tendrá derecho a honorarios razonables de abogados,
-							independientemente de si en el juicio, en la apelación, en cualquier procedimiento de
-							quiebra, asunto de arbitraje o sin recurso a juicio. En el caso de que se requiera que
-							Precise dé a una agencia de cobranzas cualquier cantidad pendiente de pago debida en virtud
-							de este acuerdo, el paciente acepta pagar todos y cada uno de los costos, honorarios o
-							cargos impuestos por dicha agencia de cobranzas al cobrar las cantidades adeudadas en virtud
-							del presente acuerdo.)</strong></p>
-					<p><strong>(Por la presente acepto renunciar a la ejecución de cualquier Estatuto de Limitaciones
-							por un período adicional de cuatro (4) años segun lo dispiesto en el CCP 360.5)</strong></p>
-				</div>
-			</div>
-			<div #esign_signature class="esign-signature">
-				<div class="esign-patient-information">
-					<div class="signature-table signature-table-group">
-						<div class="sign-icon">
-							<img src="assets/images/sign-arrow-s.png" data-toggle="modal" (click)="getEsignData(false)"
-								style="cursor: pointer;" id="opensign" tabindex="-1" class="sign-image">
+					<div class="paragraph-group">
+					  <p>
+              <strong>* * * (INFORME A SU ABOGADO DE TODO LOS PROCEDIMIENTO(S) HECHO CON
+                <span id="lblPatientBillName1">{{allreferrerData?.patientBillName}}</span>
+                PARA GARANTIZAR EL PAGO DE LOS SERVICIOS A TRAVÉS DE SU CASO. DE NO INFORMAR A SU ABOGADO
+                PUEDE HACER QUE USTED SEA RESPONSABLE DEL PAGO DE LOS SERVICIOS.)</strong>
+            </p>
+            <p>
+              <strong>(INFORME DE MÉDICO Y GRAVAMEN DE MÉDICO Por la presente autorizo
+                <span id="lblPatientBillName3">{{allreferrerData?.patientBillName}}</span>
+                (proveedor da radiologiá) entregar a usted, mi abogado, un informe completo del examen,
+                diagnóstico, tratamiento y pronóstico de mí mismo, en cuando estuve envuelto en un accidente
+                en la fecha de la herida escrito por debajo.)</strong>
+            </p>
+            <p>
+              <strong>(Por la presente le autorizo y le dirigo a usted, mi abogado, a pagar directamente a
+                <span id="lblPatientBillName5">{{allreferrerData?.patientBillName}}</span>
+                las sumas adeudadas y adeudadas por los servicios profesionales que se me presten. Tanto por
+                este accidente como por cualquier otra factura que se deba y deba a
+                <span id="lblPatientBillName8">{{allreferrerData?.patientBillName}}</span>
+                y que retenga dichas sumas de cualquier acuerdo. juicio o veredicto que puedo ser necesario
+                para proteger y compensar adecuadamente
+                <span id="lblPatientBillName9">{{allreferrerData?.patientBillName}}</span>. Por el presente
+                indundo a mi abogado que pague en su totalidad cualquier factura médica que se le adeude a
+                <span id="lblPatientBillName10">{{allreferrerData?.patientBillName}}</span>.</strong>
+            </p>
+            <p>
+              <strong>(Entiendo perfectamente que soy responsable directa y plenamente a
+                <span id="lblPatientBillName15">{{allreferrerData?.patientBillName}}</span>
+                de todas las facturas médicas presentadas por dicha proveedor por los servicios prestados y
+                que este acuerdo se hace únicamente por la protección adicional de dicho proveedor y en
+                consideración del proveedor a la espera de pago. Además, entiendo que dicho pago no está
+                supeditado a ningún acuerdo. juicio o veredicto por el cual eventualmente pueda recuperar
+                dicha tasa. Me han informado que si mi abogado no desea cooperar en la protección de los
+                interses de
+                <span id="lblPatientBillName18">{{allreferrerData?.patientBillName}}</span>. el proveedor no
+                esperará el pago y puede declarar todo el saldo adeudado y pagadero.El paciente acepta pagar
+                todos los honorarios razonables de los abogados de <span
+                  id="lblPatientBillName19">{{allreferrerData?.patientBillName}}</span>, los costos de
+                cobro y los gastos asociados con la aplicación de gravámenes. Si se requiere que
+                <span id="lblPatientBillName20">{{allreferrerData?.patientBillName}}</span> conserve a un
+                abogado para hacer cumplir cualquier disposición de este acuerdo, ya sea que se inicie o no
+                un procedimiento legal, la parte que prevalece sustancialmente tendrá derecho a honorarios
+                razonables de abogados, independientemente de si en el juicio, en la apelación, en cualquier
+                procedimiento de quiebra, asunto de arbitraje o sin recurso a juicio. En el caso de que se
+                requiera que
+                <span id="lblPatientBillName21">{{allreferrerData?.patientBillName}}</span> dé a una agencia
+                de cobranzas cualquier cantidad pendiente de pago debida en virtud de este acuerdo, el
+                paciente acepta pagar todos y cada uno de los costos, honorarios o cargos impuestos por
+                dicha agencia de cobranzas al cobrar las cantidades adeudadas en virtud del presente
+                acuerdo.)
+              </strong>
+            </p>
+            <p>
+              <strong>(Por la presente acepto renunciar a la ejecución de cualquier Estatuto de Limitaciones
+                por un período adicional de cuatro (4) años según lo dispuesto en el CCP 360.5)</strong>
+            </p>
+					</div>
+				  </div>
+				  <div #esign_signature class="esign-signature">
+					<div class="esign-patient-information esign-patient-information-group ">
+					  <div class="signature-table signature-table-group">
+						<div class="single-signature">
+						  <div class="label-title">Fecha(s) de la lesión:</div>
+						  <div class="label-input">
+							<input name="txtepdateofinjury" type="text" readonly [value]="allSignData?.InjuryDate"
+							  id="txtepdateofinjury" class="text-line">
+						  </div>
 						</div>
 						<div class="single-signature">
-							<div class="label-input">
-								<img src="assets/images/newsign-s.png" data-toggle="modal" (click)="getEsignData(false)"
-									class="animation-large" id="opensign" tabindex="-1" style="cursor: pointer;">
-							</div>
-							<div class="label-group">
-								<input name="" type="text" readonly="readonly">
-							</div>
-							<div class="label-title">(FIRMA de Paciente)</div>
+						  <div class="label-title">Imprimir primero, medio, &amp; TODOS los apellidos:
+						  </div>
+						  <div class="label-input">
+							<input name="txtepfullname" type="text" readonly [value]="allSignData?.FullNameLF"
+							  id="txtepfullname" class="text-line">
+						  </div>
 						</div>
+						<div class="single-signature">
+						  <div class="label-title">Nombre del conductor (si fuera pasajero):
+						  </div>
+						  <div class="label-input">
+							<input name="txtepdrivername" readonly type="text"  [value]="(allSignData?.DriverName) ? allSignData?.DriverName :model.driverFirstName" id="txtepdrivername" class="text-line">
+						  </div>
+						</div>
+					  </div>
 					</div>
+				  </div>
+				  <div class="esign-details">
+					<div class="paragraph-group">
+					  <p>El abajo firmante, siendo el abogado registrado del paciente anterior, por la presente acepta
+              observar todos los términos de lo anterior y acepta retener dichas sumas de cualquier acuerdo,
+              juicio o veredicto, según sea necesario para proteger adecuadamente y compensar por completo
+              <span id="lblPatientBillName18">{{allreferrerData?.patientBillName}}</span> Attorney further
+              agrees that in the event this lien is litigated, the prevailing party will be awarded attorney’s
+              fees and costs.</p>
+					</div>
+				  </div>
+          <div #esignSignatureTab class="esign-patient-information">
+            <div class="signature-table" id="startPage1">
+              <div class="sign-icon" style="position: absolute; left: -90px; top: 32px;" *ngIf="showNewSignImage && !istechlienSigned">
+                <img src="assets/images/new-Sign-Arrow.png" style="cursor: pointer;"
+                  tabindex="-1" class="sign-image" alt="">
+              </div>
+              <div class="single-signature patient-signature BorderBoxAttorneyDesign">
+                <div class="Newborder-Signature" *ngIf="!completedFirstSignature">
+                  <div class="label-input patientsign-input" (click)="clearData();signatureClick(1)" data-toggle="modal"
+                    data-target="#SignatureNewDesignModel" *ngIf="!completedSecondSignature">
+                    <div class="signatureBox">
+                      <i class="fa  fa-pencil">Firma</i>
+                    </div>
+                  </div>
+                  <div class="label-input patientsign-input" (click)="clearData();signatureClick(1)" *ngIf="completedSecondSignature">
+                    <div class="signatureBox acceptSignature">
+                      <i (click)="acceptCompletedSignature(1)">Aceptar firma</i>
+                    </div>
+                  </div>
+                </div>
+                <div class="Newborder-Signature" *ngIf="completedFirstSignature">
+                  <img  [src]="pFirstSign" alt="">
+                </div>
+                <div class="label-title">(Firma del paciente)</div>
+              </div>
+              <div class="single-signature">
+                <div class="label-title label-date">Fecha:</div>
+                <div class="label-input">
+                  <input name="txtepdate" readonly type="text" [value]="allSignData?.Currentdate" id="txtepdate"
+                    class="text-line">
+                </div>
+              </div>
+              <div class="single-signature  patient-signature BorderBoxPatientDesign">
+                <div class="label-input patientsign-input"  *ngIf="!attorneySigend">
+                </div>
+                <div class="label-input patientsign-input Newborder-Signature" *ngIf="attorneySigend">
+                  <img [src]="attorneySignature" alt="">
+                </div>
+                <div class="label-title">(Firma del abogado)</div>
+              </div>
+              <div class="single-signature">
+                <div class="label-title label-date">Fecha:</div>
+                <div class="label-input">
+                  <input name="txtPepdate1" type="text" readonly [value]="allSignData?.signdate" id="txtPepdate1"
+                    class="text-line">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="address-phone-sec">
+            <p>{{allreferrerData?.RadAddress}} <span>{{allreferrerData?.RadPhone}} </span></p>
+            </div>
 				</div>
-			</div>
-			<div class="esign-details">
-				<div class="paragraph-group">
-					<p>El abajo firmante, siendo el abogado del registro del paciente anterior, por la presente acepta
-						observar todos los términos de lo anterior y acepta retener dichas sumas de cualquier acuerdo,
-						juicio o veredicto, según sea necesario para proteger adecuadamente y compensar completamente a
-						Precise. Imágenes. El abogado también acepta que, en caso de que se litigue este derecho de
-						retención, se otorgarán los honorarios y costos del abogado a la parte vencedora. Acepto
-						proporcionar una actualización del estado del caso cada ciento ochenta (180) días a partir de la
-						primera fecha de servicio. Reconozco que el hecho de no proporcionar actualizaciones periódicas
-						del estado del caso puede resultar en que la(s) cuenta(s) del paciente sean remitidas a
-						cobranzas.</p>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="esign-request-main">
-		<div id="Div4" class="esign-request">
-			<div class="esign-header">
-				<div class="esign-header-left"> <span id="LblHeaderBillName"
+			  </div>
+			  <div class="esign-request-main" id="page2" *ngIf="isRadAssigned">
+				<div id="Div4" class="esign-request">
+				  <div class="esign-header">
+					<div class="esign-header-left"> <span id="LblHeaderBillName"
 						class="PLien-Header">{{allreferrerData?.patientBillName}}</span>
-				</div>
-			</div>
-			<div class="esign-header-title"> <span id="Label1" class="page-title">GRAVAMEN DE RADIÓLOGO MÉDICO</span>
-			</div>
-			<div class="esign-details">
-				<div class="esign-single-line"> <span id="Label2" class="headertext">A LA OFICINA DE DERECHO DE:</span>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+					</div>
+				  </div>
+				  <div class="esign-header-title"> <span id="Label1" class="page-title">GRAVAMEN DE RADIÓLOGO MÉDICO POR LESIONES PERSONALES</span>
+				  </div>
+				  <div class="esign-details">
+					<div class="esign-single-line"> <span id="Label2" class="headertext">AL DESPACHO JURIDICO DE:</span>
+					</div>
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtPattname" type="text" [value]="allSignData?.AttorneyFullName"
-								readonly="readonly" id="txtPattname" class="headerinput">
+						  <input name="txtPattname" type="text" [value]="allSignData?.AttorneyFullName"
+							readonly="readonly" id="txtPattname" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtPattadd1" type="text" [value]="allSignData?.AttorneyAddress"
-								readonly="readonly" id="txtPattadd1" class="headerinput">
+						  <input name="txtPattadd1" type="text" [value]="allSignData?.AttorneyAddress"
+							readonly="readonly" id="txtPattadd1" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
+					<div class="esign-single-line">
+					  <div class="esign-input-group">
 						<div class="esign-input-head">
-							<input name="txtPattadd3" type="text" [value]="allSignData?.AttorneyCityState"
-								readonly="readonly" id="txtPattadd3" class="headerinput">
+						  <input name="txtPattadd3" type="text" [value]="allSignData?.AttorneyCityState"
+							readonly="readonly" id="txtPattadd3" class="headerinput">
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
-						<div class="esign-input-body"> <span id="lblPeptel" class="headerlabel">TEL: </span>
-							<span id="lblPetel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="esign-input-group">
-						<div class="esign-input-body"> <span id="lblPepFax" class="headerlabel">FAX: </span>
-							<span id="lblPeFax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="esign-single-line">
-					<div class="patient-info-group">
+          <div class="tel-fax-sec">
+            <div class="esign-single-line ">
+              <div class="esign-input-group telDetail">
+                <div class="esign-input-body"> <span id="lbleptel" class="headerlabel">TEL: &nbsp;</span>
+                  <span id="lbletel" class="headetext">{{allSignData?.BusinessPhoneNumber}}</span>
+                </div>
+              </div>
+              <div class="esign-input-group faxDetail">
+                <div class="esign-input-body"> <span id="lblepfax" class="headerlabel">FAX: &nbsp;</span>
+                  <span id="lblefax" class="headetext">{{allSignData?.AttorneyFaxNumber}}</span>
+                </div>
+                </div>
+            </div>
+          </div>
+					<div class="esign-single-line">
+					  <div class="patient-info-group">
 						<div class="patient-info-single"> <span id="lblPeppatientname" class="headertext">Patient Name :
-								{{allSignData?.FullNameLF}}</span>
+							{{allSignData?.FullNameLF}}</span>
 						</div>
 						<div class="patient-info-single"> <span id="lblPeppatientid" class="headertext">Patient ID :
-								{{allSignData?.PATIENTID}}</span>
+							{{allSignData?.PATIENTID}}</span>
 						</div>
 						<div class="patient-info-single"> <span id="lblPepdob" class="headertext">Date Of Birth :
-								{{allSignData?.BIRTHDATE}}</span>
+							{{allSignData?.BIRTHDATE}}</span>
 						</div>
+					  </div>
 					</div>
-				</div>
-				<div class="paragraph-group">
-
-					<p>
-						<strong>* * * (INFORME A SU ABOGADO DE TODO LOS PROCEDIMIENTO(S) HECHO CON
-							<span id="lblPatientBillName1">{{allreferrerData?.patientBillName}}</span>
-							PARA GARANTIZAR EL PAGO DE LOS SERVICIOS A TRAVÉS DE SU CASO. DE NO INFORMAR A SU ABOGADO
-							PUEDE HACER QUE USTED SEA RESPONSABLE DEL PAGO DE LOS SERVICIOS.)</strong>
-					</p>
-					<p>
-						<strong>(INFORME DE MÉDICO Y GRAVAMEN DE MÉDICO Por la presente autorizo
-							<span id="lblPatientBillName3">{{allreferrerData?.patientBillName}}</span>
-							(proveedor da radiologiá) entregar a usted, mi abogado, un informe completo del examen,
-							diagnóstico, tratamiento y pronóstico de mí mismo, en cuando estuve envuelto en un accidente
-							en la fecha de la herida escrito por debajo.)</strong>
-					</p>
-					<p>
-						<strong>(Por la presente le autorizo y le dirigo a usted, mi abogado, a pagar directamente a
-							<span id="lblPatientBillName5">{{allreferrerData?.patientBillName}}</span>
-							las sumas adeudadas y adeudadas por los servicios profesionales que se me presten. Tanto por
-							este accidente como por cualquier otra factura que se deba y deba a
-							<span id="lblPatientBillName8">{{allreferrerData?.patientBillName}}</span>
-							y que retenga dichas sumas de cualquier acuerdo. juicio o veredicto que puedo ser necesario
-							para proteger y compensar adecuadamente
-							<span id="lblPatientBillName9">{{allreferrerData?.patientBillName}}</span>. Por el presente
-							indundo a mi abogado que pague en su totalidad cualquier factura médica que se le adeude a
-							<span id="lblPatientBillName10">{{allreferrerData?.patientBillName}}</span>.</strong>
-					</p>
-					<p>
-						<strong>(Entiendo perfectamente que soy responsable directa y plenamente a
-							<span id="lblPatientBillName15">{{allreferrerData?.patientBillName}}</span>
-							de todas las facturas médicas presentadas por dicha proveedor por los servicios prestados y
-							que este acuerdo se hace únicamente por la protección adicional de dicho proveedor y en
-							consideración del proveedor a la espera de pago. Además, entiendo que dicho pago no está
-							supeditado a ningún acuerdo. juicio o veredicto por el cual eventualmente pueda recuperar
-							dicha tasa. Me han informado que si mi abogado no desea cooperar en la protección de los
-							interses de
-							<span id="lblPatientBillName18">{{allreferrerData?.patientBillName}}</span>. el proveedor no
-							esperará el pago y puede declarar todo el saldo adeudado y pagadero.El paciente acepta pagar
-							todos los honorarios razonables de los abogados de <span
-								id="lblPatientBillName19">{{allreferrerData?.patientBillName}}</span>, los costos de
-							cobro y los gastos asociados con la aplicación de gravámenes. Si se requiere que
-							<span id="lblPatientBillName20">{{allreferrerData?.patientBillName}}</span> conserve a un
-							abogado para hacer cumplir cualquier disposición de este acuerdo, ya sea que se inicie o no
-							un procedimiento legal, la parte que prevalece sustancialmente tendrá derecho a honorarios
-							razonables de abogados, independientemente de si en el juicio, en la apelación, en cualquier
-							procedimiento de quiebra, asunto de arbitraje o sin recurso a juicio. En el caso de que se
-							requiera que
-							<span id="lblPatientBillName21">{{allreferrerData?.patientBillName}}</span> dé a una agencia
-							de cobranzas cualquier cantidad pendiente de pago debida en virtud de este acuerdo, el
-							paciente acepta pagar todos y cada uno de los costos, honorarios o cargos impuestos por
-							dicha agencia de cobranzas al cobrar las cantidades adeudadas en virtud del presente
-							acuerdo.)
-						</strong>
-					</p>
-					<p>
-						<strong>(Por la presente acepto renunciar a la ejecución de cualquier Estatuto de Limitaciones
-							por un período adicional de cuatro (4) años según lo dispuesto en el CCP 360.5)</strong>
-					</p>
-				</div>
-			</div>
-			<div class="esign-signature">
-				<div class="esign-patient-information">
-					<div class="signature-table signature-table-group">
-						<div class="sign-icon">
-							<img src="assets/images/sign-arrow-s.png" data-toggle="modal" (click)="getEsignData(false)"
-								style="cursor: pointer;" id="opensign" tabindex="-1" class="sign-image">
+          <div class="paragraph-group">
+            <p> <strong>* * * INFORME A SU ABOGADO DE TODOS LOS PROCEDIMIENTOS REALIZADOS CON
+                <span id="lblPatientBillName1">{{allreferrerData?.patientBillName}}</span>
+                PARA ASEGURAR QUE LOS SERVICIOS SE PAGUEN A TRAVÉS DE SU CASO. EL NO INFORMAR A SU ABOGADO PUEDE DETENERLO
+                RESPONSABLE DEL PAGO DE LOS SERVICIOS.</strong> * * *</p>
+            <p> <strong>RE: INFORMES MÉDICOS Y GRAVAMEN DE MÉDICO (INFORME DE MÉDICO Y GRAVAMEN DE MÉDICO) Por la presente
+                autorizar
+                <span id="lblPatientBillName3">{{allreferrerData?.patientBillName}}</span>
+                (Proveedor de radiología) para proporcionarle a usted, mi abogado, un informe completo del examen que incluye
+                todos los registros médicos, con respecto al accidente en el que estuve involucrado en las siguientes fechas de
+                lesión.</strong></p>
+            <p> <strong>Por la presente autorizo ​​y ordeno a usted, mi abogado, que pague directamente a
+                <span id="lblPatientBillName5">{{allreferrerData?.patientBillName}}</span>
+                dichas sumas adeudadas y adeudadas por los servicios profesionales prestados a mí, tanto por razón de este
+                accidente y por cualquier otra factura vencida y adeudada
+                <span id="lblPatientBillName8">{{allreferrerData?.patientBillName}}</span>
+                y retener tales sumas de cualquier acuerdo, juicio o veredicto que sea necesario para
+                proteger adecuadamente y compensar plenamente
+                <span id="lblPatientBillName9">{{allreferrerData?.patientBillName}}</span>.Yo por la presente más
+                dirigir mi
+                Abogado para pagar en su totalidad las facturas médicas adeudadas a
+                <span id="lblPatientBillName10">{{allreferrerData?.patientBillName}}</span>..</strong>
+            <p> <strong>Entiendo completamente que soy directa y totalmente responsable de
+                <span id="lblPatientBillName12">{{allreferrerData?.patientBillName}}</span>
+                por todas las facturas médicas presentadas por dicho proveedor por los servicios prestados y que este
+                acuerdo se hace únicamente para la protección adicional de dicha práctica y en consideración de
+                el proveedor esperando el pago. Además, entiendo que dicho pago no está supeditado a
+                cualquier arreglo, juicio o veredicto por el cual yo pueda eventualmente recuperar dicho honorario. Estuve
+                advertido que si mi abogado no desea cooperar en la protección
+                <span id="lblPatientBillName13">{{allreferrerData?.patientBillName}}</span>el interés, el
+                proveedor
+                no esperará el pago y puede declarar el saldo total vencido y pagadero. El paciente acepta
+                pagar todo<span id="lblPatientBillName19">{{allreferrerData?.patientBillName}}</span>'s
+                razonable
+                honorarios de abogados, costos de cobro y gastos asociados con la ejecución de este gravamen.
+                Si<span id="lblPatientBillName17">{{allreferrerData?.patientBillName}}</span>se requiere
+                para retener
+                un abogado para hacer cumplir cualquier disposición de este Acuerdo, ya sea que se inicie o no un procedimiento
+                legal
+                comenzado, la parte que prevalece sustancialmente tendrá derecho a un abogado razonable
+                honorarios independientemente de si en juicio, en apelación, en cualquier procedimiento de quiebra, arbitraje
+                asunto o sin recurso a la conveniencia. En el caso<span
+                  id="lblPatientBillName16">{{allreferrerData?.patientBillName}}</span> se requiere para
+                convertir cualquier cantidad pendiente de pago adeudada bajo
+                este acuerdo a una agencia de cobro, entonces el Paciente acepta pagar todos y cada uno de los costos, tarifas o
+                cargos impuestos por dicha agencia de cobro en el cobro de las cantidades adeudadas en virtud del
+                presente.</strong>
+            </p>
+            <p><strong>Por la presente acepto renunciar a la ejecución de cualquier estatuto de limitaciones por un período
+                adicional
+                período de cuatro (4) años según lo dispuesto en CCP 360.5.</strong></p>
+          </div>
+				  </div>
+				  <div class="esign-signature">
+					<div class="esign-patient-information esign-patient-information-group">
+					  <div class="signature-table signature-table-group">
+						<div class="single-signature">
+						  <div class="label-title">Fecha(s) de la lesión:</div>
+						  <div class="label-input">
+							<input name="txtPepdateofinjury" type="text" readonly [value]="allSignData?.InjuryDate"
+							  id="txtPepdateofinjury" class="text-line">
+						  </div>
 						</div>
-						<div class="extra-signature" style="width: 100%">
-							<div class="single-signature">
-								<div class="label-input">
-									<img src="assets/images/newsign-s.png" data-toggle="modal"
-										(click)="getEsignData(false)" class="animation-large" id="opensign"
-										tabindex="-1" style="cursor: pointer;">
-								</div>
-								<div class="label-group"><input name="" type="text" readonly="readonly"></div>
-								<div class="label-title">(FIRMA de Paciente)</div>
-							</div>
+						<div class="single-signature">
+						  <div class="label-title">Imprimir primero, medio, &amp; TODOS los apellidos:
+						  </div>
+						  <div class="label-input">
+							<input name="txtPepfullname" type="text" readonly [value]="allSignData?.FullNameLF"
+							  id="txtPepfullname" class="text-line">
+						  </div>
 						</div>
+						<div class="single-signature">
+						  <div class="label-title">Nombre del conductor (si fuera pasajero):
+						  </div>
+						  <div class="label-input">
+							<input name="txtPepdrivername" readonly type="text"  [value]="(allSignData?.DriverName) ? allSignData?.DriverName :model.driverFirstName" id="txtPepdrivername" class="text-line">
+						  </div>
+						</div>
+					  </div>
 					</div>
+				  </div>
+				  <div class="esign-details">
+					<div class="paragraph-group">
+					  <p>El abajo firmante, siendo el abogado registrado del paciente anterior, por la presente acepta observar todos
+              los términos de lo anterior, y acuerda retener dichas sumas de cualquier acuerdo, juicio o
+              veredicto, según sea necesario para proteger adecuadamente y compensar plenamente<span
+						  id="lblPatientBillName23">{{allreferrerData?.patientBillName}}</span> abogado más
+              acuerda que, en caso de que se litigue este derecho de retención, se otorgará a la parte vencedora
+              honorarios y costos.</p>
+					</div>
+				  </div>
+          <div class="esign-patient-information">
+            <div class="signature-table" id="startPage2">
+              <div class="sign-icon" style="position: absolute; left: -90px; top: 32px;" *ngIf="showNewSignImage">
+                <img src="assets/images/new-Sign-Arrow.png" style="cursor: pointer;"
+                  tabindex="-1" class="sign-image" alt="">
+              </div>
+              <div class="single-signature patient-signature BorderBoxAttorneyDesign">
+                <div class="Newborder-Signature" *ngIf="!completedSecondSignature" >
+                  <div class="label-input patientsign-input" (click)="clearData();signatureClick(2)" data-toggle="modal"
+                    data-target="#SignatureNewDesignModel" *ngIf="!completedFirstSignature">
+                    <div class="signatureBox">
+                      <i class="fa  fa-pencil">Firma</i>
+                    </div>
+                  </div>
+                  <div class="label-input patientsign-input" (click)="clearData();signatureClick(2)" *ngIf="completedFirstSignature">
+                    <div class="signatureBox acceptSignature">
+                      <i (click)="acceptCompletedSignature(2)">Aceptar firma</i>
+                    </div>
+                  </div>
+                </div>
+                <div class="Newborder-Signature" *ngIf="completedSecondSignature" >
+                  <img [src]="pSecondSign" alt="">
+                </div>
+                <div class="label-title">(Firma del paciente)</div>
+              </div>
+              <div class="single-signature">
+                <div class="label-title label-date">Fecha:</div>
+                <div class="label-input">
+                  <input name="txtepdate" readonly type="text" [value]="allSignData?.Currentdate" id="txtepdate"
+                    class="text-line">
+                </div>
+              </div>
+              <div class="single-signature  patient-signature BorderBoxPatientDesign">
+                <div class="label-input patientsign-input" *ngIf="!attorneySigend">
+                </div>
+                <div class="label-input patientsign-input Newborder-Signature" *ngIf="attorneySigend">
+                  <img [src]="attorneySignature" alt="" *ngIf="allSignData.ASL_P">
+                </div>
+                <div class="label-title">(Firma del abogado)</div>
+              </div>
+              <div class="single-signature">
+                <div class="label-title label-date">Fecha:</div>
+                <div class="label-input">
+                  <input name="txtPepdate1" type="text" readonly [value]="allSignData?.signdate" id="txtPepdate1"
+                    class="text-line">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="address-phone-sec">
+            <p>{{allreferrerData?.RadAddress}} <span>{{allreferrerData?.RadPhone}} </span></p>
+          </div>
 				</div>
+			  </div>
 			</div>
-			<div class="esign-details">
-				<div class="paragraph-group">
-					<p>El abajo firmante, siendo el abogado registrado del paciente anterior, por la presente acepta
-						observar todos los términos de lo anterior y acepta retener dichas sumas de cualquier acuerdo,
-						juicio o veredicto, según sea necesario para proteger adecuadamente y compensar por completo
-						<span id="lblPatientBillName18">{{allreferrerData?.patientBillName}}</span> Attorney further
-						agrees that in the event this lien is litigated, the prevailing party will be awarded attorney’s
-						fees and costs.
-					</p>
-				</div>
-			</div>
-			<div class="esign-details">
-				<div class="Attorney-Detail"> <span id="lblRadAddress"
-						class="page-title">{{allreferrerData?.RadAddress}}</span>
-					<span id="lblRadPhone" class="page-title">{{allreferrerData?.RadPhone}}</span>
-					<span id="lblRadFax" class="page-title">{{allreferrerData?.RadFax}}</span>
-				</div>
-			</div>
+		  </div>
 		</div>
-	</div>
-	<div class="modal fade modal-theme modal-small" #SignPopUp id="SignPopUp" data-backdrop="static"
-		data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">POR FAVOR FIRME SU GRAVAMEN MÉDICO Y DE IMÁGENES</h5>
-					<div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
-				</div>
-				<form name="form"
-					(ngSubmit)="f.form.valid && (firstName.valid && model.signature!='') && submitSign(true)"
-					#f="ngForm" class="theme-form">
+
+		<div class="modal fade modal-theme modal-small" #SignatureNewDesignModel id="SignatureNewDesignModel" data-backdrop="static"
+		  data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">POR FAVOR FIRME SU REGISTRO MÉDICO Y DE IMÁGENES</h5>
+						<div class="close-dismiss" (click)="signConfirm(false)" data-dismiss="modal"></div>
+					</div>
+					<div class="modal-content newdesignsingature-modal-content">
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link" [ngClass]="{'active': selectedModOfSignature === 'Draw'}" data-toggle="tab" href="#draw" (click)="selectedTab('Draw')">Dibujar</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" [ngClass]="{'active': selectedModOfSignature === 'Type'}" data-toggle="tab" href="#type" (click)="selectedTab('Type')">Escribe</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" [ngClass]="{'active': selectedModOfSignature === 'MySignature'}" data-toggle="tab" href="#mysignature" (click)="selectedTab('MySignature')">mi firma</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane"  [ngClass]="{'active': selectedModOfSignature === 'Draw'}" id="draw">
+                <form name="form"
+					#f="ngForm" class="theme-form" novalidate>
 					<div class="modal-body">
 						<div class="modal-body-inner">
 							<div class="row">
@@ -429,6 +981,7 @@
 										</div>
 									</div>
 								</div>
+								<br>
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 									<div class="form-group">
 										<div class="theme-label">Nombre y Apellido del Conductor (Opcional)</div>
@@ -437,186 +990,300 @@
 												[(ngModel)]="model.driverFirstName" #driverFirstName="ngModel"
 												[ngModelOptions]="{ standalone : true }" />
 										</div>
-										<div style="font-size: 10px;">Solo ingrese el nombre del conductor si usted era
-											el pasajero y NO el conductor</div>
+										<div style="font-size: 10px;">INGRESE EL NOMBRE DEL CONDUCTOR SOLO SI USTED FUE EL PASAJERO Y NO EL CONDUCTOR</div>
 									</div>
 								</div>
 								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 									<div class="form-group">
 										<div
-											[ngClass]="{'signature-pad-group_s':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
+											[ngClass]="{'signature-pad-group':model.signature=='', 'signature-pad-group remove':model.signature!=''}">
 											<signature-pad [options]="signaturePadOptions" [(ngModel)]="model.signature"
-											ngDefaultControl 
+											ngDefaultControl
+												[ngModelOptions]="{ standalone : true }"
 												[ngClass]="{ 'is-invalid': f.submitted && model.signature=='' }"
-												#signature="ngModel" [ngModelOptions]="{ standalone : true }"
-												(onEndEvent)="drawComplete()">
+												#signature="ngModel" (onEndEvent)="drawComplete()">
 											</signature-pad>
 										</div>
 										<div *ngIf="f.submitted && model.signature==''" class="invalid-feedback">
-											<div>se requiere firma</div>
+											<div>Se requiere firma</div>
 										</div>
 									</div>
 									<a href="javascript:void(0)" (click)="clearSign();" style="background-color: gray;"
-										class="btn btn-theme btn-sm">Claro Firma</a>
+										class="btn btn-theme btn-sm">Firma clara</a>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="submit" [disabled]="(firstName.invalid || model.signature =='')?true:false"
-							[ngStyle]="{'background-color': ((!firstName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
-							class="btn btn-theme pull-left btn-sm">Firmar</button>
-						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
-							#closeBtn (click)="signConfirm(false)">Cerca</a>
-					</div>
 				</form>
+							</div>
+							<div class="tab-pane"  [ngClass]="{'active': selectedModOfSignature === 'Type'}" id="type">
+								<div class="type-tab-content">
+                  <div class="grey-background-sec">
+                    <form name="form" #f="ngForm" novalidate>
+                      <div class="form-group">
+                        <div class="theme-label">Nombre y Apellido del Conductor (Opcional)</div>
+                        <div class="input-group">
+                          <input type="text" class="form-control" (click)="checkdriverFirstName()" (keyup)="checkdriverFirstName()" name="driverFirstName"
+                            [(ngModel)]="model.driverFirstName" #driverFirstName="ngModel"
+                            [ngModelOptions]="{ standalone : true }" />
+                        </div>
+                        <div style="font-size: 10px;">INGRESE EL NOMBRE DEL CONDUCTOR SOLO SI USTED FUE EL PASAJERO Y NO EL CONDUCTOR</div>
+                      </div>
+                    </form>
+										<div class="top-font-color-sec">
+											<div class="header-action action-web dropdown choose-font">
+												<div class="dropdown-toggle nav-link" id="dropdownlogout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<div class="chooseFont" [ngStyle]="{'font-family': selectedInputFont}">
+														{{selectedLanguageText}}<i class="fa fa-angle-down"></i>
+													</div>
+													<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                            <li>
+															<a href="javascript:void(0);" (click)="changeInputLanguage('HighSummit')" [ngStyle]="{'font-family': 'HighSummit'}">HighSummit</a>
+														</li>
+														<li>
+															<a href="javascript:void(0);" (click)="changeInputLanguage('TheSuavity')" [ngStyle]="{'font-family': 'TheSuavity'}">TheSuavity</a>
+														</li>
+														<li>
+															<a href="javascript:void(0);" (click)="changeInputLanguage('MrDeHaviland')" [ngStyle]="{'font-family': 'MrDeHaviland'}">MrDeHaviland</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<div class="choose-color">
+												<div class="colorSelect black" (click)="changeInputColor('black')"><i class="fa fa-check" *ngIf="selectedInputColor === 'black'"></i></div>
+												<div class="colorSelect blue" (click)="changeInputColor('blue')"><i class="fa fa-check" *ngIf="selectedInputColor === 'blue'"></i></div>
+												<div class="colorSelect red" (click)="changeInputColor('red')"><i class="fa fa-check" *ngIf="selectedInputColor === 'red'"></i></div>
+											</div>
+										</div>
+										<div class="type-signature">
+												<div class="form-group">
+                            <input matInput type="text" class="form-control" (keyup)="textToImageBase64()"
+                            placeholder="Firma del paciente" [(ngModel)]="typeSignature" [pattern]="firstNamePattern" #pSignature="ngModel"
+                            [ngStyle]="{'font-family': selectedInputFont , 'color': selectedInputColor}">
+                            <canvas #canvas height=100  width=500 hidden></canvas>
+												</div>
+										</div>
+									</div>
+									<div class="info-note-sec">
+										<p>Entiendo que Precise Imaging usa mi nombre, dirección de correo electrónico y se usará información limitada para
+                      completar el proceso de firma y mejorar la experiencia del usuario. Para obtener más información sobre cómo
+                      Precise Imaging utiliza información, consulte nuestra <a href="javascript:void(0);" data-toggle="modal"
+                      data-target="#ElecAgreePopUp">Política de privacidad</a>. Al firmar este documento con un
+                      firma electrónica, acepto que dicha firma será tan válida como las firmas manuscritas y
+                      considerados originales en la medida permitida por la ley aplicable.</p>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane"  [ngClass]="{'active': selectedModOfSignature === 'MySignature'}" id="mysignature">
+								<div class="upload-signature-content">
+                 <form name="form"
+                 #f="ngForm" class="theme-form" novalidate>
+                 <div class="modal-body">
+                   <div class="modal-body-inner">
+                     <div class="row">
+                       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                         <div class="form-group">
+                           <div class="theme-label">Nombre y Apellido</div>
+                           <div class="input-group">
+                             <input type="text" class="form-control" name="firstName"
+                               [(ngModel)]="model.firstName" #firstName="ngModel"
+                               [ngModelOptions]="{ standalone : true }" [pattern]="firstNamePattern"
+                               [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }"
+                               required />
+                           </div>
+                           <div *ngIf="f.submitted && firstName.invalid" class="invalid-feedback">
+                             <div *ngIf="firstName.errors.required">Se requiere el primer nombre</div>
+                             <div *ngIf="firstName.errors.pattern">Nombre y Apellido no valido</div>
+                           </div>
+                         </div>
+                       </div>
+                       <br>
+                       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                         <div class="form-group">
+                           <div class="theme-label">Nombre y Apellido del Conductor (Opcional)</div>
+                           <div class="input-group">
+                             <input type="text" class="form-control" (click)="checkdriverFirstName()" (keyup)="checkdriverFirstName()" name="driverFirstName"
+                               [(ngModel)]="model.driverFirstName" #driverFirstName="ngModel"
+                               [ngModelOptions]="{ standalone : true }" />
+                           </div>
+                           <div style="font-size: 10px;">INGRESE EL NOMBRE DEL CONDUCTOR SOLO SI USTED FUE EL PASAJERO Y NO EL CONDUCTOR</div>
+                         </div>
+                       </div>
+                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group">
+                          <div class="file-upload">
+                            <div class="fileupload" data-provides="fileupload">
+                              <span class="btn btn-file drag-drop-box ">
+                                <span class="fileupload-new"><P>Arrastra y suelta un archivo aquí</P><p class="or">O</p><p class="choose-file">Elija un archivo local</p></span>
+                                <input name="file" type="file" multiple (click)="myInputFile.value = null" value="" title=""
+                                   (change)="onFileChanged($event)" accept="image/png, image/jpg, image/jpeg" #myInputFile>
+                                <span class="fileupload-preview"></span>
+                              </span>
+                              </div>
+                              <div>
+                                <h3>{{ fileName }}</h3>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                     </div>
+                   </div>
+                  </div>
+                 </form>
+									<div class="info-note-sec">
+										<p>Entiendo que Precise Imaging usa mi nombre, dirección de correo electrónico y se usará información limitada para
+                      completar el proceso de firma y mejorar la experiencia del usuario. Para obtener más información sobre cómo
+                      Precise Imaging utiliza información, consulte nuestra<a href="javascript:void(0);" data-toggle="modal"
+                      data-target="#ElecAgreePopUp">Política de privacidad</a>.Al firmar este documento con un
+                      firma electrónica, acepto que dicha firma será tan válida como las firmas manuscritas y
+                      considerados originales en la medida permitida por la ley aplicable.</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<a href="javascript:void(0)" class="btn btn-border-gray pull-left btn-sm"
+							data-dismiss="modal" #closeBtn>Cancelar</a>
+						<button type="button" class="btn btn-theme pull-right btn-sm btnAccept" *ngIf="selectedModOfSignature === 'Draw'"
+            [disabled]="(firstName.invalid || model.signature =='') ? true:false"
+            [ngStyle]="{'background-color': ((!firstName.invalid) && (model.signature !='')) ? '#3b8beb' : '#bfbfbf'}"
+            (click)="((f.form.valid && (firstName.valid && model.signature!=''))) && completeSignature()">Aceptar y Firmar</button>
+
+						<button type="button" class="btn btn-theme pull-right btn-sm btnAccept"
+            *ngIf="selectedModOfSignature === 'Type'" [disabled]="(typeSignature != '' && !(pSignature.errors?.pattern)) ? false:true"
+            [ngStyle]="{'background-color': (typeSignature === '' || (pSignature.errors?.pattern))? '#bfbfbf' : '#3b8beb' }"
+            (click)="(typeSignature != '' && !(pSignature.errors?.pattern)) && completeSignature()">Aceptar y Firmar</button>
+
+						<button type="button" class="btn btn-theme pull-right btn-sm btnAccept" *ngIf="selectedModOfSignature === 'MySignature'"
+            [disabled]="(firstName.invalid || selectedFile == '') ? true:false"
+            [ngStyle]="{'background-color': ((!firstName.invalid) && (selectedFile!='')) ? '#3b8beb' : '#bfbfbf'}"
+            (click)="((f.form.valid && (firstName.valid && selectedFile!= ''))) && completeSignature()">Aceptar y Firmar</button>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="modal fade modal-theme modal-small" id="signConfirmPopUp" data-backdrop="static" data-keyboard="false"
-		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal fade modal-theme modal-small" id="signConfirmPopUp" data-backdrop="static" data-keyboard="false"
+		  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title"><i class="fas fa-bell" aria-hidden="true" style="font-size:20px"></i></h5>
-					<div class="close-dismiss" data-dismiss="modal" (click)="signConfirm(false)"></div>
-				</div>
+			  <div class="modal-header">
+				<h5 class="modal-title"><i class="fas fa-bell" aria-hidden="true" style="font-size:20px"></i></h5>
+				<div class="close-dismiss" data-dismiss="modal" (click)="signConfirm(false)"></div>
+			  </div>
+			  <div class="modal-body">
+				<p>Al firmar, acepto tanto el derecho de retención técnico (imágenes) como el derecho de retención profesional (informe del radiólogo)</p>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+				  (click)="signConfirm(false)">Cancelar</button>
+				<button type="button" class="btn btn-theme btn-sm pull-left" data-dismiss="modal"
+				  (click)="signConfirm(true)">OK</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="modal fade modal-theme modal-small" id="SignDownloadModel" data-backdrop="static" data-keyboard="false"
+		  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title">
+				  &nbsp;
+				</h5>
+				<div class="close-dismiss" (click)="onSuccessClose()" data-dismiss="modal"></div>
+			  </div>
+			  <form [formGroup]="emailSendForm" class="theme-form">
 				<div class="modal-body">
-					<p>Al firmar, acepto tanto el derecho de retención técnico (imágenes) como el derecho de retención
-						profesional (informe del radiólogo)</p>
+				  <div class="modal-body-inner">
+					<div class="row">
+					  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="form-group">
+						  <strong class="receivedLien">Hemos recibido sus gravámenes firmados.</strong>
+						  <p>(Opcional abajo)</p>
+						</div>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="form-group download-copy-section">
+						  <div class="theme-label">Descargar una copia &nbsp;<img src="assets/images/downloadicon.png" (click)="downloadSignFile()" class="animation-large download-copy-img" id="opensig" tabindex="-1" style="cursor: pointer;" alt=""></div>
+						</div>
+					  </div>
+					  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="form-group">
+						  <div class="theme-label">Enviar una copia por correo electrónico</div>
+						  <div class="input-group email-copy-btn">
+							<input type="text" formControlName="emailTxt" [ngClass]="{ 'is-invalid': submitted && refemailSendForm.emailTxt.errors }" class="form-control" />
+							<button type="submit"  [disabled]="(refemailSendForm.emailTxt.errors)?true:false"
+							[ngStyle]="{'background-color':(refemailSendForm.emailTxt.errors) ? '#bfbfbf' :'#3b8beb'}"
+							data-dismiss="modal" (click)="sendEmailbtn(true)" [attr.data-dismiss]="modelValue" class="btn btn-theme pull-left btn-sm">Enviar correo electrónico</button>
+						  </div>
+						  <div *ngIf="(submitted || refemailSendForm.emailTxt.touched) && refemailSendForm.emailTxt.errors" class="tooltiptext text-left">
+							<small class="error text-danger" *ngIf="refemailSendForm.emailTxt.errors.required">Correo electronico (requerido</small>
+							<small class="error text-danger" *ngIf="refemailSendForm.emailTxt.errors.email || refemailSendForm.emailTxt.errors.pattern">El correo electrónico debe ser una dirección de correo electrónico válida</small>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"
-						(click)="signConfirm(false)">Cancel</button>
-					<button type="button" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
-						(click)="signConfirm(true)">Ok</button>
+				  <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"  (click)="onSuccessClose()" #closeDownloadModelBtn>Cerca</a>
 				</div>
+			  </form>
 			</div>
+		  </div>
 		</div>
-	</div>
-	<div class="modal fade modal-theme modal-small" id="SignDownloadModel" data-backdrop="static" data-keyboard="false"
+	  </div>
+	  <div class="modal fade modal-theme modal-small" id="AlreadyExistsDriverNamePopUp" data-backdrop="static" data-keyboard="false"
 		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">
-						&nbsp;
-						<!-- <i class="fas fa-bell" aria-hidden="true" style="font-size:20px"></i> -->
-					</h5>
-					<div class="close-dismiss"(click)="onSuccessClose()" data-dismiss="modal"></div>
-				</div>
-				<form [formGroup]="emailSendForm" class="theme-form">
-					<div class="modal-body">
-						<div class="modal-body-inner">
-							<div class="row">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-									<div class="form-group">
-										<strong>Hemos recibido su gravamen firmado</strong>
-										<p>(Opcional abajo)</p>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-									<div class="form-group download-copy-section">
-										<div class="theme-label">Descargar una copia &nbsp;<img
-												src="assets/images/downloadicon.png" (click)="downloadSignFile()"
-												class="animation-large download-copy-img" id="opensig" tabindex="-1"
-												style="cursor: pointer;"></div>
-									</div>
-								</div>
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-									<div class="form-group">
-										<div class="theme-label">Enviar una copia por correo electrónico</div>
-										<div class="input-group email-copy-btns esignrequests-email-copy-btns">
-											<input type="text" formControlName="emailTxt"
-												[ngClass]="{ 'is-invalid': submitted && refemailSendForm.emailTxt.errors }"
-												class="form-control" />
-											<button type="submit"
-												[disabled]="(refemailSendForm.emailTxt.errors)?true:false"
-												[ngStyle]="{'background-color':(refemailSendForm.emailTxt.errors) ? '#bfbfbf' :'#3b8beb'}"
-												data-dismiss="modal" (click)="sendEmailbtn(true)"
-												[attr.data-dismiss]="modelValue"
-												class="btn btn-theme pull-left btn-sm">Enviar correo
-												electrónico</button>
-										</div>
-										<div *ngIf=" submitted && refemailSendForm.emailTxt.errors"
-											class="tooltiptext text-left">
-											<small class="error text-danger"
-												*ngIf="refemailSendForm.emailTxt.errors.required">Correo electronico
-												(requerido)</small>
-											<small class="error text-danger"
-												*ngIf="refemailSendForm.emailTxt.errors.email || refemailSendForm.emailTxt.errors.pattern">El
-												correo electrónico debe ser una dirección de correo electrónico
-												válida</small>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal"(click)="onSuccessClose()"
-							#closeDownloadModelBtn>Cerca</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	{{EsignAgreeCheck}}
-</div>
-<div class="modal fade modal-theme modal-small" id="ElecAgreePopUp" data-backdrop="static" data-keyboard="false"
-	tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
+		  <div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">CONSENTIMIENTO DE FIRMA ELECTRÓNICA</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
+			  <h5 class="modal-title">Alerta</h5>
+			  <div class="close-dismiss" data-dismiss="modal"></div>
 			</div>
 			<form class="theme-form">
-				<div class="modal-body">
-					<div class="modal-body-inner text-center">
-						<div [innerHtml]="elecAgree"></div>
-					</div>
+			  <div class="modal-body">
+				<div class="modal-body-inner text-center">
+				  Su cliente ya ingresó el nombre de un conductor ya que era el pasajero. ¿Está seguro de que desea anularlo y cambiarlo?
 				</div>
-				<div class="modal-footer text-center">
-					<a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right"
-						data-dismiss="modal">Cerca</a>
-				</div>
+			  </div>
+			  <div class="modal-footer text-center">
+				<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
+				(click)="confirmDriverName(false)" >Cancelar</button>
+				<button type="button" class="btn btn-theme btn-sm pull-left" data-dismiss="modal"
+				(click)="confirmDriverName(true)">Sí</button>
+			  </div>
 			</form>
+		  </div>
 		</div>
-	</div>
-</div>
-<div class="modal fade modal-theme modal-small" id="AlreadyExistsDriverNamePopUp" data-backdrop="static" data-keyboard="false"
-	tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
+	  </div>
+	  <div class="modal fade modal-theme modal-small" id="ElecAgreePopUp" data-backdrop="static" data-keyboard="false"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+		  <div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Alert</h5>
-				<div class="close-dismiss" data-dismiss="modal"></div>
+			  <h5 class="modal-title">CONSENTIMIENTO DE FIRMA ELECTRÓNICA</h5>
+			  <div class="close-dismiss" data-dismiss="modal"></div>
 			</div>
 			<form class="theme-form">
-				<div class="modal-body">
-					<div class="modal-body-inner text-center">
-						Su cliente ya ingresó el nombre de un conductor ya que era el pasajero. ¿Está seguro de que desea anularlo y cambiarlo?
-					</div>
+			  <div class="modal-body">
+				<div class="modal-body-inner text-center">
+				  <div [innerHtml]="elecAgree"></div>
 				</div>
-				<div class="modal-footer text-center">
-					<button type="button" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal"
-					(click)="confirmDriverName(false)" >cancelar</button>
-				    <button type="button" class="btn btn-theme btn-sm pull-left" data-dismiss="modal"
-					(click)="confirmDriverName(true)">Sí</button>					
-				</div>
+			  </div>
+			  <div class="modal-footer text-center">
+				<a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" data-dismiss="modal" >Cerca</a>
+			  </div>
 			</form>
+		  </div>
 		</div>
-	</div>
-</div>
-
-<button #hiddenSignDownloadModel [hidden]="true" data-toggle="modal" data-target="#SignDownloadModel"></button>
-<button #hiddenSignPopUp [hidden]="true" data-toggle="modal" data-target="#SignPopUp"></button>
-<button #hiddenAlreadyExistsDriverNamePopUp [hidden]="true" data-toggle="modal" data-target="#AlreadyExistsDriverNamePopUp"></button>
-</div>
-<div class="esign-successful"  *ngIf="isSignSuccessflyyMessage">
-	<img src="assets/images/award.png">
-	<p>{{message}}</p>
-</div>
+	  </div>
+	  <button #hiddenSignDownloadModel [hidden]="true" data-toggle="modal" data-target="#SignDownloadModel"></button>
+	  <button #hiddenSignPopUp [hidden]="true" data-toggle="modal" data-target="#SignPopUp"></button>
+	  <button #hiddenAlreadyExistsDriverNamePopUp [hidden]="true" data-toggle="modal" data-target="#AlreadyExistsDriverNamePopUp"></button>
+	  </div>
+  </div>
