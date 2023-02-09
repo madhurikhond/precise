@@ -1876,8 +1876,8 @@ export class SchdFacilitiesComponent implements OnInit {
     this.facilityIntakeForm.patchValue({
       isPacketDocOnly: data.isPacketDocOnly,
       isMriScreeningForm: data.isMriScreeningForm,
-      IsXrayWaiverForm: data.IsXrayWaiverForm,
-      IsFaxIntakePacket: data.IsFaxIntakePacket,
+      IsXrayWaiverForm: data.isXrayWaiverForm,
+      IsFaxIntakePacket: data.isFaxIntakePacket,
       intakeFax1: data.intakeFax1,
       intakeFax2: data.intakeFax2,
       intakeFax3: data.intakeFax3,
