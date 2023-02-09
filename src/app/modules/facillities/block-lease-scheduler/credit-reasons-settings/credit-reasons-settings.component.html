@@ -136,7 +136,7 @@
                                         </div>  -->
                                         <div>
 											<div class="input-group md-input-focused">
-                                                <span>Reminder facility every</span> 
+                                                <span>Remind facility every</span> 
 												<select id="dayselect"  (change)="onChangeReminderDays()" class="form-control" formControlName="ReminderInterval"
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && reminderIntervalValidation) }">
 													<option value = "0" disabled>Select Reminder Interval</option>
@@ -144,7 +144,7 @@
 														[ngValue]="reminder">
 														{{reminder}}</option>
 												</select>
-                                                <span>days if lease is created and not signed by the facility</span>
+                                                <span>day(s) if lease is created and not signed by the facility.</span>
 											</div>
                                             <div *ngIf="(Issubmitted && reminderIntervalValidation)"
                                             class="invalid-feedback">
@@ -164,7 +164,7 @@
             </div>
 
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-target="#" data-toggle="modal"
+                <a href="javascript:void(0)"  data-dismiss="modal" (click)="updateTabId('Reasons',false)"
                     class=" btn btn-border-gray pull-right btn-sm">Close</a>
                 <!-- <a _ngcontent-dpe-c559="" href="javascript:void(0)" id="closebtn" data-dismiss="modal" class=" btn btn-theme pull-right" click="updateManageReminderSettings()">Ok</a> -->
                 <button type="button" id="closebtn" class="btn btn-theme btn-sm pull-left" 
