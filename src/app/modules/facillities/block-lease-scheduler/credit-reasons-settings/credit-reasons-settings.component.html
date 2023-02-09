@@ -139,7 +139,7 @@
                                                 <span>Reminder facility every</span> 
 												<select id="dayselect"  (change)="onChangeReminderDays()" class="form-control" formControlName="ReminderInterval"
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && reminderIntervalValidation) }">
-													<option value = "0" disbaled>Select Reminder Interval</option>
+													<option value = "0" disabled>Select Reminder Interval</option>
 													<option *ngFor="let reminder of reminderInternallist"
 														[ngValue]="reminder">
 														{{reminder}}</option>
