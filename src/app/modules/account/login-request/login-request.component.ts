@@ -339,7 +339,7 @@ export class LoginRequestComponent implements OnInit {
         [
           Validators.email,
           Validators.required,
-          Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).com'),
+          Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).(com|COM)'),
           DontMatch.dontMatch(this.requestLoginForm.get('PersonalEmail'))
         ]
       );
