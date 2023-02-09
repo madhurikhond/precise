@@ -137,18 +137,18 @@
                                         <div>
 											<div class="input-group md-input-focused">
                                                 <span>Reminder facility every</span> 
-												<select id="dayselect" [disabled]="disableReminderInterval" class="form-control" formControlName="ReminderInterval"
-                                                [ngClass]="{ 'is-invalid': (Issubmitted && reminderForm.controls.ReminderInterval.errors) }">
-													<option value = "0" >Select Reminder Interval</option>
+												<select id="dayselect"  (change)="onChangeReminderDays()" class="form-control" formControlName="ReminderInterval"
+                                                [ngClass]="{ 'is-invalid': (Issubmitted && reminderIntervalValidation) }">
+													<option value = "0" disbaled>Select Reminder Interval</option>
 													<option *ngFor="let reminder of reminderInternallist"
 														[ngValue]="reminder">
 														{{reminder}}</option>
 												</select>
                                                 <span>days if lease is created and not signed by the facility</span>
 											</div>
-                                            <div *ngIf="(Issubmitted && reminderForm.controls.ReminderInterval.errors)"
+                                            <div *ngIf="(Issubmitted && reminderIntervalValidation)"
                                             class="invalid-feedback">
-                                            <div *ngIf="reminderForm.controls.ReminderInterval.errors?.required">
+                                            <div *ngIf="reminderIntervalValidation">
                                                 reminder interval is required</div>
                                         </div> 
 											
