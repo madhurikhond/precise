@@ -35,6 +35,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   Issubmitted : boolean = false;
   disableReminderInterval : boolean ;
+  reminderIntervalValidation : any 
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -181,6 +182,11 @@ export class CreditReasonsSettingComponent implements OnInit {
       this.f.submitted = false;
     }
   }
+  onChangeReminderDays(){
+    if(this.reminderForm.controls.ReminderInterval.value != '0'){
+      this.reminderIntervalValidation = false;
+    }
+  }
   onInsertSubmit() {
     this.submitted = true;
     this.modelValue = 'modal';
@@ -285,7 +291,6 @@ export class CreditReasonsSettingComponent implements OnInit {
     }
     this.blockLeaseSchedulerService.addUpdateBlockLeaseCreditReason(true, data).subscribe((res) => {
       if (res) {
-        debugger
         this.notificationService.showNotification({
           alertHeader: 'Success',
           alertMessage: res.response[0].Message,
@@ -303,7 +308,6 @@ export class CreditReasonsSettingComponent implements OnInit {
       });
   }
   createDropDown() {
-    debugger
     for (let i = 1; i <= 30; i++) {
       this.reminderInternallist.push(i)
     }
@@ -313,14 +317,15 @@ export class CreditReasonsSettingComponent implements OnInit {
       this.reminderForm.get('ReminderInterval').enable();
     }else{
       this.reminderForm.get('ReminderInterval').disable();
+      this.reminderForm.controls.ReminderInterval.setValue('0');
     }
   }
 
   updateManageReminderSettings() {
-    debugger
     this.Issubmitted = true ;
-    if (this.reminderForm.controls.IsActive.value == false) {
-      return;
+    if(this.reminderForm.controls.ReminderInterval.value == '0' && this.reminderForm.controls.IsActive.value == true){
+      this.reminderIntervalValidation = true ;
+      return
     }
     let data = {
       'Id': 0,
@@ -366,6 +371,7 @@ export class CreditReasonsSettingComponent implements OnInit {
         }
         if(this.reminderForm.controls.IsActive.value == false){
           this.reminderForm.get('ReminderInterval').disable();
+          this.reminderForm.controls.ReminderInterval.setValue('0');
         }
       }
     });
