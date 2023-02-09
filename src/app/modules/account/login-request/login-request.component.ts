@@ -334,7 +334,7 @@ export class LoginRequestComponent implements OnInit {
     }
     if (valuex === 'Precise Imaging Employee') {
       this.requestLoginForm.controls.WorkEmail.setValidators(null);
-     // this.requestLoginForm.get('WorkEmail').updateValueAndValidity();
+      this.requestLoginForm.get('WorkEmail').updateValueAndValidity();
       this.requestLoginForm.controls.WorkEmail.setValidators(
         [
           Validators.email,
