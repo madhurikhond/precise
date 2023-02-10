@@ -55,7 +55,9 @@ export class PendingSignatureComponent {
   signatureForm: FormGroup;
   isDefaultNamesEnable : boolean;
   isDefaultSignature: boolean;
+  isDefaultTitle: boolean;
   defaultSignature: string;
+  defaultTitle: any;
 
   constructor(private lienPortalService: LienPortalService,
     private fb: FormBuilder, private commonService: CommonMethodService,
@@ -69,7 +71,7 @@ export class PendingSignatureComponent {
       lastName: [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '', Validators.required],
       fundingCompanySign: ['', Validators.required],
       baseUrl: window.location.origin,
-      title : ['',Validators.required]
+      title : [(this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultTitle) ? this.defaultTitle : '',Validators.required]
     })
     this.commonService.setTitle(LienPortalPageTitleOption.PENDING_SIGNATURE);
   }
@@ -175,7 +177,9 @@ export class PendingSignatureComponent {
           var data = res.result;
           this.isDefaultNamesEnable = data.isDefaultNamesEnable;
           this.isDefaultSignature = data.isDefaultSignature;
+          this.isDefaultTitle = data.isDefaultTitleEnabled;
           if (data.defaultSign) {
+            this.defaultTitle = data.defaultSign.defaultTitle;
             if (data.defaultSign.defaultSign) {
               this.defaultSignature = data.defaultSign.defaultSign;
               this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
@@ -197,7 +201,7 @@ export class PendingSignatureComponent {
       lastName: (this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultNamesEnable) ? this.storageService.user.LastName : '',
       fundingCompanySign: '',
       baseUrl: window.location.origin,
-      title: '',
+      title: (this.permission &&  this.permission.IsAdd === 'true' && this.isDefaultTitle) ? this.defaultTitle : '',
     });
     if (this.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);

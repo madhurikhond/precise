@@ -29,7 +29,9 @@ export class FundingCoSettingComponent implements OnInit {
   isDefaultNamesEnable: boolean = true;
   isPendingTaskEnable: boolean = true;
   isDefaultSignature: boolean = true;
+  isDefaultTitle: boolean = true;
   defaultSignature: string;
+  defaultTitle: any;
   permission : any;
   permissionTitle = LienPortalFundingCoPermission.SignForAssignAR;
 
@@ -62,14 +64,17 @@ export class FundingCoSettingComponent implements OnInit {
             this.isDefaultNamesEnable = data.isDefaultNamesEnable;
             this.isPendingTaskEnable = data.isPendingTaskEnable;
             this.isDefaultSignature = data.isDefaultSignature;
+            this.isDefaultTitle = data.isDefaultTitleEnabled;
           }
           else{
             this.isDefaultNamesEnable = false;
             this.isPendingTaskEnable = false;
             this.isDefaultSignature = false;
+            this.isDefaultTitle = false;
           }
           if (data.defaultSign)
           {
+            this.defaultTitle = data.defaultSign.defaultTitle;
             if (data.defaultSign.defaultSign)
               this.defaultSignature = data.defaultSign.defaultSign;
               this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
@@ -87,6 +92,8 @@ export class FundingCoSettingComponent implements OnInit {
       "isDefaultNamesEnable": this.isDefaultNamesEnable,
       "isPendingTaskEnable": this.isPendingTaskEnable,
       "isDefaultSignature": this.isDefaultSignature,
+      "isDefaultTitleEnabled": this.isDefaultTitle,
+      "defaultTitle": this.defaultTitle,
       "defaultSign": {
         "defaultSign": this.defaultSignature
       },
