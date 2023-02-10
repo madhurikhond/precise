@@ -643,6 +643,7 @@ export class EsignrequestaComponent implements OnInit {
   }
 
   textToImageBase64() {
+    (this.typeSignature.length > 0)?this.typeSignature = ' '+ this.typeSignature.trimLeft() : this.typeSignature = '';
     let tCtx = this.canvas.nativeElement.getContext('2d');
     tCtx.canvas.width = tCtx.measureText(this.typeSignature).width;
     let font = '25px Arial';
