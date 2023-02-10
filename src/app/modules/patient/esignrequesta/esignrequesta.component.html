@@ -1065,7 +1065,7 @@
                         <div class="form-group">
                           <input matInput type="text" class="form-control" (keyup)="textToImageBase64()"
                             placeholder="Attorney's Signature" [(ngModel)]="typeSignature" [pattern]="firstNamePattern"
-                            #aSignature="ngModel"
+                            #aSignature="ngModel" maxlength="50"
                             [ngStyle]="{'font-family': selectedInputFont , 'color': selectedInputColor}">
                           <canvas #canvas height=100 width=500 hidden></canvas>
                         </div>

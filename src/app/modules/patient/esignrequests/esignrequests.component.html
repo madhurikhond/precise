@@ -1059,7 +1059,7 @@
 												<div class="form-group">
                             <input matInput type="text" class="form-control" (keyup)="textToImageBase64()"
                             placeholder="Firma del paciente" [(ngModel)]="typeSignature" [pattern]="firstNamePattern" #pSignature="ngModel"
-                            [ngStyle]="{'font-family': selectedInputFont , 'color': selectedInputColor}">
+                            maxlength="50" [ngStyle]="{'font-family': selectedInputFont , 'color': selectedInputColor}">
                             <canvas #canvas height=100  width=500 hidden></canvas>
 												</div>
 										</div>
