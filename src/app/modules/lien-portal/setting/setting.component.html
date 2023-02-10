@@ -1,5 +1,5 @@
 <div class="page-area">
-    
+
     <app-header></app-header>
     <app-navbar></app-navbar>
     <div class="page-working-area lien-funding-co">
@@ -79,6 +79,25 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="reminder pdf-copy">
+                          <div class="setting-content">
+                            <div class="switch-sec">
+                              <label class="toggle-switch">
+                                <input type="checkbox" [(ngModel)]="isDefaultTitle">
+                                <div class="slider"></div>
+                              </label>
+                            </div>
+
+                          </div>
+                          <div class="info-txt">Insert my saved Title by default</div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Default title from user " [(ngModel)]="defaultTitle">
+                            </div>
+                          </div>
+                        </div>
+
                         <div class="reminder signature">
                             <div class="setting-content">
                                 <div class="switch-sec">

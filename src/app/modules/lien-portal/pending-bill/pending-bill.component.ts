@@ -62,6 +62,7 @@ export class PendingBillComponent implements OnInit {
   checkboxSelectedData: any = [];
   isDefaultSignature: boolean;
   defaultSignature: any;
+  defaultTitle: any;
   permissionForAssignAR : any;
   permissionForRetainAR : any;
   permissionTitleAssignAR = OriginalLienOwnerPermission.BillStudiesAndAssignAR;
@@ -183,6 +184,7 @@ export class PendingBillComponent implements OnInit {
         dateOfStudy: data.dateOfStudy,
         studyDescription: data.study,
         cptGroup: data.cptGroup,
+        cptCode: data.cptCode,
         internalStudyId : data.internalStudyId,
         dob: data.dateOfBirth
       }));
@@ -311,6 +313,7 @@ export class PendingBillComponent implements OnInit {
       firstName: this.storageService.user.FirstName,
       lastName: this.storageService.user.LastName,
       radiologistSign: '',
+      title:''
     });
 
      if (this.defaultCompanyName.length > 0)
@@ -321,6 +324,9 @@ export class PendingBillComponent implements OnInit {
       if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.lienPortalService.defaultSignature);
       this.assignARform.controls.radiologistSign.setValue(this.lienPortalService.defaultSignature);
+    }
+    if(this.lienPortalService.isDefaultTitle){
+      this.assignARform.controls.title.setValue(this.lienPortalService.defaultTitle);
     }
   }
 
@@ -333,6 +339,10 @@ export class PendingBillComponent implements OnInit {
           if (res.status == LienPortalResponseStatus.Success) {
             var data = res.result;
             this.lienPortalService.isDefaultSignature = data.isDefaultSignature;
+            this.lienPortalService.isDefaultTitle = data.isDefaultTitleEnabled;
+            if(this.lienPortalService.isDefaultTitle)
+              this.defaultTitle = data.defaultSign.defaultTitle;
+              this.lienPortalService.defaultTitle = this.defaultTitle;
             if (this.lienPortalService.isDefaultSignature) {
               this.defaultSignature =
                 data.defaultSign.defaultSign == null

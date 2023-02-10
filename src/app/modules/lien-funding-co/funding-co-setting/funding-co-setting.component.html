@@ -37,6 +37,23 @@
 
                         </div>
 
+                        <div class="reminder pending-task">
+                          <div class="setting-content">
+                              <div class="switch-sec">
+                                  <label class="toggle-switch">
+                                      <input type="checkbox" [(ngModel)]="isDefaultTitle">
+                                      <div class="slider"></div>
+                                  </label>
+                              </div>
+
+                          </div>
+                          <div class="info-txt">Insert my saved title by default</div>
+                          <div class="input-group col-md-4">
+                            <input type="text" class="form-control" placeholder="Default title from user " [(ngModel)]="defaultTitle">
+                          </div>
+
+                        </div>
+
                       <div class="reminder signature">
                           <div class="setting-content">
                               <div class="switch-sec">

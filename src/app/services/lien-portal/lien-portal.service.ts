@@ -16,7 +16,9 @@ import { RADIOLOGIST_TYPE } from 'src/app/constants/route.constant';
 export class LienPortalService {
 
   isDefaultSignature :boolean = false;
+  isDefaultTitle :boolean = false;
   defaultSignature : string;
+  defaultTitle : string;
 
   constructor(private readonly _httpService: HttpLienPortalRequestService,
     private readonly notificationService: NotificationService,private readonly route:Router,
