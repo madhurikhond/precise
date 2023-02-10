@@ -51,7 +51,7 @@ export class LienFundingCoComponent implements OnInit {
       "dateFrom": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateFrom.value),
       "dateTo": this.lienPortalService.convertDateFormat(this.filterForm.controls.dateTo.value),
       "dateType": this.filterForm.controls.dateType.value,
-      "radiologist": this.filterForm.controls.readingRad.value,
+      "radiologist": this.filterForm.controls.readingRad.value == 'null' ? null : this.filterForm.controls.readingRad.value,
     };
 
     switch (this.selectedMode) {
