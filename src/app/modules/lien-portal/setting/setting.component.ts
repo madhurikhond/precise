@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad';
+import { log } from 'console';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { LienPortalAPIEndpoint, LienPortalResponseStatus, LienPortalStatusMessage, OriginalLienOwnerPermission } from 'src/app/models/lien-portal-response';
 import { StorageService } from 'src/app/services/common/storage.service';
@@ -27,12 +28,14 @@ export class SettingComponent implements OnInit {
   isEmailReminder: boolean = true;
   isEmailSendCopy: boolean = true;
   isDefaultSignature: boolean = true;
+  isDefaultTitle: boolean = true;
 
   days = [];
   time = [];
   radiologistSign: string;
   FundingCompanyDataSource = [];
   defaultEmail: any;
+  defaultTitle: any;
   firstEmail: any;
   secondEmail: any;
   selectedDays: any;
@@ -209,10 +212,12 @@ export class SettingComponent implements OnInit {
           this.isEmailReminder = data.isEmailReminder;
           this.isEmailSendCopy = data.isEmailSendCopy;
           this.isDefaultSignature = data.isDefaultSignature;
+          this.isDefaultTitle = data.isDefaultTitleEnabled;
         }else{
           this.isEmailReminder = false;
           this.isEmailSendCopy = false;
           this.isDefaultSignature = false;
+          this.isDefaultTitle = false;
         }
         if(data.emailReminders){
           this.selectedDays = (data.emailReminders.dayOfWeek) ? data.emailReminders.dayOfWeek : [];
@@ -233,6 +238,7 @@ export class SettingComponent implements OnInit {
         }
         this.signaturePad.fromDataURL(data.defaultSign.defaultSign);
         this.radiologistSign = data.defaultSign.defaultSign;
+        this.defaultTitle = data.defaultSign.defaultTitle;
       } else
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
     }, () => {
@@ -257,6 +263,10 @@ export class SettingComponent implements OnInit {
         'dayOfWeek': this.selectedDays,
         'timeOfDay': this.selectedTimeToReminder,
       }
+      var defaultSign ={
+        'defaultSign' : this.radiologistSign,
+        'defaultTitle' : this.defaultTitle
+      }
       var requestEmailSendCopies = [];
       requestEmailSendCopies.push(this.defaultEmail);
       if (this.firstEmail)
@@ -267,18 +277,20 @@ export class SettingComponent implements OnInit {
         "isEmailReminder": this.isEmailReminder,
         "isEmailSendCopy": this.isEmailSendCopy,
         "isDefaultSignature": this.isDefaultSignature,
+        "isDefaultTitleEnabled": this.isDefaultTitle,
+        "defaultSign": defaultSign,
         "emailReminders": requestEmailReminders,
         "emailSendCopies": requestEmailSendCopies
       }
-      this.lienPortalService.PostAPI(requestData, LienPortalAPIEndpoint.AddRadiologistSetting).subscribe((res) => {
-        if (res.status == LienPortalResponseStatus.Success) {
-          this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
-        }
-        else
-          this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-      }, () => {
-        this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
-      })
+       this.lienPortalService.PostAPI(requestData, LienPortalAPIEndpoint.AddRadiologistSetting).subscribe((res) => {
+         if (res.status == LienPortalResponseStatus.Success) {
+           this.lienPortalService.successNotification(LienPortalStatusMessage.SETTING_SAVED_SUCCESS);
+         }
+         else
+           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+       }, () => {
+         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
+       })
  }
 
  setPermission() {

@@ -66,12 +66,14 @@ export class RetainUnpaidComponent implements OnInit {
   lastName: string;
   radiologistSign: string;
   isDefaultSignature: boolean;
+  isDefaultTitle: boolean;
   defaultSignature: any;
+  defaultTitle: any;
   permissionForAssignAR : any;
   permissionForReceivePayment : any;
   defaultCompanyName: any[];
 
-  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService, 
+  constructor(private lienPortalService: LienPortalService, private commonService: CommonMethodService,
     private storageService: StorageService,private readonly notificationService: NotificationService,
     private fb: FormBuilder) {
     this.allMode = 'page';
@@ -108,9 +110,12 @@ export class RetainUnpaidComponent implements OnInit {
   ngOnInit(): void {
     this.commonService.setTitle(LienPortalPageTitleOption.RETAINED_AND_UNPAID);
     this.isDefaultSignature = this.lienPortalService.isDefaultSignature;
+    this.isDefaultTitle = this.lienPortalService.isDefaultTitle;
     this.bindFundComp_DDL();
     if (this.isDefaultSignature)
-      this.defaultSignature = this.lienPortalService.defaultSignature
+      this.defaultSignature = this.lienPortalService.defaultSignature;
+    if(this.isDefaultTitle)
+      this.defaultTitle = this.lienPortalService.defaultTitle;
   }
 
   getRetainUnPaidList() {
@@ -319,7 +324,8 @@ export class RetainUnpaidComponent implements OnInit {
       'fundingCompany': '',
       'firstName': (this.storageService.user.FirstName) ? this.storageService.user.FirstName : '',
       'lastName': (this.storageService.user.LastName) ? this.storageService.user.LastName : '',
-      'radiologistSign': ''
+      'radiologistSign': '',
+      'title': ''
     });
 
     this.assignARform.patchValue({
@@ -338,6 +344,9 @@ export class RetainUnpaidComponent implements OnInit {
     if (this.lienPortalService.isDefaultSignature) {
       this.signaturePad.fromDataURL(this.defaultSignature);
       this.assignARform.controls.radiologistSign.setValue(this.defaultSignature);
+    }
+    if(this.lienPortalService.isDefaultTitle){
+      this.assignARform.controls.title.setValue(this.defaultTitle);
     }
   }
 

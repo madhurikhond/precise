@@ -36,106 +36,102 @@
     <div class="tab-pane fundingcopaid-section" id="FundingCoPaid">
         <div class="table-responsive">
             <dx-data-grid #grid id="gridContainerassignUnpaidList" class="radflowGrid radflowGrid_plusMinus"
-                [dataSource]="fundingCoPaid" [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
-                <dxo-load-panel [enabled]="true"> </dxo-load-panel>
-                <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
-                </dxo-selection>
-                <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
-                <dxo-pager [visible]="false"></dxo-pager>
-                <dxo-sorting mode="none"></dxo-sorting>
+              [dataSource]="fundingCoPaid" [showBorders]="false" [allowColumnResizing]="true" [columnAutoWidth]="true"
+              [showColumnHeaders]="false" (onSelectionChanged)="changeCheckbox($event)">
+              <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+              <dxo-selection [selectAllMode]="allMode" [showCheckBoxesMode]="checkBoxesMode" mode="multiple">
+              </dxo-selection>
+              <dxo-paging [pageSize]="pageSize" [pageIndex]="pageNumber"></dxo-paging>
+              <dxo-pager [visible]="false"></dxo-pager>
+              <dxo-sorting mode="none"></dxo-sorting>
 
-                <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
+              <dxi-column cellTemplate="CheckNumberTemplate"></dxi-column>
 
-                <div *dxTemplate="let data of 'CheckNumberTemplate'">
-                    <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount"
-                        class="clsChecknumberBox modal-lower-case">
-                        <span class="">Check No: {{data.data.checkNumber}}</span>
-                        <span class="">Check Date: {{data.data.checkDate}}</span>
-                        <span class="">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
-                    </div>
+              <div *dxTemplate="let data of 'CheckNumberTemplate'">
+                <div *ngIf="data.data.checkNumber && data.data.checkDate && data.data.checkAmount"
+                  class="clsChecknumberBox modal-lower-case">
+                  <span class="">{{data.data.patientBillName}}</span>
+                  <span class="">Check No: {{data.data.checkNumber}}</span>
+                  <span class="">Check Date: {{data.data.checkDate}}</span>
+                  <span class="">Amount: {{data.data.checkAmount | currency:'USD':'symbol-narrow'}}</span>
                 </div>
+              </div>
 
-                <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
-                <div class="innerBatchTitle radflowGrid" *dxTemplate="let detail of 'batchNameList'">
-                    <dx-data-grid [dataSource]="detail.data.paymentWiseData" class="innerList innerTable " [columnAutoWidth]="true"
-                        [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true"
-                        [showColumnHeaders]="true">
-                        <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
-                        <dxo-sorting mode="none"></dxo-sorting>
-                        <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
-                        <!-- <dxi-column cellTemplate="BatchTemplate">
-                            <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
-                                <span>{{data.data.radiologistName}}</span>
-                                <span>{{data.data.transactionNumber}}</span>
-                                <span>
-                                    {{data.data.studyCounts }} <span
-                                        *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
-                                    <ng-template #oneStudy>
-                                        <span>Study</span>
-                                    </ng-template>
-                                </span>
-                                <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
-                            </div>
-                        </dxi-column> -->
-                        <dxi-column dataField="radiologistName" caption="Reading Radiologist"></dxi-column>
+              <dxo-master-detail [enabled]="true" template="batchNameList"></dxo-master-detail>
+              <div class="innerBatchTitle radflowGrid" *dxTemplate="let detail of 'batchNameList'">
+                <dx-data-grid [dataSource]="detail.data.paymentWiseData" class="innerList innerTable " [columnAutoWidth]="true"
+                  [showBorders]="false" [repaintChangesOnly]="true" [allowColumnResizing]="true" [showColumnHeaders]="true">
+                  <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+                  <dxo-sorting mode="none"></dxo-sorting>
+                  <!-- <dxi-column dataField="batchName" caption="Batchname"> </dxi-column> -->
+                  <!-- <dxi-column cellTemplate="BatchTemplate">
+                                        <div class="clsBatchBox" *dxTemplate="let data of 'BatchTemplate'">
+                                            <span>{{data.data.radiologistName}}</span>
+                                            <span>{{data.data.transactionNumber}}</span>
+                                            <span>
+                                                {{data.data.studyCounts }} <span
+                                                    *ngIf="data.data.studyCounts > 1;else oneStudy">Studies</span>
+                                                <ng-template #oneStudy>
+                                                    <span>Study</span>
+                                                </ng-template>
+                                            </span>
+                                            <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                                        </div>
+                                    </dxi-column> -->
+                  <dxi-column dataField="radiologistName" caption="Reading Radiologist"></dxi-column>
 
-                        <dxi-column dataField="transactionNumber" caption="Transaction Number" cellTemplate="transactionNumberTemplate">
-                          <div *dxTemplate="let data of 'transactionNumberTemplate'" class="trnNumber">
-                            <span>{{data.data.transactionNumber}}</span><a class="copyIcon" (click)="copyToClipboard(data.data.transactionNumber)"><i class="fa fa-copy"></i></a>
-                          </div>
-                        </dxi-column>
+                  <dxi-column dataField="transactionNumber" caption="Transaction Number" cellTemplate="transactionNumberTemplate">
+                    <div *dxTemplate="let data of 'transactionNumberTemplate'" class="trnNumber">
+                      <span>{{data.data.transactionNumber}}</span><a class="copyIcon"
+                        (click)="copyToClipboard(data.data.transactionNumber)"><i class="fa fa-copy"></i></a>
+                    </div>
+                  </dxi-column>
 
-                        <dxi-column dataField="studyCounts" caption="Study Count"></dxi-column>
-                        <dxi-column dataField="totalAmount" caption="Purchase Total" cellTemplate="TotalAmount"></dxi-column>
-                        <div *dxTemplate="let data of 'TotalAmount'">
-                          <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                  <dxi-column dataField="studyCounts" caption="Study Count"></dxi-column>
+                  <dxi-column dataField="totalAmount" caption="Purchase Total" cellTemplate="TotalAmount"></dxi-column>
+                  <div *dxTemplate="let data of 'TotalAmount'">
+                    <span>{{data.data.totalAmount | currency:'USD':'symbol-narrow'}}</span>
+                  </div>
+                  <dxi-column dataField="fileName" caption="" cellTemplate="PDFIconTemplate"></dxi-column>
+                  <div *dxTemplate="let data of 'PDFIconTemplate'">
+                    <a class="PDFIcon" (click)="downloadPDF(data.data)"><i class="fa fa-file-pdf-o PDFIcon"></i></a>
+                  </div>
+                  <dxo-master-detail [enabled]="true" [autoExpandAll]="expandAll" [template]="'batchDetail'"></dxo-master-detail>
+                  <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
+                    <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList" [columnAutoWidth]="true"
+                      [showBorders]="true" [repaintChangesOnly]="true" [allowColumnResizing]="true">
+                      <dxo-scrolling [useNative]="true"></dxo-scrolling>
+                      <dxo-sorting mode="none"></dxo-sorting>
+                      <dxi-column [allowFiltering]="false" [width]="3+'%'" [allowSorting]="false"
+                        cellTemplate="readingIconTemplate"></dxi-column>
+                      <dxi-column dataField="rad" caption="RAD" [width]="10+'%'"> </dxi-column>
+                      <dxi-column dataField="dateRead" caption="Date Read" [width]="7+'%'"></dxi-column>
+                      <dxi-column dataField="executionDate" caption="Executed Date" [width]="7+'%'"></dxi-column>
+                      <dxi-column dataField="paidDate" caption="Paid Date" [width]="7+'%'"></dxi-column>
+                      <dxi-column dataField="patientId" caption="Patient ID" [width]="7+'%'"></dxi-column>
+                      <dxi-column dataField="lastName" caption="Last Name" [width]="10+'%'"></dxi-column>
+                      <dxi-column dataField="firstName" caption="First Name" [width]="10+'%'"></dxi-column>
+                      <dxi-column dataField="dateOfBirth" caption="DOB" [width]="7+'%'"></dxi-column>
+                      <dxi-column dataField="study" caption="Study" [width]="8+'%'"></dxi-column>
+                      <dxi-column dataField="dateOfStudy" [width]="10+'%'" caption="DOS"></dxi-column>
+                      <dxi-column dataField="access" caption="Access#" [width]="8+'%'"></dxi-column>
+                      <dxi-column dataField="cptGroup" caption="CPT Group" [width]="8+'%'"></dxi-column>
+                      <dxi-column cellTemplate="ARPriceTemplate" caption="AR Price" [width]="8+'%'">
+                        <div *dxTemplate="let data of 'ARPriceTemplate'">
+                          {{data.data.arPrice | currency:'USD':'symbol-narrow'}}
+                        </div>
+                      </dxi-column>
+                      <!-- <dxi-column dataField="arPrice" caption="AR Price"></dxi-column> -->
+                      <div *dxTemplate="let data of 'readingIconTemplate'">
+                        <a href="javascript:void(0)" class="single-action fa  fa-file-text-o" data-toggle="modal"
+                          data-target="#docManager" (click)="showDocManager(data.data.patientId)"></a>
                       </div>
-                        <dxi-column dataField="fileName" caption="" cellTemplate="PDFIconTemplate"></dxi-column>
-                        <div *dxTemplate="let data of 'PDFIconTemplate'">
-                            <a class="PDFIcon" (click)="downloadPDF(data.data)"><i
-                                    class="fa fa-file-pdf-o PDFIcon"></i></a>
-                        </div>
-                        <dxo-master-detail [enabled]="true" [autoExpandAll]="expandAll"
-                        [template]="'batchDetail'"></dxo-master-detail>
-                        <div class="innerTable" *dxTemplate="let detail of 'batchDetail'">
-                            <dx-data-grid [dataSource]="detail.data.batchWiseData" class="innerList"
-                                [columnAutoWidth]="true" [showBorders]="true" [repaintChangesOnly]="true"
-                                [allowColumnResizing]="true" >
-                                <dxo-scrolling [useNative]="true"></dxo-scrolling>
-                                <dxo-sorting mode="none"></dxo-sorting>
-                                <dxi-column [allowFiltering]="false" [width]="3+'%'"
-                                    [allowSorting]="false" cellTemplate="readingIconTemplate"></dxi-column>
-                                <dxi-column dataField="rad" caption="RAD" [width]="10+'%'"> </dxi-column>
-                                <dxi-column dataField="dateRead" caption="Date Read" [width]="7+'%'"></dxi-column>
-                                <dxi-column dataField="executionDate" caption="Executed Date"
-                                    [width]="7+'%'"></dxi-column>
-                                <dxi-column dataField="paidDate" caption="Paid Date" [width]="7+'%'"></dxi-column>
-                                <dxi-column dataField="patientId" caption="Patient ID" [width]="7+'%'"></dxi-column>
-                                <dxi-column dataField="lastName" caption="Last Name" [width]="10+'%'"></dxi-column>
-                                <dxi-column dataField="firstName" caption="First Name" [width]="10+'%'"></dxi-column>
-                                <dxi-column dataField="dateOfBirth" caption="DOB" [width]="7+'%'"></dxi-column>
-                                <dxi-column dataField="study" caption="Study" [width]="8+'%'"></dxi-column>
-                                <dxi-column dataField="dateOfStudy" [width]="10+'%'" caption="DOS"></dxi-column>
-                                <dxi-column dataField="access" caption="Access#" [width]="8+'%'"></dxi-column>
-                                <dxi-column dataField="cptGroup" caption="CPT Group" [width]="8+'%'"></dxi-column>
-                                <dxi-column cellTemplate="ARPriceTemplate" caption="AR Price" [width]="8+'%'">
-                                    <div *dxTemplate="let data of 'ARPriceTemplate'">
-                                        {{data.data.arPrice | currency:'USD':'symbol-narrow'}}
-                                    </div>
-                                </dxi-column>
-                                <!-- <dxi-column dataField="arPrice" caption="AR Price"></dxi-column> -->
-                                <div *dxTemplate="let data of 'readingIconTemplate'">
-                                    <a href="javascript:void(0)" class="single-action fa  fa-file-text-o"
-                                        data-toggle="modal" data-target="#docManager"
-                                        (click)="showDocManager(data.data.patientId)"></a>
-                                </div>
-                            </dx-data-grid>
-
-                        </div>
                     </dx-data-grid>
 
-                </div>
+                  </div>
+                </dx-data-grid>
+
+              </div>
             </dx-data-grid>
         </div>
         <div class="pagination-theme" *ngIf="this.totalRecord>0">
