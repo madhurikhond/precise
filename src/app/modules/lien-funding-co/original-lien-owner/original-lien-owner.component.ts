@@ -44,13 +44,13 @@ export class OriginalLienOwnerComponent {
   pageNumber: number = 0;
   totalRecord: number = 0;
   currentPageNumber: number = 1;
-  pageSize: number = 20;
+  pageSize: number = 25;
 
   dataSource: any = [];
   radiologistNameWiseCounts: any = [];
   checkboxSelectedData: any;
   defaultCheckDate = new Date();
-  selectedAction = "";                                                                                                                              
+  selectedAction = "";
   expandAll = false;
 
 
