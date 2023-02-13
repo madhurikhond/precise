@@ -9,7 +9,6 @@ import { PaymentHistoryComponent } from './payment-history/payment-history.compo
 import { CheckPatientDetailsComponent } from './payment-history/check-patient-details/check-patient-details.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReceivePaymentComponent } from './receive-payment/receive-payment.component';
-import { PayRadModule } from './pay-rad/pay-rad.module';
 import { PatientDetailGroupComponent } from './receive-payment/detail-group/detail-group.component';
 import { SettleAndMinimumAmountComponent } from './receive-payment/settle-and-minimum-amount/settle-and-minimum-amount.component';
 import { StudyNotCompletedComponent } from './receive-payment/study-not-completed/study-not-completed.component';
@@ -28,8 +27,7 @@ import { BottomGridDetailComponent } from './receive-payment/bottom-grid-detail/
     SharedModule,
     NgxPaginationModule,
     DxDataGridModule,
-    AccountingRoutingModule,
-    PayRadModule
+    AccountingRoutingModule
   ]
 })
 export class AccountingModule { }
