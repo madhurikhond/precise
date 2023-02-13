@@ -106,7 +106,7 @@ export class UsersComponent implements OnInit {
   resizingModes: string[] = ['widget', 'nextColumn'];
   columnResizingMode: string;
   showFilterRow: boolean;
-  locationList : any = ['Agoura','Anaheim','Downey','Fresno','Remote','Van Nuys']
+  locationList : any = ['Agoura','Anaheim','Downey','Fresno','Pasadena','Remote','Van Nuys']
   applyFilterTypes: any = [{ key: 'auto', name: 'Immediately' }, { key: 'onClick', name: 'On Button Click' }];
   currentFilter: any;
   showHeaderFilter: boolean;
