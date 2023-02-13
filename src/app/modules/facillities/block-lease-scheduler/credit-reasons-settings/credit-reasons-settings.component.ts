@@ -313,6 +313,9 @@ export class CreditReasonsSettingComponent implements OnInit {
     }
   }
   onIsActiveValueChange(e){
+     if(this.reminderForm.controls.IsActive.value == false){
+      this.reminderIntervalValidation = false;
+    }
     if(this.reminderForm.controls.IsActive.value  == true){
       this.reminderForm.get('ReminderInterval').enable();
     }else{
