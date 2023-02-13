@@ -69,6 +69,12 @@ export class CreditReasonsSettingComponent implements OnInit {
       ReminderInterval: ['0']
     });
   }
+  close(){
+    this.updateTabId('Reasons',false);
+    this.reminderIntervalValidation = false;
+    this.Issubmitted   = false;
+
+  }
   updateTabId(tabName: string, val: boolean) {
     this.tabId = tabName;
   }
