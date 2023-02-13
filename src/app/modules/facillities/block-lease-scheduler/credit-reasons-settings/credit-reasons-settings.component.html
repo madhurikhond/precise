@@ -133,7 +133,7 @@
                                                         class="slider round"></span></label>
                                             </div>
 											<div class="input-group md-input-focused">
-                                                <span>Remind facility every</span>  {{reminderIntervalValidation}} {{Issubmitted}}
+                                                <span>Remind facility every</span> 
 												<select id="dayselect"  (change)="onChangeReminderDays()" class="form-control" formControlName="ReminderInterval"
                                                 [ngClass]="{ 'is-invalid': (Issubmitted && reminderIntervalValidation) }">
 													<option value = "0" disabled>Select Reminder Interval</option>
