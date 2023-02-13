@@ -57,7 +57,7 @@ export class LoginRequestComponent implements OnInit {
       LastName: ['', [Validators.required]],
       Address: ['', [Validators.required]],
       City: ['', [Validators.required]],
-      State: ['', [Validators.required]],
+      State: ['',[Validators.required]],
       Zip: ['', [Validators.required, Validators.minLength(5)]],
       CellPhoneMask: ['', [Validators.required, Validators.pattern(this.commonRegex.PhoneRegex)]],
       HomePhoneMask: ['', [Validators.pattern(this.commonRegex.PhoneRegex)]],
@@ -117,7 +117,7 @@ export class LoginRequestComponent implements OnInit {
           this.requestLoginForm.get('WorkEmail').setErrors({ dontMatch: true });
         }
         else {
-          this.requestLoginForm.get('WorkEmail').setErrors({ dontMatch: false });
+          this.requestLoginForm.get('WorkEmail').setErrors(null);
         }
       }
     });
@@ -339,7 +339,7 @@ export class LoginRequestComponent implements OnInit {
         [
           Validators.email,
           Validators.required,
-          Validators.pattern('^[a-zA-Z0-9._%+-]+@(?:precisemri|PRECISEMRI).(com|COM)'),
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@(?:precisemri).com$/i),
           DontMatch.dontMatch(this.requestLoginForm.get('PersonalEmail'))
         ]
       );
@@ -442,12 +442,13 @@ export function MustMatch(controlName: string, matchingControlName: string) {
 export class DontMatch {
 
   static dontMatch(otherInputControl: AbstractControl): ValidatorFn {
-
     return (inputControl: AbstractControl): { [key: string]: boolean } | null => {
       if (inputControl.value
         && inputControl.value.trim() != ''
         && inputControl.value === otherInputControl.value) {
         return { 'dontMatch': true };
+      }else{
+        return null;
       }
 
       return null;
