@@ -475,7 +475,7 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      defaultEmailAddress3P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      defaultEmailAddress3P: ['', [Validators.required,Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       emailAddress13P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       emailAddress23P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       imagesContact: [''],

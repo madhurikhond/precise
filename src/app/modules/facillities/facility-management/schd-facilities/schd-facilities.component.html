@@ -244,7 +244,7 @@
 											</div>
 											<div *ngIf="(submitted && generalInfoFormControls.street.errors) "
 												class="invalid-feedback">
-												<div *ngIf="generalInfoFormControls.street.errors?.required ">Street is
+												<div *ngIf="generalInfoFormControls.street.errors?.required">Street is
 													required</div>
 											</div>
 										</div>
@@ -701,7 +701,7 @@
 												</div>
 											</div>
 
-											<div class="form-group">
+											<!-- <div class="form-group">
 												<div class="theme-label">DEFAULT EMAIL ADDRESS FOR LEASE</div>
 												<div class="input-group">
 													<input type="text" class="form-control"
@@ -709,11 +709,15 @@
 														[ngClass]="{'is-invalid': facilityContactDetailFormControls.defaultEmailAddress3P.errors }">
 
 												</div>
-												<!-- <div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required">
+												<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required">
 												DEFAULT EMAIL ADDRESS FOR LEASE is required.
-											</div> -->
+											</div>
 												<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
 													class="invalid-feedback">
+													<div
+														*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors.required">
+														atleast one DEFAULT EMAIL ADDRESS FOR LEASE is required
+													</div>
 													<div
 														*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors">
 														DEFAULT EMAIL ADDRESS FOR LEASE must be a valid email address
@@ -749,7 +753,7 @@
 														*ngIf="facilityContactDetailFormControls.emailAddress23P.errors">
 														3RD EMAIL ADDRESS FOR LEASE must be a valid email address</div>
 												</div>
-											</div>
+											</div> -->
 										</div>
 									</div>
 									<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
@@ -3799,7 +3803,8 @@
 													to scheduling
 													facility instead of the parent</label>
 											</div>
-										</div>
+										</div>  
+										
 										<div class="row"
 											*ngIf="facilityContactDetailForm.get('isSendLeaseToFacility').value">
 											<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
@@ -3808,15 +3813,15 @@
 													<div class="input-group">
 														<input type="text" formControlName="defaultEmailAddress3P"
 															class="form-control"
-															[ngClass]="{ 'is-invalid':facilityContactDetailFormControls.defaultEmailAddress3P.errors}">
-														<div *ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors"
+															[ngClass]="{ 'is-invalid': (submitted && facilityContactDetailFormControls.defaultEmailAddress3P.errors)}">
+														<div *ngIf= "facilityContactDetailFormControls.defaultEmailAddress3P.errors || facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required"
 															class="invalid-feedback">
 															<div
-																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required ">
+																*ngIf="submitted && facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required">
 																DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
 															</div>
 															<div
-																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors.pattern">
+																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.pattern">
 																DEFAULT
 																EMAIL ADDRESS FOR LEASE
 																MUST BE A VALID
@@ -3831,6 +3836,7 @@
 												<div class="form-group">
 													<div class="theme-label"> 2ND EMAIL ADDRESS FOR LEASE</div>
 													<div class="input-group">
+														
 														<input type="text" formControlName="emailAddress13P"
 															class="form-control"
 															[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors}">
