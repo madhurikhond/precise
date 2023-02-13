@@ -112,19 +112,7 @@
                         <div class="tab-pane" [ngClass]="tabId == 'Reminder' ? 'active show' : 'fade'" id="Reminder">
                             <form [formGroup]="reminderForm" class="theme-form">
                             <div class="row rm-tb">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div 
-                                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <span class="theme-label-subtitle">Set Reminder</span>
-                                            <div class="switch-group switch-small text-right">
-                                                <label class="switch">
-                                                    <input type="checkbox"  (change)="onIsActiveValueChange($event)" formControlName = 'IsActive' checked=""><span
-                                                        class="slider round"></span></label>
-                                            </div>
-                                    </div>
-                                    </div>
-                                </div>
+                              
                                 <div class="col-md-12">
                                     <div class="row">
                                          <!-- <div class="col-md-1">
@@ -134,7 +122,16 @@
                                                         class="slider round"></span></label>
                                             </div>
                                         </div>  -->
-                                        <div>
+
+
+                                      
+                                        <div class="dlf-flex">
+
+                                            <div class="switch-group switch-small text-right">
+                                                <label class="switch">
+                                                    <input type="checkbox"  (change)="onIsActiveValueChange($event)" formControlName = 'IsActive' checked=""><span
+                                                        class="slider round"></span></label>
+                                            </div>
 											<div class="input-group md-input-focused">
                                                 <span>Remind facility every</span>  {{reminderIntervalValidation}} {{Issubmitted}}
 												<select id="dayselect"  (change)="onChangeReminderDays()" class="form-control" formControlName="ReminderInterval"

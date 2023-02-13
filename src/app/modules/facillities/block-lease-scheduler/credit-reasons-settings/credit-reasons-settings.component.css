@@ -93,13 +93,23 @@ img[_ngcontent-iiy-c0] {
 	position: relative;
 	display: inline-block;
 	width: 60px;
-	height: 34px;
+	height: 30px;
+    margin: 0px; 
 }
 .switch input {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
+.switch-group{padding-right: 10px;}
+.switch-group .slider:before{top: -5px;}
+
+.dlf-flex{display: flex; align-items: center;}
+.dlf-flex .input-group{display: flex; align-items: center;}
+.dlf-flex .input-group span{padding-right: 5px;}
+
+.dlf-flex .input-group  select{width: 217px;
+    margin-right: 10px;}
 .slider {
 	position: absolute;
 	cursor: pointer;
