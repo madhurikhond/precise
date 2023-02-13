@@ -131,21 +131,22 @@ export class PatientCodeVerificationComponent implements OnInit {
                 this.patientPortalService.globalPageNumber = patient.pageCompleted;
                 this.storageService.setItem("p_detail", this.patientPortalService.patientDetail);
 
-                if (patient.redPSL == "False" && patient.techPSL == "False" && patient.pageCompleted === 0 &&
+                if (patient.redPSL == "True" && patient.techPSL == "True" && patient.pageCompleted === 0 &&
                  (this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.PERSONAL_INJURY || this.patientPortalService.patientDetail.financialTypeName == PatientFinancialTypeName.BROKER)) {
-                  if (this.currentLanguage == "es")
-                    this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], {
-                      queryParams:
-                        { patientid: patient.patientId, Token: patient.uniqueId }
-                    });
-                  else
-                    this.router.navigate([PatientPortalURL.ESIGN_REQUEST], {
-                      queryParams:
-                        { patientid: patient.patientId, Token: patient.uniqueId }
-                    });
-                }
-                else
                   this.router.navigate([PatientPortalURL.PATIENT_HOME]);
+                }
+                else{
+                  if (this.currentLanguage == "es")
+                  this.router.navigate([PatientPortalURL.ESIGN_REQUESTS], {
+                    queryParams:
+                      { patientid: patient.patientId, Token: patient.uniqueId }
+                  });
+                else
+                  this.router.navigate([PatientPortalURL.ESIGN_REQUEST], {
+                    queryParams:
+                      { patientid: patient.patientId, Token: patient.uniqueId }
+                  });
+                }
          }
         }
         else {

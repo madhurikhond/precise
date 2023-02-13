@@ -1,1 +1,18 @@
 @import '../esignrequesta/esignrequesta.component.css';
+/* .address-phone-sec {
+  text-align: center;
+}
+
+.address-phone-sec p {
+  color: #000000;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 26px;
+  border-top: 2px solid #000;
+  margin-top: 10px;
+  padding-top: 14px
+} */
+.slider.round:before {
+  transform: translate(-2px, 6px) !important;
+  }
