@@ -372,68 +372,68 @@ export class CreateAlertComponent implements OnInit {
         infoPatientEmail: this.patientInfoList.Email
       })
       
-      if (this.retainInfoList.length != 0) {
-        this.contactInfoForm.patchValue({
-          IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == 'false'? false : true,
-          IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend == 'false' ? false : true,
-          IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend === null || this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true,
-          IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend === null || this.retainInfoList.IsRefPhyEmailSend == '0'  ? false : true,
-          IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend === null || this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
-          IsBrokerMainEmail: this.retainInfoList.IsbrokerMainEmailSend === null || this.retainInfoList.IsbrokerMainEmailSend == '0'  ? false : true,
-          IsBrokerBillingEmail : this.retainInfoList.IsBrokerBillingEmailSend === null || this.retainInfoList.IsBrokerBillingEmailSend == '0'  ? false : true,
-          IsBrokerBillingFax : this.retainInfoList.IsBrokerBillingFaxSend === null || this.retainInfoList.IsBrokerBillingFaxSend == '0'  ? false : true,
-          IsBrokerAPFax : this.retainInfoList.IsBrokerApFaxSend === null || this.retainInfoList.IsBrokerApFaxSend == '0'  ? false : true,
-          IsBrokerAPEmail :  this.retainInfoList.IsBrokerApEmailSend === null || this.retainInfoList.IsBrokerApEmailSend == '0'  ? false : true,
-          IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
-          IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
-          IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
-          // infoAttorneyFax : this.retainInfoList.AttorenyFax ? this.retainInfoList.AttorenyFax : 'N/A',
-          // infoAttorneyEmail : this.retainInfoList.AttorenyEmail ? this.retainInfoList.AttorenyEmail : 'N/A',
-          // InfoRefPhyFax : this.retainInfoList.RefPhyFax ? this.retainInfoList.RefPhyFax : 'N/A',
-          // infoRefPhyEmail : this.retainInfoList.RefPhyEmail ? this.retainInfoList.RefPhyEmail : 'N/A',
-          // InfoBrokerMainFax : this.retainInfoList.BrokerMainFax  ? this.retainInfoList.BrokerMainFax : 'N/A',
-          // InfoBrokerMainEmail : this.retainInfoList.BrokerMainEmail  ? this.retainInfoList.BrokerMainEmail : 'N/A',
-          // InfoBrokerBillingFax : this.retainInfoList.BrokerBillingFax  ? this.retainInfoList.BrokerBillingFax : 'N/A',
-          // InfoBrokerBillingEmail : this.retainInfoList.BrokerBillingEmail  ? this.retainInfoList.BrokerBillingEmail : 'N/A',
-          // InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
-          // InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
-          // infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
-          // infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
-          // infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
-          // InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
-          AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
-          AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
-          AddtionalDeskSms: this.retainInfoList.IsManualDesSmsSend3 || this.retainInfoList.IsManualDesSmsSend2 || this.retainInfoList.IsManualDesSmsSend2 == '1' ? true : false,
+      // if (this.retainInfoList.length != 0) {
+      //   this.contactInfoForm.patchValue({
+      //     IsAttorneyFax: this.retainInfoList.IsAttorenyFaxSend === null || this.retainInfoList.IsAttorenyFaxSend == 'false'? false : true,
+      //     IsAttorneyEmail: this.retainInfoList.IsAttorenyEmailSend === null || this.retainInfoList.IsAttorenyEmailSend == 'false' ? false : true,
+      //     IsRefPhyFax: this.retainInfoList.IsRefPhyFaxSend === null || this.retainInfoList.IsRefPhyFaxSend == '0' ? false : true,
+      //     IsRefPhyEmail: this.retainInfoList.IsRefPhyEmailSend === null || this.retainInfoList.IsRefPhyEmailSend == '0'  ? false : true,
+      //     IsBrokerMainFax: this.retainInfoList.IsBrokerMainFaxSend === null || this.retainInfoList.IsBrokerMainFaxSend == '0' ? false : true,
+      //     IsBrokerMainEmail: this.retainInfoList.IsbrokerMainEmailSend === null || this.retainInfoList.IsbrokerMainEmailSend == '0'  ? false : true,
+      //     IsBrokerBillingEmail : this.retainInfoList.IsBrokerBillingEmailSend === null || this.retainInfoList.IsBrokerBillingEmailSend == '0'  ? false : true,
+      //     IsBrokerBillingFax : this.retainInfoList.IsBrokerBillingFaxSend === null || this.retainInfoList.IsBrokerBillingFaxSend == '0'  ? false : true,
+      //     IsBrokerAPFax : this.retainInfoList.IsBrokerApFaxSend === null || this.retainInfoList.IsBrokerApFaxSend == '0'  ? false : true,
+      //     IsBrokerAPEmail :  this.retainInfoList.IsBrokerApEmailSend === null || this.retainInfoList.IsBrokerApEmailSend == '0'  ? false : true,
+      //     IsPatientFax: this.retainInfoList.IsPatientFaxSend === null || this.retainInfoList.IsPatientFaxSend == '0' ? false : true,
+      //     IsPatientEmail: this.retainInfoList.IsPatientEmailSend === null || this.retainInfoList.IsPatientEmailSend == '0' ? false : true,
+      //     IsPatientPhone: this.retainInfoList.IsPatientSmsSend === null || this.retainInfoList.IsPatientSmsSend == '0' ? false : true,
+      //     // infoAttorneyFax : this.retainInfoList.AttorenyFax ? this.retainInfoList.AttorenyFax : 'N/A',
+      //     // infoAttorneyEmail : this.retainInfoList.AttorenyEmail ? this.retainInfoList.AttorenyEmail : 'N/A',
+      //     // InfoRefPhyFax : this.retainInfoList.RefPhyFax ? this.retainInfoList.RefPhyFax : 'N/A',
+      //     // infoRefPhyEmail : this.retainInfoList.RefPhyEmail ? this.retainInfoList.RefPhyEmail : 'N/A',
+      //     // InfoBrokerMainFax : this.retainInfoList.BrokerMainFax  ? this.retainInfoList.BrokerMainFax : 'N/A',
+      //     // InfoBrokerMainEmail : this.retainInfoList.BrokerMainEmail  ? this.retainInfoList.BrokerMainEmail : 'N/A',
+      //     // InfoBrokerBillingFax : this.retainInfoList.BrokerBillingFax  ? this.retainInfoList.BrokerBillingFax : 'N/A',
+      //     // InfoBrokerBillingEmail : this.retainInfoList.BrokerBillingEmail  ? this.retainInfoList.BrokerBillingEmail : 'N/A',
+      //     // InfoBrokerAPEmail : this.retainInfoList.BrokerApEmail  ? this.retainInfoList.BrokerApEmail : 'N/A', 
+      //     // InfoBrokerAPFax : this.retainInfoList.BrokerApFax  ? this.retainInfoList.BrokerApFax : 'N/A',
+      //     // infoBrokerName : this.retainInfoList.BrokerID  ? this.retainInfoList.BrokerID : 'N/A',
+      //     // infoPatientPhone : this.retainInfoList.PatientSms  ? this.retainInfoList.PatientEmail : 'N/A',
+      //     // infoPatientEmail : this.retainInfoList.PatientEmail  ? this.retainInfoList.PatientEmail : 'N/A', 
+      //     // InfoPatientFax : this.retainInfoList.PatientFax  ? this.retainInfoList.PatientFax : 'N/A',
+      //     AddtionalDeskFax: this.retainInfoList.IsManualDesFaxSend3 || this.retainInfoList.IsManualDesFaxSend2 || this.retainInfoList.IsManualDesFaxSend1 == '1' ? true : false,
+      //     AddtionalDeskEmail: this.retainInfoList.IsManualDesEmailSend3 || this.retainInfoList.IsManualDesEmailSend2 || this.retainInfoList.IsManualDesEmailSend1 == '1' ? true : false,
+      //     AddtionalDeskSms: this.retainInfoList.IsManualDesSmsSend3 || this.retainInfoList.IsManualDesSmsSend2 || this.retainInfoList.IsManualDesSmsSend2 == '1' ? true : false,
 
-          infoAdditionalEmail1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
-          infoAdditionalEmail2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
-          infoAdditionalEmail3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
+      //     infoAdditionalEmail1: this.retainInfoList.ManualDesEmail1 ? this.retainInfoList.ManualDesEmail1 : '',
+      //     infoAdditionalEmail2: this.retainInfoList.ManualDesEmail2 ? this.retainInfoList.ManualDesEmail2 : '',
+      //     infoAdditionalEmail3: this.retainInfoList.ManualDesEmail3 ? this.retainInfoList.ManualDesEmail3 : '',
 
-          infoAdditionalPhone1: this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
-          infoAdditionalPhone2: this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
-          infoAdditionalPhone3: this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
+      //     infoAdditionalPhone1: this.retainInfoList.ManualDesSms1 ? this.retainInfoList.ManualDesSms1 : '',
+      //     infoAdditionalPhone2: this.retainInfoList.ManualDesSms2 ? this.retainInfoList.ManualDesSms2 : '',
+      //     infoAdditionalPhone3: this.retainInfoList.ManualDesSms3 ? this.retainInfoList.ManualDesSms3 : '',
 
-          infoAdditionalFax1: this.retainInfoList.ManualDesFax1 ? this.retainInfoList.ManualDesFax1 : '',
-          infoAdditionalFax2: this.retainInfoList.ManualDesFax2 ? this.retainInfoList.ManualDesFax2 : '',
-          infoAdditionalFax3: this.retainInfoList.ManualDesFax3 ? this.retainInfoList.ManualDesFax3 : '',
-        });
+      //     infoAdditionalFax1: this.retainInfoList.ManualDesFax1 ? this.retainInfoList.ManualDesFax1 : '',
+      //     infoAdditionalFax2: this.retainInfoList.ManualDesFax2 ? this.retainInfoList.ManualDesFax2 : '',
+      //     infoAdditionalFax3: this.retainInfoList.ManualDesFax3 ? this.retainInfoList.ManualDesFax3 : '',
+      //   });
 
-        if(this.contactInfoForm.controls.AddtionalDeskEmail.value){
-          this.addEmailChecked = true
-        }
-        if(this.contactInfoForm.controls.AddtionalDeskFax.value){
-          this.addFaxChecked = true
-        }
-        if (this.contactInfoForm.controls.IsPatientPhone.value) {
-          this.IsPatientPhoneSent = true;
-          this.smsTextModel = this.smsBody;
-        }
-        if (this.contactInfoForm.controls.AddtionalDeskSms.value) {
-          this.addPhoneChecked = true;
-          this.smsTextModel = this.smsBody;
-        }
+      //   if(this.contactInfoForm.controls.AddtionalDeskEmail.value){
+      //     this.addEmailChecked = true
+      //   }
+      //   if(this.contactInfoForm.controls.AddtionalDeskFax.value){
+      //     this.addFaxChecked = true
+      //   }
+      //   if (this.contactInfoForm.controls.IsPatientPhone.value) {
+      //     this.IsPatientPhoneSent = true;
+      //     this.smsTextModel = this.smsBody;
+      //   }
+      //   if (this.contactInfoForm.controls.AddtionalDeskSms.value) {
+      //     this.addPhoneChecked = true;
+      //     this.smsTextModel = this.smsBody;
+      //   }
        
-      }
+      // }
     }
     (this.contactInfoForm.get('infoAttorneyFax').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyFax').disable() : this.contactInfoForm.get('IsAttorneyFax').enable());
     (this.contactInfoForm.get('infoAttorneyEmail').value == 'N/A' ? this.contactInfoForm.get('IsAttorneyEmail').disable() : this.contactInfoForm.get('IsAttorneyEmail').enable());
