@@ -35,7 +35,7 @@ export class CreditReasonsSettingComponent implements OnInit {
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   Issubmitted : boolean = false;
   disableReminderInterval : boolean ;
-  reminderIntervalValidation : any 
+  reminderIntervalValidation : any = false;
   signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 2,
     pecColor: 'rgb(66,133,244)',
@@ -77,6 +77,9 @@ export class CreditReasonsSettingComponent implements OnInit {
   }
   updateTabId(tabName: string, val: boolean) {
     this.tabId = tabName;
+    if(this.reminderForm.controls.IsActive.value == true && this.tabId == 'Reminder'){
+      this.reminderIntervalValidation = false;
+    }
   }
   getCreditReasonsList() {
     let body = {

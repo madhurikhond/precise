@@ -3790,11 +3790,13 @@
 										</div>
 									</div>
 									<form class="theme-form" id = 'useLeaseForm' [formGroup]="facilityContactDetailForm">
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 										<div class="checkbox-theme">
 											<input class="form-control" (change)="checkForLease($event,'useBlockLease')"
 												formControlName="useBlockLease" type="checkbox">
 											<label for="editinfo5" class="arrow-label">Use Block Lease</label>
 										</div>
+									</div>
 										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 											<div class="checkbox-theme">
 												<input class="form-control" formControlName="isSendLeaseToFacility"
@@ -3816,11 +3818,11 @@
 															[ngClass]="{ 'is-invalid': (submitted && facilityContactDetailFormControls.defaultEmailAddress3P.errors)}">
 														<div *ngIf= "facilityContactDetailFormControls.defaultEmailAddress3P.errors || facilityContactDetailFormControls.defaultEmailAddress3P.value == '' ||facilityContactDetailFormControls.defaultEmailAddress3P.value == null || facilityContactDetailFormControls.defaultEmailAddress3P.value == 'UNDEFINED'"  class="required"
 															class="invalid-feedback">
-															<div
+															<div class="wh_space"
 																*ngIf="submitted && facilityContactDetailFormControls.defaultEmailAddress3P.errors?.required">
 																DEFAULT EMAIL ADDRESS FOR LEASE IS REQUIRED
 															</div>
-															<div
+															<div class="wh_space"
 																*ngIf="facilityContactDetailFormControls.defaultEmailAddress3P.errors?.pattern">
 																DEFAULT
 																EMAIL ADDRESS FOR LEASE
@@ -3842,7 +3844,7 @@
 															[ngClass]="{'is-invalid': facilityContactDetailFormControls.emailAddress13P.errors}">
 														<div *ngIf="facilityContactDetailFormControls.emailAddress13P.errors"
 															class="invalid-feedback">
-															<div
+															<div  class="wh_space"
 																*ngIf="facilityContactDetailFormControls.emailAddress13P.errors">
 																2ND EMAIL ADDRESS FOR
 																LEASE MUST BE A VALID
@@ -3859,8 +3861,8 @@
 														<input type="text" formControlName="emailAddress23P"
 															class="form-control"
 															[ngClass]="{'is-invalid':(facilityContactDetailFormControls.emailAddress23P.errors)}">
-														<div *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
-															class="invalid-feedback">3RD EMAIL ADDRESS FOR LEASE MUST BE
+														<div   *ngIf="facilityContactDetailFormControls.emailAddress23P.errors"
+															class="invalid-feedback wh_space">3RD EMAIL ADDRESS FOR LEASE MUST BE
 															A VALID
 															EMAIL ADDRESS</div>
 													</div>
@@ -4121,7 +4123,7 @@
 												<dxo-paging [enabled]="false"></dxo-paging>
 												<dxo-load-panel [enabled]="true"></dxo-load-panel>
 												<dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-												<dxi-column dataField="Credit time" caption="Credit Time"></dxi-column>
+												<dxi-column dataField="CreditTime" caption="Credit Time"></dxi-column>
 												<dxi-column dataField="LeaseTime" caption="Original Leased Time">
 												</dxi-column>
 												<dxi-column dataField="ReasonText" caption="Issue Type"></dxi-column>
