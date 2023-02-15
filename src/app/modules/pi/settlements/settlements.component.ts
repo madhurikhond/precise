@@ -689,7 +689,7 @@ export class SettlementsComponent implements OnInit {
   }
 
   approveStudy() {
-    debugger
+ 
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
     if (sumAllocatedAmount.toFixed(2) == parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
@@ -733,7 +733,7 @@ export class SettlementsComponent implements OnInit {
       this.modelValue = '';
       return;
     }
-    debugger
+  
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
     if (sumAllocatedAmount.toFixed(2) == parseFloat(this.settleForm.settlementAmount.value ? this.settleForm.settlementAmount.value : 0)) {
@@ -796,7 +796,7 @@ export class SettlementsComponent implements OnInit {
       this.modelValue2 = '';
       return;
     }
-    debugger
+    
     const sumAllocatedAmount = this.studyDetail.settleData.map(a => parseFloat(a.AllocatedAmount))
       .reduce((sum, current) => sum + current);
     if (sumAllocatedAmount.toFixed(2) == parseFloat(this.settleForm1.settlementAmount.value ? this.settleForm1.settlementAmount.value : 0)) {

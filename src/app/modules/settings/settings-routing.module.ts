@@ -35,7 +35,6 @@ const routes: Routes = [
   { path: 'server-settings/patient-portal/patient-modality-prep',component: PatientModalityPrepComponent, canActivate: [AuthGuard]},
   { path: 'accounting/ar/ar-settings',loadChildren: () => import('./accounting/accounting.module').then(m => m.AccountingModule), canActivate: [AuthGuard,RoleGuard] },
   // { path: 'broadcast',loadChildren: () => import('./broadcast/broadcast.module').then(m => m.BroadcastModule), canActivate: [AuthGuard] },
-  { path: 'billing-settings/rad-portal-tab', loadChildren: () => import('../settings/rad-portal-tab/rad-portal-tab.module').then(m => m.RadPortalTabModule), canActivate: [AuthGuard,RoleGuard] },
   { path: 'reminders', loadChildren: () => import('../settings/reminders/reminders.module').then(m => m.RemindersModule), canActivate: [AuthGuard,RoleGuard] },
 ];
 
