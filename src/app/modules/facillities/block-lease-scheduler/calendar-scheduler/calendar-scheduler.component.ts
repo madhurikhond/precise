@@ -97,7 +97,7 @@ export class CalendarSchedulerComponent implements OnInit {
         // this.schedulerLoad();
     }
     schedulerLoad() {
-        debugger
+      
         scheduler.skin = 'material';
         scheduler.config.first_hour = 6;
 		scheduler.config.last_hour = 24;

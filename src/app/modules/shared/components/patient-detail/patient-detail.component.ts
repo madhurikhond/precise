@@ -202,7 +202,7 @@ export class PatientDetailComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    debugger
+  
     if (this.pateintIdDynamic) {
       this.divPatientId = this.pateintIdDynamic;
     }

@@ -342,7 +342,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.hiddenViewFile.nativeElement.click();
   }
   closePDF() {
-    //  debugger
+   
     //  $('#viewFile_Doc').hide();
   }
   getActiveEpicUsers() {
@@ -1197,7 +1197,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }  
   }
   getLeaseAgreementsByFacilityId(facilityId: number) {
-    debugger
+   
     this.blockLeaseAgreementMRIList = [];
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
@@ -3577,7 +3577,7 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   copyToClipboard(currentPageUrl) {
-    debugger
+   
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
