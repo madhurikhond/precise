@@ -22,8 +22,6 @@ const routes: Routes = [
       { path: 'work-flow', loadChildren: () => import('../work-flow/workflow.module').then(m => m.WorkflowModule), canActivate: [AuthGuard] },
       { path: 'myprofile', loadChildren: () => import('../myprofile/my-profile.module').then(m => m.MyProfileModule), canActivate: [AuthGuard] },
       { path: 'auto-route-v2', loadChildren: () => import('../auto-route-v2/auto-route-v2.module').then(m => m.AutoRouteV2Module), canActivate: [AuthGuard] },
-      { path: 'rad-portal', loadChildren: () => import('../reading-rad-portal/reading-rad-portal.module').then(m => m.ReadingRadPortalModule), canActivate: [AuthGuard] },
-      { path: 'lien-management', loadChildren: () => import('../lien-management/lien-management.module').then(m => m.LienManagementModule), canActivate: [AuthGuard] },
       { path: 'lien-funding-co', loadChildren: () => import('../lien-funding-co/lien-funding-co.module').then(m => m.LienFundingCoModule), canActivate: [AuthGuard,RoleGuard] },
       { path: 'lien-funding-co-setting', component: FundingCoSettingComponent, canActivate: [AuthGuard,RoleGuard]},
       { path: 'shared', loadChildren: () => import('../shared/shared.module').then(m => m.SharedModule)},

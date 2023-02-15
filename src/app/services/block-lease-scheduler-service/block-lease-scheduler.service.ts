@@ -46,7 +46,6 @@ export class BlockLeaseSchedulerService {
   }
 
   getAllLeasesOfFacilityByStatus( Body: any,showGlobalLoader: boolean = true) {
-    debugger
     return this._httpService.post(`BlockLeaseScheduler/GetAllLeasesOfFacilityByStatus`, Body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );

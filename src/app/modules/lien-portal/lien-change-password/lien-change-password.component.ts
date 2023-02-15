@@ -57,7 +57,7 @@ export class LienChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    //console.log(this.changePasswordForm)
+    
     this.IsSubmitted = true;
     if (this.changePasswordForm.valid) {
       var body = {
