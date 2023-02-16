@@ -169,8 +169,11 @@ export class RolePermissionComponent implements OnInit {
       this.settingService.saveRolePermission(true, data).subscribe((res) => {
         if (res) {
           if (res.responseCode == ResponseStatusCode.OK && this.groupName!=this.oldGroupName)  {
+            this.getGroups()
             this.updateRoleGroupName();
           }
+          
+       
           this.notificationService.showNotification({
             alertHeader: (res.responseCode === ResponseStatusCode.OK) ? 'Success' : 'Error',
             alertMessage: res.message,
@@ -216,7 +219,7 @@ export class RolePermissionComponent implements OnInit {
     }
   }
   updateRoleGroupName() {
-
+debugger
     if (this.groupName && this.oldGroupName)
       this.settingService.updateRoleGroupName(false, this.groupName, this.oldGroupName).subscribe((res) => {
         this.resetPage()
@@ -226,6 +229,7 @@ export class RolePermissionComponent implements OnInit {
 
   editRolePermision() {
     this.isAdd = true;
+    //this.getGroups();
   }
 
 
