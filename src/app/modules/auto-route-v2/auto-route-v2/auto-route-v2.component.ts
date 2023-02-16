@@ -181,7 +181,7 @@ export class AutoRouteV2Component implements OnInit, OnDestroy {
         if (res != null) {
           var selectedFiles = event.target.files;
           for (let i = 0; i < selectedFiles.length; i++) {
-            debugger
+          
             if(selectedFiles[i]['size'] == 0){
               this.isFileSizeSmall = true
             }

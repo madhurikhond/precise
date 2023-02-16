@@ -88,7 +88,7 @@ export class CreateAlertComponent implements OnInit {
     private readonly CreateAlertService: CreateAlertService) { }
 
   ngOnInit(): void {
-    debugger
+    
     this.commonService.createAlertPopUpObservable.subscribe((body) => {
       this.alertButtonClick = body.isAlertClicked;
       this.hasAlert = body.hasAlert == true ? 1 : 0;

@@ -377,7 +377,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
       //this.downloadAllFilesAsZipFile(this.fileItems);
     }
     else if (e.itemData.text == 'Upload') {
-      debugger
+    
       this.docTypeModelChange = false;
       this.selectedDocumentTypeId = '';
       this.selectedUploadFile = [];
@@ -648,7 +648,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
   // File Method
 
   formatBytes(bytes, decimals) {
-    debugger
+    
     if (bytes === 0) {
       return '0 Bytes';
     }
@@ -706,7 +706,7 @@ export class DocumentManagerComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
   fileBrowseHandler(files) {
-    debugger
+
     this.selectedUploadFile = [];
     if (files.length > 1) {
       this.hiddenCommonMessagePopUpButton.nativeElement.click();
