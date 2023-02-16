@@ -190,10 +190,34 @@ export class UsersComponent implements OnInit {
     this.pageNumber = 1;
     this.getUsers(this.topSearchText, this.search_isactive);
   }
-
+  onIsActiveChange(IsActive : any){
+    if(this.editUserForm.controls.isActive.value && (this.selectedReferrerList == null || this.selectedReferrerList.length == 0) &&
+    ( this.selectedFacilityList == null || this.selectedFacilityList.length ==0 )&&
+    ( this.selectedParentFacilityList == null || this.selectedParentFacilityList.length == 0 )&&
+     (this.selectedBrokerList == null || this.selectedBrokerList.length == 0)){
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage:'Please set permission for user before activate',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return
+    }
+  }
   onUpdateSubmit() {
     this.submitted = true;
     this.modelValue = '';
+    if(this.editUserForm.controls.isActive.value && (this.selectedReferrerList == null || this.selectedReferrerList.length == 0) &&
+    ( this.selectedFacilityList == null || this.selectedFacilityList.length ==0 )&&
+    ( this.selectedParentFacilityList == null || this.selectedParentFacilityList.length == 0 )&&
+     (this.selectedBrokerList == null || this.selectedBrokerList.length == 0)){
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage:'Please set permission for user before activate',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return
+    }
+  
     if (this.editUserForm.invalid) {
       return;
     }
