@@ -226,6 +226,7 @@ export class RolePermissionComponent implements OnInit {
 
   editRolePermision() {
     this.isAdd = true;
+    this.getGroups();
   }
 
 
