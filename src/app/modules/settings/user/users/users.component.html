@@ -232,7 +232,7 @@
                                                 <div class="checkbox-input-group">
                                                     <div class="checkbox-theme">
                                                         <input class="form-control" formControlName="isActive"
-                                                            id="user-isactive" type="checkbox">
+                                                            id="user-isactive" type="checkbox" (change)="onIsActiveChange(editUserForm.controls.isActive.value?true:false)">
                                                         <label for="user-isactive" class="arrow-label">Is Active</label>
                                                     </div>
                                                     <!-- <div class="form-group">
