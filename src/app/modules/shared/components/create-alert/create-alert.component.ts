@@ -299,6 +299,29 @@ export class CreateAlertComponent implements OnInit {
             if (data.response.brokerInfoList != null) { this.brokerInfoList = data.response.brokerInfoList[0] }
             if (data.response.patientInfoList != null) { this.patientInfoList = data.response.patientInfoList[0]; }
             if (data.response.retainInfoList != null) { this.retainInfoList = data.response.retainInfoList[0]; }
+            this.addPhoneChecked = false;
+            this.IsPatientPhoneSent = false;
+            this.contactInfoForm.get('SmsTextModel').setErrors(null);
+            if (this.addPhoneChecked == false) {
+              this.showRequiredPhoneValidation = false
+              this.contactInfoForm.get('infoAdditionalPhone1').setErrors(null);
+              this.contactInfoForm.get('infoAdditionalPhone2').setErrors(null);
+              this.contactInfoForm.get('infoAdditionalPhone3').setErrors(null);
+            }
+          
+              if(this.addEmailChecked ==  false){
+                this.showRequiredEmailValidation
+                this.contactInfoForm.get('infoAdditionalEmail1').setErrors(null);
+                this.contactInfoForm.get('infoAdditionalEmail2').setErrors(null);
+                this.contactInfoForm.get('infoAdditionalEmail3').setErrors(null);
+            }
+          
+            if (this.addFaxChecked == false) {
+              this.showRequiredFaxValidation = false
+              this.contactInfoForm.get('infoAdditionalFax1').setErrors(null);
+              this.contactInfoForm.get('infoAdditionalFax2').setErrors(null);
+              this.contactInfoForm.get('infoAdditionalFax3').setErrors(null);
+            }
             this.FillContactInfo();
             this.updateSubjectBody();
             this.isContactModelShow = true;
