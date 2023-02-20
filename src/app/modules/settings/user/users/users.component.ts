@@ -252,7 +252,7 @@ export class UsersComponent implements OnInit {
       userTermination: userTermination,
       userSlackID: userSlackID,
       userDuties: userDuties,
-      departmentId: departmentId.toString(),
+      departmentId: departmentId ? departmentId.toString() : '',    
       groupName: groupName,
       userType: userType,
       assingBrokerID: (this.selectedBrokerList == null) ? null : this.selectedBrokerList.toString(),
