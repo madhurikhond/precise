@@ -1873,14 +1873,13 @@ export class SchdFacilitiesComponent implements OnInit {
 
   setIntakeTabForm(data: any) {
     this.selectedEpicUserList = null;
-
     if (data.userList != null && data.userList != '') {
       this.selectedEpicUserList = data.userList.split(',').map(function (item) {
         return item.trim();
       });
     }
     this.isIntakeScreeningAndWaiverVisible = data.isPacketDocOnly;
-    this.isIntakeFaxVisible = data.IsFaxIntakePacket;
+    this.isIntakeFaxVisible =  data.isFaxIntakePacket;
     this.isIntakeEmailVisible = data.isEmailIntakePacket;
     this.facilityIntakeForm.patchValue({
       isPacketDocOnly: data.isPacketDocOnly,
@@ -1965,7 +1964,6 @@ export class SchdFacilitiesComponent implements OnInit {
     this.isIntakeEmailVisible = false;
   }
   onIntakeFaxChanged(isFax: any) {
-
     this.facilityIntakeFormControls.IsFaxIntakePacket.setValue(isFax);
     this.isIntakeFaxVisible = isFax;
     this.isIntakeScreeningAndWaiverVisible = false;
