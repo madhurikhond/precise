@@ -31,7 +31,7 @@ export class LienFundingCoComponent implements OnInit {
       dateFrom: [''],
       dateTo: [''],
       dateType: [''],
-      batch: [''],
+      transactionNumber: [''],
       check: [''],
     });
 
@@ -60,10 +60,10 @@ export class LienFundingCoComponent implements OnInit {
       case LienFundingCoTabName.PENDING:
         break;
       case LienFundingCoTabName.UNPAID:
-        this.filter.batch = this.filterForm.controls.batch.value;
+        this.filter.transactionNumber = this.filterForm.controls.transactionNumber.value;
         break;
       case LienFundingCoTabName.PAID:
-        this.filter.batch = this.filterForm.controls.batch.value;
+        this.filter.transactionNumber = this.filterForm.controls.transactionNumber.value;
         this.filter.checkNumber = this.filterForm.controls.check.value;
         break;
       default:
