@@ -52,9 +52,9 @@
 
                 <div class="form-group" *ngIf="selectedMode == lienFundingCoTabName.UNPAID ||
                     selectedMode == lienFundingCoTabName.PAID">
-                    <div class="theme-label">Batch #</div>
+                    <div class="theme-label">Transaction No #</div>
                     <div class="input-group">
-                        <input type="text" formControlName="batch" class="form-control">
+                        <input type="text" formControlName="transactionNumber" class="form-control">
                     </div>
                 </div>
                 <div class="form-group" *ngIf="selectedMode == lienFundingCoTabName.PAID">
