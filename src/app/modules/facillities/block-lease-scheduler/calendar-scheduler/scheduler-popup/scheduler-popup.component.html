@@ -148,7 +148,7 @@
                                     formControlName="modalityType"
                                     [ngClass]="{ 'is-invalid': (submitted && editFormControls.modalityType.errors) }"
                                     (change)="changed($event)">
-                                    <option  value = '' selected>Select Modality</option>
+                                    <option value='' selected>Select Modality</option>
                                     <optgroup *ngFor="let group of modalityResourcesList" id={{group.Modality}}
                                         label="{{group.Modality}}">
                                         <option *ngFor="let item of group.Resources" value={{item.INTERNALRESOURCEID}}>
@@ -188,12 +188,12 @@
                         </div>
                     </div>
                 </div>
-                <div  class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
-                        <div  *ngIf="IsLeaseIdExists"  class="input-group icon-active">
-                            Lease Id : {{displayLeaseIdSchedulerPopUp}} 
+                        <div *ngIf="IsLeaseIdExists" class="input-group icon-active">
+                            Lease Id : {{displayLeaseIdSchedulerPopUp}}
                         </div>
-                        <div *ngIf="TotalLeaseHours"  class="input-group icon-active">
+                        <div *ngIf="TotalLeaseHours" class="input-group icon-active">
                             Total Lease Hour(s) :<br> {{TotalLeaseHours}}
                         </div>
                     </div>
@@ -242,11 +242,6 @@
                         </div>
                     </div>
                 </div>
-
-
-             
-
-
                 <div *ngIf="TotalBlockHours" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <div class="form-group">
                         <div class="input-group icon-active">
@@ -254,105 +249,7 @@
                         </div>
                     </div>
                 </div>
-
-
-                <div class="repeater-block" >
-
-                    <div class="rep-head">
-                        <strong>Repeat Event</strong>
-                        <span id="repeat-control" [onclick]="changetxtFunction()">Enabled</span>
-                    </div>
-                    
-                                    <div class="rp-tab-block">
-                                        <div class="radio-tabs lab-space">
-                                             <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="day" id="">Daily</label>
-                                              <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="week">Weekly</label>
-                                               <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="month" checked="">Monthly</label>
-                                               <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="year">Yearly</label>
-                                         </div>
-                    
-                    
-                                         <div class="lab-space bx-space"  id="dhx_repeat_day">
-                                             <label><input class="dhx_repeat_radio" type="radio" name="day_type" value="d">Every</label>
-                                             <label><input class="dhx_repeat_text" type="text" name="day_count" value="1">day</label>
-                                              <label><input class="dhx_repeat_radio" type="radio" name="day_type" checked="" value="w">Every workday</label>
-                                          </div>
-                    
-                    
-                                          <div class="bx-space" style="display:none;">
-                                            <label> Repeat every<input class="dhx_repeat_text" type="text" name="week_count" value="1"></label>
-                                            <span>week next days:</span><br>
-                                             <table class="dhx_days">
-                                                <tbody><tr> 
-                                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="1">Monday</label>
-                                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="4">Thursday</label> </td>
-                                                     <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="2">Tuesday</label>
-                                                         <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="5">Friday</label></td>
-                                                     <td> <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="3">Wednesday</label>
-                                                    <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day" value="6">Saturday</label> </td>
-                                                     <td> <label><input class="dhx_repeat_checkbox " type="checkbox" name="week_day" value="0">Sunday</label></td>
-                                                    </tr> </tbody></table>
-                                          </div>
-                    
-                    
-                    
-                    
-                                          <div class="monthlytabblock" id="dhx_repeat_month" style="display:none;"> 
-                                            <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio" name="month_type" value="d">Repeat</label>
-                                            <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
-                                            <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
-                                             <label class="dhx_repeat_month_label">
-                                                <input class="dhx_repeat_radio" type="radio" name="month_type" checked="" value="w">On</label>
-                                             <input class="dhx_repeat_text" type="text" name="month_week2" value="1"><label>
-                                                <select class="form-control weekselect">
-                                            <option value="1" selected="">Monday</option>
-                                            <option value="2">Tuesday</option>
-                                            <option value="3">Wednesday</option>
-                                            <option value="4">Thursday</option>
-                                            <option value="5">Friday</option>
-                                            <option value="6">Saturday</option>
-                                            <option value="0">Sunday</option>
-                                              </select>every</label>
-                                              <label><input class="dhx_repeat_text" type="text" name="month_count2" value="1">month</label></div>
-
-
-
-                                              <div id="dhx_repeat_year" style="display:none;"> 
-                                                <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio" name="year_type" value="d">Every</label>
-                                                <label><input class="dhx_repeat_text" type="text" name="year_day" value="1">day</label>
-                                                <label><select name="year_month" class="form-control weekselect">
-                                                    <option value="0" selected="">January</option>
-                                                    <option value="1">February</option><option value="2">March</option><option value="3">April</option>
-                                                    <option value="4">May</option><option value="5">June</option><option value="6">July</option>
-                                                    <option value="7">August</option><option value="8">September</option><option value="9">October</option>
-                                                    <option value="10">November</option><option value="11">December</option></select>month</label><br>
-                                                     <label class="dhx_repeat_year_label">
-                                                        <input class="dhx_repeat_radio" type="radio" name="year_type" checked="" value="w">On</label>
-
-                                                        <input class="dhx_repeat_text" type="text" name="year_week2" value="1">
-                                                        <select class="form-control weekselect" name="year_day2">
-                                                            <option value="1" selected="">Monday</option><option value="2">Tuesday</option>
-                                                            <option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option>
-                                                            <option value="6">Saturday</option><option value="7">Sunday</option>
-                                                        </select><span class="of-txt">of</span><select class="form-control weekselect" name="year_month2"><option value="0" selected="">January</option>
-                                                            <option value="1">February</option><option value="2">March</option><option value="3">April</option>
-                                                            <option value="4">May</option><option value="5">June</option><option value="6">July</option>
-                                                            <option value="7">August</option><option value="8">September</option><option value="9">October</option>
-                                                            <option value="10">November</option><option value="11">December</option></select><br> </div>
-
-
-                                         
-                                    </div>
-                                    
-                    </div>
-
-
-
-
             </div>
-
-         
-
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-subtitle">Lease Time Ends</div>
@@ -389,11 +286,142 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="repeater-block">
+                <div class="rep-head">
+                    <strong>Repeat Event</strong>
+                    <span  id="repeat-control" (click)="changetxtFunction()">Disabled</span>
+                </div>
+
+                <div *ngIf="showReccuringBlock" class="rp-tab-block">
+                    <div class="radio-tabs lab-space">
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="day"
+                                id="">Daily</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="week">Weekly</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="month"
+                                checked="">Monthly</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="year">Yearly</label>
+                    </div>
+                    <div class="lab-space bx-space" id="dhx_repeat_day">
+                        <label><input class="dhx_repeat_radio" type="radio" name="day_type" value="d">Every</label>
+                        <label><input class="dhx_repeat_text" type="text" name="day_count" value="1">day</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="day_type" checked="" value="w">Every
+                            workday</label>
+                    </div>
+                    <div class="bx-space" style="display:none;">
+                        <label> Repeat every<input class="dhx_repeat_text" type="text" name="week_count"
+                                value="1"></label>
+                        <span>week next days:</span><br>
+                        <table class="dhx_days">
+                            <tbody>
+                                <tr>
+                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="1">Monday</label>
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="4">Thursday</label>
+                                    </td>
+                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="2">Tuesday</label>
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="5">Friday</label>
+                                    </td>
+                                    <td> <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="3">Wednesday</label>
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                                value="6">Saturday</label>
+                                    </td>
+                                    <td> <label><input class="dhx_repeat_checkbox " type="checkbox" name="week_day"
+                                                value="0">Sunday</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
 
+
+
+                    <div class="monthlytabblock" id="dhx_repeat_month" style="display:none;">
+                        <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
+                                name="month_type" value="d">Repeat</label>
+                        <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
+                        <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
+                        <label class="dhx_repeat_month_label">
+                            <input class="dhx_repeat_radio" type="radio" name="month_type" checked=""
+                                value="w">On</label>
+                        <input class="dhx_repeat_text" type="text" name="month_week2" value="1"><label>
+                            <select class="form-control weekselect">
+                                <option value="1" selected="">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="0">Sunday</option>
+                            </select>every</label>
+                        <label><input class="dhx_repeat_text" type="text" name="month_count2" value="1">month</label>
+                    </div>
+
+
+
+                    <div id="dhx_repeat_year" style="display:none;">
+                        <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio"
+                                name="year_type" value="d">Every</label>
+                        <label><input class="dhx_repeat_text" type="text" name="year_day" value="1">day</label>
+                        <label><select name="year_month" class="form-control weekselect">
+                                <option value="0" selected="">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>month</label><br>
+                        <label class="dhx_repeat_year_label">
+                            <input class="dhx_repeat_radio" type="radio" name="year_type" checked=""
+                                value="w">On</label>
+
+                        <input class="dhx_repeat_text" type="text" name="year_week2" value="1">
+                        <select class="form-control weekselect" name="year_day2">
+                            <option value="1" selected="">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="7">Sunday</option>
+                        </select><span class="of-txt">of</span><select class="form-control weekselect"
+                            name="year_month2">
+                            <option value="0" selected="">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select><br>
+                    </div>
+
+
+
+                </div>
 
             </div>
-            <!-- <div class="row">
+
+
+
+
+ 
+    <!-- <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
                 </div>
@@ -402,141 +430,139 @@
                         many credits care available once they specify the resource and contrast&#125;</div>
                 </div>
             </div>           -->
-            <div class="row" *ngIf="isLeaseSigned">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-title">Credits</div>
-                </div>
-                <div *ngIf="TotalCreditHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group icon-active">
-                            Total Credit Hour(s) :<br> {{TotalCreditHours}}
-                        </div>
-                    </div>
-                </div>
-                <div class="credit-outer" *ngIf="CreditDetailsList">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="table-responsive">
-                            <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList"
-                                [wordWrapEnabled]="true" [showBorders]="true">
-                                <dxo-state-storing [enabled]="true"></dxo-state-storing>
-                                <dxo-paging [enabled]="false"></dxo-paging>
-                                <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
-                                <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
-                                <dxi-column dataField="CreditReasonText" caption="Credit Reason description"
-                                    width="300">
-                                </dxi-column>
-                                <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
-
-                                <dxi-column cellTemplate="statusCellTemplate" caption="Status">
-                                </dxi-column>
-                                <div *dxTemplate="let data of 'statusCellTemplate'">
-                                    <div *ngIf="data.data.IsUseCredit == true">
-                                        <span>used</span>
-                                    </div>
-                                    <div *ngIf="data.data.IsUseCredit == false">
-                                        <span>unused</span>
-                                    </div>
-
-                                </div>
-                            </dx-data-grid>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Credit Reason</div>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <select class="slwidth"
-                                [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
-                                formControlName="creditReasonID" class="form-control">
-                                <option value="" selected>Select</option>
-                                <option *ngFor="let group of creditReasonList" value={{group.ID}}>
-                                    {{group.ReasonText}}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div *ngIf="(submitted && editFormControls.creditReasonID.errors)" class="invalid-feedback">
-                            <div *ngIf="editFormControls.creditReasonID.errors?.required">
-                                Credit Reason is required</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row" *ngIf="isLeaseSigned">
-                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Credits to Add</div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditHours.errors) }"
-                                formControlName="creditHours" class="form-control">
-                                <option value="">Select Hour</option>
-                                <option value="0">0</option>
-                                <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
-                                    {{hours}}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
-                            class="invalid-feedback">
-                            <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
-                                modality is required</div>
-                        </div>
-                        <div *ngIf="(submitted && editFormControls.creditHours.errors)" class="invalid-feedback">
-                            <div class="required" *ngIf="editFormControls.creditHours.errors?.required">
-                                Credit Hour is required</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditMinutes.errors) }"
-                                formControlName="creditMinutes" class="form-control">
-                                <option value="">Select Minute</option>
-                                <option *ngFor="let min of minutesList" value={{min}}>
-                                    {{min}}
-                                </option>
-                            </select>
-                        </div>
-                        <div *ngIf="(submitted && editFormControls.creditMinutes.errors)" class="invalid-feedback">
-                            <div *ngIf="editFormControls.creditMinutes.errors?.required">
-                                Credit Minute is required</div>
-                        </div>
-                    </div>
+    <div class="row" *ngIf="isLeaseSigned">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="theme-label-title">Credits</div>
+        </div>
+        <div *ngIf="TotalCreditHours" class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <div class="input-group icon-active">
+                    Total Credit Hour(s) :<br> {{TotalCreditHours}}
                 </div>
             </div>
-            <div class="row no-spacetextarea" *ngIf="isLeaseSigned">
-                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
-                    <textarea class="form-control"
-                        [ngClass]="{ 'is-invalid': (submitted && editFormControls.CreditReasonText.errors) }"
-                        formControlName="CreditReasonText"
-                        placeholder="Reason for adding a credit (Required)"></textarea>
-                </div>
-                <div *ngIf="(submitted && editFormControls.CreditReasonText.errors)" class="invalid-feedback mt-0">
-                    <div *ngIf="editFormControls.CreditReasonText.errors?.required">
-                        Credit Reason Text is required</div>
+        </div>
+        <div class="credit-outer" *ngIf="CreditDetailsList">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="table-responsive">
+                    <dx-data-grid id="CreditDetailscontainer" [dataSource]="CreditDetailsList" [wordWrapEnabled]="true"
+                        [showBorders]="true">
+                        <dxo-state-storing [enabled]="true"></dxo-state-storing>
+                        <dxo-paging [enabled]="false"></dxo-paging>
+                        <dxo-grouping [contextMenuEnabled]="true"></dxo-grouping>
+                        <dxi-column dataField="ReasonText" caption="Credit Reason"></dxi-column>
+                        <dxi-column dataField="CreditReasonText" caption="Credit Reason description" width="300">
+                        </dxi-column>
+                        <dxi-column dataField="TotalHour" caption="Total Credit"></dxi-column>
+
+                        <dxi-column cellTemplate="statusCellTemplate" caption="Status">
+                        </dxi-column>
+                        <div *dxTemplate="let data of 'statusCellTemplate'">
+                            <div *ngIf="data.data.IsUseCredit == true">
+                                <span>used</span>
+                            </div>
+                            <div *ngIf="data.data.IsUseCredit == false">
+                                <span>unused</span>
+                            </div>
+
+                        </div>
+                    </dx-data-grid>
                 </div>
             </div>
-        </form>
+
+        </div>
+
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+            <div class="theme-label-subtitle">Credit Reason</div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <select class="slwidth"
+                        [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditReasonID.errors) }"
+                        formControlName="creditReasonID" class="form-control">
+                        <option value="" selected>Select</option>
+                        <option *ngFor="let group of creditReasonList" value={{group.ID}}>
+                            {{group.ReasonText}}
+                        </option>
+                    </select>
+                </div>
+
+                <div *ngIf="(submitted && editFormControls.creditReasonID.errors)" class="invalid-feedback">
+                    <div *ngIf="editFormControls.creditReasonID.errors?.required">
+                        Credit Reason is required</div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="modal-footer">
-        <button #deleteBtn id="deleteBtn" (click)="confirmDelete()"
-            class="btn btn-border-clear btn-sm pull-left">Delete</button>
-        <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
-            class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
+    <div class="row" *ngIf="isLeaseSigned">
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+            <div class="theme-label-subtitle">Credits to Add</div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditHours.errors) }"
+                        formControlName="creditHours" class="form-control">
+                        <option value="">Select Hour</option>
+                        <option value="0">0</option>
+                        <option *ngFor="let hours of getTotalHours(24)" value={{hours}}>
+                            {{hours}}
+                        </option>
+                    </select>
+                </div>
 
-
-        <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
+                <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                    class="invalid-feedback">
+                    <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
+                        modality is required</div>
+                </div>
+                <div *ngIf="(submitted && editFormControls.creditHours.errors)" class="invalid-feedback">
+                    <div class="required" *ngIf="editFormControls.creditHours.errors?.required">
+                        Credit Hour is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <select [ngClass]="{ 'is-invalid': (submitted && editFormControls.creditMinutes.errors) }"
+                        formControlName="creditMinutes" class="form-control">
+                        <option value="">Select Minute</option>
+                        <option *ngFor="let min of minutesList" value={{min}}>
+                            {{min}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="(submitted && editFormControls.creditMinutes.errors)" class="invalid-feedback">
+                    <div *ngIf="editFormControls.creditMinutes.errors?.required">
+                        Credit Minute is required</div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row no-spacetextarea" *ngIf="isLeaseSigned">
+        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+            <textarea class="form-control"
+                [ngClass]="{ 'is-invalid': (submitted && editFormControls.CreditReasonText.errors) }"
+                formControlName="CreditReasonText" placeholder="Reason for adding a credit (Required)"></textarea>
+        </div>
+        <div *ngIf="(submitted && editFormControls.CreditReasonText.errors)" class="invalid-feedback mt-0">
+            <div *ngIf="editFormControls.CreditReasonText.errors?.required">
+                Credit Reason Text is required</div>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button #deleteBtn id="deleteBtn" (click)="confirmDelete()"
+        class="btn btn-border-clear btn-sm pull-left">Delete</button>
+    <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
+        class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
+
+
+    <a href="javascript:void(0)" class="btn btn-border-gray btn-sm pull-right" (click)="close()">Cancel</a>
+</div>
 </div>
 
 <div class="modal fade modal-theme in modal-small" data-backdrop="static" id="checkFacilityPopup" tabindex="-1"
@@ -549,7 +575,8 @@
             </div>
             <div class="modal-body">
                 <ul style="list-style: none;">
-                    <li><span>Facility is either closed, has a block of time already leased for this time or blacked out.</span></li>
+                    <li><span>Facility is either closed, has a block of time already leased for this time or blacked
+                            out.</span></li>
                     <li><span>Do you still want to lease during this time?</span></li>
                 </ul>
             </div>

@@ -73,6 +73,7 @@ export class SchedulerPopupComponent implements OnInit {
   blockLeasePricingList: any = [];
   IsFacilityDetailsPopUpOpen: boolean = false;
   displayLeaseIdSchedulerPopUp: any;
+  showReccuringBlock : any ; 
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -791,11 +792,14 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   changetxtFunction() {
+    debugger
     var x = document.getElementById("repeat-control");
     if (x.innerHTML === "Disabled") {
       x.innerHTML = "Enabled";
+      this.showReccuringBlock = true ;
     } else {
       x.innerHTML = "Disabled";
+      this.showReccuringBlock = false ;
     }
       
   }
