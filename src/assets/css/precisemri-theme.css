@@ -7418,6 +7418,42 @@ select {
 		.p-rel{position: relative;}
 
 	.ms-lf-col{padding-left: 30px;}
+
+.repeater-block{width:642px;
+    padding: 0px 9px 20px; font-size: 13px;}
+.rep-head{display: flex; padding: 10px 0px;
+    justify-content: space-between; align-items: center;}
+
+	.rep-head span{border: 1px solid #ccc;
+		padding: 5px 17px;
+		color: #0288d1;
+		font-weight: 600; cursor: pointer;}
+		.lab-space label{padding-right: 15px;}
+		.radio-tabs{    border-bottom: 1px solid #ddd;
+			margin-bottom: 10px; padding-bottom: 5px;}
+
+			.bx-space{padding: 10px 0px;}
+			.dhx_days td label{padding-right: 9px; font-size: 13px;}
+
+			.weekselect{    width: 120px;
+				margin: 0px;
+				display: inline-block;
+				outline: none;
+				box-shadow: none;
+				font-size: 14px;
+				padding: 0px 10px;
+				min-height: 30px;
+				height: 30px;
+				position: relative;
+				border-radius: 6px;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis; margin-top: -4px; margin-right: 10px;}
+				.of-txt{padding-right: 3px;}
+	
+.monthlytabblock label{padding-right: 10px;}
+
 	@media (max-width: 990px) {
 		.ms-lf-col{padding-left: 10px!important;}
 		
