@@ -18,5 +18,8 @@
       padding-top: 20px;}
 
       .select-dm-cpicker select{border-color: #ddd;}
-      .select-dm-cpicker .dhx_cal_lsection{width: 155px;}
+      .select-dm-cpicker .dhx_cal_lsection{width: 155px;
+        font-size: 14px;
+        font-weight: 800;
+    }
       .select-dm-cpicker .dhx_section_time span{display: block;}
