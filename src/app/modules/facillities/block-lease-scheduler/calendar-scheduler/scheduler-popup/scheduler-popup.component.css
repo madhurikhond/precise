@@ -4,3 +4,19 @@
     cursor: pointer;
   }
   .disabled{ pointer-events: none }
+
+  .ndd-block{    width: 100%!important;
+    margin-bottom: 26px;
+    border-top: 1px solid #ddd;}
+    .ndd-block.dhx_repeat_right label:nth-child(3){width: initial!important;}
+    .ndd-block label{padding-bottom: 10px;}
+    .ndd-block input.dhx_repeat_date{border-width: 2px;}
+    .select-dm-cpicker{float: left;
+      width: 100%;
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;}
+
+      .select-dm-cpicker select{border-color: #ddd;}
+      .select-dm-cpicker .dhx_cal_lsection{width: 155px;}
+      .select-dm-cpicker .dhx_section_time span{display: block;}
