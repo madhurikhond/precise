@@ -1000,6 +1000,14 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getblockLeasePaymentByFacilityId(this.facilityId);
         this.getUnpaidLeases();
         this.getFacilityCreditsUnUsed();
+        if(this.modalityServiceForm.controls.mriservice.value){
+          this.onChangeService('mri');
+        }
+        
+        if(this.modalityServiceForm.controls.ctservice.value){
+          this.onChangeService('ct');
+        }
+       
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -2029,6 +2037,12 @@ export class SchdFacilitiesComponent implements OnInit {
     );
   }
   updateFacility(isPopUpStay: boolean) {
+    if(this.facilityContactDetailForm.get('isSendLeaseToFacility').value == false){
+      this.facilityContactDetailForm.get('defaultEmailAddress3P').clearValidators();
+      this.facilityContactDetailForm.get('emailAddress13P').clearValidators();
+      this.facilityContactDetailForm.get('emailAddress23P').clearValidators();
+
+    }
     this.modalValue = 'modal';
     this.submitted = true;
     this.setFacilityContactDetailTabForm(this.facilityContactDetailForm.value)
@@ -2038,7 +2052,8 @@ export class SchdFacilitiesComponent implements OnInit {
       this.facilityContactDetailForm.invalid ||
       this.facilityIntakeForm.invalid ||
       this.facilityPoliciesForm.invalid ||
-      this.modalityMriForm.invalid
+      this.modalityMriForm.invalid ||
+      this.modalityCtForm.invalid
     ) {
       this.modalValue = '';
       return;
@@ -2454,7 +2469,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalValue = '';
       return;
     }
-
+   
     let body = {
       ///// General Tab Form Controls
       facilityId: 0,
@@ -3578,6 +3593,8 @@ export class SchdFacilitiesComponent implements OnInit {
     return a;
   }
   onChangeService(type) {
+    debugger
+    
     if (type == 'mri') {
       this.CheckSameCombinationMRI('Type1');
       this.CheckSameCombinationMRI('Type2');
@@ -3588,6 +3605,23 @@ export class SchdFacilitiesComponent implements OnInit {
       this.CheckSameCombinationCT('Type2');
       this.CheckSameCombinationCT('Type3');
     }
+    if(this.modalityServiceFormControls.ctservice.value == false){
+      //this.modalityCtForm.controls.ct1ResourceName.setValidators(null);
+      this.modalityCtForm.get('ct1ResourceName').clearValidators()
+      this.modalityCtForm.get('ct2ResourceName').clearValidators()
+      this.modalityCtForm.get('ct3ResourceName').clearValidators()
+      this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
+      this.modalityCtForm.get('ct2ResourceName').updateValueAndValidity();
+      this.modalityCtForm.get('ct3ResourceName').updateValueAndValidity();
+    } 
+    if(this.modalityServiceFormControls.mriservice.value == false){
+      this.modalityMriForm.get('mri1ResourceName').clearValidators()
+      this.modalityMriForm.get('mri2ResourceName').clearValidators()
+      this.modalityMriForm.get('mri3ResourceName').clearValidators()
+      this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
+      this.modalityMriForm.get('mri2ResourceName').updateValueAndValidity();
+      this.modalityMriForm.get('mri3ResourceName').updateValueAndValidity();
+    } 
   }
   copyToClipboard(currentPageUrl) {
    
