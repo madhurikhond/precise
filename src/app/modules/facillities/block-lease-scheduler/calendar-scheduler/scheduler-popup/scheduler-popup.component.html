@@ -120,14 +120,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </form>
-
-
-
-
         <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form" novalidate>
             <div class="row">
 
@@ -292,66 +287,58 @@
                     <strong>Repeat Event</strong>
                     <span  id="repeat-control" (click)="changetxtFunction()">Disabled</span>
                 </div>
-
+                <form  [formGroup]="reccurringBlockForm" class="theme-form" >
                 <div *ngIf="showReccuringBlock" class="rp-tab-block">
-                    <div class="radio-tabs lab-space">
-                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="day"
-                                id="">Daily</label>
-                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="week">Weekly</label>
-                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="month"
-                                checked="">Monthly</label>
-                        <label><input class="dhx_repeat_radio" type="radio" name="repeat" value="year">Yearly</label>
+                    <div class="radio-tabs lab-space">  
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="day"
+                                id=""  checked >Daily</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="week">Weekly</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="month"
+                                >Monthly</label>
                     </div>
-                    <div class="lab-space bx-space" id="dhx_repeat_day">
-                        <label><input class="dhx_repeat_radio" type="radio" name="day_type" value="d">Every</label>
-                        <label><input class="dhx_repeat_text" type="text" name="day_count" value="1">day</label>
-                        <label><input class="dhx_repeat_radio" type="radio" name="day_type" checked="" value="w">Every
+                    <div  *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'day'" class="lab-space bx-space" id="dhx_repeat_day">
+                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" value="everyDay">Every</label>
+                        <label><input class="dhx_repeat_text" type="text" name="dailyOccranceNumberOfDays" formControlName ="dailyOccranceNumberOfDays" value="1">day</label> <br>
+                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" checked="" value="everyWorkday">Every
                             workday</label>
                     </div>
-                    <div class="bx-space" style="display:none;">
-                        <label> Repeat every<input class="dhx_repeat_text" type="text" name="week_count"
+                    <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'week'" class="bx-space">
+                        <label> Repeat every<input class="dhx_repeat_text" type="text" name="weekOccuranceNumberOfWeeks" formControlName ="weekOccuranceNumberOfWeeks"
                                 value="1"></label>
                         <span>week next days:</span><br>
                         <table class="dhx_days">
                             <tbody>
                                 <tr>
-                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays" 
                                                 value="1">Monday</label>
-                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="4">Thursday</label>
                                     </td>
-                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                    <td><label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="2">Tuesday</label>
-                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="5">Friday</label>
                                     </td>
-                                    <td> <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                    <td> <label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="3">Wednesday</label>
-                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="week_day"
+                                        <label><input class="dhx_repeat_checkbox" type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="6">Saturday</label>
                                     </td>
-                                    <td> <label><input class="dhx_repeat_checkbox " type="checkbox" name="week_day"
+                                    <td> <label><input class="dhx_repeat_checkbox " type="checkbox" name="weekOccuranceDays" formControlName ="weekOccuranceDays"
                                                 value="0">Sunday</label></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-
-
-
-
-
-
-                    <div class="monthlytabblock" id="dhx_repeat_month" style="display:none;">
+                    <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'month'"  class="monthlytabblock" id="dhx_repeat_month" >
                         <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
-                                name="month_type" value="d">Repeat</label>
+                            name="monthlyOccurance" formControlName ="monthlyOccurance" value="reapeatMonthlyOccurance">Repeat</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
                         <label class="dhx_repeat_month_label">
-                            <input class="dhx_repeat_radio" type="radio" name="month_type" checked=""
+                            <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance" formControlName ="monthlyOccurance" checked=""
                                 value="w">On</label>
-                        <input class="dhx_repeat_text" type="text" name="month_week2" value="1"><label>
+                        <input class="dhx_repeat_text" type="text" name="month_week2" formControlName = "staticMonthlyOccurance" value="1"><label>
                             <select class="form-control weekselect">
                                 <option value="1" selected="">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -458,15 +445,11 @@
                     <option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select> </div></div>
 
                 </div>
+                </form>
 
                 
 
             </div>
-
-
-
-
- 
     <!-- <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
