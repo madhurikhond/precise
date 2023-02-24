@@ -120,14 +120,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </form>
-
-
-
-
         <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form" novalidate>
             <div class="row">
 
@@ -294,18 +289,17 @@
                 </div>
                 <form  [formGroup]="reccurringBlockForm" class="theme-form" >
                 <div *ngIf="showReccuringBlock" class="rp-tab-block">
-                    <div class="radio-tabs lab-space">
+                    <div class="radio-tabs lab-space">  
                         <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="day"
-                                id=""  checked="" >Daily</label>
+                                id=""  checked >Daily</label>
                         <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="week">Weekly</label>
                         <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="month"
                                 >Monthly</label>
-                        <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery" formControlName ="repeatEvery" value="year">Yearly</label>
                     </div>
                     <div  *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'day'" class="lab-space bx-space" id="dhx_repeat_day">
-                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" value="d">Every</label>
+                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" value="everyDay">Every</label>
                         <label><input class="dhx_repeat_text" type="text" name="dailyOccranceNumberOfDays" formControlName ="dailyOccranceNumberOfDays" value="1">day</label> <br>
-                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" checked="" value="w">Every
+                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" checked="" value="everyWorkday">Every
                             workday</label>
                     </div>
                     <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'week'" class="bx-space">
@@ -336,19 +330,15 @@
                             </tbody>
                         </table>
                     </div>
-
-
-
-
                     <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'month'"  class="monthlytabblock" id="dhx_repeat_month" >
                         <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
-                            name="monthlyOccurance" formControlName ="monthlyOccurance" value="d">Repeat</label>
+                            name="monthlyOccurance" formControlName ="monthlyOccurance" value="reapeatMonthlyOccurance">Repeat</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
                         <label class="dhx_repeat_month_label">
                             <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance" formControlName ="monthlyOccurance" checked=""
                                 value="w">On</label>
-                        <input class="dhx_repeat_text" type="text" name="month_week2" value="1"><label>
+                        <input class="dhx_repeat_text" type="text" name="month_week2" formControlName = "staticMonthlyOccurance" value="1"><label>
                             <select class="form-control weekselect">
                                 <option value="1" selected="">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -360,68 +350,10 @@
                             </select>every</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_count2" value="1">month</label>
                     </div>
-
-
-
-                    <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'year'" id="dhx_repeat_year">
-                        <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio"
-                                name="year_type" value="d">Every</label>
-                        <label><input class="dhx_repeat_text" type="text" name="year_day" value="1">day</label>
-                        <label><select name="year_month" class="form-control weekselect">
-                                <option value="0" selected="">January</option>
-                                <option value="1">February</option>
-                                <option value="2">March</option>
-                                <option value="3">April</option>
-                                <option value="4">May</option>
-                                <option value="5">June</option>
-                                <option value="6">July</option>
-                                <option value="7">August</option>
-                                <option value="8">September</option>
-                                <option value="9">October</option>
-                                <option value="10">November</option>
-                                <option value="11">December</option>
-                            </select>month</label><br>
-                        <label class="dhx_repeat_year_label">
-                            <input class="dhx_repeat_radio" type="radio" name="year_type" checked=""
-                                value="w">On</label>
-
-                        <input class="dhx_repeat_text" type="text" name="year_week2" value="1">
-                        <select class="form-control weekselect" name="year_day2">
-                            <option value="1" selected="">Monday</option>
-                            <option value="2">Tuesday</option>
-                            <option value="3">Wednesday</option>
-                            <option value="4">Thursday</option>
-                            <option value="5">Friday</option>
-                            <option value="6">Saturday</option>
-                            <option value="7">Sunday</option>
-                        </select><span class="of-txt">of</span><select class="form-control weekselect"
-                            name="year_month2">
-                            <option value="0" selected="">January</option>
-                            <option value="1">February</option>
-                            <option value="2">March</option>
-                            <option value="3">April</option>
-                            <option value="4">May</option>
-                            <option value="5">June</option>
-                            <option value="6">July</option>
-                            <option value="7">August</option>
-                            <option value="8">September</option>
-                            <option value="9">October</option>
-                            <option value="10">November</option>
-                            <option value="11">December</option>
-                        </select><br>
-                    </div>
-
-
-
                 </div>
                 </form>
 
             </div>
-
-
-
-
- 
     <!-- <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>

@@ -440,7 +440,6 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
-    console.log(this.reccurringBlockForm)
     if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
@@ -729,10 +728,21 @@ export class SchedulerPopupComponent implements OnInit {
       weekOccuranceNumberOfWeeks : [''],
       weekOccuranceDays: [''],
       weeklyOccurance : [''],
-      monthlyOccurance : ['']
+      monthlyOccurance : [''],
 
       //facilityName: ['', Validators.required]
     });
+    this.reccurringBlockForm.get("repeatEvery").valueChanges.subscribe(x => {
+      if(x == 'day'){
+        this.reccurringBlockForm.controls.dailyOccurance.setValue('everyDay')
+        this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.setValue('1')
+      }else if(x == 'week'){
+        this.reccurringBlockForm.controls.weekOccuranceNumberOfWeeks.setValue('1')
+      }
+      else if(x == 'month'){
+        this.reccurringBlockForm.controls.monthlyOccurance.setValue('reapeatMonthlyOccurance')
+      }
+   })
   }
   private createForm() {
     // $(document).keydown(function (event) {
@@ -807,19 +817,23 @@ export class SchedulerPopupComponent implements OnInit {
       alertType: err.status
     });
   }
-
+ 
   changetxtFunction() {
     debugger
     var x = document.getElementById("repeat-control");
     if (x.innerHTML === "Disabled") {
       x.innerHTML = "Enabled";
+      this.reccurringBlockForm.controls.repeatEvery.setValue('day');
+      if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
+        this.reccurringBlockForm.controls.dailyOccurance.setValue('everyDay')
+        this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.setValue('1')
+      }
       this.showReccuringBlock = true ;
     } else {
       x.innerHTML = "Disabled";
       this.showReccuringBlock = false ;
     }
-      
-  }
+    }
   ClosePopup(te) {
     setTimeout(() => {
       $('body').addClass('modal-open')
