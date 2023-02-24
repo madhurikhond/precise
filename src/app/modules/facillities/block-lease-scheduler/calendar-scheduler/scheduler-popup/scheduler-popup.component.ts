@@ -48,6 +48,7 @@ export class SchedulerPopupComponent implements OnInit {
   checkFacilityHours: boolean = false;
   leaseForm: FormGroup;
   leaseBlockOffForm: FormGroup;
+  reccurringBlockForm : FormGroup ;
   now = new Date();
   form: FormGroup;
   validateMessage: string = '';
@@ -117,6 +118,7 @@ export class SchedulerPopupComponent implements OnInit {
       }
     })
     this.getTotalLeaseAndCreditHours();
+    this.createReccurringBlockForm();
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
@@ -421,6 +423,7 @@ export class SchedulerPopupComponent implements OnInit {
     });
   }
   saveBlockLeaseData() {
+    debugger
     // if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
     //   this.notificationService.showNotification({
     //     alertHeader: '',
@@ -437,6 +440,7 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
+    console.log(this.reccurringBlockForm)
     if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
@@ -503,7 +507,6 @@ export class SchedulerPopupComponent implements OnInit {
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200 && res.response.responseCode != 404) {
-
             if (res.response.responseCode == 400) {
               this.notificationService.showNotification({
                 alertHeader: '',
@@ -717,6 +720,20 @@ export class SchedulerPopupComponent implements OnInit {
     return `${sHours} : ${sMinutes}`;
   }
 
+
+  createReccurringBlockForm() {
+    this.reccurringBlockForm = this.fb.group({
+      repeatEvery : [''],
+      dailyOccurance : [''],
+      dailyOccranceNumberOfDays : [''],
+      weekOccuranceNumberOfWeeks : [''],
+      weekOccuranceDays: [''],
+      weeklyOccurance : [''],
+      monthlyOccurance : ['']
+
+      //facilityName: ['', Validators.required]
+    });
+  }
   private createForm() {
     // $(document).keydown(function (event) {
     //   if (event.keyCode == 27) {
