@@ -1,19 +1,16 @@
 import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { DatePipe } from '@angular/common';
-import {
-  DxDateBoxModule
-} from 'devextreme-angular';
+import {DxDateBoxModule} from 'devextreme-angular';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
 import { CommonMethodService } from '../../../../../services/common/common-method.service';
 import { AlertsRoutingModule } from 'src/app/modules/settings/RIS-settings/alerts/alerts-routing.module';
-
 declare const $: any;
 
 @Component({
@@ -75,6 +72,8 @@ export class SchedulerPopupComponent implements OnInit {
   IsFacilityDetailsPopUpOpen: boolean = false;
   displayLeaseIdSchedulerPopUp: any;
   showReccuringBlock : any ; 
+  checks: Array<object> = [];
+  endOccurance :any
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -119,6 +118,16 @@ export class SchedulerPopupComponent implements OnInit {
     })
     this.getTotalLeaseAndCreditHours();
     this.createReccurringBlockForm();
+    //this.createReccurringBlockForm()
+    this.checks = [
+      {description: 'Monday', value: '1'},
+      {description: "Tuesday", value: '2'},
+      {description: "Wednesday", value: '3'},
+      {description: "Thursday", value: '4'},
+      {description: "Friday", value: '5'},
+      {description: "Saturday", value: '6'},
+      {description: "Sunday", value: '0'}
+    ];
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
@@ -440,6 +449,7 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
+   
     if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
@@ -461,7 +471,6 @@ export class SchedulerPopupComponent implements OnInit {
           'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
           'resourceId': this.selectedresourceId,
-          'IsAllModality': this.IsAllModality
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
@@ -492,6 +501,31 @@ export class SchedulerPopupComponent implements OnInit {
       if (this.isLeaseSigned == true && this.LeaseBlockId != 0) {
         this.saveCreditInfo();
       } else {
+        if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
+          this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+        }else{
+          this.endOccurance = '#'
+        }
+        if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
+          if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
+            var reccurBody = {
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+              rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
+              rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
+              event_length : 45634
+            }
+          }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
+            var reccurBody = {
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') +  this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+              rec_type : 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
+              rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
+              event_length : 45634
+            } 
+          } 
+        }
+        console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
           'facilityId': this.FacilityID,
@@ -502,7 +536,11 @@ export class SchedulerPopupComponent implements OnInit {
           'endDate': this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd'),
           'startTime': this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
-          'resourceId': this.selectedresourceId
+          'resourceId': this.selectedresourceId,
+          'IsAllModality': this.IsAllModality,
+          'IsRecurEvent': this.showReccuringBlock,
+          'RecurEventId' : 0 ,
+          'SchedulerEvent' : reccurBody
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200 && res.response.responseCode != 404) {
@@ -726,23 +764,31 @@ export class SchedulerPopupComponent implements OnInit {
       dailyOccurance : [''],
       dailyOccranceNumberOfDays : [''],
       weekOccuranceNumberOfWeeks : [''],
-      weekOccuranceDays: [''],
-      weeklyOccurance : [''],
+      weeklyOccurance :[''],
       monthlyOccurance : [''],
-
-      //facilityName: ['', Validators.required]
+      staticMonthlyOccurance : [''],
+      endOccurrance : [''],
+      endOccurranceNumberOfDays : [''],
+      endOccurrancedate : [''],
+      endOccurranceDays : [''],
+      weekOccuranceDays:this.fb.array([
+        ]),
     });
     this.reccurringBlockForm.get("repeatEvery").valueChanges.subscribe(x => {
       if(x == 'day'){
         this.reccurringBlockForm.controls.dailyOccurance.setValue('everyDay')
         this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.setValue('1')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
       }else if(x == 'week'){
         this.reccurringBlockForm.controls.weekOccuranceNumberOfWeeks.setValue('1')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
       }
       else if(x == 'month'){
         this.reccurringBlockForm.controls.monthlyOccurance.setValue('reapeatMonthlyOccurance')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
       }
    })
+   this.addCreds()
   }
   private createForm() {
     // $(document).keydown(function (event) {
@@ -817,6 +863,19 @@ export class SchedulerPopupComponent implements OnInit {
       alertType: err.status
     });
   }
+  addCreds() {
+    debugger
+    const arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
+    arr.push(this.fb.group({
+      reccuringMonday: '',
+      reccuringTuesday: '',
+      reccuringWednesday: '',
+      reccuringThursday: '',
+      reccuringFriday: '',
+      reccuringSaturday: '',
+      reccuringSunday: '',
+    }));
+  }
  
   changetxtFunction() {
     debugger
@@ -839,8 +898,11 @@ export class SchedulerPopupComponent implements OnInit {
       $('body').addClass('modal-open')
     }, 500);
   }
+
   get editFormControls() { return this.leaseForm.controls; }
   get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
+  
+
 }
 
 export enum ModalResult {
