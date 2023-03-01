@@ -310,23 +310,23 @@
                             <tbody formArrayName="weekOccuranceDays">
                                 <tr  *ngFor="let singleFormGroup of reccurringBlockForm.controls.weekOccuranceDays.controls; let i = index">
                                     <ng-container [formGroupName]="i">   
-                                        <td>{{i+1}}</td>
-                                    <td><label><input class="dhx_repeat_checkbox" id="checkMonday" type="checkbox" name="reccuringMonday" formControlName ="reccuringMonday" 
+                                        
+                                    <td><label><input class="dhx_repeat_checkbox" id="checkMonday"  (change)="onChange(i,$event, $event.target.checked)"   type="checkbox" name="reccuringMonday" formControlName ="reccuringMonday" 
                                                 value="1">Monday</label>
-                                        <label><input class="dhx_repeat_checkbox" id="checkThursday"  type="checkbox" name="reccuringTuesday" formControlName ="reccuringTuesday"
+                                        <label><input class="dhx_repeat_checkbox" id="checkTuesday" (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringTuesday" formControlName ="reccuringTuesday"
                                                 value="2">Tuesday</label>
                                     </td>
-                                    <td><label><input class="dhx_repeat_checkbox" id="checkTuesday" type="checkbox" name="reccuringWednesday" formControlName ="reccuringWednesday"
+                                    <td><label><input class="dhx_repeat_checkbox" id="checkWednesday" (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringWednesday" formControlName ="reccuringWednesday"
                                                 value="3">Wednesday</label>
-                                        <label><input class="dhx_repeat_checkbox" id="checkFriday"  type="checkbox" name="reccuringThursday" formControlName ="reccuringThursday"
-                                                value="5">Friday</label>
+                                        <label><input class="dhx_repeat_checkbox" id="checkThursday"  (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringThursday" formControlName ="reccuringThursday"
+                                                value="4">Thursday</label>
                                     </td>
-                                    <td> <label><input class="dhx_repeat_checkbox"  id="checkWednesday" type="checkbox" name="reccuringFriday" formControlName ="reccuringFriday"
-                                                value="3">Wednesday</label>
-                                        <label><input class="dhx_repeat_checkbox" id="checkSaturday"  type="checkbox" name="reccuringSaturday" formControlName ="reccuringSaturday"
+                                    <td> <label><input class="dhx_repeat_checkbox"  id="checkFriday"  (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringFriday" formControlName ="reccuringFriday"
+                                                value="5">Friday</label>
+                                        <label><input class="dhx_repeat_checkbox" id="checkSaturday"  (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringSaturday" formControlName ="reccuringSaturday"
                                                 value="6">Saturday</label>
                                     </td>
-                                    <td> <label><input class="dhx_repeat_checkbox" id="checkSunday" type="checkbox" name="reccuringSunday" formControlName ="reccuringSunday"
+                                    <td> <label><input class="dhx_repeat_checkbox" id="checkSunday" (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringSunday" formControlName ="reccuringSunday"
                                                 value="0">Sunday</label></td>
                                     </ng-container>
                                 </tr>

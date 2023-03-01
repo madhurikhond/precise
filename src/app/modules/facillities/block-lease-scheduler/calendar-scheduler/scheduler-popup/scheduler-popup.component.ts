@@ -74,6 +74,7 @@ export class SchedulerPopupComponent implements OnInit {
   showReccuringBlock : any ; 
   checks: Array<object> = [];
   endOccurance :any
+  daysList = [];
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -118,16 +119,6 @@ export class SchedulerPopupComponent implements OnInit {
     })
     this.getTotalLeaseAndCreditHours();
     this.createReccurringBlockForm();
-    //this.createReccurringBlockForm()
-    this.checks = [
-      {description: 'Monday', value: '1'},
-      {description: "Tuesday", value: '2'},
-      {description: "Wednesday", value: '3'},
-      {description: "Thursday", value: '4'},
-      {description: "Friday", value: '5'},
-      {description: "Saturday", value: '6'},
-      {description: "Sunday", value: '0'}
-    ];
   }
   leaseFormInitialization() {
     var eTime = new Date(this.event['end_date']);
@@ -431,6 +422,15 @@ export class SchedulerPopupComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
+  onChange(index: number, data : any, isChecked: boolean) {
+    if (isChecked) {
+      this.daysList.push(data.target.value);
+    } else {
+      this.daysList.splice(this.daysList.indexOf(data.target.value),1);
+    }
+    this.daysList.sort();
+}
   saveBlockLeaseData() {
     debugger
     // if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
@@ -449,7 +449,6 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
-   
     if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
@@ -524,6 +523,14 @@ export class SchedulerPopupComponent implements OnInit {
               event_length : 45634
             } 
           } 
+        }else if (this.reccurringBlockForm.controls.repeatEvery.value == 'week'){  
+          var reccurBody = {
+            start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+            end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+            rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.daysList+'_'+'_'+'_'+ this.endOccurance,
+            rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.daysList +'_'+'_'+'_',   
+            event_length : 45634
+          }
         }
         console.log(reccurBody)
         let body = {
@@ -867,13 +874,13 @@ export class SchedulerPopupComponent implements OnInit {
     debugger
     const arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
     arr.push(this.fb.group({
-      reccuringMonday: '',
-      reccuringTuesday: '',
-      reccuringWednesday: '',
-      reccuringThursday: '',
-      reccuringFriday: '',
-      reccuringSaturday: '',
-      reccuringSunday: '',
+      reccuringMonday: [''],
+      reccuringTuesday: [''],
+      reccuringWednesday: [''],
+      reccuringThursday: [''],
+      reccuringFriday: [''],
+      reccuringSaturday: [''],
+      reccuringSunday: [''],
     }));
   }
  
