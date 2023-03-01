@@ -449,35 +449,7 @@ export class SchedulerPopupComponent implements OnInit {
     //   });
     //   return;
     // }
-    if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
-      this.endOccurance = '#'+this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
-    }else if(this.reccurringBlockForm.controls.endOccurrance.value == '#no'){
-      this.endOccurance = this.reccurringBlockForm.controls.endOccurrance.value
-    }else{
-      this.endOccurance = '#'
-    }
-    if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
-      if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
-        var body = {
-          startDate: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd hh:mm'),
-          endDate: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd hh:mm'),
-          rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
-          rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
-        }
-      }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'week'){
-        var body = {
-          startDate: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd hh:mm'),
-          endDate: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd hh:mm'),
-          rec_type : 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
-          rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',   
-        }
-      
-      } 
-    }
    
-    console.log(body)
-    console.log(this.reccurringBlockForm)
-
     if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
@@ -499,7 +471,6 @@ export class SchedulerPopupComponent implements OnInit {
           'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
           'resourceId': this.selectedresourceId,
-          'IsAllModality': this.IsAllModality
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
@@ -530,6 +501,31 @@ export class SchedulerPopupComponent implements OnInit {
       if (this.isLeaseSigned == true && this.LeaseBlockId != 0) {
         this.saveCreditInfo();
       } else {
+        if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
+          this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+        }else{
+          this.endOccurance = '#'
+        }
+        if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
+          if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
+            var reccurBody = {
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+              rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
+              rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
+              event_length : 45634
+            }
+          }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
+            var reccurBody = {
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') +  this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
+              rec_type : 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
+              rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
+              event_length : 45634
+            } 
+          } 
+        }
+        console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
           'facilityId': this.FacilityID,
@@ -540,7 +536,11 @@ export class SchedulerPopupComponent implements OnInit {
           'endDate': this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd'),
           'startTime': this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
-          'resourceId': this.selectedresourceId
+          'resourceId': this.selectedresourceId,
+          'IsAllModality': this.IsAllModality,
+          'IsRecurEvent': this.showReccuringBlock,
+          'RecurEventId' : 0 ,
+          'SchedulerEvent' : reccurBody
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200 && res.response.responseCode != 404) {

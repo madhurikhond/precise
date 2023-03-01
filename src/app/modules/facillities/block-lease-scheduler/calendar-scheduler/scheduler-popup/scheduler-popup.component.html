@@ -299,7 +299,7 @@
                     <div  *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'day'" class="lab-space bx-space" id="dhx_repeat_day">
                         <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" value="everyDay">Every</label>
                         <label><input class="dhx_repeat_text" type="text" name="dailyOccranceNumberOfDays" formControlName ="dailyOccranceNumberOfDays" value="1">day</label> <br>
-                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" checked="" value="week">Every
+                        <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance" formControlName ="dailyOccurance" checked="" value="everySelectedWeekDay">Every
                             workday</label>
                     </div>
                     <div *ngIf = "reccurringBlockForm.controls.repeatEvery.value == 'week'" class="bx-space">
@@ -402,7 +402,7 @@
                     </div>
                     <div class="dhx_repeat_divider cs-diveider"></div>
                     <div class="dhx_repeat_right ndd-block">
-                         <label><input class="dhx_repeat_radio" type="radio" formControlName="endOccurrance" name="endOccurrance" value="#no" checked="">No end date</label>
+                         <!-- <label><input class="dhx_repeat_radio" type="radio" formControlName="endOccurrance" name="endOccurrance" value="#no" checked="">No end date</label> -->
                          <br> <label><input class="dhx_repeat_radio" type="radio" formControlName="endOccurrance" name="endOccurrance" value="">After</label>
                          <input class="dhx_repeat_text" type="text" name="endOccurranceNumberOfDays" formControlName="endOccurranceNumberOfDays" value="endOccurranceNumberOfDays">occurrences<br>
                           <label><input class="dhx_repeat_radio" type="radio"  value ='endByDate' formControlName="endOccurrance" name="endOccurrance">End by</label><input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br> 
