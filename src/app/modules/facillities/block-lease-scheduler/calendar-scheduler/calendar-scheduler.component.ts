@@ -130,13 +130,15 @@ export class CalendarSchedulerComponent implements OnInit {
             serialize: true,
             year_view: true,
             agenda_view: true,
-            tooltip: true
+            tooltip: true,
+            recurring: true
         });
         scheduler.date.timeline_start = scheduler.date.week_start;
         scheduler.plugins({
             multisection: true,
             timeline: true,
             multiselect: true,
+            recurring: true
         });
         scheduler.config.multisection = true;
         scheduler.templates.event_class = function (start, end, event) {
