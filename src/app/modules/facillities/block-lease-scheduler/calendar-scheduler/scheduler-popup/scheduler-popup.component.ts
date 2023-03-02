@@ -652,6 +652,19 @@ export class SchedulerPopupComponent implements OnInit {
     }, 500);
 
   }
+  onOccuranceEndDate(){
+    var start_date = new Date(this.editBlockOffFormControls.start_date.value);
+    var reccurance_end_date = new Date(this.reccurringBlockForm.controls.endOccurrancedate.value);
+    if (this.editBlockOffFormControls.end_date.value != null) {
+      if (Date.parse(reccurance_end_date.toDateString()) < Date.parse(start_date.toDateString())) {
+        this.reccurringBlockForm.patchValue({
+          endOccurrancedate: null,
+        });
+        console.log(this.AlreadyBlockedLeaseList)
+        this.dateTimeValidationMsg = "End occurance date should be greater than Start date";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+ }}}
+
   handleBlockOffDaysChange(e: any, from: string) {
     this.AlreadyBlockedLeaseList = [];
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
@@ -784,7 +797,7 @@ export class SchedulerPopupComponent implements OnInit {
       staticMonthlyOccurance : [''],
       endOccurrance : [''],
       endOccurranceNumberOfDays : [''],
-      endOccurrancedate : [''],
+      endOccurrancedate : [this.event['end_date']],
       endOccurranceDays : [''],
       weekOccuranceDays:this.fb.array([
         ]),
