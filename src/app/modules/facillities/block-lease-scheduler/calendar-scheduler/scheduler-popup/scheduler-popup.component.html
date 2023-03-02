@@ -405,7 +405,11 @@
                          <!-- <label><input class="dhx_repeat_radio" type="radio" formControlName="endOccurrance" name="endOccurrance" value="#no" checked="">No end date</label> -->
                          <br> <label><input class="dhx_repeat_radio" type="radio" formControlName="endOccurrance" name="endOccurrance" value="">After</label>
                          <input class="dhx_repeat_text" type="text" name="endOccurranceNumberOfDays" formControlName="endOccurranceNumberOfDays" value="endOccurranceNumberOfDays">occurrences<br>
-                          <label><input class="dhx_repeat_radio" type="radio"  value ='endByDate' formControlName="endOccurrance" name="endOccurrance">End by</label><input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br> 
+                          <label><input class="dhx_repeat_radio" type="radio"  value ='endByDate' formControlName="endOccurrance" name="endOccurrance"/>End by</label>
+                          <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
+                          <dx-date-box (onValueChanged)="onOccuranceEndDate()" 
+                          formControlName="endOccurrancedate" type="date" onkeydown="return false">
+                      </dx-date-box>
                     </div>
 
 
@@ -624,7 +628,7 @@
                 <div class="close-dismiss" data-dismiss="modal"></div>
             </div>
             <div class="modal-body">
-                <p *ngIf="AlreadyBlockedLeaseList != 0;else isDateValid">
+                <p *ngIf="AlreadyBlockedLeaseList != 0 && AlreadyBlockedLeaseList != undefined;else isDateValid">
                     <span *ngIf="isBlockOffTime">YOU CAN NOT BLACK OUT SOME OF THE DATES SELECTED IN
                         BLACK OUT LEASE DURATION BECAUSE FOLLOWING DATES ARE
                         ALREADY LEASE
