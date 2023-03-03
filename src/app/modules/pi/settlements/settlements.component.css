@@ -12,4 +12,9 @@
   .dx-button-has-text .dx-button-content {
     padding: 0 !important;
   }
-      
+
+
+  .note-list.settementNote {
+    max-height: 205px;
+    margin-top: 15px;
+}
