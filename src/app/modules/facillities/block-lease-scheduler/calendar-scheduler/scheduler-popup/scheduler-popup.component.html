@@ -311,8 +311,8 @@
                                 <tr  *ngFor="let singleFormGroup of reccurringBlockForm.controls.weekOccuranceDays.controls; let i = index">
                                     <ng-container [formGroupName]="i">   
                                         
-                                    <td><label><input class="dhx_repeat_checkbox" id="checkMonday"  (change)="onChange(i,$event, $event.target.checked)"   type="checkbox" name="reccuringMonday" formControlName ="reccuringMonday" 
-                                                value="1">Monday</label>
+                                    <td><label><input  class="dhx_repeat_checkbox" id="checkMonday"  (change)="onChange(i,$event, $event.target.checked)"   type="checkbox" name="reccuringMonday" formControlName ="reccuringMonday" 
+                                        value="1">Monday</label>
                                         <label><input class="dhx_repeat_checkbox" id="checkTuesday" (change)="onChange(i,$event, $event.target.checked)"  type="checkbox" name="reccuringTuesday" formControlName ="reccuringTuesday"
                                                 value="2">Tuesday</label>
                                     </td>

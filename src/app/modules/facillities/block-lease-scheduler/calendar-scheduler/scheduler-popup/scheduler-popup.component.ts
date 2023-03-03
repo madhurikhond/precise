@@ -75,6 +75,7 @@ export class SchedulerPopupComponent implements OnInit {
   checks: Array<object> = [];
   endOccurance :any
   daysList = [];
+  arr : any ;
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -523,8 +524,8 @@ export class SchedulerPopupComponent implements OnInit {
             }
           }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
             var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd')+ ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd')  + ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
               rec_type : 'week'+'_'+ this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
               rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
               event_length : reccurringEventLength
@@ -539,6 +540,8 @@ export class SchedulerPopupComponent implements OnInit {
             event_length :reccurringEventLength
           }
         }
+        let reccurringDayArray = <FormArray>this.reccurringBlockForm.controls["weekOccuranceDays"];
+        reccurringDayArray.controls[1].patchValue(true);
         console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
@@ -890,11 +893,12 @@ export class SchedulerPopupComponent implements OnInit {
       alertMessage: err.message,
       alertType: err.status
     });
+   
   }
   addCreds() {
     debugger
-    const arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
-    arr.push(this.fb.group({
+    this.arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
+    this.arr.push(this.fb.group({
       reccuringMonday: [''],
       reccuringTuesday: [''],
       reccuringWednesday: [''],
