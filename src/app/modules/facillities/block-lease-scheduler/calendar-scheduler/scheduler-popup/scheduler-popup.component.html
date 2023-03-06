@@ -337,12 +337,12 @@
                         <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                             name="monthlyOccurance" formControlName ="monthlyOccurance" value="reapeatMonthlyOccurance">Repeat</label>
                         <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day every</label>
-                        <label><input class="dhx_repeat_text" type="text" name="month_count" value="1">month</label><br>
+                        <label><input class="dhx_repeat_text" type="text" name= "reapeat_month_count" formControlName = "reapeat_month_count" value="1">month</label><br>
                         <label class="dhx_repeat_month_label">
                             <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance" formControlName ="monthlyOccurance" checked=""
-                                value="w">On</label>
-                        <input class="dhx_repeat_text" type="text" name="month_week2" formControlName = "staticMonthlyOccurance" value="1"><label>
-                            <select class="form-control weekselect">
+                                value="OnEveryMonthweek">On</label>
+                        <input class="dhx_repeat_text" type="text" name="onEveryDayOfWeek" formControlName = "onEveryDayOfWeek" value="1"><label>
+                            <select class="form-control weekselect" name ="repeatOnEveryMonthWeekDay"  formControlName="repeatOnEveryMonthWeekDay">
                                 <option value="1" selected="">Monday</option>
                                 <option value="2">Tuesday</option>
                                 <option value="3">Wednesday</option>
@@ -351,7 +351,7 @@
                                 <option value="6">Saturday</option>
                                 <option value="0">Sunday</option>
                             </select>every</label>
-                        <label><input class="dhx_repeat_text" type="text" name="month_count2" value="1">month</label>
+                        <label><input class="dhx_repeat_text" type="text" name="repeatOnEveryMonth" formControlName="repeatOnEveryMonth" value="1">month</label>
                     </div>
                     <div id="dhx_repeat_year" style="display:none;">
                         <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio"
