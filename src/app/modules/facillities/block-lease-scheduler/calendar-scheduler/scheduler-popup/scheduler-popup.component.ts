@@ -75,7 +75,7 @@ export class SchedulerPopupComponent implements OnInit {
   checks: Array<object> = [];
   endOccurance :any
   daysList = [];
-  arr : any ;
+  reccurringBodyEndDate : any ;
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -502,12 +502,14 @@ export class SchedulerPopupComponent implements OnInit {
       } else {
         if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
           this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+          this.reccurringBodyEndDate = this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') 
         }else{
-          this.endOccurance = '#'
+          this.endOccurance = '#' 
+          this.reccurringBodyEndDate =   this.datePipe.transform(this.reccurringBlockForm.controls.endOccurrancedate.value, 'yyyy-MM-dd')  
         }
         var startDate= this.datePipe.transform(this.editFormControls.start_date.value, this.dateTimeFormatCustom.Date);
         var startTime= this.datePipe.transform(this.editFormControls.start_time.value, this.dateTimeFormatCustom.Time);
-        var endDate= this.datePipe.transform(this.editFormControls.end_date.value, this.dateTimeFormatCustom.Date);
+        var endDate = this.datePipe.transform(this.editFormControls.end_date.value, this.dateTimeFormatCustom.Date);
         var endTime= this.datePipe.transform(this.editFormControls.end_time.value, this.dateTimeFormatCustom.Time);
         var reccurringEndDate : any=new Date(endDate+ ' '+ endTime);
         var reccurringStartDate:any=new Date(startDate+ ' '+ startTime);
@@ -517,31 +519,29 @@ export class SchedulerPopupComponent implements OnInit {
           if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
             var reccurBody = {
               start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.reccurringBodyEndDate + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
               rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
               rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
               event_length :reccurringEventLength
             }
           }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
             var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd')+ ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd')  + ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+              end_date: this.reccurringBodyEndDate+ ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
               rec_type : 'week'+'_'+ this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
               rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
               event_length : reccurringEventLength
             } 
-          } 
+          }   
         }else if (this.reccurringBlockForm.controls.repeatEvery.value == 'week'){  
           var reccurBody = {
             start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-            end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-            rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_' + this.daysList+ this.endOccurance,
+            end_date: this.reccurringBodyEndDate + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+            rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_' + this.daysList+ this.endOccurance ,
             rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_'+ this.daysList ,   
             event_length :reccurringEventLength
           }
         }
-        let reccurringDayArray = <FormArray>this.reccurringBlockForm.controls["weekOccuranceDays"];
-        reccurringDayArray.controls[1].patchValue(true);
         console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
@@ -893,12 +893,11 @@ export class SchedulerPopupComponent implements OnInit {
       alertMessage: err.message,
       alertType: err.status
     });
-   
   }
   addCreds() {
     debugger
-    this.arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
-    this.arr.push(this.fb.group({
+    const arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
+    arr.push(this.fb.group({
       reccuringMonday: [''],
       reccuringTuesday: [''],
       reccuringWednesday: [''],
