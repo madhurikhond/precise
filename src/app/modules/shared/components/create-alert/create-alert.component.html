@@ -150,8 +150,8 @@
                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                               <div class="checkbox-theme">
                                  <input id="chkInternalUser" type="checkbox" (change)="onchkUserChange($event)"
-                                    style="opacity: 1; margin: 21px 0px 0px -5px" />
-                                 <label class="arrow-labe2">Notify Internal Via Slack</label>
+                                    style="opacity: 1;" />
+                                 <label for="chkInternalUser" class="arrow-labe2">Notify Internal Via Slack</label>
                                  <select id="inputUser" (change)="onUserChange($event)" class="form-control" hidden>
                                     <option *ngFor="let item of userList" value={{item.UserName}}>
                                        {{item.UserName}}
@@ -163,7 +163,7 @@
                      </div>
                      <ng-container *ngIf="isContactModelShow">
                         <div id="showContactInfoModel" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-                           <div class="create-alert-list">
+                           <div class="create-alert-list title-header">
                               <div class="row">
                                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="theme-label-subtitle">
@@ -191,7 +191,7 @@
                                           <input id="chkAttFax" style="display: none;" type="checkbox"
                                              formControlName="IsAttorneyFax" />
                                           <label *ngIf="attorneyAsDefaultContact == false" for="chkAttFax"><img
-                                                src="assets/images/FaxIconGray.png"></label>&nbsp;
+                                                src="assets/images/FaxIconGray.png"></label>
                                           <label *ngIf="attorneyAsDefaultContact == true" for="chkAttFax"><img
                                                 src="assets/images/FaxIconGreen.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -201,7 +201,7 @@
                                           <input id="chkAttEmail" style="display: none;" type="checkbox"
                                              formControlName="IsAttorneyEmail" />
                                           <label *ngIf="attorneyAsDefaultContact == false" for="chkAttEmail"><img
-                                                src="assets/images/EmailIconGray.png"></label>&nbsp;
+                                                src="assets/images/EmailIconGray.png"></label>
                                           <label *ngIf="attorneyAsDefaultContact == true" for="chkAttEmail"><img
                                                 src="assets/images/EmailIconGreen.png"></label>&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -226,7 +226,7 @@
                                           <input id="chkRefPhyFax" type="checkbox" style="display: none;"
                                              formControlName="IsRefPhyFax" />
                                           <label *ngIf="doctorAsDefaultContact == false" for="chkRefPhyFax"><img
-                                                src="assets/images/FaxIconGray.png"></label>&nbsp;&nbsp;
+                                                src="assets/images/FaxIconGray.png"></label>
                                           <label *ngIf="doctorAsDefaultContact == true" for="chkRefPhyFax"><img
                                                 src="assets/images/FaxIconGreen.png"></label>&nbsp;&nbsp;
                                           <input type="text" readonly style="border:0"
@@ -236,7 +236,7 @@
                                           <input id="chkRefPhyEmail" style="display: none;" type="checkbox"
                                              formControlName="IsRefPhyEmail" />
                                           <label *ngIf="doctorAsDefaultContact == false" for="chkRefPhyEmail"><img
-                                                src="assets/images/EmailIconGray.png"></label>&nbsp;&nbsp;
+                                                src="assets/images/EmailIconGray.png"></label>
                                           <label *ngIf="doctorAsDefaultContact == true" for="chkRefPhyEmail"><img
                                                 src="assets/images/EmailIconGreen.png"></label>&nbsp;&nbsp;
 
@@ -337,9 +337,7 @@
                                           <input type="text" readonly style="border:0"
                                              formControlName="InfoPatientFax" />
                                        </div>
-                                    </div>
-
-                                    <div class="create-alert-icon-detail"
+                                       <div class="create-alert-icon-detail"
                                        *ngIf="contactInfoFormRef.InfoPatientFax.value!='N/A'">
                                        <input id="chkPatientFax" type="checkbox" style="display: none;"
                                           formControlName="IsPatientFax" />
@@ -347,9 +345,7 @@
                                           <img src="assets/images/FaxIconGray.png">
                                        </label>&nbsp;
                                        <input type="text" readonly style="border:0" formControlName="InfoPatientFax" />
-                                    </div>
-
-                                    <div class="create-alert-icon-list">
+                                       </div>
                                        <div class="create-alert-icon-detail">
                                           <input id="chkPatientEmail" type="checkbox" style="display: none;"
                                              formControlName="IsPatientEmail" />
@@ -359,42 +355,38 @@
                                           <input type="text" readonly style="border:0"
                                              formControlName="infoPatientEmail" />
                                        </div>
-                                    </div>
-                                    <div class="create-alert-icon-list">
-                                       <!--to hide div if phone no. is not available-->
                                        <div class="create-alert-icon-detail"
-                                          *ngIf="contactInfoFormRef.infoPatientPhone.value=='N/A'">
-                                          <input id="chkPatientPhone" type="checkbox" style="display: none;"
-                                             [attr.disabled]="contactInfoFormRef.infoPatientPhone.value=='N/A'"
-                                             formControlName="IsPatientPhone"
-                                             (change)="onchkPatientPhoneChange($event)" />
-                                          <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
-                                          <input type="text" readonly style="border:0"
-                                             formControlName="infoPatientPhone" />
-                                       </div>
-                                       <div class="create-alert-icon-detail"
-                                          *ngIf="contactInfoFormRef.infoPatientPhone.value!='N/A'">
-                                          <input id="chkPatientPhone" type="checkbox" style="display: none;"
-                                             formControlName="IsPatientPhone"
-                                             (change)="onchkPatientPhoneChange($event)" />
-                                          <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
-                                          <input type="text" readonly style="border:0"
-                                             formControlName="infoPatientPhone" />
-                                       </div>
+                                       *ngIf="contactInfoFormRef.infoPatientPhone.value=='N/A'">
+                                       <input id="chkPatientPhone" type="checkbox" style="display: none;"
+                                          [attr.disabled]="contactInfoFormRef.infoPatientPhone.value=='N/A'"
+                                          formControlName="IsPatientPhone"
+                                          (change)="onchkPatientPhoneChange($event)" />
+                                       <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
+                                       <input type="text" readonly style="border:0"
+                                          formControlName="infoPatientPhone" />
                                     </div>
+                                    <div class="create-alert-icon-detail"
+                                       *ngIf="contactInfoFormRef.infoPatientPhone.value!='N/A'">
+                                       <input id="chkPatientPhone" type="checkbox" style="display: none;"
+                                          formControlName="IsPatientPhone"
+                                          (change)="onchkPatientPhoneChange($event)" />
+                                       <label for="chkPatientPhone"><img src="assets/images/sms.png"></label>&nbsp;
+                                       <input type="text" readonly style="border:0"
+                                          formControlName="infoPatientPhone" />
+                                    </div>
+                                    </div>
+
                                  </div>
                               </div>
                            </div>
                            <div class="create-alert-list">
                               <div class="create-alert-list-left">
-                                 <div class="theme-label-subtitle">Addt'tl <br />Desk</div>
+                                 <div class="theme-label-subtitle">Additional Destination</div>
                               </div>
                               <div class="create-alert-list-right emfx">
-                                 <div class="create-alert-list-right-top">
-                                    <div class="theme-label-subtitle">N/A</div>
-                                 </div>
+                                 
                                  <div class="create-alert-list-right-bottom">
-                                    <div class="create-alert-icon-list">
+                                    <div class="create-alert-icon-list pt-4">
                                        <div class="create-alert-icon-detail dflexbox">
                                           <input id="chkAddFax" type="checkbox" formControlName="AddtionalDeskFax"
                                              style="display: none;" (change)="onchkFaxChange($event)" />
