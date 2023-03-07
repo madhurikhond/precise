@@ -3,7 +3,6 @@ import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/fo
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { CommonMethodService } from 'src/app/services/common/common-method.service';
 import { CreateAlertService } from 'src/app/services/create-alert/createalert.service';
-import { ckeConfig } from 'src/app/constants/Ckeditor';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { CommonRegex } from 'src/app/constants/commonregex';
 import { forkJoin } from 'rxjs';
@@ -41,12 +40,18 @@ export class CreateAlertComponent implements OnInit {
   modalValue: string = 'modal';
   patientFieldDisable: boolean = false;
   alertButtonClick: boolean = false;
-  readonly CkeConfig = ckeConfig;
+  readonly CkeConfig = {
+    toolbar :'Basic',
+  toolbar_Basic:
+  [
+    ['Bold', 'Italic','Underline', '-', 'NumberedList', 'BulletedList', '-', 'Styles','Format','Font','FontSize', 'TextColor','BGColor']
+  ]
+  };
   Issubmitted: boolean = false;
   IsPatientPhoneSent = false;
   name = 'ng2-ckeditor';
   //ckeConfig: CKEDITOR.config;
-  ckeConfig: any;
+  ckeConfig : any;
   ckConfig: any;
   mycontent: string;
   Alert: any;
@@ -650,7 +655,7 @@ export class CreateAlertComponent implements OnInit {
    else if(this.isContactModelShow){
     this.notificationService.showNotification({ 
       alertHeader : null,
-      alertMessage: 'Please check atleast one icon.',
+      alertMessage: 'Please select atleast one method.',
       alertType: ResponseStatusCode.BadRequest
     });
     return

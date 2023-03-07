@@ -6,88 +6,127 @@
 
 
 img{
-    height: 30px;
+  height: 30px;
 }
 ul {
-    list-style-type: none;
-  }
-  
-  li {
-    display: inline-block;
-  }   
-  
-  label {
-    border: 1px solid #fff;
-    padding: 10px;
-    position: relative;
-    margin: 10px;
-    cursor: pointer;
-  }
-  
-  label:before {
-    background-color: white;
-    color: white;
-    content: " ";
-    border-radius: 50%;
-    border: 1px solid grey;
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    line-height: 28px;
-    transition-duration: 0.4s;
-    transform: scale(0);
-  }
-  
-  label img {
-    height: 30px;
-    transition-duration: 0.2s;
-    transform-origin: 50% 50%;
-  }
-  
-  :checked + label {
-    border-color: #ddd;
-  }
-  
-  :checked + label:before {
-    content: "✓";
-    background-color: #34c600;
-    transform: scale(1);
-  }
-  
-  :checked + label img {
-    transform: scale(0.9);
-    /* box-shadow: 0 0 5px #333; */
-    z-index: -1;
-  }
-  label.arrow-labe2:before {
-    display: none;
-  }
-  label.arrow-labe2 {
-    border: 0;
-}
-.ck-editor__editable{
-  display: none !important;
+  list-style-type: none;
 }
 
- .ck-editor-valid.is-invalid #cke_editor3{
-  border: 1px solid red !important;
+li {
+  display: inline-block;
+}   
+
+label {
+  border: 1px solid #fff;
+  padding: 0;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -11px;
+  left: -16px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+label img {
+  height: 30px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: #ddd;
+}
+
+:checked + label:before {
+  content: "✓";
+  background-color: #34c600;
+  transform: scale(0.6);
+  z-index: 9;
+}
+
+:checked + label img {
+  transform: scale(0.9);
+  /* box-shadow: 0 0 5px #333; */
+  z-index: -1;
+}
+label.arrow-labe2:before {
+  display: none;
+}
+label.arrow-labe2 {
+  border: 0;
+}
+.ck-editor__editable{
+display: none !important;
+}
+
+.ck-editor-valid.is-invalid #cke_editor3{
+border: 1px solid red !important;
 }
 
 .dflexbox{width: 100%;
-  display: flex;
-  align-items: center;
-  text-align: left;}
-  .dflexbox input{width: 33%;}
-  .dflexbox .tooltiptext {position: absolute;}
-  .dflexbox .form-control{margin-left: 3px;
-    margin-right: 3px;
-    width: 145px;
-    display: inline-block;}
-  .emfx{width:calc(100% - 100px);}
-  .input-dflex{width: 33.33%;}
-  .emfx .create-alert-icon-list{width: 100%;}
-  .input-dflex input{width: 94%!important; padding-right: 10px!important; font-size: 14px;}
-  .input-dflex{}
+display: flex;
+align-items: center;
+text-align: left;}
+.dflexbox input{width: 33%;}
+.dflexbox .tooltiptext {position: absolute;}
+.dflexbox .form-control{margin-left: 3px;
+  margin-right: 3px;
+  width: 145px;
+  display: inline-block;}
+.emfx{width:calc(100% - 100px);}
+.input-dflex{width: 33.33%;}
+.emfx .create-alert-icon-list{width: 100%;}
+.input-dflex input{width: 94%!important; padding-right: 10px!important; font-size: 14px;}
+.input-dflex{}
+
+/**********************Newly Design***********************/
+.create-alert-popup .create-alert-list-right .create-alert-list-right-top .theme-label-subtitle {
+text-align: center;
+margin: 0;
+}
+
+.create-alert-popup .create-alert-icon-detail {
+
+margin-bottom: 0;
+
+}
+.create-alert-popup .create-alert-list-left .theme-label-subtitle {
+margin-top: 0;
+}
+.create-alert-popup .create-alert-list{
+display: flex;
+align-items: center;
+}
+.create-alert-list.title-header .row {
+width: 100%;
+}
+.create-alert-popup .create-alert-icon-list {
+padding-bottom: 24px;
+}
+.create-alert-popup .create-alert-list{
+padding-bottom: 0;
+margin-bottom: 0;
+}
+.create-alert-popup .create-alert-list-left {
+width: 96px;
+}
+.input-dflex .ng-touched.ng-valid{
+  border: thin solid green !important;
+}
+.input-dflex .ng-touched.ng-invalid{
+  border: thin solid red !important;
+}
