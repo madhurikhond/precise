@@ -76,6 +76,11 @@ export class SchedulerPopupComponent implements OnInit {
   endOccurance :any
   daysList = [];
   reccurringBodyEndDate : any ;
+
+  months : string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  days: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -460,6 +465,7 @@ export class SchedulerPopupComponent implements OnInit {
         if (this.leaseBlockOffForm.invalid) {
           return;
         }
+        var reccurBody=this. calculateRecurringData()
         let body = {
           'facilityId': this.FacilityID,
           'modality': this.selectedModality.toUpperCase(),
@@ -468,6 +474,10 @@ export class SchedulerPopupComponent implements OnInit {
           'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
           'resourceId': this.selectedresourceId,
+          'IsAllModality': this.IsAllModality,
+           'IsRecurEvent': this.showReccuringBlock,
+          'RecurEventId' : 0 ,
+          'SchedulerEvent' : reccurBody
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
@@ -498,66 +508,7 @@ export class SchedulerPopupComponent implements OnInit {
       if (this.isLeaseSigned == true && this.LeaseBlockId != 0) {
         this.saveCreditInfo();
       } else {
-        if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
-          this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
-          this.reccurringBodyEndDate = this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') 
-        }else{
-          this.endOccurance = '#' 
-          this.reccurringBodyEndDate =   this.datePipe.transform(this.reccurringBlockForm.controls.endOccurrancedate.value, 'yyyy-MM-dd')  
-        }
-        var startDate= this.datePipe.transform(this.editFormControls.start_date.value, this.dateTimeFormatCustom.Date);
-        var startTime= this.datePipe.transform(this.editFormControls.start_time.value, this.dateTimeFormatCustom.Time);
-        var endDate = this.datePipe.transform(this.editFormControls.end_date.value, this.dateTimeFormatCustom.Date);
-        var endTime= this.datePipe.transform(this.editFormControls.end_time.value, this.dateTimeFormatCustom.Time);
-        var reccurringEndDate : any=new Date(endDate+ ' '+ endTime);
-        var reccurringStartDate:any=new Date(startDate+ ' '+ startTime);
-        var reccurringEventLength= (reccurringEndDate-reccurringStartDate)/1000
-        var reccuringEndDate = this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value * this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
-        if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
-          if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
-            var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.reccurringBodyEndDate + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
-              rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
-              event_length :reccurringEventLength
-            }
-          }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
-            var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.reccurringBodyEndDate+ ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              rec_type : 'week'+'_'+ this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
-              rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
-              event_length : reccurringEventLength
-            } 
-          }   
-        }else if (this.reccurringBlockForm.controls.repeatEvery.value == 'week'){  
-          var reccurBody = {
-            start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-            end_date: this.reccurringBodyEndDate + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-            rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_' + this.daysList+ this.endOccurance ,
-            rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_'+ this.daysList ,   
-            event_length :reccurringEventLength
-          }
-        }else if (this.reccurringBlockForm.controls.repeatEvery.value =='month'){
-          if(this.reccurringBlockForm.controls.monthlyOccurance.value == 'reapeatMonthlyOccurance'){
-            var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.reapeat_month_count.value +'_'+'_'+'_'+ this.endOccurance,
-              rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.reapeat_month_count.value +'_'+'_'+'_' ,   
-              event_length :reccurringEventLength
-            }
-          }else if (this.reccurringBlockForm.controls.monthlyOccurance.value == 'OnEveryMonthweek'){
-         
-            var reccurBody = {
-              start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
-              rec_type :this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.repeatOnEveryMonth.value +'_'+this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value+'_'+this.reccurringBlockForm.controls.onEveryDayOfWeek.value+'_'  + this.endOccurance,
-              rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.repeatOnEveryMonth.value +'_'+this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value+'_'+this.reccurringBlockForm.controls.onEveryDayOfWeek.value+'_' ,   
-              event_length :reccurringEventLength
-            }
-          }}
+        var reccurBody=this. calculateRecurringData()
         console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
@@ -807,22 +758,22 @@ export class SchedulerPopupComponent implements OnInit {
 
   createReccurringBlockForm() {
     this.reccurringBlockForm = this.fb.group({
-      repeatEvery : [''],
-      dailyOccurance : [''],
-      dailyOccranceNumberOfDays : [''],
-      OccuranceNumberOfWeeks : [''],
+      repeatEvery : ['day'],
+      dailyOccurance : ['everyDay'],
+      dailyOccranceNumberOfDays : ['1'],
+      OccuranceNumberOfWeeks : ['1'],
       weeklyOccurance :[''],
       monthlyOccurance : [''],
       staticMonthlyOccurance : [''],
       endOccurrance : [''],
-      endOccurranceNumberOfDays : [''],
+      endOccurranceNumberOfDays : ['1'],
       endOccurrancedate : [this.event['end_date']],
       endOccurranceDays : [''],
       everyMonthCount : [''],
-      reapeat_month_count  : [''],
-      repeatOnEveryMonth  :[''],
+      reapeat_month_count  : ['1'],
+      repeatOnEveryMonth  :['1'],
       repeatOnEveryMonthWeekDay: ['1'],
-      onEveryDayOfWeek : [''],
+      onEveryDayOfWeek : ['1'],
       weekOccuranceDays:this.fb.array([
         ]),
     });
@@ -887,6 +838,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   changeScheduleType(checked: any) {
+    this.createReccurringBlockForm();
     this.leaseForm.patchValue({
       modalityType: "",
       contrastType: "",
@@ -951,6 +903,72 @@ export class SchedulerPopupComponent implements OnInit {
       $('body').addClass('modal-open')
     }, 500);
   }
+
+calculateRecurringData(){
+  var reccurBody: any;
+  if(this.reccurringBlockForm.controls.endOccurrance.value == ''){
+    this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+    this.reccurringBodyEndDate = this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') 
+  }else{
+    this.endOccurance = '#' 
+    this.reccurringBodyEndDate =   this.datePipe.transform(this.reccurringBlockForm.controls.endOccurrancedate.value, 'yyyy-MM-dd')  
+  }
+  var startDate= this.datePipe.transform(this.editFormControls.start_date.value, this.dateTimeFormatCustom.Date);
+  var startTime= this.datePipe.transform(this.editFormControls.start_time.value, this.dateTimeFormatCustom.Time);
+  var endDate = this.datePipe.transform(this.editFormControls.end_date.value, this.dateTimeFormatCustom.Date);
+  var endTime= this.datePipe.transform(this.editFormControls.end_time.value, this.dateTimeFormatCustom.Time);
+  var reccurringEndDate : any=new Date(endDate+ ' '+ endTime);
+  var reccurringStartDate:any=new Date(startDate+ ' '+ startTime);
+  var reccurringEventLength= (reccurringEndDate-reccurringStartDate)/1000
+  var reccuringEndDate = this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value * this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+  if(this.reccurringBlockForm.controls.repeatEvery.value == 'day'){
+    if(this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay'){
+        reccurBody = {
+        start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        end_date: this.reccurringBodyEndDate + ' '+this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+ this.endOccurance,
+        rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_',   
+        event_length :reccurringEventLength
+      }
+    }else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay'){
+        reccurBody = {
+        start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        end_date: this.reccurringBodyEndDate+ ' '+ this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        rec_type : 'week'+'_'+ this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5'+ this.endOccurance,
+        rec_pattern: 'week'+'_'+this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value+'_'+'_'+'_'+'1,'+'2,'+'3,'+'4,'+'5',  
+        event_length : reccurringEventLength
+      } 
+    }   
+  }else if (this.reccurringBlockForm.controls.repeatEvery.value == 'week'){  
+      reccurBody = {
+      start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+      end_date: this.reccurringBodyEndDate + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+      rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_' + this.daysList+ this.endOccurance ,
+      rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value +'_'+'_'+'_'+ this.daysList ,   
+      event_length :reccurringEventLength
+    }
+  }else if (this.reccurringBlockForm.controls.repeatEvery.value =='month'){
+    if(this.reccurringBlockForm.controls.monthlyOccurance.value == 'reapeatMonthlyOccurance'){
+        reccurBody = {
+        start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        rec_type : this.reccurringBlockForm.controls.repeatEvery.value+'_'+ this.reccurringBlockForm.controls.reapeat_month_count.value +'_'+'_'+'_'+ this.endOccurance,
+        rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.reapeat_month_count.value +'_'+'_'+'_' ,   
+        event_length :reccurringEventLength
+      }
+    }else if (this.reccurringBlockForm.controls.monthlyOccurance.value == 'OnEveryMonthweek'){
+   
+        reccurBody = {
+        start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' '+  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' +  this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        rec_type :this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.repeatOnEveryMonth.value +'_'+this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value+'_'+this.reccurringBlockForm.controls.onEveryDayOfWeek.value+'_'  + this.endOccurance,
+        rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value+'_'+this.reccurringBlockForm.controls.repeatOnEveryMonth.value +'_'+this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value+'_'+this.reccurringBlockForm.controls.onEveryDayOfWeek.value+'_' ,   
+        event_length :reccurringEventLength
+      }
+    }}
+
+    return reccurBody;
+}
 
   get editFormControls() { return this.leaseForm.controls; }
   get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
