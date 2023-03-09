@@ -15,6 +15,7 @@ import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { DatePipe } from '@angular/common';
 import { CommonMethodService } from '../../../../services/common/common-method.service';
+import { EditRecurringEventModalComponent } from './edit-recurring-event-modal/edit-recurring-event-modal.component';
 
 declare let scheduler: any;
 
@@ -97,10 +98,10 @@ export class CalendarSchedulerComponent implements OnInit {
         // this.schedulerLoad();
     }
     schedulerLoad() {
-      
+
         scheduler.skin = 'material';
         scheduler.config.first_hour = 6;
-		scheduler.config.last_hour = 24;
+        scheduler.config.last_hour = 24;
         scheduler.config.xml_date = '%Y-%m-%d';
         scheduler.config.hour_date = "%h:%i %A";
         scheduler.xy.scale_width = 70;
@@ -294,7 +295,36 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     checkBlockedOffDays(event: any, id: number) {
         if (event.LeaseBlockId) {
-            scheduler.startLightbox(id, this.openForm(event));
+
+            if (event.RecurEventId && event.RecurEventId > 0) {
+                const modalRef = this.modalService.open(EditRecurringEventModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                modalRef.result.then().catch((reason: ModalResult | any) => {
+                    if (reason != 4) {
+                        if (reason == 2) {
+                            var recurringEventJson = JSON.parse(event.RecurEvent);
+                            event.old_start_date = event.start_date;
+                            event.old_end_date = event.end_date;
+                            var statDate = new Date(event.start_date);
+                            var newStatDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.StartTime);
+                            var endDate = new Date(event.end_date);
+                            var daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
+                                - Date.UTC(statDate.getFullYear(), statDate.getMonth(), statDate.getDate())) / (1000 * 60 * 60 * 24))
+
+                            var newEndDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.EndTime);
+
+                            event.start_date = newStatDate;
+                            newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
+                            //newEndDate.setDate(newEndDate.getMilliseconds() + recurringEventJson.EventLength)
+                            event.end_date = newEndDate;
+                        }
+                        event.RecurEventId = reason == 1 ? 0 : event.RecurEventId;
+                        event.IsRecurEvent = reason != 1;
+                        scheduler.startLightbox(id, this.openForm(event));
+                    }
+                });
+            }
+            else
+                scheduler.startLightbox(id, this.openForm(event));
         } else {
             let body =
             {
@@ -312,7 +342,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     dayValue = event.start_date.getDay();
                 }
                 else {
-                    dayValue = event._sday  < 6 ? event._sday + 1 : 0;
+                    dayValue = event._sday < 6 ? event._sday + 1 : 0;
                 }
                 if (!this.displayClosedDays.includes(dayValue)) {
                     if (res.response) {

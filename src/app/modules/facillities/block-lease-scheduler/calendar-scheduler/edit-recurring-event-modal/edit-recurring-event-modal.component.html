@@ -1,0 +1,20 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Alert</h5>
+
+        <div class="close-dismiss"></div>
+        <div class="close-dismiss" (click)="close()"></div>
+    </div>
+    <div class="modal-body">
+        <div>
+            <ul style="list-style: none;">
+                <li><span>Do you want to edit the whole set of repeated events?</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-theme btn-sm pull-left" (click)="confirmOccurance()">Edit occurrence</button>
+        <button type="button" class="btn btn-theme btn-sm pull-left" (click)="confirmSeries()">Edit series</button>
+        <a href="javascript:void(0)" class="btn btn-border btn-sm pull-right" (click)="close()">Cancel</a>
+    </div>
+</div>

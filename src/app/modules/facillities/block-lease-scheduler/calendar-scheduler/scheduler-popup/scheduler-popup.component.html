@@ -124,7 +124,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" (click)="changetxtFunction()">Disabled</span>
+                    <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}} </span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
@@ -422,7 +422,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" (click)="changetxtFunction()">Disabled</span>
+                    <span id="repeat-control" (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
