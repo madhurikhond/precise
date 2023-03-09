@@ -199,12 +199,16 @@ export class LoginComponent implements OnInit {
     }
     for (let i = 0; i < responseHierarchy.length; i++) {
       list.push(responseHierarchy[i].hierarchy);
-      if (list[0].Url !== '') {
-        valReturn = list[0].Url
-      }
-      else if (list[0].Url == '' && list[0].Children) {
-        valReturn = list[0].Children[0].Url
-      }
+      
+    }
+    if (list[0].Url !== '') {
+      valReturn = list[0].Url
+    }
+    else if (list[0].Url == '' && list[0].Children.length>0) {
+      valReturn = list[0].Children[0].Url
+    }
+    else{
+      valReturn = list[1].Url
     }
     return valReturn;
   }
