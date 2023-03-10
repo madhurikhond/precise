@@ -124,7 +124,8 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}} </span>
+                    <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
+                    </span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
@@ -422,7 +423,8 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
+                    <span id="repeat-control"
+                        (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
@@ -686,7 +688,7 @@
     <div class="modal-footer">
         <button #deleteBtn id="deleteBtn" (click)="confirmDelete()"
             class="btn btn-border-clear btn-sm pull-left">Delete</button>
-        <button type="button" #SaveBtn id="SaveBtn" (click)="saveBlockLeaseData()"
+        <button type="button" #SaveBtn id="SaveBtn" (click)="ShowGenericMessage()"
             class="btn btn-theme btn-sm pull-left">{{isBlockOffTime?"Save":"Add Block"}}</button>
 
 
@@ -790,6 +792,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-theme in modal-small" data-backdrop="static" id="showGenericMessage" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <div class="close-dismiss" data-dismiss="modal"></div>
+            </div>
+            <div class="modal-body">
+                <p>
+                    FACILITY COULD HAVE LEASE BLOCKS ALREADY CREATED OR COULD BE CLOSED ON SOME OF THE DAYS. PROCEEDING
+                    FURTHER WILL CREATE A RECURRING BLOCK ANYWAY.
+                    <br />
+                    DO YOU STILL WANT TO CREATE BLOCKS FOR SELECTED TIME?
+                </p> 
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
+                     data-dismiss="modal">No</a>
+                <a  href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
+                    data-dismiss="modal"  (click)="saveBlockLeaseData()">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <button class="d-none" #hiddengreaterCreditTimePopUp [hidden]="true" data-toggle="modal"
     data-target="#greaterCreditTimePopUp"></button>
 <button class="d-none" #hiddenCheckFacilityPopupBtn [hidden]="true" data-toggle="modal"
@@ -798,3 +827,5 @@
     data-target="#checkAlreadyBlockedLeasePopup"></button>
 <button class="d-none" #hiddenpastDateConfirm [hidden]="true" data-toggle="modal"
     data-target="#pastDateConfirm"></button>
+<button class="d-none" #hiddenshowGenericMessage [hidden]="true" data-toggle="modal"
+    data-target="#showGenericMessage"></button>

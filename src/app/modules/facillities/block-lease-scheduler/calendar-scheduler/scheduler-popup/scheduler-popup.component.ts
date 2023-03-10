@@ -25,6 +25,8 @@ export class SchedulerPopupComponent implements OnInit {
   @ViewChild('hiddencheckAlreadyBlockedLeasePopup', { static: false }) hiddencheckAlreadyBlockedLeasePopup: ElementRef;
   @ViewChild('hiddenpastDateConfirm', { static: false }) hiddenpastDateConfirm: ElementRef;
   @ViewChild('hiddengreaterCreditTimePopUp', { static: false }) hiddengreaterCreditTimePopUp: ElementRef;
+  @ViewChild('hiddenshowGenericMessage', { static: false }) hiddenshowGenericMessage: ElementRef;
+
   @Input() isNew: boolean;
   @Input() event: Event;
   @Input() mode: any;
@@ -294,8 +296,9 @@ export class SchedulerPopupComponent implements OnInit {
       this.modality_change = false;
       this.IsAllModality = true;
     }
-    if (!this.isBlockOffTime)
-      this.validateAutoBlockOffDays();
+    if (!this.isBlockOffTime) {
+      // this.validateAutoBlockOffDays();
+    }
 
   }
   validateAutoBlockOffDays() {
@@ -328,7 +331,10 @@ export class SchedulerPopupComponent implements OnInit {
   changed(event: any) {
     this.changedOffDays(event);
     if (this.selectedModality) {
-      this.MatchFacilityHours();
+      this.getTotalLeaseAndCreditHours
+      //this.hiddenshowGenericMessage.nativeElement.click();
+      // this.MatchFacilityHours();
+
     }
   }
   senddatatoschd_facilities() {
@@ -1021,6 +1027,10 @@ export class SchedulerPopupComponent implements OnInit {
 
     });
 
+  }
+
+  ShowGenericMessage(){
+    this.hiddenshowGenericMessage.nativeElement.click();
   }
 
   get editFormControls() { return this.leaseForm.controls; }
