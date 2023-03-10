@@ -92,7 +92,7 @@ export class BlockLeaseSchedulerService {
     );
   }
   deleteBlockLeaseById(showGlobalLoader: boolean = true, LeaseBlockId: any, RecurEventId: any) {
-    var body={
+    var body = {
       'LeaseId': LeaseBlockId,
       'RecurEventId': RecurEventId
     }
