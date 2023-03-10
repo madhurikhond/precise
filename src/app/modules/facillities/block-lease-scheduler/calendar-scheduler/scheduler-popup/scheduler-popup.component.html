@@ -127,7 +127,7 @@
                     <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
                     </span>
                 </div>
-                <form [formGroup]="reccurringBlockForm" class="theme-form">
+                <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
                         <div class="radio-tabs lab-space">
                             <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery"
@@ -141,7 +141,8 @@
                             id="dhx_repeat_day">
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" value="everyDay">Every</label>
-                            <label><input class="dhx_repeat_text" type="text" name="dailyOccranceNumberOfDays"
+                            <label><input class="dhx_repeat_text" type="text" style="wid
+                            :45px" name="dailyOccranceNumberOfDays"
                                     formControlName="dailyOccranceNumberOfDays" value="1">day</label> <br>
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" checked="" value="everySelectedWeekDay">Every
@@ -249,6 +250,8 @@
                             <input class="dhx_repeat_text" type="text" name="endOccurranceNumberOfDays"
                                 formControlName="endOccurranceNumberOfDays"
                                 value="endOccurranceNumberOfDays">occurrences<br>
+
+                                <div class="dlflex">  
                             <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
                                     formControlName="endOccurrance" name="endOccurrance" />End by</label>
                             <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
@@ -256,12 +259,13 @@
                                 type="date" onkeydown="return false">
                             </dx-date-box>
                         </div>
+                        </div>
                     </div>
                 </form>
             </div>
 
         </form>
-        <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form" novalidate>
+        <form *ngIf="isBlockOffTime" [formGroup]="leaseForm" class="theme-form " novalidate>
             <div class="row">
 
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -426,7 +430,7 @@
                     <span id="repeat-control"
                         (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
-                <form [formGroup]="reccurringBlockForm" class="theme-form">
+                <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
                     <div *ngIf="showReccuringBlock" class="rp-tab-block">
                         <div class="radio-tabs lab-space">
                             <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery"
@@ -548,12 +552,14 @@
                             <input class="dhx_repeat_text" type="text" name="endOccurranceNumberOfDays"
                                 formControlName="endOccurranceNumberOfDays"
                                 value="endOccurranceNumberOfDays">occurrences<br>
+                                <div class="dlflex">
                             <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
                                     formControlName="endOccurrance" name="endOccurrance" />End by</label>
                             <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
                             <dx-date-box (onValueChanged)="onOccuranceEndDate()" formControlName="endOccurrancedate"
                                 type="date" onkeydown="return false">
                             </dx-date-box>
+                        </div>  
                         </div>
                     </div>
                 </form>

@@ -23,3 +23,13 @@
         font-weight: 800;
     }
       .select-dm-cpicker .dhx_section_time span{display: block;}
+
+      .css-frm input.dhx_repeat_text{width: 42px!important; outline: 0;}
+      .dlflex{display: flex; 
+        align-items: center;}
+        .dlflex label{margin-right: 10px;
+          padding: 0px;
+          margin-bottom: 3px;}
+
+          .dlflex .dx-texteditor.dx-editor-outlined{height: 30px;
+            width: 139px; padding-left: 0px;}
