@@ -302,19 +302,11 @@ export class CalendarSchedulerComponent implements OnInit {
                     if (reason != 4) {
                         if (reason == 2) {
                             var recurringEventJson = JSON.parse(event.RecurEvent);
-                            event.old_start_date = event.start_date;
-                            event.old_end_date = event.end_date;
-                            var statDate = new Date(event.start_date);
                             var newStatDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.StartTime);
-                            var endDate = new Date(event.end_date);
-                            var daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
-                                - Date.UTC(statDate.getFullYear(), statDate.getMonth(), statDate.getDate())) / (1000 * 60 * 60 * 24))
-
                             var newEndDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.EndTime);
 
                             event.start_date = newStatDate;
                             newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
-                            //newEndDate.setDate(newEndDate.getMilliseconds() + recurringEventJson.EventLength)
                             event.end_date = newEndDate;
                         }
                         event.RecurEventId = reason == 1 ? 0 : event.RecurEventId;
@@ -424,7 +416,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.GetBlockLeaseData();
                     this.backToCalendar();
                 }
-                if ((reason == 4)) {
+                else if ((reason == 4)) {
                     scheduler.endLightbox(false, null);
                     this.backToCalendar();
                 }
@@ -432,6 +424,12 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.latestStartDate = event.start_date;
                     this.latestSchedulerMode = scheduler.getState().mode;
                     scheduler.deleteEvent(event.id);
+                    this.GetBlockLeaseData();
+                    this.backToCalendar();
+                }
+                else {
+                    this.latestStartDate = event.start_date;
+                    this.latestSchedulerMode = scheduler.getState().mode;
                     this.GetBlockLeaseData();
                     this.backToCalendar();
                 }

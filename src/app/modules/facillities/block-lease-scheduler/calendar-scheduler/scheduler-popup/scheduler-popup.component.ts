@@ -865,7 +865,8 @@ export class SchedulerPopupComponent implements OnInit {
   }
   confirmDelete() {
     const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-    modalRef.componentInstance.LeaseBlockId = this.LeaseBlockId;
+    modalRef.componentInstance.LeaseBlockId = this.RecurEventId > 0 ? 0 : this.LeaseBlockId;
+    modalRef.componentInstance.RecurEventId = this.RecurEventId;
     modalRef.result
       .then()
       .catch((reason: ModalResult | any) => {
@@ -999,6 +1000,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   PatchValueInRecurringForm(recurringevent: any) {
 
+   // this.SetRecurringStartEndDate(this.event);
     var eventText = JSON.parse(JSON.parse(recurringevent).EventText);
     this.showReccuringBlock = true;
     this.reccurringBlockForm.patchValue({
@@ -1021,6 +1023,18 @@ export class SchedulerPopupComponent implements OnInit {
 
     });
 
+  }
+
+  SetRecurringStartEndDate(event: any) {
+    if (this.IsRecurEvent) {
+      var recurringEventJson = JSON.parse(event.RecurEvent);
+      var newStatDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.StartTime);
+      var newEndDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.EndTime);
+
+      event.start_date = newStatDate;
+      newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
+       event.end_date = newEndDate;
+    }
   }
 
   get editFormControls() { return this.leaseForm.controls; }
