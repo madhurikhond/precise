@@ -720,7 +720,7 @@ export class SchedulerPopupComponent implements OnInit {
         if ((previousValue != newValue) && isValid) {
           this.getTotalLeaseAndCreditHours();
           if (this.selectedresourceId && this.selectedModality) {
-            this.MatchFacilityHours();
+          //  this.MatchFacilityHours();
           }
         }
       }
