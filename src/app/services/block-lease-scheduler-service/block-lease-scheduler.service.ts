@@ -93,8 +93,8 @@ export class BlockLeaseSchedulerService {
   }
   deleteBlockLeaseById(showGlobalLoader: boolean = true, LeaseBlockId: any, RecurEventId: any) {
     var body = {
-      'LeaseId': LeaseBlockId,
-      'RecurEventId': RecurEventId
+      'LeaseId': LeaseBlockId??0,
+      'RecurEventId': RecurEventId??0
     }
 
     return this._httpService.post(`BlockLeaseScheduler/DeleteBlockLeaseById`, body, showGlobalLoader).pipe(
