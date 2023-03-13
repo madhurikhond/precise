@@ -73,7 +73,7 @@ export class SchedulerPopupComponent implements OnInit {
   blockLeasePricingList: any = [];
   IsFacilityDetailsPopUpOpen: boolean = false;
   displayLeaseIdSchedulerPopUp: any;
-  showReccuringBlock: any;
+  showReccuringBlock: any = false;
   checks: Array<object> = [];
   endOccurance: any
   daysList = [];
@@ -450,22 +450,6 @@ export class SchedulerPopupComponent implements OnInit {
     this.daysList.sort();
   }
   saveBlockLeaseData() {
-    // if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
-    //   this.notificationService.showNotification({
-    //     alertHeader: '',
-    //     alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
-    //     alertType: null
-    //   });
-    //   return;
-    // }
-    // if (this.selectedModality.toUpperCase() == 'MRI' && (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null)) {
-    //   this.notificationService.showNotification({
-    //     alertHeader: '',
-    //     alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease',
-    //     alertType: null
-    //   });
-    //   return;
-    // }
     if ((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1) {
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID
@@ -489,7 +473,7 @@ export class SchedulerPopupComponent implements OnInit {
           'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
           'resourceId': this.selectedresourceId,
           'IsAllModality': this.IsAllModality,
-          'IsRecurEvent': this.LeaseBlockId ? this.IsRecurEvent : this.showReccuringBlock,
+          'IsRecurEvent': this.showReccuringBlock,
           'RecurEventId': this.RecurEventId,
           'SchedulerEvent': reccurBody
         }
@@ -537,7 +521,7 @@ export class SchedulerPopupComponent implements OnInit {
           'resourceId': this.selectedresourceId,
           'IsAllModality': this.IsAllModality,
           'RecurEventId': this.RecurEventId,
-          'IsRecurEvent': this.LeaseBlockId ? this.IsRecurEvent : this.showReccuringBlock,
+          'IsRecurEvent': this.showReccuringBlock,
           'SchedulerEvent': reccurBody,
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
@@ -720,7 +704,7 @@ export class SchedulerPopupComponent implements OnInit {
         if ((previousValue != newValue) && isValid) {
           this.getTotalLeaseAndCreditHours();
           if (this.selectedresourceId && this.selectedModality) {
-          //  this.MatchFacilityHours();
+            //  this.MatchFacilityHours();
           }
         }
       }
@@ -1006,9 +990,8 @@ export class SchedulerPopupComponent implements OnInit {
 
   PatchValueInRecurringForm(recurringevent: any) {
 
-   // this.SetRecurringStartEndDate(this.event);
+    // this.SetRecurringStartEndDate(this.event);
     var eventText = JSON.parse(JSON.parse(recurringevent).EventText);
-    this.showReccuringBlock = true;
     this.reccurringBlockForm.patchValue({
       repeatEvery: eventText.repeatEvery,
       dailyOccurance: eventText.dailyOccurance,
@@ -1029,9 +1012,37 @@ export class SchedulerPopupComponent implements OnInit {
 
     });
 
+    const items = (<FormArray>this.reccurringBlockForm.get('weekOccuranceDays'));
+    var weekData = eventText.weekOccuranceDays[0];
+    for (let i = 0; i < items.length; i++) {
+      var dex = (<FormGroup>items.at(i))
+      dex.patchValue({
+        reccuringMonday: weekData.reccuringMonday,
+        reccuringTuesday: weekData.reccuringTuesday,
+        reccuringWednesday: weekData.reccuringWednesday,
+        reccuringThursday: weekData.reccuringThursday,
+        reccuringFriday: weekData.reccuringFriday,
+        reccuringSaturday: weekData.reccuringSaturday,
+        reccuringSunday: weekData.reccuringSunday,
+      });
+    }
+    if (weekData.reccuringSunday)
+      this.daysList.push(0)
+    if (weekData.reccuringMonday)
+      this.daysList.push(1)
+    if (weekData.reccuringTuesday)
+      this.daysList.push(2)
+    if (weekData.reccuringWednesday)
+      this.daysList.push(3)
+    if (weekData.reccuringThursday)
+      this.daysList.push(4)
+    if (weekData.reccuringFriday)
+      this.daysList.push(5)
+    if (weekData.reccuringSaturday)
+      this.daysList.push(6)
   }
 
-  ShowGenericMessage(){
+  ShowGenericMessage() {
     this.hiddenshowGenericMessage.nativeElement.click();
   }
 
@@ -1043,7 +1054,7 @@ export class SchedulerPopupComponent implements OnInit {
 
       event.start_date = newStatDate;
       newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
-       event.end_date = newEndDate;
+      event.end_date = newEndDate;
     }
   }
 
