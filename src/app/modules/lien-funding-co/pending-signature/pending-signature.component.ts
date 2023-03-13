@@ -162,8 +162,10 @@ export class PendingSignatureComponent {
           this.modal_close.nativeElement.click();
         }
         else
+          this.modal_close.nativeElement.click();
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
+        this.modal_close.nativeElement.click();
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       });
     }

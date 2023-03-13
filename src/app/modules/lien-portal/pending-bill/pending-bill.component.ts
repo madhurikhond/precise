@@ -251,11 +251,15 @@ export class PendingBillComponent implements OnInit {
               this.lienPortalService.errorNotification(
                 LienPortalStatusMessage.COMMON_ERROR
               );
+               this.closeAssignBtn.nativeElement.click();
+               this.getListingData();
           },
           () => {
             this.lienPortalService.errorNotification(
               LienPortalStatusMessage.COMMON_ERROR
             );
+             this.closeAssignBtn.nativeElement.click();
+             this.getListingData();
           }
         );
     }
@@ -293,11 +297,13 @@ export class PendingBillComponent implements OnInit {
             );
             this.getListingData();
           } else
+            this.closeRetainARModal();
             this.lienPortalService.errorNotification(
               LienPortalStatusMessage.COMMON_ERROR
             );
         },
         () => {
+          this.closeRetainARModal();
           this.lienPortalService.errorNotification(
             LienPortalStatusMessage.COMMON_ERROR
           );
