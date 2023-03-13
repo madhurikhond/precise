@@ -180,8 +180,10 @@ export class FundingCoPaidComponent {
           this.selectedAction = "";
         }
         else
+          this.modal_edit_payment_close.nativeElement.click();
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
+        this.modal_edit_payment_close.nativeElement.click();
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       });
     }
@@ -200,8 +202,10 @@ export class FundingCoPaidComponent {
           this.selectedAction = "";
         }
         else
+          this.modal_remove_close.nativeElement.click();
           this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       }, () => {
+        this.modal_remove_close.nativeElement.click();
         this.lienPortalService.errorNotification(LienPortalStatusMessage.COMMON_ERROR);
       })
     }
