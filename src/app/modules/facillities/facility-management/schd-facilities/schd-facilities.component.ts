@@ -76,7 +76,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityName: string = '';
   facilityNoteList: any = [];
   facilityId: number;
-  leaseId:number;
+  leaseId: number;
   isNoteRequired: boolean = false;
   isTagRequired: boolean = false;
   isIntakeEmailVisible: boolean = false;
@@ -3596,9 +3596,7 @@ export class SchdFacilitiesComponent implements OnInit {
     return a;
   }
   onChangeService(type) {
-    debugger
-
-    if (type == 'mri') {
+      if (type == 'mri') {
       this.CheckSameCombinationMRI('Type1');
       this.CheckSameCombinationMRI('Type2');
       this.CheckSameCombinationMRI('Type3');
@@ -3637,26 +3635,25 @@ export class SchdFacilitiesComponent implements OnInit {
       alertType: null
     });
   }
-  confirmationForVoidLease(data:any) {
-    debugger
-    this.leaseId=data.data.LeaseId
+  confirmationForVoidLease(data: any) {
+    this.leaseId = data.data.LeaseId
     this.hiddenConfirmationLease.nativeElement.click();
   }
-  
+
   MarkLeaseAsVoid() {
     this.facilityService.confirmationForVoidLease(true, this.leaseId).subscribe((res) => {
-     if(res.responseCode==200){
-      this.showNotificationOnSucess(res);
-      
-    }
-  else{
-    this.showNotificationOnFailure(res);
-    }
+      if (res.responseCode == 200) {
+        this.showNotificationOnSucess(res);
+        this.getLeaseAgreementsByFacilityId(this.facilityId);
+      }
+      else {
+        this.showNotificationOnFailure(res);
+      }
 
     },
-    (err: any) => {
-      this.errorNotification(err);
-    }
+      (err: any) => {
+        this.errorNotification(err);
+      }
     );
   }
 
