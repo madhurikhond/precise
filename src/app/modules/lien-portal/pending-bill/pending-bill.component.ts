@@ -247,12 +247,13 @@ export class PendingBillComponent implements OnInit {
                 LienPortalStatusMessage.STUDIES_ASSIGNED_TO_FUNDING_CO
               );
               this.getListingData();
-            } else
+            } else{
               this.lienPortalService.errorNotification(
                 LienPortalStatusMessage.COMMON_ERROR
               );
                this.closeAssignBtn.nativeElement.click();
                this.getListingData();
+              }
           },
           () => {
             this.lienPortalService.errorNotification(
