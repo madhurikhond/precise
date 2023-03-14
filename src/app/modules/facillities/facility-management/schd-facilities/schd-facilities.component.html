@@ -3963,9 +3963,12 @@
 
 															</div>
 															<div *dxTemplate="let data of 'ActionTemplate'">
+																
 																<a href="javascript:void(0)" class="link-btn"
-																	(click)="confirmationForVoidLease()">
-																	<i class="fa fa-times"></i>
+																	(click)="confirmationForVoidLease(data)"  *ngIf='data.data.FacilitySignedOn==null'>
+																	<i class="fa fa-times">
+																	
+																	</i>
 																</a>
 																<!-- <p *ngIf='data.data.FacilitySignedOn!==null'>
 																	{{data.data.FacilitySignedOn

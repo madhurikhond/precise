@@ -76,6 +76,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityName: string = '';
   facilityNoteList: any = [];
   facilityId: number;
+  leaseId:number;
   isNoteRequired: boolean = false;
   isTagRequired: boolean = false;
   isIntakeEmailVisible: boolean = false;
@@ -3636,17 +3637,25 @@ export class SchdFacilitiesComponent implements OnInit {
       alertType: null
     });
   }
-  confirmationForVoidLease() {
+  confirmationForVoidLease(data:any) {
     debugger
+    this.leaseId=data.data.LeaseId
     this.hiddenConfirmationLease.nativeElement.click();
-
   }
+  
   MarkLeaseAsVoid() {
-    this.facilityService.confirmationForVoidLease(true, this.voidLease).subscribe((res) => {
+    this.facilityService.confirmationForVoidLease(true, this.leaseId).subscribe((res) => {
+     if(res.responseCode==200){
+      this.showNotificationOnSucess(res);
+      
+    }
+  else{
+    this.showNotificationOnFailure(res);
+    }
 
-      console.error("delete");
- 
-
+    },
+    (err: any) => {
+      this.errorNotification(err);
     }
     );
   }
