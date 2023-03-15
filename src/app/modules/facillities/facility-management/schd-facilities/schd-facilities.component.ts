@@ -1213,6 +1213,7 @@ export class SchdFacilitiesComponent implements OnInit {
   getLeaseAgreementsByFacilityId(facilityId: number) {
 
     this.blockLeaseAgreementMRIList = [];
+    this.defaultPopupTab= this.defaultPopupTab == 'LeaseAgreement_CT'?'LeaseAgreement_MRI': this.defaultPopupTab
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
         ? 'MRI' : 'CT', PageNumber: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' ? this.MRIPageNumber : this.CTPageNumber,

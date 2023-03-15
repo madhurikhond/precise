@@ -3882,7 +3882,7 @@
 										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
 										id="LeaseAgreements">
 										<div class="tab-section">
-											<ul class="nav nav-tabs">
+											<!-- <ul class="nav nav-tabs">
 												<li class="nav-item"> <a class="nav-link"
 														(click)="tabClick('LeaseAgreement_MRI')"
 														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' }"
@@ -3890,10 +3890,11 @@
 												</li>
 												<li class="nav-item"> <a class="nav-link"
 														(click)="tabClick('LeaseAgreement_CT')"
-														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreement_CT'}"
+														[ngClass]="{'active': defaultPopupTab === 'LeModalityaseAgreement_CT'}"
 														data-toggle="tab" href="#LeaseAgreementCT">CT</a>
 												</li>
-											</ul>
+											</ul> -->
+
 											<div class="tab-content">
 												<div class="tab-pane"
 													[ngClass]="defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreements'  ? 'active show' : 'fade'"
@@ -3914,6 +3915,8 @@
 															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
 																[allowEditing]="false">
 															</dxi-column>
+															<dxi-column dataField="ModalityType"
+																caption="Modality"></dxi-column>
 															<dxi-column dataField="ResourceName"
 																caption="Resource Name">
 															</dxi-column>
@@ -3992,6 +3995,7 @@
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
 																</p>
+																<p *ngIf="data.data.IsVoided">N/A</p>
 															</div>
 															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
 																<i *ngIf='data.data.IsPaid == true'>
@@ -4018,7 +4022,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="tab-pane"
+												<!-- <div class="tab-pane"
 													[ngClass]="defaultPopupTab === 'LeaseAgreement_CT'  ? 'active show' : 'fade'"
 													id="LeaseAgreementCT">
 													<div class="table-responsive">
@@ -4097,13 +4101,13 @@
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
 																</p>
 															</div>
-															<!-- <div *dxTemplate="let data of 'dateExecutedOnTemplate'">
+															 <div *dxTemplate="let data of 'dateExecutedOnTemplate'">
 																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
 																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
 																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
 																</p>
 															</div> -->
-															<div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
+															<!-- <div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
 																<i *ngIf='data.data.IsPaid == true'>
 																	<img src="assets/images/paid.png"
 																		class="paid_unpaid_cursor"
@@ -4127,7 +4131,7 @@
 															</pagination-controls>
 														</div>
 													</div>
-												</div>
+												</div> --> 
 											</div>
 										</div>
 									</div>
