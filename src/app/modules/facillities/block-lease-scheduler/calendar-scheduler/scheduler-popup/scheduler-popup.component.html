@@ -51,7 +51,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Lease Time Starts</div>
+                    <div class="theme-label-subtitle">Block Time Starts</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
                     <div class="form-group">
@@ -87,7 +87,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Lease Time Ends</div>
+                    <div class="theme-label-subtitle">Block Time Ends</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
                     <div class="form-group">
@@ -142,8 +142,8 @@
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" value="everyDay">Every</label>
                             <label><input class="dhx_repeat_text" type="text" style="wid
-                            :45px" name="dailyOccranceNumberOfDays"
-                                    formControlName="dailyOccranceNumberOfDays" value="1">day</label> <br>
+                            :45px" name="dailyOccranceNumberOfDays" formControlName="dailyOccranceNumberOfDays"
+                                    value="1">day</label> <br>
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" checked="" value="everySelectedWeekDay">Every
                                 workday</label>
@@ -251,14 +251,14 @@
                                 formControlName="endOccurranceNumberOfDays"
                                 value="endOccurranceNumberOfDays">occurrences<br>
 
-                                <div class="dlflex">  
-                            <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
-                                    formControlName="endOccurrance" name="endOccurrance" />End by</label>
-                            <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
-                            <dx-date-box (onValueChanged)="onOccuranceEndDate()" formControlName="endOccurrancedate"
-                                type="date" onkeydown="return false">
-                            </dx-date-box>
-                        </div>
+                            <div class="dlflex">
+                                <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
+                                        formControlName="endOccurrance" name="endOccurrance" />End by</label>
+                                <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
+                                <dx-date-box (onValueChanged)="onOccuranceEndDate()" formControlName="endOccurrancedate"
+                                    type="date" onkeydown="return false">
+                                </dx-date-box>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -345,7 +345,7 @@
             </div>
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Lease Time Starts</div>
+                    <div class="theme-label-subtitle">Block Time Starts</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
                     <div class="form-group">
@@ -389,7 +389,7 @@
             </div>
             <div class="row" [class.disabled]="LeaseId?true:false">
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
-                    <div class="theme-label-subtitle">Lease Time Ends</div>
+                    <div class="theme-label-subtitle">Block Time Ends</div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 ms-lf-col">
                     <div class="form-group">
@@ -445,7 +445,7 @@
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" value="everyDay">Every</label>
                             <label><input class="dhx_repeat_text" type="text" name="dailyOccranceNumberOfDays"
-                                    formControlName="dailyOccranceNumberOfDays" value="1">day</label> <br>
+                                    formControlName="dailyOccranceNumberOfDays" value="1">days</label> <br>
                             <label><input class="dhx_repeat_radio" type="radio" name="dailyOccurance"
                                     formControlName="dailyOccurance" checked="" value="everySelectedWeekDay">Every
                                 workday</label>
@@ -500,11 +500,11 @@
                             id="dhx_repeat_month">
                             <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                                     name="monthlyOccurance" formControlName="monthlyOccurance"
-                                    value="reapeatMonthlyOccurance">Repeat</label>
-                            <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">day
-                                every</label>
+                                    value="reapeatMonthlyOccurance">REPEAT ON EVERY</label>
+                            <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">DATE OF THE
+                                MONTH AFTER EVERY</label>
                             <label><input class="dhx_repeat_text" type="text" name="reapeat_month_count"
-                                    formControlName="reapeat_month_count" value="1">month</label><br>
+                                    formControlName="reapeat_month_count" value="1">Month(S)</label><br>
                             <label class="dhx_repeat_month_label">
                                 <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance"
                                     formControlName="monthlyOccurance" checked="" value="OnEveryMonthweek">On</label>
@@ -517,11 +517,11 @@
                                     </ng-container>
                                 </select>every</label>
                             <label><input class="dhx_repeat_text" type="text" name="repeatOnEveryMonth"
-                                    formControlName="repeatOnEveryMonth" value="1">month</label>
+                                    formControlName="repeatOnEveryMonth" value="1">month(S)</label>
                         </div>
                         <div id="dhx_repeat_year" style="display:none;">
                             <label class="dhx_repeat_year_label"><input class="dhx_repeat_radio" type="radio"
-                                    name="year_type" value="d">Every</label>
+                                    name="year_type" value="d">After Every</label>
                             <label><input class="dhx_repeat_text" type="text" name="year_day" value="1">day</label>
                             <label><select name="year_month" class="form-control weekselect">
                                     <ng-container *ngFor="let month  of months; let i=index;">
@@ -552,14 +552,14 @@
                             <input class="dhx_repeat_text" type="text" name="endOccurranceNumberOfDays"
                                 formControlName="endOccurranceNumberOfDays"
                                 value="endOccurranceNumberOfDays">occurrences<br>
-                                <div class="dlflex">
-                            <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
-                                    formControlName="endOccurrance" name="endOccurrance" />End by</label>
-                            <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
-                            <dx-date-box (onValueChanged)="onOccuranceEndDate()" formControlName="endOccurrancedate"
-                                type="date" onkeydown="return false">
-                            </dx-date-box>
-                        </div>  
+                            <div class="dlflex">
+                                <label><input class="dhx_repeat_radio" type="radio" value='endByDate'
+                                        formControlName="endOccurrance" name="endOccurrance" />End by</label>
+                                <!-- <input class="dhx_repeat_date" type="text" formControlName = "endOccurrancedate" name="endOccurrancedate" value="25.02.2023"><br>  -->
+                                <dx-date-box (onValueChanged)="onOccuranceEndDate()" formControlName="endOccurrancedate"
+                                    type="date" onkeydown="return false">
+                                </dx-date-box>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -813,13 +813,12 @@
                     FURTHER WILL CREATE A RECURRING BLOCK ANYWAY.
                     <br />
                     DO YOU STILL WANT TO CREATE BLOCKS FOR SELECTED TIME?
-                </p> 
+                </p>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm"
-                     data-dismiss="modal">No</a>
-                <a  href="javascript:void(0)" class="btn btn-theme pull-left btn-sm"
-                    data-dismiss="modal"  (click)="saveBlockLeaseData()">Yes</a>
+                <a href="javascript:void(0)" class="btn btn-border-gray pull-right btn-sm" data-dismiss="modal">No</a>
+                <a href="javascript:void(0)" class="btn btn-theme pull-left btn-sm" data-dismiss="modal"
+                    (click)="saveBlockLeaseData()">Yes</a>
             </div>
         </div>
     </div>
