@@ -501,14 +501,6 @@
                             <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                                     name="monthlyOccurance" formControlName="monthlyOccurance"
                                     value="reapeatMonthlyOccurance">REPEAT ON EVERY</label>
-                                    <input class="dhx_repeat_text" type="text" name="onEveryDayOfWeek"
-                                    formControlName="onEveryDayOfWeek" value="1"><label>
-                                    <select class="form-control weekselect" name="repeatOnEveryMonthWeekDay"
-                                        formControlName="repeatOnEveryMonthWeekDay">
-                                        <ng-container *ngFor="let day  of days; let i=index;">
-                                            <option [value]="i">{{day}}</option>
-                                        </ng-container>
-                                    </select>every</label>
                             <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">DATE OF THE
                                 MONTH AFTER EVERY</label>
                             <label><input class="dhx_repeat_text" type="text" name="reapeat_month_count"
