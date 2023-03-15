@@ -3882,19 +3882,6 @@
 										[ngClass]="defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreement_CT' ? 'active show' : 'fade'"
 										id="LeaseAgreements">
 										<div class="tab-section">
-											<!-- <ul class="nav nav-tabs">
-												<li class="nav-item"> <a class="nav-link"
-														(click)="tabClick('LeaseAgreement_MRI')"
-														[ngClass]="{'active': defaultPopupTab === 'LeaseAgreements' || defaultPopupTab === 'LeaseAgreement_MRI' }"
-														data-toggle="tab" href="#LeaseAgreementMRI">MRI</a>
-												</li>
-												<li class="nav-item"> <a class="nav-link"
-														(click)="tabClick('LeaseAgreement_CT')"
-														[ngClass]="{'active': defaultPopupTab === 'LeModalityaseAgreement_CT'}"
-														data-toggle="tab" href="#LeaseAgreementCT">CT</a>
-												</li>
-											</ul> -->
-
 											<div class="tab-content">
 												<div class="tab-pane"
 													[ngClass]="defaultPopupTab === 'LeaseAgreement_MRI' || defaultPopupTab === 'LeaseAgreements'  ? 'active show' : 'fade'"
@@ -4022,122 +4009,10 @@
 														</div>
 													</div>
 												</div>
-												<!-- <div class="tab-pane"
-													[ngClass]="defaultPopupTab === 'LeaseAgreement_CT'  ? 'active show' : 'fade'"
-													id="LeaseAgreementCT">
-													<div class="table-responsive">
-														<dx-data-grid id="gridContainerLeaseAgreement_CT"
-															[dataSource]="fullblockLeaseAgreementCTList"
-															(onRowUpdated)="onRowUpdated($event)" [showBorders]="true">
-															<dxi-column dataField="LeaseId" caption="Lease #">
-															</dxi-column>
-															<dxi-column cellTemplate="dateCreatedOnTemplate"
-																caption="Lease Created">
-															</dxi-column>
-															<dxi-column cellTemplate="dateExecutedOnTemplate"
-																caption="Lease Executed">
-															</dxi-column>
-															<dxi-column dataField="TimeFrame" caption="Lease Time Frame"
-																[allowEditing]="false">
-															</dxi-column>
-															<dxi-column dataField="ResourceName"
-																caption="Resource Name">
-															</dxi-column>
 
-															<dxi-column dataField="TotalLeaseHours" caption="CT Hours">
-															</dxi-column>
-															<dxi-column dataField="ResourceRatePerHour"
-																caption="CT Rate" cellTemplate="CTRateTemplate">
-															</dxi-column>
-															<dxi-column dataField="TotalAmount" caption="Total"
-																cellTemplate="TotalCTHourTemplate">
-															</dxi-column>
-															<dxi-column caption="Paid"
-																cellTemplate="paidUnpaidIconShowTemplate">
-															</dxi-column>
-															<dxi-column caption="Agreement"
-																cellTemplate="dateExecutedOnTemplate">
-															</dxi-column>
-															<div *dxTemplate="let data of 'CTRateTemplate'">
-																<p *ngIf="data.data.ResourceRatePerHour">
-																	${{data.data.ResourceRatePerHour | number:'0.2-2'}}
-																</p>
-																<p *ngIf="!data.data.ResourceRatePerHour"></p>
-
-															</div>
-															<div *dxTemplate="let data of 'TotalCTHourTemplate'">
-																<p *ngIf="data.data.TotalAmount">
-																	${{data.data.TotalAmount | number:'0.2-2'}}</p>
-																<p *ngIf="!data.data.TotalAmount"></p>
-
-															</div>
-															<div *dxTemplate="let data of 'pdfCTLinkTemplate'">
-																<a href="javascript:void(0)" class="link-btn"
-																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
-																	<i class="fa fa-file-pdf-o"></i>
-																</a>
-																<a href="javascript:void(0)"
-																	class="text-success link-btn"
-																	*ngIf='data.data.IsLeaseExecuted'
-																	data-toggle="modal" data-target="#viewFile_Docx"
-																	style="margin-left: 5px"
-																	(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
-																	<i class="fa fa-file-pdf-o"></i>
-																</a>
-															</div>
-															<div *dxTemplate="let data of 'dateCreatedOnTemplate'">
-																<p>
-																	{{data.data.CreatedOn|
-																	date:dateTimeFormatCustom.Date}}
-																</p>
-															</div>
-															<div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p *ngIf="data.data.FacilitySignedOn">
-																	{{data.data.FacilitySignedOn|date:
-																	dateTimeFormatCustom.Date}}
-																</p>
-																<p *ngIf='data.data.FacilitySignedOn == null'>
-																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
-																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
-																</p>
-															</div>
-															 <div *dxTemplate="let data of 'dateExecutedOnTemplate'">
-																<p  *ngIf = 'data.data.FacilitySignedOn == null'>
-																	<a class="copy-button" (click)="copyToClipboard(currentPageUrl +
-																	data.data.FacilityEsignLink)"><i class="fa fa-copy"></i></a>
-																</p>
-															</div> -->
-															<!-- <div *dxTemplate="let data of 'paidUnpaidIconShowTemplate'">
-																<i *ngIf='data.data.IsPaid == true'>
-																	<img src="assets/images/paid.png"
-																		class="paid_unpaid_cursor"
-																		style="width: 9px;margin-left: 5px">
-																</i>
-																<i *ngIf='data.data.IsUnpaid == true'>
-																	<img src="assets/images/unpaid.png"
-																		class="paid_unpaid_cursor"
-																		style="width: 9px;margin-left: 5px">
-																</i>
-															</div>
-														</dx-data-grid>
-													</div>
-													<div class="pagination-theme">
-														<div class="pagination-theme">
-															<div
-																*ngFor="let item of fullblockLeaseAgreementCTList | paginate: { id: 'pagination_CT' , itemsPerPage: CTpageSize, currentPage: CTPageNumber, totalItems:totalrecordsFull_CT}">
-															</div>
-															<pagination-controls id="pagination_CT"
-																(pageChange)="onPageNumberChangedLeaseAgreements($event,'CT')">
-															</pagination-controls>
-														</div>
-													</div>
-												</div> --> 
 											</div>
 										</div>
 									</div>
-
-
-
 									<div class="tab-pane"
 										[ngClass]="defaultPopupTab == 'Credit/Debit' ? 'active show' : 'fade'"
 										id="CreditandDebit">
