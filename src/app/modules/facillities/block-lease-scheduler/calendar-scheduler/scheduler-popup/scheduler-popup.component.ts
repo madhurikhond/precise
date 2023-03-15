@@ -1078,6 +1078,23 @@ export class SchedulerPopupComponent implements OnInit {
         return;
       }
     }
+    if(this.reccurringBlockForm.controls.repeatEvery.value == 'week' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSunday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringMonday == '' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringTuesday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringWednesday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringThursday == '' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringFriday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSaturday == '' )
+    {
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage: 'Please select atleast one week day.',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return 
+
+    }    
     this.hiddenshowGenericMessage.nativeElement.click();
   }
 
