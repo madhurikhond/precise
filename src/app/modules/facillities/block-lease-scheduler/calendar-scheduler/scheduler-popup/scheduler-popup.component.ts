@@ -11,6 +11,7 @@ import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
 import { CommonMethodService } from '../../../../../services/common/common-method.service';
 import { AlertsRoutingModule } from 'src/app/modules/settings/RIS-settings/alerts/alerts-routing.module';
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 declare const $: any;
 
 @Component({
@@ -503,6 +504,23 @@ export class SchedulerPopupComponent implements OnInit {
     else if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
       this.BlockOffDaysSubmitted = false;
       this.submitted = true;
+      if(this.reccurringBlockForm.controls.repeatEvery.value == 'week' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSunday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringMonday == '' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringTuesday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringWednesday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringThursday == '' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringFriday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSaturday == '' )
+      {
+        this.notificationService.showNotification({ 
+          alertHeader : null,
+          alertMessage: 'Please select atleast one week day.',
+          alertType: ResponseStatusCode.BadRequest
+        });
+        return 
+
+      }
       if (this.leaseForm.invalid) {
         return;
       }
@@ -510,7 +528,6 @@ export class SchedulerPopupComponent implements OnInit {
         this.saveCreditInfo();
       } else {
         var reccurBody = this.calculateRecurringData()
-        console.log(reccurBody)
         let body = {
           'LeaseId': this.LeaseBlockId,
           'facilityId': this.FacilityID,
