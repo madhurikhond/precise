@@ -55,7 +55,7 @@
                         </ng-select>
                     </div>
                 </div>
-                <!--
+                <!-- 
                 <div class="form-group">
                     <div class="theme-label">ATTORNEY</div>
                     <div class="input-group input-loader">
@@ -494,64 +494,58 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="table-responsive manual-table">
+                            <table class="table table-theme">
+                                <thead>
+                                    <tr>
+                                        <th width="100">DOS</th>
+                                        <th width="100">DOCTOR</th>
+                                        <th width="100">FACILITY</th>
+                                        <th width="100">ATTORNEY</th>
+                                        <th width="100">FUNDING COMPANY</th>
+                                        <th width="100">STUDY DESCRIPTION</th>
+                                        <th width="100">MIN</th>
+                                        <th width="100">ALLOC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let settle of studyDetail.settleData">
+                                        <td>{{settle.Dos | date: dateTimeFormatCustom.Date}}</td>
+                                        <td>{{settle.Doctor}}</td>
+                                        <td>{{settle.FacilityName}}</td>
+                                        <td>{{settle.ATTORNEY}}</td>
+                                        <td>{{settle.BROKER}}</td>
+                                        <td>{{settle.STUDYDESCRIPTION}}</td>
+                                        <td>{{settle.MinPrice==null?settle.Defaulltprice: settle.MinPrice}}</td>
+                                        <td><input class="form-control" type="text" appTwoDigitDecimaNumber
+                                                [(ngModel)]="settle.AllocatedAmount"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form [formGroup]="addNoteForm">
+                            <div class="user-detail">
+                                <div class="input-group">
+                                    <textarea formControlName="noteText" class="form-control"
+                                        placeholder="Enter any notes related to this settlement here"></textarea>
+                                </div>
+                            </div>
+                            <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
+                                <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
+                                    text</small>
+                            </div>
+                            <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
+                                class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
+                        </form>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                      <form [formGroup]="addNoteForm">
-                        <div class="user-detail">
-                            <div class="input-group">
-                                <textarea formControlName="noteText" class="form-control"
-                                    placeholder="Enter any notes related to this settlement here"></textarea>
+                        <div id="divNoteList" class="note-list">
+                            <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
+                                <div class="name">{{note.UserName}}</div>
+                                <p>{{note.Note}}</p>
                             </div>
                         </div>
-                        <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
-                            <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
-                                text</small>
-                        </div>
-                        <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
-                            class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
-                    </form>
-                      <div id="divNoteList" class="note-list settementNote">
-                          <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
-                              <div class="name">{{note.UserName}}</div>
-                              <p>{{note.Note}}</p>
-                          </div>
-                      </div>
                     </div>
-                </div>
-                <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="table-responsive manual-table">
-                      <table class="table table-theme">
-                          <thead>
-                              <tr>
-                                  <th width="100">DOS</th>
-                                  <th width="100">DOCTOR</th>
-                                  <th width="100">FACILITY</th>
-                                  <th width="100">ATTORNEY</th>
-                                  <th width="100">FUNDING COMPANY</th>
-                                  <th width="100">STUDY DESCRIPTION</th>
-                                  <th width="100">CPT Code</th>
-                                  <th width="100">MIN</th>
-                                  <th width="100">ALLOC</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr *ngFor="let settle of studyDetail.settleData">
-                                  <td>{{settle.Dos | date: dateTimeFormatCustom.Date}}</td>
-                                  <td>{{settle.Doctor}}</td>
-                                  <td>{{settle.FacilityName}}</td>
-                                  <td>{{settle.ATTORNEY}}</td>
-                                  <td>{{settle.BROKER}}</td>
-                                  <td>{{settle.STUDYDESCRIPTION}}</td>
-                                  <td>{{settle.CPTCode}}</td>
-                                  <td>{{settle.MinPrice==null?settle.Defaulltprice: settle.MinPrice}}</td>
-                                  <td><input class="form-control" type="text" appTwoDigitDecimaNumber
-                                          [(ngModel)]="settle.AllocatedAmount"></td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-                  </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -736,26 +730,12 @@
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                      <form [formGroup]="addNoteForm">
-                        <div class="user-detail">
-                            <div class="input-group">
-                                <textarea formControlName="noteText" class="form-control"
-                                    placeholder="Enter any notes related to this settlement here"></textarea>
+                        <div id="divNoteList" class="note-list">
+                            <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
+                                <div class="name">{{note.UserName}}</div>
+                                <p>{{note.Note}}</p>
                             </div>
                         </div>
-                        <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
-                            <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
-                                text</small>
-                        </div>
-                        <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
-                            class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
-                    </form>
-                      <div id="divNoteList" class="note-list settementNote">
-                          <div id="{{note.Id}}" *ngFor="let note of noteList" class="note-list-inner">
-                              <div class="name">{{note.UserName}}</div>
-                              <p>{{note.Note}}</p>
-                          </div>
-                      </div>
                     </div>
                 </div>
                 <div class="table-responsive manual-table">
@@ -768,7 +748,6 @@
                                 <th width="100">ATTORNEY</th>
                                 <th width="100">FUNDING COMPANY</th>
                                 <th width="100">STUDY DESCRIPTION</th>
-                                <th width="100">CPT Code</th>
                                 <th width="100">MIN</th>
                                 <th width="100">ALLOC</th>
                             </tr>
@@ -781,7 +760,6 @@
                                 <td>{{settle.ATTORNEY}}</td>
                                 <td>{{settle.BROKER}}</td>
                                 <td>{{settle.STUDYDESCRIPTION}}</td>
-                                <td>{{settle.CPTCode}}</td>
                                 <td>{{settle.MinPrice==null?settle.Defaulltprice: settle.MinPrice}}</td>
                                 <td><input class="form-control" type="text" appTwoDigitDecimaNumber
                                         [(ngModel)]="settle.AllocatedAmount"></td>
@@ -789,6 +767,21 @@
                         </tbody>
                     </table>
                 </div>
+                <form [formGroup]="addNoteForm">
+                    <div class="user-detail">
+                        <div class="input-group">
+                            <textarea formControlName="noteText" class="form-control"
+                                placeholder="Enter any notes related to this settlement here"></textarea>
+                        </div>
+                    </div>
+                    <div *ngIf="noteSubmitted && nForm.noteText" class="tooltiptext text-right">
+                        <small class="error text-danger" *ngIf="nForm.noteText.invalid">Please write some
+                            text</small>
+                    </div>
+                    <button type="button" [attr.data-dismiss]="modelValue" (click)="addSettleNote()"
+                        class="btn btn-theme btn-sm" data-dismiss="modal">Add Note</button>
+                </form>
+
             </div>
             <div class="modal-footer">
                 <button (click)="settleSubmit1(true)" type="button" class="btn btn-theme pull-left btn-sm"
