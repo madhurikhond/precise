@@ -3935,6 +3935,7 @@
 															</div>
 															<div *dxTemplate="let data of 'pdfMRILinkTemplate'">
 																<a href="javascript:void(0)" class="link-btn"
+																*ngIf='!data.data.IsVoided'
 																	data-toggle="modal" data-target="#viewFile_Docx"
 																	(click)="get3pLeaseFacilityData(data.data.LeaseAgreementPath,'')">
 																	<i class="fa fa-file-pdf-o"></i>
@@ -3947,7 +3948,12 @@
 																	(click)="get3pLeaseFacilityData(data.data.FacilitySignedAgreement,'')">
 																	<i class="fa fa-file-pdf-o"></i>
 																</a>
-
+																<a href="javascript:void(0)" class="link-btn text-danger"
+																*ngIf='data.data.IsVoided'
+																	data-toggle="modal" data-target="#viewFile_Docx"
+																	(click)="get3pLeaseFacilityData(data.data.VoidedAgreement,'')">
+																	<i class="fa fa-file-pdf-o "></i>
+																</a>
 															</div>
 															<div *dxTemplate="let data of 'ActionTemplate'">
 
