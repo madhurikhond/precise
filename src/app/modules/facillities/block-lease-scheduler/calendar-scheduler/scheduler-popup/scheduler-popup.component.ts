@@ -774,6 +774,7 @@ export class SchedulerPopupComponent implements OnInit {
       repeatOnEveryMonth: ['1'],
       repeatOnEveryMonthWeekDay: ['1'],
       onEveryDayOfWeek: ['1'],
+      DayOfMonth  :['1'],
       weekOccuranceDays: this.fb.array([
       ]),
       totalDays: [0]
@@ -970,6 +971,7 @@ export class SchedulerPopupComponent implements OnInit {
           rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.reapeat_month_count.value + '_' + '_' + '_' + this.endOccurance,
           rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.reapeat_month_count.value + '_' + '_' + '_',
           event_length: reccurringEventLength,
+          DayOfMonth : this.reccurringBlockForm.controls.DayOfMonth.value,
           text: JSON.stringify(this.reccurringBlockForm.value)
         }
       } else if (this.reccurringBlockForm.controls.monthlyOccurance.value == 'OnEveryMonthweek') {
@@ -980,6 +982,7 @@ export class SchedulerPopupComponent implements OnInit {
           rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonth.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value + '_' + this.reccurringBlockForm.controls.onEveryDayOfWeek.value + '_' + this.endOccurance,
           rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonth.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value + '_' + this.reccurringBlockForm.controls.onEveryDayOfWeek.value + '_',
           event_length: reccurringEventLength,
+          //DayOfMonth : this.reccurringBlockForm.controls.DayOfMonth.value,
           text: JSON.stringify(this.reccurringBlockForm.value)
         }
       }
