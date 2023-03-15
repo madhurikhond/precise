@@ -1067,6 +1067,7 @@ export class SchedulerPopupComponent implements OnInit {
 
   ShowGenericMessage() {
     this.submitted = true;
+    this.BlockOffDaysSubmitted=true;
     if (!this.isBlockOffTime) {
       if (this.leaseBlockOffForm.invalid) {
         return;
