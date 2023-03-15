@@ -501,15 +501,21 @@
                             <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                                     name="monthlyOccurance" formControlName="monthlyOccurance"
                                     value="reapeatMonthlyOccurance">REPEAT ON EVERY</label>
-                            <label><input class="dhx_repeat_text" type="text" name="month_day" value="1">DATE OF THE
+                            <label><select class="form-control weekselect" type="text" name="month_day" value="number">
+                                    <ng-container *ngFor="let item of numbers; let i=index;">
+                                        <option [value]="item">{{item}}</option>
+                                    </ng-container></select> DATE OF THE
                                 MONTH AFTER EVERY</label>
                             <label><input class="dhx_repeat_text" type="text" name="reapeat_month_count"
                                     formControlName="reapeat_month_count" value="1">Month(S)</label><br>
                             <label class="dhx_repeat_month_label">
                                 <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance"
                                     formControlName="monthlyOccurance" checked="" value="OnEveryMonthweek">On</label>
-                            <input class="dhx_repeat_text" type="text" name="onEveryDayOfWeek"
-                                formControlName="onEveryDayOfWeek" value="1"><label>
+                            <select class="form-control weekselect" type="text" name="onEveryDayOfWeek"
+                                formControlName="onEveryDayOfWeek" value="number">
+                                <ng-container *ngFor="let item of onNumber; let i=index;">
+                                <option [value]="item">{{item}}</option>
+                                 </ng-container></select><label>
                                 <select class="form-control weekselect" name="repeatOnEveryMonthWeekDay"
                                     formControlName="repeatOnEveryMonthWeekDay">
                                     <ng-container *ngFor="let day  of days; let i=index;">
