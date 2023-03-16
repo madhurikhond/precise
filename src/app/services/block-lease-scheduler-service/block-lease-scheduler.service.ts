@@ -13,11 +13,11 @@ export class BlockLeaseSchedulerService {
 
 
   sendDataToCalendarScheduler: EventEmitter<any> = new EventEmitter<any>();
- 
+
   sendDataToCalendarSchedulerWindow(body: any): void {
     this.sendDataToCalendarScheduler.emit(body);
   }
- 
+
   constructor(private readonly _httpService: HttpService, private readonly storageService: StorageService,) { }
   getScheduleStatusList(showGlobalLoader: boolean = true) {
     return this._httpService.get(`BlockLeaseScheduler/GetScheduleStatusList`, showGlobalLoader).pipe(
@@ -45,7 +45,7 @@ export class BlockLeaseSchedulerService {
     );
   }
 
-  getAllLeasesOfFacilityByStatus( Body: any,showGlobalLoader: boolean = true) {
+  getAllLeasesOfFacilityByStatus(Body: any, showGlobalLoader: boolean = true) {
     return this._httpService.post(`BlockLeaseScheduler/GetAllLeasesOfFacilityByStatus`, Body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
@@ -55,7 +55,7 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string, UserId : any) {
+  getBlockLeaseData(showGlobalLoader: boolean = true, FacilityId: string, UserId: any) {
     return this._httpService.get(`BlockLeaseScheduler/GetBlockLeaseData?FacilityId=${FacilityId}&UserId=${UserId}`, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
@@ -91,8 +91,13 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  deleteBlockLeaseById(showGlobalLoader: boolean = true, LeaseBlockId: any) {
-    return this._httpService.post(`BlockLeaseScheduler/DeleteBlockLeaseById`, LeaseBlockId, showGlobalLoader).pipe(
+  deleteBlockLeaseById(showGlobalLoader: boolean = true, LeaseBlockId: any, RecurEventId: any) {
+    var body = {
+      'LeaseId': LeaseBlockId??0,
+      'RecurEventId': RecurEventId??0
+    }
+
+    return this._httpService.post(`BlockLeaseScheduler/DeleteBlockLeaseById`, body, showGlobalLoader).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -126,9 +131,9 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  getTotalAmountToPay(showGlobalLoader : boolean= true,frontendJsonInput:string){
-    return this._httpService.post(`BlockLeaseScheduler/GetTotalAmountToPay`,frontendJsonInput,showGlobalLoader,true).pipe(
-      map((res:ApiResponse) => res)
+  getTotalAmountToPay(showGlobalLoader: boolean = true, frontendJsonInput: string) {
+    return this._httpService.post(`BlockLeaseScheduler/GetTotalAmountToPay`, frontendJsonInput, showGlobalLoader, true).pipe(
+      map((res: ApiResponse) => res)
     );
   }
   validateEmailLinkAndSaveFacilitySign(showGlobalLoader: boolean = true, body: any) {
@@ -137,12 +142,12 @@ export class BlockLeaseSchedulerService {
     );
   }
   getLeaseDetail(showGlobalLoader: boolean = true, key: string) {
-    return this._httpService.post(`BlockLeaseScheduler/GetLeaseDetail`, key, showGlobalLoader,true).pipe(
+    return this._httpService.post(`BlockLeaseScheduler/GetLeaseDetail`, key, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
-    );   
+    );
   }
   deleteUnusedCreditByCreditId(showGlobalLoader: boolean = true, frontendJsonInput: string) {
-    return this._httpService.post(`BlockLeaseScheduler/DeleteUnusedCreditById`, frontendJsonInput, showGlobalLoader,true).pipe(
+    return this._httpService.post(`BlockLeaseScheduler/DeleteUnusedCreditById`, frontendJsonInput, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res)
     );
   }
@@ -151,9 +156,9 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res)
     );
   }
-  ApproveAndSendLeaseToFacilityToAll(showGlobalLoader : boolean = true,body:any){
-    return this._httpService.post(`BlockLeaseScheduler/ApproveAndSendLeaseToFacilityToAll`,body,showGlobalLoader).pipe(
-      map((res:ApiResponse) => res)
+  ApproveAndSendLeaseToFacilityToAll(showGlobalLoader: boolean = true, body: any) {
+    return this._httpService.post(`BlockLeaseScheduler/ApproveAndSendLeaseToFacilityToAll`, body, showGlobalLoader).pipe(
+      map((res: ApiResponse) => res)
     );
   }
   getAlreadyBlockedOffDaysModalityBased(showGlobalLoader: boolean = true, Body: any) {
@@ -161,8 +166,8 @@ export class BlockLeaseSchedulerService {
       map((res: ApiResponse) => res));
   }
 
-  ManageReminderSettings(showGlobalLoader: boolean = true, Body: any){
-    return this._httpService.post(`BlockLeaseScheduler/ManageReminderSettings`, Body, showGlobalLoader,true).pipe(
+  ManageReminderSettings(showGlobalLoader: boolean = true, Body: any) {
+    return this._httpService.post(`BlockLeaseScheduler/ManageReminderSettings`, Body, showGlobalLoader, true).pipe(
       map((res: ApiResponse) => res));
   }
 }
