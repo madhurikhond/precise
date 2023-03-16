@@ -661,9 +661,9 @@
                             </select>
                         </div>
 
-                        <div *ngIf="(BlockOffDaysSubmitted && editBlockOffFormControls.modalityType.errors)"
+                        <div *ngIf="(BlockOffDaysSubmitted && editFormControls.modalityType.errors)"
                             class="invalid-feedback">
-                            <div *ngIf="editBlockOffFormControls.modalityType.errors?.required">
+                            <div *ngIf="editFormControls.modalityType.errors?.required">
                                 modality is required</div>
                         </div>
                         <div *ngIf="(submitted && editFormControls.creditHours.errors)" class="invalid-feedback">
