@@ -7504,3 +7504,23 @@ select {
 				#gridContainerBlockLeasePaymentList .dx-master-detail-row {
 					pointer-events: none !important;
 				}
+				.monthselected{
+					width: 50px;
+					margin: 0px;
+					display: inline-block;
+					outline: none;
+					box-shadow: none;
+					font-size: 14px;
+					padding: 0px 10px;
+					min-height: 30px;
+					height: 30px;
+					position: relative;
+					border-radius: 6px;
+					border: 1px solid rgba(0, 0, 0, 0.1);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-top: -4px;
+					margin-right: 10px;
+				}
+				

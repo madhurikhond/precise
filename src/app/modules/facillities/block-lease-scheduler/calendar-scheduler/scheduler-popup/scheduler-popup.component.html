@@ -198,7 +198,7 @@
                             <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                                     name="monthlyOccurance" formControlName="monthlyOccurance"
                                     value="reapeatMonthlyOccurance">REPEAT ON EVERY</label>
-                            <label><select class="form-control weekselect" type="text" formControlName="DayOfMonth"
+                            <label><select class="form-control monthselected" type="text" formControlName="DayOfMonth"
                                     name="DayOfMonth" value="number">
                                     <ng-container *ngFor="let item of numbers; let i=index;">
                                         <option [value]="item">{{item}}</option>
@@ -209,7 +209,7 @@
                             <label class="dhx_repeat_month_label">
                                 <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance"
                                     formControlName="monthlyOccurance" checked="" value="OnEveryMonthweek">On</label>
-                            <select class="form-control weekselect" type="text" name="onEveryDayOfWeek"
+                            <select class="form-control monthselected" type="text" name="onEveryDayOfWeek"
                                 formControlName="onEveryDayOfWeek" value="number">
                                 <ng-container *ngFor="let item of onNumber; let i=index;">
                                     <option [value]="item">{{item}}</option>
@@ -507,7 +507,7 @@
                             <label class="dhx_repeat_month_label"><input class="dhx_repeat_radio" type="radio"
                                     name="monthlyOccurance" formControlName="monthlyOccurance"
                                     value="reapeatMonthlyOccurance">REPEAT ON EVERY</label>
-                            <label><select class="form-control weekselect" type="text" formControlName="DayOfMonth"
+                            <label><select class="form-control monthselected" type="text" formControlName="DayOfMonth"
                                     name="DayOfMonth" value="number">
                                     <ng-container *ngFor="let item of numbers; let i=index;">
                                         <option [value]="item">{{item}}</option>
@@ -518,7 +518,7 @@
                             <label class="dhx_repeat_month_label">
                                 <input class="dhx_repeat_radio" type="radio" name="monthlyOccurance"
                                     formControlName="monthlyOccurance" checked="" value="OnEveryMonthweek">On</label>
-                            <select class="form-control weekselect" type="text" name="onEveryDayOfWeek"
+                            <select class="form-control monthselected" type="text" name="onEveryDayOfWeek"
                                 formControlName="onEveryDayOfWeek" value="number">
                                 <ng-container *ngFor="let item of onNumber; let i=index;">
                                     <option [value]="item">{{item}}</option>
