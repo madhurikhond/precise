@@ -166,7 +166,14 @@ export class LienPortalComponent implements OnInit {
         break;
       case LienPortalTabName.ASSIGN_UNPAID:
         this.filter.fundingCompany = this.filterForm.controls.fundingCompany.value;
-        this.filter.isFundingCompanySigned = Boolean(parseInt(this.filterForm.controls.fundingCoSigned.value));
+        if(this.filterForm.controls.fundingCoSigned.value == 'null')
+        {
+          this.filter.isFundingCompanySigned = null;
+        }
+        else
+        {
+          this.filter.isFundingCompanySigned = Boolean(parseInt(this.filterForm.controls.fundingCoSigned.value));
+        }
         break;
       case LienPortalTabName.ASSIGN_PAID:
         this.filter.fundingCompany = this.filterForm.controls.fundingCompany.value;
@@ -192,7 +199,7 @@ export class LienPortalComponent implements OnInit {
       dateTo: '',
       dateType: '',
       fundingCompany: '',
-      fundingCoSigned: 0,
+      fundingCoSigned: 'null',
       check: '',
       checkNumber: '',
     });
