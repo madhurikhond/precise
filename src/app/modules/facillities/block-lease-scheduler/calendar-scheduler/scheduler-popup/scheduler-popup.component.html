@@ -122,13 +122,13 @@
                 </div>
             </div>
             <div class="repeater-block">
-                <div class="rep-head">
+                <div  class="rep-head">
                     <strong>Repeat Event</strong>
                     <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
                     </span>
                 </div>
-                <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
-                    <div *ngIf="showReccuringBlock" class="rp-tab-block">
+                <form [formGroup]="reccurringBlockForm " class="theme-form css-frm" >
+                    <div *ngIf="showReccuringBlock" class="rp-tab-block" >
                         <div class="radio-tabs lab-space">
                             <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery"
                                     formControlName="repeatEvery" value="day" id="" checked>Daily</label>
@@ -430,14 +430,14 @@
                     </div>
                 </div>
             </div>
-            <div class="repeater-block">
+            <div class="repeater-block"[class.disabled]="LeaseId?true:false">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
                     <span id="repeat-control"
                         (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
-                <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
-                    <div *ngIf="showReccuringBlock" class="rp-tab-block">
+                <form [formGroup]="reccurringBlockForm" class="theme-form css-frm ">
+                    <div *ngIf="showReccuringBlock" class="rp-tab-block ">
                         <div class="radio-tabs lab-space">
                             <label><input class="dhx_repeat_radio" type="radio" name="repeatEvery"
                                     formControlName="repeatEvery" value="day" id="" checked>Daily</label>
