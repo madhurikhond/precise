@@ -33,3 +33,7 @@
 
           .dlflex .dx-texteditor.dx-editor-outlined{height: 30px;
             width: 139px; padding-left: 0px;}
+
+            .disable-btn{   border: 1px solid #dbdbdb;
+            
+              color: #ababab;}

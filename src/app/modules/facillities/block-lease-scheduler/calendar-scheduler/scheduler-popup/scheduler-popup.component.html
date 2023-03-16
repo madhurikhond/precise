@@ -124,7 +124,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
+                    <span id="repeat-control" class="disable-btn" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
                     </span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
@@ -433,7 +433,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control"
+                    <span id="repeat-control" class="disable-btn"
                         (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
@@ -577,7 +577,7 @@
                     </div>
                 </form>
             </div>
-
+<div class="clearfix"></div>
             <div class="row" *ngIf="isLeaseSigned">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="theme-label-title">Credits</div>
