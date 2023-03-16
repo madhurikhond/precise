@@ -124,7 +124,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" class="disable-btn" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
+                    <span id="repeat-control"  [class.disable-btn]="LeaseId || IsRecurEvent ?true:false" (click)="changetxtFunction()"> {{showReccuringBlock?'Enabled':'Disabled'}}
                     </span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
@@ -433,7 +433,7 @@
             <div class="repeater-block">
                 <div class="rep-head">
                     <strong>Repeat Event</strong>
-                    <span id="repeat-control" class="disable-btn"
+                    <span id="repeat-control" [class.disable-btn]="LeaseId || IsRecurEvent?true:false"
                         (click)="changetxtFunction()">{{showReccuringBlock?'Enabled':'Disabled'}}</span>
                 </div>
                 <form [formGroup]="reccurringBlockForm" class="theme-form css-frm">
