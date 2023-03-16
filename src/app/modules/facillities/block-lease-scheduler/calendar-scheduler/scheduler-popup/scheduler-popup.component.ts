@@ -141,6 +141,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   leaseFormInitialization() {
+    debugger
     var eTime = new Date(this.event['end_date']);
     eTime.setSeconds(eTime.getSeconds() + 1);
     this.leaseForm = this.formBuilder.group({
@@ -643,9 +644,10 @@ export class SchedulerPopupComponent implements OnInit {
 
   }
   onOccuranceEndDate() {
-    var start_date = new Date(this.editBlockOffFormControls.start_date.value);
+    debugger
+    var start_date = new Date(this.leaseForm.controls.start_date.value);
     var reccurance_end_date = new Date(this.reccurringBlockForm.controls.endOccurrancedate.value);
-    if (this.editBlockOffFormControls.end_date.value != null) {
+    if (this.leaseForm.controls.end_date.value != null) {
       if (Date.parse(reccurance_end_date.toDateString()) < Date.parse(start_date.toDateString())) {
         this.reccurringBlockForm.patchValue({
           endOccurrancedate: null,
