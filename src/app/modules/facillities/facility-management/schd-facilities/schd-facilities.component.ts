@@ -17,6 +17,7 @@ import { environment } from '../../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
+import { from } from 'rxjs';
 
 declare const $: any;
 
@@ -31,8 +32,8 @@ export class SchdFacilitiesComponent implements OnInit {
   hiddenDeleteTagPopUpButton: ElementRef;
   @ViewChild('hiddenAddEditPopUpItem', { read: ElementRef })
   hiddenAddEditPopUpItem: ElementRef;
-  @ViewChild('hiddenConfirmationLeaseBtn', { static: false })
-  hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenConfirmationLeaseBtn', { static: false }) hiddenConfirmationLeaseBtn: ElementRef;
+  @ViewChild('hiddenConfirmationLease', { static: false }) hiddenConfirmationLease: ElementRef;
   @ViewChild('hiddenViewFile', { read: ElementRef }) hiddenViewFile: ElementRef;
   @ViewChild('hiddenDeleteUnusedCreditLink', { read: ElementRef }) hiddenDeleteUnusedCreditLink: ElementRef;
   @Input() isGridDisplay: boolean = true;
@@ -75,6 +76,7 @@ export class SchdFacilitiesComponent implements OnInit {
   facilityName: string = '';
   facilityNoteList: any = [];
   facilityId: number;
+  leaseId: number;
   isNoteRequired: boolean = false;
   isTagRequired: boolean = false;
   isIntakeEmailVisible: boolean = false;
@@ -130,6 +132,7 @@ export class SchdFacilitiesComponent implements OnInit {
   numberPattern: any = /^\d{0,4}(\.\d{1,2})?$/;
   sendDataDocManager: any;
   allowUpdatingPrice: boolean = false;
+  voidLease: any;
   name = 'ng2-ckeditor';
   //ckeConfig: CKEDITOR.config;
   ckeConfig: any;
@@ -155,9 +158,9 @@ export class SchdFacilitiesComponent implements OnInit {
   selectedleaseArray: any = []; selectedRows: any = [];
   readonly commonRegex = CommonRegex;
   currentPageUrl: string;
-  CTpageSize :number = 20;
-  CTPageNumber  : number =1 ;
-  isSendLeaseToFacility : any;
+  CTpageSize: number = 20;
+  CTPageNumber: number = 1;
+  isSendLeaseToFacility: any;
   //   config = {
   //     uiColor: '#ffffff',
   //     toolbarGroups: [{ name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -202,14 +205,14 @@ export class SchdFacilitiesComponent implements OnInit {
           this.defaultPopupTab = res.type;
         }
         if (res.facilityId && res.clickOnIcon == 1) {
-          this.pageNumberOfUnpaidLeases = 1 ;
-          this.pageNumberOfPaid =1 ;
-          this.MRIPageNumber =1 
-          this.CTPageNumber =1
-          this.pageNumberOfUnusedCredits =1;
+          this.pageNumberOfUnpaidLeases = 1;
+          this.pageNumberOfPaid = 1;
+          this.MRIPageNumber = 1
+          this.CTPageNumber = 1
+          this.pageNumberOfUnusedCredits = 1;
           this.getLeaseAgreementsByFacilityId(res.facilityId)
         }
-       
+
       }
     });
     facilityService.sendDataToschdFacilities.subscribe((res) => {
@@ -225,7 +228,7 @@ export class SchdFacilitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentPageUrl =  window.location.href.split('m/')[0]+'m/facilities/3p-block-lease-scheduler';
+    this.currentPageUrl = window.location.href.split('m/')[0] + 'm/facilities/3p-block-lease-scheduler';
     console.log(this.currentPageUrl)
     this.pageSize =
       this.pageSizeArray.filter((x) => x.IsSelected).length > 0
@@ -342,7 +345,7 @@ export class SchdFacilitiesComponent implements OnInit {
     this.hiddenViewFile.nativeElement.click();
   }
   closePDF() {
-   
+
     //  $('#viewFile_Doc').hide();
   }
   getActiveEpicUsers() {
@@ -443,7 +446,7 @@ export class SchdFacilitiesComponent implements OnInit {
       previousFacilityName1: [''],
       previousFacilityName2: [''],
       schedFacilityTaxID: [''],
-     
+
     });
   }
   createFacilityDetailTabForm() {
@@ -475,7 +478,7 @@ export class SchdFacilitiesComponent implements OnInit {
       schedulingCellPhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       schedulingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
-      defaultEmailAddress3P: ['', [Validators.required,Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
+      defaultEmailAddress3P: ['', [Validators.required, Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       emailAddress13P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       emailAddress23P: ['', [Validators.email, Validators.pattern(this.commonRegex.EmailRegex)]],
       imagesContact: [''],
@@ -491,7 +494,7 @@ export class SchdFacilitiesComponent implements OnInit {
       billingHomePhone: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       billingFax: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       useBlockLease: [''],
-      isSendLeaseToFacility : [''],
+      isSendLeaseToFacility: [''],
     });
 
   }
@@ -1000,14 +1003,14 @@ export class SchdFacilitiesComponent implements OnInit {
         this.getblockLeasePaymentByFacilityId(this.facilityId);
         this.getUnpaidLeases();
         this.getFacilityCreditsUnUsed();
-        if(this.modalityServiceForm.controls.mriservice.value){
+        if (this.modalityServiceForm.controls.mriservice.value) {
           this.onChangeService('mri');
         }
-        
-        if(this.modalityServiceForm.controls.ctservice.value){
+
+        if (this.modalityServiceForm.controls.ctservice.value) {
           this.onChangeService('ct');
         }
-       
+
       }
     }, (err: any) => {
       this.errorNotification(err);
@@ -1197,23 +1200,24 @@ export class SchdFacilitiesComponent implements OnInit {
       }
     }
   }
-  onEditorPreparing(e) {  
-    if (e.dataField === "ContrastCostPerUnit" || e.dataField === "LeaseRatePerHour") {  
-      e.editorOptions.onKeyPress = function(args) {  
-        var event = args.event;  
-        if (!/[0-9]/.test(String.fromCharCode(event.keyCode)))  
-          event.preventDefault();  
-      }  
-    }  
+  onEditorPreparing(e) {
+    if (e.dataField === "ContrastCostPerUnit" || e.dataField === "LeaseRatePerHour") {
+      e.editorOptions.onKeyPress = function (args) {
+        var event = args.event;
+        if (!/[0-9]/.test(String.fromCharCode(event.keyCode)))
+          event.preventDefault();
+      }
+    }
   }
 
   getLeaseAgreementsByFacilityId(facilityId: number) {
-   
+
     this.blockLeaseAgreementMRIList = [];
+    this.defaultPopupTab= this.defaultPopupTab == 'LeaseAgreement_CT'?'LeaseAgreement_MRI': this.defaultPopupTab
     let body: any = {
       FacilityId: facilityId, Modality: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'
-        ? 'MRI' : 'CT', PageNumber:  this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' ? this.MRIPageNumber :this.CTPageNumber,
-         PageSize:this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI'  ?this.MRIpageSize : this.CTpageSize
+        ? 'MRI' : 'CT', PageNumber: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' ? this.MRIPageNumber : this.CTPageNumber,
+      PageSize: this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'LeaseAgreement_MRI' ? this.MRIpageSize : this.CTpageSize
     };
 
     this.facilityService.getLeaseAgreementsByFacilityId(true, body).subscribe((res) => {
@@ -1233,10 +1237,10 @@ export class SchdFacilitiesComponent implements OnInit {
     });
   }
   onPageNumberChangedLeaseAgreements(pageNumber: number, type: any) {
-    if(type == 'MRI'){
+    if (type == 'MRI') {
       this.MRIPageNumber = pageNumber;
     }
-    if(type == 'CT'){
+    if (type == 'CT') {
       this.CTPageNumber = pageNumber;
     }
 
@@ -1489,7 +1493,7 @@ export class SchdFacilitiesComponent implements OnInit {
       schedFacilityTaxID: data.schedFacilityTaxID,
 
     });
-   
+
     if (data.overridePrice) this.allowUpdatingPrice = true;
     else this.allowUpdatingPrice = false;
   }
@@ -1586,7 +1590,7 @@ export class SchdFacilitiesComponent implements OnInit {
       billingHomePhone: data.billingHomePhone,
       billingFax: data.billingFax,
       useBlockLease: data.useBlockLease,
-      isSendLeaseToFacility : data.isSendLeaseToFacility
+      isSendLeaseToFacility: data.isSendLeaseToFacility
     });
   }
   setModalityServiceTabForm(data: any) {
@@ -1887,7 +1891,7 @@ export class SchdFacilitiesComponent implements OnInit {
       });
     }
     this.isIntakeScreeningAndWaiverVisible = data.isPacketDocOnly;
-    this.isIntakeFaxVisible =  data.isFaxIntakePacket;
+    this.isIntakeFaxVisible = data.isFaxIntakePacket;
     this.isIntakeEmailVisible = data.isEmailIntakePacket;
     this.facilityIntakeForm.patchValue({
       isPacketDocOnly: data.isPacketDocOnly,
@@ -2037,7 +2041,7 @@ export class SchdFacilitiesComponent implements OnInit {
     );
   }
   updateFacility(isPopUpStay: boolean) {
-    if(this.facilityContactDetailForm.get('isSendLeaseToFacility').value == false){
+    if (this.facilityContactDetailForm.get('isSendLeaseToFacility').value == false) {
       this.facilityContactDetailForm.get('defaultEmailAddress3P').clearValidators();
       this.facilityContactDetailForm.get('emailAddress13P').clearValidators();
       this.facilityContactDetailForm.get('emailAddress23P').clearValidators();
@@ -2469,7 +2473,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalValue = '';
       return;
     }
-   
+
     let body = {
       ///// General Tab Form Controls
       facilityId: 0,
@@ -2486,7 +2490,7 @@ export class SchdFacilitiesComponent implements OnInit {
       isActive: this.generalInfoFormControls.isActive.value,
       doNotScheduleFacility:
         this.generalInfoFormControls.doNotScheduleFacility.value,
-      
+
       facilityMile: this.generalInfoFormControls.facilityMile.value,
       priceWeight: this.generalInfoFormControls.priceWeight.value,
       latitude: this.generalInfoFormControls.latitude.value,
@@ -3020,17 +3024,17 @@ export class SchdFacilitiesComponent implements OnInit {
   }
   tabClick(tabName) {
     this.defaultPopupTab = tabName;
-   if (
+    if (
       this.defaultPopupTab == 'LeaseAgreements' ||
-      this.defaultPopupTab == 'LeaseAgreement_MRI' 
+      this.defaultPopupTab == 'LeaseAgreement_MRI'
     ) {
       this.MRIPageNumber = 1;
       this.MRIpageSize = 20;
       this.getLeaseAgreementsByFacilityId(this.facilityId);
-    } 
+    }
     if (
       this.defaultPopupTab == 'LeaseAgreements' ||
-      this.defaultPopupTab == 'LeaseAgreement_CT' 
+      this.defaultPopupTab == 'LeaseAgreement_CT'
     ) {
       this.CTPageNumber = 1;
       this.CTpageSize = 20;
@@ -3052,10 +3056,10 @@ export class SchdFacilitiesComponent implements OnInit {
     if (this.defaultPopupTab == 'Credit/Debit') {
       this.getAllBlockLeaseCredits();
     }
-    if(this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'Credit/Debit' || this.defaultPopupTab == 'LeasePayments' ){
+    if (this.defaultPopupTab == 'LeaseAgreements' || this.defaultPopupTab == 'Credit/Debit' || this.defaultPopupTab == 'LeasePayments') {
       $("#useLeaseForm").css("display", "none");
     }
-    if(this.defaultPopupTab == 'BlockLeaseRate'){
+    if (this.defaultPopupTab == 'BlockLeaseRate') {
       $("#useLeaseForm").css("display", "block");
     }
   }
@@ -3214,14 +3218,14 @@ export class SchdFacilitiesComponent implements OnInit {
     }
   }
   UnpaidButtonClick(e) {
-    var TotalLease = 0, TotalCredit : number = 0;
+    var TotalLease = 0, TotalCredit: number = 0;
     for (let i = 0; i < this.selectedleaseArray.length; i++) {
       TotalLease += this.selectedleaseArray[i].TotalAmount;
     }
     for (let i = 0; i < this.selectedCreditPayment.length; i++) {
       TotalCredit += parseFloat(this.selectedCreditPayment[i].CreditAmount);
     }
-    
+
     var leaseIdListTemp = this.leaseIdArray ? this.leaseIdArray.join(",") : '';
     var creditIdListTemp = this.creditIdArray ? this.creditIdArray.join(",") : '';
     var data = {
@@ -3593,9 +3597,7 @@ export class SchdFacilitiesComponent implements OnInit {
     return a;
   }
   onChangeService(type) {
-    debugger
-    
-    if (type == 'mri') {
+      if (type == 'mri') {
       this.CheckSameCombinationMRI('Type1');
       this.CheckSameCombinationMRI('Type2');
       this.CheckSameCombinationMRI('Type3');
@@ -3605,7 +3607,7 @@ export class SchdFacilitiesComponent implements OnInit {
       this.CheckSameCombinationCT('Type2');
       this.CheckSameCombinationCT('Type3');
     }
-    if(this.modalityServiceFormControls.ctservice.value == false){
+    if (this.modalityServiceFormControls.ctservice.value == false) {
       //this.modalityCtForm.controls.ct1ResourceName.setValidators(null);
       this.modalityCtForm.get('ct1ResourceName').clearValidators()
       this.modalityCtForm.get('ct2ResourceName').clearValidators()
@@ -3613,18 +3615,18 @@ export class SchdFacilitiesComponent implements OnInit {
       this.modalityCtForm.get('ct1ResourceName').updateValueAndValidity();
       this.modalityCtForm.get('ct2ResourceName').updateValueAndValidity();
       this.modalityCtForm.get('ct3ResourceName').updateValueAndValidity();
-    } 
-    if(this.modalityServiceFormControls.mriservice.value == false){
+    }
+    if (this.modalityServiceFormControls.mriservice.value == false) {
       this.modalityMriForm.get('mri1ResourceName').clearValidators()
       this.modalityMriForm.get('mri2ResourceName').clearValidators()
       this.modalityMriForm.get('mri3ResourceName').clearValidators()
       this.modalityMriForm.get('mri1ResourceName').updateValueAndValidity();
       this.modalityMriForm.get('mri2ResourceName').updateValueAndValidity();
       this.modalityMriForm.get('mri3ResourceName').updateValueAndValidity();
-    } 
+    }
   }
   copyToClipboard(currentPageUrl) {
-   
+
     navigator.clipboard.writeText(currentPageUrl).catch(() => {
       console.error("Unable to copy text");
     });
@@ -3634,4 +3636,26 @@ export class SchdFacilitiesComponent implements OnInit {
       alertType: null
     });
   }
+  confirmationForVoidLease(data: any) {
+    this.leaseId = data.data.LeaseId
+    this.hiddenConfirmationLease.nativeElement.click();
+  }
+
+  MarkLeaseAsVoid() {
+    this.facilityService.confirmationForVoidLease(true, this.leaseId).subscribe((res) => {
+      if (res.responseCode == 200) {
+        this.showNotificationOnSucess(res);
+        this.getLeaseAgreementsByFacilityId(this.facilityId);
+      }
+      else {
+        this.showNotificationOnFailure(res);
+      }
+
+    },
+      (err: any) => {
+        this.errorNotification(err);
+      }
+    );
+  }
+
 }

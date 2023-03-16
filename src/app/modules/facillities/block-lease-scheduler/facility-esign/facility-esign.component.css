@@ -1283,3 +1283,6 @@ p {
     top: 0px;
     padding-left: 12px;
 }
+.esign-successful{
+	text-transform: uppercase;
+}

@@ -436,6 +436,12 @@ getFacilityParentById(showGlobalLoader : boolean = true, facilityParentId:number
   AddCopyPrice(showGlobalLoader: true, body: any) {
     return this._httpService.post('Facility/AddCopyPrice', body, showGlobalLoader).pipe(map((res: ApiResponse) => res));
   }
+ 
+  confirmationForVoidLease(showGlobalLoader : boolean = true,leaseId:any){
+    return this._httpService.get('BlockLeaseScheduler/MarkLeaseAsVoid?key='+leaseId,showGlobalLoader).pipe(
+      map((res:ApiResponse) => res)
+    );
+  }
 }
 
 export enum ActionDropDownEnum {

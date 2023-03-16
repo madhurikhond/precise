@@ -15,6 +15,7 @@ import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/services/common/storage.service';
 import { DatePipe } from '@angular/common';
 import { CommonMethodService } from '../../../../services/common/common-method.service';
+import { EditRecurringEventModalComponent } from './edit-recurring-event-modal/edit-recurring-event-modal.component';
 
 declare let scheduler: any;
 
@@ -97,10 +98,10 @@ export class CalendarSchedulerComponent implements OnInit {
         // this.schedulerLoad();
     }
     schedulerLoad() {
-      
+
         scheduler.skin = 'material';
         scheduler.config.first_hour = 6;
-		scheduler.config.last_hour = 24;
+        scheduler.config.last_hour = 24;
         scheduler.config.xml_date = '%Y-%m-%d';
         scheduler.config.hour_date = "%h:%i %A";
         scheduler.xy.scale_width = 70;
@@ -130,13 +131,15 @@ export class CalendarSchedulerComponent implements OnInit {
             serialize: true,
             year_view: true,
             agenda_view: true,
-            tooltip: true
+            tooltip: true,
+            recurring: true
         });
         scheduler.date.timeline_start = scheduler.date.week_start;
         scheduler.plugins({
             multisection: true,
             timeline: true,
             multiselect: true,
+            recurring: true
         });
         scheduler.config.multisection = true;
         scheduler.templates.event_class = function (start, end, event) {
@@ -292,7 +295,28 @@ export class CalendarSchedulerComponent implements OnInit {
     }
     checkBlockedOffDays(event: any, id: number) {
         if (event.LeaseBlockId) {
-            scheduler.startLightbox(id, this.openForm(event));
+
+            if (event.RecurEventId && event.RecurEventId > 0) {
+                const modalRef = this.modalService.open(EditRecurringEventModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
+                modalRef.result.then().catch((reason: ModalResult | any) => {
+                    if (reason != 4) {
+                        if (reason == 2) {
+                            var recurringEventJson = JSON.parse(event.RecurEvent);
+                            var newStatDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.StartTime);
+                            var newEndDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.EndTime);
+
+                            event.start_date = newStatDate;
+                            newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
+                            event.end_date = newEndDate;
+                        }
+                        event.RecurEventId = reason == 1 ? 0 : event.RecurEventId;
+                        event.IsRecurEvent = reason != 1;
+                        scheduler.startLightbox(id, this.openForm(event));
+                    }
+                });
+            }
+            else
+                scheduler.startLightbox(id, this.openForm(event));
         } else {
             let body =
             {
@@ -310,7 +334,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     dayValue = event.start_date.getDay();
                 }
                 else {
-                    dayValue = event._sday  < 6 ? event._sday + 1 : 0;
+                    dayValue = event._sday < 6 ? event._sday + 1 : 0;
                 }
                 if (!this.displayClosedDays.includes(dayValue)) {
                     if (res.response) {
@@ -392,7 +416,7 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.GetBlockLeaseData();
                     this.backToCalendar();
                 }
-                if ((reason == 4)) {
+                else if ((reason == 4)) {
                     scheduler.endLightbox(false, null);
                     this.backToCalendar();
                 }
@@ -400,6 +424,12 @@ export class CalendarSchedulerComponent implements OnInit {
                     this.latestStartDate = event.start_date;
                     this.latestSchedulerMode = scheduler.getState().mode;
                     scheduler.deleteEvent(event.id);
+                    this.GetBlockLeaseData();
+                    this.backToCalendar();
+                }
+                else {
+                    this.latestStartDate = event.start_date;
+                    this.latestSchedulerMode = scheduler.getState().mode;
                     this.GetBlockLeaseData();
                     this.backToCalendar();
                 }

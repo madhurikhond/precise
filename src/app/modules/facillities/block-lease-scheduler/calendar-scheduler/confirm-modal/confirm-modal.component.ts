@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/services/common/notification.servic
 })
 export class ConfirmModalComponent implements OnInit {
   @Input() LeaseBlockId: any;
+  @Input() RecurEventId: any;
   ModalResult = ModalResult;
   constructor(public modal: NgbActiveModal,
     private readonly blockLeaseSchedulerService: BlockLeaseSchedulerService,
@@ -26,8 +27,8 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   delete() {
-    if (this.LeaseBlockId != 0) {
-      this.blockLeaseSchedulerService.deleteBlockLeaseById(true, this.LeaseBlockId).subscribe((res) => {
+    if (this.LeaseBlockId >0 || this.RecurEventId > 0) {
+      this.blockLeaseSchedulerService.deleteBlockLeaseById(true, this.LeaseBlockId, this.RecurEventId).subscribe((res) => {
         if (res.responseCode == 200) {
           this.notificationService.showNotification({
             alertHeader: 'Success',

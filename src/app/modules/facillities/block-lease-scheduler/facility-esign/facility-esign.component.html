@@ -1,5 +1,5 @@
 <div [ngClass]="{'d-none':alreadySignedbodyDisabled}">
-    <div class="esign-request-body" id="facilityEsignbody" *ngIf="!alreadySignedbodyDisabled && !isEsignValid">
+    <div class="esign-request-body" id="facilityEsignbody" *ngIf="!alreadySignedbodyDisabled && !isEsignValid && !IsVoided">
         <div class="esign-request-main esign-request-main-group">
             <div id="englishpatient" class="esign-request" style="display: block;">
                 <div class="esign-header">
@@ -151,4 +151,8 @@
 <div class="esign-successful" *ngIf="isEsignValid">
     <img src="assets\images\alert.png">
     <p>The lease agreement has been already signed by the facility.</p>
+</div>
+<div class="esign-successful" *ngIf="IsVoided">
+    <img src="assets\images\alert.png">
+    <p>this lease has been voided by precise imaging</p>
 </div>

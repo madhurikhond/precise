@@ -1,19 +1,17 @@
 import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from 'src/app/services/common/notification.service';
 import { BlockLeaseSchedulerService } from 'src/app/services/block-lease-scheduler-service/block-lease-scheduler.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { DateTimeFormatCustom } from 'src/app/constants/dateTimeFormat';
 import { DatePipe } from '@angular/common';
-import {
-  DxDateBoxModule
-} from 'devextreme-angular';
+import { DxDateBoxModule } from 'devextreme-angular';
 import { FacilityService } from 'src/app/services/facillities/facility.service';
 import { Console } from 'console';
 import { CommonMethodService } from '../../../../../services/common/common-method.service';
 import { AlertsRoutingModule } from 'src/app/modules/settings/RIS-settings/alerts/alerts-routing.module';
-
+import { ResponseStatusCode } from 'src/app/constants/response-status-code.enum';
 declare const $: any;
 
 @Component({
@@ -28,6 +26,8 @@ export class SchedulerPopupComponent implements OnInit {
   @ViewChild('hiddencheckAlreadyBlockedLeasePopup', { static: false }) hiddencheckAlreadyBlockedLeasePopup: ElementRef;
   @ViewChild('hiddenpastDateConfirm', { static: false }) hiddenpastDateConfirm: ElementRef;
   @ViewChild('hiddengreaterCreditTimePopUp', { static: false }) hiddengreaterCreditTimePopUp: ElementRef;
+  @ViewChild('hiddenshowGenericMessage', { static: false }) hiddenshowGenericMessage: ElementRef;
+
   @Input() isNew: boolean;
   @Input() event: Event;
   @Input() mode: any;
@@ -48,6 +48,7 @@ export class SchedulerPopupComponent implements OnInit {
   checkFacilityHours: boolean = false;
   leaseForm: FormGroup;
   leaseBlockOffForm: FormGroup;
+  reccurringBlockForm: FormGroup;
   now = new Date();
   form: FormGroup;
   validateMessage: string = '';
@@ -73,6 +74,18 @@ export class SchedulerPopupComponent implements OnInit {
   blockLeasePricingList: any = [];
   IsFacilityDetailsPopUpOpen: boolean = false;
   displayLeaseIdSchedulerPopUp: any;
+  showReccuringBlock: any = false;
+  checks: Array<object> = [];
+  endOccurance: any
+  daysList = [];
+  reccurringBodyEndDate: any;
+  RecurEventId: any = 0;
+  IsRecurEvent: any;
+  selectedItem:any;
+  months: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  days: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  numbers=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+  onNumber=[1,2,3,4,5]
   constructor(
     public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -88,6 +101,8 @@ export class SchedulerPopupComponent implements OnInit {
 
   ngOnInit(): void {
     // this.isLeaseSigned = true;
+    this.selectedItem = this.numbers[0];
+    this.selectedItem= this.onNumber[0];
     this.createForm();
     this.leaseFormInitialization();
     if (this.data) {
@@ -97,6 +112,9 @@ export class SchedulerPopupComponent implements OnInit {
       if (this.event) {
         if (this.event['LeaseBlockId']) {
           this.LeaseBlockId = this.event['LeaseBlockId'];
+          this.IsRecurEvent = this.event['IsRecurEvent'];
+          this.showReccuringBlock = this.IsRecurEvent;
+          this.RecurEventId = this.event['RecurEventId'];
           document.getElementById('SaveBtn').style.display = 'none';
         } else {
           document.getElementById('SaveBtn').style.display = 'block';
@@ -116,8 +134,13 @@ export class SchedulerPopupComponent implements OnInit {
       }
     })
     this.getTotalLeaseAndCreditHours();
+    this.createReccurringBlockForm();
+    if (this.event && this.event['LeaseBlockId']) {
+      this.PatchValueInRecurringForm(this.event['RecurEvent'])
+    }
   }
   leaseFormInitialization() {
+    debugger
     var eTime = new Date(this.event['end_date']);
     eTime.setSeconds(eTime.getSeconds() + 1);
     this.leaseForm = this.formBuilder.group({
@@ -277,15 +300,16 @@ export class SchedulerPopupComponent implements OnInit {
       this.modality_change = false;
       this.IsAllModality = true;
     }
-    if (!this.isBlockOffTime)
-      this.validateAutoBlockOffDays();
+    if (!this.isBlockOffTime) {
+      // this.validateAutoBlockOffDays();
+    }
 
   }
   validateAutoBlockOffDays() {
-    if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
+    if ((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1) {
       this.selectedModality = this.modalityResourcesList[0].Modality
-      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
-    }    
+      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID
+    }
     this.AlreadyBlockedLeaseList = [];
     let body =
     {
@@ -311,7 +335,10 @@ export class SchedulerPopupComponent implements OnInit {
   changed(event: any) {
     this.changedOffDays(event);
     if (this.selectedModality) {
-      this.MatchFacilityHours();
+      this.getTotalLeaseAndCreditHours
+      //this.hiddenshowGenericMessage.nativeElement.click();
+      // this.MatchFacilityHours();
+
     }
   }
   senddatatoschd_facilities() {
@@ -381,8 +408,6 @@ export class SchedulerPopupComponent implements OnInit {
         if (res.response[0].TotalLeaseHours)
           //  alert('Total hours value: ' + res.response[0].TotalLeaseHours);
           this.TotalLeaseHours = JSON.parse(res.response[0].TotalLeasedHours).TotalLeaseHours;
-
-
       }
     },
       (err: any) => {
@@ -419,26 +444,19 @@ export class SchedulerPopupComponent implements OnInit {
       this.errorNotification(err);
     });
   }
+
+  onChange(index: number, data: any, isChecked: boolean) {
+    if (isChecked) {
+      this.daysList.push(parseInt(data.target.value));
+    } else {
+      this.daysList.splice(this.daysList.indexOf(parseInt(data.target.value)), 1);
+    }
+    this.daysList.sort();
+  }
   saveBlockLeaseData() {
-    // if (this.selectedModality.toUpperCase() == 'CT' && (this.CtPrice == null || this.CtPrice.LeaseRatePerHour == null || this.CtPrice.LeaseRatePerHour == "")) {
-    //   this.notificationService.showNotification({
-    //     alertHeader: '',
-    //     alertMessage: "Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease",
-    //     alertType: null
-    //   });
-    //   return;
-    // }
-    // if (this.selectedModality.toUpperCase() == 'MRI' && (this.MriPrice == null || this.MriPrice.LeaseRatePerHour == null)) {
-    //   this.notificationService.showNotification({
-    //     alertHeader: '',
-    //     alertMessage: 'Pricing of the selected modality is not added. Please add the price for this facility before creating a block/lease',
-    //     alertType: null
-    //   });
-    //   return;
-    // }
-    if((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1){
+    if ((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1) {
       this.selectedModality = this.modalityResourcesList[0].Modality
-      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID 
+      this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID
     }
     if (!this.isBlockOffTime) {
       if (this.AlreadyBlockedLeaseList.length > 0) {
@@ -449,6 +467,7 @@ export class SchedulerPopupComponent implements OnInit {
         if (this.leaseBlockOffForm.invalid) {
           return;
         }
+        var reccurBody = this.calculateRecurringData()
         let body = {
           'facilityId': this.FacilityID,
           'modality': this.selectedModality.toUpperCase(),
@@ -457,7 +476,10 @@ export class SchedulerPopupComponent implements OnInit {
           'startTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editBlockOffFormControls.end_time.value.toLocaleTimeString('en-US')),
           'resourceId': this.selectedresourceId,
-          'IsAllModality': this.IsAllModality
+          'IsAllModality': this.IsAllModality,
+          'IsRecurEvent': this.showReccuringBlock,
+          'RecurEventId': this.RecurEventId?this.RecurEventId:0,
+          'SchedulerEvent': reccurBody
         }
         this.blockLeaseSchedulerService.saveAutoBlockOffData(true, body).subscribe((res) => {
           if (res.responseCode == 200) {
@@ -482,12 +504,30 @@ export class SchedulerPopupComponent implements OnInit {
     else if (this.isValidTimeAndClosedDays && this.isValidAlreadyBlockedLease) {
       this.BlockOffDaysSubmitted = false;
       this.submitted = true;
+      if(this.reccurringBlockForm.controls.repeatEvery.value == 'week' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSunday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringMonday == '' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringTuesday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringWednesday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringThursday == '' && 
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringFriday == '' &&
+      this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSaturday == '' )
+      {
+        this.notificationService.showNotification({ 
+          alertHeader : null,
+          alertMessage: 'Please select atleast one week day.',
+          alertType: ResponseStatusCode.BadRequest
+        });
+        return 
+
+      }
       if (this.leaseForm.invalid) {
         return;
       }
       if (this.isLeaseSigned == true && this.LeaseBlockId != 0) {
         this.saveCreditInfo();
       } else {
+        var reccurBody = this.calculateRecurringData()
         let body = {
           'LeaseId': this.LeaseBlockId,
           'facilityId': this.FacilityID,
@@ -498,11 +538,14 @@ export class SchedulerPopupComponent implements OnInit {
           'endDate': this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd'),
           'startTime': this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
           'endTime': this.getTwentyFourHourTime(this.editFormControls.end_time.value.toLocaleTimeString('en-US')),
-          'resourceId': this.selectedresourceId
+          'resourceId': this.selectedresourceId,
+          'IsAllModality': this.IsAllModality,
+          'RecurEventId': this.RecurEventId?this.RecurEventId:0,
+          'IsRecurEvent': this.showReccuringBlock,
+          'SchedulerEvent': reccurBody,
         }
         this.blockLeaseSchedulerService.saveBlockLeaseData(true, body).subscribe((res) => {
           if (res.responseCode == 200 && res.response.responseCode != 404) {
-
             if (res.response.responseCode == 400) {
               this.notificationService.showNotification({
                 alertHeader: '',
@@ -597,6 +640,22 @@ export class SchedulerPopupComponent implements OnInit {
     }, 500);
 
   }
+  onOccuranceEndDate() {
+    debugger
+    var start_date = new Date(this.leaseForm.controls.start_date.value);
+    var reccurance_end_date = new Date(this.reccurringBlockForm.controls.endOccurrancedate.value);
+    if (this.leaseForm.controls.end_date.value != null) {
+      if (Date.parse(reccurance_end_date.toDateString()) < Date.parse(start_date.toDateString())) {
+        this.reccurringBlockForm.patchValue({
+          endOccurrancedate: null,
+        });
+        console.log(this.AlreadyBlockedLeaseList)
+        this.dateTimeValidationMsg = "End occurance date should be greater than Start date";
+        this.hiddencheckAlreadyBlockedLeasePopup.nativeElement.click();
+      }
+    }
+  }
+
   handleBlockOffDaysChange(e: any, from: string) {
     this.AlreadyBlockedLeaseList = [];
     var start_date = new Date(this.editBlockOffFormControls.start_date.value);
@@ -623,6 +682,7 @@ export class SchedulerPopupComponent implements OnInit {
     }
   }
   handleValueChange(e: any, from: string) {
+
     this.AlreadyBlockedLeaseList = [];
     this.TotalBlockHours = '';
     this.TotalLeaseHours = '';
@@ -665,7 +725,7 @@ export class SchedulerPopupComponent implements OnInit {
         if ((previousValue != newValue) && isValid) {
           this.getTotalLeaseAndCreditHours();
           if (this.selectedresourceId && this.selectedModality) {
-            this.MatchFacilityHours();
+            //  this.MatchFacilityHours();
           }
         }
       }
@@ -686,10 +746,10 @@ export class SchedulerPopupComponent implements OnInit {
         if (res.response.length > 0) {
           this.IsAllModality = true;
           this.modalityResourcesList = res.response;
-          if(this.modalityResourcesList.length == 1){
+          if (this.modalityResourcesList.length == 1) {
             this.leaseForm.patchValue({
-              modalityType:  this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID,
-              contrastType : 'w/o'
+              modalityType: this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID,
+              contrastType: 'w/o'
             });
           }
         }
@@ -716,6 +776,49 @@ export class SchedulerPopupComponent implements OnInit {
     return `${sHours} : ${sMinutes}`;
   }
 
+
+  createReccurringBlockForm() {
+    this.reccurringBlockForm = this.fb.group({
+      repeatEvery: ['day'],
+      dailyOccurance: ['everyDay'],
+      dailyOccranceNumberOfDays: ['1'],
+      OccuranceNumberOfWeeks: ['1'],
+      weeklyOccurance: [''],
+      monthlyOccurance: [''],
+      staticMonthlyOccurance: [''],
+      endOccurrance: [''],
+      endOccurranceNumberOfDays: ['1'],
+      endOccurrancedate: [this.event['end_date']],
+      endOccurranceDays: [''],
+      everyMonthCount: [''],
+      reapeat_month_count: ['1'],
+      repeatOnEveryMonth: ['1'],
+      repeatOnEveryMonthWeekDay: ['1'],
+      onEveryDayOfWeek: ['1'],
+      DayOfMonth  :['1'],
+      weekOccuranceDays: this.fb.array([
+      ]),
+      totalDays: [0]
+    });
+    this.reccurringBlockForm.get("repeatEvery").valueChanges.subscribe(x => {
+      if (x == 'day') {
+        this.reccurringBlockForm.controls.dailyOccurance.setValue('everyDay')
+        this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.setValue('1')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
+      } else if (x == 'week') {
+        this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.setValue('1')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
+      }
+      else if (x == 'month') {
+        this.reccurringBlockForm.controls.monthlyOccurance.setValue('reapeatMonthlyOccurance')
+        this.reccurringBlockForm.controls.endOccurranceNumberOfDays.setValue('1')
+        this.reccurringBlockForm.controls.reapeat_month_count.setValue('1')
+        this.reccurringBlockForm.controls.repeatOnEveryMonth.setValue('1')
+        this.reccurringBlockForm.controls.onEveryDayOfWeek.setValue('1')
+      }
+    })
+    this.addCreds()
+  }
   private createForm() {
     // $(document).keydown(function (event) {
     //   if (event.keyCode == 27) {
@@ -758,6 +861,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   changeScheduleType(checked: any) {
+    this.createReccurringBlockForm();
     this.leaseForm.patchValue({
       modalityType: "",
       contrastType: "",
@@ -773,7 +877,8 @@ export class SchedulerPopupComponent implements OnInit {
   }
   confirmDelete() {
     const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true, backdrop: 'static', size: 'sm', windowClass: 'modal fade modal-theme in modal-small' });
-    modalRef.componentInstance.LeaseBlockId = this.LeaseBlockId;
+    modalRef.componentInstance.LeaseBlockId = this.RecurEventId > 0 ? 0 : this.LeaseBlockId;
+    modalRef.componentInstance.RecurEventId = this.RecurEventId;
     modalRef.result
       .then()
       .catch((reason: ModalResult | any) => {
@@ -789,15 +894,231 @@ export class SchedulerPopupComponent implements OnInit {
       alertType: err.status
     });
   }
+  addCreds() {
+    const arr = this.reccurringBlockForm.controls.weekOccuranceDays as FormArray;
+    arr.push(this.fb.group({
+      reccuringMonday: [''],
+      reccuringTuesday: [''],
+      reccuringWednesday: [''],
+      reccuringThursday: [''],
+      reccuringFriday: [''],
+      reccuringSaturday: [''],
+      reccuringSunday: [''],
+    }));
+  }
 
+  changetxtFunction() {
+    if (!this.LeaseBlockId) {
+      //  var x = document.getElementById("repeat-control");
+      if (!this.showReccuringBlock) {
+        //  x.innerHTML = "Enabled";
+        this.reccurringBlockForm.controls.repeatEvery.setValue('day');
+        if (this.reccurringBlockForm.controls.repeatEvery.value == 'day') {
+          this.reccurringBlockForm.controls.dailyOccurance.setValue('everyDay')
+          this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.setValue('1')
+        }
+        this.showReccuringBlock = true;
+      } else {
+        //  x.innerHTML = "Disabled";
+        this.showReccuringBlock = false;
+      }
+    }
+  }
   ClosePopup(te) {
     setTimeout(() => {
       $('body').addClass('modal-open')
     }, 500);
   }
+
+  calculateRecurringData() {
+    var reccurBody: any;
+    if (this.reccurringBlockForm.controls.endOccurrance.value == '') {
+      this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
+      this.reccurringBodyEndDate = this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd')
+    } else {
+      this.endOccurance = '#'
+      this.reccurringBodyEndDate = this.datePipe.transform(this.reccurringBlockForm.controls.endOccurrancedate.value, 'yyyy-MM-dd')
+    }
+    var startDate = this.datePipe.transform(this.editFormControls.start_date.value, this.dateTimeFormatCustom.Date);
+    var startTime = this.datePipe.transform(this.editFormControls.start_time.value, this.dateTimeFormatCustom.Time);
+    var endDate = this.datePipe.transform(this.editFormControls.end_date.value, this.dateTimeFormatCustom.Date);
+    var endTime = this.datePipe.transform(this.editFormControls.end_time.value, this.dateTimeFormatCustom.Time);
+    var reccurringEndDate: any = new Date(endDate + ' ' + endTime);
+    var reccurringStartDate: any = new Date(startDate + ' ' + startTime);
+    var reccurringEventLength = (reccurringEndDate - reccurringStartDate) / 1000
+
+    var daysDiff = Math.floor((Date.UTC(reccurringEndDate.getFullYear(), reccurringEndDate.getMonth(), reccurringEndDate.getDate())
+      - Date.UTC(reccurringStartDate.getFullYear(), reccurringStartDate.getMonth(), reccurringStartDate.getDate())) / (1000 * 60 * 60 * 24))
+
+
+    this.reccurringBlockForm.patchValue({
+      totalDays: daysDiff
+    });
+
+    if (this.reccurringBlockForm.controls.repeatEvery.value == 'day') {
+      if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everyDay') {
+        reccurBody = {
+          start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          end_date: this.reccurringBodyEndDate + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value + '_' + '_' + '_' + this.endOccurance,
+          rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value + '_' + '_' + '_',
+          event_length: reccurringEventLength,
+          text: JSON.stringify(this.reccurringBlockForm.value)
+        }
+      } else if (this.reccurringBlockForm.controls.dailyOccurance.value == 'everySelectedWeekDay') {
+        reccurBody = {
+          start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          end_date: this.reccurringBodyEndDate + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          rec_type: 'week' + '_' + this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value + '_' + '_' + '_' + '1,' + '2,' + '3,' + '4,' + '5' + this.endOccurance,
+          rec_pattern: 'week' + '_' + this.reccurringBlockForm.controls.dailyOccranceNumberOfDays.value + '_' + '_' + '_' + '1,' + '2,' + '3,' + '4,' + '5',
+          event_length: reccurringEventLength,
+          text: JSON.stringify(this.reccurringBlockForm.value)
+        }
+      }
+    } else if (this.reccurringBlockForm.controls.repeatEvery.value == 'week') {
+      reccurBody = {
+        start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        end_date: this.reccurringBodyEndDate + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+        rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value + '_' + '_' + '_' + this.daysList + this.endOccurance,
+        rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.OccuranceNumberOfWeeks.value + '_' + '_' + '_' + this.daysList,
+        event_length: reccurringEventLength,
+        text: JSON.stringify(this.reccurringBlockForm.value)
+      }
+    } else if (this.reccurringBlockForm.controls.repeatEvery.value == 'month') {
+      if (this.reccurringBlockForm.controls.monthlyOccurance.value == 'reapeatMonthlyOccurance') {
+        reccurBody = {
+          start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.reapeat_month_count.value + '_' + '_' + '_' + this.endOccurance,
+          rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.reapeat_month_count.value + '_' + '_' + '_',
+          event_length: reccurringEventLength,
+          DayOfMonth : this.reccurringBlockForm.controls.DayOfMonth.value,
+          text: JSON.stringify(this.reccurringBlockForm.value)
+        }
+      } else if (this.reccurringBlockForm.controls.monthlyOccurance.value == 'OnEveryMonthweek') {
+
+        reccurBody = {
+          start_date: this.datePipe.transform(this.editFormControls.start_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          end_date: this.datePipe.transform(this.editFormControls.end_date.value, 'yyyy-MM-dd') + ' ' + this.getTwentyFourHourTime(this.editFormControls.start_time.value.toLocaleTimeString('en-US')),
+          rec_type: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonth.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value + '_' + this.reccurringBlockForm.controls.onEveryDayOfWeek.value + '_' + this.endOccurance,
+          rec_pattern: this.reccurringBlockForm.controls.repeatEvery.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonth.value + '_' + this.reccurringBlockForm.controls.repeatOnEveryMonthWeekDay.value + '_' + this.reccurringBlockForm.controls.onEveryDayOfWeek.value + '_',
+          event_length: reccurringEventLength,
+          //DayOfMonth : this.reccurringBlockForm.controls.DayOfMonth.value,
+          text: JSON.stringify(this.reccurringBlockForm.value)
+        }
+      }
+    }
+
+    return reccurBody;
+  }
+
+  PatchValueInRecurringForm(recurringevent: any) {
+
+    // this.SetRecurringStartEndDate(this.event);
+    var eventText = JSON.parse(JSON.parse(recurringevent).EventText);
+    this.reccurringBlockForm.patchValue({
+      repeatEvery: eventText.repeatEvery,
+      dailyOccurance: eventText.dailyOccurance,
+      dailyOccranceNumberOfDays: eventText.dailyOccranceNumberOfDays,
+      OccuranceNumberOfWeeks: eventText.OccuranceNumberOfWeeks,
+      weeklyOccurance: eventText.weeklyOccurance,
+      monthlyOccurance: eventText.monthlyOccurance,
+      staticMonthlyOccurance: eventText.staticMonthlyOccurance,
+      endOccurrance: eventText.endOccurrance,
+      endOccurranceNumberOfDays: eventText.endOccurranceNumberOfDays,
+      endOccurrancedate: eventText.endOccurrancedate,
+      endOccurranceDays: eventText.endOccurranceDays,
+      everyMonthCount: eventText.everyMonthCount,
+      reapeat_month_count: eventText.reapeat_month_count,
+      repeatOnEveryMonth: eventText.repeatOnEveryMonth,
+      repeatOnEveryMonthWeekDay: eventText.repeatOnEveryMonthWeekDay,
+      onEveryDayOfWeek: eventText.onEveryDayOfWeek,
+      DayOfMonth: eventText.DayOfMonth
+
+    });
+
+    const items = (<FormArray>this.reccurringBlockForm.get('weekOccuranceDays'));
+    var weekData = eventText.weekOccuranceDays[0];
+    for (let i = 0; i < items.length; i++) {
+      var dex = (<FormGroup>items.at(i))
+      dex.patchValue({
+        reccuringMonday: weekData.reccuringMonday,
+        reccuringTuesday: weekData.reccuringTuesday,
+        reccuringWednesday: weekData.reccuringWednesday,
+        reccuringThursday: weekData.reccuringThursday,
+        reccuringFriday: weekData.reccuringFriday,
+        reccuringSaturday: weekData.reccuringSaturday,
+        reccuringSunday: weekData.reccuringSunday,
+      });
+    }
+    if (weekData.reccuringSunday)
+      this.daysList.push(0)
+    if (weekData.reccuringMonday)
+      this.daysList.push(1)
+    if (weekData.reccuringTuesday)
+      this.daysList.push(2)
+    if (weekData.reccuringWednesday)
+      this.daysList.push(3)
+    if (weekData.reccuringThursday)
+      this.daysList.push(4)
+    if (weekData.reccuringFriday)
+      this.daysList.push(5)
+    if (weekData.reccuringSaturday)
+      this.daysList.push(6)
+  }
+
+  ShowGenericMessage() {
+    this.submitted = true;
+    this.BlockOffDaysSubmitted=true;
+    if (!this.isBlockOffTime) {
+      if (this.leaseBlockOffForm.invalid) {
+        return;
+      }
+    }
+    else
+    {
+      if (this.leaseForm.invalid) {
+        return;
+      }
+    }
+    if(this.reccurringBlockForm.controls.repeatEvery.value == 'week' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSunday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringMonday == '' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringTuesday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringWednesday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringThursday == '' && 
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringFriday == '' &&
+    this.reccurringBlockForm.controls.weekOccuranceDays.value[0].reccuringSaturday == '' )
+    {
+      this.notificationService.showNotification({ 
+        alertHeader : null,
+        alertMessage: 'Please select atleast one week day.',
+        alertType: ResponseStatusCode.BadRequest
+      });
+      return 
+
+    }    
+    this.hiddenshowGenericMessage.nativeElement.click();
+  }
+
+  SetRecurringStartEndDate(event: any) {
+    if (this.IsRecurEvent) {
+      var recurringEventJson = JSON.parse(event.RecurEvent);
+      var newStatDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.StartTime);
+      var newEndDate = new Date(recurringEventJson.StartDate + ' ' + recurringEventJson.EndTime);
+
+      event.start_date = newStatDate;
+      newEndDate.setDate(newEndDate.getDate() + JSON.parse(recurringEventJson.EventText).totalDays)
+      event.end_date = newEndDate;
+    }
+  }
+
   get editFormControls() { return this.leaseForm.controls; }
   get editBlockOffFormControls() { return this.leaseBlockOffForm.controls; }
+
+
 }
+
 export enum ModalResult {
   BACKDROP_CLICK = 0,
   ESC = 1,

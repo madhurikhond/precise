@@ -4,3 +4,36 @@
     cursor: pointer;
   }
   .disabled{ pointer-events: none }
+
+  .ndd-block{    width: 100%!important;
+    margin-bottom: 26px;
+    border-top: 1px solid #ddd;}
+    .ndd-block.dhx_repeat_right label:nth-child(3){width: initial!important;}
+    .ndd-block label{padding-bottom: 10px;}
+    .ndd-block input.dhx_repeat_date{border-width: 2px;}
+    .select-dm-cpicker{float: left;
+      width: 100%;
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;}
+
+      .select-dm-cpicker select{border-color: #ddd;}
+      .select-dm-cpicker .dhx_cal_lsection{width: 155px;
+        font-size: 14px;
+        font-weight: 800;
+    }
+      .select-dm-cpicker .dhx_section_time span{display: block;}
+
+      .css-frm input.dhx_repeat_text{width: 42px!important; outline: 0;}
+      .dlflex{display: flex; 
+        align-items: center;}
+        .dlflex label{margin-right: 10px;
+          padding: 0px;
+          margin-bottom: 3px;}
+
+          .dlflex .dx-texteditor.dx-editor-outlined{height: 30px;
+            width: 139px; padding-left: 0px;}
+
+            .disable-btn{   border: 1px solid #dbdbdb;
+            
+              color: #ababab;}
