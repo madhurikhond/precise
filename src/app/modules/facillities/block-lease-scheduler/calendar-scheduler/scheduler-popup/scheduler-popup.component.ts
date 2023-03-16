@@ -446,14 +446,16 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   onChange(index: number, data: any, isChecked: boolean) {
+    debugger
     if (isChecked) {
-      this.daysList.push(data.target.value);
+      this.daysList.push(parseInt(data.target.value));
     } else {
-      this.daysList.splice(this.daysList.indexOf(data.target.value), 1);
+      this.daysList.splice(this.daysList.indexOf(parseInt(data.target.value)), 1);
     }
     this.daysList.sort();
   }
   saveBlockLeaseData() {
+    debugger
     if ((this.selectedModality == '' || this.selectedresourceId == '') && this.modalityResourcesList.length == 1) {
       this.selectedModality = this.modalityResourcesList[0].Modality
       this.selectedresourceId = this.modalityResourcesList[0].Resources[0].INTERNALRESOURCEID
@@ -930,6 +932,7 @@ export class SchedulerPopupComponent implements OnInit {
   }
 
   calculateRecurringData() {
+    debugger
     var reccurBody: any;
     if (this.reccurringBlockForm.controls.endOccurrance.value == '') {
       this.endOccurance = '#' + this.reccurringBlockForm.controls.endOccurranceNumberOfDays.value;
