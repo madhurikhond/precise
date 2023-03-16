@@ -1033,6 +1033,7 @@ export class SchedulerPopupComponent implements OnInit {
       repeatOnEveryMonth: eventText.repeatOnEveryMonth,
       repeatOnEveryMonthWeekDay: eventText.repeatOnEveryMonthWeekDay,
       onEveryDayOfWeek: eventText.onEveryDayOfWeek,
+      DayOfMonth: eventText.DayOfMonth
 
     });
 
