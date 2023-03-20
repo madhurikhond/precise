@@ -74,7 +74,7 @@
                     <div class="theme-label">Attorney</div>
                     <div class="input-group md-input-focused">
                         <dx-autocomplete placeholder="Search Attorney..." [showClearButton]="true"
-                            [dataSource]="attorneyList" (change)="ClearAttorney($event)"
+                            [dataSource]="attorneyList" (change)="ClearAttorney($event)" [maxItemCount]="maxItemCount"
                             [(ngModel)]="attorneyTypeModelList">
                         </dx-autocomplete>
                     </div>
@@ -127,7 +127,7 @@
                     <div class="input-group">
                         <dx-autocomplete placeholder="Search Referrer..." [showClearButton]="true"
                             [dataSource]="referrerList" (change)="ClearReferrerPhysician($event)"
-                            [(ngModel)]="referrerModelList">
+                            [(ngModel)]="referrerModelList"  [maxItemCount]="maxItemCount">
                         </dx-autocomplete>
                     </div>
                 </div>
@@ -442,7 +442,7 @@
                                 <div class="input-group">
                                     <dx-autocomplete placeholder="Search Referrer..." [showClearButton]="true"
                                         [dataSource]="referrerList" [(ngModel)]="referrerModelList">
-                                    </dx-autocomplete>
+                                    </dx-autocomplete >
                                 </div>
                             </div>
                         </div>
