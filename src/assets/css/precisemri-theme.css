@@ -7524,3 +7524,6 @@ select {
 					margin-right: 10px;
 				}
 				
+				.dx-dropdownlist-popup-wrapper .dx-scrollview-content .dx-item.dx-list-item:nth-child(-n + 72)  {
+					display: block !important;
+				  }

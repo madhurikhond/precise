@@ -168,7 +168,7 @@ export class PatientComponent implements OnInit {
   patientidparam: any;
   isSelectAll: boolean = false
   readonly commonRegex = CommonRegex;
-
+  maxItemCount=100
   constructor(private fb: FormBuilder, private readonly patientService: PatientService, private readonly notificationService: NotificationService,
     private readonly _commonMethodService: CommonMethodService//,public datepipe:DatePipe
     , private readonly storageService: StorageService,
